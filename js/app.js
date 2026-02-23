@@ -3579,21 +3579,49 @@ function pauseAllVideos(){
         var src=iframe.src||'';
         if(src.indexOf('youtube')!==-1){try{iframe.contentWindow.postMessage(JSON.stringify({event:'command',func:'pauseVideo',args:[]}),'*');}catch(e){}}
         else if(src.indexOf('vimeo')!==-1){try{iframe.contentWindow.postMessage(JSON.stringify({method:'pause'}),'*');}catch(e){}}
+        else if(src && src!=='about:blank'){
+            // Instagram, TikTok, Spotify, SoundCloud — blank src to stop
+            if(!iframe.dataset.origSrc) iframe.dataset.origSrc=src;
+            iframe.src='about:blank';
+        }
     });
 }
 (function initVideoScrollObserver(){
     if(!('IntersectionObserver' in window)) return;
+    // Pause an iframe: YouTube/Vimeo via postMessage, others by blanking src
+    function pauseIframe(iframe){
+        var src=iframe.src||'';
+        if(src.indexOf('youtube')!==-1){
+            try{iframe.contentWindow.postMessage(JSON.stringify({event:'command',func:'pauseVideo',args:[]}),'*');}catch(e){}
+        } else if(src.indexOf('vimeo')!==-1){
+            try{iframe.contentWindow.postMessage(JSON.stringify({method:'pause'}),'*');}catch(e){}
+        } else if(src){
+            // Instagram, TikTok, Spotify, SoundCloud — no postMessage API
+            // Save src and blank it to fully stop playback
+            if(!iframe.dataset.origSrc) iframe.dataset.origSrc=src;
+            iframe.src='about:blank';
+        }
+    }
+    // Restore a previously blanked iframe
+    function resumeIframe(iframe){
+        if(iframe.dataset.origSrc){
+            iframe.src=iframe.dataset.origSrc;
+            delete iframe.dataset.origSrc;
+        }
+    }
     var observer = new IntersectionObserver(function(entries){
         if(!settings.autoplay) return; // autoplay off — don't interfere
         entries.forEach(function(entry){
             var el=entry.target;
             if(entry.isIntersecting){
-                // Auto-play HTML5 video (muted so browsers allow it)
+                // Resume HTML5 video (muted so browsers allow it)
                 var vid=el.querySelector('video');
                 if(vid && vid.paused && vid.dataset.wasPlaying==='1'){
                     vid.muted=true;
                     try{vid.play();}catch(e){}
                 }
+                // Restore blanked iframes
+                el.querySelectorAll('iframe').forEach(function(f){resumeIframe(f);});
             } else {
                 // Pause everything when scrolled away
                 var vid=el.querySelector('video');
@@ -3601,21 +3629,13 @@ function pauseAllVideos(){
                     vid.dataset.wasPlaying='1';
                     vid.pause();
                 }
-                var iframe=el.querySelector('iframe');
-                if(iframe){
-                    var src=iframe.src||'';
-                    if(src.indexOf('youtube')!==-1){
-                        try{iframe.contentWindow.postMessage(JSON.stringify({event:'command',func:'pauseVideo',args:[]}),'*');}catch(e){}
-                    } else if(src.indexOf('vimeo')!==-1){
-                        try{iframe.contentWindow.postMessage(JSON.stringify({method:'pause'}),'*');}catch(e){}
-                    }
-                }
+                el.querySelectorAll('iframe').forEach(function(f){pauseIframe(f);});
             }
         });
     }, {threshold:0.25});
     function observeNewEmbeds(){
-        // Video embeds (YouTube, Vimeo, direct video files)
-        document.querySelectorAll('.video-embed:not([data-vobs])').forEach(function(el){
+        // Video + social embeds (YouTube, Vimeo, Instagram, TikTok, Spotify, SoundCloud, direct files)
+        document.querySelectorAll('.video-embed:not([data-vobs]), .social-embed:not([data-vobs])').forEach(function(el){
             el.setAttribute('data-vobs','1');
             observer.observe(el);
         });
