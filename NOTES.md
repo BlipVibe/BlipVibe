@@ -282,3 +282,25 @@
 - CSS: `.video-embed` / `.video-embed-mini` in style.css
 - Raw URL is hidden from post text when embed is shown (same as link previews)
 - No database changes — purely client-side rendering
+
+## Updated Terms of Use & TOS Acceptance System (added 2026-02-23)
+
+### TOS Content Update
+- Expanded from 8 sections to 12 sections
+- New sections: User Content & Responsibility (ownership, licensing), Embedded & Third-Party Media, Copyright & DMCA Policy (with takedown procedure to copyright@blipvibe.com), Repeat Infringer Policy, Report Feature
+- Effective date updated to February 23, 2026
+- Both signup form and splash modal contain identical terms
+
+### Version-Based Acceptance System
+- `TOS_VERSION` constant in app.js — bump this number whenever TOS changes to force all users to re-accept
+- Current version: `2` (Feb 23 2026 update)
+- **New signups:** Accept via checkbox during signup, version stored to localStorage + skin_data immediately
+- **Existing users:** On login/page load, `checkTosAccepted()` runs in `initApp()` after loading skin_data
+  - If TOS not accepted (or older version), full-screen modal shown with scrollable terms
+  - "I Agree" → stores acceptance to localStorage + Supabase `skin_data.tosAcceptedVersion`
+  - "Decline" → immediately logged out via `handleLogout()`
+  - Modal is blocking — user cannot interact with the app until they accept
+- Acceptance persists cross-device via `skin_data.tosAcceptedVersion` in Supabase
+- localStorage fallback: `blipvibe_tos_v_<userId>` for instant local checks
+- `_buildSkinData()` includes `tosAcceptedVersion` field for sync
+- CSS: `.tos-splash-overlay` / `.tos-splash-modal` / `.tos-splash-scroll` in style.css

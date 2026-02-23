@@ -95,6 +95,9 @@ signupForm.addEventListener('submit', async function (e) {
         // If enabled, session is null — user must confirm email first.
         if (result.session) {
             // Session exists: auto-signed-in, onAuthStateChange will fire
+            // Mark TOS as accepted — they just agreed during signup
+            _tosAccepted = true;
+            try { localStorage.setItem('blipvibe_tos_v_'+result.user.id, String(TOS_VERSION)); } catch(e){}
             closeSignupModal();
         } else {
             // No session: email confirmation required
@@ -202,6 +205,92 @@ function resetAllCustomizations(){
     document.body.style.background='';document.body.style.color='';
 }
 
+// ======================== TERMS OF SERVICE ACCEPTANCE ========================
+// Bump this version whenever the TOS changes — all users must re-accept
+var TOS_VERSION = 2; // v2 = Feb 23 2026 update (DMCA, embedded media, etc.)
+var _tosAccepted = false;
+
+function checkTosAccepted(){
+    if(!currentUser) return false;
+    // Check skin_data first (cross-device), then localStorage fallback
+    var sd = currentUser.skin_data || {};
+    if(sd.tosAcceptedVersion >= TOS_VERSION) return true;
+    try { if(parseInt(localStorage.getItem('blipvibe_tos_v_'+currentUser.id))>=TOS_VERSION) return true; } catch(e){}
+    return false;
+}
+
+function markTosAccepted(){
+    if(!currentUser) return;
+    _tosAccepted = true;
+    // Persist to localStorage immediately
+    try { localStorage.setItem('blipvibe_tos_v_'+currentUser.id, String(TOS_VERSION)); } catch(e){}
+    // Persist to Supabase skin_data for cross-device sync
+    syncSkinDataToSupabase(true);
+}
+
+function showTosModal(){
+    return new Promise(function(resolve){
+        var overlay=document.createElement('div');
+        overlay.className='tos-splash-overlay';
+        overlay.innerHTML='<div class="tos-splash-modal">'
+            +'<h3 style="margin:0 0 12px;font-size:18px;color:var(--dark);">Updated Terms of Use</h3>'
+            +'<p style="margin:0 0 12px;font-size:13px;color:var(--gray);">We\'ve updated our Terms of Use. Please review and accept to continue using BlipVibe.</p>'
+            +'<div class="tos-splash-scroll">'
+            +'<h4>BlipVibe \u2013 Terms of Use &amp; Disclaimer (Beta)</h4>'
+            +'<p><strong>Effective Date:</strong> February 23, 2026</p>'
+            +'<p>By continuing to use BlipVibe, you agree to the following terms:</p>'
+            +'<h5>1. Free Expression Policy</h5>'
+            +'<p>BlipVibe supports open conversation and the free exchange of ideas. Users are allowed to express opinions, debate topics, and share perspectives, even if others may disagree.</p>'
+            +'<p>However, free expression does not include harassment, threats, or targeted abuse. The following content is strictly prohibited:</p>'
+            +'<ul><li>Racial slurs</li><li>Sexual orientation slurs</li><li>Credible threats of violence</li><li>Doxing (sharing private personal information without consent)</li><li>Direct harassment or intimidation</li></ul>'
+            +'<p>BlipVibe reserves the right to remove content that violates these rules.</p>'
+            +'<h5>2. User Content &amp; Responsibility</h5>'
+            +'<p>You are solely responsible for all content you post, including text, images, links, comments, and messages.</p>'
+            +'<p>By posting content, you represent and warrant that you own the content, or you have the necessary rights or permission to share it.</p>'
+            +'<p>You agree not to post illegal content, spam, malicious code, or copyrighted material without authorization.</p>'
+            +'<p>BlipVibe does not claim ownership of your content. However, by posting, you grant BlipVibe a non-exclusive, worldwide, royalty-free license to display and distribute your content within the platform.</p>'
+            +'<h5>3. Embedded &amp; Third-Party Media</h5>'
+            +'<p>BlipVibe may display embedded media from third-party platforms (such as YouTube, Spotify, TikTok, or SoundCloud) using official embed tools.</p>'
+            +'<p>BlipVibe does not host, store, or redistribute third-party copyrighted audio or video files unless explicitly stated.</p>'
+            +'<p>Users are responsible for ensuring they have the right to share linked or embedded content.</p>'
+            +'<h5>4. Copyright &amp; DMCA Policy</h5>'
+            +'<p>BlipVibe complies with the Digital Millennium Copyright Act (DMCA). If you believe content on BlipVibe infringes your copyright, you may submit a DMCA takedown notice to: <strong>copyright@blipvibe.com</strong></p>'
+            +'<p>Upon receipt of a valid notice, BlipVibe will remove or disable access to the content, notify the user who posted it, and allow counter-notification where applicable.</p>'
+            +'<h5>5. Repeat Infringer Policy</h5>'
+            +'<p>BlipVibe maintains a policy to terminate accounts of users determined to be repeat copyright infringers.</p>'
+            +'<h5>6. Report Feature</h5>'
+            +'<p>Users may report content believed to violate these Terms. BlipVibe reviews reports and may remove content or take action as necessary.</p>'
+            +'<h5>7. Beta Platform Notice</h5>'
+            +'<p>BlipVibe is currently in beta. Features may change, break, or be removed without notice. Data may be reset or deleted during development updates.</p>'
+            +'<h5>8. No Warranty</h5>'
+            +'<p>BlipVibe is provided "as is" without warranties of any kind. We do not guarantee uninterrupted service, permanent data storage, or error-free performance.</p>'
+            +'<h5>9. Limitation of Liability</h5>'
+            +'<p>BlipVibe and its creator are not liable for data loss, user disputes, or damages resulting from platform use.</p>'
+            +'<h5>10. Privacy</h5>'
+            +'<p>Basic account data (such as email and profile information) is stored for platform functionality. BlipVibe does not sell personal data.</p>'
+            +'<h5>11. Account Termination</h5>'
+            +'<p>BlipVibe reserves the right to suspend or terminate accounts that violate these Terms.</p>'
+            +'<h5>12. Acceptance</h5>'
+            +'<p>By continuing to use BlipVibe, you confirm that you have read and agree to these Terms and understand that BlipVibe is currently in beta.</p>'
+            +'</div>'
+            +'<div class="tos-splash-buttons">'
+            +'<button class="btn btn-primary" id="tosAcceptBtn">I Agree</button>'
+            +'<button class="btn" id="tosDeclineBtn" style="background:var(--border);color:var(--dark);">Decline</button>'
+            +'</div>'
+            +'</div>';
+        document.body.appendChild(overlay);
+        document.getElementById('tosAcceptBtn').addEventListener('click',function(){
+            overlay.remove();
+            markTosAccepted();
+            resolve(true);
+        });
+        document.getElementById('tosDeclineBtn').addEventListener('click',function(){
+            overlay.remove();
+            resolve(false);
+        });
+    });
+}
+
 var DEFAULT_AVATAR = 'images/default-avatar.svg';
 
 // Helper: get avatar URL for current user (returns placeholder if none)
@@ -275,6 +364,17 @@ async function initApp() {
     loadState(); // Restore skins, settings, purchases from localStorage (fast)
     // Always load from Supabase to pick up cross-device changes
     await loadSkinDataFromSupabase();
+    // Check TOS acceptance — existing users must accept updated terms before proceeding
+    if(!checkTosAccepted()){
+        populateUserUI();
+        showApp();
+        var accepted = await showTosModal();
+        if(!accepted){
+            _initAppRunning = false;
+            handleLogout();
+            return;
+        }
+    }
     populateUserUI();
     showApp();
     // Immediately navigate to the hash page so the user never sees home flash
@@ -595,7 +695,8 @@ function _buildSkinData(){
         commentCoinAwarded:commentCoinAwarded||{},
         savedFolders:savedFolders||[],
         hiddenPosts:hiddenPosts||{},
-        reportedPosts:reportedPosts||[]
+        reportedPosts:reportedPosts||[],
+        tosAcceptedVersion:_tosAccepted?TOS_VERSION:((currentUser&&currentUser.skin_data&&currentUser.skin_data.tosAcceptedVersion)||0)
     };
 }
 function syncSkinDataToSupabase(immediate){
