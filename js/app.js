@@ -185,7 +185,7 @@ function resetAllCustomizations(){
     state.groupCoins={};state.groupOwnedSkins={};state.groupOwnedPremiumSkins={};
     state.groupActiveSkin={};state.groupActivePremiumSkin={};
     state.groupPostCoinCount={};state.groupCommentCoinPosts={};state.groupReplyCoinPosts={};
-    settings={darkMode:false,notifSound:true,privateProfile:false,autoplay:true,commentOrder:'top',showLocation:true};
+    settings={darkMode:false,notifSound:true,privateProfile:false,autoplay:true,commentOrder:'top',showLocation:false};
     // Reset premium background globals
     premiumBgImage=null;premiumBgOverlay=0;premiumBgDarkness=0;premiumCardTransparency=0.1;
     // Strip visual customizations from DOM
@@ -207,7 +207,7 @@ function resetAllCustomizations(){
 
 // ======================== TERMS OF SERVICE ACCEPTANCE ========================
 // Bump this version whenever the TOS changes — all users must re-accept
-var TOS_VERSION = 2; // v2 = Feb 23 2026 update (DMCA, embedded media, etc.)
+var TOS_VERSION = 3; // v3 = Feb 23 2026 comprehensive update (age, coins, messaging, location, privacy, dispute resolution)
 var _tosAccepted = false;
 
 function checkTosAccepted(){
@@ -239,39 +239,45 @@ function showTosModal(){
             +'<h4>BlipVibe \u2013 Terms of Use &amp; Disclaimer (Beta)</h4>'
             +'<p><strong>Effective Date:</strong> February 23, 2026</p>'
             +'<p>By continuing to use BlipVibe, you agree to the following terms:</p>'
-            +'<h5>1. Free Expression Policy</h5>'
-            +'<p>BlipVibe supports open conversation and the free exchange of ideas. Users are allowed to express opinions, debate topics, and share perspectives, even if others may disagree.</p>'
-            +'<p>However, free expression does not include harassment, threats, or targeted abuse. The following content is strictly prohibited:</p>'
-            +'<ul><li>Racial slurs</li><li>Sexual orientation slurs</li><li>Credible threats of violence</li><li>Doxing (sharing private personal information without consent)</li><li>Direct harassment or intimidation</li></ul>'
-            +'<p>BlipVibe reserves the right to remove content that violates these rules.</p>'
-            +'<h5>2. User Content &amp; Responsibility</h5>'
-            +'<p>You are solely responsible for all content you post, including text, images, links, comments, and messages.</p>'
-            +'<p>By posting content, you represent and warrant that you own the content, or you have the necessary rights or permission to share it.</p>'
-            +'<p>You agree not to post illegal content, spam, malicious code, or copyrighted material without authorization.</p>'
-            +'<p>BlipVibe does not claim ownership of your content. However, by posting, you grant BlipVibe a non-exclusive, worldwide, royalty-free license to display and distribute your content within the platform.</p>'
-            +'<h5>3. Embedded &amp; Third-Party Media</h5>'
-            +'<p>BlipVibe may display embedded media from third-party platforms (such as YouTube, Spotify, TikTok, or SoundCloud) using official embed tools.</p>'
-            +'<p>BlipVibe does not host, store, or redistribute third-party copyrighted audio or video files unless explicitly stated.</p>'
-            +'<p>Users are responsible for ensuring they have the right to share linked or embedded content.</p>'
-            +'<h5>4. Copyright &amp; DMCA Policy</h5>'
-            +'<p>BlipVibe complies with the Digital Millennium Copyright Act (DMCA). If you believe content on BlipVibe infringes your copyright, you may submit a DMCA takedown notice to: <strong>copyright@blipvibe.com</strong></p>'
-            +'<p>Upon receipt of a valid notice, BlipVibe will remove or disable access to the content, notify the user who posted it, and allow counter-notification where applicable.</p>'
-            +'<h5>5. Repeat Infringer Policy</h5>'
-            +'<p>BlipVibe maintains a policy to terminate accounts of users determined to be repeat copyright infringers.</p>'
-            +'<h5>6. Report Feature</h5>'
-            +'<p>Users may report content believed to violate these Terms. BlipVibe reviews reports and may remove content or take action as necessary.</p>'
-            +'<h5>7. Beta Platform Notice</h5>'
-            +'<p>BlipVibe is currently in beta. Features may change, break, or be removed without notice. Data may be reset or deleted during development updates.</p>'
-            +'<h5>8. No Warranty</h5>'
-            +'<p>BlipVibe is provided "as is" without warranties of any kind. We do not guarantee uninterrupted service, permanent data storage, or error-free performance.</p>'
-            +'<h5>9. Limitation of Liability</h5>'
-            +'<p>BlipVibe and its creator are not liable for data loss, user disputes, or damages resulting from platform use.</p>'
-            +'<h5>10. Privacy</h5>'
-            +'<p>Basic account data (such as email and profile information) is stored for platform functionality. BlipVibe does not sell personal data.</p>'
-            +'<h5>11. Account Termination</h5>'
-            +'<p>BlipVibe reserves the right to suspend or terminate accounts that violate these Terms.</p>'
-            +'<h5>12. Acceptance</h5>'
-            +'<p>By continuing to use BlipVibe, you confirm that you have read and agree to these Terms and understand that BlipVibe is currently in beta.</p>'
+            +'<h5>1. Eligibility &amp; Age Requirement</h5>'
+            +'<p>You must be at least <strong>13 years old</strong> to use BlipVibe. BlipVibe does not knowingly collect personal information from children under 13 (COPPA). If we discover a user is under 13, their account will be terminated and data deleted.</p>'
+            +'<h5>2. Free Expression Policy</h5>'
+            +'<p>BlipVibe supports open conversation. The following is strictly prohibited: racial slurs, sexual orientation slurs, credible threats of violence, doxing, and direct harassment or intimidation.</p>'
+            +'<h5>3. User Content &amp; Responsibility</h5>'
+            +'<p>You are solely responsible for all content you post. You must own the content or have rights to share it. You agree not to post illegal content, spam, malicious code, or copyrighted material without authorization.</p>'
+            +'<p>BlipVibe does not claim ownership of your content. By posting, you grant BlipVibe a non-exclusive, worldwide, royalty-free license to display and distribute your content within the platform. This license ends when you delete your content or account, except where shared by others.</p>'
+            +'<h5>4. Embedded &amp; Third-Party Media</h5>'
+            +'<p>BlipVibe displays embedded media from YouTube, Spotify, TikTok, Instagram, Twitter/X, Vimeo, and SoundCloud using their official embed tools. BlipVibe does not host or redistribute third-party content. These embeds may set cookies and collect data per each platform\'s own privacy policy.</p>'
+            +'<h5>5. Copyright &amp; DMCA Policy</h5>'
+            +'<p>BlipVibe complies with the DMCA. Send takedown notices to <strong>copyright@blipvibe.com</strong> with: your name and contact info, identification of the copyrighted work, the URL of the infringing material, good faith and accuracy statements, and your signature.</p>'
+            +'<h5>6. Repeat Infringer Policy</h5>'
+            +'<p>Accounts with multiple valid DMCA takedown notices may be suspended or permanently terminated.</p>'
+            +'<h5>7. Virtual Currency (Coins)</h5>'
+            +'<p>BlipVibe Coins have <strong>no real-world monetary value</strong>, cannot be exchanged for cash, are non-transferable, and are used only for cosmetic items. BlipVibe may modify or reset Coin balances at any time. Coins are non-refundable.</p>'
+            +'<h5>8. Direct Messages</h5>'
+            +'<p>Messages are stored on our servers and are <strong>not end-to-end encrypted</strong>. BlipVibe may access messages if required by law or to enforce these Terms. Do not share sensitive personal information through messages.</p>'
+            +'<h5>9. Location Features</h5>'
+            +'<p>Location sharing is <strong>off by default</strong> and must be manually enabled. If enabled, only your approximate area is shown on posts. Precise GPS coordinates are not stored.</p>'
+            +'<h5>10. Report Feature</h5>'
+            +'<p>Users may report content that violates these Terms. BlipVibe reviews reports and may take action as necessary.</p>'
+            +'<h5>11. Privacy &amp; Data</h5>'
+            +'<p>BlipVibe collects: account data (email, username, date of birth), content (posts, comments, messages, images), usage data (likes, follows, preferences), and technical data (session tokens). We do <strong>not</strong> sell personal data. Data is stored using Supabase. Third-party services (Google Fonts, Microlink, OpenStreetMap, embedded media platforms) may collect data per their own policies. Request account/data deletion at <strong>hello@blipvibe.com</strong>.</p>'
+            +'<h5>12. Beta Platform Notice</h5>'
+            +'<p>BlipVibe is in beta. Features may change or be removed. Data may be reset during development.</p>'
+            +'<h5>13. No Warranty</h5>'
+            +'<p>BlipVibe is provided "as is" without warranties of any kind.</p>'
+            +'<h5>14. Limitation of Liability</h5>'
+            +'<p>BlipVibe and its operators are not liable for data loss, user disputes, or damages. Total liability shall not exceed $100 USD.</p>'
+            +'<h5>15. Account Termination</h5>'
+            +'<p>BlipVibe may suspend or terminate accounts that violate these Terms. Users may request account deletion at hello@blipvibe.com.</p>'
+            +'<h5>16. Dispute Resolution</h5>'
+            +'<p>Disputes shall be resolved through good-faith negotiation, then binding arbitration (American Arbitration Association). You waive the right to participate in class actions.</p>'
+            +'<h5>17. Governing Law</h5>'
+            +'<p>These Terms are governed by the laws of the United States.</p>'
+            +'<h5>18. Changes to Terms</h5>'
+            +'<p>BlipVibe may update these Terms. All users will be required to review and accept updated Terms before continuing.</p>'
+            +'<h5>19. Acceptance</h5>'
+            +'<p>By continuing to use BlipVibe, you confirm you are at least 13, have read and agree to these Terms, and understand BlipVibe is in beta.</p>'
             +'</div>'
             +'<div class="tos-splash-buttons">'
             +'<button class="btn btn-primary" id="tosAcceptBtn">I Agree</button>'
@@ -624,7 +630,7 @@ var state = {
     groupCommentCoinPosts: {},
     groupReplyCoinPosts: {}
 };
-var settings={darkMode:false,notifSound:true,privateProfile:false,autoplay:true,commentOrder:'top',showLocation:true};
+var settings={darkMode:false,notifSound:true,privateProfile:false,autoplay:true,commentOrder:'top',showLocation:false};
 var userLocation=null; // Detected state/region from geolocation
 
 // Persist state to localStorage (keyed per user)
@@ -3418,7 +3424,7 @@ function getVideoEmbedHtml(url, mini){
     var cls='video-embed'+(mini?' video-embed-mini':'');
     // YouTube: watch, short, embed, youtu.be
     m=url.match(/(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
-    if(m){ id=m[1]; return '<div class="'+cls+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><iframe src="https://www.youtube.com/embed/'+id+'" width="100%" height="'+(mini?'180':'360')+'" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }
+    if(m){ id=m[1]; return '<div class="'+cls+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><iframe src="https://www.youtube-nocookie.com/embed/'+id+'" width="100%" height="'+(mini?'180':'360')+'" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }
     // Vimeo
     m=url.match(/vimeo\.com\/(\d+)/);
     if(m){ id=m[1]; return '<div class="'+cls+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><iframe src="https://player.vimeo.com/video/'+id+'" width="100%" height="'+(mini?'180':'360')+'" frameborder="0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }

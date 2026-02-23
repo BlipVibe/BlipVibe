@@ -293,15 +293,22 @@
 
 ## Updated Terms of Use & TOS Acceptance System (added 2026-02-23)
 
-### TOS Content Update
-- Expanded from 8 sections to 12 sections
-- New sections: User Content & Responsibility (ownership, licensing), Embedded & Third-Party Media, Copyright & DMCA Policy (with takedown procedure to copyright@blipvibe.com), Repeat Infringer Policy, Report Feature
-- Effective date updated to February 23, 2026
+### TOS Content Update (v3 — Feb 23 2026)
+- Expanded from 12 sections to 19 sections
+- New sections: Eligibility & Age Requirement (13+ / COPPA), Virtual Currency (Coins), Direct Messages (not E2E encrypted), Location Features (opt-in), expanded Privacy & Data (all data categories + third-party services disclosed), Dispute Resolution (binding arbitration, class action waiver), Governing Law, Changes to Terms
+- Content license now ends when user deletes content/account
+- Liability cap added ($100 USD)
+- Account deletion contact added (hello@blipvibe.com)
+- Third-party tracking disclosure added for embedded media
 - Both signup form and splash modal contain identical terms
+
+### Code Changes for Legal Compliance
+- YouTube embeds switched to `youtube-nocookie.com` (privacy-enhanced mode, reduces Google tracking)
+- Location sharing changed from **opt-out** to **opt-in** (default `showLocation: false`)
 
 ### Version-Based Acceptance System
 - `TOS_VERSION` constant in app.js — bump this number whenever TOS changes to force all users to re-accept
-- Current version: `2` (Feb 23 2026 update)
+- Current version: `3` (Feb 23 2026 comprehensive update)
 - **New signups:** Accept via checkbox during signup, version stored to localStorage + skin_data immediately
 - **Existing users:** On login/page load, `checkTosAccepted()` runs in `initApp()` after loading skin_data
   - If TOS not accepted (or older version), full-screen modal shown with scrollable terms
