@@ -270,3 +270,15 @@
 - Icon: `fa-user`, empty state: "You haven't posted anything yet!"
 - No database changes — purely client-side filtering of already-loaded feed data
 - Tab button in `index.html` `#feedTabs`, filter logic in `renderFeed()` in `app.js`
+
+## Inline Video Embeds (added 2026-02-23)
+- Video URLs in posts, messages, and comments now play inline instead of opening in a new tab
+- **YouTube** (watch, shorts, embed, youtu.be) → embedded iframe player
+- **Vimeo** → embedded iframe player
+- **Direct video files** (.mp4, .webm, .ogg) → native `<video>` element with controls
+- `getVideoEmbedHtml(url, mini)` helper returns embed HTML or null for non-video URLs
+- Integrated into `autoFetchLinkPreviews()` (feed), `autoFetchLinkPreviewsMini()` (messages/comments), and post creation link preview
+- Mini embeds (messages/comments) use smaller height (180px vs 360px)
+- CSS: `.video-embed` / `.video-embed-mini` in style.css
+- Raw URL is hidden from post text when embed is shown (same as link previews)
+- No database changes — purely client-side rendering

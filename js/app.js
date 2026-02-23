@@ -3286,6 +3286,22 @@ function _showFeedbackModal(){
 // ======================== GENERATE FEED (100 POSTS) ========================
 var feedPosts=[];
 var activeFeedTab='following';
+
+// ======================== INLINE VIDEO EMBED HELPER ========================
+function getVideoEmbedHtml(url, mini){
+    if(!url) return null;
+    var id, m;
+    // YouTube: watch, short, embed, youtu.be
+    m=url.match(/(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    if(m){ id=m[1]; var w=mini?'100%':'100%'; var h=mini?'180':'360'; return '<div class="video-embed'+(mini?' video-embed-mini':'')+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><iframe src="https://www.youtube.com/embed/'+id+'" width="'+w+'" height="'+h+'" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }
+    // Vimeo
+    m=url.match(/vimeo\.com\/(\d+)/);
+    if(m){ id=m[1]; var vh=mini?'180':'360'; return '<div class="video-embed'+(mini?' video-embed-mini':'')+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><iframe src="https://player.vimeo.com/video/'+id+'" width="100%" height="'+vh+'" frameborder="0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }
+    // Direct video files
+    if(/\.(mp4|webm|ogg)(\?.*)?$/i.test(url)){ return '<div class="video-embed'+(mini?' video-embed-mini':'')+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><video src="'+url+'" controls playsinline preload="metadata" style="display:block;width:100%;border-radius:8px;max-height:'+(mini?'200px':'500px')+';background:#000;"></video></div>'; }
+    return null;
+}
+
 function buildMediaGrid(imgs){
     if(!imgs||!imgs.length) return '';
     var pid='pg-'+Date.now()+'-'+Math.random().toString(36).substr(2,5);
@@ -3659,6 +3675,14 @@ function autoFetchLinkPreviewsMini(container,selector){
         if(!urlMatch) return;
         var url=urlMatch[1].replace(/[.,;:!?)]+$/,'');
         if(/\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i.test(url)) return;
+        // Inline video embed for YouTube, Vimeo, direct video files
+        var videoHtml=getVideoEmbedHtml(url,true);
+        if(videoHtml){
+            el.insertAdjacentHTML('beforeend',videoHtml);
+            var escaped=url.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+            el.innerHTML=el.innerHTML.replace(new RegExp(escaped,'g'),'');
+            return;
+        }
         fetch('https://api.microlink.io?url='+encodeURIComponent(url))
             .then(function(r){return r.json();})
             .then(function(data){
@@ -3696,6 +3720,14 @@ function autoFetchLinkPreviews(container){
         var url=urlMatch[1].replace(/[.,;:!?)]+$/,'');
         // Don't fetch for image URLs already shown as post media
         if(/\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i.test(url)) return;
+        // Inline video embed for YouTube, Vimeo, direct video files
+        var videoHtml=getVideoEmbedHtml(url,false);
+        if(videoHtml){
+            desc.insertAdjacentHTML('beforeend',videoHtml);
+            var escaped=url.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+            textEl.innerHTML=textEl.innerHTML.replace(new RegExp(escaped,'g'),'');
+            return;
+        }
         fetch('https://api.microlink.io?url='+encodeURIComponent(url))
             .then(function(r){return r.json();})
             .then(function(data){
@@ -3907,13 +3939,18 @@ $('#openPostModal').addEventListener('click',function(){
         }
         var linkHtml='';
         if(linkUrl){
-            var linkDomain=(_linkData.domain)||linkUrl.replace(/^https?:\/\/(www\.)?/,'').split('/')[0].toUpperCase();
-            linkHtml='<a href="'+linkUrl+'" target="_blank" class="link-preview">';
-            if(linkImgSrc){linkHtml+='<img src="'+linkImgSrc+'" class="link-preview-image">';}
-            linkHtml+='<div class="link-preview-info">';
-            linkHtml+='<div class="link-preview-url">'+linkDomain+'</div>';
-            if(linkTitle){linkHtml+='<div class="link-preview-title">'+linkTitle+'</div>';}
-            linkHtml+='</div></a>';
+            var vidEmbed=getVideoEmbedHtml(linkUrl,false);
+            if(vidEmbed){
+                linkHtml=vidEmbed;
+            } else {
+                var linkDomain=(_linkData.domain)||linkUrl.replace(/^https?:\/\/(www\.)?/,'').split('/')[0].toUpperCase();
+                linkHtml='<a href="'+linkUrl+'" target="_blank" class="link-preview">';
+                if(linkImgSrc){linkHtml+='<img src="'+linkImgSrc+'" class="link-preview-image">';}
+                linkHtml+='<div class="link-preview-info">';
+                linkHtml+='<div class="link-preview-url">'+linkDomain+'</div>';
+                if(linkTitle){linkHtml+='<div class="link-preview-title">'+linkTitle+'</div>';}
+                linkHtml+='</div></a>';
+            }
         }
         var myName = currentUser ? (currentUser.display_name || currentUser.username) : 'You';
         var myPostId = sbPost ? sbPost.id : 'my-'+Date.now();
