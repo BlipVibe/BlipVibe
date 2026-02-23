@@ -1,0 +1,271 @@
+=========================================================================
+BLIPVIBE — LEGAL COVERAGE SUMMARY
+Last Updated: February 23, 2026
+=========================================================================
+
+This document summarizes all legal protections currently in place for
+BlipVibe across the Terms of Service, Privacy Policy, and technical
+implementation.
+
+=========================================================================
+TERMS OF SERVICE (21 Sections)
+=========================================================================
+
+1. ELIGIBILITY & AGE (COPPA COMPLIANCE)
+   - Minimum age: 13 years old
+   - Age verification at signup (birthday field)
+   - Accounts of users under 13 will be terminated and data deleted
+   - Compliant with Children's Online Privacy Protection Act (COPPA)
+
+2. FREE EXPRESSION POLICY
+   - Supports open conversation
+   - Strictly prohibits: racial slurs, sexual orientation slurs,
+     credible threats of violence, doxing, direct harassment
+
+3. USER CONTENT & RESPONSIBILITY
+   - Users own their content
+   - Non-exclusive, worldwide, royalty-free license to display on platform
+   - License ends when content/account is deleted
+   - Users responsible for copyright compliance
+   - Prohibited: illegal content, spam, malicious code, copyrighted
+     material without authorization
+
+4. EMBEDDED & THIRD-PARTY MEDIA
+   - Uses official embed tools (YouTube, Spotify, TikTok, Instagram,
+     Twitter/X, Vimeo, SoundCloud)
+   - BlipVibe does not host or redistribute third-party content
+   - Third-party tracking disclosure for embedded media
+
+5. COPYRIGHT & DMCA POLICY
+   - Full DMCA compliance
+   - Takedown process documented (notice requirements listed)
+   - Designated contact: copyright@blipvibe.com
+   - Counter-notification process supported
+
+6. REPEAT INFRINGER POLICY
+   - Accounts with multiple valid DMCA notices may be terminated
+
+7. VIRTUAL CURRENCY (COINS)
+   - No real-world monetary value
+   - Non-transferable, non-refundable
+   - Used only for cosmetic items
+   - BlipVibe may modify/reset balances at any time
+
+8. DIRECT MESSAGES
+   - Not end-to-end encrypted (disclosed)
+   - May be accessed if required by law or to enforce Terms
+   - Users warned not to share sensitive info via messages
+
+9. LOCATION FEATURES
+   - Off by default (opt-in only)
+   - Only approximate area shown (city/region)
+   - Precise GPS coordinates not stored
+
+10. REPORT FEATURE
+    - Users can report content violations
+    - BlipVibe reviews reports and takes action
+
+11. PRIVACY & DATA
+    - All data categories disclosed
+    - Third-party services listed
+    - Data deletion available via hello@blipvibe.com
+    - Does not sell personal data
+
+12. BETA PLATFORM NOTICE
+    - "As is" beta — features may change, data may be reset
+
+13. NO WARRANTY
+    - Provided "as is" without warranties of any kind
+
+14. LIMITATION OF LIABILITY
+    - Not liable for data loss, user disputes, or damages
+    - Total liability capped at $100 USD
+
+15. ACCOUNT TERMINATION
+    - BlipVibe may suspend/terminate violating accounts
+    - Users may delete their own account via Settings or email
+
+16. DISPUTE RESOLUTION
+    - Good-faith negotiation first
+    - Binding arbitration (American Arbitration Association)
+    - Class action waiver
+
+17. INDEMNIFICATION
+    - Users agree to indemnify and hold harmless BlipVibe
+    - Covers claims from user's content, use, or TOS violation
+
+18. GOVERNING LAW
+    - State of Texas, United States
+    - Exclusive jurisdiction in Texas state/federal courts
+
+19. SEVERABILITY
+    - Invalid provisions don't void remaining terms
+
+20. CHANGES TO TERMS
+    - Users must accept updated terms before continuing
+
+21. ACCEPTANCE
+    - Confirms age, agreement, and beta understanding
+
+=========================================================================
+PRIVACY POLICY (14 Sections)
+=========================================================================
+
+1. INFORMATION WE COLLECT
+   - Account info: email, username, display name, DOB, password (hashed),
+     profile bio, avatar, cover photo
+   - Content: posts, comments, replies, DMs, uploaded images, saved posts
+   - Usage data: likes, dislikes, follows, preferences, coin balance,
+     blocked users, reported content
+   - Technical data: auth session tokens, last visited page
+   - Location data: only if opted in, approximate area only
+
+2. HOW WE USE YOUR INFORMATION
+   - Platform operation, authentication, content display, messaging,
+     notifications, Terms enforcement, DMCA compliance
+
+3. INFORMATION WE DO NOT COLLECT
+   - No analytics/tracking pixels
+   - No selling/renting/sharing data with advertisers
+   - No precise GPS storage
+   - No message reading (except by law/Terms)
+
+4. DATA STORAGE & SECURITY
+   - Supabase cloud infrastructure
+   - Encrypted at rest and in transit (TLS/SSL)
+   - Row-level security policies
+   - Secure password hashing
+   - DMs not end-to-end encrypted (disclosed)
+
+5. THIRD-PARTY SERVICES (full table)
+   - Supabase (database, auth, storage)
+   - Google Fonts (font loading)
+   - Cloudflare/Font Awesome (icons)
+   - Microlink (link previews)
+   - OpenStreetMap/Nominatim (location lookup)
+   - YouTube, TikTok, Instagram, Twitter/X, Spotify, Vimeo, SoundCloud
+     (media embeds)
+   - Each service's data sharing disclosed
+
+6. COOKIES & LOCAL STORAGE
+   - No BlipVibe tracking cookies
+   - localStorage for: auth tokens, preferences, TOS status, last page
+   - Third-party embed cookies disclosed
+   - Cookie consent banner with accept/decline
+   - Manage cookies option in Settings
+
+7. CHILDREN'S PRIVACY (COPPA)
+   - Not directed at children under 13
+   - Age verification at signup
+   - Will delete account if child under 13 discovered
+   - Contact: hello@blipvibe.com
+
+8. YOUR RIGHTS
+   - Access: view all data within platform
+   - Correction: edit profile, posts, settings anytime
+   - Deletion: Delete My Account in Settings or email
+   - Data portability: request copy via email
+   - Opt-out of location: toggle in Settings
+
+9. DATA RETENTION
+   - Active accounts: data retained while active
+   - Deleted content: removed from database
+   - Deleted accounts: all data deleted within 30 days
+   - Beta resets possible
+
+10. CALIFORNIA RESIDENTS (CCPA)
+    - Right to know what data is collected
+    - Right to request deletion
+    - Right to opt out of data sale (N/A — we don't sell)
+    - Non-discrimination for exercising rights
+    - Contact: hello@blipvibe.com
+
+11. EUROPEAN USERS (GDPR)
+    - Legal bases: contract, consent, legitimate interest
+    - Rights: access, rectification, erasure, restrict processing,
+      data portability, object, withdraw consent
+    - Response within 30 days
+    - Data breach notification within 72 hours
+    - International transfer basis: explicit consent (Article 49(1)(a))
+
+12. INTERNATIONAL USERS
+    - Servers in United States
+    - Data transferred to and processed in US
+    - Consent obtained for transfer
+
+13. CHANGES TO THIS POLICY
+    - Effective date updated on changes
+    - Continued use = acceptance
+
+14. CONTACT US
+    - Email: hello@blipvibe.com
+    - Copyright/DMCA: copyright@blipvibe.com
+
+=========================================================================
+TECHNICAL SECURITY MEASURES
+=========================================================================
+
+XSS PROTECTION
+- escapeHtml() applied to 45+ user-content injection points
+- Covers: post content, display names, bios, comments, messages,
+  group names/descriptions, notifications, link previews, album titles
+
+COOKIE CONSENT
+- All third-party embeds gated behind cookie consent
+- YouTube, Vimeo, Spotify, SoundCloud (iframes)
+- TikTok, Twitter/X, Instagram (SDK scripts / iframes)
+- Placeholder UI shown when blocked
+- Manage cookies in Settings (accept/revoke)
+
+PROFILE DATA PROTECTION
+- Sensitive columns (skin_data, birthday, email) revoked from
+  authenticated/anon SELECT
+- SECURITY DEFINER RPC (get_own_profile) for own data access
+- Column-level Postgres grants
+
+ACCOUNT DELETION
+- Delete My Account button in Settings (double confirmation)
+- Cleans up storage files (avatars, post images)
+- delete_own_account RPC deletes profile + auth.users record
+- CASCADE deletes all posts, comments, likes, follows, etc.
+- profiles_delete RLS policy for user self-deletion
+
+GEOLOCATION
+- Off by default, opt-in only
+- Only fires when settings.showLocation is true
+- Approximate area only, no precise coordinates stored
+
+SEARCH INJECTION PREVENTION
+- sbSearchProfiles() sanitizes query to strip PostgREST
+  filter-injection characters (commas, parens, dots)
+
+ADMIN SECURITY
+- is_admin column cannot be set by client (REVOKE UPDATE)
+- All admin RPCs check is_admin server-side (SECURITY DEFINER)
+- Cannot delete/suspend other admin accounts
+- Admin actions: view users, suspend, delete (with confirmation)
+
+=========================================================================
+SQL MIGRATIONS TO RUN
+=========================================================================
+
+1. supabase/fix-profile-rls.sql
+   - Adds skin_data, birthday, email columns
+   - Revokes SELECT on sensitive columns
+   - Creates get_own_profile() and delete_own_account() RPCs
+   - Adds profiles_delete RLS policy
+
+2. supabase/admin-setup.sql
+   - Adds is_admin and is_suspended columns
+   - Revokes UPDATE on is_admin from client roles
+   - Creates admin RPC functions
+   - Set yourself as admin after running
+
+=========================================================================
+CONTACT INFORMATION
+=========================================================================
+
+General: hello@blipvibe.com
+DMCA/Copyright: copyright@blipvibe.com
+
+=========================================================================
