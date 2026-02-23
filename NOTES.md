@@ -647,3 +647,30 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - `showEditGroupPostModal(pid)` — reads current text from DOM, calls `sbEditPost`
 - `confirmDeleteGroupPost(pid)` — confirmation modal, calls `sbDeletePost`, removes card from DOM
 - Menu toggle and action handlers wired in `bindGvPostEvents()`
+
+## GIF Search in Comments (added 2026-02-23)
+
+### Overview
+- Users can post GIFs as comments via a Klipy-powered search picker
+- GIF button in comment input bar (between text input and Post button)
+- Opens a panel with search input and 2-column grid of GIF thumbnails
+- Trending GIFs load on open, debounced search (400ms) for queries
+- Clicking a GIF auto-submits it as a comment
+
+### API
+- **Provider:** Klipy (licensed GIF service used by WhatsApp/Canva/Figma)
+- `searchKlipyGifs(query, perPage)` — search endpoint, returns `{preview, full, title}`
+- `getKlipyTrending(perPage)` — trending endpoint
+- Results cached in `_gifCache` to avoid repeated requests
+- "Powered by KLIPY" attribution in picker footer (required)
+
+### Storage
+- GIF URLs stored in existing `content` field as `[gif]URL[/gif]`
+- No database changes — GIFs hotlinked from Klipy CDN
+- `buildCommentHtml()` detects `[gif]...[/gif]` pattern and renders as `<img class="comment-gif">`
+
+### CSS
+- `.comment-gif-btn` — pill button style for GIF trigger
+- `.gif-picker-panel` — flex column panel with border-top, max-height 320px
+- `.gif-picker-grid` — 2-column CSS grid with overflow scroll
+- `.comment-gif` — max-width 280px, max-height 200px, rounded corners

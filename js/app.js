@@ -44,6 +44,40 @@ function checkCooldown(key, ms) {
     return 0; // not on cooldown
 }
 
+// ======================== KLIPY GIF API ========================
+var _KLIPY_KEY='cDQONkvWzqpz8dILu8iczUr38kTZhaGckOuJgnYLC8XixymLWYYXWuGdxH1Zw4V6';
+var _gifCache={};
+function _parseKlipyGif(g){
+    var f=g.file||{};
+    var sm=f.sm||f.md||f.hd||f.xs||{};
+    var hd=f.hd||f.md||f.sm||{};
+    var preview=(sm.webp&&sm.webp.url)||(sm.gif&&sm.gif.url)||'';
+    var full=(hd.gif&&hd.gif.url)||(hd.webp&&hd.webp.url)||(sm.gif&&sm.gif.url)||preview;
+    return{preview:preview,full:full,title:g.title||''};
+}
+async function searchKlipyGifs(query,perPage){
+    perPage=perPage||20;var key='s:'+query+':'+perPage;
+    if(_gifCache[key])return _gifCache[key];
+    try{
+        var r=await fetch('https://api.klipy.com/api/v1/'+_KLIPY_KEY+'/gifs/search?q='+encodeURIComponent(query)+'&per_page='+perPage);
+        var d=await r.json();
+        var items=(d.data&&d.data.data)||d.data||[];
+        var results=items.map(_parseKlipyGif).filter(function(g){return g.preview;});
+        _gifCache[key]=results;return results;
+    }catch(e){console.error('Klipy search error:',e);return[];}
+}
+async function getKlipyTrending(perPage){
+    perPage=perPage||20;var key='t:'+perPage;
+    if(_gifCache[key])return _gifCache[key];
+    try{
+        var r=await fetch('https://api.klipy.com/api/v1/'+_KLIPY_KEY+'/gifs/trending?per_page='+perPage);
+        var d=await r.json();
+        var items=(d.data&&d.data.data)||d.data||[];
+        var results=items.map(_parseKlipyGif).filter(function(g){return g.preview;});
+        _gifCache[key]=results;return results;
+    }catch(e){console.error('Klipy trending error:',e);return[];}
+}
+
 // ======================== AUTHENTICATION (Supabase) ========================
 // currentUser holds the live profile row; currentAuthUser holds auth.users row
 var currentUser = null;    // { id, username, display_name, bio, avatar_url, ... }
@@ -1660,7 +1694,12 @@ function buildCommentHtml(cid,name,img,text,likes,isReply,authorId,replyToName){
     var h='<div class="comment-item'+(isReply?' comment-reply':'')+'" data-cid="'+cid+'">';
     h+='<img src="'+avatarSrc+'" style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;flex-shrink:0;object-fit:cover;">';
     h+='<div style="flex:1;"><strong style="font-size:13px;">'+escapeHtml(name)+'</strong>';
-    h+='<p class="comment-text" style="font-size:13px;color:#555;margin-top:2px;">'+replyTag+escapeHtmlNl(text)+'</p>';
+    var gifMatch=text.match(/^\[gif\](.*?)\[\/gif\]$/);
+    if(gifMatch){
+        h+='<div style="margin-top:4px;">'+replyTag+'<img src="'+escapeHtml(gifMatch[1])+'" class="comment-gif" alt="GIF" loading="lazy"></div>';
+    }else{
+        h+='<p class="comment-text" style="font-size:13px;color:#555;margin-top:2px;">'+replyTag+escapeHtmlNl(text)+'</p>';
+    }
     h+='<div class="comment-actions-row" style="display:flex;gap:12px;margin-top:8px;">';
     h+='<button class="comment-like-btn" data-cid="'+cid+'" data-aid="'+(authorId||'')+'" style="background:none;font-size:12px;color:'+(liked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:4px;"><i class="'+(liked?'fas':'far')+' fa-thumbs-up"></i><span>'+lc+'</span></button>';
     h+='<button class="comment-dislike-btn" data-cid="'+cid+'" data-aid="'+(authorId||'')+'" style="background:none;font-size:12px;color:'+(disliked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:4px;"><i class="'+(disliked?'fas':'far')+' fa-thumbs-down"></i><span>'+dc+'</span></button>';
@@ -1770,7 +1809,12 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
     html+='<div class="comment-modal-layout">';
     html+=postEmbed;
     html+='<div class="comment-modal-scroll">'+tabsHtml+'<div id="commentsList">'+commentsHtml+'</div></div>';
-    html+='<div class="comment-modal-input"><div id="replyIndicator" style="display:none;font-size:12px;color:var(--primary);margin-bottom:6px;">Replying to <span id="replyToName"></span> <button id="cancelReply" style="background:none;color:#999;font-size:12px;margin-left:8px;cursor:pointer;">Cancel</button></div><div style="display:flex;gap:10px;"><input type="text" class="post-input" id="commentInput" placeholder="Write a comment..." style="flex:1;"><button class="btn btn-primary" id="postCommentBtn">Post</button></div></div>';
+    html+='<div id="gifPickerPanel" class="gif-picker-panel" style="display:none;">';
+    html+='<div class="gif-picker-header"><input type="text" id="gifSearchInput" class="post-input" placeholder="Search GIFs..." style="flex:1;font-size:13px;"><button id="gifPickerClose" style="background:none;color:#999;font-size:16px;cursor:pointer;padding:4px 8px;"><i class="fas fa-times"></i></button></div>';
+    html+='<div class="gif-picker-grid" id="gifPickerGrid"></div>';
+    html+='<div class="gif-picker-footer">Powered by <strong>KLIPY</strong></div>';
+    html+='</div>';
+    html+='<div class="comment-modal-input"><div id="replyIndicator" style="display:none;font-size:12px;color:var(--primary);margin-bottom:6px;">Replying to <span id="replyToName"></span> <button id="cancelReply" style="background:none;color:#999;font-size:12px;margin-left:8px;cursor:pointer;">Cancel</button></div><div style="display:flex;gap:10px;align-items:center;"><input type="text" class="post-input" id="commentInput" placeholder="Write a comment..." style="flex:1;"><button class="comment-gif-btn" id="commentGifBtn" title="Search GIFs">GIF</button><button class="btn btn-primary" id="postCommentBtn">Post</button></div></div>';
     html+='</div>';
     showModal(html);
     // Scroll comments to bottom
@@ -1849,6 +1893,58 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
         await showComments(postId,countEl,sortMode);
     });
     document.getElementById('commentInput').addEventListener('keypress',function(e){if(e.key==='Enter')document.getElementById('postCommentBtn').click();});
+
+    // ---- GIF Picker ----
+    var gifPanel=document.getElementById('gifPickerPanel');
+    var gifGrid=document.getElementById('gifPickerGrid');
+    var gifSearchInput=document.getElementById('gifSearchInput');
+    var gifBtn=document.getElementById('commentGifBtn');
+    var _gifDebounce=null;
+
+    function renderGifGrid(gifs){
+        if(!gifs||!gifs.length){gifGrid.innerHTML='<p style="color:#777;text-align:center;grid-column:1/-1;padding:20px 0;">No GIFs found</p>';return;}
+        gifGrid.innerHTML=gifs.map(function(g){return '<img src="'+escapeHtml(g.preview||g.full)+'" alt="'+escapeHtml(g.title)+'" data-full="'+escapeHtml(g.full)+'" loading="lazy">';}).join('');
+    }
+
+    async function openGifPicker(){
+        gifPanel.style.display='flex';
+        gifSearchInput.value='';
+        gifGrid.innerHTML='<p style="color:#777;text-align:center;grid-column:1/-1;padding:20px 0;">Loading...</p>';
+        gifSearchInput.focus();
+        var trending=await getKlipyTrending(20);
+        renderGifGrid(trending);
+    }
+
+    function closeGifPicker(){gifPanel.style.display='none';gifGrid.innerHTML='';}
+
+    gifBtn.addEventListener('click',function(){
+        if(gifPanel.style.display==='flex') closeGifPicker();
+        else openGifPicker();
+    });
+    document.getElementById('gifPickerClose').addEventListener('click',closeGifPicker);
+
+    gifSearchInput.addEventListener('input',function(){
+        clearTimeout(_gifDebounce);
+        var q=gifSearchInput.value.trim();
+        if(!q){
+            _gifDebounce=setTimeout(async function(){renderGifGrid(await getKlipyTrending(20));},200);
+            return;
+        }
+        _gifDebounce=setTimeout(async function(){
+            gifGrid.innerHTML='<p style="color:#777;text-align:center;grid-column:1/-1;padding:20px 0;">Searching...</p>';
+            var results=await searchKlipyGifs(q,20);
+            renderGifGrid(results);
+        },400);
+    });
+
+    gifGrid.addEventListener('click',function(e){
+        var img=e.target.closest('img');if(!img)return;
+        var fullUrl=img.dataset.full;if(!fullUrl)return;
+        var input=document.getElementById('commentInput');
+        input.value='[gif]'+fullUrl+'[/gif]';
+        closeGifPicker();
+        document.getElementById('postCommentBtn').click();
+    });
 }
 
 function bindCommentLikes(){

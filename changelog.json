@@ -1,5 +1,19 @@
 [
   {
+    "version": "0.2.8",
+    "date": "2026-02-23",
+    "added": [
+      "GIF search in comments — Klipy-powered GIF picker with search and trending",
+      "GIF button in comment input bar opens a 2-column searchable GIF grid",
+      "Clicking a GIF auto-posts it as a comment with inline image rendering"
+    ],
+    "changed": [
+      "Comment input bar now has GIF button between text input and Post button",
+      "GIF comments stored as [gif]URL[/gif] in content field (no schema changes)"
+    ],
+    "fixed": []
+  },
+  {
     "version": "0.2.7",
     "date": "2026-02-23",
     "added": [

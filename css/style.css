@@ -566,6 +566,17 @@ body.skin-midnight .photos-empty,body.skin-midnight .photo-album-empty{color:#bb
 .comment-modal-scroll{flex:1;overflow-y:auto;padding:12px 20px;min-height:80px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;}
 .comment-modal-input{padding:12px 20px;border-top:1px solid var(--border);flex-shrink:0;}
 
+/* GIF Picker */
+.comment-gif-btn{background:transparent;border:1.5px solid var(--border);color:var(--gray);font-size:12px;font-weight:700;padding:6px 10px;border-radius:6px;letter-spacing:.5px;transition:border-color .2s,color .2s;flex-shrink:0;}
+.comment-gif-btn:hover{border-color:var(--primary);color:var(--primary);}
+.gif-picker-panel{display:none;flex-direction:column;border-top:1px solid var(--border);max-height:320px;background:var(--card);}
+.gif-picker-header{display:flex;gap:8px;align-items:center;padding:10px 20px;}
+.gif-picker-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 20px 8px;overflow-y:auto;flex:1;min-height:0;}
+.gif-picker-grid img{width:100%;border-radius:6px;cursor:pointer;transition:transform .15s,opacity .15s;object-fit:cover;aspect-ratio:4/3;}
+.gif-picker-grid img:hover{transform:scale(1.04);opacity:.85;}
+.gif-picker-footer{text-align:center;font-size:10px;color:var(--gray);padding:4px 0 8px;flex-shrink:0;letter-spacing:.5px;}
+.comment-gif{max-width:280px;max-height:200px;border-radius:8px;display:block;margin-top:4px;}
+
 /* Mini Link Preview (messages, comments) */
 .link-preview-mini{margin-top:8px;max-width:260px;border-radius:8px;overflow:hidden;}
 .link-preview-mini .link-preview-image{height:100px;width:100%;object-fit:cover;}
@@ -2183,6 +2194,9 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .comment-modal-layout{max-height:calc(90vh - 55px)!important;}
     .comment-modal-scroll{padding:10px 14px!important;}
     .comment-modal-input{padding:10px 14px!important;}
+    .gif-picker-header{padding:8px 14px!important;}
+    .gif-picker-grid{padding:0 14px 6px!important;}
+    .comment-gif{max-width:200px!important;max-height:160px!important;}
     .comment-post-embed{padding:12px 14px!important;}
 
     /* --- Messages --- */
