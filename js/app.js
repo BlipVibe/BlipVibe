@@ -30,6 +30,7 @@ function safeTruncate(str,max,ellipsis){var a=Array.from(str||'');if(a.length<=m
 
 // ======================== XSS PROTECTION ========================
 function escapeHtml(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function escapeHtmlNl(s){return escapeHtml(s).replace(/\n/g,'<br>');}
 
 // ======================== AUTHENTICATION (Supabase) ========================
 // currentUser holds the live profile row; currentAuthUser holds auth.users row
@@ -1301,8 +1302,8 @@ async function renderSearchResults(q,tab){
                 var text=fp.text;
                 var tags=fp.tags||[];
                 var badge=fp.badge||badgeTypes[0];
-                var short=escapeHtml(safeSlice(text,0,200));
-                var rest=escapeHtml(safeSlice(text,200));
+                var short=escapeHtmlNl(safeSlice(text,0,200));
+                var rest=escapeHtmlNl(safeSlice(text,200));
                 var hasMore=rest.length>0;
                 html+='<div class="card feed-post search-post-card">';
                 var avatarSrc=person.avatar_url||DEFAULT_AVATAR;
@@ -1625,7 +1626,7 @@ function buildCommentHtml(cid,name,img,text,likes,isReply,authorId,replyToName){
     var h='<div class="comment-item'+(isReply?' comment-reply':'')+'" data-cid="'+cid+'">';
     h+='<img src="'+avatarSrc+'" style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;flex-shrink:0;object-fit:cover;">';
     h+='<div style="flex:1;"><strong style="font-size:13px;">'+escapeHtml(name)+'</strong>';
-    h+='<p class="comment-text" style="font-size:13px;color:#555;margin-top:2px;">'+replyTag+escapeHtml(text)+'</p>';
+    h+='<p class="comment-text" style="font-size:13px;color:#555;margin-top:2px;">'+replyTag+escapeHtmlNl(text)+'</p>';
     h+='<div class="comment-actions-row" style="display:flex;gap:12px;margin-top:8px;">';
     h+='<button class="comment-like-btn" data-cid="'+cid+'" data-aid="'+(authorId||'')+'" style="background:none;font-size:12px;color:'+(liked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:4px;"><i class="'+(liked?'fas':'far')+' fa-thumbs-up"></i><span>'+lc+'</span></button>';
     h+='<button class="comment-dislike-btn" data-cid="'+cid+'" data-aid="'+(authorId||'')+'" style="background:none;font-size:12px;color:'+(disliked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:4px;"><i class="'+(disliked?'fas':'far')+' fa-thumbs-down"></i><span>'+dc+'</span></button>';
@@ -1700,7 +1701,7 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
         postEmbed+='<img src="'+avatarSrc+'" alt="'+escapeHtml(person.name)+'" class="post-avatar" style="width:40px;height:40px;">';
         postEmbed+='<div class="post-user-info"><div class="post-user-top"><h4 class="post-username">'+escapeHtml(person.name)+'</h4><span class="post-time">'+timeStr+'</span></div></div>';
         postEmbed+='</div>';
-        postEmbed+='<div class="post-description"><p>'+escapeHtml(fp.text)+'</p></div>';
+        postEmbed+='<div class="post-description"><p>'+escapeHtmlNl(fp.text)+'</p></div>';
         if(fp.images) postEmbed+=buildMediaGrid(fp.images);
         if(fp.tags&&fp.tags.length){postEmbed+='<div class="post-tags" style="margin-bottom:8px;">';fp.tags.forEach(function(t){postEmbed+='<span class="skill-tag">'+t+'</span>';});postEmbed+='</div>';}
         postEmbed+='<div class="post-actions" style="padding-top:10px;"><div class="action-left">';
@@ -1932,7 +1933,7 @@ async function renderInlineComments(postId){
         var isOwnComment=currentUser&&c.authorId&&c.authorId===currentUser.id;
         var editBtn=isOwnComment?'<button class="inline-comment-edit" data-cid="'+c.cid+'" data-postid="'+postId+'" data-text="'+escapeHtml(c.text)+'" style="background:none;font-size:11px;color:#999;cursor:pointer;"><i class="fas fa-pen"></i></button>':'';
         var deleteBtn=isOwnComment?'<button class="inline-comment-delete" data-cid="'+c.cid+'" data-postid="'+postId+'" style="background:none;font-size:11px;color:#e74c3c;cursor:pointer;"><i class="fas fa-trash"></i></button>':'';
-        html+='<div class="inline-comment" data-cid="'+c.cid+'"><img src="'+avatarSrc+'" class="inline-comment-avatar" style="object-fit:cover;"><div><div class="inline-comment-bubble"><strong style="font-size:12px;">'+escapeHtml(c.name)+'</strong> <span style="font-size:12px;color:#555;">'+escapeHtml(c.text)+'</span></div><div style="display:flex;gap:10px;margin-top:6px;margin-left:4px;"><button class="inline-comment-like" data-cid="'+c.cid+'" data-aid="'+(c.authorId||'')+'" style="background:none;font-size:11px;color:'+(liked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(liked?'fas':'far')+' fa-thumbs-up"></i>'+lc+'</button><button class="inline-comment-dislike" data-cid="'+c.cid+'" data-aid="'+(c.authorId||'')+'" style="background:none;font-size:11px;color:'+(disliked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(disliked?'fas':'far')+' fa-thumbs-down"></i>'+dc+'</button><button class="inline-comment-reply" data-cid="'+c.cid+'" style="background:none;font-size:11px;color:#999;cursor:pointer;"><i class="far fa-comment"></i> Reply</button>'+editBtn+deleteBtn+'</div></div></div>';
+        html+='<div class="inline-comment" data-cid="'+c.cid+'"><img src="'+avatarSrc+'" class="inline-comment-avatar" style="object-fit:cover;"><div><div class="inline-comment-bubble"><strong style="font-size:12px;">'+escapeHtml(c.name)+'</strong> <span style="font-size:12px;color:#555;">'+escapeHtmlNl(c.text)+'</span></div><div style="display:flex;gap:10px;margin-top:6px;margin-left:4px;"><button class="inline-comment-like" data-cid="'+c.cid+'" data-aid="'+(c.authorId||'')+'" style="background:none;font-size:11px;color:'+(liked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(liked?'fas':'far')+' fa-thumbs-up"></i>'+lc+'</button><button class="inline-comment-dislike" data-cid="'+c.cid+'" data-aid="'+(c.authorId||'')+'" style="background:none;font-size:11px;color:'+(disliked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(disliked?'fas':'far')+' fa-thumbs-down"></i>'+dc+'</button><button class="inline-comment-reply" data-cid="'+c.cid+'" style="background:none;font-size:11px;color:#999;cursor:pointer;"><i class="far fa-comment"></i> Reply</button>'+editBtn+deleteBtn+'</div></div></div>';
         // Show replies threaded under this comment
         var replies=repliesByParent[c.cid]||[];
         var shownReplies=replies.slice(0,2);
@@ -1944,7 +1945,7 @@ async function renderInlineComments(postId){
             var rIsOwn=currentUser&&r.authorId&&r.authorId===currentUser.id;
             var rEdit=rIsOwn?'<button class="inline-comment-edit" data-cid="'+r.cid+'" data-postid="'+postId+'" data-text="'+escapeHtml(r.text)+'" style="background:none;font-size:11px;color:#999;cursor:pointer;"><i class="fas fa-pen"></i></button>':'';
             var rDel=rIsOwn?'<button class="inline-comment-delete" data-cid="'+r.cid+'" data-postid="'+postId+'" style="background:none;font-size:11px;color:#e74c3c;cursor:pointer;"><i class="fas fa-trash"></i></button>':'';
-            html+='<div class="inline-comment" style="margin-left:28px;" data-cid="'+r.cid+'"><img src="'+rAvatar+'" class="inline-comment-avatar" style="object-fit:cover;"><div><div class="inline-comment-bubble"><i class="fas fa-reply" style="font-size:9px;color:var(--primary);margin-right:4px;transform:scaleX(-1);"></i><span style="color:var(--primary);font-size:11px;margin-right:3px;">@'+escapeHtml(c.name)+'</span><strong style="font-size:12px;">'+escapeHtml(r.name)+'</strong> <span style="font-size:12px;color:#555;">'+escapeHtml(r.text)+'</span></div><div style="display:flex;gap:10px;margin-top:6px;margin-left:4px;"><button class="inline-comment-like" data-cid="'+r.cid+'" data-aid="'+(r.authorId||'')+'" style="background:none;font-size:11px;color:'+(rLiked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(rLiked?'fas':'far')+' fa-thumbs-up"></i>'+rlc+'</button><button class="inline-comment-dislike" data-cid="'+r.cid+'" data-aid="'+(r.authorId||'')+'" style="background:none;font-size:11px;color:'+(rDisliked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(rDisliked?'fas':'far')+' fa-thumbs-down"></i>'+rdc+'</button><button class="inline-comment-reply" data-cid="'+c.cid+'" style="background:none;font-size:11px;color:#999;cursor:pointer;"><i class="far fa-comment"></i> Reply</button>'+rEdit+rDel+'</div></div></div>';
+            html+='<div class="inline-comment" style="margin-left:28px;" data-cid="'+r.cid+'"><img src="'+rAvatar+'" class="inline-comment-avatar" style="object-fit:cover;"><div><div class="inline-comment-bubble"><i class="fas fa-reply" style="font-size:9px;color:var(--primary);margin-right:4px;transform:scaleX(-1);"></i><span style="color:var(--primary);font-size:11px;margin-right:3px;">@'+escapeHtml(c.name)+'</span><strong style="font-size:12px;">'+escapeHtml(r.name)+'</strong> <span style="font-size:12px;color:#555;">'+escapeHtmlNl(r.text)+'</span></div><div style="display:flex;gap:10px;margin-top:6px;margin-left:4px;"><button class="inline-comment-like" data-cid="'+r.cid+'" data-aid="'+(r.authorId||'')+'" style="background:none;font-size:11px;color:'+(rLiked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(rLiked?'fas':'far')+' fa-thumbs-up"></i>'+rlc+'</button><button class="inline-comment-dislike" data-cid="'+r.cid+'" data-aid="'+(r.authorId||'')+'" style="background:none;font-size:11px;color:'+(rDisliked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(rDisliked?'fas':'far')+' fa-thumbs-down"></i>'+rdc+'</button><button class="inline-comment-reply" data-cid="'+c.cid+'" style="background:none;font-size:11px;color:#999;cursor:pointer;"><i class="far fa-comment"></i> Reply</button>'+rEdit+rDel+'</div></div></div>';
         });
         if(replies.length>2) html+='<a href="#" class="show-more-comments" style="font-size:11px;color:var(--primary);display:block;margin-left:28px;margin-top:2px;margin-bottom:4px;">'+( replies.length-2)+' more repl'+(replies.length-2===1?'y':'ies')+'</a>';
     });
@@ -2215,7 +2216,7 @@ async function showProfileView(person){
                 feedHtml+='<div class="post-header">';
                 feedHtml+='<img src="'+authorAvatar+'" alt="'+escapeHtml(authorName)+'" class="post-avatar">';
                 feedHtml+='<div class="post-user-info"><div class="post-user-top"><h4 class="post-username">'+escapeHtml(authorName)+'</h4><span class="post-time">'+postTime+'</span></div></div></div>';
-                feedHtml+='<div class="post-description"><p>'+escapeHtml(post.content)+'</p></div>';
+                feedHtml+='<div class="post-description"><p>'+escapeHtmlNl(post.content)+'</p></div>';
                 var pvImgs=post.media_urls&&post.media_urls.length?post.media_urls:(post.image_url?[post.image_url]:[]);
                 feedHtml+=buildMediaGrid(pvImgs);
                 var pvLikes=post.like_count||0;
@@ -2722,7 +2723,7 @@ async function showGroupView(group){
                 if(isMe) feedHtml+='<div class="post-badges"><span class="badge badge-green"><i class="fas fa-user"></i> You</span></div>';
                 feedHtml+='</div></div>';
                 feedHtml+='<div class="post-description">';
-                if(p.content) feedHtml+='<p>'+escapeHtml(p.content)+'</p>';
+                if(p.content) feedHtml+='<p>'+escapeHtmlNl(p.content)+'</p>';
                 feedHtml+='</div>';
                 var gvImgs=p.media_urls&&p.media_urls.length?p.media_urls:(p.image_url?[p.image_url]:[]);
                 feedHtml+=buildMediaGrid(gvImgs);
@@ -3650,7 +3651,7 @@ function renderFeed(tab){
         var i=p.idx,person=p.person,text=p.text,tags=p.tags||[],badge=p.badge,loc=p.loc,likes=p.likes,genComments=p.comments||[],shares=p.shares;
         var commentCount=p.commentCount||genComments.length;
         var menuId='post-menu-'+i;
-        var short=escapeHtml(safeSlice(text,0,160));var rest=escapeHtml(safeSlice(text,160));var hasMore=rest.length>0;
+        var short=escapeHtmlNl(safeSlice(text,0,160));var rest=escapeHtmlNl(safeSlice(text,160));var hasMore=rest.length>0;
         var avatarSrc=person.avatar_url||'images/default-avatar.svg';
         var timeStr=p.created_at?timeAgoReal(p.created_at):timeAgo(typeof i==='number'?i:0);
         html+='<div class="card feed-post">';
@@ -3677,7 +3678,7 @@ function renderFeed(tab){
             var sp=p.sharedPost;var spAvatar=sp.avatar_url||DEFAULT_AVATAR;
             html+='<div class="share-preview" style="margin:0 20px 14px;">';
             html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><img src="'+spAvatar+'" style="width:28px;height:28px;border-radius:50%;object-fit:cover;"><strong class="share-preview-name" style="font-size:13px;">'+escapeHtml(sp.name)+'</strong><span class="share-preview-time" style="font-size:12px;">'+sp.time+'</span></div>';
-            html+='<div class="share-preview-text" style="font-size:13px;">'+escapeHtml(sp.text)+'</div>';
+            html+='<div class="share-preview-text" style="font-size:13px;">'+escapeHtmlNl(sp.text)+'</div>';
             if(sp.images){sp.images.forEach(function(src){html+='<img src="'+src+'" style="max-width:100%;border-radius:8px;margin-top:8px;">';});}
             html+='</div>';
         }
@@ -4207,7 +4208,7 @@ $('#openPostModal').addEventListener('click',function(){
         if(postTags.length>0){tagsHtml='<div class="post-tags">';postTags.forEach(function(t){tagsHtml+='<span class="skill-tag">#'+t+'</span>';});tagsHtml+='</div>';}
         var displayText=text;
         if(linkUrl&&linkHtml){var esc=linkUrl.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');displayText=displayText.replace(new RegExp(esc,'g'),'').trim();}
-        postHtml+='<div class="post-description">'+(displayText?'<p>'+displayText.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</p>':'')+mediaHtml+linkHtml+'</div>'+tagsHtml;
+        postHtml+='<div class="post-description">'+(displayText?'<p>'+escapeHtmlNl(displayText)+'</p>':'')+mediaHtml+linkHtml+'</div>'+tagsHtml;
         postHtml+='<div class="post-actions"><div class="action-left"><button class="action-btn like-btn" data-post-id="'+myPostId+'"><i class="far fa-thumbs-up"></i><span class="like-count">0</span></button>';
         postHtml+='<button class="action-btn dislike-btn" data-post-id="'+myPostId+'"><i class="far fa-thumbs-down"></i><span class="dislike-count">0</span></button>';
         postHtml+='<button class="action-btn comment-btn"><i class="far fa-comment"></i><span>0</span></button>';
@@ -5302,7 +5303,7 @@ async function openChat(contact){
                 // Render image messages
                 var imgMatch=content.match(/^\[img\](.*?)\[\/img\]$/);
                 if(imgMatch){content='<img src="'+escapeHtml(imgMatch[1])+'" style="max-width:200px;border-radius:8px;">';}
-                else{content=escapeHtml(content);}
+                else{content=escapeHtmlNl(content);}
                 mhtml+='<div class="msg-bubble '+(isMine?'sent':'received')+'" data-mid="'+m.id+'" data-raw="'+(isImg?'':escapeHtml(m.content))+'">'+content+(isMine&&!isImg?'<button class="msg-edit-btn" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:10px;padding:2px 0 0;cursor:pointer;display:block;text-align:right;"><i class="fas fa-pen"></i></button>':'')+'</div>';
             });
             msgArea.innerHTML=mhtml;
@@ -6333,7 +6334,7 @@ function _renderSavedTabPosts(){
 }
 function renderSavedPostCard(p){
     var i=p.idx,person=p.person,text=p.text,badge=p.badge,likes=p.likes,genComments=p.comments,shares=p.shares;
-    var short=escapeHtml(safeSlice(text,0,160));var rest=escapeHtml(safeSlice(text,160));var hasMore=rest.length>0;
+    var short=escapeHtmlNl(safeSlice(text,0,160));var rest=escapeHtmlNl(safeSlice(text,160));var hasMore=rest.length>0;
     var folder=findPostFolder(i);
     var html='<div class="card feed-post saved-post-item" data-spid="'+i+'">';
     html+='<div class="post-header">';
