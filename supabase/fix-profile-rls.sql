@@ -54,4 +54,27 @@ $$;
 --    However, sbUpdateProfile() must NOT call .select() after update, because
 --    that would try to read the revoked columns. The client code has been
 --    updated to omit .select() on profile updates.
+
+-- 4. Allow users to delete their own profile (for account deletion)
+--    Drop first so this script is re-runnable.
+DROP POLICY IF EXISTS profiles_delete ON public.profiles;
+CREATE POLICY profiles_delete ON public.profiles
+  FOR DELETE USING (auth.uid() = id);
+
+-- 5. SECURITY DEFINER function to fully delete a user's account
+--    Cleans up auth.users row (which the client can't do).
+--    Called via: sb.rpc('delete_own_account')
+CREATE OR REPLACE FUNCTION public.delete_own_account()
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+  -- Delete profile (cascade takes care of posts, comments, likes, etc.)
+  DELETE FROM public.profiles WHERE id = auth.uid();
+  -- Delete auth user record
+  DELETE FROM auth.users WHERE id = auth.uid();
+END;
+$$;
+
 -- =============================================================================

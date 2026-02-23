@@ -135,17 +135,40 @@ async function sbUpdateProfile(userId, updates) {
 }
 
 async function sbDeleteAccount(userId) {
-  // Delete profile row — cascades to posts, comments, likes, follows, notifications, albums, etc.
-  const { error } = await sb.from('profiles').delete().eq('id', userId);
-  if (error) throw error;
-  // Sign out after deletion
+  // 1. Clean up storage files (best-effort, don't block on errors)
+  try {
+    var { data: avatarFiles } = await sb.storage.from('avatars').list(userId);
+    if (avatarFiles && avatarFiles.length) {
+      await sb.storage.from('avatars').remove(avatarFiles.map(f => userId + '/' + f.name));
+    }
+  } catch(e) { console.warn('Avatar cleanup:', e); }
+  try {
+    var { data: postFiles } = await sb.storage.from('posts').list(userId);
+    if (postFiles && postFiles.length) {
+      await sb.storage.from('posts').remove(postFiles.map(f => userId + '/' + f.name));
+    }
+  } catch(e) { console.warn('Post files cleanup:', e); }
+  // 2. Delete profile + auth.users via SECURITY DEFINER RPC (full cleanup)
+  //    Falls back to client-side profile delete if RPC not deployed yet.
+  try {
+    const { error: rpcErr } = await sb.rpc('delete_own_account');
+    if (rpcErr) throw rpcErr;
+  } catch(e) {
+    console.warn('delete_own_account RPC failed, falling back:', e);
+    const { error } = await sb.from('profiles').delete().eq('id', userId);
+    if (error) throw error;
+  }
+  // 3. Sign out
   await sb.auth.signOut();
 }
 
 async function sbSearchProfiles(query, limit = 20) {
+  // Sanitize: strip PostgREST filter-injection chars (commas, parens, dots at boundaries)
+  var safe = query.replace(/[,().]/g, '').trim();
+  if (!safe) return [];
   const { data, error } = await sb.from('profiles')
     .select('*')
-    .or(`username.ilike.%${query}%,display_name.ilike.%${query}%,bio.ilike.%${query}%`)
+    .or(`username.ilike.%${safe}%,display_name.ilike.%${safe}%,bio.ilike.%${safe}%`)
     .limit(limit);
   if (error) throw error;
   return data;
