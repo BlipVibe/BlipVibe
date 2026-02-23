@@ -577,7 +577,7 @@ body.skin-midnight .photos-empty,body.skin-midnight .photo-album-empty{color:#bb
 .gif-picker-grid img{width:100%;border-radius:4px;cursor:pointer;transition:transform .15s,opacity .15s;object-fit:contain;background:rgba(0,0,0,.05);}
 .gif-picker-grid img:hover{transform:scale(1.05);opacity:.85;}
 .gif-picker-footer{text-align:center;font-size:10px;color:var(--gray);padding:4px 0 8px;flex-shrink:0;letter-spacing:.5px;}
-.comment-gif{max-width:280px;max-height:200px;border-radius:8px;display:block;margin-top:4px;}
+.comment-gif{max-width:180px;max-height:130px;border-radius:6px;display:block;margin-top:4px;}
 
 /* Mini Link Preview (messages, comments) */
 .link-preview-mini{margin-top:8px;max-width:260px;border-radius:8px;overflow:hidden;}
@@ -2199,7 +2199,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .gif-picker-panel{max-height:min(320px,45vh)!important;}
     .gif-picker-header{padding:8px 12px!important;}
     .gif-picker-grid{padding:0 10px 6px!important;gap:3px!important;}
-    .comment-gif{max-width:200px!important;max-height:160px!important;}
+    .comment-gif{max-width:140px!important;max-height:100px!important;}
     .comment-post-embed{padding:12px 14px!important;}
 
     /* --- Messages --- */
