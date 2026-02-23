@@ -2782,9 +2782,18 @@ async function showGroupView(group){
                 var isMe=currentUser&&author.id===currentUser.id;
                 var timeStr=p.created_at?timeAgo(p.created_at):'just now';
                 var commentCount=p.comments&&p.comments[0]?p.comments[0].count:0;
+                var gvMenuId='gvmenu-'+p.id;
                 feedHtml+='<div class="card feed-post" data-post-id="'+p.id+'" data-author-id="'+author.id+'"><div class="post-header"><img src="'+avatar+'" alt="'+escapeHtml(name)+'" class="post-avatar gv-post-author" data-uid="'+author.id+'" style="cursor:pointer;"><div class="post-user-info"><div class="post-user-top"><h4 class="post-username gv-post-author" data-uid="'+author.id+'" style="cursor:pointer;">'+escapeHtml(name)+'</h4><span class="post-time">'+timeStr+'</span></div>';
                 if(isMe) feedHtml+='<div class="post-badges"><span class="badge badge-green"><i class="fas fa-user"></i> You</span></div>';
-                feedHtml+='</div></div>';
+                feedHtml+='</div>';
+                feedHtml+='<button class="post-menu-btn" data-menu="'+gvMenuId+'"><i class="fas fa-ellipsis-h"></i></button>';
+                feedHtml+='<div class="post-dropdown" id="'+gvMenuId+'">';
+                feedHtml+='<a href="#" data-action="save" data-pid="'+p.id+'"><i class="fas fa-bookmark"></i> Save Post</a>';
+                feedHtml+='<a href="#" data-action="report" data-pid="'+p.id+'"><i class="fas fa-flag"></i> Report</a>';
+                feedHtml+='<a href="#" data-action="hide" data-pid="'+p.id+'"><i class="fas fa-eye-slash"></i> Hide</a>';
+                if(isMe) feedHtml+='<a href="#" data-action="edit" data-pid="'+p.id+'"><i class="fas fa-pen"></i> Edit</a><a href="#" data-action="delete" data-pid="'+p.id+'" style="color:#e74c3c;"><i class="fas fa-trash"></i> Delete</a>';
+                feedHtml+='</div>';
+                feedHtml+='</div>';
                 feedHtml+='<div class="post-description">';
                 if(p.content) feedHtml+='<p>'+escapeHtmlNl(p.content)+'</p>';
                 feedHtml+='</div>';
@@ -3052,6 +3061,10 @@ function bindGvPostEvents(){
     $$('#gvPostsFeed .like-btn').forEach(function(btn){btn.addEventListener('click',async function(e){var pid=btn.getAttribute('data-post-id');var countEl=btn.querySelector('.like-count');var count=parseInt(countEl.textContent);var isUUID=/^[0-9a-f]{8}-/.test(pid);var had=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);if(state.likedPosts[pid]){delete state.likedPosts[pid];btn.classList.remove('liked');btn.querySelector('i').className='far fa-thumbs-up';countEl.textContent=count-1;if(isUUID&&currentUser){try{await sbToggleLike(currentUser.id,'post',pid);}catch(e2){}}}else{if(state.dislikedPosts[pid]){var db=btn.closest('.action-left').querySelector('.dislike-btn');var dc=db.querySelector('.dislike-count');dc.textContent=parseInt(dc.textContent)-1;delete state.dislikedPosts[pid];db.classList.remove('disliked');db.querySelector('i').className='far fa-thumbs-down';}state.likedPosts[pid]=true;btn.classList.add('liked');btn.querySelector('i').className='fas fa-thumbs-up';countEl.textContent=count+1;if(isUUID&&currentUser){try{await sbToggleLike(currentUser.id,'post',pid);}catch(e2){}}}var has=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);if(!isOwnPost(pid)){if(!had&&has){state.coins++;updateCoins();if(_activeGroupId)addGroupCoins(_activeGroupId,1);}else if(had&&!has){state.coins--;updateCoins();if(_activeGroupId&&(state.groupCoins[_activeGroupId]||0)>0)addGroupCoins(_activeGroupId,-1);}}saveState();});});
     $$('#gvPostsFeed .dislike-btn').forEach(function(btn){btn.addEventListener('click',async function(){var pid=btn.getAttribute('data-post-id');var countEl=btn.querySelector('.dislike-count');var count=parseInt(countEl.textContent);var isUUID=/^[0-9a-f]{8}-/.test(pid);var had=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);if(state.dislikedPosts[pid]){delete state.dislikedPosts[pid];btn.classList.remove('disliked');btn.querySelector('i').className='far fa-thumbs-down';countEl.textContent=count-1;}else{if(state.likedPosts[pid]){var lb=btn.closest('.action-left').querySelector('.like-btn');var lc=lb.querySelector('.like-count');lc.textContent=parseInt(lc.textContent)-1;delete state.likedPosts[pid];lb.classList.remove('liked');lb.querySelector('i').className='far fa-thumbs-up';if(isUUID&&currentUser){try{await sbToggleLike(currentUser.id,'post',pid);}catch(e2){}}}state.dislikedPosts[pid]=true;btn.classList.add('disliked');btn.querySelector('i').className='fas fa-thumbs-down';countEl.textContent=count+1;}var has=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);if(!isOwnPost(pid)){if(!had&&has){state.coins++;updateCoins();if(_activeGroupId)addGroupCoins(_activeGroupId,1);}else if(had&&!has){state.coins--;updateCoins();if(_activeGroupId&&(state.groupCoins[_activeGroupId]||0)>0)addGroupCoins(_activeGroupId,-1);}}saveState();});});
     $$('#gvPostsFeed .comment-btn').forEach(function(btn){btn.addEventListener('click',function(){var postId=btn.closest('.action-left').querySelector('.like-btn').getAttribute('data-post-id');showComments(postId,btn.querySelector('span'));});});
+    // Post menu toggle
+    $$('#gvPostsFeed .post-menu-btn').forEach(function(btn){btn.addEventListener('click',function(e){e.stopPropagation();var menuId=btn.dataset.menu;var menu=document.getElementById(menuId);if(!menu)return;$$('#gvPostsFeed .post-dropdown.show').forEach(function(m){if(m!==menu)m.classList.remove('show');});menu.classList.toggle('show');});});
+    // Post dropdown actions
+    $$('#gvPostsFeed .post-dropdown a').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();a.closest('.post-dropdown').classList.remove('show');var pid=a.dataset.pid;var action=a.dataset.action;if(action==='save') showSaveModal(pid);else if(action==='report') showReportModal(pid);else if(action==='hide'){var postEl=document.querySelector('#gvPostsFeed .feed-post[data-post-id="'+pid+'"]');if(postEl){postEl.style.display='none';showToast('Post hidden');}}else if(action==='edit') showEditGroupPostModal(pid);else if(action==='delete') confirmDeleteGroupPost(pid);});});
     bindLikeCountClicks('#gvPostsFeed');
 }
 
@@ -3093,6 +3106,7 @@ function openGroupPostModal(group){
             await sbCreatePost(currentUser.id,text||'',imageUrl,group.id);
             if(state.postCoinCount<10){state.coins+=5;state.postCoinCount++;updateCoins();}
             if(canEarnGroupPostCoin(group.id)){addGroupCoins(group.id,5);trackGroupPostCoin(group.id);}
+            saveState();
             closeModal();showGroupView(group);
         }catch(e){
             console.error('Group post:',e);
@@ -6368,6 +6382,38 @@ function hidePost(pid){
 function unhidePost(pid){
     delete hiddenPosts[pid];
     persistHidden();
+}
+function showEditGroupPostModal(pid){
+    var postEl=document.querySelector('#gvPostsFeed .feed-post[data-post-id="'+pid+'"] .post-description p');
+    var currentText=postEl?postEl.textContent:'';
+    var h='<div class="modal-header"><h3>Edit Post</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body"><textarea id="editPostText" class="cpm-textarea" style="min-height:100px;">'+currentText+'</textarea>';
+    h+='<div class="modal-actions" style="margin-top:12px;"><button class="btn btn-outline modal-close">Cancel</button><button class="btn btn-primary" id="saveEditPostBtn">Save</button></div></div>';
+    showModal(h);
+    document.getElementById('saveEditPostBtn').addEventListener('click',async function(){
+        var newText=$('#editPostText').value.trim();
+        if(!newText){showToast('Post cannot be empty');return;}
+        try{
+            await sbEditPost(pid,newText);
+            if(postEl) postEl.innerHTML=escapeHtmlNl(newText);
+            closeModal();showToast('Post updated');
+        }catch(e){console.error('Edit group post:',e);showToast('Failed to edit post');}
+    });
+}
+function confirmDeleteGroupPost(pid){
+    showModal('<div class="modal-header"><h3>Delete Post</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body"><p style="color:var(--gray);text-align:center;margin-bottom:16px;">Are you sure you want to delete this post? This cannot be undone.</p><div class="modal-actions"><button class="btn btn-outline modal-close">Cancel</button><button class="btn" id="confirmDeleteGvPostBtn" style="background:#e74c3c;color:#fff;">Delete</button></div></div>');
+    document.getElementById('confirmDeleteGvPostBtn').addEventListener('click',async function(){
+        closeModal();
+        try{
+            await sbDeletePost(pid);
+            var postEl=document.querySelector('#gvPostsFeed .feed-post[data-post-id="'+pid+'"]');
+            if(postEl) postEl.remove();
+            showToast('Post deleted');
+        }catch(e){
+            console.error('Delete group post:',e);
+            showToast('Failed to delete post: '+(e.message||'Unknown error'));
+        }
+    });
 }
 function showHiddenPostsModal(){
     var pids=Object.keys(hiddenPosts);

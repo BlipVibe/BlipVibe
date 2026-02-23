@@ -638,3 +638,12 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - Group like/dislike handlers: fixed coin logic + added `sbToggleLike` calls + `saveState()`
 - Comment/reply submit handler: awards group coins when `_activeGroupId` is set
 - Shop purchase handlers: use `addGroupCoins(-price)` instead of direct `state.groupCoins` mutation
+
+### Group post dropdown menu (added)
+- Group posts now have the same three-dot menu as main feed posts
+- Options: **Save Post**, **Report**, **Hide** (hides from view)
+- Own posts also get: **Edit**, **Delete** (with confirmation modal)
+- **No Share** option (group posts stay in the group)
+- `showEditGroupPostModal(pid)` — reads current text from DOM, calls `sbEditPost`
+- `confirmDeleteGroupPost(pid)` — confirmation modal, calls `sbDeletePost`, removes card from DOM
+- Menu toggle and action handlers wired in `bindGvPostEvents()`
