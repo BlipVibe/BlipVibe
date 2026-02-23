@@ -569,9 +569,11 @@ body.skin-midnight .photos-empty,body.skin-midnight .photo-album-empty{color:#bb
 /* GIF Picker */
 .comment-gif-btn{background:transparent;border:1.5px solid var(--border);color:var(--gray);font-size:12px;font-weight:700;padding:6px 10px;border-radius:6px;letter-spacing:.5px;transition:border-color .2s,color .2s;flex-shrink:0;}
 .comment-gif-btn:hover{border-color:var(--primary);color:var(--primary);}
-.gif-picker-panel{display:none;flex-direction:column;border-top:1px solid var(--border);max-height:320px;background:var(--card);}
-.gif-picker-header{display:flex;gap:8px;align-items:center;padding:10px 20px;}
-.gif-picker-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 20px 8px;overflow-y:auto;flex:1;min-height:0;}
+.comment-modal-input{position:relative;}
+.gif-picker-panel{display:none;flex-direction:column;position:absolute;bottom:100%;left:0;right:0;height:340px;background:var(--card);border:1px solid var(--border);border-bottom:none;border-radius:14px 14px 0 0;box-shadow:0 -4px 24px rgba(0,0,0,.25);z-index:10;animation:gifPickerIn .2s ease;}
+@keyframes gifPickerIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.gif-picker-header{display:flex;gap:8px;align-items:center;padding:10px 16px;flex-shrink:0;}
+.gif-picker-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 16px 8px;overflow-y:auto;flex:1;min-height:0;}
 .gif-picker-grid img{width:100%;border-radius:6px;cursor:pointer;transition:transform .15s,opacity .15s;object-fit:cover;aspect-ratio:4/3;}
 .gif-picker-grid img:hover{transform:scale(1.04);opacity:.85;}
 .gif-picker-footer{text-align:center;font-size:10px;color:var(--gray);padding:4px 0 8px;flex-shrink:0;letter-spacing:.5px;}
@@ -2194,6 +2196,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .comment-modal-layout{max-height:calc(90vh - 55px)!important;}
     .comment-modal-scroll{padding:10px 14px!important;}
     .comment-modal-input{padding:10px 14px!important;}
+    .gif-picker-panel{height:300px!important;}
     .gif-picker-header{padding:8px 14px!important;}
     .gif-picker-grid{padding:0 14px 6px!important;}
     .comment-gif{max-width:200px!important;max-height:160px!important;}

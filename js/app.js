@@ -1809,12 +1809,13 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
     html+='<div class="comment-modal-layout">';
     html+=postEmbed;
     html+='<div class="comment-modal-scroll">'+tabsHtml+'<div id="commentsList">'+commentsHtml+'</div></div>';
+    html+='<div class="comment-modal-input">';
     html+='<div id="gifPickerPanel" class="gif-picker-panel" style="display:none;">';
     html+='<div class="gif-picker-header"><input type="text" id="gifSearchInput" class="post-input" placeholder="Search GIFs..." style="flex:1;font-size:13px;"><button id="gifPickerClose" style="background:none;color:#999;font-size:16px;cursor:pointer;padding:4px 8px;"><i class="fas fa-times"></i></button></div>';
     html+='<div class="gif-picker-grid" id="gifPickerGrid"></div>';
     html+='<div class="gif-picker-footer">Powered by <strong>KLIPY</strong></div>';
     html+='</div>';
-    html+='<div class="comment-modal-input"><div id="replyIndicator" style="display:none;font-size:12px;color:var(--primary);margin-bottom:6px;">Replying to <span id="replyToName"></span> <button id="cancelReply" style="background:none;color:#999;font-size:12px;margin-left:8px;cursor:pointer;">Cancel</button></div><div style="display:flex;gap:10px;align-items:center;"><input type="text" class="post-input" id="commentInput" placeholder="Write a comment..." style="flex:1;"><button class="comment-gif-btn" id="commentGifBtn" title="Search GIFs">GIF</button><button class="btn btn-primary" id="postCommentBtn">Post</button></div></div>';
+    html+='<div id="replyIndicator" style="display:none;font-size:12px;color:var(--primary);margin-bottom:6px;">Replying to <span id="replyToName"></span> <button id="cancelReply" style="background:none;color:#999;font-size:12px;margin-left:8px;cursor:pointer;">Cancel</button></div><div style="display:flex;gap:10px;align-items:center;"><input type="text" class="post-input" id="commentInput" placeholder="Write a comment..." style="flex:1;"><button class="comment-gif-btn" id="commentGifBtn" title="Search GIFs">GIF</button><button class="btn btn-primary" id="postCommentBtn">Post</button></div></div>';
     html+='</div>';
     showModal(html);
     // Scroll comments to bottom
