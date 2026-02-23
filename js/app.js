@@ -3389,6 +3389,12 @@ var feedPosts=[];
 var activeFeedTab='following';
 
 // ======================== INLINE MEDIA EMBED HELPER ========================
+var _tiktokScriptLoaded=false;
+function _loadTikTokEmbed(){
+    if(_tiktokScriptLoaded) { if(window.tiktokEmbed&&tiktokEmbed.lib) tiktokEmbed.lib.render(); return; }
+    _tiktokScriptLoaded=true;
+    var s=document.createElement('script');s.src='https://www.tiktok.com/embed.js';s.async=true;document.body.appendChild(s);
+}
 function getVideoEmbedHtml(url, mini){
     if(!url) return null;
     var id, m;
@@ -3399,9 +3405,10 @@ function getVideoEmbedHtml(url, mini){
     // Vimeo
     m=url.match(/vimeo\.com\/(\d+)/);
     if(m){ id=m[1]; return '<div class="'+cls+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><iframe src="https://player.vimeo.com/video/'+id+'" width="100%" height="'+(mini?'180':'360')+'" frameborder="0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }
-    // TikTok: tiktok.com/@user/video/ID
+    // TikTok: tiktok.com/@user/video/ID or vm.tiktok.com/shortcode
     m=url.match(/tiktok\.com\/@[^/]+\/video\/(\d+)/);
-    if(m){ id=m[1]; return '<div class="'+cls+'" style="margin-top:10px;border-radius:8px;overflow:hidden;max-width:325px;"><iframe src="https://www.tiktok.com/embed/v2/'+id+'" width="325" height="'+(mini?'400':'740')+'" frameborder="0" allow="accelerometer;autoplay;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }
+    if(!m) m=url.match(/tiktok\.com\/(?:@[^/]+\/video\/)?(\d{15,})/);
+    if(m){ id=m[1]; _loadTikTokEmbed(); return '<div class="'+cls+' tiktok-embed-wrap" style="margin-top:10px;max-width:325px;"><blockquote class="tiktok-embed" cite="'+url+'" data-video-id="'+id+'" style="max-width:325px;min-width:250px;"><section></section></blockquote></div>'; }
     // Twitter / X: twitter.com/user/status/ID or x.com/user/status/ID
     m=url.match(/(?:twitter\.com|x\.com)\/\w+\/status\/(\d+)/);
     if(m){ id=m[1]; return '<div class="'+cls+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><iframe src="https://platform.twitter.com/embed/Tweet.html?id='+id+'" width="100%" height="'+(mini?'300':'500')+'" frameborder="0" style="display:block;width:100%;border-radius:8px;border:1px solid var(--border);"></iframe></div>'; }
@@ -3797,6 +3804,7 @@ function autoFetchLinkPreviewsMini(container,selector){
             el.insertAdjacentHTML('beforeend',videoHtml);
             var escaped=url.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
             el.innerHTML=el.innerHTML.replace(new RegExp(escaped,'g'),'');
+            if(/tiktok\.com/i.test(url)) setTimeout(_loadTikTokEmbed,100);
             return;
         }
         fetch('https://api.microlink.io?url='+encodeURIComponent(url))
@@ -3842,6 +3850,7 @@ function autoFetchLinkPreviews(container){
             desc.insertAdjacentHTML('beforeend',videoHtml);
             var escaped=url.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
             textEl.innerHTML=textEl.innerHTML.replace(new RegExp(escaped,'g'),'');
+            if(/tiktok\.com/i.test(url)) setTimeout(_loadTikTokEmbed,100);
             return;
         }
         fetch('https://api.microlink.io?url='+encodeURIComponent(url))
@@ -4083,6 +4092,7 @@ $('#openPostModal').addEventListener('click',function(){
         postHtml+='<button class="action-btn comment-btn"><i class="far fa-comment"></i><span>0</span></button>';
         postHtml+='<button class="action-btn share-btn"><i class="fas fa-share-from-square"></i><span>0</span></button></div></div></div>';
         container.insertAdjacentHTML('afterbegin',postHtml);
+        if(linkUrl&&/tiktok\.com/i.test(linkUrl)) setTimeout(_loadTikTokEmbed,100);
         if(state.postCoinCount<10){state.coins+=5;state.postCoinCount++;updateCoins();}
         closeModal();
         var newPost=container.firstElementChild;
