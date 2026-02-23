@@ -110,6 +110,14 @@ async function sbGetProfile(userId) {
   return data;
 }
 
+// Get OWN profile with private columns (skin_data, birthday, email)
+// Uses SECURITY DEFINER RPC to bypass column-level revokes
+async function sbGetOwnProfile() {
+  const { data, error } = await sb.rpc('get_own_profile');
+  if (error) throw error;
+  return data;
+}
+
 async function sbGetProfileByUsername(username) {
   const { data, error } = await sb.from('profiles')
     .select('*')
@@ -120,13 +128,18 @@ async function sbGetProfileByUsername(username) {
 }
 
 async function sbUpdateProfile(userId, updates) {
-  const { data, error } = await sb.from('profiles')
+  const { error } = await sb.from('profiles')
     .update(updates)
-    .eq('id', userId)
-    .select()
-    .single();
+    .eq('id', userId);
   if (error) throw error;
-  return data;
+}
+
+async function sbDeleteAccount(userId) {
+  // Delete profile row — cascades to posts, comments, likes, follows, notifications, albums, etc.
+  const { error } = await sb.from('profiles').delete().eq('id', userId);
+  if (error) throw error;
+  // Sign out after deletion
+  await sb.auth.signOut();
 }
 
 async function sbSearchProfiles(query, limit = 20) {

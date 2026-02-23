@@ -1,5 +1,26 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+// ======================== COOKIE / THIRD-PARTY CONSENT ========================
+var _cookieConsent = false;
+function checkCookieConsent(){ try { return localStorage.getItem('blipvibe_cookie_consent')==='1'; } catch(e){ return false; } }
+function grantCookieConsent(){ _cookieConsent=true; try { localStorage.setItem('blipvibe_cookie_consent','1'); } catch(e){} var b=document.getElementById('cookieConsentBanner'); if(b) b.remove(); }
+function showCookieConsent(){
+    if(checkCookieConsent()||_cookieConsent) return;
+    var b=document.createElement('div');b.id='cookieConsentBanner';
+    b.innerHTML='<div class="cookie-banner-inner">'
+        +'<p><strong>Cookies &amp; Third-Party Content</strong> — BlipVibe uses local storage for your session and preferences. Embedded content from YouTube, TikTok, Instagram, Twitter/X, Spotify, and others may set cookies. '
+        +'<a href="#" id="cookiePolicyLink" style="color:var(--primary);">Privacy Policy</a></p>'
+        +'<div class="cookie-banner-btns">'
+        +'<button class="btn btn-primary" id="cookieAcceptBtn">Accept All</button>'
+        +'<button class="btn" id="cookieDeclineBtn" style="background:var(--border);color:var(--dark);">Essential Only</button>'
+        +'</div></div>';
+    document.body.appendChild(b);
+    document.getElementById('cookieAcceptBtn').addEventListener('click',function(){ grantCookieConsent(); });
+    document.getElementById('cookieDeclineBtn').addEventListener('click',function(){ _cookieConsent=false; try{localStorage.setItem('blipvibe_cookie_consent','essential');}catch(e){} b.remove(); });
+    document.getElementById('cookiePolicyLink').addEventListener('click',function(e){ e.preventDefault(); navigateTo('privacy'); });
+}
+_cookieConsent=checkCookieConsent();
+
 // ======================== EMOJI-SAFE STRING HELPERS ========================
 // Array.from splits by full Unicode code points so surrogate pairs / ZWJ emoji stay intact
 function safeSlice(str,start,end){var a=Array.from(str||'');return a.slice(start,end).join('');}
@@ -356,7 +377,8 @@ async function initApp() {
     if (!authUser) { _initAppRunning = false; showLogin(); return; }
     currentAuthUser = authUser;
     try {
-        currentUser = await sbGetProfile(authUser.id);
+        currentUser = await sbGetOwnProfile();
+        if(!currentUser) currentUser = await sbGetProfile(authUser.id);
     } catch (e) {
         // Profile doesn't exist yet (e.g. email confirmation flow) — create it now
         try {
@@ -396,6 +418,7 @@ async function initApp() {
     var hashFix=document.getElementById('hash-nav-fix');
     if(hashFix) hashFix.remove();
     reapplyCustomizations(); // Re-apply skins, fonts, nav styles, dark mode
+    showCookieConsent(); // Show cookie banner if not yet accepted
     detectUserLocation(); // Start async geolocation detection
     if(currentUser.cover_photo_url) { state.coverPhoto = currentUser.cover_photo_url; applyCoverPhoto(); }
     // Load user's existing likes from Supabase so UI reflects correct state
@@ -3339,8 +3362,30 @@ document.addEventListener('click',function(e){
             h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Hidden Posts</span><button class="btn btn-outline" id="settingsViewHidden" style="padding:4px 14px;font-size:12px;">View ('+hiddenCount+')</button></div>';
             var blockedCount=Object.keys(blockedUsers).length;
             h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Blocked Users</span><button class="btn btn-outline" id="settingsViewBlocked" style="padding:4px 14px;font-size:12px;color:#e74c3c;border-color:#e74c3c;">View ('+blockedCount+')</button></div>';
+            h+='<div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--border);text-align:center;"><button class="btn" id="settingsDeleteAccount" style="background:#e74c3c;color:#fff;padding:8px 20px;font-size:13px;border-radius:8px;cursor:pointer;"><i class="fas fa-trash" style="margin-right:6px;"></i>Delete My Account</button></div>';
             h+='<div style="margin-top:16px;text-align:center;"><button class="btn btn-primary modal-close">Done</button></div></div>';
             showModal(h);
+            document.getElementById('settingsDeleteAccount').addEventListener('click',function(){
+                closeModal();
+                var ch='<div class="modal-header"><h3 style="color:#e74c3c;"><i class="fas fa-exclamation-triangle" style="margin-right:8px;"></i>Delete Account</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+                ch+='<div class="modal-body"><p style="color:#777;text-align:center;margin-bottom:12px;">This will <strong>permanently delete</strong> your account and all your data including posts, comments, likes, and followers.</p>';
+                ch+='<p style="color:#e74c3c;text-align:center;font-weight:600;margin-bottom:16px;">This action cannot be undone.</p>';
+                ch+='<div class="modal-actions"><button class="btn btn-primary modal-close">Cancel</button><button class="btn" id="confirmDeleteAccount" style="background:#e74c3c;color:#fff;">Delete Forever</button></div></div>';
+                showModal(ch);
+                document.getElementById('confirmDeleteAccount').addEventListener('click',async function(){
+                    this.disabled=true;this.textContent='Deleting...';
+                    try{
+                        await sbDeleteAccount(currentUser.id);
+                        closeModal();
+                        showToast('Account deleted. Goodbye!');
+                        handleLogout();
+                    }catch(e){
+                        console.error('Delete account error:',e);
+                        showToast('Failed to delete account: '+(e.message||'Unknown error'));
+                        this.disabled=false;this.textContent='Delete Forever';
+                    }
+                });
+            });
             document.getElementById('settingsViewHidden').addEventListener('click',function(){showHiddenPostsModal();});
             document.getElementById('settingsViewBlocked').addEventListener('click',function(){showBlockedUsersModal();});
             document.getElementById('commentOrderSelect').addEventListener('change',function(){settings.commentOrder=this.value;saveState();});
@@ -3397,18 +3442,21 @@ var activeFeedTab='following';
 // ======================== INLINE MEDIA EMBED HELPER ========================
 var _tiktokScriptLoaded=false;
 function _loadTikTokEmbed(){
+    if(!_cookieConsent) return;
     if(_tiktokScriptLoaded) { if(window.tiktokEmbed&&tiktokEmbed.lib) tiktokEmbed.lib.render(); return; }
     _tiktokScriptLoaded=true;
     var s=document.createElement('script');s.src='https://www.tiktok.com/embed.js';s.async=true;document.body.appendChild(s);
 }
 var _twitterScriptLoaded=false;
 function _loadTwitterEmbed(){
+    if(!_cookieConsent) return;
     if(_twitterScriptLoaded) { if(window.twttr&&twttr.widgets) twttr.widgets.load(); return; }
     _twitterScriptLoaded=true;
     var s=document.createElement('script');s.src='https://platform.twitter.com/widgets.js';s.async=true;document.body.appendChild(s);
 }
 var _instagramScriptLoaded=false;
 function _loadInstagramEmbed(){
+    if(!_cookieConsent) return;
     if(_instagramScriptLoaded) { if(window.instgrm&&instgrm.Embeds) instgrm.Embeds.process(); return; }
     _instagramScriptLoaded=true;
     var s=document.createElement('script');s.src='https://www.instagram.com/embed.js';s.async=true;document.body.appendChild(s);
@@ -4109,7 +4157,9 @@ $('#openPostModal').addEventListener('click',function(){
         postHtml+='<div class="post-badges">'+myLocBadge+'</div></div></div>';
         var tagsHtml='';
         if(postTags.length>0){tagsHtml='<div class="post-tags">';postTags.forEach(function(t){tagsHtml+='<span class="skill-tag">#'+t+'</span>';});tagsHtml+='</div>';}
-        postHtml+='<div class="post-description">'+(text?'<p>'+text.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</p>':'')+mediaHtml+linkHtml+'</div>'+tagsHtml;
+        var displayText=text;
+        if(linkUrl&&linkHtml){var esc=linkUrl.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');displayText=displayText.replace(new RegExp(esc,'g'),'').trim();}
+        postHtml+='<div class="post-description">'+(displayText?'<p>'+displayText.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</p>':'')+mediaHtml+linkHtml+'</div>'+tagsHtml;
         postHtml+='<div class="post-actions"><div class="action-left"><button class="action-btn like-btn" data-post-id="'+myPostId+'"><i class="far fa-thumbs-up"></i><span class="like-count">0</span></button>';
         postHtml+='<button class="action-btn dislike-btn" data-post-id="'+myPostId+'"><i class="far fa-thumbs-down"></i><span class="dislike-count">0</span></button>';
         postHtml+='<button class="action-btn comment-btn"><i class="far fa-comment"></i><span>0</span></button>';

@@ -319,3 +319,37 @@
 - localStorage fallback: `blipvibe_tos_v_<userId>` for instant local checks
 - `_buildSkinData()` includes `tosAcceptedVersion` field for sync
 - CSS: `.tos-splash-overlay` / `.tos-splash-modal` / `.tos-splash-scroll` in style.css
+
+## Cookie Consent Banner (added 2026-02-23)
+- `_cookieConsent` variable gates third-party embed scripts (TikTok, Twitter, Instagram)
+- Banner shows at bottom of screen via `showCookieConsent()` called in `initApp()`
+- "Accept All" sets `_cookieConsent=true` + saves to localStorage `blipvibe_cookie_consent`
+- "Essential Only" dismisses banner without enabling third-party scripts
+- Embed loaders `_loadTikTokEmbed()`, `_loadTwitterEmbed()`, `_loadInstagramEmbed()` check `_cookieConsent` before injecting scripts
+- CSS: `#cookieConsentBanner` / `.cookie-banner-inner` / `.cookie-banner-btns`
+
+## Delete My Account (added 2026-02-23)
+- Red "Delete My Account" button in Settings modal (below blocked users, above Done)
+- Double confirmation: first modal warns about permanent deletion, second "Delete Forever" button
+- Calls `sbDeleteAccount(userId)` in supabase.js — deletes profile row (cascades to all user data), then signs out
+- Profile has `ON DELETE CASCADE` from `auth.users` so all posts, comments, likes, follows, notifications, albums cascade
+
+## Profile RLS Fix (added 2026-02-23)
+- **SQL migration:** `supabase/fix-profile-rls.sql`
+- Revokes SELECT on `skin_data`, `birthday`, `email` columns from `authenticated` and `anon` roles
+- Creates `get_own_profile()` SECURITY DEFINER RPC that returns the current user's full profile as JSONB
+- **Client changes:** `sbGetOwnProfile()` added to supabase.js (calls the RPC), used in `initApp()` for loading own profile
+- `sbUpdateProfile()` no longer calls `.select()` after update (avoids reading revoked columns)
+- Other users' profiles fetched via `sbGetProfile()` simply won't include sensitive columns (PostgREST skips them)
+- **Action required:** Run `supabase/fix-profile-rls.sql` in Supabase SQL Editor
+
+## Embedded Video Link Hiding (updated 2026-02-23)
+- When a video/media embed is rendered, the raw URL text is stripped from the post
+- `autoFetchLinkPreviews()` and `autoFetchLinkPreviewsMini()` already strip URLs via regex replacement
+- Post creation flow now also strips `linkUrl` from display text when an embed is used (line ~4137 in app.js)
+
+## People You May Know Fix (updated 2026-02-23)
+- Moved suggestions card from left-sidebar to right-sidebar in index.html
+- Every template's CSS had `.left-sidebar .suggestions-card{display:none}` — all 17 removed
+- Now shows in the right sidebar for all templates that display the right sidebar
+- Templates that hide right-sidebar entirely (duo, focus, wing) naturally won't show it — these are minimal layouts by design
