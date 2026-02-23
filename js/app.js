@@ -3970,7 +3970,8 @@ function renderFeed(tab){
         html+='<div class="post-user-info"><div class="post-user-top"><h4 class="post-username" data-person-id="'+person.id+'">'+escapeHtml(person.name)+'</h4><span class="post-time">'+timeStr+'</span></div>';
         var badgesHtml='';
         if(badge) badgesHtml+='<span class="badge '+badge.cls+'"><i class="fas '+badge.icon+'"></i> '+badge.text+'</span>';
-        if(loc) badgesHtml+='<span class="badge badge-blue"><i class="fas fa-map-marker-alt"></i> '+escapeHtml(loc)+'</span>';
+        var hideMyLoc=currentUser&&person.id===currentUser.id&&!settings.showLocation;
+        if(loc&&!hideMyLoc) badgesHtml+='<span class="badge badge-blue"><i class="fas fa-map-marker-alt"></i> '+escapeHtml(loc)+'</span>';
         if(badgesHtml) html+='<div class="post-badges">'+badgesHtml+'</div>';
         html+='</div>';
         html+='<button class="post-menu-btn" data-menu="'+menuId+'"><i class="fas fa-ellipsis-h"></i></button>';
