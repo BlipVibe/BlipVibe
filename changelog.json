@@ -1,5 +1,24 @@
 [
   {
+    "version": "0.2.7",
+    "date": "2026-02-23",
+    "added": [
+      "Server-side group coin RPC (add_group_coins) — all members see same balance",
+      "Group coins earned for comments and replies in groups (+2 each)"
+    ],
+    "changed": [
+      "Group coins now persist to database (shared across all users, not localStorage)",
+      "Group shop purchases sync coin spending to database",
+      "Group like/dislike properly awards both personal (+1) and group (+1) coins"
+    ],
+    "fixed": [
+      "Group coins from likes/dislikes never awarded (regex didn't match UUID post IDs)",
+      "No group coins awarded for commenting or replying in groups",
+      "Could earn coins for liking own posts in groups (isOwnPost now checks group feed)",
+      "Group likes/dislikes not synced to Supabase (sbToggleLike calls were missing)"
+    ]
+  },
+  {
     "version": "0.2.6",
     "date": "2026-02-23",
     "added": [

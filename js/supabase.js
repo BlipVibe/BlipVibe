@@ -739,6 +739,12 @@ async function sbUpdateGroup(groupId, updates) {
   return data;
 }
 
+async function sbAddGroupCoins(groupId, amount) {
+  const { data, error } = await sb.rpc('add_group_coins', { p_group_id: groupId, p_amount: amount });
+  if (error) throw error;
+  return data; // returns new coin_balance
+}
+
 // ---- 12. SKINS --------------------------------------------------------------
 
 async function sbGetSkins() {

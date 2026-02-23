@@ -602,3 +602,39 @@
 - Uploads to `posts` bucket under `feedback/` path via `sbUploadFile()`
 - Screenshot URL appended to email body, along with user email + ID for context
 - Remove button (red X) clears the selected image
+
+## Group Coin System Fix (v0.2.7 — 2026-02-23)
+
+### Overview
+Group coins are **shared** — they belong to the group, not individual users. All members see the same balance. You earn both personal coins AND group coins when interacting in groups (but not on your own content).
+
+### Coin Awards
+| Action | Personal Coins | Group Coins |
+|---|---|---|
+| Like/dislike someone's group post | +1 | +1 |
+| Comment on someone's group post | +2 | +2 |
+| Reply on someone's group post | +2 | +2 |
+| Post in group | +5 | +5 |
+| Like/comment on **own** post | 0 | 0 |
+
+### What was fixed
+- **Group like/dislike coins broken:** Old regex `pid.match(/^gvp?-(\d+)-/)` never matched UUID post IDs → group coins never awarded. Now uses `_activeGroupId` variable
+- **No group coins for comments/replies:** `showComments()` only awarded personal coins. Now also calls `addGroupCoins()` with tracking via `canEarnGroupCommentCoin`/`canEarnGroupReplyCoin`
+- **Own post check broken in groups:** `isOwnPost()` only checked `feedPosts` (main feed). Extended to check DOM `data-author-id` attribute on group feed posts
+- **Group likes not synced to DB:** `sbToggleLike()` calls were missing from group like/dislike handlers
+- **Coins only in localStorage:** `addGroupCoins()` now calls `sbAddGroupCoins()` RPC which atomically increments `groups.coin_balance` in DB. Returns server truth to update local state
+- **Shop purchases not synced:** Group shop buy handlers now use `addGroupCoins(-price)` which syncs to DB
+
+### Database
+- **New RPC:** `add_group_coins(p_group_id, p_amount)` — SECURITY DEFINER, checks auth + membership, atomically updates `coin_balance` (floored at 0)
+- **Migration:** Run `supabase/fix-group-coins.sql` in Supabase SQL Editor
+
+### Code Changes
+- `_activeGroupId` variable: set in `showGroupView()`, cleared in `navigateTo()`
+- `addGroupCoins()` now calls `sbAddGroupCoins()` RPC (fire-and-forget with server truth update)
+- `sbAddGroupCoins(groupId, amount)` wrapper in supabase.js
+- `isOwnPost()` extended with DOM `data-author-id` fallback
+- Group post HTML includes `data-author-id` attribute
+- Group like/dislike handlers: fixed coin logic + added `sbToggleLike` calls + `saveState()`
+- Comment/reply submit handler: awards group coins when `_activeGroupId` is set
+- Shop purchase handlers: use `addGroupCoins(-price)` instead of direct `state.groupCoins` mutation

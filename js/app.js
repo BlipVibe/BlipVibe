@@ -1156,7 +1156,7 @@ function timeAgo(i){
 // ======================== NAVIGATION ========================
 var _pvSaved=null;
 var _gvSaved=null;
-var _navCurrent='home';var _navPrev='home';var _navFromPopstate=false;
+var _navCurrent='home';var _navPrev='home';var _navFromPopstate=false;var _activeGroupId=null;
 function navigateTo(page,skipPush){
     // Restore user's skin/font/template when leaving profile view
     if(_pvSaved&&page!=='profile-view'){
@@ -1168,6 +1168,8 @@ function navigateTo(page,skipPush){
         applyFont(_pvSaved.font||null,true);
         _pvSaved=null;
     }
+    // Clear active group context when leaving group view
+    _activeGroupId=null;
     // Restore user's skin when leaving group view
     if(_gvSaved){
         premiumBgImage=_gvSaved.bgImage;premiumBgOverlay=_gvSaved.bgOverlay;premiumBgDarkness=_gvSaved.bgDarkness||0;premiumCardTransparency=_gvSaved.cardTrans!=null?_gvSaved.cardTrans:0.1;
@@ -1375,17 +1377,24 @@ function updateCoins(){
 function isOwnPost(postId){
     if(!currentUser) return false;
     var fp=feedPosts.find(function(x){return x.idx===postId;});
-    return !!(fp&&fp.person&&fp.person.id===currentUser.id);
+    if(fp&&fp.person&&fp.person.id===currentUser.id) return true;
+    // Also check DOM for group posts (not in feedPosts array)
+    var el=document.querySelector('.feed-post[data-post-id="'+postId+'"]');
+    if(el&&el.dataset.authorId===currentUser.id) return true;
+    return false;
 }
 function addGroupCoins(groupId,amount){
     if(!state.groupCoins[groupId]) state.groupCoins[groupId]=0;
     state.groupCoins[groupId]+=amount;
-    var el=document.getElementById('gvGroupCoinCount');
-    if(el) el.textContent=state.groupCoins[groupId]||0;
-    var el2=document.getElementById('gvGroupCoinCount2');
-    if(el2) el2.textContent=state.groupCoins[groupId]||0;
+    if(state.groupCoins[groupId]<0) state.groupCoins[groupId]=0;
+    updateGroupCoinDisplay(groupId);
     var coinWrap=document.getElementById('gvGroupCoins');
     if(coinWrap){coinWrap.classList.remove('coin-pop');void coinWrap.offsetWidth;coinWrap.classList.add('coin-pop');}
+    // Sync to DB — fire-and-forget, update local with server truth
+    sbAddGroupCoins(groupId,amount).then(function(newBalance){
+        state.groupCoins[groupId]=newBalance;
+        updateGroupCoinDisplay(groupId);
+    }).catch(function(e){console.error('Group coin sync:',e);});
 }
 function getGroupCoinCount(groupId){return state.groupCoins[groupId]||0;}
 function getTodayKey(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
@@ -1824,12 +1833,16 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
         }
 
         if(replyTarget){
-            if(!isOwnPost(postId)&&!state.replyCoinPosts[postId]){state.replyCoinPosts[postId]=true;state.coins+=2;updateCoins();}
+            if(!isOwnPost(postId)&&!state.replyCoinPosts[postId]){state.replyCoinPosts[postId]=true;state.coins+=2;updateCoins();
+                if(_activeGroupId&&canEarnGroupReplyCoin(_activeGroupId,postId)){addGroupCoins(_activeGroupId,2);trackGroupReplyCoin(_activeGroupId,postId);}
+            }
             replyTarget=null;
             document.getElementById('replyIndicator').style.display='none';
             input.placeholder='Write a comment...';
         }else{
-            if(!isOwnPost(postId)&&!state.commentCoinPosts[postId]){state.commentCoinPosts[postId]=true;state.coins+=2;updateCoins();}
+            if(!isOwnPost(postId)&&!state.commentCoinPosts[postId]){state.commentCoinPosts[postId]=true;state.coins+=2;updateCoins();
+                if(_activeGroupId&&canEarnGroupCommentCoin(_activeGroupId,postId)){addGroupCoins(_activeGroupId,2);trackGroupCommentCoin(_activeGroupId,postId);}
+            }
         }
         input.value='';if(countEl)countEl.textContent=parseInt(countEl.textContent)+1;
         renderInlineComments(postId);
@@ -2651,7 +2664,7 @@ async function showGroupView(group){
     $$('.page').forEach(function(p){p.classList.remove('active');});
     document.getElementById('page-group-view').classList.add('active');
     $$('.nav-link').forEach(function(l){l.classList.remove('active');});
-    _navPrev=_navCurrent;_navCurrent='group-view';
+    _navPrev=_navCurrent;_navCurrent='group-view';_activeGroupId=group.id;
     if(!_navFromPopstate) history.pushState({page:'group-view',groupId:group.id},'','#group-view:'+group.id);
     window.scrollTo(0,0);
 
@@ -2769,7 +2782,7 @@ async function showGroupView(group){
                 var isMe=currentUser&&author.id===currentUser.id;
                 var timeStr=p.created_at?timeAgo(p.created_at):'just now';
                 var commentCount=p.comments&&p.comments[0]?p.comments[0].count:0;
-                feedHtml+='<div class="card feed-post" data-post-id="'+p.id+'"><div class="post-header"><img src="'+avatar+'" alt="'+escapeHtml(name)+'" class="post-avatar gv-post-author" data-uid="'+author.id+'" style="cursor:pointer;"><div class="post-user-info"><div class="post-user-top"><h4 class="post-username gv-post-author" data-uid="'+author.id+'" style="cursor:pointer;">'+escapeHtml(name)+'</h4><span class="post-time">'+timeStr+'</span></div>';
+                feedHtml+='<div class="card feed-post" data-post-id="'+p.id+'" data-author-id="'+author.id+'"><div class="post-header"><img src="'+avatar+'" alt="'+escapeHtml(name)+'" class="post-avatar gv-post-author" data-uid="'+author.id+'" style="cursor:pointer;"><div class="post-user-info"><div class="post-user-top"><h4 class="post-username gv-post-author" data-uid="'+author.id+'" style="cursor:pointer;">'+escapeHtml(name)+'</h4><span class="post-time">'+timeStr+'</span></div>';
                 if(isMe) feedHtml+='<div class="post-badges"><span class="badge badge-green"><i class="fas fa-user"></i> You</span></div>';
                 feedHtml+='</div></div>';
                 feedHtml+='<div class="post-description">';
@@ -3036,8 +3049,8 @@ async function showGroupView(group){
 }
 
 function bindGvPostEvents(){
-    $$('#gvPostsFeed .like-btn').forEach(function(btn){btn.addEventListener('click',function(e){var pid=btn.getAttribute('data-post-id');var countEl=btn.querySelector('.like-count');var count=parseInt(countEl.textContent);var had=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);if(state.likedPosts[pid]){delete state.likedPosts[pid];btn.classList.remove('liked');btn.querySelector('i').className='far fa-thumbs-up';countEl.textContent=count-1;}else{if(state.dislikedPosts[pid]){var db=btn.closest('.action-left').querySelector('.dislike-btn');var dc=db.querySelector('.dislike-count');dc.textContent=parseInt(dc.textContent)-1;delete state.dislikedPosts[pid];db.classList.remove('disliked');db.querySelector('i').className='far fa-thumbs-down';}state.likedPosts[pid]=true;btn.classList.add('liked');btn.querySelector('i').className='fas fa-thumbs-up';countEl.textContent=count+1;}var has=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);if(!isOwnPost(pid)){if(!had&&has){state.coins++;updateCoins();var _glm=pid.match(/^gvp?-(\d+)-/);if(_glm)addGroupCoins(parseInt(_glm[1]),1);}else if(had&&!has){state.coins--;updateCoins();var _glm2=pid.match(/^gvp?-(\d+)-/);if(_glm2&&(state.groupCoins[parseInt(_glm2[1])]||0)>0)addGroupCoins(parseInt(_glm2[1]),-1);}}});});
-    $$('#gvPostsFeed .dislike-btn').forEach(function(btn){btn.addEventListener('click',function(){var pid=btn.getAttribute('data-post-id');var countEl=btn.querySelector('.dislike-count');var count=parseInt(countEl.textContent);var had=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);if(state.dislikedPosts[pid]){delete state.dislikedPosts[pid];btn.classList.remove('disliked');btn.querySelector('i').className='far fa-thumbs-down';countEl.textContent=count-1;}else{if(state.likedPosts[pid]){var lb=btn.closest('.action-left').querySelector('.like-btn');var lc=lb.querySelector('.like-count');lc.textContent=parseInt(lc.textContent)-1;delete state.likedPosts[pid];lb.classList.remove('liked');lb.querySelector('i').className='far fa-thumbs-up';}state.dislikedPosts[pid]=true;btn.classList.add('disliked');btn.querySelector('i').className='fas fa-thumbs-down';countEl.textContent=count+1;}var has=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);if(!isOwnPost(pid)){if(!had&&has){state.coins++;updateCoins();var _gdm=pid.match(/^gvp?-(\d+)-/);if(_gdm)addGroupCoins(parseInt(_gdm[1]),1);}else if(had&&!has){state.coins--;updateCoins();var _gdm2=pid.match(/^gvp?-(\d+)-/);if(_gdm2&&(state.groupCoins[parseInt(_gdm2[1])]||0)>0)addGroupCoins(parseInt(_gdm2[1]),-1);}}});});
+    $$('#gvPostsFeed .like-btn').forEach(function(btn){btn.addEventListener('click',async function(e){var pid=btn.getAttribute('data-post-id');var countEl=btn.querySelector('.like-count');var count=parseInt(countEl.textContent);var isUUID=/^[0-9a-f]{8}-/.test(pid);var had=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);if(state.likedPosts[pid]){delete state.likedPosts[pid];btn.classList.remove('liked');btn.querySelector('i').className='far fa-thumbs-up';countEl.textContent=count-1;if(isUUID&&currentUser){try{await sbToggleLike(currentUser.id,'post',pid);}catch(e2){}}}else{if(state.dislikedPosts[pid]){var db=btn.closest('.action-left').querySelector('.dislike-btn');var dc=db.querySelector('.dislike-count');dc.textContent=parseInt(dc.textContent)-1;delete state.dislikedPosts[pid];db.classList.remove('disliked');db.querySelector('i').className='far fa-thumbs-down';}state.likedPosts[pid]=true;btn.classList.add('liked');btn.querySelector('i').className='fas fa-thumbs-up';countEl.textContent=count+1;if(isUUID&&currentUser){try{await sbToggleLike(currentUser.id,'post',pid);}catch(e2){}}}var has=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);if(!isOwnPost(pid)){if(!had&&has){state.coins++;updateCoins();if(_activeGroupId)addGroupCoins(_activeGroupId,1);}else if(had&&!has){state.coins--;updateCoins();if(_activeGroupId&&(state.groupCoins[_activeGroupId]||0)>0)addGroupCoins(_activeGroupId,-1);}}saveState();});});
+    $$('#gvPostsFeed .dislike-btn').forEach(function(btn){btn.addEventListener('click',async function(){var pid=btn.getAttribute('data-post-id');var countEl=btn.querySelector('.dislike-count');var count=parseInt(countEl.textContent);var isUUID=/^[0-9a-f]{8}-/.test(pid);var had=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);if(state.dislikedPosts[pid]){delete state.dislikedPosts[pid];btn.classList.remove('disliked');btn.querySelector('i').className='far fa-thumbs-down';countEl.textContent=count-1;}else{if(state.likedPosts[pid]){var lb=btn.closest('.action-left').querySelector('.like-btn');var lc=lb.querySelector('.like-count');lc.textContent=parseInt(lc.textContent)-1;delete state.likedPosts[pid];lb.classList.remove('liked');lb.querySelector('i').className='far fa-thumbs-up';if(isUUID&&currentUser){try{await sbToggleLike(currentUser.id,'post',pid);}catch(e2){}}}state.dislikedPosts[pid]=true;btn.classList.add('disliked');btn.querySelector('i').className='fas fa-thumbs-down';countEl.textContent=count+1;}var has=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);if(!isOwnPost(pid)){if(!had&&has){state.coins++;updateCoins();if(_activeGroupId)addGroupCoins(_activeGroupId,1);}else if(had&&!has){state.coins--;updateCoins();if(_activeGroupId&&(state.groupCoins[_activeGroupId]||0)>0)addGroupCoins(_activeGroupId,-1);}}saveState();});});
     $$('#gvPostsFeed .comment-btn').forEach(function(btn){btn.addEventListener('click',function(){var postId=btn.closest('.action-left').querySelector('.like-btn').getAttribute('data-post-id');showComments(postId,btn.querySelector('span'));});});
     bindLikeCountClicks('#gvPostsFeed');
 }
@@ -4955,10 +4968,10 @@ function renderGroupShop(groupId){
         if(!skin) return;
         var gc=getGroupCoinCount(gid);
         if(gc>=skin.price){
-            state.groupCoins[gid]-=skin.price;
+            addGroupCoins(gid,-skin.price);
             if(!state.groupOwnedSkins[gid]) state.groupOwnedSkins[gid]={};
             state.groupOwnedSkins[gid][sid]=true;
-            updateGroupCoinDisplay(gid);gShopPurchased(btn);
+            gShopPurchased(btn);
             addNotification('skin','Group purchased the "'+skin.name+'" skin!');
         }
     });});
@@ -4969,10 +4982,10 @@ function renderGroupShop(groupId){
         if(!skin) return;
         var gc=getGroupCoinCount(gid);
         if(gc>=skin.price){
-            state.groupCoins[gid]-=skin.price;
+            addGroupCoins(gid,-skin.price);
             if(!state.groupOwnedPremiumSkins[gid]) state.groupOwnedPremiumSkins[gid]={};
             state.groupOwnedPremiumSkins[gid][pid]=true;
-            updateGroupCoinDisplay(gid);gShopPurchased(btn);
+            gShopPurchased(btn);
             addNotification('skin','Group purchased the "'+skin.name+'" premium skin!');
         }
     });});
