@@ -985,7 +985,46 @@ async function sbGetUserPhotoReaction(photoUrl, userId) {
   return data ? data.reaction : null;
 }
 
-// ---- 18. UTILITY: timeAgo for real timestamps --------------------------------
+// ---- 18. ADMIN ---------------------------------------------------------------
+
+async function sbIsAdmin() {
+  try {
+    const { data, error } = await sb.rpc('is_current_user_admin');
+    if (error) return false;
+    return !!data;
+  } catch(e) { return false; }
+}
+
+async function sbAdminGetUsers(search, pageSize, pageOffset) {
+  const { data, error } = await sb.rpc('admin_get_users', {
+    search_query: search || '',
+    page_size: pageSize || 50,
+    page_offset: pageOffset || 0
+  });
+  if (error) throw error;
+  return data || [];
+}
+
+async function sbAdminUserCount(search) {
+  const { data, error } = await sb.rpc('admin_user_count', {
+    search_query: search || ''
+  });
+  if (error) throw error;
+  return data || 0;
+}
+
+async function sbAdminDeleteUser(targetId) {
+  const { error } = await sb.rpc('admin_delete_user', { target_id: targetId });
+  if (error) throw error;
+}
+
+async function sbAdminToggleSuspend(targetId) {
+  const { data, error } = await sb.rpc('admin_toggle_suspend', { target_id: targetId });
+  if (error) throw error;
+  return data; // returns new is_suspended boolean
+}
+
+// ---- 19. UTILITY: timeAgo for real timestamps --------------------------------
 
 function timeAgoReal(dateStr) {
   const now = Date.now();

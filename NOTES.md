@@ -320,18 +320,22 @@
 - `_buildSkinData()` includes `tosAcceptedVersion` field for sync
 - CSS: `.tos-splash-overlay` / `.tos-splash-modal` / `.tos-splash-scroll` in style.css
 
-## Cookie Consent Banner (added 2026-02-23)
-- `_cookieConsent` variable gates third-party embed scripts (TikTok, Twitter, Instagram)
+## Cookie Consent Banner (added 2026-02-23, updated 2026-02-23)
+- `_cookieConsent` variable gates ALL third-party embed scripts and iframes
 - Banner shows at bottom of screen via `showCookieConsent()` called in `initApp()`
-- "Accept All" sets `_cookieConsent=true` + saves to localStorage `blipvibe_cookie_consent`
+- "Accept All" sets `_cookieConsent=true` + saves to localStorage, reloads page to activate embeds
 - "Essential Only" dismisses banner without enabling third-party scripts
-- Embed loaders `_loadTikTokEmbed()`, `_loadTwitterEmbed()`, `_loadInstagramEmbed()` check `_cookieConsent` before injecting scripts
+- **All embeds gated:** TikTok, Twitter, Instagram script loaders + YouTube, Vimeo, Spotify, SoundCloud iframes
+- Blocked embeds show `_embedConsentPlaceholder()` with "Allow & Load" button
+- **Manage Cookies in Settings:** Shows current consent status, click to toggle accept/revoke + page reload
+- Delegated click handler on `.embed-consent-btn` calls `grantCookieConsent()` + reload
 - CSS: `#cookieConsentBanner` / `.cookie-banner-inner` / `.cookie-banner-btns`
 
-## Delete My Account (added 2026-02-23)
+## Delete My Account (added 2026-02-23, updated 2026-02-23)
 - Red "Delete My Account" button in Settings modal (below blocked users, above Done)
 - Double confirmation: first modal warns about permanent deletion, second "Delete Forever" button
-- Calls `sbDeleteAccount(userId)` in supabase.js — deletes profile row (cascades to all user data), then signs out
+- `sbDeleteAccount()` now: (1) cleans up storage files (avatars + posts buckets), (2) calls `delete_own_account` SECURITY DEFINER RPC to delete profile + auth.users, (3) falls back to client-side profile delete if RPC not deployed, (4) signs out
+- `profiles_delete` RLS policy added to allow users to delete their own profile row
 - Profile has `ON DELETE CASCADE` from `auth.users` so all posts, comments, likes, follows, notifications, albums cascade
 
 ## Profile RLS Fix (added 2026-02-23)
@@ -353,3 +357,58 @@
 - Every template's CSS had `.left-sidebar .suggestions-card{display:none}` — all 17 removed
 - Now shows in the right sidebar for all templates that display the right sidebar
 - Templates that hide right-sidebar entirely (duo, focus, wing) naturally won't show it — these are minimal layouts by design
+
+## XSS Sanitization (added 2026-02-23)
+- `escapeHtml()` function added (escapes `& < > " '`) — applied to 45+ user-content injection points
+- Covers: post content, display names, bios, comment text, message content, group names/descriptions, notification text, link preview titles, album titles, profile cards, shared post content, location badges
+- `autoFetchLinkPreviews()` URL replacement uses `escapeHtml(url)` for innerHTML matching (handles `&amp;` encoding)
+
+## Geolocation Opt-In Fix (added 2026-02-23)
+- `detectUserLocation()` now only fires when `settings.showLocation` is true (was firing unconditionally)
+
+## Legal & Compliance Updates (added 2026-02-23)
+- **Privacy Policy:** Added GDPR section (Section 11) — legal basis for processing, EEA user rights, breach notification (72hr), international transfer basis. Renumbered subsequent sections.
+- **TOS:** Added indemnification (Section 17), severability (Section 19) clauses. Governing law now names **State of Texas** specifically. Renumbered to 21 sections total.
+- **Search injection fix:** `sbSearchProfiles()` now sanitizes query by stripping PostgREST filter-injection characters (`,`, `(`, `)`, `.`) before use in `.or()` filter
+
+## Super Admin Panel (added 2026-02-23)
+
+### Overview
+- Admin users can view all users, suspend/unsuspend accounts, and permanently delete user accounts
+- All admin actions enforced **server-side** via SECURITY DEFINER functions that check `is_admin` flag
+- Client-side `_isAdmin` flag only controls UI visibility — cannot be spoofed to bypass server checks
+
+### Database
+- `is_admin BOOLEAN DEFAULT false` column on `profiles` — set manually in Supabase dashboard or SQL
+- `is_suspended BOOLEAN DEFAULT false` column on `profiles` — toggled by admin functions
+- `REVOKE UPDATE (is_admin)` from `authenticated`/`anon` — prevents privilege escalation from client
+- **SQL migration:** `supabase/admin-setup.sql`
+
+### RPC Functions (SECURITY DEFINER, all check is_admin)
+- `is_current_user_admin()` → returns boolean (lightweight UI check)
+- `admin_get_users(search_query, page_size, page_offset)` → returns JSONB array with user info + post counts
+- `admin_user_count(search_query)` → returns total matching user count for pagination
+- `admin_delete_user(target_id)` → deletes profile (cascade) + auth.users record. Cannot delete other admins.
+- `admin_toggle_suspend(target_id)` → toggles `is_suspended`, returns new status. Cannot suspend admins.
+
+### Supabase Client Functions (js/supabase.js)
+- `sbIsAdmin()` — calls `is_current_user_admin` RPC
+- `sbAdminGetUsers(search, pageSize, pageOffset)` — calls `admin_get_users` RPC
+- `sbAdminUserCount(search)` — calls `admin_user_count` RPC
+- `sbAdminDeleteUser(targetId)` — calls `admin_delete_user` RPC
+- `sbAdminToggleSuspend(targetId)` — calls `admin_toggle_suspend` RPC
+
+### UI (js/app.js + index.html)
+- **Admin Panel page** (`#page-admin`): searchable, paginated user table with avatar, name, email, posts, joined date, status badges
+- **Dropdown link** (`#dropdownAdmin`): hidden by default, shown via `sbIsAdmin()` check in `initApp()`
+- **Profile view buttons**: Admin users see Suspend + Delete buttons below the block button when viewing other users' profiles
+- **Confirmation modals**: Both suspend and delete require confirmation before executing
+- **Safety**: Cannot delete or suspend other admin accounts (server-side check)
+- **Action required:** Run `supabase/admin-setup.sql` then set yourself as admin: `UPDATE public.profiles SET is_admin = true WHERE username = 'your_username';`
+
+## Video Embed Aspect Ratio Fix (updated 2026-02-23)
+- YouTube and Vimeo iframes were stretching tall because of fixed `height` attribute + 100% width
+- Changed `.video-embed` CSS to use `aspect-ratio: 16/9` with `max-width: 560px`
+- Iframes now positioned absolutely within the aspect-ratio container
+- Removed inline `width`/`height`/`style` from YouTube and Vimeo iframe HTML in app.js
+- Mini embeds capped at `max-width: 360px`

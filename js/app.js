@@ -35,6 +35,7 @@ function escapeHtml(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').re
 // currentUser holds the live profile row; currentAuthUser holds auth.users row
 var currentUser = null;    // { id, username, display_name, bio, avatar_url, ... }
 var currentAuthUser = null;
+var _isAdmin = false;
 
 var loginPage = document.getElementById('loginPage');
 var appShell = document.getElementById('appShell');
@@ -414,6 +415,12 @@ async function initApp() {
     }
     populateUserUI();
     showApp();
+    // Check admin status (non-blocking, UI gating only — real enforcement is server-side)
+    sbIsAdmin().then(function(admin){
+        _isAdmin=admin;
+        var adminLink=document.getElementById('dropdownAdmin');
+        if(adminLink) adminLink.style.display=admin?'':'none';
+    });
     // Immediately navigate to the hash page so the user never sees home flash
     var hashPage=(location.hash||'').replace('#','');
     // Fallback to localStorage if hash is empty/home (mobile Safari can lose the hash on refresh)
@@ -1168,6 +1175,7 @@ function navigateTo(page,skipPush){
         } else renderPhotoAlbum();
     }
     if(page==='saved') renderSavedPage();
+    if(page==='admin') renderAdminPanel();
     _navPrev=_navCurrent;_navCurrent=page;
     if(!skipPush) history.pushState({page:page},'','#'+page);
     // Persist current page so mobile refresh can restore it even if hash is lost
@@ -2129,6 +2137,13 @@ async function showProfileView(person){
         cardHtml+='<div class="pv-actions"><button class="btn '+(isFollowed?'btn-disabled':'btn-primary')+'" id="pvFollowBtn" data-uid="'+person.id+'">'+(isFollowed?'<i class="fas fa-check"></i> Following':'<i class="fas fa-plus"></i> Follow')+'</button>';
         cardHtml+='<button class="btn btn-primary" id="pvMsgBtn"><i class="fas fa-envelope"></i> Message</button>';
         cardHtml+='<button class="btn btn-outline" id="pvBlockBtn" style="color:#e74c3c;border-color:#e74c3c;">'+(blockedUsers[person.id]?'<i class="fas fa-unlock"></i> Unblock':'<i class="fas fa-ban"></i> Block')+'</button></div>';
+        if(_isAdmin){
+            cardHtml+='<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">';
+            cardHtml+='<span style="font-size:11px;color:var(--gray);display:flex;align-items:center;gap:4px;"><i class="fas fa-shield-halved" style="color:#e74c3c;"></i>Admin:</span>';
+            cardHtml+='<button class="btn btn-outline" id="pvAdminSuspend" style="padding:4px 12px;font-size:11px;color:#f59e0b;border-color:#f59e0b;"><i class="fas fa-pause"></i> Suspend</button>';
+            cardHtml+='<button class="btn" id="pvAdminDelete" style="padding:4px 12px;font-size:11px;background:#e74c3c;color:#fff;"><i class="fas fa-trash"></i> Delete Account</button>';
+            cardHtml+='</div>';
+        }
     }
     cardHtml+='<div class="profile-links"><a href="#" class="pv-back-link" id="pvBack"><i class="fas fa-arrow-left"></i> Back to Home</a></div>';
     cardHtml+='</div>';
@@ -2260,6 +2275,21 @@ async function showProfileView(person){
             } else {
                 showBlockConfirmModal(person,function(){showProfileView(person);});
             }
+        });
+    }
+    // Event: Admin actions on profile
+    var pvAdminSuspend=document.getElementById('pvAdminSuspend');
+    if(pvAdminSuspend){
+        pvAdminSuspend.addEventListener('click',function(){
+            showModal('<div class="modal-header"><h3><i class="fas fa-pause-circle" style="color:#f59e0b;margin-right:8px;"></i>Suspend User</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body"><p style="text-align:center;margin-bottom:16px;">Toggle suspension for <strong>'+escapeHtml(person.name)+'</strong>?</p><div class="modal-actions"><button class="btn btn-outline modal-close">Cancel</button><button class="btn" id="confirmPvSuspend" style="background:#f59e0b;color:#fff;">Confirm</button></div></div>');
+            document.getElementById('confirmPvSuspend').addEventListener('click',async function(){closeModal();try{var s=await sbAdminToggleSuspend(person.id);showToast(person.name+(s?' suspended':' unsuspended'));}catch(e){showToast('Error: '+(e.message||'Failed'));}});
+        });
+    }
+    var pvAdminDelete=document.getElementById('pvAdminDelete');
+    if(pvAdminDelete){
+        pvAdminDelete.addEventListener('click',function(){
+            showModal('<div class="modal-header"><h3 style="color:#e74c3c;"><i class="fas fa-exclamation-triangle" style="margin-right:8px;"></i>Admin: Delete User</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body"><p style="text-align:center;margin-bottom:12px;">Permanently delete <strong>'+escapeHtml(person.name)+'</strong>?</p><p style="text-align:center;font-size:13px;color:#e74c3c;margin-bottom:16px;">All posts, comments, messages, and files will be permanently removed.</p><div class="modal-actions"><button class="btn btn-outline modal-close">Cancel</button><button class="btn" id="confirmPvAdminDel" style="background:#e74c3c;color:#fff;">Delete Account</button></div></div>');
+            document.getElementById('confirmPvAdminDel').addEventListener('click',async function(){closeModal();try{await sbAdminDeleteUser(person.id);showToast(person.name+'\'s account deleted');navigateTo('home');}catch(e){showToast('Error: '+(e.message||'Failed'));}});
         });
     }
     // Event: Likes
@@ -3490,10 +3520,10 @@ function getVideoEmbedHtml(url, mini){
     var cls='video-embed'+(mini?' video-embed-mini':'');
     // YouTube: watch, short, embed, youtu.be
     m=url.match(/(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
-    if(m){ id=m[1]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'YouTube',cls,mini); return '<div class="'+cls+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><iframe src="https://www.youtube-nocookie.com/embed/'+id+'" width="100%" height="'+(mini?'180':'360')+'" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }
+    if(m){ id=m[1]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'YouTube',cls,mini); return '<div class="'+cls+'"><iframe src="https://www.youtube-nocookie.com/embed/'+id+'" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>'; }
     // Vimeo
     m=url.match(/vimeo\.com\/(\d+)/);
-    if(m){ id=m[1]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'Vimeo',cls,mini); return '<div class="'+cls+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><iframe src="https://player.vimeo.com/video/'+id+'" width="100%" height="'+(mini?'180':'360')+'" frameborder="0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }
+    if(m){ id=m[1]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'Vimeo',cls,mini); return '<div class="'+cls+'"><iframe src="https://player.vimeo.com/video/'+id+'" frameborder="0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen></iframe></div>'; }
     // TikTok: tiktok.com/@user/video/ID or vm.tiktok.com/shortcode
     m=url.match(/tiktok\.com\/@[^/]+\/video\/(\d+)/);
     if(!m) m=url.match(/tiktok\.com\/(?:@[^/]+\/video\/)?(\d{15,})/);
@@ -5856,9 +5886,101 @@ function _bindPhotoAlbumMenus(){
 $('#viewAllPhotos').addEventListener('click',function(e){e.preventDefault();renderPhotoAlbum();navigateTo('photos');});
 $$('.photos-back-link').forEach(function(l){l.addEventListener('click',function(e){e.preventDefault();navigateTo(_navPrev&&_navPrev!=='photos'?_navPrev:'home');});});
 $$('.privacy-back-link').forEach(function(l){l.addEventListener('click',function(e){e.preventDefault();navigateTo(_navPrev&&_navPrev!=='privacy'?_navPrev:'home');});});
+$$('.admin-back-link').forEach(function(l){l.addEventListener('click',function(e){e.preventDefault();navigateTo(_navPrev&&_navPrev!=='admin'?_navPrev:'home');});});
+document.getElementById('dropdownAdmin').addEventListener('click',function(e){e.preventDefault();$('#userDropdownMenu').classList.remove('show');navigateTo('admin');renderAdminPanel();});
 // Privacy Policy link on login page
 var _ppLink=document.getElementById('loginPrivacyLink');
 if(_ppLink) _ppLink.addEventListener('click',function(e){e.preventDefault();showApp();navigateTo('privacy');});
+
+// ======================== ADMIN PANEL ========================
+var _adminPage=0;var _adminSearch='';var _adminPageSize=30;
+async function renderAdminPanel(){
+    if(!_isAdmin){document.getElementById('adminUserList').innerHTML='<p style="text-align:center;color:#e74c3c;padding:40px;">Access denied.</p>';return;}
+    var listEl=document.getElementById('adminUserList');
+    var countEl=document.getElementById('adminUserCount');
+    var pagEl=document.getElementById('adminPagination');
+    listEl.innerHTML='<div style="text-align:center;padding:40px;color:var(--gray);"><i class="fas fa-spinner fa-spin" style="font-size:24px;"></i><p style="margin-top:8px;">Loading users...</p></div>';
+    try{
+        var total=await sbAdminUserCount(_adminSearch);
+        var users=await sbAdminGetUsers(_adminSearch,_adminPageSize,_adminPage*_adminPageSize);
+        countEl.textContent=total+' user'+(total!==1?'s':'')+(_adminSearch?' matching "'+escapeHtml(_adminSearch)+'"':'');
+        var h='<table style="width:100%;border-collapse:collapse;font-size:13px;">';
+        h+='<tr style="border-bottom:2px solid var(--border);text-align:left;"><th style="padding:8px;">User</th><th style="padding:8px;">Email</th><th style="padding:8px;">Posts</th><th style="padding:8px;">Joined</th><th style="padding:8px;">Status</th><th style="padding:8px;text-align:right;">Actions</th></tr>';
+        (users||[]).forEach(function(u){
+            var name=escapeHtml(u.display_name||u.username||'Unknown');
+            var uname=escapeHtml(u.username||'');
+            var email=escapeHtml(u.email||'—');
+            var avatar=u.avatar_url||DEFAULT_AVATAR;
+            var joined=u.created_at?new Date(u.created_at).toLocaleDateString():'—';
+            var suspended=u.is_suspended;
+            var isAdmin=u.is_admin;
+            var isSelf=currentUser&&u.id===currentUser.id;
+            var statusBadge=isAdmin?'<span style="background:#3b82f6;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;">Admin</span>'
+                :suspended?'<span style="background:#e74c3c;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;">Suspended</span>'
+                :'<span style="background:var(--green);color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;">Active</span>';
+            h+='<tr style="border-bottom:1px solid var(--border);">';
+            h+='<td style="padding:8px;"><div style="display:flex;align-items:center;gap:8px;"><img src="'+avatar+'" style="width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0;"><div><div style="font-weight:600;">'+name+'</div><div style="font-size:11px;color:var(--gray);">@'+uname+'</div></div></div></td>';
+            h+='<td style="padding:8px;font-size:12px;">'+email+'</td>';
+            h+='<td style="padding:8px;">'+((u.post_count||0))+'</td>';
+            h+='<td style="padding:8px;font-size:12px;">'+joined+'</td>';
+            h+='<td style="padding:8px;">'+statusBadge+'</td>';
+            h+='<td style="padding:8px;text-align:right;">';
+            if(!isSelf&&!isAdmin){
+                h+='<button class="btn btn-outline admin-suspend-btn" data-uid="'+u.id+'" data-name="'+name+'" style="padding:4px 10px;font-size:11px;margin-right:4px;'+(suspended?'color:var(--green);border-color:var(--green);':'color:#f59e0b;border-color:#f59e0b;')+'">'+(suspended?'<i class="fas fa-check"></i> Unsuspend':'<i class="fas fa-pause"></i> Suspend')+'</button>';
+                h+='<button class="btn admin-delete-btn" data-uid="'+u.id+'" data-name="'+name+'" style="padding:4px 10px;font-size:11px;background:#e74c3c;color:#fff;"><i class="fas fa-trash"></i> Delete</button>';
+            } else if(isSelf){
+                h+='<span style="font-size:11px;color:var(--gray);">You</span>';
+            } else {
+                h+='<span style="font-size:11px;color:var(--gray);">Admin</span>';
+            }
+            h+='</td></tr>';
+        });
+        h+='</table>';
+        listEl.innerHTML=h;
+        // Pagination
+        var totalPages=Math.ceil(total/_adminPageSize);
+        var ph='';
+        if(totalPages>1){
+            for(var i=0;i<totalPages;i++){
+                ph+='<button class="btn '+(i===_adminPage?'btn-primary':'btn-outline')+' admin-page-btn" data-pg="'+i+'" style="padding:4px 12px;font-size:12px;margin:0 2px;">'+((i+1))+'</button>';
+            }
+        }
+        pagEl.innerHTML=ph;
+        // Bind events
+        $$('.admin-page-btn').forEach(function(btn){btn.addEventListener('click',function(){_adminPage=parseInt(btn.dataset.pg);renderAdminPanel();});});
+        $$('.admin-suspend-btn').forEach(function(btn){
+            btn.addEventListener('click',function(){
+                var uid=btn.dataset.uid;var name=btn.dataset.name;
+                showModal('<div class="modal-header"><h3><i class="fas fa-pause-circle" style="color:#f59e0b;margin-right:8px;"></i>Toggle Suspend</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body"><p style="text-align:center;margin-bottom:16px;">Toggle suspension for <strong>'+name+'</strong>?</p><p style="text-align:center;font-size:13px;color:var(--gray);margin-bottom:16px;">Suspended users cannot log in or interact with the platform.</p><div class="modal-actions"><button class="btn btn-outline modal-close">Cancel</button><button class="btn" id="confirmAdminSuspend" style="background:#f59e0b;color:#fff;">Confirm</button></div></div>');
+                document.getElementById('confirmAdminSuspend').addEventListener('click',async function(){
+                    closeModal();
+                    try{var newStatus=await sbAdminToggleSuspend(uid);showToast(name+(newStatus?' suspended':' unsuspended'));renderAdminPanel();}catch(e){showToast('Error: '+(e.message||'Failed'));console.error(e);}
+                });
+            });
+        });
+        $$('.admin-delete-btn').forEach(function(btn){
+            btn.addEventListener('click',function(){
+                var uid=btn.dataset.uid;var name=btn.dataset.name;
+                showModal('<div class="modal-header"><h3 style="color:#e74c3c;"><i class="fas fa-exclamation-triangle" style="margin-right:8px;"></i>Delete User</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body"><p style="text-align:center;margin-bottom:16px;">Permanently delete <strong>'+name+'</strong> and all their data?</p><p style="text-align:center;font-size:13px;color:#e74c3c;margin-bottom:16px;">This action cannot be undone. All posts, comments, messages, and files will be deleted.</p><div class="modal-actions"><button class="btn btn-outline modal-close">Cancel</button><button class="btn" id="confirmAdminDelete" style="background:#e74c3c;color:#fff;">Delete Account</button></div></div>');
+                document.getElementById('confirmAdminDelete').addEventListener('click',async function(){
+                    closeModal();
+                    try{await sbAdminDeleteUser(uid);showToast(name+'\'s account deleted');renderAdminPanel();}catch(e){showToast('Error: '+(e.message||'Failed'));console.error(e);}
+                });
+            });
+        });
+    }catch(e){
+        console.error('Admin panel:',e);
+        listEl.innerHTML='<p style="text-align:center;color:#e74c3c;padding:40px;">Failed to load users: '+(e.message||'Unknown error')+'</p>';
+    }
+    // Search handler
+    var searchInput=document.getElementById('adminSearchInput');
+    var searchBtn=document.getElementById('adminSearchBtn');
+    if(searchBtn&&!searchBtn._bound){
+        searchBtn._bound=true;
+        searchBtn.addEventListener('click',function(){_adminSearch=searchInput.value.trim();_adminPage=0;renderAdminPanel();});
+        searchInput.addEventListener('keydown',function(e){if(e.key==='Enter'){_adminSearch=searchInput.value.trim();_adminPage=0;renderAdminPanel();}});
+    }
+}
 
 // ======================== SAVE POST MODAL ========================
 function showSaveModal(pid){
