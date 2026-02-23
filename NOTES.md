@@ -574,3 +574,24 @@
 - Color-coded sections: green (Added), amber (Changed), blue (Fixed)
 - Consistent with existing modal styling
 - `showDevUpdatesModal()` function in app.js
+
+## Group Bug Fixes (v0.2.6 — 2026-02-23)
+
+### Group photos disappearing (fixed)
+- **Cause:** Profile/cover images were only stored as base64 in JS memory — never uploaded to Supabase Storage or persisted to DB
+- **Fix:** Added `sbUploadGroupImage(groupId, file, type)` in supabase.js to upload to `avatars/groups/{id}/` path
+- Crop confirmation handler now: canvas → blob → File → `sbUploadGroupImage()` → `sbUpdateGroup(group.id, {avatar_url})` or `{cover_photo_url}`
+- GIF uploads go directly without crop
+- "Select from previous" handlers also call `sbUpdateGroup()` to persist
+
+### Group posts on personal profile (fixed)
+- **Cause:** `sbGetUserPosts()` didn't filter out group posts
+- **Fix:** Added `.is('group_id', null)` to the query
+
+### Group layout off to side on tablet (fixed)
+- **Cause:** Tablet CSS had 2-column grid but 3 grid children (gv-left, gv-center, gv-right)
+- **Fix:** Hide `.gv-left` on tablet breakpoint instead of just making it static
+
+### Group coins showing 0 (fixed)
+- **Cause:** `coin_balance` from DB wasn't mapped in `loadGroups()` or synced to `state.groupCoins` in `showGroupView()`
+- **Fix:** Map `coin_balance` in `loadGroups()` and sync in `showGroupView()`

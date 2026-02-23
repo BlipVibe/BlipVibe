@@ -271,6 +271,7 @@ async function sbGetUserPosts(userId, limit = 20) {
       comments:comments(count)
     `)
     .eq('author_id', userId)
+    .is('group_id', null)
     .order('created_at', { ascending: false })
     .limit(limit);
   if (error) throw error;
@@ -638,6 +639,13 @@ async function sbUploadPostImage(userId, file) {
   const ext = file.name.split('.').pop();
   const path = `${userId}/${Date.now()}.${ext}`;
   return sbUploadFile('posts', path, file);
+}
+
+async function sbUploadGroupImage(groupId, file, type) {
+  validateUploadFile(file, { maxSize: 5 * 1024 * 1024, label: 'Group ' + type });
+  const ext = file.name.split('.').pop();
+  const path = `groups/${groupId}/${type}-${Date.now()}.${ext}`;
+  return sbUploadFile('avatars', path, file);
 }
 
 // ---- 11. GROUPS -------------------------------------------------------------

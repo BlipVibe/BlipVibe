@@ -1854,7 +1854,8 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .center-feed{grid-column:1!important;grid-row:auto!important;}
     .right-sidebar{grid-column:2!important;grid-row:auto!important;position:static!important;max-width:none!important;margin:0!important;width:auto!important;}
     .gv-layout{grid-template-columns:1fr 220px!important;max-width:100%!important;}
-    .gv-left,.gv-right{position:static!important;}
+    .gv-left{display:none!important;}
+    .gv-right{position:static!important;}
     .pv-layout{grid-template-columns:1fr 220px!important;max-width:100%!important;grid-template-rows:auto!important;}
     .pv-col-left{grid-column:1/-1!important;grid-row:auto!important;position:static!important;}
     .pv-col-left>.card{position:static!important;}

@@ -988,7 +988,8 @@ async function loadGroups() {
                 mods: [],
                 rules: g.rules || null,
                 coverPhoto: g.cover_photo_url || null,
-                profileImg: g.avatar_url || null
+                profileImg: g.avatar_url || null,
+                coin_balance: g.coin_balance || 0
             };
         });
     } catch(e) { console.error('loadGroups:', e); groups = []; }
@@ -2412,14 +2413,23 @@ function showGroupProfileCropModal(src,group){
     resizeHandle.addEventListener('touchstart',function(e){var t=e.touches[0];gpDragStart(t.clientX,t.clientY,true);e.preventDefault();e.stopPropagation();},{passive:false});
     document.addEventListener('touchmove',function(e){if(dragging||resizing){var t=e.touches[0];gpDragMove(t.clientX,t.clientY);e.preventDefault();}},{passive:false});
     document.addEventListener('touchend',gpDragEnd);
-    document.getElementById('cropConfirmBtn').addEventListener('click',function(){
+    document.getElementById('cropConfirmBtn').addEventListener('click',async function(){
+        var btn=this;btn.disabled=true;btn.textContent='Saving...';
         var canvas=document.createElement('canvas');var scaleX=img.naturalWidth/img.clientWidth;var scaleY=img.naturalHeight/img.clientHeight;
         var sx=box.offsetLeft*scaleX,sy=box.offsetTop*scaleY,sw=box.offsetWidth*scaleX,sh=box.offsetHeight*scaleY;
         canvas.width=400;canvas.height=400;var ctx=canvas.getContext('2d');ctx.drawImage(img,sx,sy,sw,sh,0,0,400,400);
-        var url=canvas.toDataURL('image/png');
-        group.profileImg=url;
-        if(!group.photos) group.photos={profile:[],cover:[]};
-        group.photos.profile.unshift({src:url,date:Date.now()});
+        try{
+            var blob=await new Promise(function(r){canvas.toBlob(r,'image/png');});
+            var file=new File([blob],'group-avatar-'+Date.now()+'.png',{type:'image/png'});
+            var publicUrl=await sbUploadGroupImage(group.id,file,'avatar');
+            await sbUpdateGroup(group.id,{avatar_url:publicUrl});
+            group.profileImg=publicUrl;
+            if(!group.photos) group.photos={profile:[],cover:[]};
+            group.photos.profile.unshift({src:publicUrl,date:Date.now()});
+        }catch(e){
+            console.error('Group avatar upload:',e);showToast('Failed to save group photo: '+(e.message||''));
+            group.profileImg=canvas.toDataURL('image/png');
+        }
         closeModal();showGroupView(group);renderGroups();
     });
 }
@@ -2444,15 +2454,26 @@ function showGroupCoverCropModal(src,group,banner){
     resizeHandle.addEventListener('touchstart',function(e){var t=e.touches[0];gcDragStart(t.clientX,t.clientY,true);e.preventDefault();e.stopPropagation();},{passive:false});
     document.addEventListener('touchmove',function(e){if(dragging||resizing){var t=e.touches[0];gcDragMove(t.clientX,t.clientY);e.preventDefault();}},{passive:false});
     document.addEventListener('touchend',gcDragEnd);
-    document.getElementById('coverCropConfirmBtn').addEventListener('click',function(){
+    document.getElementById('coverCropConfirmBtn').addEventListener('click',async function(){
+        var btn=this;btn.disabled=true;btn.textContent='Saving...';
         var canvas=document.createElement('canvas');var scaleX=img.naturalWidth/img.clientWidth;var scaleY=img.naturalHeight/img.clientHeight;
         var sx=box.offsetLeft*scaleX,sy=box.offsetTop*scaleY,sw=box.offsetWidth*scaleX,sh=box.offsetHeight*scaleY;
         canvas.width=1280;canvas.height=350;var ctx=canvas.getContext('2d');ctx.drawImage(img,sx,sy,sw,sh,0,0,1280,350);
-        var url=canvas.toDataURL('image/jpeg',0.9);
-        group.coverPhoto=url;
-        if(!group.photos) group.photos={profile:[],cover:[]};
-        group.photos.cover.unshift({src:url,date:Date.now()});
-        banner.style.background='url('+url+') center/cover';
+        try{
+            var blob=await new Promise(function(r){canvas.toBlob(r,'image/jpeg',0.9);});
+            var file=new File([blob],'group-cover-'+Date.now()+'.jpg',{type:'image/jpeg'});
+            var publicUrl=await sbUploadGroupImage(group.id,file,'cover');
+            await sbUpdateGroup(group.id,{cover_photo_url:publicUrl});
+            group.coverPhoto=publicUrl;
+            if(!group.photos) group.photos={profile:[],cover:[]};
+            group.photos.cover.unshift({src:publicUrl,date:Date.now()});
+            banner.style.background='url('+publicUrl+') center/cover';
+        }catch(e){
+            console.error('Group cover upload:',e);showToast('Failed to save cover photo: '+(e.message||''));
+            var fallback=canvas.toDataURL('image/jpeg',0.9);
+            group.coverPhoto=fallback;
+            banner.style.background='url('+fallback+') center/cover';
+        }
         closeModal();
     });
 }
@@ -2636,6 +2657,11 @@ async function showGroupView(group){
 
     var joined=state.joinedGroups[group.id];
     var isOwner=currentUser&&group.owner_id===currentUser.id;
+
+    // Sync group coin balance from DB if available
+    if(group.coin_balance!==undefined&&group.coin_balance!==null){
+        state.groupCoins[group.id]=group.coin_balance;
+    }
     var themeColor=getGroupThemeColor(group);
     var banner=$('#gvCoverBanner');
     banner.style.background=group.coverPhoto?'url('+group.coverPhoto+') center/cover':themeColor;
@@ -2881,9 +2907,11 @@ async function showGroupView(group){
             $$('.gv-cover-pick-thumb').forEach(function(thumb){
                 thumb.addEventListener('mouseenter',function(){thumb.style.borderColor='var(--primary)';});
                 thumb.addEventListener('mouseleave',function(){thumb.style.borderColor='transparent';});
-                thumb.addEventListener('click',function(){
+                thumb.addEventListener('click',async function(){
                     var src=photos[parseInt(thumb.dataset.idx)].src;
-                    group.coverPhoto=src;banner.style.background='url('+src+') center/cover';closeModal();
+                    group.coverPhoto=src;banner.style.background='url('+src+') center/cover';
+                    try{await sbUpdateGroup(group.id,{cover_photo_url:src});}catch(e){console.warn('Save group cover:',e);}
+                    closeModal();
                 });
             });
         });
@@ -2913,28 +2941,35 @@ async function showGroupView(group){
             h+='</div></div>';showModal(h);
             if(photos.length>0) initDragScroll('#modalContent');
             document.getElementById('gvUploadPhotoBtn').addEventListener('click',function(){document.getElementById('gvModalImgInput').click();});
-            document.getElementById('gvModalImgInput').addEventListener('change',function(){
+            document.getElementById('gvModalImgInput').addEventListener('change',async function(){
                 var f=this.files[0];if(!f)return;
                 var isGif=f.type==='image/gif';
-                var r=new FileReader();
-                r.onload=function(e){
-                    if(isGif){
-                        group.profileImg=e.target.result;
+                if(isGif){
+                    try{
+                        var publicUrl=await sbUploadGroupImage(group.id,f,'avatar');
+                        await sbUpdateGroup(group.id,{avatar_url:publicUrl});
+                        group.profileImg=publicUrl;
                         if(!group.photos) group.photos={profile:[],cover:[]};
-                        group.photos.profile.unshift({src:e.target.result,date:Date.now()});
-                        closeModal();showGroupView(group);renderGroups();
-                    } else {
-                        showGroupProfileCropModal(e.target.result,group);
+                        group.photos.profile.unshift({src:publicUrl,date:Date.now()});
+                    }catch(e){
+                        console.error('Group GIF upload:',e);showToast('Failed to save group photo: '+(e.message||''));
+                        var r=new FileReader();r.onload=function(ev){group.profileImg=ev.target.result;};r.readAsDataURL(f);
                     }
-                };
-                r.readAsDataURL(f);
+                    closeModal();showGroupView(group);renderGroups();
+                } else {
+                    var r=new FileReader();
+                    r.onload=function(e){showGroupProfileCropModal(e.target.result,group);};
+                    r.readAsDataURL(f);
+                }
             });
             $$('.gv-profile-pick-thumb').forEach(function(thumb){
                 thumb.addEventListener('mouseenter',function(){thumb.style.borderColor='var(--primary)';});
                 thumb.addEventListener('mouseleave',function(){thumb.style.borderColor='transparent';});
-                thumb.addEventListener('click',function(){
+                thumb.addEventListener('click',async function(){
                     var src=photos[parseInt(thumb.dataset.idx)].src;
-                    group.profileImg=src;closeModal();showGroupView(group);renderGroups();
+                    group.profileImg=src;
+                    try{await sbUpdateGroup(group.id,{avatar_url:src});}catch(e){console.warn('Save group avatar:',e);}
+                    closeModal();showGroupView(group);renderGroups();
                 });
             });
             $$('.gv-icon-pick').forEach(function(btn){btn.addEventListener('click',function(){group.icon=btn.dataset.icon;delete group.profileImg;closeModal();showGroupView(group);renderGroups();});});

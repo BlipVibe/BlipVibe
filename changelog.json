@@ -1,5 +1,22 @@
 [
   {
+    "version": "0.2.6",
+    "date": "2026-02-23",
+    "added": [
+      "Group photos now persist to Supabase Storage (profile + cover)"
+    ],
+    "changed": [
+      "Personal profile feed excludes group posts",
+      "Group coin balance synced from database instead of local state"
+    ],
+    "fixed": [
+      "Group profile/cover photos disappearing on reload (now uploaded to Storage + saved to DB)",
+      "Group posts appearing on personal profile feed",
+      "Group view layout — posts off to the side on tablet (CSS grid fix)",
+      "Group coins showing 0 (coin_balance not mapped from DB)"
+    ]
+  },
+  {
     "version": "0.2.5",
     "date": "2026-02-23",
     "added": [
