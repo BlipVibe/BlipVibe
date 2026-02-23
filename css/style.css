@@ -488,6 +488,10 @@ img{display:block;}
 .video-embed iframe,.video-embed video{position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:8px;}
 .video-embed-mini{max-width:360px;}
 .post-description .video-embed{margin:10px auto 0;}
+/* Social embeds (Instagram, TikTok, Twitter) — blockquote-based, must size naturally */
+.social-embed{width:100%;margin:10px auto 0;border-radius:8px;overflow:visible;background:transparent;}
+.social-embed iframe,.social-embed blockquote{max-width:100%!important;}
+.social-embed-mini{max-width:360px;}
 
 /* ========== RIGHT SIDEBAR ========== */
 .right-sidebar{display:flex;flex-direction:column;gap:20px;position:sticky;top:80px;align-self:start;min-width:0;word-wrap:break-word;overflow-wrap:anywhere;}

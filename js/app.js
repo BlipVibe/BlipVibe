@@ -3518,6 +3518,7 @@ function getVideoEmbedHtml(url, mini){
     if(!url) return null;
     var id, m;
     var cls='video-embed'+(mini?' video-embed-mini':'');
+    var socialCls='social-embed'+(mini?' social-embed-mini':'');
     // YouTube: watch, short, embed, youtu.be
     m=url.match(/(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
     if(m){ id=m[1]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'YouTube',cls,mini); return '<div class="'+cls+'"><iframe src="https://www.youtube-nocookie.com/embed/'+id+'" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>'; }
@@ -3527,18 +3528,18 @@ function getVideoEmbedHtml(url, mini){
     // TikTok: tiktok.com/@user/video/ID or vm.tiktok.com/shortcode
     m=url.match(/tiktok\.com\/@[^/]+\/video\/(\d+)/);
     if(!m) m=url.match(/tiktok\.com\/(?:@[^/]+\/video\/)?(\d{15,})/);
-    if(m){ id=m[1]; _loadTikTokEmbed(); return '<div class="'+cls+' tiktok-embed-wrap" style="margin:10px auto 0;max-width:325px;"><blockquote class="tiktok-embed" cite="'+url+'" data-video-id="'+id+'" style="max-width:325px;min-width:250px;"><section></section></blockquote></div>'; }
+    if(m){ id=m[1]; _loadTikTokEmbed(); return '<div class="'+socialCls+'" style="max-width:325px;"><blockquote class="tiktok-embed" cite="'+url+'" data-video-id="'+id+'" style="max-width:325px;min-width:250px;"><section></section></blockquote></div>'; }
     // Twitter / X: twitter.com/user/status/ID or x.com/user/status/ID (official blockquote + widgets.js)
     m=url.match(/((?:twitter\.com|x\.com)\/\w+\/status\/(\d+))/);
-    if(m){ _loadTwitterEmbed(); var tweetUrl=url.match(/(https?:\/\/(?:twitter\.com|x\.com)\/\w+\/status\/\d+)/); var tUrl=tweetUrl?tweetUrl[1]:url; return '<div class="'+cls+'" style="margin:10px auto 0;max-width:550px;"><blockquote class="twitter-tweet" data-dnt="true"'+(mini?' data-width="300"':'')+'><a href="'+tUrl+'"></a></blockquote></div>'; }
+    if(m){ _loadTwitterEmbed(); var tweetUrl=url.match(/(https?:\/\/(?:twitter\.com|x\.com)\/\w+\/status\/\d+)/); var tUrl=tweetUrl?tweetUrl[1]:url; return '<div class="'+socialCls+'" style="max-width:550px;"><blockquote class="twitter-tweet" data-dnt="true"'+(mini?' data-width="300"':'')+'><a href="'+tUrl+'"></a></blockquote></div>'; }
     // Instagram: posts, reels, TV (official blockquote + embed.js)
     m=url.match(/instagram\.com\/(p|reel|tv)\/([A-Za-z0-9_-]+)/);
-    if(m){ var igType=m[1]; id=m[2]; var igUrl='https://www.instagram.com/'+igType+'/'+id+'/'; _loadInstagramEmbed(); return '<div class="'+cls+'" style="margin:10px auto 0;max-width:400px;"><blockquote class="instagram-media" data-instgrm-permalink="'+igUrl+'" data-instgrm-version="14" style="max-width:400px;min-width:250px;width:100%;"><a href="'+igUrl+'"></a></blockquote></div>'; }
+    if(m){ var igType=m[1]; id=m[2]; var igUrl='https://www.instagram.com/'+igType+'/'+id+'/'; _loadInstagramEmbed(); return '<div class="'+socialCls+'" style="max-width:400px;"><blockquote class="instagram-media" data-instgrm-permalink="'+igUrl+'" data-instgrm-version="14" style="max-width:400px;min-width:250px;width:100%;"><a href="'+igUrl+'"></a></blockquote></div>'; }
     // Spotify: tracks, albums, playlists, episodes, shows
     m=url.match(/open\.spotify\.com\/(track|album|playlist|episode|show)\/([A-Za-z0-9]+)/);
-    if(m){ var stype=m[1]; id=m[2]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'Spotify',cls,mini); var sh=(stype==='track'||stype==='episode')?(mini?'80':'152'):(mini?'152':'352'); return '<div class="'+cls+'" style="margin:10px auto 0;max-width:560px;border-radius:12px;overflow:hidden;"><iframe src="https://open.spotify.com/embed/'+stype+'/'+id+'" width="100%" height="'+sh+'" frameborder="0" allow="autoplay;clipboard-write;encrypted-media;fullscreen;picture-in-picture" loading="lazy" style="display:block;width:100%;border-radius:12px;"></iframe></div>'; }
+    if(m){ var stype=m[1]; id=m[2]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'Spotify',socialCls,mini); var sh=(stype==='track'||stype==='episode')?(mini?'80':'152'):(mini?'152':'352'); return '<div class="'+socialCls+'" style="max-width:560px;border-radius:12px;overflow:hidden;"><iframe src="https://open.spotify.com/embed/'+stype+'/'+id+'" width="100%" height="'+sh+'" frameborder="0" allow="autoplay;clipboard-write;encrypted-media;fullscreen;picture-in-picture" loading="lazy" style="display:block;width:100%;border-radius:12px;"></iframe></div>'; }
     // SoundCloud: any soundcloud.com URL (uses oEmbed widget)
-    if(/soundcloud\.com\/.+\/.+/.test(url)){ if(!_cookieConsent) return _embedConsentPlaceholder(url,'SoundCloud',cls,mini); return '<div class="'+cls+'" style="margin:10px auto 0;max-width:560px;border-radius:8px;overflow:hidden;"><iframe width="100%" height="'+(mini?'120':'166')+'" scrolling="no" frameborder="0" allow="autoplay" src="https://w.soundcloud.com/player/?url='+encodeURIComponent(url)+'&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false" style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }
+    if(/soundcloud\.com\/.+\/.+/.test(url)){ if(!_cookieConsent) return _embedConsentPlaceholder(url,'SoundCloud',socialCls,mini); return '<div class="'+socialCls+'" style="max-width:560px;border-radius:8px;overflow:hidden;"><iframe width="100%" height="'+(mini?'120':'166')+'" scrolling="no" frameborder="0" allow="autoplay" src="https://w.soundcloud.com/player/?url='+encodeURIComponent(url)+'&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false" style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }
     // Direct video files
     if(/\.(mp4|webm|ogg)(\?.*)?$/i.test(url)){ return '<div class="'+cls+'" style="margin:10px auto 0;max-width:560px;border-radius:8px;overflow:hidden;"><video src="'+url+'" controls playsinline preload="metadata" style="display:block;width:100%;border-radius:8px;max-height:'+(mini?'200px':'500px')+';background:#000;"></video></div>'; }
     return null;
