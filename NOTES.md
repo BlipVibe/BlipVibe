@@ -273,20 +273,23 @@
 
 ## Inline Media Embeds (added 2026-02-23, updated 2026-02-23)
 - Media URLs in posts, messages, and comments embed inline instead of opening in a new tab
-- **YouTube** (watch, shorts, embed, youtu.be) → embedded iframe player
-- **Vimeo** → embedded iframe player
-- **TikTok** (`tiktok.com/@user/video/ID`) → TikTok embed v2 iframe (325px wide, 740px tall)
-- **Twitter/X** (`twitter.com` or `x.com` status URLs) → Twitter embed iframe
-- **Instagram** (posts, reels, TV: `instagram.com/p/`, `/reel/`, `/tv/`) → Instagram embed iframe
-- **Spotify** (tracks, albums, playlists, episodes, shows) → Spotify embed iframe (compact for tracks, tall for playlists)
-- **SoundCloud** (any track/set URL) → SoundCloud widget player iframe
-- **Direct video files** (.mp4, .webm, .ogg) → native `<video>` element with controls
+- All embeds use **official embed methods** from each platform (no unofficial/internal endpoints)
+- **YouTube** (watch, shorts, embed, youtu.be) → official `/embed/` iframe
+- **Vimeo** → official `player.vimeo.com` iframe
+- **TikTok** (`tiktok.com/@user/video/ID`) → official blockquote + `embed.js` SDK
+- **Twitter/X** (`twitter.com` or `x.com` status URLs) → official blockquote + `widgets.js` SDK
+- **Instagram** (posts, reels, TV) → official blockquote + `embed.js` SDK (no API key needed for this method)
+- **Spotify** (tracks, albums, playlists, episodes, shows) → official `/embed/` iframe
+- **SoundCloud** (any track/set URL) → official widget player iframe
+- **Direct video files** (.mp4, .webm, .ogg) → native HTML5 `<video>` element with controls
+- Third-party embed scripts (TikTok, Twitter, Instagram) load once and re-render via `_reloadThirdPartyEmbeds(url)`
 - `getVideoEmbedHtml(url, mini)` helper returns embed HTML or null for non-embeddable URLs
 - Integrated into `autoFetchLinkPreviews()` (feed), `autoFetchLinkPreviewsMini()` (messages/comments), and post creation link preview
 - Mini embeds (messages/comments) use smaller heights for all platforms
 - CSS: `.video-embed` / `.video-embed-mini` in style.css
 - Raw URL is hidden from post text when embed is shown (same as link previews)
 - No database changes — purely client-side rendering using official embed endpoints
+- Covered in TOS section 3 (Embedded & Third-Party Media): BlipVibe uses official embed tools, does not host/redistribute third-party content
 
 ## Updated Terms of Use & TOS Acceptance System (added 2026-02-23)
 

@@ -3395,6 +3395,23 @@ function _loadTikTokEmbed(){
     _tiktokScriptLoaded=true;
     var s=document.createElement('script');s.src='https://www.tiktok.com/embed.js';s.async=true;document.body.appendChild(s);
 }
+var _twitterScriptLoaded=false;
+function _loadTwitterEmbed(){
+    if(_twitterScriptLoaded) { if(window.twttr&&twttr.widgets) twttr.widgets.load(); return; }
+    _twitterScriptLoaded=true;
+    var s=document.createElement('script');s.src='https://platform.twitter.com/widgets.js';s.async=true;document.body.appendChild(s);
+}
+var _instagramScriptLoaded=false;
+function _loadInstagramEmbed(){
+    if(_instagramScriptLoaded) { if(window.instgrm&&instgrm.Embeds) instgrm.Embeds.process(); return; }
+    _instagramScriptLoaded=true;
+    var s=document.createElement('script');s.src='https://www.instagram.com/embed.js';s.async=true;document.body.appendChild(s);
+}
+function _reloadThirdPartyEmbeds(url){
+    if(/tiktok\.com/i.test(url)) setTimeout(_loadTikTokEmbed,100);
+    else if(/(?:twitter\.com|x\.com)/i.test(url)) setTimeout(_loadTwitterEmbed,100);
+    else if(/instagram\.com/i.test(url)) setTimeout(_loadInstagramEmbed,100);
+}
 function getVideoEmbedHtml(url, mini){
     if(!url) return null;
     var id, m;
@@ -3409,12 +3426,12 @@ function getVideoEmbedHtml(url, mini){
     m=url.match(/tiktok\.com\/@[^/]+\/video\/(\d+)/);
     if(!m) m=url.match(/tiktok\.com\/(?:@[^/]+\/video\/)?(\d{15,})/);
     if(m){ id=m[1]; _loadTikTokEmbed(); return '<div class="'+cls+' tiktok-embed-wrap" style="margin-top:10px;max-width:325px;"><blockquote class="tiktok-embed" cite="'+url+'" data-video-id="'+id+'" style="max-width:325px;min-width:250px;"><section></section></blockquote></div>'; }
-    // Twitter / X: twitter.com/user/status/ID or x.com/user/status/ID
-    m=url.match(/(?:twitter\.com|x\.com)\/\w+\/status\/(\d+)/);
-    if(m){ id=m[1]; return '<div class="'+cls+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><iframe src="https://platform.twitter.com/embed/Tweet.html?id='+id+'" width="100%" height="'+(mini?'300':'500')+'" frameborder="0" style="display:block;width:100%;border-radius:8px;border:1px solid var(--border);"></iframe></div>'; }
-    // Instagram: posts, reels, TV
-    m=url.match(/instagram\.com\/(?:p|reel|tv)\/([A-Za-z0-9_-]+)/);
-    if(m){ id=m[1]; return '<div class="'+cls+'" style="margin-top:10px;border-radius:8px;overflow:hidden;max-width:400px;"><iframe src="https://www.instagram.com/p/'+id+'/embed/" width="400" height="'+(mini?'400':'580')+'" frameborder="0" scrolling="no" allowtransparency="true" style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }
+    // Twitter / X: twitter.com/user/status/ID or x.com/user/status/ID (official blockquote + widgets.js)
+    m=url.match(/((?:twitter\.com|x\.com)\/\w+\/status\/(\d+))/);
+    if(m){ _loadTwitterEmbed(); var tweetUrl=url.match(/(https?:\/\/(?:twitter\.com|x\.com)\/\w+\/status\/\d+)/); var tUrl=tweetUrl?tweetUrl[1]:url; return '<div class="'+cls+'" style="margin-top:10px;max-width:550px;"><blockquote class="twitter-tweet" data-dnt="true"'+(mini?' data-width="300"':'')+'><a href="'+tUrl+'"></a></blockquote></div>'; }
+    // Instagram: posts, reels, TV (official blockquote + embed.js)
+    m=url.match(/instagram\.com\/(p|reel|tv)\/([A-Za-z0-9_-]+)/);
+    if(m){ var igType=m[1]; id=m[2]; var igUrl='https://www.instagram.com/'+igType+'/'+id+'/'; _loadInstagramEmbed(); return '<div class="'+cls+'" style="margin-top:10px;max-width:400px;"><blockquote class="instagram-media" data-instgrm-permalink="'+igUrl+'" data-instgrm-version="14" style="max-width:400px;min-width:250px;width:100%;"><a href="'+igUrl+'"></a></blockquote></div>'; }
     // Spotify: tracks, albums, playlists, episodes, shows
     m=url.match(/open\.spotify\.com\/(track|album|playlist|episode|show)\/([A-Za-z0-9]+)/);
     if(m){ var stype=m[1]; id=m[2]; var sh=(stype==='track'||stype==='episode')?(mini?'80':'152'):(mini?'152':'352'); return '<div class="'+cls+'" style="margin-top:10px;border-radius:12px;overflow:hidden;"><iframe src="https://open.spotify.com/embed/'+stype+'/'+id+'" width="100%" height="'+sh+'" frameborder="0" allow="autoplay;clipboard-write;encrypted-media;fullscreen;picture-in-picture" loading="lazy" style="display:block;width:100%;border-radius:12px;"></iframe></div>'; }
@@ -3804,7 +3821,7 @@ function autoFetchLinkPreviewsMini(container,selector){
             el.insertAdjacentHTML('beforeend',videoHtml);
             var escaped=url.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
             el.innerHTML=el.innerHTML.replace(new RegExp(escaped,'g'),'');
-            if(/tiktok\.com/i.test(url)) setTimeout(_loadTikTokEmbed,100);
+            _reloadThirdPartyEmbeds(url);
             return;
         }
         fetch('https://api.microlink.io?url='+encodeURIComponent(url))
@@ -3850,7 +3867,7 @@ function autoFetchLinkPreviews(container){
             desc.insertAdjacentHTML('beforeend',videoHtml);
             var escaped=url.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
             textEl.innerHTML=textEl.innerHTML.replace(new RegExp(escaped,'g'),'');
-            if(/tiktok\.com/i.test(url)) setTimeout(_loadTikTokEmbed,100);
+            _reloadThirdPartyEmbeds(url);
             return;
         }
         fetch('https://api.microlink.io?url='+encodeURIComponent(url))
@@ -4092,7 +4109,7 @@ $('#openPostModal').addEventListener('click',function(){
         postHtml+='<button class="action-btn comment-btn"><i class="far fa-comment"></i><span>0</span></button>';
         postHtml+='<button class="action-btn share-btn"><i class="fas fa-share-from-square"></i><span>0</span></button></div></div></div>';
         container.insertAdjacentHTML('afterbegin',postHtml);
-        if(linkUrl&&/tiktok\.com/i.test(linkUrl)) setTimeout(_loadTikTokEmbed,100);
+        if(linkUrl) _reloadThirdPartyEmbeds(linkUrl);
         if(state.postCoinCount<10){state.coins+=5;state.postCoinCount++;updateCoins();}
         closeModal();
         var newPost=container.firstElementChild;
