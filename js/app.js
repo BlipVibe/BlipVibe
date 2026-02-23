@@ -3526,9 +3526,31 @@ function _showFeedbackModal(){
     h+='<input type="text" id="feedbackSubject" placeholder="What is this about?" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;margin-bottom:12px;background:var(--card);color:var(--dark);">';
     h+='<label style="display:block;font-size:13px;font-weight:600;margin-bottom:4px;">Message</label>';
     h+='<textarea id="feedbackBody" rows="5" placeholder="Describe the issue or share your feedback..." style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;resize:vertical;background:var(--card);color:var(--dark);"></textarea>';
+    h+='<label style="display:block;font-size:13px;font-weight:600;margin:12px 0 4px;">Screenshot <span style="font-weight:400;color:var(--gray);">(optional)</span></label>';
+    h+='<div id="feedbackScreenshotArea" style="border:2px dashed var(--border);border-radius:8px;padding:16px;text-align:center;cursor:pointer;position:relative;transition:border-color .2s;">';
+    h+='<input type="file" id="feedbackFileInput" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer;">';
+    h+='<div id="feedbackScreenshotPlaceholder"><i class="fas fa-camera" style="font-size:20px;color:var(--gray);margin-bottom:6px;display:block;"></i><span style="font-size:13px;color:var(--gray);">Click or drag to add a screenshot</span></div>';
+    h+='<div id="feedbackScreenshotPreview" style="display:none;position:relative;"><img id="feedbackPreviewImg" style="max-width:100%;max-height:200px;border-radius:6px;"><button type="button" id="feedbackRemoveImg" style="position:absolute;top:-8px;right:-8px;width:24px;height:24px;border-radius:50%;background:#e74c3c;color:#fff;border:none;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;"><i class="fas fa-times"></i></button></div>';
+    h+='</div>';
     h+='<div style="margin-top:14px;text-align:right;"><button class="btn btn-primary" id="feedbackSendBtn"><i class="fas fa-paper-plane" style="margin-right:6px;"></i>Submit</button></div>';
     h+='</div>';
     showModal(h);
+    var _fbFile=null;
+    var fileInput=document.getElementById('feedbackFileInput');
+    var placeholder=document.getElementById('feedbackScreenshotPlaceholder');
+    var preview=document.getElementById('feedbackScreenshotPreview');
+    var previewImg=document.getElementById('feedbackPreviewImg');
+    fileInput.addEventListener('change',function(){
+        if(fileInput.files&&fileInput.files[0]){
+            _fbFile=fileInput.files[0];
+            var reader=new FileReader();
+            reader.onload=function(e){previewImg.src=e.target.result;placeholder.style.display='none';preview.style.display='block';};
+            reader.readAsDataURL(_fbFile);
+        }
+    });
+    document.getElementById('feedbackRemoveImg').addEventListener('click',function(e){
+        e.stopPropagation();_fbFile=null;fileInput.value='';preview.style.display='none';placeholder.style.display='';
+    });
     document.getElementById('feedbackSendBtn').addEventListener('click',async function(){
         var subj=document.getElementById('feedbackSubject').value.trim();
         var body=document.getElementById('feedbackBody').value.trim();
@@ -3536,7 +3558,18 @@ function _showFeedbackModal(){
         var btn=document.getElementById('feedbackSendBtn');
         btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin" style="margin-right:6px;"></i>Sending...';
         try{
-            var res=await fetch('https://formsubmit.co/ajax/hello@blipvibe.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({_subject:subj||'Feedback from BlipVibe',message:body,_template:'table'})});
+            var screenshotUrl='';
+            if(_fbFile){
+                try{
+                    var ext=_fbFile.name.split('.').pop()||'png';
+                    var path='feedback/'+Date.now()+'-'+Math.random().toString(36).slice(2,8)+'.'+ext;
+                    screenshotUrl=await sbUploadFile('posts',path,_fbFile);
+                }catch(ue){console.error('Screenshot upload failed:',ue);}
+            }
+            var msg=body;
+            if(screenshotUrl) msg+='\n\nScreenshot: '+screenshotUrl;
+            if(state.user) msg+='\n\nUser: '+state.user.email+' ('+state.user.id+')';
+            var res=await fetch('https://formsubmit.co/ajax/hello@blipvibe.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({_subject:subj||'Feedback from BlipVibe',message:msg,_template:'table'})});
             if(res.ok){closeModal();showToast('Feedback sent! Thank you.');}
             else{btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane" style="margin-right:6px;"></i>Submit';showToast('Failed to send. Please try again.');}
         }catch(e){btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane" style="margin-right:6px;"></i>Submit';showToast('Network error. Please try again.');}

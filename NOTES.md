@@ -595,3 +595,10 @@
 ### Group coins showing 0 (fixed)
 - **Cause:** `coin_balance` from DB wasn't mapped in `loadGroups()` or synced to `state.groupCoins` in `showGroupView()`
 - **Fix:** Map `coin_balance` in `loadGroups()` and sync in `showGroupView()`
+
+### Feedback modal — screenshot attachment (added)
+- Optional file input with drag-drop area and image preview
+- Accepts any image type (`accept="image/*"`)
+- Uploads to `posts` bucket under `feedback/` path via `sbUploadFile()`
+- Screenshot URL appended to email body, along with user email + ID for context
+- Remove button (red X) clears the selected image

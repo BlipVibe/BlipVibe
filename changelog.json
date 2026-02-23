@@ -3,7 +3,8 @@
     "version": "0.2.6",
     "date": "2026-02-23",
     "added": [
-      "Group photos now persist to Supabase Storage (profile + cover)"
+      "Group photos now persist to Supabase Storage (profile + cover)",
+      "Screenshot attachment in feedback modal (optional, uploads to Storage)"
     ],
     "changed": [
       "Personal profile feed excludes group posts",
