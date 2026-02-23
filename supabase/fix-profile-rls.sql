@@ -14,6 +14,17 @@
 -- (including private columns) via a SECURITY DEFINER function.
 -- =============================================================================
 
+-- 0. Ensure the columns exist first (safe to re-run)
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS skin_data JSONB DEFAULT '{}';
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS birthday DATE DEFAULT NULL;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS email TEXT DEFAULT NULL;
+
+-- Backfill email from auth.users for existing profiles
+UPDATE public.profiles p
+SET email = u.email
+FROM auth.users u
+WHERE p.id = u.id AND p.email IS NULL;
+
 -- 1. Revoke SELECT on sensitive columns from all client-facing roles
 REVOKE SELECT (skin_data, birthday, email) ON public.profiles FROM authenticated;
 REVOKE SELECT (skin_data, birthday, email) ON public.profiles FROM anon;
