@@ -263,3 +263,10 @@
 ### Migration
 - Run `supabase/add-albums.sql` in Supabase SQL Editor for existing deployments
 - Full schema also updated in `supabase/schema.sql`
+
+## My Posts Feed Tab (added 2026-02-23)
+- New **"My Posts"** pill tab added to the main feed alongside Following and Discover
+- Filters `feedPosts` to show only posts where `person.id === currentUser.id`
+- Icon: `fa-user`, empty state: "You haven't posted anything yet!"
+- No database changes — purely client-side filtering of already-loaded feed data
+- Tab button in `index.html` `#feedTabs`, filter logic in `renderFeed()` in `app.js`

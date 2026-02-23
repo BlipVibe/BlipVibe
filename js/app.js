@@ -3367,7 +3367,10 @@ function getFollowingIds(){
 function renderFeed(tab){
     activeFeedTab=tab;
     var posts;
-    if(tab==='following'){
+    if(tab==='myposts'){
+        // My Posts tab: only the current user's posts
+        posts=feedPosts.filter(function(p){return currentUser&&p.person.id===currentUser.id&&!hiddenPosts[p.idx];});
+    } else if(tab==='following'){
         // Following tab: only posts from people you follow + your own
         var ids=getFollowingIds();
         posts=feedPosts.filter(function(p){return ids[p.person.id]&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id];});
@@ -3378,8 +3381,8 @@ function renderFeed(tab){
     }
     var container=$('#feedContainer');
     if(!posts.length){
-        var emptyMsg=tab==='discover'?'Follow more people to discover posts from their friends!':'No posts yet. Be the first to post!';
-        var emptyIcon=tab==='discover'?'fa-compass':'fa-pen';
+        var emptyMsg=tab==='myposts'?'You haven\'t posted anything yet!':tab==='discover'?'Follow more people to discover posts from their friends!':'No posts yet. Be the first to post!';
+        var emptyIcon=tab==='myposts'?'fa-user':tab==='discover'?'fa-compass':'fa-pen';
         container.innerHTML='<div class="card" style="padding:40px;text-align:center;color:var(--gray);"><i class="fas '+emptyIcon+'" style="font-size:32px;margin-bottom:12px;display:block;"></i><p>'+emptyMsg+'</p></div>';
         $$('#feedTabs .search-tab').forEach(function(t){t.classList.toggle('active',t.dataset.feedtab===tab);});
         return;
