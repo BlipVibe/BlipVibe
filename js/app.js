@@ -5786,6 +5786,10 @@ function _bindPhotoAlbumMenus(){
 }
 $('#viewAllPhotos').addEventListener('click',function(e){e.preventDefault();renderPhotoAlbum();navigateTo('photos');});
 $$('.photos-back-link').forEach(function(l){l.addEventListener('click',function(e){e.preventDefault();navigateTo(_navPrev&&_navPrev!=='photos'?_navPrev:'home');});});
+$$('.privacy-back-link').forEach(function(l){l.addEventListener('click',function(e){e.preventDefault();navigateTo(_navPrev&&_navPrev!=='privacy'?_navPrev:'home');});});
+// Privacy Policy link on login page
+var _ppLink=document.getElementById('loginPrivacyLink');
+if(_ppLink) _ppLink.addEventListener('click',function(e){e.preventDefault();showApp();navigateTo('privacy');});
 
 // ======================== SAVE POST MODAL ========================
 function showSaveModal(pid){
