@@ -412,3 +412,79 @@
 - Iframes now positioned absolutely within the aspect-ratio container
 - Removed inline `width`/`height`/`style` from YouTube and Vimeo iframe HTML in app.js
 - Mini embeds capped at `max-width: 360px`
+
+## Social Embed Class Split (updated 2026-02-23)
+- `.video-embed` (16:9 aspect-ratio, absolute positioning) for YouTube, Vimeo, direct video
+- `.social-embed` (natural sizing, no forced aspect ratio) for Instagram, TikTok, Twitter, Spotify, SoundCloud
+- Instagram switched from blockquote + embed.js SDK to direct `/embed/captioned/` iframe for reliable mobile playback
+- Cookie consent gating added for Instagram iframe
+
+## Suggestion Name Overflow Fix (updated 2026-02-23)
+- `.suggestion-info` gets `overflow:hidden`
+- `.suggestion-info h4` and `.suggestion-info p` get `white-space:nowrap;overflow:hidden;text-overflow:ellipsis`
+- Prevents long display names from cutting into neighboring suggestion cards
+
+## Newline Preservation (added 2026-02-23)
+- `escapeHtmlNl()` function converts `\n` to `<br>` after HTML-escaping
+- Applied to all multiline content: feed posts, search results, profile view posts, group posts, comment modal text, inline comments + replies, messages, shared post text, new post creation display, saved posts
+
+## Full Legal & Security Audit (completed 2026-02-23)
+
+### Overall Risk: LOW-MODERATE (safe for public repo)
+
+### 1. API Keys & Secrets
+- **Only key in codebase:** Supabase anon/publishable key (`sb_publishable_...`) in `supabase.js:7-8` — designed to be public, gated by RLS
+- **No service_role key** found anywhere (searched `service_role`, `SERVICE_ROLE`, `eyJ...` JWT prefix pattern)
+- **No `.env` files**, no `config.json`, no private keys, no hardcoded passwords, no bearer tokens
+- `schema.sql:454` has a comment mentioning service_role as a future recommendation — no actual key
+
+### 2. Copyrighted Third-Party Code
+- **None found** — entire codebase (app.js, supabase.js, style.css, index.html) is original hand-written code
+- No vendor-bundled libraries, no minified third-party JS included locally
+
+### 3. Licensed Assets
+- **Font Awesome 6.5.1** (CDN) — SIL OFL icons / MIT code — free for commercial use, no attribution required
+- **Google Fonts** (CDN) — SIL Open Font License — free for commercial use
+- **SVG images** (premium-*.svg, default-avatar.svg, logo) — original BlipVibe branding
+- No stock photos or third-party images requiring attribution
+
+### 4. External Libraries
+- **@supabase/supabase-js@2** (jsdelivr CDN) — MIT license
+- **Font Awesome 6.5.1** (cdnjs CDN) — MIT / SIL OFL
+- **Google Fonts** — SIL OFL
+- No GPL, AGPL, or copyleft libraries used
+
+### 5. Third-Party Embed TOS Compliance
+- YouTube (privacy-enhanced `youtube-nocookie.com`) — compliant
+- Vimeo, TikTok, Twitter/X, Instagram, Spotify, SoundCloud — all use official embed methods
+- **Microlink** (link previews, `api.microlink.io`) — free tier, 100 req/day limit; monitor usage at scale
+- **FormSubmit.co** (feedback form) — free tier AJAX, no API key needed
+- All embeds gated behind cookie consent — GDPR compliant
+
+### 6. Scraping / External Requests
+- **No scraping** — all external data via official APIs/embeds
+- **Nominatim** (OpenStreetMap reverse geocoding, `app.js:937`) — low-volume browser-side requests are acceptable; at scale, consider paid geocoding
+- **Recommended:** Add OpenStreetMap attribution text somewhere visible (e.g., footer) per OSM license
+
+### 7. Attribution Requirements
+- All CDN libraries (MIT/SIL OFL) used via standard CDN links — no attribution legally required
+- **OpenStreetMap:** Should add "Map data from OpenStreetMap contributors" attribution per their terms
+- No other missing attributions
+
+### 8. Personal Data Exposure
+- Sensitive columns (email, birthday, skin_data) revoked from client SELECT via SQL migration
+- Own profile data accessed via SECURITY DEFINER RPC (`get_own_profile`)
+- Admin functions enforced server-side with `is_admin` check
+- `is_admin` column cannot be set by client (REVOKE UPDATE)
+- XSS sanitization (`escapeHtml`) on 45+ user-content injection points
+- Search query injection prevention (PostgREST filter chars stripped)
+- DMs not E2E encrypted — disclosed in TOS + Privacy Policy
+- Storage images publicly accessible by URL — disclosed in Privacy Policy
+
+### Action Items
+1. Add OpenStreetMap attribution text (required by OSM license)
+2. Verify both SQL migrations deployed (`fix-profile-rls.sql` + `admin-setup.sql`)
+3. Monitor Microlink free tier usage — upgrade or self-host if traffic grows
+
+### Reference Document
+- Full legal coverage summary: `LEGAL-COVERAGE.txt` (271 lines, covers all 21 TOS sections, 14 Privacy Policy sections, technical security measures, SQL migrations)
