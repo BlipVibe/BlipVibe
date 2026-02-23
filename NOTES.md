@@ -487,4 +487,39 @@
 3. Monitor Microlink free tier usage — upgrade or self-host if traffic grows
 
 ### Reference Document
-- Full legal coverage summary: `LEGAL-COVERAGE.txt` (271 lines, covers all 21 TOS sections, 14 Privacy Policy sections, technical security measures, SQL migrations)
+- Full legal coverage summary: `LEGAL-COVERAGE.txt` (covers all 21 TOS sections, 14 Privacy Policy sections, technical security measures, SQL migrations)
+
+## Security Hardening Phase 2 (added 2026-02-23)
+
+### Rate Limiting
+- **Auth (login/signup/password reset):** Frontend cooldown helper `checkCooldown(key, ms)` prevents rapid-fire attempts (3s login, 5s signup, 10s reset). HTTP 429 / "rate" error messages caught and shown as friendly toast.
+- **Direct messages:** Server-side RPC `send_message_ratelimited` — counts messages by sender in last 60s, rejects if >= 30. `sbSendMessage()` now calls this RPC instead of direct insert.
+- **Post creation:** 5-second frontend cooldown via `checkCooldown('post', 5000)` in publish handler. Defense-in-depth alongside Supabase's own API rate limiting.
+
+### File Upload Hardening
+- `validateUploadFile(file, opts)` in supabase.js — MIME whitelist (JPEG, PNG, WebP, GIF), blocks SVG/HTML/JS, configurable size limit, extension-MIME match validation
+- Applied to: `sbUploadAvatar` (5MB), `sbUploadCover` (5MB), `sbUploadPostImage` (10MB), premium background upload (5MB), message image send (10MB)
+- Errors shown via `showToast()` or caught by existing try/catch blocks
+
+### Admin Action Logging
+- `admin_logs` table: id, admin_id, target_user_id, action, details (JSONB), created_at
+- RLS: SELECT for admins only, no client INSERT/UPDATE/DELETE (logging done inside SECURITY DEFINER RPCs)
+- `admin_delete_user` logs BEFORE delete (preserves FK), `admin_toggle_suspend` logs AFTER toggle
+- `admin_get_logs(p_limit, p_offset)` RPC returns logs with admin/target usernames via JOINs
+- Admin panel UI: log table shown below user list with date, admin, action, target columns
+
+### RLS Gap Fixes
+- `notifications` DELETE: `auth.uid() = user_id`
+- `messages` DELETE: `auth.uid() = sender_id`
+- `user_skins` DELETE: `auth.uid() = user_id`
+- `group_skins` DELETE: owner check via groups subquery
+- `storage.objects` (posts bucket) DELETE: authenticated users
+
+### Search Injection Hardening
+- `search_profiles(p_query, p_limit)` SECURITY DEFINER RPC — uses `ILIKE` with parameterized `v_pattern` variable (no string interpolation)
+- `sbSearchProfiles()` now calls this RPC instead of using `.or()` string interpolation
+- Sanitizes LIKE wildcards (`%`, `_`, `\`) server-side
+
+### SQL Migration
+- **File:** `supabase/security-hardening-phase2.sql` — run AFTER `admin-setup.sql`
+- Contains: send_message_ratelimited RPC, admin_logs table + RLS, modified admin RPCs, admin_get_logs RPC, RLS gap fixes, search_profiles RPC

@@ -236,14 +236,40 @@ GEOLOCATION
 - Approximate area only, no precise coordinates stored
 
 SEARCH INJECTION PREVENTION
-- sbSearchProfiles() sanitizes query to strip PostgREST
-  filter-injection characters (commas, parens, dots)
+- Server-side search_profiles() RPC with parameterized ILIKE
+  (no client-side string interpolation into PostgREST filters)
+- Sanitizes LIKE wildcards (%, _, \) server-side
+- sbSearchProfiles() calls RPC instead of .or() filter
 
 ADMIN SECURITY
 - is_admin column cannot be set by client (REVOKE UPDATE)
 - All admin RPCs check is_admin server-side (SECURITY DEFINER)
 - Cannot delete/suspend other admin accounts
 - Admin actions: view users, suspend, delete (with confirmation)
+- Admin action logging: admin_logs table records all admin
+  suspend/unsuspend/delete actions with timestamps and details
+
+RATE LIMITING
+- Auth (login/signup/password reset): Frontend cooldown helper
+  prevents rapid-fire attempts (3s/5s/10s). HTTP 429 handling.
+- Direct messages: Server-side RPC limits to 30 messages per
+  60 seconds per sender
+- Post creation: 5-second frontend cooldown between posts
+
+FILE UPLOAD HARDENING
+- MIME whitelist: JPEG, PNG, WebP, GIF only
+- Blocked types: SVG, HTML, JavaScript (XSS vectors)
+- Size limits: avatars/covers 5MB, post images 10MB
+- Extension-MIME match validation
+- Applied to all upload paths (avatar, cover, post, background,
+  message image)
+
+ROW LEVEL SECURITY (RLS) POLICIES
+- notifications: users can delete their own
+- messages: users can delete messages they sent
+- user_skins: users can delete their own
+- group_skins: group owners can delete
+- storage.objects (posts bucket): authenticated users can delete
 
 =========================================================================
 SQL MIGRATIONS TO RUN
@@ -260,6 +286,14 @@ SQL MIGRATIONS TO RUN
    - Revokes UPDATE on is_admin from client roles
    - Creates admin RPC functions
    - Set yourself as admin after running
+
+3. supabase/security-hardening-phase2.sql
+   - Rate-limited message sending RPC
+   - Admin action logs table + RLS + logging in admin RPCs
+   - Admin get logs RPC
+   - RLS gap fixes (notifications, messages, user_skins,
+     group_skins, storage posts)
+   - Parameterized search_profiles RPC
 
 =========================================================================
 CONTACT INFORMATION

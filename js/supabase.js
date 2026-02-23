@@ -163,15 +163,15 @@ async function sbDeleteAccount(userId) {
 }
 
 async function sbSearchProfiles(query, limit = 20) {
-  // Sanitize: strip PostgREST filter-injection chars (commas, parens, dots at boundaries)
+  // Uses parameterized SECURITY DEFINER RPC — no client-side string interpolation
   var safe = query.replace(/[,().]/g, '').trim();
   if (!safe) return [];
-  const { data, error } = await sb.from('profiles')
-    .select('*')
-    .or(`username.ilike.%${safe}%,display_name.ilike.%${safe}%,bio.ilike.%${safe}%`)
-    .limit(limit);
+  const { data, error } = await sb.rpc('search_profiles', {
+    p_query: safe,
+    p_limit: limit || 20
+  });
   if (error) throw error;
-  return data;
+  return data || [];
 }
 
 async function sbGetAllProfiles(limit = 50) {
@@ -558,13 +558,50 @@ async function sbUploadFile(bucket, path, file) {
   return urlData.publicUrl + '?t=' + Date.now();
 }
 
+// ---- Upload file validation (MIME whitelist, size limit, extension match) ----
+var _UPLOAD_ALLOWED_MIMES = {
+  'image/jpeg': ['jpg','jpeg'],
+  'image/png': ['png'],
+  'image/webp': ['webp'],
+  'image/gif': ['gif']
+};
+var _UPLOAD_BLOCKED_MIMES = ['image/svg+xml','text/html','application/javascript','application/x-javascript','text/javascript'];
+
+function validateUploadFile(file, opts) {
+  opts = opts || {};
+  var label = opts.label || 'File';
+  var maxSize = opts.maxSize || (10 * 1024 * 1024); // default 10MB
+
+  // Check blocked types first
+  if (_UPLOAD_BLOCKED_MIMES.indexOf(file.type) !== -1) {
+    throw new Error(label + ': ' + file.type + ' files are not allowed for security reasons.');
+  }
+  // Check MIME whitelist
+  if (!_UPLOAD_ALLOWED_MIMES[file.type]) {
+    throw new Error(label + ': unsupported file type (' + (file.type || 'unknown') + '). Allowed: JPEG, PNG, WebP, GIF.');
+  }
+  // Check file size
+  if (file.size > maxSize) {
+    var maxMB = Math.round(maxSize / (1024 * 1024));
+    throw new Error(label + ': file too large (' + (file.size / (1024*1024)).toFixed(1) + 'MB). Maximum: ' + maxMB + 'MB.');
+  }
+  // Extension-MIME match
+  var ext = (file.name || '').split('.').pop().toLowerCase();
+  var allowedExts = _UPLOAD_ALLOWED_MIMES[file.type];
+  if (ext && allowedExts.indexOf(ext) === -1) {
+    throw new Error(label + ': file extension .' + ext + ' does not match type ' + file.type + '. Expected: .' + allowedExts.join(', .'));
+  }
+}
+
 async function sbUploadAvatar(userId, file) {
+  validateUploadFile(file, { maxSize: 5 * 1024 * 1024, label: 'Avatar' });
   const ext = file.name.split('.').pop();
   const path = `${userId}/avatar-${Date.now()}.${ext}`;
   return sbUploadFile('avatars', path, file);
 }
 
 async function sbUploadCover(userId, file) {
+  validateUploadFile(file, { maxSize: 5 * 1024 * 1024, label: 'Cover photo' });
   const ext = file.name.split('.').pop();
   const path = `${userId}/cover-${Date.now()}.${ext}`;
   return sbUploadFile('avatars', path, file);
@@ -597,6 +634,7 @@ async function sbListUserCovers(userId) {
 }
 
 async function sbUploadPostImage(userId, file) {
+  validateUploadFile(file, { maxSize: 10 * 1024 * 1024, label: 'Image' });
   const ext = file.name.split('.').pop();
   const path = `${userId}/${Date.now()}.${ext}`;
   return sbUploadFile('posts', path, file);
@@ -815,13 +853,12 @@ async function sbEditMessage(messageId, newContent) {
 }
 
 async function sbSendMessage(senderId, receiverId, content) {
-  const { data, error } = await sb.from('messages')
-    .insert({ sender_id: senderId, receiver_id: receiverId, content: content })
-    .select(`
-      *,
-      sender:profiles!messages_sender_id_fkey(id, username, display_name, avatar_url)
-    `)
-    .single();
+  // Uses rate-limited SECURITY DEFINER RPC (30 msgs/60s per sender)
+  // senderId param kept for backwards compat but auth.uid() used server-side
+  const { data, error } = await sb.rpc('send_message_ratelimited', {
+    p_receiver_id: receiverId,
+    p_content: content
+  });
   if (error) throw error;
   return data;
 }
@@ -1022,6 +1059,15 @@ async function sbAdminToggleSuspend(targetId) {
   const { data, error } = await sb.rpc('admin_toggle_suspend', { target_id: targetId });
   if (error) throw error;
   return data; // returns new is_suspended boolean
+}
+
+async function sbAdminGetLogs(limit, offset) {
+  const { data, error } = await sb.rpc('admin_get_logs', {
+    p_limit: limit || 50,
+    p_offset: offset || 0
+  });
+  if (error) throw error;
+  return data || [];
 }
 
 // ---- 19. UTILITY: timeAgo for real timestamps --------------------------------

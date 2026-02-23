@@ -32,6 +32,18 @@ function safeTruncate(str,max,ellipsis){var a=Array.from(str||'');if(a.length<=m
 function escapeHtml(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function escapeHtmlNl(s){return escapeHtml(s).replace(/\n/g,'<br>');}
 
+// ======================== RATE-LIMIT COOLDOWN HELPER ========================
+var _cooldowns = {};
+function checkCooldown(key, ms) {
+    var now = Date.now();
+    if (_cooldowns[key] && now - _cooldowns[key] < ms) {
+        var secsLeft = Math.ceil((ms - (now - _cooldowns[key])) / 1000);
+        return secsLeft; // returns seconds remaining (truthy = on cooldown)
+    }
+    _cooldowns[key] = now;
+    return 0; // not on cooldown
+}
+
 // ======================== AUTHENTICATION (Supabase) ========================
 // currentUser holds the live profile row; currentAuthUser holds auth.users row
 var currentUser = null;    // { id, username, display_name, bio, avatar_url, ... }
@@ -77,6 +89,8 @@ loginForm.addEventListener('submit', async function (e) {
     var input = loginEmail.value.trim();
     var pw = loginPass.value;
     if (!input || !pw) { loginError.textContent = 'Please enter both username/email and password.'; loginError.classList.add('show'); return; }
+    var cdSecs = checkCooldown('login', 3000);
+    if (cdSecs) { loginError.textContent = 'Please wait ' + cdSecs + 's before trying again.'; loginError.classList.add('show'); return; }
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
     try {
@@ -90,7 +104,9 @@ loginForm.addEventListener('submit', async function (e) {
         loginForm.reset();
         // onAuthStateChange will call initApp()
     } catch (err) {
-        loginError.textContent = err.message || 'Invalid email or password.';
+        var msg = err.message || 'Invalid email or password.';
+        if ((err.status === 429) || /rate/i.test(msg)) msg = 'Too many login attempts. Please wait a moment and try again.';
+        loginError.textContent = msg;
         loginError.classList.add('show');
     } finally {
         submitBtn.disabled = false;
@@ -115,6 +131,8 @@ signupForm.addEventListener('submit', async function (e) {
     var ageDiff = Date.now() - new Date(birthday).getTime();
     if (ageDiff < 13 * 365.25 * 24 * 60 * 60 * 1000) { signupError.textContent = 'You must be at least 13 years old to use BlipVibe.'; signupError.classList.add('show'); return; }
     if (!termsChecked) { signupError.textContent = 'You must agree to the Terms of Use.'; signupError.classList.add('show'); return; }
+    var cdSecs = checkCooldown('signup', 5000);
+    if (cdSecs) { signupError.textContent = 'Please wait ' + cdSecs + 's before trying again.'; signupError.classList.add('show'); return; }
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
     try {
@@ -135,7 +153,9 @@ signupForm.addEventListener('submit', async function (e) {
             signupForm.reset();
         }
     } catch (err) {
-        signupError.textContent = err.message || 'Signup failed.';
+        var msg = err.message || 'Signup failed.';
+        if ((err.status === 429) || /rate/i.test(msg)) msg = 'Too many signup attempts. Please wait a moment and try again.';
+        signupError.textContent = msg;
         signupError.style.color = '';
         signupError.classList.add('show');
     } finally {
@@ -168,13 +188,17 @@ document.querySelector('.login-forgot').addEventListener('click', async function
     e.preventDefault();
     var email = loginEmail.value.trim();
     if (!email) { loginError.textContent = 'Enter your email first, then click Forgot password.'; loginError.classList.add('show'); return; }
+    var cdSecs = checkCooldown('reset', 10000);
+    if (cdSecs) { loginError.textContent = 'Please wait ' + cdSecs + 's before requesting another reset.'; loginError.classList.add('show'); return; }
     try {
         await sb.auth.resetPasswordForEmail(email);
         loginError.textContent = 'Password reset email sent! Check your inbox.';
         loginError.classList.add('show');
         loginError.style.color = 'var(--primary)';
     } catch (err) {
-        loginError.textContent = err.message;
+        var msg = err.message || 'Password reset failed.';
+        if ((err.status === 429) || /rate/i.test(msg)) msg = 'Too many reset requests. Please wait a moment and try again.';
+        loginError.textContent = msg;
         loginError.classList.add('show');
     }
 });
@@ -4119,6 +4143,8 @@ $('#openPostModal').addEventListener('click',function(){
     var _publishing=false;
     document.getElementById('cpmPublish').addEventListener('click', async function(){
         if(_publishing)return;
+        var postCd=checkCooldown('post',5000);
+        if(postCd){showToast('Please wait a few seconds before posting again.');return;}
         var text=document.getElementById('cpmText').value.trim();
         var linkUrl=_linkData.url||'';
         var linkTitle=_linkData.title||'';
@@ -5143,6 +5169,8 @@ function renderMySkins(){
     if(bgUploadInput){
         bgUploadInput.addEventListener('change',async function(){
             var file=bgUploadInput.files[0];if(!file||!currentUser)return;
+            // Validate file before upload
+            try{ validateUploadFile(file, {maxSize: 5*1024*1024, label:'Background'}); }catch(ve){ showToast(ve.message); return; }
             // Upload to Supabase Storage for persistence and sharing
             try{
                 var ext=file.name.split('.').pop()||'jpg';
@@ -5348,6 +5376,7 @@ async function openChat(contact){
     $('#msgImgInput').addEventListener('change',async function(){
         var file=this.files[0];if(!file||!activeChat||!currentUser) return;
         try{
+            validateUploadFile(file, {maxSize: 10*1024*1024, label:'Image'});
             var path=currentUser.id+'/msg-'+Date.now()+'-'+file.name;
             var url=await sbUploadFile('posts',path,file);
             var imgContent='[img]'+url+'[/img]';
@@ -5980,6 +6009,36 @@ async function renderAdminPanel(){
         searchBtn._bound=true;
         searchBtn.addEventListener('click',function(){_adminSearch=searchInput.value.trim();_adminPage=0;renderAdminPanel();});
         searchInput.addEventListener('keydown',function(e){if(e.key==='Enter'){_adminSearch=searchInput.value.trim();_adminPage=0;renderAdminPanel();}});
+    }
+    // ---- Admin action logs ----
+    var logEl=document.getElementById('adminLogList');
+    if(logEl){
+        logEl.innerHTML='<div style="text-align:center;padding:20px;color:var(--gray);"><i class="fas fa-spinner fa-spin"></i> Loading logs...</div>';
+        try{
+            var logs=await sbAdminGetLogs(50,0);
+            if(!logs||!logs.length){
+                logEl.innerHTML='<p style="text-align:center;color:var(--gray);padding:20px;">No admin actions logged yet.</p>';
+            } else {
+                var lh='<table style="width:100%;border-collapse:collapse;font-size:13px;">';
+                lh+='<tr style="border-bottom:2px solid var(--border);text-align:left;"><th style="padding:8px;">Date</th><th style="padding:8px;">Admin</th><th style="padding:8px;">Action</th><th style="padding:8px;">Target</th></tr>';
+                logs.forEach(function(log){
+                    var date=log.created_at?new Date(log.created_at).toLocaleString():'—';
+                    var actionLabel=escapeHtml(log.action||'').replace(/_/g,' ');
+                    var actionColor=log.action==='delete_user'?'#e74c3c':log.action==='suspend_user'?'#f59e0b':'var(--green)';
+                    lh+='<tr style="border-bottom:1px solid var(--border);">';
+                    lh+='<td style="padding:8px;font-size:12px;">'+date+'</td>';
+                    lh+='<td style="padding:8px;">@'+escapeHtml(log.admin_username||'—')+'</td>';
+                    lh+='<td style="padding:8px;"><span style="color:'+actionColor+';font-weight:600;text-transform:capitalize;">'+actionLabel+'</span></td>';
+                    lh+='<td style="padding:8px;">@'+escapeHtml(log.target_username||'—')+'</td>';
+                    lh+='</tr>';
+                });
+                lh+='</table>';
+                logEl.innerHTML=lh;
+            }
+        }catch(e){
+            console.error('Admin logs:',e);
+            logEl.innerHTML='<p style="text-align:center;color:var(--gray);padding:20px;">Failed to load logs.</p>';
+        }
     }
 }
 
