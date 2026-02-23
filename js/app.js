@@ -3464,6 +3464,7 @@ document.addEventListener('click',function(e){
                 t.style.background=settings[k]?'var(--green)':'#ccc';
                 t.firstElementChild.style.left=settings[k]?'20px':'2px';
                 if(k==='darkMode'){document.body.style.background=settings[k]?'#1a1a2e':'';document.body.style.color=settings[k]?'#eee':'';}
+                if(k==='autoplay'&&!settings[k]) pauseAllVideos();
                 saveState();
             });});
         }
@@ -3570,12 +3571,20 @@ function getVideoEmbedHtml(url, mini){
 }
 
 // ======================== VIDEO AUTO-PLAY / PAUSE ON SCROLL ========================
-// Pauses videos (HTML5 <video>, YouTube, Vimeo) when scrolled out of view.
-// Auto-plays HTML5 <video> (muted) when scrolled into view.
-// YouTube/Vimeo only auto-pause (user must click play first).
+// Respects settings.autoplay — when ON: pause off-screen, resume on-screen.
+// When OFF: no auto-play/pause behavior (manual control only).
+function pauseAllVideos(){
+    document.querySelectorAll('video').forEach(function(v){if(!v.paused)try{v.pause();}catch(e){}});
+    document.querySelectorAll('.video-embed iframe, .social-embed iframe').forEach(function(iframe){
+        var src=iframe.src||'';
+        if(src.indexOf('youtube')!==-1){try{iframe.contentWindow.postMessage(JSON.stringify({event:'command',func:'pauseVideo',args:[]}),'*');}catch(e){}}
+        else if(src.indexOf('vimeo')!==-1){try{iframe.contentWindow.postMessage(JSON.stringify({method:'pause'}),'*');}catch(e){}}
+    });
+}
 (function initVideoScrollObserver(){
     if(!('IntersectionObserver' in window)) return;
     var observer = new IntersectionObserver(function(entries){
+        if(!settings.autoplay) return; // autoplay off — don't interfere
         entries.forEach(function(entry){
             var el=entry.target;
             if(entry.isIntersecting){
