@@ -8,6 +8,7 @@
 ## Workflow Rules
 - **Always push** every commit to `origin main` immediately after committing
 - **Always update this file** (`NOTES.md`) whenever something changes — new features, bug fixes, structural changes
+- **Always update `changelog.json`** when adding features, fixing bugs, or making changes — this feeds the in-app Developer Updates viewer
 - **Always commit** after each meaningful change (don't batch unrelated changes)
 - Title this file "My Notes" — no "claude" in the filename
 - When starting a new session, **read this file first** to understand the full project state
@@ -539,4 +540,37 @@
 - Vimeo iframes get `?api=1` for postMessage control
 - `data-vobs` attribute marks elements already being observed (prevents duplicate observers)
 - `data-was-playing` tracks whether a video was playing before being paused by scroll (only resumes if it was)
+- Also observes `.social-embed` containers (Instagram, TikTok, Spotify, SoundCloud)
+- Iframes without postMessage API paused by blanking `src`, restored on scroll-back
 - No database changes — purely client-side behavior
+
+## Developer Updates / Changelog Viewer (added 2026-02-23)
+
+### Overview
+- "Developer Updates" button in Settings modal opens a changelog viewer
+- Shows version history with date, version number, and collapsible details
+- Each entry has Added / Changed / Fixed sections (accordion style)
+- Newest entry at top with "NEW" badge
+- Only one entry expanded at a time, smooth expand/collapse animation
+
+### Data Source
+- `changelog.json` in project root — simple JSON array, no DB needed
+- Fetched once and cached in `_changelogData` for the session
+- **Workflow rule:** Update `changelog.json` alongside `NOTES.md` when making changes
+
+### Format
+```json
+{
+  "version": "0.2.5",
+  "date": "2026-02-23",
+  "added": ["..."],
+  "changed": ["..."],
+  "fixed": ["..."]
+}
+```
+
+### UI
+- Chevron icon rotates on expand/collapse
+- Color-coded sections: green (Added), amber (Changed), blue (Fixed)
+- Consistent with existing modal styling
+- `showDevUpdatesModal()` function in app.js

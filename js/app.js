@@ -3428,6 +3428,7 @@ document.addEventListener('click',function(e){
             h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Blocked Users</span><button class="btn btn-outline" id="settingsViewBlocked" style="padding:4px 14px;font-size:12px;color:#e74c3c;border-color:#e74c3c;">View ('+blockedCount+')</button></div>';
             var cookieStatus=_cookieConsent?'Accepted':'Essential Only';
             h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Cookie Consent</span><button class="btn btn-outline" id="settingsManageCookies" style="padding:4px 14px;font-size:12px;">'+cookieStatus+'</button></div>';
+            h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Developer Updates</span><button class="btn btn-outline" id="settingsDevUpdates" style="padding:4px 14px;font-size:12px;"><i class="fas fa-code-branch" style="margin-right:4px;"></i>View</button></div>';
             h+='<div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--border);text-align:center;"><button class="btn" id="settingsDeleteAccount" style="background:#e74c3c;color:#fff;padding:8px 20px;font-size:13px;border-radius:8px;cursor:pointer;"><i class="fas fa-trash" style="margin-right:6px;"></i>Delete My Account</button></div>';
             h+='<div style="margin-top:16px;text-align:center;"><button class="btn btn-primary modal-close">Done</button></div></div>';
             showModal(h);
@@ -3454,6 +3455,7 @@ document.addEventListener('click',function(e){
             });
             document.getElementById('settingsViewHidden').addEventListener('click',function(){showHiddenPostsModal();});
             document.getElementById('settingsViewBlocked').addEventListener('click',function(){showBlockedUsersModal();});
+            document.getElementById('settingsDevUpdates').addEventListener('click',function(){showDevUpdatesModal();});
             document.getElementById('settingsManageCookies').addEventListener('click',function(){
                 if(_cookieConsent){try{localStorage.setItem('blipvibe_cookie_consent','essential');}catch(e){}_cookieConsent=false;closeModal();showToast('Cookies revoked — third-party embeds are now blocked.');setTimeout(function(){location.reload();},800);}
                 else{grantCookieConsent();closeModal();showToast('Cookies accepted — embeds will now load.');setTimeout(function(){location.reload();},800);}
@@ -6381,6 +6383,71 @@ async function showBlockedUsersModal(){
         btn.addEventListener('click',function(){
             unblockUser(btn.dataset.uid);
             showBlockedUsersModal();
+        });
+    });
+}
+
+// ======================== DEVELOPER UPDATES (CHANGELOG) ========================
+var _changelogData=null;
+async function showDevUpdatesModal(){
+    closeModal();
+    // Fetch changelog (cached after first load)
+    if(!_changelogData){
+        try{
+            var resp=await fetch('changelog.json?t='+Date.now());
+            _changelogData=await resp.json();
+        }catch(e){
+            showToast('Failed to load updates');return;
+        }
+    }
+    var logs=_changelogData;
+    var h='<div class="modal-header"><h3><i class="fas fa-code-branch" style="color:var(--primary);margin-right:8px;"></i>Developer Updates</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body" style="padding:16px 20px;max-height:65vh;overflow-y:auto;">';
+    logs.forEach(function(entry,i){
+        var d=new Date(entry.date+'T00:00:00');
+        var dateStr=d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+        var isFirst=i===0;
+        h+='<div class="cl-entry" data-cli="'+i+'" style="border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden;">';
+        h+='<div class="cl-header" data-cli="'+i+'" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none;transition:background .15s;">';
+        h+='<span style="font-size:14px;font-weight:500;">'+dateStr+' — <span style="color:var(--primary);font-weight:600;">v'+escapeHtml(entry.version)+'</span>';
+        if(isFirst) h+=' <span style="background:var(--primary);color:#fff;font-size:10px;padding:1px 6px;border-radius:8px;margin-left:6px;font-weight:600;vertical-align:middle;">NEW</span>';
+        h+='</span>';
+        h+='<i class="fas fa-chevron-down cl-chevron" style="font-size:12px;color:var(--gray);transition:transform .25s;"></i>';
+        h+='</div>';
+        h+='<div class="cl-body" style="max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 16px;">';
+        h+='<div style="padding-bottom:14px;">';
+        if(entry.added&&entry.added.length){
+            h+='<p style="font-size:12px;font-weight:600;color:var(--green);margin:8px 0 4px;"><i class="fas fa-plus" style="margin-right:4px;"></i>Added</p>';
+            entry.added.forEach(function(a){h+='<p style="font-size:13px;margin:2px 0 2px 16px;color:var(--dark);opacity:.85;">'+escapeHtml(a)+'</p>';});
+        }
+        if(entry.changed&&entry.changed.length){
+            h+='<p style="font-size:12px;font-weight:600;color:#f59e0b;margin:8px 0 4px;"><i class="fas fa-pen" style="margin-right:4px;"></i>Changed</p>';
+            entry.changed.forEach(function(c){h+='<p style="font-size:13px;margin:2px 0 2px 16px;color:var(--dark);opacity:.85;">'+escapeHtml(c)+'</p>';});
+        }
+        if(entry.fixed&&entry.fixed.length){
+            h+='<p style="font-size:12px;font-weight:600;color:#3b82f6;margin:8px 0 4px;"><i class="fas fa-bug" style="margin-right:4px;"></i>Fixed</p>';
+            entry.fixed.forEach(function(f){h+='<p style="font-size:13px;margin:2px 0 2px 16px;color:var(--dark);opacity:.85;">'+escapeHtml(f)+'</p>';});
+        }
+        h+='</div></div></div>';
+    });
+    h+='</div>';
+    showModal(h);
+    // Accordion behavior — one open at a time
+    $$('.cl-header').forEach(function(hdr){
+        hdr.addEventListener('click',function(){
+            var idx=hdr.dataset.cli;
+            var entry=hdr.closest('.cl-entry');
+            var body=entry.querySelector('.cl-body');
+            var chevron=hdr.querySelector('.cl-chevron');
+            var isOpen=body.style.maxHeight&&body.style.maxHeight!=='0px';
+            // Close all
+            $$('.cl-body').forEach(function(b){b.style.maxHeight='0';});
+            $$('.cl-chevron').forEach(function(c){c.style.transform='rotate(0deg)';});
+            // Open clicked (if it was closed)
+            if(!isOpen){
+                body.style.maxHeight=body.scrollHeight+'px';
+                chevron.style.transform='rotate(180deg)';
+            }
         });
     });
 }

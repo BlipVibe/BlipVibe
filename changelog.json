@@ -1,0 +1,87 @@
+[
+  {
+    "version": "0.2.5",
+    "date": "2026-02-23",
+    "added": [
+      "Video auto-pause on scroll — videos stop when scrolled off-screen",
+      "Autoplay setting toggle in Settings controls scroll behavior",
+      "Security hardening Phase 2: rate limiting, upload validation, admin logs"
+    ],
+    "changed": [
+      "DM sending now server-side rate limited (30 msgs/60s)",
+      "Search uses server-side parameterized query (no more string interpolation)",
+      "File uploads restricted to JPEG, PNG, WebP, GIF only"
+    ],
+    "fixed": [
+      "Instagram/TikTok/Spotify embeds now pause when scrolled away",
+      "RLS gaps patched for notifications, messages, user_skins, group_skins",
+      "Multiple videos could play simultaneously without being able to find them"
+    ]
+  },
+  {
+    "version": "0.2.4",
+    "date": "2026-02-23",
+    "added": [
+      "XSS sanitization on 45+ user-content injection points",
+      "Cookie consent banner gating all third-party embeds",
+      "Delete My Account button in Settings with double confirmation",
+      "Super Admin Panel with user management, suspend, and delete",
+      "Profile RLS — sensitive columns hidden from other users"
+    ],
+    "changed": [
+      "Own profile data now fetched via secure RPC instead of direct query",
+      "Admin actions enforced server-side via SECURITY DEFINER functions",
+      "Geolocation changed to opt-in (was firing unconditionally)"
+    ],
+    "fixed": [
+      "Search injection via PostgREST filter characters",
+      "Admin privilege escalation blocked (is_admin column revoked from client)"
+    ]
+  },
+  {
+    "version": "0.2.3",
+    "date": "2026-02-23",
+    "added": [
+      "Inline media embeds for YouTube, Vimeo, TikTok, Twitter/X, Instagram, Spotify, SoundCloud",
+      "Version-based TOS acceptance system — forces re-accept on TOS update",
+      "Newline preservation in posts, comments, and messages",
+      "Updated Terms of Service (v3) with 21 sections",
+      "My Posts tab in main feed"
+    ],
+    "changed": [
+      "YouTube embeds switched to privacy-enhanced youtube-nocookie.com",
+      "Instagram embeds switched to iframe for reliable mobile playback",
+      "Video embeds use proper 16:9 aspect ratio container"
+    ],
+    "fixed": [
+      "Suggestion name overflow cutting into neighboring cards",
+      "People You May Know moved from hidden left sidebar to right sidebar"
+    ]
+  },
+  {
+    "version": "0.2.2",
+    "date": "2026-02-19",
+    "added": [
+      "Per-photo comments in lightbox viewer (desktop panel + mobile sheet)",
+      "Per-photo likes and dislikes with optimistic UI",
+      "Album system with pill tabs, upload, and drag-scroll",
+      "Saved posts page with folder pill tabs",
+      "Report / Feedback modal in Settings",
+      "Mobile bottom nav bar extended to tablets (≤768px)"
+    ],
+    "changed": [
+      "Coins no longer awarded for interacting with your own content",
+      "Albums tab shown for all users (own + others), not just self"
+    ],
+    "fixed": [
+      "Tablet swipe jumping to wrong category in skin shops",
+      "Groups page defaults to My Groups tab",
+      "Mobile refresh going to home screen (localStorage fallback)",
+      "Photos disappearing on reload (race condition)",
+      "Cross-device sync not working on mobile (visibilitychange listener)",
+      "Saved posts not showing up (was only checking current feed)",
+      "Premium transparency bleeding into group view",
+      "Group skins bleeding between groups"
+    ]
+  }
+]
