@@ -3545,10 +3545,10 @@ function getVideoEmbedHtml(url, mini){
     var socialCls='social-embed'+(mini?' social-embed-mini':'');
     // YouTube: watch, short, embed, youtu.be
     m=url.match(/(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
-    if(m){ id=m[1]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'YouTube',cls,mini); return '<div class="'+cls+'"><iframe src="https://www.youtube-nocookie.com/embed/'+id+'" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>'; }
+    if(m){ id=m[1]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'YouTube',cls,mini); return '<div class="'+cls+'"><iframe src="https://www.youtube-nocookie.com/embed/'+id+'?enablejsapi=1" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>'; }
     // Vimeo
     m=url.match(/vimeo\.com\/(\d+)/);
-    if(m){ id=m[1]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'Vimeo',cls,mini); return '<div class="'+cls+'"><iframe src="https://player.vimeo.com/video/'+id+'" frameborder="0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen></iframe></div>'; }
+    if(m){ id=m[1]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'Vimeo',cls,mini); return '<div class="'+cls+'"><iframe src="https://player.vimeo.com/video/'+id+'?api=1" frameborder="0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen></iframe></div>'; }
     // TikTok: tiktok.com/@user/video/ID or vm.tiktok.com/shortcode
     m=url.match(/tiktok\.com\/@[^/]+\/video\/(\d+)/);
     if(!m) m=url.match(/tiktok\.com\/(?:@[^/]+\/video\/)?(\d{15,})/);
@@ -3568,6 +3568,65 @@ function getVideoEmbedHtml(url, mini){
     if(/\.(mp4|webm|ogg)(\?.*)?$/i.test(url)){ return '<div class="'+cls+'" style="margin:10px auto 0;max-width:560px;border-radius:8px;overflow:hidden;"><video src="'+url+'" controls playsinline preload="metadata" style="display:block;width:100%;border-radius:8px;max-height:'+(mini?'200px':'500px')+';background:#000;"></video></div>'; }
     return null;
 }
+
+// ======================== VIDEO AUTO-PLAY / PAUSE ON SCROLL ========================
+// Pauses videos (HTML5 <video>, YouTube, Vimeo) when scrolled out of view.
+// Auto-plays HTML5 <video> (muted) when scrolled into view.
+// YouTube/Vimeo only auto-pause (user must click play first).
+(function initVideoScrollObserver(){
+    if(!('IntersectionObserver' in window)) return;
+    var observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+            var el=entry.target;
+            if(entry.isIntersecting){
+                // Auto-play HTML5 video (muted so browsers allow it)
+                var vid=el.querySelector('video');
+                if(vid && vid.paused && vid.dataset.wasPlaying==='1'){
+                    vid.muted=true;
+                    try{vid.play();}catch(e){}
+                }
+            } else {
+                // Pause everything when scrolled away
+                var vid=el.querySelector('video');
+                if(vid && !vid.paused){
+                    vid.dataset.wasPlaying='1';
+                    vid.pause();
+                }
+                var iframe=el.querySelector('iframe');
+                if(iframe){
+                    var src=iframe.src||'';
+                    if(src.indexOf('youtube')!==-1){
+                        try{iframe.contentWindow.postMessage(JSON.stringify({event:'command',func:'pauseVideo',args:[]}),'*');}catch(e){}
+                    } else if(src.indexOf('vimeo')!==-1){
+                        try{iframe.contentWindow.postMessage(JSON.stringify({method:'pause'}),'*');}catch(e){}
+                    }
+                }
+            }
+        });
+    }, {threshold:0.25});
+    function observeNewEmbeds(){
+        // Video embeds (YouTube, Vimeo, direct video files)
+        document.querySelectorAll('.video-embed:not([data-vobs])').forEach(function(el){
+            el.setAttribute('data-vobs','1');
+            observer.observe(el);
+        });
+        // Standalone <video> in post media grids (uploaded videos)
+        document.querySelectorAll('video[controls]:not([data-vobs])').forEach(function(vid){
+            if(vid.closest('[data-vobs]')) return; // already observed via parent
+            vid.setAttribute('data-vobs','1');
+            // Wrap observation on the video's parent thumb/container
+            var wrap=vid.closest('.pm-thumb')||vid.parentElement;
+            if(wrap && !wrap.getAttribute('data-vobs')){
+                wrap.setAttribute('data-vobs','1');
+                observer.observe(wrap);
+            }
+        });
+    }
+    // MutationObserver to auto-watch new embeds as they appear in the DOM
+    var mo=new MutationObserver(observeNewEmbeds);
+    mo.observe(document.body,{childList:true,subtree:true});
+    observeNewEmbeds();
+})();
 
 function buildMediaGrid(imgs){
     if(!imgs||!imgs.length) return '';

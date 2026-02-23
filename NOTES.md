@@ -521,5 +521,22 @@
 - Sanitizes LIKE wildcards (`%`, `_`, `\`) server-side
 
 ### SQL Migration
-- **File:** `supabase/security-hardening-phase2.sql` — run AFTER `admin-setup.sql`
+- **File:** `supabase/security-hardening-phase2.sql` — self-contained (includes prerequisite column additions), safe to run standalone
 - Contains: send_message_ratelimited RPC, admin_logs table + RLS, modified admin RPCs, admin_get_logs RPC, RLS gap fixes, search_profiles RPC
+
+## Video Auto-Play / Pause on Scroll (added 2026-02-23)
+
+### Overview
+- Videos automatically **pause** when scrolled out of view (>75% off-screen)
+- HTML5 `<video>` elements resume (muted) when scrolled back into view
+- YouTube and Vimeo iframes auto-pause via postMessage API when scrolled away (user must click play to restart)
+- Prevents multiple videos playing simultaneously when scrolling through feed
+
+### Implementation
+- `IntersectionObserver` with 25% threshold watches `.video-embed` containers and standalone `<video>` elements
+- `MutationObserver` automatically picks up new embeds as they're dynamically added to the DOM
+- YouTube iframes get `?enablejsapi=1` for postMessage control
+- Vimeo iframes get `?api=1` for postMessage control
+- `data-vobs` attribute marks elements already being observed (prevents duplicate observers)
+- `data-was-playing` tracks whether a video was playing before being paused by scroll (only resumes if it was)
+- No database changes — purely client-side behavior

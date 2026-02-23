@@ -1,11 +1,17 @@
 -- =============================================================================
 -- Security Hardening Phase 2
--- Run this in Supabase SQL Editor AFTER admin-setup.sql
+-- Self-contained — safe to run even if admin-setup.sql was not run first.
 -- =============================================================================
 --
 -- Adds: rate-limited message RPC, admin action logs, RLS gap fixes,
 --       parameterized search RPC
 -- =============================================================================
+
+-- =====================================================================
+-- 0. PREREQUISITES — ensure columns from admin-setup.sql exist
+-- =====================================================================
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT false;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS is_suspended BOOLEAN DEFAULT false;
 
 -- =====================================================================
 -- 1. RATE-LIMITED MESSAGE SENDING
