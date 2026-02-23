@@ -3388,18 +3388,33 @@ function _showFeedbackModal(){
 var feedPosts=[];
 var activeFeedTab='following';
 
-// ======================== INLINE VIDEO EMBED HELPER ========================
+// ======================== INLINE MEDIA EMBED HELPER ========================
 function getVideoEmbedHtml(url, mini){
     if(!url) return null;
     var id, m;
+    var cls='video-embed'+(mini?' video-embed-mini':'');
     // YouTube: watch, short, embed, youtu.be
     m=url.match(/(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
-    if(m){ id=m[1]; var w=mini?'100%':'100%'; var h=mini?'180':'360'; return '<div class="video-embed'+(mini?' video-embed-mini':'')+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><iframe src="https://www.youtube.com/embed/'+id+'" width="'+w+'" height="'+h+'" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }
+    if(m){ id=m[1]; return '<div class="'+cls+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><iframe src="https://www.youtube.com/embed/'+id+'" width="100%" height="'+(mini?'180':'360')+'" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }
     // Vimeo
     m=url.match(/vimeo\.com\/(\d+)/);
-    if(m){ id=m[1]; var vh=mini?'180':'360'; return '<div class="video-embed'+(mini?' video-embed-mini':'')+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><iframe src="https://player.vimeo.com/video/'+id+'" width="100%" height="'+vh+'" frameborder="0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }
+    if(m){ id=m[1]; return '<div class="'+cls+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><iframe src="https://player.vimeo.com/video/'+id+'" width="100%" height="'+(mini?'180':'360')+'" frameborder="0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }
+    // TikTok: tiktok.com/@user/video/ID
+    m=url.match(/tiktok\.com\/@[^/]+\/video\/(\d+)/);
+    if(m){ id=m[1]; return '<div class="'+cls+'" style="margin-top:10px;border-radius:8px;overflow:hidden;max-width:325px;"><iframe src="https://www.tiktok.com/embed/v2/'+id+'" width="325" height="'+(mini?'400':'740')+'" frameborder="0" allow="accelerometer;autoplay;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }
+    // Twitter / X: twitter.com/user/status/ID or x.com/user/status/ID
+    m=url.match(/(?:twitter\.com|x\.com)\/\w+\/status\/(\d+)/);
+    if(m){ id=m[1]; return '<div class="'+cls+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><iframe src="https://platform.twitter.com/embed/Tweet.html?id='+id+'" width="100%" height="'+(mini?'300':'500')+'" frameborder="0" style="display:block;width:100%;border-radius:8px;border:1px solid var(--border);"></iframe></div>'; }
+    // Instagram: posts, reels, TV
+    m=url.match(/instagram\.com\/(?:p|reel|tv)\/([A-Za-z0-9_-]+)/);
+    if(m){ id=m[1]; return '<div class="'+cls+'" style="margin-top:10px;border-radius:8px;overflow:hidden;max-width:400px;"><iframe src="https://www.instagram.com/p/'+id+'/embed/" width="400" height="'+(mini?'400':'580')+'" frameborder="0" scrolling="no" allowtransparency="true" style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }
+    // Spotify: tracks, albums, playlists, episodes, shows
+    m=url.match(/open\.spotify\.com\/(track|album|playlist|episode|show)\/([A-Za-z0-9]+)/);
+    if(m){ var stype=m[1]; id=m[2]; var sh=(stype==='track'||stype==='episode')?(mini?'80':'152'):(mini?'152':'352'); return '<div class="'+cls+'" style="margin-top:10px;border-radius:12px;overflow:hidden;"><iframe src="https://open.spotify.com/embed/'+stype+'/'+id+'" width="100%" height="'+sh+'" frameborder="0" allow="autoplay;clipboard-write;encrypted-media;fullscreen;picture-in-picture" loading="lazy" style="display:block;width:100%;border-radius:12px;"></iframe></div>'; }
+    // SoundCloud: any soundcloud.com URL (uses oEmbed widget)
+    if(/soundcloud\.com\/.+\/.+/.test(url)){ return '<div class="'+cls+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><iframe width="100%" height="'+(mini?'120':'166')+'" scrolling="no" frameborder="0" allow="autoplay" src="https://w.soundcloud.com/player/?url='+encodeURIComponent(url)+'&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false" style="display:block;width:100%;border-radius:8px;"></iframe></div>'; }
     // Direct video files
-    if(/\.(mp4|webm|ogg)(\?.*)?$/i.test(url)){ return '<div class="video-embed'+(mini?' video-embed-mini':'')+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><video src="'+url+'" controls playsinline preload="metadata" style="display:block;width:100%;border-radius:8px;max-height:'+(mini?'200px':'500px')+';background:#000;"></video></div>'; }
+    if(/\.(mp4|webm|ogg)(\?.*)?$/i.test(url)){ return '<div class="'+cls+'" style="margin-top:10px;border-radius:8px;overflow:hidden;"><video src="'+url+'" controls playsinline preload="metadata" style="display:block;width:100%;border-radius:8px;max-height:'+(mini?'200px':'500px')+';background:#000;"></video></div>'; }
     return null;
 }
 

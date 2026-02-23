@@ -271,17 +271,22 @@
 - No database changes — purely client-side filtering of already-loaded feed data
 - Tab button in `index.html` `#feedTabs`, filter logic in `renderFeed()` in `app.js`
 
-## Inline Video Embeds (added 2026-02-23)
-- Video URLs in posts, messages, and comments now play inline instead of opening in a new tab
+## Inline Media Embeds (added 2026-02-23, updated 2026-02-23)
+- Media URLs in posts, messages, and comments embed inline instead of opening in a new tab
 - **YouTube** (watch, shorts, embed, youtu.be) → embedded iframe player
 - **Vimeo** → embedded iframe player
+- **TikTok** (`tiktok.com/@user/video/ID`) → TikTok embed v2 iframe (325px wide, 740px tall)
+- **Twitter/X** (`twitter.com` or `x.com` status URLs) → Twitter embed iframe
+- **Instagram** (posts, reels, TV: `instagram.com/p/`, `/reel/`, `/tv/`) → Instagram embed iframe
+- **Spotify** (tracks, albums, playlists, episodes, shows) → Spotify embed iframe (compact for tracks, tall for playlists)
+- **SoundCloud** (any track/set URL) → SoundCloud widget player iframe
 - **Direct video files** (.mp4, .webm, .ogg) → native `<video>` element with controls
-- `getVideoEmbedHtml(url, mini)` helper returns embed HTML or null for non-video URLs
+- `getVideoEmbedHtml(url, mini)` helper returns embed HTML or null for non-embeddable URLs
 - Integrated into `autoFetchLinkPreviews()` (feed), `autoFetchLinkPreviewsMini()` (messages/comments), and post creation link preview
-- Mini embeds (messages/comments) use smaller height (180px vs 360px)
+- Mini embeds (messages/comments) use smaller heights for all platforms
 - CSS: `.video-embed` / `.video-embed-mini` in style.css
 - Raw URL is hidden from post text when embed is shown (same as link previews)
-- No database changes — purely client-side rendering
+- No database changes — purely client-side rendering using official embed endpoints
 
 ## Updated Terms of Use & TOS Acceptance System (added 2026-02-23)
 
