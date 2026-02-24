@@ -269,7 +269,7 @@ function resetAllCustomizations(){
     savedFolders=[{id:'fav',name:'Favorites',posts:[]}];hiddenPosts={};reportedPosts=[];
     state.postCoinCount=0;state.commentCoinPosts={};state.replyCoinPosts={};
     state.groupCoins={};state.groupOwnedSkins={};state.groupOwnedPremiumSkins={};
-    state.groupActiveSkin={};state.groupActivePremiumSkin={};
+    state.groupActiveSkin={};state.groupActivePremiumSkin={};state.groupPremiumBg={};
     state.groupPostCoinCount={};state.groupCommentCoinPosts={};state.groupReplyCoinPosts={};
     settings={darkMode:false,notifSound:true,privateProfile:false,autoplay:true,commentOrder:'top',showLocation:false};
     // Reset premium background globals
@@ -724,6 +724,7 @@ var state = {
     groupOwnedPremiumSkins: {},
     groupActiveSkin: {},
     groupActivePremiumSkin: {},
+    groupPremiumBg: {},
     groupPostCoinCount: {},
     groupCommentCoinPosts: {},
     groupReplyCoinPosts: {}
@@ -750,7 +751,7 @@ function saveState(){
         joinedGroups:state.joinedGroups,privateFollowers:state.privateFollowers,
         groupCoins:state.groupCoins,groupOwnedSkins:state.groupOwnedSkins,
         groupOwnedPremiumSkins:state.groupOwnedPremiumSkins,
-        groupActiveSkin:state.groupActiveSkin,groupActivePremiumSkin:state.groupActivePremiumSkin,
+        groupActiveSkin:state.groupActiveSkin,groupActivePremiumSkin:state.groupActivePremiumSkin,groupPremiumBg:state.groupPremiumBg,
         premiumBgUrl:_bk?_bk.bgImage:premiumBgImage,
         premiumBgOverlay:_bk?_bk.bgOverlay:premiumBgOverlay,
         premiumBgDarkness:_bk?_bk.bgDarkness:premiumBgDarkness,
@@ -891,6 +892,7 @@ function loadState(){
         if(save.groupOwnedPremiumSkins) state.groupOwnedPremiumSkins=save.groupOwnedPremiumSkins;
         if(save.groupActiveSkin) state.groupActiveSkin=save.groupActiveSkin;
         if(save.groupActivePremiumSkin) state.groupActivePremiumSkin=save.groupActivePremiumSkin;
+        if(save.groupPremiumBg) state.groupPremiumBg=save.groupPremiumBg;
         if(save.premiumBgUrl) premiumBgImage=save.premiumBgUrl;
         if(save.premiumBgOverlay!==undefined) premiumBgOverlay=save.premiumBgOverlay;
         else if(save.premiumBgSaturation!==undefined) premiumBgOverlay=0; // migrate old data
@@ -3061,6 +3063,8 @@ async function showGroupView(group){
                 h+='</div>';
             }
             h+='<p style="text-align:center;color:var(--gray);font-size:13px;margin:12px 0;">Or pick an icon:</p>';
+            var _tc=getGroupThemeColor(group);
+            if(_tc){h+='<style>.gv-icon-pick.active{border-color:'+_tc+';color:'+_tc+';background:'+_tc+'22;}.gv-icon-pick:hover{background:'+_tc+'33;color:'+_tc+';}</style>';}
             h+='<div class="gv-icon-grid">';
             icons.forEach(function(ic){h+='<button class="gv-icon-pick'+(group.icon===ic&&!group.profileImg?' active':'')+'" data-icon="'+ic+'"><i class="fas '+ic+'"></i></button>';});
             h+='</div></div>';showModal(h);
@@ -3097,7 +3101,7 @@ async function showGroupView(group){
                     closeModal();showGroupView(group);renderGroups();
                 });
             });
-            $$('.gv-icon-pick').forEach(function(btn){btn.addEventListener('click',function(){group.icon=btn.dataset.icon;delete group.profileImg;closeModal();showGroupView(group);renderGroups();});});
+            $$('.gv-icon-pick').forEach(function(btn){btn.addEventListener('click',function(){group.icon=btn.dataset.icon;closeModal();showGroupView(group);renderGroups();});});
         });}
     }
     $$('.gv-rules-btn').forEach(function(btn){btn.addEventListener('click',function(){
@@ -4697,10 +4701,13 @@ function bindGroupEvents(container){
             var group=groups.find(function(g){return g.id===gid;});
             if(!group) return;
             var icons=['fa-users','fa-camera-retro','fa-gamepad','fa-utensils','fa-dumbbell','fa-music','fa-paw','fa-plane-departure','fa-book','fa-leaf','fa-film','fa-hammer','fa-mug-hot','fa-code','fa-palette','fa-rocket','fa-heart','fa-star','fa-fire','fa-bolt','fa-globe','fa-trophy','fa-gem','fa-shield'];
-            var h='<div class="modal-header"><h3>Change Icon</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body"><div class="gv-icon-grid">';
+            var _tc=getGroupThemeColor(group);
+            var h='<div class="modal-header"><h3>Change Icon</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body">';
+            if(_tc){h+='<style>.gv-icon-pick.active{border-color:'+_tc+';color:'+_tc+';background:'+_tc+'22;}.gv-icon-pick:hover{background:'+_tc+'33;color:'+_tc+';}</style>';}
+            h+='<div class="gv-icon-grid">';
             icons.forEach(function(ic){h+='<button class="gv-icon-pick'+(group.icon===ic?' active':'')+'" data-icon="'+ic+'"><i class="fas '+ic+'"></i></button>';});
             h+='</div></div>';showModal(h);
-            $$('.gv-icon-pick').forEach(function(pick){pick.addEventListener('click',function(){group.icon=pick.dataset.icon;delete group.profileImg;closeModal();renderGroups();});});
+            $$('.gv-icon-pick').forEach(function(pick){pick.addEventListener('click',function(){group.icon=pick.dataset.icon;closeModal();renderGroups();});});
         });
     });
 }
@@ -5176,6 +5183,31 @@ function renderGroupShop(groupId){
     var html='<div class="shop-scroll-row scroll-2row">';
     active.items.forEach(function(item){html+=active.render(item);});
     html+='</div>';
+    // Group premium background controls (on owned tab with active premium skin)
+    if(currentGroupShopTab==='owned'&&state.groupActivePremiumSkin[groupId]){
+        if(!state.groupPremiumBg[groupId]) state.groupPremiumBg[groupId]={};
+        var _gbg=state.groupPremiumBg[groupId];
+        var bgHtml='<div class="premium-bg-controls card" style="margin-top:16px;padding:16px;border-radius:12px;">';
+        bgHtml+='<h4 class="card-heading" style="margin-bottom:10px;font-size:14px;"><i class="fas fa-image" style="margin-right:6px;color:var(--primary);"></i>Background Image</h4>';
+        bgHtml+='<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">';
+        bgHtml+='<label class="btn btn-primary" style="cursor:pointer;font-size:13px;"><i class="fas fa-upload" style="margin-right:6px;"></i>Upload<input type="file" id="groupBgUpload" accept="image/*" style="display:none;"></label>';
+        if(_gbg.src){
+            bgHtml+='<button class="btn btn-outline" id="groupBgRemove" style="font-size:13px;"><i class="fas fa-trash" style="margin-right:6px;"></i>Remove</button>';
+            bgHtml+='<img src="'+_gbg.src+'" style="width:48px;height:48px;object-fit:cover;border-radius:6px;border:2px solid currentColor;opacity:.7;">';
+        }
+        bgHtml+='</div>';
+        if(_gbg.src){
+            var _d=Math.round((_gbg.darkness||0)*100),_o=Math.round((_gbg.overlay||0)*100),_ct=Math.round((_gbg.cardTrans!=null?_gbg.cardTrans:0.1)*100);
+            bgHtml+='<div style="margin-top:12px;"><label style="font-size:12px;opacity:.7;display:flex;align-items:center;gap:8px;"><i class="fas fa-moon"></i>Darkness: <span id="gBgDarknessLabel">'+_d+'%</span></label>';
+            bgHtml+='<input type="range" id="gBgDarknessSlider" min="0" max="80" value="'+_d+'" style="width:100%;margin-top:6px;accent-color:var(--primary);"></div>';
+            bgHtml+='<div style="margin-top:10px;"><label style="font-size:12px;opacity:.7;display:flex;align-items:center;gap:8px;"><i class="fas fa-droplet"></i>Frosted Glass: <span id="gBgOverlayLabel">'+_o+'%</span></label>';
+            bgHtml+='<input type="range" id="gBgOverlaySlider" min="0" max="80" value="'+_o+'" style="width:100%;margin-top:6px;accent-color:var(--primary);"></div>';
+            bgHtml+='<div style="margin-top:10px;"><label style="font-size:12px;opacity:.7;display:flex;align-items:center;gap:8px;"><i class="fas fa-eye"></i>Card Transparency: <span id="gBgCardTransLabel">'+_ct+'%</span></label>';
+            bgHtml+='<input type="range" id="gBgCardTransSlider" min="0" max="80" value="'+_ct+'" style="width:100%;margin-top:6px;accent-color:var(--primary);"></div>';
+        }
+        bgHtml+='</div>';
+        html+=bgHtml;
+    }
     container.innerHTML=html;
 
     function gShopPurchased(btn){var p=btn.parentElement;var priceEl=p.querySelector('.skin-price');if(priceEl)priceEl.remove();btn.className='btn btn-disabled';btn.textContent='Owned';btn.disabled=true;btn.replaceWith(btn.cloneNode(true));}
@@ -5218,6 +5250,65 @@ function renderGroupShop(groupId){
 
     initDragScroll('#gvShopContent');
 
+    // Group premium background handlers
+    var _gBgUpload=document.getElementById('groupBgUpload');
+    if(_gBgUpload){
+        _gBgUpload.addEventListener('change',async function(){
+            var file=_gBgUpload.files[0];if(!file||!currentUser)return;
+            try{validateUploadFile(file,{maxSize:5*1024*1024,label:'Background'});}catch(ve){showToast(ve.message);return;}
+            if(!state.groupPremiumBg[groupId]) state.groupPremiumBg[groupId]={};
+            try{
+                var ext=file.name.split('.').pop()||'jpg';
+                var path='backgrounds/group_'+groupId+'/bg.'+ext;
+                var url=await sbUploadFile('avatars',path,file);
+                state.groupPremiumBg[groupId].src=url;
+            }catch(e){
+                console.warn('Group BG upload failed, using local:',e);
+                var reader=new FileReader();
+                reader.onload=function(ev){state.groupPremiumBg[groupId].src=ev.target.result;applyGroupSkin(groupId);renderGroupShop(groupId);saveState();};
+                reader.readAsDataURL(file);return;
+            }
+            applyGroupSkin(groupId);renderGroupShop(groupId);saveState();
+        });
+    }
+    var _gBgRemove=document.getElementById('groupBgRemove');
+    if(_gBgRemove){
+        _gBgRemove.addEventListener('click',function(){
+            state.groupPremiumBg[groupId]={};
+            applyGroupSkin(groupId);renderGroupShop(groupId);saveState();
+        });
+    }
+    var _gBgDSlider=document.getElementById('gBgDarknessSlider');
+    if(_gBgDSlider){
+        _gBgDSlider.addEventListener('input',function(){
+            var v=parseInt(_gBgDSlider.value)/100;
+            state.groupPremiumBg[groupId].darkness=v;
+            document.getElementById('gBgDarknessLabel').textContent=Math.round(v*100)+'%';
+            premiumBgDarkness=v;updatePremiumBg();
+        });
+        _gBgDSlider.addEventListener('change',function(){saveState();});
+    }
+    var _gBgOSlider=document.getElementById('gBgOverlaySlider');
+    if(_gBgOSlider){
+        _gBgOSlider.addEventListener('input',function(){
+            var v=parseInt(_gBgOSlider.value)/100;
+            state.groupPremiumBg[groupId].overlay=v;
+            document.getElementById('gBgOverlayLabel').textContent=Math.round(v*100)+'%';
+            premiumBgOverlay=v;updatePremiumBg();
+        });
+        _gBgOSlider.addEventListener('change',function(){saveState();});
+    }
+    var _gBgCTSlider=document.getElementById('gBgCardTransSlider');
+    if(_gBgCTSlider){
+        _gBgCTSlider.addEventListener('input',function(){
+            var v=parseInt(_gBgCTSlider.value)/100;
+            state.groupPremiumBg[groupId].cardTrans=v;
+            document.getElementById('gBgCardTransLabel').textContent=Math.round(v*100)+'%';
+            premiumCardTransparency=v;updatePremiumBg();
+        });
+        _gBgCTSlider.addEventListener('change',function(){saveState();});
+    }
+
     $$('#gvShopTabs .search-tab').forEach(function(tab){tab.addEventListener('click',function(){
         $$('#gvShopTabs .search-tab').forEach(function(t){t.classList.remove('active');});
         tab.classList.add('active');currentGroupShopTab=tab.dataset.gstab;renderGroupShop(groupId);
@@ -5250,7 +5341,7 @@ function applyGroupSkin(groupId){
     var hasCover=grp&&grp.coverPhoto;
     // Save personal skin state once when entering group view
     if(!_gvSaved) _gvSaved={skin:state.activeSkin,premiumSkin:state.activePremiumSkin,bgImage:premiumBgImage,bgOverlay:premiumBgOverlay,bgDarkness:premiumBgDarkness,cardTrans:premiumCardTransparency};
-    // Fully disable premium bg in group view so transparency doesn't bleed into nav/cards
+    // Reset premium bg — will re-apply group's own bg below if applicable
     premiumBgImage=null;premiumBgOverlay=0;premiumBgDarkness=0;premiumCardTransparency=0.1;
     updatePremiumBg();
     // Reset ALL body-level skin state to prevent bleeding between groups
@@ -5281,6 +5372,15 @@ function applyGroupSkin(groupId){
         if(profileCover) profileCover.style.background=skin?skin.preview:'';
         if(iconWrap) iconWrap.style.background=skin?skin.accent:'';
         applyPremiumSkin(activePremium,true);
+        // Apply group's own premium background if set
+        var gbg=state.groupPremiumBg[groupId];
+        if(gbg&&gbg.src){
+            premiumBgImage=gbg.src;
+            premiumBgOverlay=gbg.overlay!=null?gbg.overlay:0;
+            premiumBgDarkness=gbg.darkness!=null?gbg.darkness:0;
+            premiumCardTransparency=gbg.cardTrans!=null?gbg.cardTrans:0.1;
+            updatePremiumBg();
+        }
     } else if(activeBasic){
         gvPage.classList.add('gskin-'+activeBasic);
         gvPage.style.background=groupSkinBgs[activeBasic]||'';

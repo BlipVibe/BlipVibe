@@ -3,7 +3,8 @@
     "version": "0.2.10",
     "date": "2026-02-23",
     "added": [
-      "Try On preview button in Skin Shop — live-preview any skin, font, logo, icon set, coin skin, template, or nav style before buying"
+      "Try On preview button in Skin Shop — live-preview any skin, font, logo, icon set, coin skin, template, or nav style before buying",
+      "Group premium skin background image — upload, darkness, frosted glass, and card transparency controls (same as profile skins)"
     ],
     "changed": [
       "Shop cards for unowned items now show 'Try On' button alongside Buy button",
@@ -11,7 +12,9 @@
       "Purchasing an item while trying it on keeps it applied without reverting"
     ],
     "fixed": [
-      "Saved posts page images stretched too wide — post cards now capped at 680px width"
+      "Saved posts page images stretched too wide — post cards now capped at 680px width",
+      "Group icon picker buttons now use the group's active skin color instead of default theme",
+      "Picking a group icon no longer deletes the group's profile picture"
     ]
   },
   {
