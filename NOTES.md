@@ -724,3 +724,7 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - `.shop-card-actions` — flex row for Try On + Buy buttons
 - `.try-on-btn` — small outline button (12px font, 4px 12px padding)
 - `.try-on-btn.trying` — filled with `var(--primary)` to indicate active preview
+
+## Group Premium Skin Background Fix (fixed 2026-02-24)
+- **Cause:** `applyGroupSkin()` set `gvPage.style.background` to hardcoded `#f0f0f0` (light) or `#0f172a` (dark) before checking for uploaded background images. This opaque inline background on `#page-group-view` (z-index:1) covered the `#premiumBgLayer` (z-index:0), so uploaded background images never showed through.
+- **Fix:** When a group has a premium background image, `gvPage.style.background` is set to `'transparent'` after `updatePremiumBg()` so the layer shows through. Without a background image, it uses `var(--ps-bg)` instead of hardcoded colors so each skin's actual theme color is applied (e.g., Geo Prism gets `#f0f4ff` instead of grey).

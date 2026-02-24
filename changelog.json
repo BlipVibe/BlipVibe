@@ -12,6 +12,8 @@
       "Purchasing an item while trying it on keeps it applied without reverting"
     ],
     "fixed": [
+      "Group premium skin background image now shows through instead of being covered by grey page background",
+      "Group premium skins without a background image now use the skin's actual theme color instead of hardcoded grey",
       "Saved posts page images stretched too wide — post cards now capped at 680px width",
       "Group icon picker buttons now use the group's active skin color instead of default theme",
       "Picking a group icon no longer deletes the group's profile picture"

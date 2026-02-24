@@ -5367,8 +5367,7 @@ function applyGroupSkin(groupId){
     if(activePremium){
         var skin=premiumSkins.find(function(s){return s.id===activePremium;});
         if(skin){gvPage.classList.add('gpremium-'+activePremium);if(skin.dark)gvPage.classList.add('gpremium-dark');}
-        gvPage.style.background=skin&&skin.dark?'#0f172a':'#f0f0f0';
-        if(banner&&!hasCover) banner.style.background=skin&&skin.dark?'#0f172a':'';
+        if(banner&&!hasCover) banner.style.background=skin?'var(--ps-bg)':'';
         if(profileCover) profileCover.style.background=skin?skin.preview:'';
         if(iconWrap) iconWrap.style.background=skin?skin.accent:'';
         applyPremiumSkin(activePremium,true);
@@ -5382,6 +5381,10 @@ function applyGroupSkin(groupId){
             // updatePremiumBg requires state.activePremiumSkin to be set
             state.activePremiumSkin=activePremium;
             updatePremiumBg();
+            // Make page transparent so premiumBgLayer shows through
+            gvPage.style.background='transparent';
+        } else {
+            gvPage.style.background=skin?'var(--ps-bg)':'#f0f0f0';
         }
     } else if(activeBasic){
         gvPage.classList.add('gskin-'+activeBasic);
