@@ -20,7 +20,8 @@
         // Fallback to localStorage if hash lost (mobile Safari refresh)
         if(!h||h==='home'){try{var lp=localStorage.getItem('blipvibe_lastPage');if(lp&&lp!=='home')h=lp;}catch(e){}}
         if(h==='skins') h='shop';
-        if(h&&h!=='home'&&h!=='profile-view'&&h!=='group-view'){
+        if(h.indexOf('group-view:')===0) h='group-view';
+        if(h&&h!=='home'&&h!=='profile-view'){
             var s=document.createElement('style');
             s.id='hash-nav-fix';
             s.textContent='#page-home{display:none!important;}#page-'+h+'{display:block!important;}';

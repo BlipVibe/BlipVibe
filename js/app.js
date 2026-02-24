@@ -5379,6 +5379,8 @@ function applyGroupSkin(groupId){
             premiumBgOverlay=gbg.overlay!=null?gbg.overlay:0;
             premiumBgDarkness=gbg.darkness!=null?gbg.darkness:0;
             premiumCardTransparency=gbg.cardTrans!=null?gbg.cardTrans:0.1;
+            // updatePremiumBg requires state.activePremiumSkin to be set
+            state.activePremiumSkin=activePremium;
             updatePremiumBg();
         }
     } else if(activeBasic){
