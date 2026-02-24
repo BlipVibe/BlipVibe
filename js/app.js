@@ -6019,6 +6019,7 @@ function showCreateAlbumModal(photoSrcToAdd){
             closeModal();pvPhotoTab='albums';
             $$('#pvPhotoTabs .search-tab').forEach(function(t){t.classList.remove('active');if(t.dataset.pvpt==='albums')t.classList.add('active');});
             renderPvPhotoTab(true);renderPhotosCard();
+            if(_navCurrent==='photos') renderPhotoAlbum();
             showToast('Album "'+name+'" created');
         }catch(e){console.error('Album create error:',e);showToast('Error creating album');}
     });
