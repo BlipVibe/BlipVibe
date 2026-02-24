@@ -1229,8 +1229,8 @@ function navigateTo(page,skipPush){
     if(page==='messages'){var ml=document.querySelector('.messages-layout');if(ml)ml.classList.remove('chat-open');loadConversations();renderMsgFollowing();}
     if(page==='profiles') renderProfiles(currentProfileTab);
     if(page==='groups'){currentGroupTab='yours';renderGroups();}
-    if(page==='shop') renderShop();
-    if(page==='skins') renderMySkins();
+    if(page==='skins'){page='shop';_skinPageView='mine';target=document.getElementById('page-shop');if(target)target.classList.add('active');$$('.nav-link[data-page="shop"]').forEach(function(l){l.classList.add('active');});if(!skipPush){history.replaceState({page:'shop'},'','#shop');}}
+    if(page==='shop') renderSkinPage();
     if(page==='photos'){
         if(currentUser&&(!_pvAlbums||!_pvAlbums.length)){
             sbGetAlbums(currentUser.id).then(function(a){_pvAlbums=a;renderPhotoAlbum();}).catch(function(){renderPhotoAlbum();});
@@ -1248,6 +1248,7 @@ var _initHash=(location.hash||'').replace('#','')||'home';
 // Fallback to localStorage if hash lost (mobile refresh)
 if(_initHash==='home'){try{var _lp=localStorage.getItem('blipvibe_lastPage');if(_lp&&_lp!=='home')_initHash=_lp;}catch(e){}}
 if(_initHash==='profile-view') _initHash='home';
+if(_initHash==='skins'){_initHash='shop';_skinPageView='mine';}
 if(_initHash==='group-view') _initHash='groups';
 if(_initHash.indexOf('group-view:')===0) _initHash=_initHash; // keep as-is, handled in initApp
 history.replaceState({page:_initHash},'','#'+_initHash);
@@ -3325,6 +3326,7 @@ $('#pvCoverFileInput').addEventListener('change',function(){
 // View Profile links
 $('#viewMyProfile').addEventListener('click',function(e){e.preventDefault();showMyProfileModal();});
 $('#dropdownViewProfile').addEventListener('click',function(e){e.preventDefault();$('#userDropdownMenu').classList.remove('show');showMyProfileModal();});
+$('#dropdownMySkins').addEventListener('click',function(e){e.preventDefault();$('#userDropdownMenu').classList.remove('show');_skinPageView='mine';navigateTo('shop');});
 
 // Edit Profile
 $('#editProfileBtn').addEventListener('click',function(e){
@@ -4974,6 +4976,7 @@ function shopBuy(owned,price,cls,attr){
     return '<div class="skin-price"><i class="fas fa-coins"></i> '+price+' Coins</div><button class="btn '+(state.coins>=price?'btn-primary':'btn-disabled')+' '+cls+'" '+attr+(state.coins<price?' disabled':'')+'>Buy</button>';
 }
 var currentShopTab=null;
+var _skinPageView='shop'; // 'shop' or 'mine'
 function getShopCategories(){
     var cats=[];
     cats.push({key:'basic',label:'<i class="fas fa-palette"></i> Basic Skins',items:skins,render:function(s){return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="skin-preview-inner" style="color:#333;background:#fff;">Profile Preview</div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';">'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p>'+shopBuy(state.ownedSkins[s.id],s.price,'buy-skin-btn','data-sid="'+s.id+'"')+'</div></div>';}});
@@ -4985,6 +4988,25 @@ function getShopCategories(){
     cats.push({key:'templates',label:'<i class="fas fa-table-columns"></i> Templates',items:templates,render:function(t){return '<div class="skin-card"><div class="skin-preview" style="background:'+t.preview+';">'+tplPreviewHtml(t.id)+'</div><div class="skin-card-body"><h4>'+t.name+'</h4><p>'+t.desc+'</p>'+shopBuy(state.ownedTemplates[t.id],t.price,'buy-tpl-btn','data-tid="'+t.id+'"')+'</div></div>';}});
     cats.push({key:'navstyles',label:'<i class="fas fa-bars-staggered"></i> Nav Styles',items:navStyles,render:function(n){return '<div class="skin-card"><div class="skin-preview" style="background:'+n.preview+';">'+navPreviewHtml(n.id)+'</div><div class="skin-card-body"><h4>'+n.name+'</h4><p>'+n.desc+'</p>'+shopBuy(state.ownedNavStyles[n.id],n.price,'buy-nav-btn','data-nid="'+n.id+'"')+'</div></div>';}});
     return cats;
+}
+function renderSkinPage(){
+    var shopView=$('#skinShopView');
+    var mineView=$('#mySkinView');
+    if(_skinPageView==='mine'){
+        shopView.style.display='none';mineView.style.display='';
+        renderMySkins();
+    } else {
+        shopView.style.display='';mineView.style.display='none';
+        renderShop();
+    }
+    $$('#skinPageToggle .search-tab').forEach(function(t){t.classList.toggle('active',t.dataset.skinView===_skinPageView);});
+    $$('#skinPageToggle .search-tab').forEach(function(btn){
+        btn.onclick=function(){
+            if(btn.dataset.skinView===_skinPageView) return;
+            _skinPageView=btn.dataset.skinView;
+            renderSkinPage();
+        };
+    });
 }
 function renderShop(){
     var cats=getShopCategories();
@@ -5275,7 +5297,7 @@ function applyIconSet(setId,silent){
         }
     });
     // Update nav icons specifically (they use data-page)
-    ['home','groups','skins','profiles','shop','messages','notifications'].forEach(function(page){var el=document.querySelector('.nav-link[data-page="'+page+'"] i');if(el){el.className='fas '+newMap[page];}});
+    ['home','groups','profiles','shop','messages','notifications'].forEach(function(page){var el=document.querySelector('.nav-link[data-page="'+page+'"] i');if(el){el.className='fas '+newMap[page];}});
     activeIcons=newMap;
     state.activeIconSet=setId;
     if(setId&&!silent)addNotification('skin','You applied the "'+iconSets.find(function(s){return s.id===setId;}).name+'" icon set!');
@@ -5410,7 +5432,8 @@ function renderMySkins(){
     var cats=getMySkinCategories();
     if(!cats.length){
         $('#mySkinsTabs').innerHTML='';
-        $('#mySkinsGrid').innerHTML='<div class="empty-state"><i class="fas fa-palette"></i><p>You don\'t own anything yet.</p><button class="btn btn-primary" data-page="shop">Visit Shop</button></div>';
+        $('#mySkinsGrid').innerHTML='<div class="empty-state"><i class="fas fa-palette"></i><p>You don\'t own anything yet.</p><button class="btn btn-primary" id="visitShopBtn">Visit Shop</button></div>';
+        var _vsBtn=$('#visitShopBtn');if(_vsBtn)_vsBtn.addEventListener('click',function(){_skinPageView='shop';renderSkinPage();});
         return;
     }
     if(!currentMySkinsTab||!cats.find(function(c){return c.key===currentMySkinsTab;})) currentMySkinsTab=cats[0].key;
@@ -6901,8 +6924,7 @@ renderSuggestions();
 renderTrendingSidebar();
 renderGroups();
 renderProfiles();
-renderShop();
-renderMySkins();
+renderSkinPage();
 renderMsgContacts();
 renderNotifications();
 renderPhotosCard();

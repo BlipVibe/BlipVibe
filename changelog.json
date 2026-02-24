@@ -1,5 +1,19 @@
 [
   {
+    "version": "0.2.9",
+    "date": "2026-02-23",
+    "added": [
+      "Combined Skins page with pill toggle between 'Skin Shop' and 'My Skins' views"
+    ],
+    "changed": [
+      "Skin Shop and My Skins merged into single 'Skins' nav page, freeing up a nav slot",
+      "Nav bar shows one 'Skins' link instead of separate 'Skins' and 'Skin Shop' links",
+      "Dropdown 'My Skins' opens the Skins page with My Skins toggle active",
+      "Old #skins URLs redirect to #shop with My Skins view"
+    ],
+    "fixed": []
+  },
+  {
     "version": "0.2.8",
     "date": "2026-02-23",
     "added": [

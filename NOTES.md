@@ -648,6 +648,30 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - `confirmDeleteGroupPost(pid)` — confirmation modal, calls `sbDeletePost`, removes card from DOM
 - Menu toggle and action handlers wired in `bindGvPostEvents()`
 
+## Combined Skins Page (v0.2.9 — 2026-02-23)
+
+### Overview
+- Skin Shop and My Skins merged into a single "Skins" page (`#shop`) with a pill toggle
+- Nav bar has one "Skins" link (palette icon) instead of two separate links
+- Top-level toggle pills: "Skin Shop" (default) / "My Skins"
+- `_skinPageView` variable (`'shop'` or `'mine'`) tracks active view, persists during session
+- Re-entering the page remembers the last active view
+
+### Backward Compatibility
+- Old `#skins` hash URLs redirect to `#shop` with My Skins view active
+- Dropdown "My Skins" link sets `_skinPageView='mine'` before navigating
+- Inline flash-prevention script handles `skins` → `shop` redirect
+- `_initHash` and `popstate` both redirect `skins` → `shop`
+
+### Empty State
+- "Visit Shop" button in My Skins empty state switches the toggle to Skin Shop (no page navigation)
+
+### Code Changes
+- `renderSkinPage()` — wrapper that shows/hides `#skinShopView` / `#mySkinView` and binds toggle pills
+- `navigateTo()` redirects `page==='skins'` to `shop` with `_skinPageView='mine'`
+- Removed `'skins'` from nav icon set updater array (no longer a separate nav link)
+- `#page-skins` HTML container removed, content moved into `#page-shop` with toggle structure
+
 ## GIF Search in Comments (added 2026-02-23)
 
 ### Overview
