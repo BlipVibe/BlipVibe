@@ -939,10 +939,17 @@ document.addEventListener('visibilitychange',function(){
         syncSkinDataToSupabase(true);
     } else if(document.visibilityState==='visible'){
         // Pull latest settings when tab regains focus (picks up changes from other devices)
-        loadSkinDataFromSupabase().then(function(){
-            reapplyCustomizations();
-            saveState(); // update localStorage with fresh data
-        });
+        // Skip skin reapply if in group view — group skin should stay applied
+        if(_activeGroupId){
+            loadSkinDataFromSupabase().then(function(){
+                saveState();
+            });
+        } else {
+            loadSkinDataFromSupabase().then(function(){
+                reapplyCustomizations();
+                saveState();
+            });
+        }
     }
 });
 
