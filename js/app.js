@@ -5373,6 +5373,7 @@ function applyGroupSkin(groupId){
         applyPremiumSkin(activePremium,true);
         // Apply group's own premium background if set
         var gbg=state.groupPremiumBg[groupId];
+        console.log('[GroupBG] activePremium:', activePremium, 'gbg:', JSON.stringify(gbg), 'layer:', document.getElementById('premiumBgLayer')?.classList.toString());
         if(gbg&&gbg.src){
             premiumBgImage=gbg.src;
             premiumBgOverlay=gbg.overlay!=null?gbg.overlay:0;
@@ -5381,6 +5382,7 @@ function applyGroupSkin(groupId){
             // updatePremiumBg requires state.activePremiumSkin to be set
             state.activePremiumSkin=activePremium;
             updatePremiumBg();
+            console.log('[GroupBG] AFTER updatePremiumBg — premiumBgImage:', premiumBgImage, 'activePremiumSkin:', state.activePremiumSkin, 'layer active:', document.getElementById('premiumBgLayer')?.classList.contains('active'), 'body has-premium-bg:', document.body.classList.contains('has-premium-bg'));
             // Make page transparent so premiumBgLayer shows through
             gvPage.style.background='transparent';
         } else {
