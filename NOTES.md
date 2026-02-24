@@ -698,3 +698,29 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - `.gif-picker-panel` — flex column panel with border-top, max-height 320px
 - `.gif-picker-grid` — 2-column CSS grid with overflow scroll
 - `.comment-gif` — max-width 280px, max-height 200px, rounded corners
+
+## "Try On" Preview Button — Skin Shop (added 2026-02-23)
+
+### Overview
+- Every unowned shop card has a "Try On" button next to the Buy button
+- Clicking "Try On" live-previews the item (skin, font, logo, icons, coins, template, nav style, premium skin) without saving to state or database
+- Click again to toggle off; auto-reverts when switching to My Skins tab or navigating away
+- Purchasing while trying on keeps the item applied permanently
+
+### State
+- `_tryOnSnapshot` — saved copy of all active customization state before first try-on
+- `_tryOnActive` — `{ type, id }` of the currently previewed item, or null
+
+### Key Functions
+- `doTryOn(type, id)` — takes snapshot, applies item with `silent=true`, restores leaked state values, updates button visuals
+- `revertTryOn()` — re-applies all saved values from snapshot, clears try-on state
+- Called from: `navigateTo()`, `renderSkinPage()` (mine tab switch), toggle-off click
+
+### Leaked State Handling
+- `applyLogo`, `applyIconSet`, `applyCoinSkin`, `applyNavStyle` always mutate `state.*` even with `silent=true`
+- After every try-on apply, these 4 values are restored from `_tryOnSnapshot`
+
+### CSS
+- `.shop-card-actions` — flex row for Try On + Buy buttons
+- `.try-on-btn` — small outline button (12px font, 4px 12px padding)
+- `.try-on-btn.trying` — filled with `var(--primary)` to indicate active preview

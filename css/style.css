@@ -77,6 +77,10 @@ img{display:block;}
 .skin-card .btn-primary:hover{background:#4aa8a4!important;border-color:#4aa8a4!important;}
 .skin-card .btn-disabled{background:#ccc!important;border-color:#ccc!important;color:#fff!important;}
 .skin-card .btn-outline{border-color:#ddd!important;color:#555!important;background:transparent!important;}
+.shop-card-actions{display:flex;gap:6px;align-items:center;margin-top:4px;}
+.try-on-btn{font-size:12px!important;padding:4px 12px!important;border-radius:6px!important;border:1px solid #bbb!important;color:#666!important;background:transparent!important;transition:all .2s;}
+.try-on-btn:hover{border-color:var(--primary)!important;color:var(--primary)!important;}
+.try-on-btn.trying{background:var(--primary)!important;color:#fff!important;border-color:var(--primary)!important;}
 .skin-card{animation:none!important;}
 .group-card{background:var(--card);color:var(--dark);}
 .profile-card-item{background:var(--card);color:var(--dark);}
@@ -540,6 +544,7 @@ img{display:block;}
 .album-del-x{opacity:.4;font-size:10px;margin-left:4px;cursor:pointer;transition:opacity .2s,color .2s;}
 .album-del-x:hover{opacity:1;color:#e74c3c;}
 #albumTabContent,#savedTabContent{transition:opacity .25s ease,transform .25s ease;}
+#savedTabContent{max-width:680px;}
 .saved-tab-count{background:rgba(0,0,0,.1);color:var(--gray);font-size:10px;padding:1px 6px;border-radius:8px;font-weight:600;}
 .search-tab.active .saved-tab-count{background:rgba(255,255,255,.25);color:#fff;}
 body.skin-midnight .photos-empty,body.skin-midnight .photo-album-empty{color:#bbb;}

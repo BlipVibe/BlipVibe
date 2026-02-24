@@ -1,5 +1,18 @@
 [
   {
+    "version": "0.2.10",
+    "date": "2026-02-23",
+    "added": [
+      "Try On preview button in Skin Shop — live-preview any skin, font, logo, icon set, coin skin, template, or nav style before buying"
+    ],
+    "changed": [
+      "Shop cards for unowned items now show 'Try On' button alongside Buy button",
+      "Try-on auto-reverts when switching to My Skins tab, navigating away, or toggling off",
+      "Purchasing an item while trying it on keeps it applied without reverting"
+    ],
+    "fixed": []
+  },
+  {
     "version": "0.2.9",
     "date": "2026-02-23",
     "added": [

@@ -1192,6 +1192,7 @@ var _pvSaved=null;
 var _gvSaved=null;
 var _navCurrent='home';var _navPrev='home';var _navFromPopstate=false;var _activeGroupId=null;
 function navigateTo(page,skipPush){
+    revertTryOn();
     // Restore user's skin/font/template when leaving profile view
     if(_pvSaved&&page!=='profile-view'){
         premiumBgImage=_pvSaved.bgImage;premiumBgOverlay=_pvSaved.bgOverlay;premiumBgDarkness=_pvSaved.bgDarkness||0;premiumCardTransparency=_pvSaved.cardTrans!=null?_pvSaved.cardTrans:0.1;
@@ -4971,28 +4972,96 @@ function navPreviewHtml(id){
     }
 }
 function shopCard(preview,body){return '<div class="skin-card"><div class="skin-preview" style="background:'+preview+';">'+body+'</div>';}
-function shopBuy(owned,price,cls,attr){
+function shopBuy(owned,price,cls,attr,tryType,tryId){
     if(owned) return '<button class="btn btn-disabled">Owned</button>';
-    return '<div class="skin-price"><i class="fas fa-coins"></i> '+price+' Coins</div><button class="btn '+(state.coins>=price?'btn-primary':'btn-disabled')+' '+cls+'" '+attr+(state.coins<price?' disabled':'')+'>Buy</button>';
+    var trying=_tryOnActive&&_tryOnActive.type===tryType&&_tryOnActive.id===tryId;
+    return '<div class="skin-price"><i class="fas fa-coins"></i> '+price+' Coins</div><div class="shop-card-actions"><button class="btn btn-outline try-on-btn'+(trying?' trying':'')+'" data-try-type="'+tryType+'" data-try-id="'+tryId+'">'+(trying?'Trying':'Try On')+'</button><button class="btn '+(state.coins>=price?'btn-primary':'btn-disabled')+' '+cls+'" '+attr+(state.coins<price?' disabled':'')+'>Buy</button></div>';
 }
 var currentShopTab=null;
 var _skinPageView='shop'; // 'shop' or 'mine'
+var _tryOnSnapshot=null;
+var _tryOnActive=null;
+
+function revertTryOn(){
+    if(!_tryOnSnapshot) return;
+    applySkin(_tryOnSnapshot.activeSkin||null,true);
+    if(_tryOnSnapshot.activePremiumSkin) applyPremiumSkin(_tryOnSnapshot.activePremiumSkin,true);
+    applyFont(_tryOnSnapshot.activeFont||null,true);
+    applyLogo(_tryOnSnapshot.activeLogo||null);
+    applyIconSet(_tryOnSnapshot.activeIconSet||null,true);
+    applyCoinSkin(_tryOnSnapshot.activeCoinSkin||null,true);
+    applyTemplate(_tryOnSnapshot.activeTemplate||null,true);
+    applyNavStyle(_tryOnSnapshot.activeNavStyle||null,true);
+    // Restore leaked state values
+    state.activeLogo=_tryOnSnapshot.activeLogo;
+    state.activeIconSet=_tryOnSnapshot.activeIconSet;
+    state.activeCoinSkin=_tryOnSnapshot.activeCoinSkin;
+    state.activeNavStyle=_tryOnSnapshot.activeNavStyle;
+    _tryOnSnapshot=null;
+    _tryOnActive=null;
+    $$('.try-on-btn').forEach(function(b){b.classList.remove('trying');b.textContent='Try On';});
+}
+
+function doTryOn(type,id){
+    // Take snapshot before first try-on
+    if(!_tryOnSnapshot){
+        _tryOnSnapshot={
+            activeSkin:state.activeSkin,
+            activePremiumSkin:state.activePremiumSkin,
+            activeFont:state.activeFont,
+            activeLogo:state.activeLogo,
+            activeIconSet:state.activeIconSet,
+            activeCoinSkin:state.activeCoinSkin,
+            activeTemplate:state.activeTemplate,
+            activeNavStyle:state.activeNavStyle
+        };
+    }
+    // Toggle off if same item
+    if(_tryOnActive&&_tryOnActive.type===type&&_tryOnActive.id===id){
+        revertTryOn();
+        return;
+    }
+    // Apply the item visually
+    switch(type){
+        case'skin':applySkin(id,true);break;
+        case'premium':applyPremiumSkin(id,true);break;
+        case'font':applyFont(id,true);break;
+        case'logo':applyLogo(id);break;
+        case'icons':applyIconSet(id,true);break;
+        case'coins':applyCoinSkin(id,true);break;
+        case'template':applyTemplate(id,true);break;
+        case'navstyle':applyNavStyle(id,true);break;
+    }
+    // Restore leaked state values from snapshot
+    state.activeLogo=_tryOnSnapshot.activeLogo;
+    state.activeIconSet=_tryOnSnapshot.activeIconSet;
+    state.activeCoinSkin=_tryOnSnapshot.activeCoinSkin;
+    state.activeNavStyle=_tryOnSnapshot.activeNavStyle;
+    _tryOnActive={type:type,id:id};
+    // Update button visuals
+    $$('.try-on-btn').forEach(function(b){
+        var match=b.dataset.tryType===type&&b.dataset.tryId===id;
+        b.classList.toggle('trying',match);
+        b.textContent=match?'Trying':'Try On';
+    });
+}
 function getShopCategories(){
     var cats=[];
-    cats.push({key:'basic',label:'<i class="fas fa-palette"></i> Basic Skins',items:skins,render:function(s){return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="skin-preview-inner" style="color:#333;background:#fff;">Profile Preview</div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';">'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p>'+shopBuy(state.ownedSkins[s.id],s.price,'buy-skin-btn','data-sid="'+s.id+'"')+'</div></div>';}});
-    cats.push({key:'premium',label:'<i class="fas fa-gem"></i> Premium Skins',items:premiumSkins,render:function(s){return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="premium-preview-frame" style="background:'+s.border+';"><img src="images/default-avatar.svg" class="premium-preview-avatar"></div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';"><i class="fas '+s.icon+'" style="color:'+s.iconColor+';margin-right:6px;"></i>'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p>'+shopBuy(state.ownedPremiumSkins[s.id],s.price,'buy-premium-btn','data-pid="'+s.id+'"')+'</div></div>';}});
-    cats.push({key:'fonts',label:'<i class="fas fa-font"></i> Font Styles',items:fonts,render:function(f){return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#667eea,#764ba2);"><span style="font-family:\''+f.family+'\',sans-serif;color:#fff;font-size:24px;">Aa Bb Cc</span></div><div class="skin-card-body"><h4 style="font-family:\''+f.family+'\',sans-serif;">'+f.name+'</h4><p>'+f.desc+'</p>'+shopBuy(state.ownedFonts[f.id],f.price,'buy-font-btn','data-fid="'+f.id+'"')+'</div></div>';}});
-    cats.push({key:'logos',label:'<i class="fas fa-star"></i> Logo Styles',items:logos,render:function(l){var preview=l.img?'<img src="'+l.img+'" style="height:80px;object-fit:contain;">':'<span style="color:#fff;font-size:22px;font-weight:700;">'+(l.text||'')+'</span>';return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;">'+preview+'</div><div class="skin-card-body"><h4>'+l.name+'</h4><p>'+l.desc+'</p>'+shopBuy(state.ownedLogos[l.id],l.price,'buy-logo-btn','data-lid="'+l.id+'"')+'</div></div>';}});
-    cats.push({key:'icons',label:'<i class="fas fa-icons"></i> Icon Sets',items:iconSets,render:function(s){var prev='';Object.keys(s.icons).slice(0,5).forEach(function(k){prev+='<i class="fas '+s.icons[k]+'" style="margin:0 4px;font-size:18px;"></i>';});return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div style="color:#fff;">'+prev+'</div></div><div class="skin-card-body"><h4>'+s.name+'</h4><p>'+s.desc+'</p>'+shopBuy(state.ownedIconSets[s.id],s.price,'buy-icon-btn','data-iid="'+s.id+'"')+'</div></div>';}});
-    cats.push({key:'coins',label:'<i class="fas fa-coins"></i> Coin Skins',items:coinSkins,render:function(s){return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#1a1a2e,#16213e);"><i class="fas '+s.icon+'" style="font-size:36px;color:'+s.color+';"></i></div><div class="skin-card-body"><h4>'+s.name+'</h4><p>'+s.desc+'</p>'+shopBuy(state.ownedCoinSkins[s.id],s.price,'buy-coin-btn','data-cid="'+s.id+'"')+'</div></div>';}});
-    cats.push({key:'templates',label:'<i class="fas fa-table-columns"></i> Templates',items:templates,render:function(t){return '<div class="skin-card"><div class="skin-preview" style="background:'+t.preview+';">'+tplPreviewHtml(t.id)+'</div><div class="skin-card-body"><h4>'+t.name+'</h4><p>'+t.desc+'</p>'+shopBuy(state.ownedTemplates[t.id],t.price,'buy-tpl-btn','data-tid="'+t.id+'"')+'</div></div>';}});
-    cats.push({key:'navstyles',label:'<i class="fas fa-bars-staggered"></i> Nav Styles',items:navStyles,render:function(n){return '<div class="skin-card"><div class="skin-preview" style="background:'+n.preview+';">'+navPreviewHtml(n.id)+'</div><div class="skin-card-body"><h4>'+n.name+'</h4><p>'+n.desc+'</p>'+shopBuy(state.ownedNavStyles[n.id],n.price,'buy-nav-btn','data-nid="'+n.id+'"')+'</div></div>';}});
+    cats.push({key:'basic',label:'<i class="fas fa-palette"></i> Basic Skins',items:skins,render:function(s){return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="skin-preview-inner" style="color:#333;background:#fff;">Profile Preview</div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';">'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p>'+shopBuy(state.ownedSkins[s.id],s.price,'buy-skin-btn','data-sid="'+s.id+'"','skin',s.id)+'</div></div>';}});
+    cats.push({key:'premium',label:'<i class="fas fa-gem"></i> Premium Skins',items:premiumSkins,render:function(s){return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="premium-preview-frame" style="background:'+s.border+';"><img src="images/default-avatar.svg" class="premium-preview-avatar"></div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';"><i class="fas '+s.icon+'" style="color:'+s.iconColor+';margin-right:6px;"></i>'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p>'+shopBuy(state.ownedPremiumSkins[s.id],s.price,'buy-premium-btn','data-pid="'+s.id+'"','premium',s.id)+'</div></div>';}});
+    cats.push({key:'fonts',label:'<i class="fas fa-font"></i> Font Styles',items:fonts,render:function(f){return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#667eea,#764ba2);"><span style="font-family:\''+f.family+'\',sans-serif;color:#fff;font-size:24px;">Aa Bb Cc</span></div><div class="skin-card-body"><h4 style="font-family:\''+f.family+'\',sans-serif;">'+f.name+'</h4><p>'+f.desc+'</p>'+shopBuy(state.ownedFonts[f.id],f.price,'buy-font-btn','data-fid="'+f.id+'"','font',f.id)+'</div></div>';}});
+    cats.push({key:'logos',label:'<i class="fas fa-star"></i> Logo Styles',items:logos,render:function(l){var preview=l.img?'<img src="'+l.img+'" style="height:80px;object-fit:contain;">':'<span style="color:#fff;font-size:22px;font-weight:700;">'+(l.text||'')+'</span>';return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;">'+preview+'</div><div class="skin-card-body"><h4>'+l.name+'</h4><p>'+l.desc+'</p>'+shopBuy(state.ownedLogos[l.id],l.price,'buy-logo-btn','data-lid="'+l.id+'"','logo',l.id)+'</div></div>';}});
+    cats.push({key:'icons',label:'<i class="fas fa-icons"></i> Icon Sets',items:iconSets,render:function(s){var prev='';Object.keys(s.icons).slice(0,5).forEach(function(k){prev+='<i class="fas '+s.icons[k]+'" style="margin:0 4px;font-size:18px;"></i>';});return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div style="color:#fff;">'+prev+'</div></div><div class="skin-card-body"><h4>'+s.name+'</h4><p>'+s.desc+'</p>'+shopBuy(state.ownedIconSets[s.id],s.price,'buy-icon-btn','data-iid="'+s.id+'"','icons',s.id)+'</div></div>';}});
+    cats.push({key:'coins',label:'<i class="fas fa-coins"></i> Coin Skins',items:coinSkins,render:function(s){return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#1a1a2e,#16213e);"><i class="fas '+s.icon+'" style="font-size:36px;color:'+s.color+';"></i></div><div class="skin-card-body"><h4>'+s.name+'</h4><p>'+s.desc+'</p>'+shopBuy(state.ownedCoinSkins[s.id],s.price,'buy-coin-btn','data-cid="'+s.id+'"','coins',s.id)+'</div></div>';}});
+    cats.push({key:'templates',label:'<i class="fas fa-table-columns"></i> Templates',items:templates,render:function(t){return '<div class="skin-card"><div class="skin-preview" style="background:'+t.preview+';">'+tplPreviewHtml(t.id)+'</div><div class="skin-card-body"><h4>'+t.name+'</h4><p>'+t.desc+'</p>'+shopBuy(state.ownedTemplates[t.id],t.price,'buy-tpl-btn','data-tid="'+t.id+'"','template',t.id)+'</div></div>';}});
+    cats.push({key:'navstyles',label:'<i class="fas fa-bars-staggered"></i> Nav Styles',items:navStyles,render:function(n){return '<div class="skin-card"><div class="skin-preview" style="background:'+n.preview+';">'+navPreviewHtml(n.id)+'</div><div class="skin-card-body"><h4>'+n.name+'</h4><p>'+n.desc+'</p>'+shopBuy(state.ownedNavStyles[n.id],n.price,'buy-nav-btn','data-nid="'+n.id+'"','navstyle',n.id)+'</div></div>';}});
     return cats;
 }
 function renderSkinPage(){
     var shopView=$('#skinShopView');
     var mineView=$('#mySkinView');
     if(_skinPageView==='mine'){
+        revertTryOn();
         shopView.style.display='none';mineView.style.display='';
         renderMySkins();
     } else {
@@ -5019,15 +5088,26 @@ function renderShop(){
     active.items.forEach(function(item){html+=active.render(item);});
     html+='</div>';
     $('#shopGrid').innerHTML=html;
-    function shopPurchased(btn){var p=btn.parentElement;var priceEl=p.querySelector('.skin-price');if(priceEl)priceEl.remove();btn.className='btn btn-disabled';btn.textContent='Owned';btn.disabled=true;btn.replaceWith(btn.cloneNode(true));renderMySkins();saveState();}
-    $$('.buy-skin-btn').forEach(function(btn){btn.addEventListener('click',function(){var sid=btn.getAttribute('data-sid');var skin=skins.find(function(s){return s.id===sid;});if(state.coins>=skin.price){state.coins-=skin.price;state.ownedSkins[sid]=true;updateCoins();shopPurchased(btn);addNotification('skin','You purchased the "'+skin.name+'" skin!');}});});
-    $$('.buy-font-btn').forEach(function(btn){btn.addEventListener('click',function(){var fid=btn.getAttribute('data-fid');var font=fonts.find(function(f){return f.id===fid;});if(state.coins>=font.price){state.coins-=font.price;state.ownedFonts[fid]=true;updateCoins();shopPurchased(btn);addNotification('skin','You purchased the "'+font.name+'" font!');}});});
-    $$('.buy-logo-btn').forEach(function(btn){btn.addEventListener('click',function(){var lid=btn.getAttribute('data-lid');var logo=logos.find(function(l){return l.id===lid;});if(state.coins>=logo.price){state.coins-=logo.price;state.ownedLogos[lid]=true;updateCoins();shopPurchased(btn);addNotification('skin','You purchased the "'+logo.name+'" logo!');}});});
-    $$('.buy-icon-btn').forEach(function(btn){btn.addEventListener('click',function(){var iid=btn.getAttribute('data-iid');var s=iconSets.find(function(x){return x.id===iid;});if(state.coins>=s.price){state.coins-=s.price;state.ownedIconSets[iid]=true;updateCoins();shopPurchased(btn);addNotification('skin','You purchased the "'+s.name+'" icon set!');}});});
-    $$('.buy-coin-btn').forEach(function(btn){btn.addEventListener('click',function(){var cid=btn.getAttribute('data-cid');var s=coinSkins.find(function(x){return x.id===cid;});if(state.coins>=s.price){state.coins-=s.price;state.ownedCoinSkins[cid]=true;updateCoins();shopPurchased(btn);addNotification('skin','You purchased the "'+s.name+'" coin skin!');}});});
-    $$('.buy-tpl-btn').forEach(function(btn){btn.addEventListener('click',function(){var tid=btn.getAttribute('data-tid');var t=templates.find(function(x){return x.id===tid;});if(state.coins>=t.price){state.coins-=t.price;state.ownedTemplates[tid]=true;updateCoins();shopPurchased(btn);addNotification('skin','You purchased the "'+t.name+'" template!');}});});
-    $$('.buy-premium-btn').forEach(function(btn){btn.addEventListener('click',function(){var pid=btn.getAttribute('data-pid');var skin=premiumSkins.find(function(s){return s.id===pid;});if(state.coins>=skin.price){state.coins-=skin.price;state.ownedPremiumSkins[pid]=true;updateCoins();shopPurchased(btn);addNotification('skin','You purchased the "'+skin.name+'" premium skin!');}});});
-    $$('.buy-nav-btn').forEach(function(btn){btn.addEventListener('click',function(){var nid=btn.getAttribute('data-nid');var n=navStyles.find(function(x){return x.id===nid;});if(state.coins>=n.price){state.coins-=n.price;state.ownedNavStyles[nid]=true;updateCoins();shopPurchased(btn);addNotification('skin','You purchased the "'+n.name+'" nav style!');}});});
+    function shopPurchased(btn,tryType,tryId){
+        var body=btn.closest('.skin-card-body');
+        var priceEl=body.querySelector('.skin-price');if(priceEl)priceEl.remove();
+        var actions=body.querySelector('.shop-card-actions');
+        if(actions){var owned=document.createElement('button');owned.className='btn btn-disabled';owned.textContent='Owned';owned.disabled=true;actions.replaceWith(owned);}
+        else{btn.className='btn btn-disabled';btn.textContent='Owned';btn.disabled=true;btn.replaceWith(btn.cloneNode(true));}
+        // If buying the item currently being tried on, keep it applied — clear try-on state without reverting
+        if(_tryOnActive&&_tryOnActive.type===tryType&&_tryOnActive.id===tryId){_tryOnSnapshot=null;_tryOnActive=null;}
+        renderMySkins();saveState();
+    }
+    $$('.buy-skin-btn').forEach(function(btn){btn.addEventListener('click',function(){var sid=btn.getAttribute('data-sid');var skin=skins.find(function(s){return s.id===sid;});if(state.coins>=skin.price){state.coins-=skin.price;state.ownedSkins[sid]=true;updateCoins();shopPurchased(btn,'skin',sid);addNotification('skin','You purchased the "'+skin.name+'" skin!');}});});
+    $$('.buy-font-btn').forEach(function(btn){btn.addEventListener('click',function(){var fid=btn.getAttribute('data-fid');var font=fonts.find(function(f){return f.id===fid;});if(state.coins>=font.price){state.coins-=font.price;state.ownedFonts[fid]=true;updateCoins();shopPurchased(btn,'font',fid);addNotification('skin','You purchased the "'+font.name+'" font!');}});});
+    $$('.buy-logo-btn').forEach(function(btn){btn.addEventListener('click',function(){var lid=btn.getAttribute('data-lid');var logo=logos.find(function(l){return l.id===lid;});if(state.coins>=logo.price){state.coins-=logo.price;state.ownedLogos[lid]=true;updateCoins();shopPurchased(btn,'logo',lid);addNotification('skin','You purchased the "'+logo.name+'" logo!');}});});
+    $$('.buy-icon-btn').forEach(function(btn){btn.addEventListener('click',function(){var iid=btn.getAttribute('data-iid');var s=iconSets.find(function(x){return x.id===iid;});if(state.coins>=s.price){state.coins-=s.price;state.ownedIconSets[iid]=true;updateCoins();shopPurchased(btn,'icons',iid);addNotification('skin','You purchased the "'+s.name+'" icon set!');}});});
+    $$('.buy-coin-btn').forEach(function(btn){btn.addEventListener('click',function(){var cid=btn.getAttribute('data-cid');var s=coinSkins.find(function(x){return x.id===cid;});if(state.coins>=s.price){state.coins-=s.price;state.ownedCoinSkins[cid]=true;updateCoins();shopPurchased(btn,'coins',cid);addNotification('skin','You purchased the "'+s.name+'" coin skin!');}});});
+    $$('.buy-tpl-btn').forEach(function(btn){btn.addEventListener('click',function(){var tid=btn.getAttribute('data-tid');var t=templates.find(function(x){return x.id===tid;});if(state.coins>=t.price){state.coins-=t.price;state.ownedTemplates[tid]=true;updateCoins();shopPurchased(btn,'template',tid);addNotification('skin','You purchased the "'+t.name+'" template!');}});});
+    $$('.buy-premium-btn').forEach(function(btn){btn.addEventListener('click',function(){var pid=btn.getAttribute('data-pid');var skin=premiumSkins.find(function(s){return s.id===pid;});if(state.coins>=skin.price){state.coins-=skin.price;state.ownedPremiumSkins[pid]=true;updateCoins();shopPurchased(btn,'premium',pid);addNotification('skin','You purchased the "'+skin.name+'" premium skin!');}});});
+    $$('.buy-nav-btn').forEach(function(btn){btn.addEventListener('click',function(){var nid=btn.getAttribute('data-nid');var n=navStyles.find(function(x){return x.id===nid;});if(state.coins>=n.price){state.coins-=n.price;state.ownedNavStyles[nid]=true;updateCoins();shopPurchased(btn,'navstyle',nid);addNotification('skin','You purchased the "'+n.name+'" nav style!');}});});
+    // Try On button handlers
+    $$('.try-on-btn').forEach(function(btn){btn.addEventListener('click',function(){doTryOn(btn.dataset.tryType,btn.dataset.tryId);});});
     initDragScroll('#shopGrid');
     initDragScroll('#shopTabs');
     $$('#shopTabs .search-tab').forEach(function(tab){tab.addEventListener('click',function(){
