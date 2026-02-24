@@ -10,7 +10,9 @@
       "Try-on auto-reverts when switching to My Skins tab, navigating away, or toggling off",
       "Purchasing an item while trying it on keeps it applied without reverting"
     ],
-    "fixed": []
+    "fixed": [
+      "Saved posts page images stretched too wide — post cards now capped at 680px width"
+    ]
   },
   {
     "version": "0.2.9",
