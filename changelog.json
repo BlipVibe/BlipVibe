@@ -1,5 +1,15 @@
 [
   {
+    "version": "0.2.11",
+    "date": "2026-02-26",
+    "added": [],
+    "changed": [],
+    "fixed": [
+      "Twitter/X embeds not showing — missing cookie consent check caused blank posts (URL stripped but embed never loaded)",
+      "TikTok embeds had the same missing cookie consent gate (now shows consent placeholder like all other platforms)"
+    ]
+  },
+  {
     "version": "0.2.10",
     "date": "2026-02-23",
     "added": [

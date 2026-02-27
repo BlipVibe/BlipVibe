@@ -732,3 +732,7 @@ Group coins are **shared** — they belong to the group, not individual users. A
 ## Cross-Tab Skin Bleeding Fix (fixed 2026-02-24)
 - **Cause:** `visibilitychange` handler called `reapplyCustomizations()` unconditionally when a tab became visible. If you were in a group view, switching tabs would pull personal skin from Supabase and overwrite the group's active skin.
 - **Fix:** Skip `reapplyCustomizations()` when `_activeGroupId` is set (i.e., in group view). Still syncs data from Supabase and saves to localStorage, just doesn't re-apply skin visuals.
+
+## Twitter/X & TikTok Embed Cookie Consent Fix (fixed 2026-02-26)
+- **Cause:** `getVideoEmbedHtml()` was missing `_cookieConsent` check for Twitter/X and TikTok embeds. All other platforms (YouTube, Vimeo, Instagram, Spotify, SoundCloud) had the check. Without cookie consent, `_loadTwitterEmbed()` returned early (no `widgets.js` loaded), but the blockquote HTML was still returned and injected. The URL was stripped from post text, leaving the post appearing blank — no URL, no working embed.
+- **Fix:** Added `if(!_cookieConsent) return _embedConsentPlaceholder(url,'Twitter/X',socialCls,mini)` before the Twitter/X blockquote return, and same for TikTok. Now both show the consent placeholder (with "Allow & Load" button) like all other platforms when cookies aren't consented.

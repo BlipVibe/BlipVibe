@@ -3765,10 +3765,10 @@ function getVideoEmbedHtml(url, mini){
     // TikTok: tiktok.com/@user/video/ID or vm.tiktok.com/shortcode
     m=url.match(/tiktok\.com\/@[^/]+\/video\/(\d+)/);
     if(!m) m=url.match(/tiktok\.com\/(?:@[^/]+\/video\/)?(\d{15,})/);
-    if(m){ id=m[1]; _loadTikTokEmbed(); return '<div class="'+socialCls+'" style="max-width:325px;"><blockquote class="tiktok-embed" cite="'+url+'" data-video-id="'+id+'" style="max-width:325px;min-width:250px;"><section></section></blockquote></div>'; }
+    if(m){ id=m[1]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'TikTok',socialCls,mini); _loadTikTokEmbed(); return '<div class="'+socialCls+'" style="max-width:325px;"><blockquote class="tiktok-embed" cite="'+url+'" data-video-id="'+id+'" style="max-width:325px;min-width:250px;"><section></section></blockquote></div>'; }
     // Twitter / X: twitter.com/user/status/ID or x.com/user/status/ID (official blockquote + widgets.js)
     m=url.match(/((?:twitter\.com|x\.com)\/\w+\/status\/(\d+))/);
-    if(m){ _loadTwitterEmbed(); var tweetUrl=url.match(/(https?:\/\/(?:twitter\.com|x\.com)\/\w+\/status\/\d+)/); var tUrl=tweetUrl?tweetUrl[1]:url; return '<div class="'+socialCls+'" style="max-width:550px;"><blockquote class="twitter-tweet" data-dnt="true"'+(mini?' data-width="300"':'')+'><a href="'+tUrl+'"></a></blockquote></div>'; }
+    if(m){ if(!_cookieConsent) return _embedConsentPlaceholder(url,'Twitter/X',socialCls,mini); _loadTwitterEmbed(); var tweetUrl=url.match(/(https?:\/\/(?:twitter\.com|x\.com)\/\w+\/status\/\d+)/); var tUrl=tweetUrl?tweetUrl[1]:url; return '<div class="'+socialCls+'" style="max-width:550px;"><blockquote class="twitter-tweet" data-dnt="true"'+(mini?' data-width="300"':'')+'><a href="'+tUrl+'"></a></blockquote></div>'; }
     // Instagram: posts, reels, TV (iframe embed — more reliable on mobile than blockquote SDK)
     m=url.match(/instagram\.com\/(p|reel|tv)\/([A-Za-z0-9_-]+)/);
     if(m){ var igType=m[1]; id=m[2]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'Instagram',socialCls,mini); var igUrl='https://www.instagram.com/'+igType+'/'+id+'/embed/captioned/'; return '<div class="'+socialCls+'" style="max-width:400px;overflow:hidden;border-radius:8px;"><iframe src="'+igUrl+'" width="100%" height="'+(mini?'350':'520')+'" frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen style="display:block;width:100%;border:0;border-radius:8px;background:#fff;"></iframe></div>'; }
