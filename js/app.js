@@ -4805,6 +4805,7 @@ async function renderSuggestions(){
             });
         });
     }catch(e){console.error('renderSuggestions:',e);}
+    renderMobilePills();
 }
 
 // ======================== TRENDING GROUPS SIDEBAR ========================
@@ -4824,6 +4825,47 @@ function renderTrendingSidebar(){
             var gid=el.getAttribute('data-gid');
             var group=groups.find(function(g){return g.id===gid;});
             if(group) showGroupView(group);
+        });
+    });
+    renderMobilePills();
+}
+
+// ======================== MOBILE PILLS BAR ========================
+function renderMobilePills(){
+    var bar=$('#mobilePills');
+    if(!bar) return;
+    var html='';
+    // People You May Know pills
+    try{
+        var list=$('#suggestionList');
+        if(list){
+            var items=list.querySelectorAll('.suggestion-item');
+            items.forEach(function(item){
+                var uid=item.querySelector('.suggestion-follow-btn')?.dataset.uid;
+                var img=item.querySelector('.suggestion-avatar');
+                var name=item.querySelector('.suggestion-info h4');
+                if(!uid||!name) return;
+                html+='<button class="mobile-pill" data-pill-uid="'+uid+'">'+(img?'<img src="'+img.src+'">':'<i class="fas fa-user"></i>')+escapeHtml(name.textContent)+'</button>';
+            });
+        }
+    }catch(e){}
+    // Trending Groups pills
+    try{
+        var sorted=groups.slice().sort(function(a,b){return (b.members||0)-(a.members||0);});
+        sorted.slice(0,4).forEach(function(g){
+            html+='<button class="mobile-pill" data-pill-gid="'+g.id+'"><i class="fas '+(g.icon||'fa-users')+'" style="color:'+(g.color||'var(--primary)')+';"></i>'+escapeHtml(g.name)+'</button>';
+        });
+    }catch(e){}
+    bar.innerHTML=html;
+    bar.querySelectorAll('[data-pill-uid]').forEach(function(pill){
+        pill.addEventListener('click',async function(){
+            try{var p=await sbGetProfile(pill.dataset.pillUid);if(p) showProfileView(profileToPerson(p));}catch(e){}
+        });
+    });
+    bar.querySelectorAll('[data-pill-gid]').forEach(function(pill){
+        pill.addEventListener('click',function(){
+            var g=groups.find(function(gr){return gr.id===pill.dataset.pillGid;});
+            if(g) showGroupView(g);
         });
     });
 }

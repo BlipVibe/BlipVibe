@@ -5,11 +5,13 @@
     "added": [
       "Personal cover photo picker — 'Change Cover Photo' now opens a modal with previous uploads and re-crop option",
       "Premium background history — previous background uploads shown as scrollable thumbnail row, click to re-apply",
-      "Group premium background history — same scrollable previous uploads picker for group background images"
+      "Group premium background history — same scrollable previous uploads picker for group background images",
+      "Mobile pills bar — People You May Know and Trending Groups shown as clickable pills above the post bar on mobile"
     ],
     "changed": [
       "Selecting a previous photo (avatar, group profile, group cover) now opens re-crop modal instead of applying directly",
-      "Premium background uploads use unique filenames so previous uploads are preserved instead of overwritten"
+      "Premium background uploads use unique filenames so previous uploads are preserved instead of overwritten",
+      "People You May Know and Trending Groups cards hidden from bottom of mobile feed (replaced by top pills)"
     ],
     "fixed": [
       "PNG profile pictures showing white border/box — removed border and box-shadow from all avatar elements",
