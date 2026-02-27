@@ -1,5 +1,23 @@
 [
   {
+    "version": "0.2.14",
+    "date": "2026-02-27",
+    "added": [
+      "Personal cover photo picker — 'Change Cover Photo' now opens a modal with previous uploads and re-crop option",
+      "Premium background history — previous background uploads shown as scrollable thumbnail row, click to re-apply",
+      "Group premium background history — same scrollable previous uploads picker for group background images"
+    ],
+    "changed": [
+      "Selecting a previous photo (avatar, group profile, group cover) now opens re-crop modal instead of applying directly",
+      "Premium background uploads use unique filenames so previous uploads are preserved instead of overwritten"
+    ],
+    "fixed": [
+      "PNG profile pictures showing white border/box — removed border and box-shadow from all avatar elements",
+      "Avatar background color jutting out as square — containers now clip to rounded shape with overflow:hidden",
+      "Group icon wrap showing white border and box shadow around group images"
+    ]
+  },
+  {
     "version": "0.2.13",
     "date": "2026-02-27",
     "added": [],

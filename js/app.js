@@ -3069,11 +3069,9 @@ async function showGroupView(group){
             $$('.gv-cover-pick-thumb').forEach(function(thumb){
                 thumb.addEventListener('mouseenter',function(){thumb.style.borderColor='var(--primary)';});
                 thumb.addEventListener('mouseleave',function(){thumb.style.borderColor='transparent';});
-                thumb.addEventListener('click',async function(){
+                thumb.addEventListener('click',function(){
                     var src=photos[parseInt(thumb.dataset.idx)].src;
-                    group.coverPhoto=src;banner.style.background='url('+src+') center/cover';
-                    try{await sbUpdateGroup(group.id,{cover_photo_url:src});}catch(e){console.warn('Save group cover:',e);}
-                    closeModal();
+                    closeModal();showGroupCoverCropModal(src,group,banner);
                 });
             });
         });
@@ -3129,11 +3127,9 @@ async function showGroupView(group){
             $$('.gv-profile-pick-thumb').forEach(function(thumb){
                 thumb.addEventListener('mouseenter',function(){thumb.style.borderColor='var(--primary)';});
                 thumb.addEventListener('mouseleave',function(){thumb.style.borderColor='transparent';});
-                thumb.addEventListener('click',async function(){
+                thumb.addEventListener('click',function(){
                     var src=photos[parseInt(thumb.dataset.idx)].src;
-                    group.profileImg=src;
-                    try{await sbUpdateGroup(group.id,{avatar_url:src});}catch(e){console.warn('Save group avatar:',e);}
-                    closeModal();showGroupView(group);renderGroups();
+                    closeModal();showGroupProfileCropModal(src,group);
                 });
             });
             $$('.gv-icon-pick').forEach(function(btn){btn.addEventListener('click',async function(){group.icon=btn.dataset.icon;try{await sbUpdateGroup(group.id,{icon:group.icon});}catch(e){console.warn('Save group icon:',e);}closeModal();showGroupView(group);renderGroups();});});
@@ -3258,8 +3254,31 @@ function openGroupPostModal(group){
     });
 }
 
-// Cover photo upload with crop
-$('#coverEditBtn').addEventListener('click',function(e){e.stopPropagation();$('#coverFileInput').click();});
+// Cover photo upload with crop + previous picker
+function showCoverPickerModal(){
+    var photos=state.photos.cover;
+    var h='<div class="modal-header"><h3>Change Cover Photo</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body">';
+    h+='<div style="text-align:center;margin-bottom:16px;"><button class="btn btn-primary" id="coverUploadNewBtn"><i class="fas fa-upload"></i> Upload New Photo</button></div>';
+    if(photos.length>0){
+        h+='<p style="font-size:13px;color:var(--gray);margin-bottom:12px;text-align:center;">Or select from previous uploads:</p>';
+        h+='<div class="shop-scroll-row" id="coverPickRow" style="gap:12px;padding:8px 4px 12px;">';
+        photos.forEach(function(p,i){h+='<img src="'+p.src+'" class="cover-pick-thumb" data-idx="'+i+'" style="min-width:140px;max-width:140px;height:50px;object-fit:cover;border-radius:8px;cursor:pointer;border:3px solid transparent;transition:border-color .2s;flex-shrink:0;scroll-snap-align:start;">';});
+        h+='</div>';
+    }
+    h+='</div>';
+    showModal(h);
+    if(photos.length>0) initDragScroll('#modalContent');
+    document.getElementById('coverUploadNewBtn').addEventListener('click',function(){closeModal();$('#coverFileInput').click();});
+    $$('.cover-pick-thumb').forEach(function(thumb){
+        thumb.addEventListener('mouseenter',function(){thumb.style.borderColor='var(--primary)';});
+        thumb.addEventListener('mouseleave',function(){thumb.style.borderColor='transparent';});
+        thumb.addEventListener('click',function(){
+            var src=photos[parseInt(thumb.dataset.idx)].src;
+            closeModal();showCoverCropModal(src);
+        });
+    });
+}
+$('#coverEditBtn').addEventListener('click',function(e){e.stopPropagation();showCoverPickerModal();});
 $('#coverFileInput').addEventListener('change',function(){
     var file=this.files[0];
     if(!file) return;
@@ -3353,7 +3372,7 @@ function applyCoverPhoto(){
 }
 
 // Profile view cover photo upload
-$('#pvCoverEditBtn').addEventListener('click',function(e){e.stopPropagation();$('#pvCoverFileInput').click();});
+$('#pvCoverEditBtn').addEventListener('click',function(e){e.stopPropagation();showCoverPickerModal();});
 $('#pvCoverFileInput').addEventListener('change',function(){
     var file=this.files[0];
     if(!file) return;
@@ -3569,9 +3588,7 @@ $('#avatarEditBtn').addEventListener('click',function(e){
         thumb.addEventListener('mouseleave',function(){thumb.style.borderColor='transparent';});
         thumb.addEventListener('click',function(){
             var src=photos[parseInt(thumb.dataset.idx)].src;
-            syncAllAvatars(src);
-            if(currentUser) sbUpdateProfile(currentUser.id, { avatar_url: src }).catch(function(e){ console.error('Avatar select error:', e); });
-            closeModal();
+            closeModal();showCropModal(src);
         });
     });
 });
@@ -5394,6 +5411,7 @@ function renderGroupShop(groupId){
             bgHtml+='<img src="'+_gbg.src+'" style="width:48px;height:48px;object-fit:cover;border-radius:6px;border:2px solid currentColor;opacity:.7;">';
         }
         bgHtml+='</div>';
+        bgHtml+='<div id="groupBgHistory" style="margin-top:10px;"></div>';
         if(_gbg.src){
             var _d=Math.round((_gbg.darkness||0)*100),_o=Math.round((_gbg.overlay||0)*100),_ct=Math.round((_gbg.cardTrans!=null?_gbg.cardTrans:0.1)*100);
             bgHtml+='<div style="margin-top:12px;"><label style="font-size:12px;opacity:.7;display:flex;align-items:center;gap:8px;"><i class="fas fa-moon"></i>Darkness: <span id="gBgDarknessLabel">'+_d+'%</span></label>';
@@ -5459,7 +5477,7 @@ function renderGroupShop(groupId){
             if(!state.groupPremiumBg[groupId]) state.groupPremiumBg[groupId]={};
             try{
                 var ext=file.name.split('.').pop()||'jpg';
-                var path='backgrounds/group_'+groupId+'/bg.'+ext;
+                var path='backgrounds/group_'+groupId+'/bg-'+Date.now()+'.'+ext;
                 var url=await sbUploadFile('avatars',path,file);
                 state.groupPremiumBg[groupId].src=url;
             }catch(e){
@@ -5470,6 +5488,28 @@ function renderGroupShop(groupId){
             }
             applyGroupSkin(groupId);renderGroupShop(groupId);saveState();
         });
+    }
+    // Load group background history thumbnails
+    var gBgHistoryEl=document.getElementById('groupBgHistory');
+    if(gBgHistoryEl){
+        sbListGroupBackgrounds(groupId).then(function(bgs){
+            if(!bgs||!bgs.length)return;
+            var hh='<p style="font-size:12px;color:var(--gray);margin-bottom:6px;">Previous uploads:</p><div class="shop-scroll-row" style="gap:8px;padding:4px 0 8px;">';
+            bgs.forEach(function(b,i){hh+='<img src="'+b.src+'" class="grp-bg-hist-thumb" data-idx="'+i+'" style="min-width:64px;max-width:64px;height:64px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:border-color .2s;flex-shrink:0;scroll-snap-align:start;opacity:.8;">';});
+            hh+='</div>';
+            gBgHistoryEl.innerHTML=hh;
+            initDragScroll('#groupBgHistory');
+            var bgArr=bgs;
+            $$('.grp-bg-hist-thumb').forEach(function(t){
+                t.addEventListener('mouseenter',function(){t.style.borderColor='var(--primary)';t.style.opacity='1';});
+                t.addEventListener('mouseleave',function(){t.style.borderColor='transparent';t.style.opacity='.8';});
+                t.addEventListener('click',function(){
+                    if(!state.groupPremiumBg[groupId]) state.groupPremiumBg[groupId]={};
+                    state.groupPremiumBg[groupId].src=bgArr[parseInt(t.dataset.idx)].src;
+                    applyGroupSkin(groupId);renderGroupShop(groupId);saveState();
+                });
+            });
+        }).catch(function(e){console.warn('Group BG history load:',e);});
     }
     var _gBgRemove=document.getElementById('groupBgRemove');
     if(_gBgRemove){
@@ -5841,6 +5881,7 @@ function renderMySkins(){
             bgHtml+='<img src="'+premiumBgImage+'" style="width:48px;height:48px;object-fit:cover;border-radius:6px;border:2px solid currentColor;opacity:.7;">';
         }
         bgHtml+='</div>';
+        bgHtml+='<div id="premiumBgHistory" style="margin-top:10px;"></div>';
         if(premiumBgImage){
             bgHtml+='<div style="margin-top:12px;">';
             bgHtml+='<label style="font-size:12px;opacity:.7;display:flex;align-items:center;gap:8px;"><i class="fas fa-moon"></i>Darkness: <span id="darknessValLabel">'+Math.round(premiumBgDarkness*100)+'%</span></label>';
@@ -5869,7 +5910,7 @@ function renderMySkins(){
             // Upload to Supabase Storage for persistence and sharing
             try{
                 var ext=file.name.split('.').pop()||'jpg';
-                var path='backgrounds/'+currentUser.id+'/bg.'+ext;
+                var path='backgrounds/'+currentUser.id+'/bg-'+Date.now()+'.'+ext;
                 var url=await sbUploadFile('avatars',path,file);
                 premiumBgImage=url;
                 updatePremiumBg();renderMySkins();saveState();
@@ -5881,6 +5922,27 @@ function renderMySkins(){
                 reader.readAsDataURL(file);
             }
         });
+    }
+    // Load background history thumbnails
+    var bgHistoryEl=document.getElementById('premiumBgHistory');
+    if(bgHistoryEl&&currentUser){
+        sbListUserBackgrounds(currentUser.id).then(function(bgs){
+            if(!bgs||!bgs.length)return;
+            var hh='<p style="font-size:12px;color:var(--gray);margin-bottom:6px;">Previous uploads:</p><div class="shop-scroll-row" style="gap:8px;padding:4px 0 8px;">';
+            bgs.forEach(function(b,i){hh+='<img src="'+b.src+'" class="prem-bg-hist-thumb" data-idx="'+i+'" style="min-width:64px;max-width:64px;height:64px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:border-color .2s;flex-shrink:0;scroll-snap-align:start;opacity:.8;">';});
+            hh+='</div>';
+            bgHistoryEl.innerHTML=hh;
+            initDragScroll('#premiumBgHistory');
+            var bgArr=bgs;
+            $$('.prem-bg-hist-thumb').forEach(function(t){
+                t.addEventListener('mouseenter',function(){t.style.borderColor='var(--primary)';t.style.opacity='1';});
+                t.addEventListener('mouseleave',function(){t.style.borderColor='transparent';t.style.opacity='.8';});
+                t.addEventListener('click',function(){
+                    premiumBgImage=bgArr[parseInt(t.dataset.idx)].src;
+                    updatePremiumBg();renderMySkins();saveState();
+                });
+            });
+        }).catch(function(e){console.warn('BG history load:',e);});
     }
     var bgRemoveBtn=document.getElementById('premiumBgRemove');
     if(bgRemoveBtn){

@@ -642,6 +642,32 @@ async function sbListUserCovers(userId) {
     });
 }
 
+async function sbListUserBackgrounds(userId) {
+  const { data, error } = await sb.storage
+    .from('avatars')
+    .list('backgrounds/' + userId, { sortBy: { column: 'created_at', order: 'desc' } });
+  if (error) throw error;
+  return (data || [])
+    .filter(f => f.name.match(/^bg-/))
+    .map(f => {
+      const { data: urlData } = sb.storage.from('avatars').getPublicUrl('backgrounds/' + userId + '/' + f.name);
+      return { src: urlData.publicUrl + '?t=' + Date.now(), date: new Date(f.created_at).getTime(), name: f.name };
+    });
+}
+
+async function sbListGroupBackgrounds(groupId) {
+  const { data, error } = await sb.storage
+    .from('avatars')
+    .list('backgrounds/group_' + groupId, { sortBy: { column: 'created_at', order: 'desc' } });
+  if (error) throw error;
+  return (data || [])
+    .filter(f => f.name.match(/^bg-/))
+    .map(f => {
+      const { data: urlData } = sb.storage.from('avatars').getPublicUrl('backgrounds/group_' + groupId + '/' + f.name);
+      return { src: urlData.publicUrl + '?t=' + Date.now(), date: new Date(f.created_at).getTime(), name: f.name };
+    });
+}
+
 async function sbUploadPostImage(userId, file) {
   validateUploadFile(file, { maxSize: 10 * 1024 * 1024, label: 'Image' });
   const ext = file.name.split('.').pop();
