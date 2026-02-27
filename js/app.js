@@ -3746,7 +3746,6 @@ function _loadInstagramEmbed(){
 }
 function _reloadThirdPartyEmbeds(url){
     if(/tiktok\.com/i.test(url)) setTimeout(_loadTikTokEmbed,100);
-    else if(/(?:twitter\.com|x\.com)/i.test(url)) setTimeout(_loadTwitterEmbed,100);
 }
 function _embedConsentPlaceholder(url,label,cls,mini){
     return '<div class="'+cls+'" style="margin:10px auto 0;max-width:560px;border-radius:8px;overflow:hidden;background:#f0f0f0;padding:20px;text-align:center;aspect-ratio:auto;position:static;"><p style="color:#666;font-size:13px;margin-bottom:8px;"><i class="fas fa-cookie-bite" style="margin-right:6px;"></i>'+escapeHtml(label)+' content blocked</p><p style="font-size:12px;color:#999;margin-bottom:10px;">Accept cookies to view embedded content</p><button class="btn btn-primary embed-consent-btn" style="font-size:12px;padding:6px 16px;" data-url="'+escapeHtml(url)+'">Allow &amp; Load</button></div>';
@@ -3766,9 +3765,7 @@ function getVideoEmbedHtml(url, mini){
     m=url.match(/tiktok\.com\/@[^/]+\/video\/(\d+)/);
     if(!m) m=url.match(/tiktok\.com\/(?:@[^/]+\/video\/)?(\d{15,})/);
     if(m){ id=m[1]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'TikTok',socialCls,mini); _loadTikTokEmbed(); return '<div class="'+socialCls+'" style="max-width:325px;"><blockquote class="tiktok-embed" cite="'+url+'" data-video-id="'+id+'" style="max-width:325px;min-width:250px;"><section></section></blockquote></div>'; }
-    // Twitter / X: twitter.com/user/status/ID or x.com/user/status/ID (official blockquote + widgets.js)
-    m=url.match(/((?:twitter\.com|x\.com)\/\w+\/status\/(\d+))/);
-    if(m){ if(!_cookieConsent) return _embedConsentPlaceholder(url,'Twitter/X',socialCls,mini); _loadTwitterEmbed(); var tweetUrl=url.match(/(https?:\/\/(?:twitter\.com|x\.com)\/\w+\/status\/\d+)/); var tUrl=tweetUrl?tweetUrl[1]:url; return '<div class="'+socialCls+'" style="max-width:550px;"><blockquote class="twitter-tweet" data-dnt="true"'+(mini?' data-width="300"':'')+'><a href="'+tUrl+'"></a></blockquote></div>'; }
+    // Twitter / X: let Microlink handle link preview (widgets.js blockquote approach unreliable)
     // Instagram: posts, reels, TV (iframe embed — more reliable on mobile than blockquote SDK)
     m=url.match(/instagram\.com\/(p|reel|tv)\/([A-Za-z0-9_-]+)/);
     if(m){ var igType=m[1]; id=m[2]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'Instagram',socialCls,mini); var igUrl='https://www.instagram.com/'+igType+'/'+id+'/embed/captioned/'; return '<div class="'+socialCls+'" style="max-width:400px;overflow:hidden;border-radius:8px;"><iframe src="'+igUrl+'" width="100%" height="'+(mini?'350':'520')+'" frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen style="display:block;width:100%;border:0;border-radius:8px;background:#fff;"></iframe></div>'; }

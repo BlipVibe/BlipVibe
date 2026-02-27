@@ -5,8 +5,8 @@
     "added": [],
     "changed": [],
     "fixed": [
-      "Twitter/X embeds not showing — missing cookie consent check caused blank posts (URL stripped but embed never loaded)",
-      "TikTok embeds had the same missing cookie consent gate (now shows consent placeholder like all other platforms)"
+      "Twitter/X links now show as rich link preview cards instead of broken blank embeds (widgets.js blockquote approach was unreliable)",
+      "TikTok embeds had missing cookie consent gate (now shows consent placeholder like all other platforms)"
     ]
   },
   {
