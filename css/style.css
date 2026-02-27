@@ -1983,12 +1983,20 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
         margin:0!important;
     }
     #msgBadge{
+        position:absolute!important;
+        top:2px!important;right:2px!important;
         width:8px!important;height:8px!important;min-width:8px!important;
+        max-width:8px!important;max-height:8px!important;
         padding:0!important;font-size:0!important;line-height:0!important;
         border-radius:50%!important;
         background:var(--primary)!important;
-        top:2px!important;right:2px!important;
+        z-index:10!important;
+        pointer-events:none!important;
+        flex:none!important;
+        overflow:hidden!important;
+        display:none!important;
     }
+    #msgBadge.has-unread{display:block!important;opacity:1!important;}
     .nav-right{flex:1!important;justify-content:flex-end!important;}
     body[class*="premium-"] .nav-center{background:var(--ps-nav)!important;background-size:200% 200%!important;animation:gradientShift 6s ease infinite!important;}
 
@@ -2446,12 +2454,18 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     }
     /* Message badge → small themed dot on mobile (no number) */
     #msgBadge{
+        position:absolute!important;
+        top:2px!important;right:2px!important;
         width:8px!important;height:8px!important;min-width:8px!important;
+        max-width:8px!important;max-height:8px!important;
         padding:0!important;font-size:0!important;line-height:0!important;
         border-radius:50%!important;
         background:var(--primary)!important;
-        top:2px!important;right:2px!important;
+        z-index:10!important;pointer-events:none!important;
+        flex:none!important;overflow:hidden!important;
+        display:none!important;
     }
+    #msgBadge.has-unread{display:block!important;opacity:1!important;}
 
     /* --- Bottom nav clearance --- */
     .page{padding-bottom:72px!important;}

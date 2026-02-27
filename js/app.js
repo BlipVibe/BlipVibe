@@ -5927,8 +5927,8 @@ function updateMsgBadge(){
     msgConversations.forEach(function(c){if(!blockedUsers[c.partnerId]) total+=c.unread||0;});
     var badge=$('#msgBadge');
     if(badge){
-        if(total>0){badge.style.display='flex';badge.textContent=total;}
-        else{badge.style.display='none';}
+        if(total>0){badge.classList.add('has-unread');badge.style.display='';badge.textContent=total;}
+        else{badge.classList.remove('has-unread');badge.style.display='none';}
     }
 }
 
