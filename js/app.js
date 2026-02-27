@@ -3357,9 +3357,9 @@ $('#editProfileBtn').addEventListener('click',function(e){
     html+='<div class="modal-body"><form class="edit-profile-form" id="editProfileForm">';
     // Display mode radio toggle
     html+='<label>Show my name as</label>';
-    html+='<div style="display:flex;gap:12px;margin-bottom:12px;">';
-    html+='<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:0;font-weight:normal;"><input type="radio" name="displayMode" value="real_name" '+(displayMode==='real_name'?'checked':'')+' style="margin:0;"> First &amp; Last Name</label>';
-    html+='<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:0;font-weight:normal;"><input type="radio" name="displayMode" value="nickname" '+(displayMode==='nickname'?'checked':'')+' style="margin:0;"> Nickname</label>';
+    html+='<div style="display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;">';
+    html+='<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:0;font-weight:normal;white-space:nowrap;"><input type="radio" name="displayMode" value="real_name" '+(displayMode==='real_name'?'checked':'')+' style="margin:0;"> First &amp; Last Name</label>';
+    html+='<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:0;font-weight:normal;white-space:nowrap;"><input type="radio" name="displayMode" value="nickname" '+(displayMode==='nickname'?'checked':'')+' style="margin:0;"> Nickname</label>';
     html+='</div>';
     // Live preview
     html+='<div id="namePreview" style="background:var(--hover);border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:14px;color:var(--text-secondary);"><i class="fas fa-eye" style="margin-right:6px;"></i>Displays as: <strong id="namePreviewText"></strong></div>';
