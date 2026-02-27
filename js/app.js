@@ -866,7 +866,9 @@ function loadState(){}
 function reapplyCustomizations(){
     if(state.activePremiumSkin) applyPremiumSkin(state.activePremiumSkin,true);
     else if(state.activeSkin) applySkin(state.activeSkin,true);
-    if(state.activeFont) applyFont(state.activeFont,true);
+    // If in group view, apply group font instead of personal font
+    if(_activeGroupId&&state.groupActiveFont[_activeGroupId]) applyFont(state.groupActiveFont[_activeGroupId],true);
+    else if(state.activeFont) applyFont(state.activeFont,true);
     if(state.activeLogo) applyLogo(state.activeLogo);
     if(state.activeIconSet) applyIconSet(state.activeIconSet,true);
     if(state.activeCoinSkin) applyCoinSkin(state.activeCoinSkin,true);
@@ -889,7 +891,13 @@ document.addEventListener('visibilitychange',function(){
         // Pull latest settings when tab regains focus (picks up changes from other devices)
         // Skip skin reapply if in group view — group skin should stay applied
         if(_activeGroupId){
+            var _gid=_activeGroupId;
             loadSkinDataFromSupabase().then(function(){
+                // Re-apply group font after state refresh from Supabase
+                if(_activeGroupId===_gid){
+                    var gFont=state.groupActiveFont[_gid]||null;
+                    applyFont(gFont,true);
+                }
                 saveState();
             });
         } else {
