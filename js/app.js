@@ -846,7 +846,9 @@ function _applySkinDataFromCache(sd){
 async function loadSkinDataFromSupabase(){
     if(!currentUser) return;
     try{
-        var profile=await sbGetProfile(currentUser.id);
+        // Must use sbGetOwnProfile (SECURITY DEFINER RPC) — skin_data SELECT
+        // is revoked from authenticated role, so sbGetProfile returns null for it
+        var profile=await sbGetOwnProfile();
         if(!profile||!profile.skin_data) return;
         var sd=profile.skin_data;
         _applySkinDataFromCache(sd);
