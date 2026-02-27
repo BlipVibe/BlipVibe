@@ -233,6 +233,7 @@ img{display:block;}
 .user-dropdown a{display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:14px;color:var(--dark);transition:background .2s;}
 .user-dropdown a:hover{background:var(--border);}
 .user-dropdown a i{width:16px;color:var(--gray);}
+.dropdown-saved-link{display:none;}
 
 /* ========== PAGES ========== */
 .page{display:none;padding-top:80px;min-height:100vh;}
@@ -1909,6 +1910,8 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .nav-username{display:none!important;}
     .nav-coins{padding:4px 8px!important;font-size:12px!important;}
     .nav-user .fa-chevron-down{display:none!important;}
+    .nav-saved-link{display:none!important;}
+    .dropdown-saved-link{display:flex!important;}
 
     /* --- Bottom nav bar — nav links pinned to bottom of screen --- */
     .nav-center{

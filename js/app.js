@@ -3342,6 +3342,7 @@ $('#pvCoverFileInput').addEventListener('change',function(){
 $('#viewMyProfile').addEventListener('click',function(e){e.preventDefault();showMyProfileModal();});
 $('#dropdownViewProfile').addEventListener('click',function(e){e.preventDefault();$('#userDropdownMenu').classList.remove('show');showMyProfileModal();});
 $('#dropdownMySkins').addEventListener('click',function(e){e.preventDefault();$('#userDropdownMenu').classList.remove('show');_skinPageView='mine';navigateTo('shop');});
+$('#dropdownSaved').addEventListener('click',function(e){e.preventDefault();$('#userDropdownMenu').classList.remove('show');navigateTo('saved');});
 
 // Edit Profile
 $('#editProfileBtn').addEventListener('click',function(e){
