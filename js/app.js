@@ -246,7 +246,7 @@ function handleLogout() {
         currentUser = null;
         currentAuthUser = null;
         resetAllCustomizations();
-        try{localStorage.removeItem('blipvibe_lastPage');}catch(e){}
+        try{sessionStorage.removeItem('blipvibe_lastPage');}catch(e){}
         showLogin();
     });
 }
@@ -484,7 +484,7 @@ async function initApp() {
     var hashPage=(location.hash||'').replace('#','');
     // Fallback to localStorage if hash is empty/home (mobile Safari can lose the hash on refresh)
     if(!hashPage||hashPage==='home'){
-        try{var lp=localStorage.getItem('blipvibe_lastPage');if(lp&&lp!=='home') hashPage=lp;}catch(e){}
+        try{var lp=sessionStorage.getItem('blipvibe_lastPage');if(lp&&lp!=='home') hashPage=lp;}catch(e){}
     }
     if(hashPage&&hashPage!=='home'&&hashPage!=='profile-view'&&hashPage!=='group-view'&&hashPage.indexOf('group-view:')!==0){
         navigateTo(hashPage,true);
@@ -1251,12 +1251,12 @@ function navigateTo(page,skipPush){
     _navPrev=_navCurrent;_navCurrent=page;
     if(!skipPush) history.pushState({page:page},'','#'+page);
     // Persist current page so mobile refresh can restore it even if hash is lost
-    try{localStorage.setItem('blipvibe_lastPage',page);}catch(e){}
+    try{sessionStorage.setItem('blipvibe_lastPage',page);}catch(e){}
 }
 // Browser back/forward support
 var _initHash=(location.hash||'').replace('#','')||'home';
 // Fallback to localStorage if hash lost (mobile refresh)
-if(_initHash==='home'){try{var _lp=localStorage.getItem('blipvibe_lastPage');if(_lp&&_lp!=='home')_initHash=_lp;}catch(e){}}
+if(_initHash==='home'){try{var _lp=sessionStorage.getItem('blipvibe_lastPage');if(_lp&&_lp!=='home')_initHash=_lp;}catch(e){}}
 if(_initHash==='profile-view') _initHash='home';
 if(_initHash==='skins'){_initHash='shop';_skinPageView='mine';}
 if(_initHash==='group-view') _initHash='groups';

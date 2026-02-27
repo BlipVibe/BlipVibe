@@ -738,3 +738,7 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - **Fix:** Removed broken `widgets.js` blockquote embed. Added `_fetchXPreview()` helper that uses **FxTwitter API** (`api.fxtwitter.com`) to get tweet data (author, text, photos, video thumbnails). Rich preview cards now show in feed posts, messages/comments (mini), and post creation live preview. Videos show thumbnail (inline playback not possible — X limitation). Falls back to basic link if API fails.
 - **Three integration points:** `autoFetchLinkPreviews()` (feed), `autoFetchLinkPreviewsMini()` (messages/comments), `detectAndFetchLink()` (post creation)
 - Also added missing `_cookieConsent` check for TikTok embeds.
+
+## Default Page Fix (fixed 2026-02-26)
+- **Cause:** `blipvibe_lastPage` was stored in `localStorage`, which persists across sessions. Opening the app in a new tab/window would restore the last visited page (e.g. groups) instead of home.
+- **Fix:** Switched from `localStorage` to `sessionStorage` for `blipvibe_lastPage`. Session storage clears when the tab/window closes, so refreshes within a session still restore the page, but new visits always start at home. Changed in 5 places: index.html inline script, initApp(), navigateTo(), logout handler, and _initHash setup.

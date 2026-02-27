@@ -18,7 +18,7 @@
     (function(){
         var h=(location.hash||'').replace('#','');
         // Fallback to localStorage if hash lost (mobile Safari refresh)
-        if(!h||h==='home'){try{var lp=localStorage.getItem('blipvibe_lastPage');if(lp&&lp!=='home')h=lp;}catch(e){}}
+        if(!h||h==='home'){try{var lp=sessionStorage.getItem('blipvibe_lastPage');if(lp&&lp!=='home')h=lp;}catch(e){}}
         if(h==='skins') h='shop';
         if(h.indexOf('group-view:')===0) h='group-view';
         if(h&&h!=='home'&&h!=='profile-view'){
