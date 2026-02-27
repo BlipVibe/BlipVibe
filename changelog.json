@@ -1,5 +1,21 @@
 [
   {
+    "version": "0.2.12",
+    "date": "2026-02-26",
+    "added": [
+      "Structured display name system — first name, last name, and optional nickname fields",
+      "Display mode toggle in Edit Profile — choose to show 'First & Last Name' or 'Nickname'",
+      "Live name preview in Edit Profile modal shows how your name will appear across the app",
+      "First and last name collected during signup"
+    ],
+    "changed": [
+      "Edit Profile modal now has separate First Name, Last Name, and Nickname fields instead of a single Name input",
+      "Search now matches against first name, last name, and nickname in addition to username and display name",
+      "Existing users' display names automatically parsed into first/last name fields via migration"
+    ],
+    "fixed": []
+  },
+  {
     "version": "0.2.11",
     "date": "2026-02-26",
     "added": [],

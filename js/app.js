@@ -154,11 +154,14 @@ signupForm.addEventListener('submit', async function (e) {
     signupError.classList.remove('show');
     var submitBtn = signupForm.querySelector('button[type="submit"]');
     if (submitBtn.disabled) return;
+    var firstName = document.getElementById('signupFirstName').value.trim();
+    var lastName = document.getElementById('signupLastName').value.trim();
     var username = document.getElementById('signupUsername').value.trim();
     var email = document.getElementById('signupEmail').value.trim();
     var pw = document.getElementById('signupPassword').value;
     var birthday = document.getElementById('signupBirthday').value;
     var termsChecked = document.getElementById('signupTerms').checked;
+    if (!firstName || !lastName) { signupError.textContent = 'First and last name are required.'; signupError.classList.add('show'); return; }
     if (!username || !email || !pw) { signupError.textContent = 'All fields are required.'; signupError.classList.add('show'); return; }
     if (pw.length < 6) { signupError.textContent = 'Password must be at least 6 characters.'; signupError.classList.add('show'); return; }
     if (!birthday) { signupError.textContent = 'Please enter your date of birth.'; signupError.classList.add('show'); return; }
@@ -170,7 +173,7 @@ signupForm.addEventListener('submit', async function (e) {
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
     try {
-        var result = await sbSignUp(email, pw, username, birthday);
+        var result = await sbSignUp(email, pw, username, birthday, firstName, lastName);
         // If email confirmation is disabled, Supabase returns a session directly.
         // If enabled, session is null — user must confirm email first.
         if (result.session) {
@@ -3344,21 +3347,57 @@ $('#dropdownMySkins').addEventListener('click',function(e){e.preventDefault();$(
 $('#editProfileBtn').addEventListener('click',function(e){
     e.preventDefault();
     // Read current values from Supabase profile (authoritative) or DOM fallback
-    var name=currentUser?currentUser.display_name||currentUser.username:'';
+    var firstName=currentUser?currentUser.first_name||'':'';
+    var lastName=currentUser?currentUser.last_name||'':'';
+    var nickname=currentUser?currentUser.nickname||'':'';
+    var displayMode=currentUser?currentUser.display_mode||'real_name':'real_name';
     var statusText=currentUser?currentUser.status||'':'';
     var bio=currentUser?currentUser.bio||'':'';
     var html='<div class="modal-header"><h3>Edit Profile</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     html+='<div class="modal-body"><form class="edit-profile-form" id="editProfileForm">';
-    html+='<label>Name</label><input type="text" id="editName" value="'+name+'">';
+    // Display mode radio toggle
+    html+='<label>Show my name as</label>';
+    html+='<div style="display:flex;gap:12px;margin-bottom:12px;">';
+    html+='<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:0;font-weight:normal;"><input type="radio" name="displayMode" value="real_name" '+(displayMode==='real_name'?'checked':'')+' style="margin:0;"> First &amp; Last Name</label>';
+    html+='<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:0;font-weight:normal;"><input type="radio" name="displayMode" value="nickname" '+(displayMode==='nickname'?'checked':'')+' style="margin:0;"> Nickname</label>';
+    html+='</div>';
+    // Live preview
+    html+='<div id="namePreview" style="background:var(--hover);border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:14px;color:var(--text-secondary);"><i class="fas fa-eye" style="margin-right:6px;"></i>Displays as: <strong id="namePreviewText"></strong></div>';
+    // Name fields
+    html+='<div style="display:flex;gap:8px;margin-bottom:8px;">';
+    html+='<div style="flex:1;"><label>First Name</label><input type="text" id="editFirstName" value="'+escapeHtml(firstName)+'" placeholder="First name"></div>';
+    html+='<div style="flex:1;"><label>Last Name</label><input type="text" id="editLastName" value="'+escapeHtml(lastName)+'" placeholder="Last name"></div>';
+    html+='</div>';
+    html+='<label>Nickname <span style="font-weight:normal;color:var(--gray);">(optional)</span></label><input type="text" id="editNickname" value="'+escapeHtml(nickname)+'" placeholder="Nickname">';
+    // Status, Bio, Private Followers — unchanged
     var statusEmojis=['😊','😎','🤩','😴','😤','🥳','🤔','😂','❤️','🔥','💀','👻','🎮','📚','💻','🎵','✨','🌙'];
     html+='<label>Status</label><div class="status-emoji-picker" id="statusEmojiPicker">';
     statusEmojis.forEach(function(em){html+='<button type="button" class="status-emoji-btn'+(statusText===em?' active':'')+'" data-emoji="'+em+'">'+em+'</button>';});
     html+='<button type="button" class="status-emoji-btn'+(statusText===''?' active':'')+'" data-emoji="" title="Clear">✖</button>';
     html+='</div><input type="hidden" id="editStatus" value="'+statusText+'">';
-    html+='<label>Bio</label><textarea id="editAbout" placeholder="Tell us about yourself...">'+bio+'</textarea>';
+    html+='<label>Bio</label><textarea id="editAbout" placeholder="Tell us about yourself...">'+escapeHtml(bio)+'</textarea>';
     html+='<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-top:1px solid var(--border);margin-top:4px;"><div><label style="margin-bottom:0;"><i class="fas fa-lock" style="margin-right:6px;color:var(--gray);"></i>Private Followers</label><p style="font-size:12px;color:var(--gray);margin-top:2px;">Hide your followers and following lists</p></div><label class="toggle-switch"><input type="checkbox" id="editPrivate" '+(state.privateFollowers?'checked':'')+'><span class="toggle-slider"></span></label></div>';
     html+='<button type="submit" class="btn btn-primary btn-block" style="margin-top:12px;">Save</button></form></div>';
     showModal(html);
+
+    // Live preview logic
+    function updateNamePreview(){
+        var mode=document.querySelector('input[name="displayMode"]:checked').value;
+        var fn=$('#editFirstName').value;
+        var ln=$('#editLastName').value;
+        var nn=$('#editNickname').value;
+        var uname=currentUser?currentUser.username:'User';
+        var preview=computeDisplayName(fn,ln,nn,mode,uname);
+        $('#namePreviewText').textContent=preview;
+    }
+    updateNamePreview();
+    ['editFirstName','editLastName','editNickname'].forEach(function(id){
+        document.getElementById(id).addEventListener('input',updateNamePreview);
+    });
+    document.querySelectorAll('input[name="displayMode"]').forEach(function(r){
+        r.addEventListener('change',updateNamePreview);
+    });
+
     $$('.status-emoji-btn').forEach(function(btn){
         btn.addEventListener('click',function(){
             $$('.status-emoji-btn').forEach(function(b){b.classList.remove('active');});
@@ -3368,7 +3407,12 @@ $('#editProfileBtn').addEventListener('click',function(e){
     });
     $('#editProfileForm').addEventListener('submit', async function(ev){
         ev.preventDefault();
-        var n=$('#editName').value.trim()||name;
+        var fn=$('#editFirstName').value.trim();
+        var ln=$('#editLastName').value.trim();
+        var nn=$('#editNickname').value.trim();
+        var mode=document.querySelector('input[name="displayMode"]:checked').value;
+        var uname=currentUser?currentUser.username:'User';
+        var n=computeDisplayName(fn,ln,nn,mode,uname);
         var s=$('#editStatus').value.trim();
         var a=$('#editAbout').value.trim();
         state.privateFollowers=$('#editPrivate').checked;
@@ -3377,10 +3421,18 @@ $('#editProfileBtn').addEventListener('click',function(e){
         if(currentUser) {
             try {
                 await sbUpdateProfile(currentUser.id, {
+                    first_name: fn,
+                    last_name: ln,
+                    nickname: nn,
+                    display_mode: mode,
                     display_name: n,
                     status: s,
                     bio: a
                 });
+                currentUser.first_name = fn;
+                currentUser.last_name = ln;
+                currentUser.nickname = nn;
+                currentUser.display_mode = mode;
                 currentUser.display_name = n;
                 currentUser.status = s;
                 currentUser.bio = a;

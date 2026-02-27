@@ -83,6 +83,15 @@
             <h2 class="login-title">Create Account</h2>
             <form id="signupForm" autocomplete="off">
                 <div class="login-error" id="signupError"></div>
+                <div class="login-field" style="display:flex;gap:8px;">
+                    <div class="login-input-wrap" style="flex:1;">
+                        <i class="fas fa-id-card"></i>
+                        <input type="text" id="signupFirstName" placeholder="First Name" autocomplete="given-name">
+                    </div>
+                    <div class="login-input-wrap" style="flex:1;">
+                        <input type="text" id="signupLastName" placeholder="Last Name" autocomplete="family-name">
+                    </div>
+                </div>
                 <div class="login-field">
                     <div class="login-input-wrap">
                         <i class="fas fa-user"></i>

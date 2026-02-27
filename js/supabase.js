@@ -11,11 +11,11 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 // ---- 2. AUTH ----------------------------------------------------------------
 
-async function sbSignUp(email, password, username, birthday = null) {
+async function sbSignUp(email, password, username, birthday = null, firstName = '', lastName = '') {
   const { data, error } = await sb.auth.signUp({
     email,
     password,
-    options: { data: { username } }
+    options: { data: { username, first_name: firstName, last_name: lastName } }
   });
   if (error) throw error;
 
@@ -26,7 +26,10 @@ async function sbSignUp(email, password, username, birthday = null) {
     const row = {
       id: data.user.id,
       username: username,
-      display_name: username,
+      display_name: computeDisplayName(firstName, lastName, '', 'real_name', username),
+      first_name: firstName,
+      last_name: lastName,
+      display_mode: 'real_name',
       email: email,
       bio: '',
       avatar_url: null,
@@ -80,11 +83,16 @@ async function sbEnsureProfile(authUser) {
   // No profile yet — create one using metadata from signup
   // Note: do NOT include avatar_url or cover_photo_url so upsert won't overwrite them
   const username = authUser.user_metadata?.username || authUser.email.split('@')[0];
+  const firstName = authUser.user_metadata?.first_name || '';
+  const lastName = authUser.user_metadata?.last_name || '';
   const { data, error } = await sb.from('profiles')
     .upsert({
       id: authUser.id,
       username: username,
-      display_name: username,
+      display_name: computeDisplayName(firstName, lastName, '', 'real_name', username),
+      first_name: firstName,
+      last_name: lastName,
+      display_mode: 'real_name',
       bio: ''
     }, { onConflict: 'id' })
     .select()
@@ -1095,6 +1103,15 @@ function timeAgoReal(dateStr) {
   if (diff < 86400) return Math.floor(diff / 3600) + ' hr' + (Math.floor(diff / 3600) > 1 ? 's' : '') + ' ago';
   if (diff < 604800) return Math.floor(diff / 86400) + ' day' + (Math.floor(diff / 86400) > 1 ? 's' : '') + ' ago';
   return new Date(dateStr).toLocaleDateString();
+}
+
+// ---- 20. DISPLAY NAME HELPER ------------------------------------------------
+
+function computeDisplayName(firstName, lastName, nickname, displayMode, username) {
+  if (displayMode === 'nickname' && nickname && nickname.trim()) return nickname.trim();
+  var first = (firstName || '').trim(), last = (lastName || '').trim();
+  if (first || last) return (first + ' ' + last).trim();
+  return username || 'User';
 }
 
 // ---- EXPORT (globals for vanilla JS) ----------------------------------------

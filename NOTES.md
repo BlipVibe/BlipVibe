@@ -742,3 +742,12 @@ Group coins are **shared** — they belong to the group, not individual users. A
 ## Default Page Fix (fixed 2026-02-26)
 - **Cause:** `blipvibe_lastPage` was stored in `localStorage`, which persists across sessions. Opening the app in a new tab/window would restore the last visited page (e.g. groups) instead of home.
 - **Fix:** Switched from `localStorage` to `sessionStorage` for `blipvibe_lastPage`. Session storage clears when the tab/window closes, so refreshes within a session still restore the page, but new visits always start at home. Changed in 5 places: index.html inline script, initApp(), navigateTo(), logout handler, and _initHash setup.
+
+## Display Name System (added 2026-02-26)
+- **New columns:** `first_name`, `last_name`, `nickname`, `display_mode` ('real_name' | 'nickname') on `profiles`
+- **`display_name` stays as a synced/computed column** — recomputed client-side via `computeDisplayName()` whenever source fields change, then saved alongside them. All 70+ existing `display_name || username` patterns in app.js and 20+ Supabase query selects need zero changes.
+- **Signup form** now collects first name + last name (required) above the username field
+- **Edit Profile modal** replaced single "Name" input with: radio toggle (First & Last vs Nickname), first/last name inputs side-by-side, nickname input (optional), live preview showing computed display name
+- **`computeDisplayName(firstName, lastName, nickname, displayMode, username)`** — pure helper in supabase.js encoding all fallback rules: nickname mode uses nickname if available, otherwise falls back to real name, then username
+- **Migration** (`supabase/add-display-name-fields.sql`): adds columns, backfills existing display_name into first/last, updates `handle_new_user` trigger, updates `search_profiles` and `admin_get_users` RPCs to search new fields
+- **Search** now matches first_name, last_name, and nickname in addition to username/display_name/bio
