@@ -733,6 +733,8 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - **Cause:** `visibilitychange` handler called `reapplyCustomizations()` unconditionally when a tab became visible. If you were in a group view, switching tabs would pull personal skin from Supabase and overwrite the group's active skin.
 - **Fix:** Skip `reapplyCustomizations()` when `_activeGroupId` is set (i.e., in group view). Still syncs data from Supabase and saves to localStorage, just doesn't re-apply skin visuals.
 
-## Twitter/X Embed Fix (fixed 2026-02-26)
-- **Cause:** Twitter/X used the `blockquote.twitter-tweet` + `widgets.js` approach for embeds. The script was unreliable — blockquote was injected and URL stripped from post text, but `widgets.js` failed to process it, leaving posts completely blank (no text, no embed).
-- **Fix:** Removed the broken Twitter/X blockquote embed from `getVideoEmbedHtml()`. X links now fall through to Microlink link preview, which shows a proper card with title, image, and clickable link. Also added missing `_cookieConsent` check for TikTok embeds.
+## Twitter/X Link Preview Fix (fixed 2026-02-26)
+- **Cause:** Twitter/X used the `blockquote.twitter-tweet` + `widgets.js` approach for embeds. The script was unreliable — blockquote was injected and URL stripped from post text, but `widgets.js` failed to process it, leaving posts completely blank. Microlink also can't scrape X (blocked by Twitter).
+- **Fix:** Removed broken `widgets.js` blockquote embed. Added `_fetchXPreview()` helper that uses **FxTwitter API** (`api.fxtwitter.com`) to get tweet data (author, text, photos, video thumbnails). Rich preview cards now show in feed posts, messages/comments (mini), and post creation live preview. Videos show thumbnail (inline playback not possible — X limitation). Falls back to basic link if API fails.
+- **Three integration points:** `autoFetchLinkPreviews()` (feed), `autoFetchLinkPreviewsMini()` (messages/comments), `detectAndFetchLink()` (post creation)
+- Also added missing `_cookieConsent` check for TikTok embeds.

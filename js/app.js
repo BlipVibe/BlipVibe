@@ -4229,6 +4229,32 @@ function bindLikeCountClicks(containerSelector){
     });
 }
 
+// Helper: fetch X/Twitter link preview via FxTwitter API (returns true if URL is X, false otherwise)
+function _fetchXPreview(url, onResult, mini){
+    var xm=url.match(/(?:twitter\.com|x\.com)\/\w+\/status\/(\d+)/i);
+    if(!xm) return false;
+    fetch('https://api.fxtwitter.com/status/'+xm[1])
+        .then(function(r){return r.json();})
+        .then(function(data){
+            if(!data.tweet){onResult(null);return;}
+            var t=data.tweet;
+            var cls=mini?'link-preview link-preview-mini':'link-preview';
+            var h='<a href="'+escapeHtml(url)+'" target="_blank" class="'+cls+'">';
+            if(t.media&&t.media.photos&&t.media.photos.length>0) h+='<img src="'+escapeHtml(t.media.photos[0].url)+'" class="link-preview-image">';
+            else if(t.media&&t.media.videos&&t.media.videos.length>0) h+='<img src="'+escapeHtml(t.media.videos[0].thumbnail_url)+'" class="link-preview-image">';
+            h+='<div class="link-preview-info">';
+            h+='<div class="link-preview-url">X (TWITTER)</div>';
+            var title='';
+            if(t.author) title+=t.author.name+': ';
+            if(t.text) title+=t.text.length>120?t.text.substring(0,120)+'…':t.text;
+            if(title) h+='<div class="link-preview-title">'+escapeHtml(title)+'</div>';
+            h+='</div></a>';
+            onResult(h,t);
+        })
+        .catch(function(){onResult(null);});
+    return true;
+}
+
 // Auto-fetch compact link previews for messages, comments, and other small containers
 function autoFetchLinkPreviewsMini(container,selector){
     if(!container) return;
@@ -4240,6 +4266,8 @@ function autoFetchLinkPreviewsMini(container,selector){
         if(!urlMatch) return;
         var url=urlMatch[1].replace(/[.,;:!?)]+$/,'');
         if(/\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i.test(url)) return;
+        // X/Twitter: use FxTwitter API (Microlink can't scrape X)
+        if(_fetchXPreview(url,function(h){if(!h)return;el.insertAdjacentHTML('beforeend',h);var esc=escapeHtml(url).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');el.innerHTML=el.innerHTML.replace(new RegExp(esc,'g'),'');},true)) return;
         // Inline video embed for YouTube, Vimeo, direct video files
         var videoHtml=getVideoEmbedHtml(url,true);
         if(videoHtml){
@@ -4286,6 +4314,8 @@ function autoFetchLinkPreviews(container){
         var url=urlMatch[1].replace(/[.,;:!?)]+$/,'');
         // Don't fetch for image URLs already shown as post media
         if(/\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i.test(url)) return;
+        // X/Twitter: use FxTwitter API (Microlink can't scrape X)
+        if(_fetchXPreview(url,function(h){if(!h)return;desc.insertAdjacentHTML('beforeend',h);var esc=escapeHtml(url).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');textEl.innerHTML=textEl.innerHTML.replace(new RegExp(esc,'g'),'');},false)) return;
         // Inline video embed for YouTube, Vimeo, direct video files
         var videoHtml=getVideoEmbedHtml(url,false);
         if(videoHtml){
@@ -4378,6 +4408,36 @@ $('#openPostModal').addEventListener('click',function(){
         preview.innerHTML='<div style="padding:12px;color:var(--gray);font-size:13px;"><i class="fas fa-spinner fa-spin"></i> Fetching link preview...</div>';
         clearTimeout(_linkFetchTimer);
         _linkFetchTimer=setTimeout(function(){
+            // X/Twitter: use FxTwitter API
+            var xm=url.match(/(?:twitter\.com|x\.com)\/\w+\/status\/(\d+)/i);
+            if(xm){
+                fetch('https://api.fxtwitter.com/status/'+xm[1])
+                    .then(function(r){return r.json();})
+                    .then(function(data){
+                        if(data.tweet){
+                            var t=data.tweet;
+                            _linkData.domain='X (TWITTER)';
+                            var title='';
+                            if(t.author) title+=t.author.name+': ';
+                            if(t.text) title+=t.text.length>120?t.text.substring(0,120)+'…':t.text;
+                            _linkData.title=title;
+                            if(t.media&&t.media.photos&&t.media.photos.length>0) _linkData.image=t.media.photos[0].url;
+                            else if(t.media&&t.media.videos&&t.media.videos.length>0) _linkData.image=t.media.videos[0].thumbnail_url;
+                            var h='<a href="'+escapeHtml(url)+'" target="_blank" class="link-preview" style="margin:0;">';
+                            if(_linkData.image) h+='<img src="'+escapeHtml(_linkData.image)+'" class="link-preview-image">';
+                            h+='<div class="link-preview-info">';
+                            h+='<div class="link-preview-url">'+_linkData.domain+'</div>';
+                            if(_linkData.title) h+='<div class="link-preview-title">'+escapeHtml(_linkData.title)+'</div>';
+                            h+='</div></a><button id="cpmLinkRemove" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:12px;"><i class="fas fa-times"></i></button>';
+                            preview.innerHTML='<div style="position:relative;">'+h+'</div>';
+                            document.getElementById('cpmLinkRemove').addEventListener('click',function(){_linkData={url:'',title:'',desc:'',image:''};_lastFetchedUrl='__removed__';section.style.display='none';preview.innerHTML='';});
+                        } else {
+                            preview.innerHTML='<a href="'+escapeHtml(url)+'" target="_blank" class="link-preview" style="margin:0;"><div class="link-preview-info"><div class="link-preview-url">X (TWITTER)</div></div></a>';
+                        }
+                    })
+                    .catch(function(){preview.innerHTML='<a href="'+escapeHtml(url)+'" target="_blank" class="link-preview" style="margin:0;"><div class="link-preview-info"><div class="link-preview-url">'+escapeHtml(url)+'</div></div></a>';});
+                return;
+            }
             fetch('https://api.microlink.io?url='+encodeURIComponent(url))
                 .then(function(r){return r.json();})
                 .then(function(data){

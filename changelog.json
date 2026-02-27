@@ -5,7 +5,7 @@
     "added": [],
     "changed": [],
     "fixed": [
-      "Twitter/X links now show as rich link preview cards instead of broken blank embeds (widgets.js blockquote approach was unreliable)",
+      "Twitter/X links now show rich preview cards with images, video thumbnails, and tweet text (via FxTwitter API — Microlink couldn't scrape X)",
       "TikTok embeds had missing cookie consent gate (now shows consent placeholder like all other platforms)"
     ]
   },
