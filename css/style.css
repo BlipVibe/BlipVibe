@@ -1975,7 +1975,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
         padding:0!important;font-size:0!important;line-height:0!important;
         border-radius:50%!important;
         background:var(--primary)!important;
-        top:2px!important;right:2px!important;
+        top:-2px!important;right:0!important;
     }
     body[class*="premium-"] .nav-center{background:var(--ps-nav)!important;background-size:200% 200%!important;animation:gradientShift 6s ease infinite!important;}
 
@@ -2437,7 +2437,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
         padding:0!important;font-size:0!important;line-height:0!important;
         border-radius:50%!important;
         background:var(--primary)!important;
-        top:2px!important;right:2px!important;
+        top:-2px!important;right:0!important;
     }
 
     /* --- Bottom nav clearance --- */
