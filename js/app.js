@@ -7182,26 +7182,26 @@ async function showDevUpdatesModal(){
         var d=new Date(entry.date+'T00:00:00');
         var dateStr=d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
         var isFirst=i===0;
-        h+='<div class="cl-entry" data-cli="'+i+'" style="border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden;">';
+        h+='<div class="cl-entry" data-cli="'+i+'" style="border:1px solid rgba(128,128,128,.3);border-radius:10px;margin-bottom:10px;overflow:hidden;">';
         h+='<div class="cl-header" data-cli="'+i+'" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none;transition:background .15s;">';
         h+='<span style="font-size:14px;font-weight:500;">'+dateStr+' — <span style="color:var(--primary);font-weight:600;">v'+escapeHtml(entry.version)+'</span>';
         if(isFirst) h+=' <span style="background:var(--primary);color:#fff;font-size:10px;padding:1px 6px;border-radius:8px;margin-left:6px;font-weight:600;vertical-align:middle;">NEW</span>';
         h+='</span>';
-        h+='<i class="fas fa-chevron-down cl-chevron" style="font-size:12px;color:var(--gray);transition:transform .25s;"></i>';
+        h+='<i class="fas fa-chevron-down cl-chevron" style="font-size:12px;opacity:.5;transition:transform .25s;"></i>';
         h+='</div>';
         h+='<div class="cl-body" style="max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 16px;">';
         h+='<div style="padding-bottom:14px;">';
         if(entry.added&&entry.added.length){
             h+='<p style="font-size:12px;font-weight:600;color:var(--green);margin:8px 0 4px;"><i class="fas fa-plus" style="margin-right:4px;"></i>Added</p>';
-            entry.added.forEach(function(a){h+='<p style="font-size:13px;margin:2px 0 2px 16px;color:var(--dark);opacity:.85;">'+escapeHtml(a)+'</p>';});
+            entry.added.forEach(function(a){h+='<p style="font-size:13px;margin:2px 0 2px 16px;opacity:.85;">'+escapeHtml(a)+'</p>';});
         }
         if(entry.changed&&entry.changed.length){
             h+='<p style="font-size:12px;font-weight:600;color:#f59e0b;margin:8px 0 4px;"><i class="fas fa-pen" style="margin-right:4px;"></i>Changed</p>';
-            entry.changed.forEach(function(c){h+='<p style="font-size:13px;margin:2px 0 2px 16px;color:var(--dark);opacity:.85;">'+escapeHtml(c)+'</p>';});
+            entry.changed.forEach(function(c){h+='<p style="font-size:13px;margin:2px 0 2px 16px;opacity:.85;">'+escapeHtml(c)+'</p>';});
         }
         if(entry.fixed&&entry.fixed.length){
             h+='<p style="font-size:12px;font-weight:600;color:#3b82f6;margin:8px 0 4px;"><i class="fas fa-bug" style="margin-right:4px;"></i>Fixed</p>';
-            entry.fixed.forEach(function(f){h+='<p style="font-size:13px;margin:2px 0 2px 16px;color:var(--dark);opacity:.85;">'+escapeHtml(f)+'</p>';});
+            entry.fixed.forEach(function(f){h+='<p style="font-size:13px;margin:2px 0 2px 16px;opacity:.85;">'+escapeHtml(f)+'</p>';});
         }
         h+='</div></div></div>';
     });
