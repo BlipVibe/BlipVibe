@@ -12,6 +12,7 @@
       "App always opens to home feed on new visits (removed session-based last page restore)"
     ],
     "fixed": [
+      "Group skins bleeding into personal profile — leaving a group now properly restores your personal skin state",
       "Group skin purchases not registering — buy handlers now save to localStorage and sync to Supabase immediately",
       "Group skins/templates resetting randomly — now synced to Supabase so they persist across devices and tab switches",
       "Group cover photo not visible after cropping — view now refreshes after save",

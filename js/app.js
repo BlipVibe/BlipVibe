@@ -1242,6 +1242,8 @@ function navigateTo(page,skipPush){
     _activeGroupId=null;
     // Restore user's skin when leaving group view
     if(_gvSaved){
+        state.activeSkin=_gvSaved.skin||null;
+        state.activePremiumSkin=_gvSaved.premiumSkin||null;
         premiumBgImage=_gvSaved.bgImage;premiumBgOverlay=_gvSaved.bgOverlay;premiumBgDarkness=_gvSaved.bgDarkness||0;premiumCardTransparency=_gvSaved.cardTrans!=null?_gvSaved.cardTrans:0.1;
         if(_gvSaved.premiumSkin) applyPremiumSkin(_gvSaved.premiumSkin,true);
         else{applySkin(_gvSaved.skin||null,true);updatePremiumBg();}
