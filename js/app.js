@@ -1321,6 +1321,9 @@ function performSearch(q){
     currentSearchTab='people';
     navigateTo('search');
     $('#searchQuery').textContent='Results for "'+q+'"';
+    // Sync the search page input
+    var spi=document.getElementById('searchPageQuery');
+    if(spi&&spi.value!==q) spi.value=q;
     // Update tab active states
     $$('.search-tab').forEach(function(t){t.classList.toggle('active',t.dataset.tab==='people');});
     renderSearchResults(q,'people');
@@ -3348,6 +3351,13 @@ $('#dropdownViewProfile').addEventListener('click',function(e){e.preventDefault(
 $('#dropdownMySkins').addEventListener('click',function(e){e.preventDefault();$('#userDropdownMenu').classList.remove('show');_skinPageView='mine';navigateTo('shop');});
 $('#dropdownSaved').addEventListener('click',function(e){e.preventDefault();$('#userDropdownMenu').classList.remove('show');navigateTo('saved');});
 $('#mobileNotifBtn').addEventListener('click',function(e){e.preventDefault();navigateTo('notifications');});
+$('#mobileSearchBtn').addEventListener('click',function(e){e.preventDefault();navigateTo('search');setTimeout(function(){var inp=document.getElementById('searchPageQuery');if(inp)inp.focus();},100);});
+$('#searchPageQuery').addEventListener('keydown',function(e){
+    if(e.key==='Enter'){var q=this.value.trim();if(q.length>0){performSearch(q);}}
+});
+$('#searchPageQuery').addEventListener('input',function(){
+    var q=this.value.trim();if(q.length>=2){performSearch(q);}
+});
 
 // Edit Profile
 $('#editProfileBtn').addEventListener('click',function(e){

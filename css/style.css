@@ -234,6 +234,7 @@ img{display:block;}
 .user-dropdown a:hover{background:var(--border);}
 .user-dropdown a i{width:16px;color:var(--gray);}
 .dropdown-saved-link{display:none;}
+.mobile-search-btn{display:none;position:relative;color:rgba(255,255,255,.8);font-size:18px;padding:4px;text-decoration:none;}
 .mobile-notif-btn{display:none;position:relative;color:rgba(255,255,255,.8);font-size:18px;padding:4px;text-decoration:none;}
 .mobile-notif-btn .notif-badge{position:absolute;top:-4px;right:-6px;min-width:1.5em;height:1.5em;font-size:10px;display:flex;align-items:center;justify-content:center;}
 
@@ -1907,8 +1908,8 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .navbar{height:48px!important;max-height:48px!important;}
     .nav-container{padding:0 10px!important;gap:6px!important;}
     .nav-logo{font-size:clamp(13px,3.5vw,18px)!important;padding:4px 10px!important;}
-    .search-bar{width:110px!important;}
-    .search-bar input{font-size:12px!important;padding:6px 10px 6px 30px!important;}
+    .search-bar{display:none!important;}
+    .mobile-search-btn{display:flex!important;align-items:center;}
     .nav-username{display:none!important;}
     .nav-coins{padding:4px 8px!important;font-size:12px!important;}
     .nav-user .fa-chevron-down{display:none!important;}
