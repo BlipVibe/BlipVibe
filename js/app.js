@@ -6075,6 +6075,11 @@ async function openChat(contact){
     var isMobile=window.innerWidth<=900;
     if(msgLayout) msgLayout.classList.add('chat-open');
     if(isMobile&&chatEl){
+        // Hide both navbars so chat takes full screen
+        var topNav=document.querySelector('.navbar');
+        var botNav=document.querySelector('.nav-center');
+        if(topNav) topNav.style.display='none';
+        if(botNav) botNav.style.display='none';
         chatEl.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;display:flex;flex-direction:column;background:var(--card);';
         var hdr=chatEl.querySelector('.msg-chat-header');
         if(hdr) hdr.style.cssText='flex-shrink:0;padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top,0px));background:var(--card);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;';
@@ -6088,7 +6093,14 @@ async function openChat(contact){
     // Back button handler
     var backBtn=document.getElementById('msgBackBtn');
     if(backBtn){backBtn.addEventListener('click',function(){
-        if(isMobile&&chatEl) chatEl.style.cssText='';
+        if(isMobile){
+            // Restore navbars
+            var topNav=document.querySelector('.navbar');
+            var botNav=document.querySelector('.nav-center');
+            if(topNav) topNav.style.display='';
+            if(botNav) botNav.style.display='';
+            if(chatEl) chatEl.style.cssText='';
+        }
         if(msgLayout) msgLayout.classList.remove('chat-open');
         activeChat=null;renderMsgContacts();
     });}
