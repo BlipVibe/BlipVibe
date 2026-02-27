@@ -5360,7 +5360,7 @@ function getGroupShopCategories(groupId){
     cats.push({key:'fonts',label:'<i class="fas fa-font"></i> Fonts',items:fonts,render:function(f){
         var owned=state.groupOwnedFonts[groupId][f.id];
         var isActive=state.groupActiveFont[groupId]===f.id;
-        return '<div class="skin-card"><div class="skin-preview" style="display:flex;align-items:center;justify-content:center;font-family:\''+f.family+'\',sans-serif;font-size:'+(f.scale?Math.round(18*f.scale):18)+'px;background:var(--card,#fff);color:var(--text,#333);">Aa Bb 123</div><div class="skin-card-body"><h4>'+f.name+'</h4><p>'+f.desc+'</p>'+(owned?'<button class="btn '+(isActive?'btn-disabled':'btn-primary')+' apply-gfont-btn" data-fid="'+f.id+'" data-gid="'+groupId+'">'+(isActive?'Active':'Apply')+'</button>':groupShopBuy(groupId,false,f.price,'buy-gfont-btn','data-fid="'+f.id+'" data-gid="'+groupId+'"'))+'</div></div>';
+        return '<div class="skin-card"><div class="skin-preview" style="display:flex;align-items:center;justify-content:center;font-family:\''+f.family+'\',sans-serif;font-size:'+(f.scale?Math.round(18*f.scale):18)+'px;background:#f0f2f5;color:#333;">Aa Bb 123</div><div class="skin-card-body"><h4>'+f.name+'</h4><p>'+f.desc+'</p>'+(owned?'<button class="btn '+(isActive?'btn-disabled':'btn-primary')+' apply-gfont-btn" data-fid="'+f.id+'" data-gid="'+groupId+'">'+(isActive?'Active':'Apply')+'</button>':groupShopBuy(groupId,false,f.price,'buy-gfont-btn','data-fid="'+f.id+'" data-gid="'+groupId+'"'))+'</div></div>';
     }});
 
     // Apply Skins tab (always visible)
