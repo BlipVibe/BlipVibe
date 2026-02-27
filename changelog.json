@@ -6,7 +6,7 @@
     "changed": [],
     "fixed": [
       "Twitter/X links now show rich preview cards with images, video thumbnails, and tweet text (via FxTwitter API — Microlink couldn't scrape X)",
-      "TikTok embeds had missing cookie consent gate (now shows consent placeholder like all other platforms)",
+      "TikTok links now show rich preview cards with thumbnails and captions (via official oEmbed API — blockquote embed was unreliable)",
       "App now opens to home feed by default instead of remembering last page from a previous session"
     ]
   },

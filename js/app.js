@@ -3744,9 +3744,7 @@ function _loadInstagramEmbed(){
     _instagramScriptLoaded=true;
     var s=document.createElement('script');s.src='https://www.instagram.com/embed.js';s.async=true;document.body.appendChild(s);
 }
-function _reloadThirdPartyEmbeds(url){
-    if(/tiktok\.com/i.test(url)) setTimeout(_loadTikTokEmbed,100);
-}
+function _reloadThirdPartyEmbeds(url){}
 function _embedConsentPlaceholder(url,label,cls,mini){
     return '<div class="'+cls+'" style="margin:10px auto 0;max-width:560px;border-radius:8px;overflow:hidden;background:#f0f0f0;padding:20px;text-align:center;aspect-ratio:auto;position:static;"><p style="color:#666;font-size:13px;margin-bottom:8px;"><i class="fas fa-cookie-bite" style="margin-right:6px;"></i>'+escapeHtml(label)+' content blocked</p><p style="font-size:12px;color:#999;margin-bottom:10px;">Accept cookies to view embedded content</p><button class="btn btn-primary embed-consent-btn" style="font-size:12px;padding:6px 16px;" data-url="'+escapeHtml(url)+'">Allow &amp; Load</button></div>';
 }
@@ -3761,10 +3759,7 @@ function getVideoEmbedHtml(url, mini){
     // Vimeo
     m=url.match(/vimeo\.com\/(\d+)/);
     if(m){ id=m[1]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'Vimeo',cls,mini); return '<div class="'+cls+'"><iframe src="https://player.vimeo.com/video/'+id+'?api=1" frameborder="0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen></iframe></div>'; }
-    // TikTok: tiktok.com/@user/video/ID or vm.tiktok.com/shortcode
-    m=url.match(/tiktok\.com\/@[^/]+\/video\/(\d+)/);
-    if(!m) m=url.match(/tiktok\.com\/(?:@[^/]+\/video\/)?(\d{15,})/);
-    if(m){ id=m[1]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'TikTok',socialCls,mini); _loadTikTokEmbed(); return '<div class="'+socialCls+'" style="max-width:325px;"><blockquote class="tiktok-embed" cite="'+url+'" data-video-id="'+id+'" style="max-width:325px;min-width:250px;"><section></section></blockquote></div>'; }
+    // TikTok: let oEmbed API handle link preview (blockquote + embed.js unreliable)
     // Twitter / X: let Microlink handle link preview (widgets.js blockquote approach unreliable)
     // Instagram: posts, reels, TV (iframe embed — more reliable on mobile than blockquote SDK)
     m=url.match(/instagram\.com\/(p|reel|tv)\/([A-Za-z0-9_-]+)/);
@@ -4255,6 +4250,29 @@ function _fetchXPreview(url, onResult, mini){
     return true;
 }
 
+// Helper: fetch TikTok link preview via official oEmbed API (returns true if URL is TikTok, false otherwise)
+function _fetchTikTokPreview(url, onResult, mini){
+    if(!/tiktok\.com/i.test(url)) return false;
+    fetch('https://www.tiktok.com/oembed?url='+encodeURIComponent(url))
+        .then(function(r){return r.json();})
+        .then(function(data){
+            if(!data.title&&!data.author_name){onResult(null);return;}
+            var cls=mini?'link-preview link-preview-mini':'link-preview';
+            var h='<a href="'+escapeHtml(url)+'" target="_blank" class="'+cls+'">';
+            if(data.thumbnail_url) h+='<img src="'+escapeHtml(data.thumbnail_url)+'" class="link-preview-image">';
+            h+='<div class="link-preview-info">';
+            h+='<div class="link-preview-url">TIKTOK</div>';
+            var title='';
+            if(data.author_name) title+=data.author_name+': ';
+            if(data.title) title+=data.title.length>120?data.title.substring(0,120)+'…':data.title;
+            if(title) h+='<div class="link-preview-title">'+escapeHtml(title)+'</div>';
+            h+='</div></a>';
+            onResult(h);
+        })
+        .catch(function(){onResult(null);});
+    return true;
+}
+
 // Auto-fetch compact link previews for messages, comments, and other small containers
 function autoFetchLinkPreviewsMini(container,selector){
     if(!container) return;
@@ -4268,6 +4286,8 @@ function autoFetchLinkPreviewsMini(container,selector){
         if(/\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i.test(url)) return;
         // X/Twitter: use FxTwitter API (Microlink can't scrape X)
         if(_fetchXPreview(url,function(h){if(!h)return;el.insertAdjacentHTML('beforeend',h);var esc=escapeHtml(url).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');el.innerHTML=el.innerHTML.replace(new RegExp(esc,'g'),'');},true)) return;
+        // TikTok: use official oEmbed API
+        if(_fetchTikTokPreview(url,function(h){if(!h)return;el.insertAdjacentHTML('beforeend',h);var esc=escapeHtml(url).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');el.innerHTML=el.innerHTML.replace(new RegExp(esc,'g'),'');},true)) return;
         // Inline video embed for YouTube, Vimeo, direct video files
         var videoHtml=getVideoEmbedHtml(url,true);
         if(videoHtml){
@@ -4316,6 +4336,8 @@ function autoFetchLinkPreviews(container){
         if(/\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i.test(url)) return;
         // X/Twitter: use FxTwitter API (Microlink can't scrape X)
         if(_fetchXPreview(url,function(h){if(!h)return;desc.insertAdjacentHTML('beforeend',h);var esc=escapeHtml(url).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');textEl.innerHTML=textEl.innerHTML.replace(new RegExp(esc,'g'),'');},false)) return;
+        // TikTok: use official oEmbed API
+        if(_fetchTikTokPreview(url,function(h){if(!h)return;desc.insertAdjacentHTML('beforeend',h);var esc=escapeHtml(url).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');textEl.innerHTML=textEl.innerHTML.replace(new RegExp(esc,'g'),'');},false)) return;
         // Inline video embed for YouTube, Vimeo, direct video files
         var videoHtml=getVideoEmbedHtml(url,false);
         if(videoHtml){
@@ -4433,6 +4455,33 @@ $('#openPostModal').addEventListener('click',function(){
                             document.getElementById('cpmLinkRemove').addEventListener('click',function(){_linkData={url:'',title:'',desc:'',image:''};_lastFetchedUrl='__removed__';section.style.display='none';preview.innerHTML='';});
                         } else {
                             preview.innerHTML='<a href="'+escapeHtml(url)+'" target="_blank" class="link-preview" style="margin:0;"><div class="link-preview-info"><div class="link-preview-url">X (TWITTER)</div></div></a>';
+                        }
+                    })
+                    .catch(function(){preview.innerHTML='<a href="'+escapeHtml(url)+'" target="_blank" class="link-preview" style="margin:0;"><div class="link-preview-info"><div class="link-preview-url">'+escapeHtml(url)+'</div></div></a>';});
+                return;
+            }
+            // TikTok: use official oEmbed API
+            if(/tiktok\.com/i.test(url)){
+                fetch('https://www.tiktok.com/oembed?url='+encodeURIComponent(url))
+                    .then(function(r){return r.json();})
+                    .then(function(data){
+                        if(data.title||data.author_name){
+                            _linkData.domain='TIKTOK';
+                            var title='';
+                            if(data.author_name) title+=data.author_name+': ';
+                            if(data.title) title+=data.title.length>120?data.title.substring(0,120)+'…':data.title;
+                            _linkData.title=title;
+                            if(data.thumbnail_url) _linkData.image=data.thumbnail_url;
+                            var h='<a href="'+escapeHtml(url)+'" target="_blank" class="link-preview" style="margin:0;">';
+                            if(_linkData.image) h+='<img src="'+escapeHtml(_linkData.image)+'" class="link-preview-image">';
+                            h+='<div class="link-preview-info">';
+                            h+='<div class="link-preview-url">'+_linkData.domain+'</div>';
+                            if(_linkData.title) h+='<div class="link-preview-title">'+escapeHtml(_linkData.title)+'</div>';
+                            h+='</div></a><button id="cpmLinkRemove" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:12px;"><i class="fas fa-times"></i></button>';
+                            preview.innerHTML='<div style="position:relative;">'+h+'</div>';
+                            document.getElementById('cpmLinkRemove').addEventListener('click',function(){_linkData={url:'',title:'',desc:'',image:''};_lastFetchedUrl='__removed__';section.style.display='none';preview.innerHTML='';});
+                        } else {
+                            preview.innerHTML='<a href="'+escapeHtml(url)+'" target="_blank" class="link-preview" style="margin:0;"><div class="link-preview-info"><div class="link-preview-url">TIKTOK</div></div></a>';
                         }
                     })
                     .catch(function(){preview.innerHTML='<a href="'+escapeHtml(url)+'" target="_blank" class="link-preview" style="margin:0;"><div class="link-preview-info"><div class="link-preview-url">'+escapeHtml(url)+'</div></div></a>';});

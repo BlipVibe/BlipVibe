@@ -737,7 +737,7 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - **Cause:** Twitter/X used the `blockquote.twitter-tweet` + `widgets.js` approach for embeds. The script was unreliable — blockquote was injected and URL stripped from post text, but `widgets.js` failed to process it, leaving posts completely blank. Microlink also can't scrape X (blocked by Twitter).
 - **Fix:** Removed broken `widgets.js` blockquote embed. Added `_fetchXPreview()` helper that uses **FxTwitter API** (`api.fxtwitter.com`) to get tweet data (author, text, photos, video thumbnails). Rich preview cards now show in feed posts, messages/comments (mini), and post creation live preview. Videos show thumbnail (inline playback not possible — X limitation). Falls back to basic link if API fails.
 - **Three integration points:** `autoFetchLinkPreviews()` (feed), `autoFetchLinkPreviewsMini()` (messages/comments), `detectAndFetchLink()` (post creation)
-- Also added missing `_cookieConsent` check for TikTok embeds.
+- TikTok had same issue — removed broken blockquote + `embed.js` approach. Added `_fetchTikTokPreview()` helper using TikTok's official oEmbed API (`tiktok.com/oembed`) for thumbnail, title, and author. Same 3 integration points as X.
 
 ## Default Page Fix (fixed 2026-02-26)
 - **Cause:** `blipvibe_lastPage` was stored in `localStorage`, which persists across sessions. Opening the app in a new tab/window would restore the last visited page (e.g. groups) instead of home.
