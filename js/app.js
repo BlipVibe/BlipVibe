@@ -6069,12 +6069,29 @@ async function openChat(contact){
     html+='<button id="sendMsgBtn"><i class="fas fa-paper-plane"></i></button>';
     html+='</div>';
     $('#msgChat').innerHTML=html;
-    // Mobile: show chat area, hide sidebar
+    // Mobile: show chat area full-screen
     var msgLayout=document.querySelector('.messages-layout');
+    var chatEl=$('#msgChat');
+    var isMobile=window.innerWidth<=900;
     if(msgLayout) msgLayout.classList.add('chat-open');
+    if(isMobile&&chatEl){
+        chatEl.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;display:flex;flex-direction:column;background:var(--card);';
+        var hdr=chatEl.querySelector('.msg-chat-header');
+        if(hdr) hdr.style.cssText='flex-shrink:0;padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top,0px));background:var(--card);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;';
+        var backBtnEl=chatEl.querySelector('.msg-back-btn');
+        if(backBtnEl) backBtnEl.style.display='flex';
+        var msgs=chatEl.querySelector('.msg-chat-messages');
+        if(msgs) msgs.style.cssText='flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px;display:flex;flex-direction:column;gap:12px;';
+        var inp=chatEl.querySelector('.msg-chat-input');
+        if(inp) inp.style.cssText='flex-shrink:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--border);display:flex;gap:8px;align-items:center;position:relative;';
+    }
     // Back button handler
     var backBtn=document.getElementById('msgBackBtn');
-    if(backBtn){backBtn.addEventListener('click',function(){if(msgLayout)msgLayout.classList.remove('chat-open');activeChat=null;renderMsgContacts();});}
+    if(backBtn){backBtn.addEventListener('click',function(){
+        if(isMobile&&chatEl) chatEl.style.cssText='';
+        if(msgLayout) msgLayout.classList.remove('chat-open');
+        activeChat=null;renderMsgContacts();
+    });}
 
     // Load messages
     try{
