@@ -11,7 +11,9 @@
     "changed": [
       "Photo state now tracks storage file names and post IDs for proper deletion across storage, albums, and posts"
     ],
-    "fixed": []
+    "fixed": [
+      "Blurry text on premium skin backgrounds — removed heavy glow text-shadow (was 8px blur) and replaced with crisp 2px drop shadow"
+    ]
   },
   {
     "version": "0.2.15",
