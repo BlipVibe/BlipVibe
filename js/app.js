@@ -1560,8 +1560,9 @@ var _systemTypes={system:1,skin:1,group:1,coin:1,purchase:1};
 function updateNotifBadge(){
     var unread=state.notifications.filter(function(n){return !n.read&&!_systemTypes[n.type];}).length;
     var badge=$('#notifBadge');
-    if(unread>0){badge.style.display='flex';badge.textContent=unread;}
-    else{badge.style.display='none';}
+    var mobileBadge=document.getElementById('mobileNotifBadge');
+    if(unread>0){badge.style.display='flex';badge.textContent=unread;if(mobileBadge){mobileBadge.style.display='flex';mobileBadge.textContent=unread;}}
+    else{badge.style.display='none';if(mobileBadge) mobileBadge.style.display='none';}
 }
 function getNotifIcon(type){
     var map={comment:{cls:'skin',icon:'fa-comment'},reply:{cls:'skin',icon:'fa-reply'},like:{cls:'coin',icon:'fa-heart'},follow:{cls:'follow',icon:'fa-user-plus'},message:{cls:'group',icon:'fa-envelope'},system:{cls:'coin',icon:'fa-cog'},skin:{cls:'skin',icon:'fa-palette'},group:{cls:'group',icon:'fa-users'},coin:{cls:'coin',icon:'fa-coins'}};
@@ -3346,6 +3347,7 @@ $('#viewMyProfile').addEventListener('click',function(e){e.preventDefault();show
 $('#dropdownViewProfile').addEventListener('click',function(e){e.preventDefault();$('#userDropdownMenu').classList.remove('show');showMyProfileModal();});
 $('#dropdownMySkins').addEventListener('click',function(e){e.preventDefault();$('#userDropdownMenu').classList.remove('show');_skinPageView='mine';navigateTo('shop');});
 $('#dropdownSaved').addEventListener('click',function(e){e.preventDefault();$('#userDropdownMenu').classList.remove('show');navigateTo('saved');});
+$('#mobileNotifBtn').addEventListener('click',function(e){e.preventDefault();navigateTo('notifications');});
 
 // Edit Profile
 $('#editProfileBtn').addEventListener('click',function(e){

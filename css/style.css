@@ -234,6 +234,8 @@ img{display:block;}
 .user-dropdown a:hover{background:var(--border);}
 .user-dropdown a i{width:16px;color:var(--gray);}
 .dropdown-saved-link{display:none;}
+.mobile-notif-btn{display:none;position:relative;color:rgba(255,255,255,.8);font-size:18px;padding:4px;text-decoration:none;}
+.mobile-notif-btn .notif-badge{position:absolute;top:-4px;right:-6px;min-width:1.5em;height:1.5em;font-size:10px;display:flex;align-items:center;justify-content:center;}
 
 /* ========== PAGES ========== */
 .page{display:none;padding-top:80px;min-height:100vh;}
@@ -1911,7 +1913,9 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .nav-coins{padding:4px 8px!important;font-size:12px!important;}
     .nav-user .fa-chevron-down{display:none!important;}
     .nav-saved-link{display:none!important;}
+    .nav-notif-link{display:none!important;}
     .dropdown-saved-link{display:flex!important;}
+    .mobile-notif-btn{display:flex!important;align-items:center;}
 
     /* --- Bottom nav bar — nav links pinned to bottom of screen --- */
     .nav-center{
