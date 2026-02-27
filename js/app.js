@@ -808,7 +808,9 @@ function _buildSkinData(){
         tosAcceptedVersion:_tosAccepted?TOS_VERSION:((currentUser&&currentUser.skin_data&&currentUser.skin_data.tosAcceptedVersion)||0),
         groupActiveSkin:state.groupActiveSkin||{},
         groupActivePremiumSkin:state.groupActivePremiumSkin||{},
-        groupPremiumBg:state.groupPremiumBg||{}
+        groupPremiumBg:state.groupPremiumBg||{},
+        groupOwnedSkins:state.groupOwnedSkins||{},
+        groupOwnedPremiumSkins:state.groupOwnedPremiumSkins||{}
     };
 }
 function syncSkinDataToSupabase(immediate){
@@ -870,6 +872,19 @@ async function loadSkinDataFromSupabase(){
         if(sd.groupActiveSkin&&typeof sd.groupActiveSkin==='object') Object.assign(state.groupActiveSkin,sd.groupActiveSkin);
         if(sd.groupActivePremiumSkin&&typeof sd.groupActivePremiumSkin==='object') Object.assign(state.groupActivePremiumSkin,sd.groupActivePremiumSkin);
         if(sd.groupPremiumBg&&typeof sd.groupPremiumBg==='object') Object.assign(state.groupPremiumBg,sd.groupPremiumBg);
+        // Group owned skins (merge — never lose purchases)
+        if(sd.groupOwnedSkins&&typeof sd.groupOwnedSkins==='object'){
+            Object.keys(sd.groupOwnedSkins).forEach(function(gid){
+                if(!state.groupOwnedSkins[gid]) state.groupOwnedSkins[gid]={};
+                Object.assign(state.groupOwnedSkins[gid],sd.groupOwnedSkins[gid]);
+            });
+        }
+        if(sd.groupOwnedPremiumSkins&&typeof sd.groupOwnedPremiumSkins==='object'){
+            Object.keys(sd.groupOwnedPremiumSkins).forEach(function(gid){
+                if(!state.groupOwnedPremiumSkins[gid]) state.groupOwnedPremiumSkins[gid]={};
+                Object.assign(state.groupOwnedPremiumSkins[gid],sd.groupOwnedPremiumSkins[gid]);
+            });
+        }
     }catch(e){console.warn('Load skin data from Supabase:',e);}
 }
 function loadState(){
@@ -5402,6 +5417,7 @@ function renderGroupShop(groupId){
             addGroupCoins(gid,-skin.price);
             if(!state.groupOwnedSkins[gid]) state.groupOwnedSkins[gid]={};
             state.groupOwnedSkins[gid][sid]=true;
+            saveState();syncSkinDataToSupabase();
             gShopPurchased(btn);
             addNotification('skin','Group purchased the "'+skin.name+'" skin!');
         }
@@ -5416,6 +5432,7 @@ function renderGroupShop(groupId){
             addGroupCoins(gid,-skin.price);
             if(!state.groupOwnedPremiumSkins[gid]) state.groupOwnedPremiumSkins[gid]={};
             state.groupOwnedPremiumSkins[gid][pid]=true;
+            saveState();syncSkinDataToSupabase();
             gShopPurchased(btn);
             addNotification('skin','Group purchased the "'+skin.name+'" premium skin!');
         }
