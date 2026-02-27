@@ -733,6 +733,8 @@ var state = {
     groupActiveSkin: {},
     groupActivePremiumSkin: {},
     groupPremiumBg: {},
+    groupOwnedFonts: {},
+    groupActiveFont: {},
     groupPostCoinCount: {},
     groupCommentCoinPosts: {},
     groupReplyCoinPosts: {}
@@ -780,9 +782,11 @@ function _buildSkinData(){
         tosAcceptedVersion:_tosAccepted?TOS_VERSION:((currentUser&&currentUser.skin_data&&currentUser.skin_data.tosAcceptedVersion)||0),
         groupActiveSkin:state.groupActiveSkin||{},
         groupActivePremiumSkin:state.groupActivePremiumSkin||{},
+        groupActiveFont:state.groupActiveFont||{},
         groupPremiumBg:state.groupPremiumBg||{},
         groupOwnedSkins:state.groupOwnedSkins||{},
-        groupOwnedPremiumSkins:state.groupOwnedPremiumSkins||{}
+        groupOwnedPremiumSkins:state.groupOwnedPremiumSkins||{},
+        groupOwnedFonts:state.groupOwnedFonts||{}
     };
 }
 function syncSkinDataToSupabase(immediate){
@@ -839,9 +843,11 @@ function _applySkinDataFromCache(sd){
     // Group skin data (full replace)
     state.groupActiveSkin=sd.groupActiveSkin||{};
     state.groupActivePremiumSkin=sd.groupActivePremiumSkin||{};
+    state.groupActiveFont=sd.groupActiveFont||{};
     state.groupPremiumBg=sd.groupPremiumBg||{};
     state.groupOwnedSkins=sd.groupOwnedSkins||{};
     state.groupOwnedPremiumSkins=sd.groupOwnedPremiumSkins||{};
+    state.groupOwnedFonts=sd.groupOwnedFonts||{};
 }
 async function loadSkinDataFromSupabase(){
     if(!currentUser) return;
@@ -1164,6 +1170,7 @@ function navigateTo(page,skipPush){
         premiumBgImage=_gvSaved.bgImage;premiumBgOverlay=_gvSaved.bgOverlay;premiumBgDarkness=_gvSaved.bgDarkness||0;premiumCardTransparency=_gvSaved.cardTrans!=null?_gvSaved.cardTrans:0.1;
         if(_gvSaved.premiumSkin) applyPremiumSkin(_gvSaved.premiumSkin,true);
         else{applySkin(_gvSaved.skin||null,true);updatePremiumBg();}
+        applyFont(_gvSaved.font||null,true);
         _gvSaved=null;
     }
     $$('.page').forEach(function(p){p.classList.remove('active');});
@@ -5348,6 +5355,14 @@ function getGroupShopCategories(groupId){
         return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="premium-preview-frame" style="background:'+s.border+';"><img src="images/default-avatar.svg" class="premium-preview-avatar"></div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';"><i class="fas '+s.icon+'" style="color:'+s.iconColor+';margin-right:6px;"></i>'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p>'+groupShopBuy(groupId,state.groupOwnedPremiumSkins[groupId][s.id],s.price,'buy-gspremium-btn','data-pid="'+s.id+'" data-gid="'+groupId+'"')+'</div></div>';
     }});
 
+    // Fonts tab
+    if(!state.groupOwnedFonts[groupId]) state.groupOwnedFonts[groupId]={};
+    cats.push({key:'fonts',label:'<i class="fas fa-font"></i> Fonts',items:fonts,render:function(f){
+        var owned=state.groupOwnedFonts[groupId][f.id];
+        var isActive=state.groupActiveFont[groupId]===f.id;
+        return '<div class="skin-card"><div class="skin-preview" style="display:flex;align-items:center;justify-content:center;font-family:\''+f.family+'\',sans-serif;font-size:'+(f.scale?Math.round(18*f.scale):18)+'px;background:var(--card,#fff);color:var(--text,#333);">Aa Bb 123</div><div class="skin-card-body"><h4>'+f.name+'</h4><p>'+f.desc+'</p>'+(owned?'<button class="btn '+(isActive?'btn-disabled':'btn-primary')+' apply-gfont-btn" data-fid="'+f.id+'" data-gid="'+groupId+'">'+(isActive?'Active':'Apply')+'</button>':groupShopBuy(groupId,false,f.price,'buy-gfont-btn','data-fid="'+f.id+'" data-gid="'+groupId+'"'))+'</div></div>';
+    }});
+
     // Apply Skins tab (always visible)
     var ownedBasic=skins.filter(function(s){return state.groupOwnedSkins[groupId][s.id];});
     var ownedPrem=premiumSkins.filter(function(s){return state.groupOwnedPremiumSkins[groupId][s.id];});
@@ -5386,6 +5401,10 @@ function renderGroupShop(groupId){
     var html='<div class="shop-scroll-row scroll-2row">';
     active.items.forEach(function(item){html+=active.render(item);});
     html+='</div>';
+    // Reset font button on fonts tab
+    if(currentGroupShopTab==='fonts'&&state.groupActiveFont[groupId]){
+        html+='<div style="margin-top:12px;text-align:center;"><button class="btn btn-outline" id="resetGroupFont" style="font-size:13px;"><i class="fas fa-undo" style="margin-right:6px;"></i>Reset to Default Font</button></div>';
+    }
     // Group premium background controls (on owned tab with active premium skin)
     if(currentGroupShopTab==='owned'&&state.groupActivePremiumSkin[groupId]){
         if(!state.groupPremiumBg[groupId]) state.groupPremiumBg[groupId]={};
@@ -5453,6 +5472,38 @@ function renderGroupShop(groupId){
         else{state.groupActiveSkin[gid]=sid;state.groupActivePremiumSkin[gid]=null;}
         applyGroupSkin(gid);renderGroupShop(gid);renderGroups();saveState();
     });});
+
+    // Font buy handlers
+    $$('#gvShopContent .buy-gfont-btn').forEach(function(btn){btn.addEventListener('click',function(){
+        var fid=btn.getAttribute('data-fid');var gid=btn.getAttribute('data-gid');
+        var font=fonts.find(function(f){return f.id===fid;});
+        if(!font) return;
+        var gc=getGroupCoinCount(gid);
+        if(gc>=font.price){
+            addGroupCoins(gid,-font.price);
+            if(!state.groupOwnedFonts[gid]) state.groupOwnedFonts[gid]={};
+            state.groupOwnedFonts[gid][fid]=true;
+            saveState();syncSkinDataToSupabase();
+            gShopPurchased(btn);
+            addNotification('skin','Group purchased the "'+font.name+'" font!');
+        }
+    });});
+
+    // Font apply handlers
+    $$('#gvShopContent .apply-gfont-btn').forEach(function(btn){btn.addEventListener('click',function(){
+        var fid=btn.getAttribute('data-fid');var gid=btn.getAttribute('data-gid');
+        state.groupActiveFont[gid]=fid;
+        applyFont(fid,true);
+        renderGroupShop(gid);saveState();
+    });});
+
+    // Reset group font
+    var resetFontBtn=document.getElementById('resetGroupFont');
+    if(resetFontBtn) resetFontBtn.addEventListener('click',function(){
+        state.groupActiveFont[groupId]=null;
+        applyFont(null,true);
+        renderGroupShop(groupId);saveState();
+    });
 
     initDragScroll('#gvShopContent');
 
@@ -5568,7 +5619,7 @@ function applyGroupSkin(groupId){
     var grp=groups.find(function(g){return g.id===groupId;});
     var hasCover=grp&&grp.coverPhoto;
     // Save personal skin state once when entering group view
-    if(!_gvSaved) _gvSaved={skin:state.activeSkin,premiumSkin:state.activePremiumSkin,bgImage:premiumBgImage,bgOverlay:premiumBgOverlay,bgDarkness:premiumBgDarkness,cardTrans:premiumCardTransparency};
+    if(!_gvSaved) _gvSaved={skin:state.activeSkin,premiumSkin:state.activePremiumSkin,font:state.activeFont,bgImage:premiumBgImage,bgOverlay:premiumBgOverlay,bgDarkness:premiumBgDarkness,cardTrans:premiumCardTransparency};
     // Reset premium bg — will re-apply group's own bg below if applicable
     premiumBgImage=null;premiumBgOverlay=0;premiumBgDarkness=0;premiumCardTransparency=0.1;
     updatePremiumBg();
@@ -5624,6 +5675,9 @@ function applyGroupSkin(groupId){
     } else {
         applySkin(null,true);
     }
+    // Apply group font (or reset to personal font)
+    var gFont=state.groupActiveFont[groupId]||null;
+    applyFont(gFont,true);
 }
 
 var skinColors={

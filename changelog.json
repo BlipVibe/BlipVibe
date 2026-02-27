@@ -6,14 +6,17 @@
       "Read-only localStorage cache — app loads instantly from cached skin data while Supabase fetches fresh state in the background",
       "Single photo delete — trash button on hover for profile pictures, cover photos, and post photos",
       "Bulk photo delete — 'Select' button enables multi-select mode with floating action bar for batch deletion",
-      "Delete Photo option in photo context menu (three-dot menu)"
+      "Delete Photo option in photo context menu (three-dot menu)",
+      "Group fonts — buy, apply, and reset fonts per group via the group shop Fonts tab"
     ],
     "changed": [
-      "Photo state now tracks storage file names and post IDs for proper deletion across storage, albums, and posts"
+      "Photo state now tracks storage file names and post IDs for proper deletion across storage, albums, and posts",
+      "Group font saved/restored when entering/leaving group view (personal font preserved)"
     ],
     "fixed": [
       "Blurry text on premium skin backgrounds — removed heavy glow text-shadow (was 8px blur) and replaced with crisp 2px drop shadow",
-      "Premium backgrounds and group skins not persisting — loadSkinDataFromSupabase used sbGetProfile (which has skin_data column revoked) instead of sbGetOwnProfile (SECURITY DEFINER RPC that can read it)"
+      "Premium backgrounds and group skins not persisting — loadSkinDataFromSupabase used sbGetProfile (which has skin_data column revoked) instead of sbGetOwnProfile (SECURITY DEFINER RPC that can read it)",
+      "Card transparency slider not working in groups — gpremium-dark CSS used hardcoded background overriding the color-mix opacity variable"
     ]
   },
   {

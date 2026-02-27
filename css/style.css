@@ -1771,7 +1771,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
 #page-group-view.gskin-guild-frost .card-heading,#page-group-view.gskin-guild-frost .profile-name{color:#006064;}
 
 /* Premium Group Skins (dark) */
-#page-group-view.gpremium-dark .gv-layout .card{background:#1e293b;color:#e2e8f0;}
+#page-group-view.gpremium-dark .gv-layout .card{background:color-mix(in srgb,#1e293b var(--card-opacity,90%),transparent);color:#e2e8f0;}
 #page-group-view.gpremium-dark .card-heading,#page-group-view.gpremium-dark .profile-name,#page-group-view.gpremium-dark .gv-shop-title{color:#e2e8f0;}
 #page-group-view.gpremium-dark .profile-title,#page-group-view.gpremium-dark .gv-about-meta span{color:#94a3b8;}
 #page-group-view.gpremium-dark .post-username,#page-group-view.gpremium-dark .post-description p{color:#e2e8f0;}
