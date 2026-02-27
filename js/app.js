@@ -5947,6 +5947,7 @@ function renderMsgContacts(search){
         var avatar=c.partner.avatar_url||DEFAULT_AVATAR;
         var preview=c.lastMessage.content||'';
         if(/^\[img\]/.test(preview)) preview='Sent an image';
+        else if(/^\[gif\]/.test(preview)) preview='Sent a GIF';
         else if(Array.from(preview).length>40) preview=safeTruncate(preview,40,'...');
         var time=timeAgoReal(c.lastMessage.created_at);
         var isActive=activeChat&&activeChat.partnerId===c.partnerId;
@@ -6039,6 +6040,13 @@ function _msgSearchPersonCard(p){
     return h;
 }
 
+function _renderMsgContent(content){
+    var imgMatch=content.match(/^\[img\](.*?)\[\/img\]$/);
+    if(imgMatch) return {html:'<img src="'+escapeHtml(imgMatch[1])+'" style="max-width:200px;border-radius:8px;">',isMedia:true};
+    var gifMatch=content.match(/^\[gif\](.*?)\[\/gif\]$/);
+    if(gifMatch) return {html:'<img src="'+escapeHtml(gifMatch[1])+'" style="max-width:200px;border-radius:8px;">',isMedia:true};
+    return {html:escapeHtmlNl(content),isMedia:false};
+}
 async function openChat(contact){
     if(blockedUsers[contact.partnerId]){showToast('This user is blocked');return;}
     activeChat=contact;
@@ -6047,7 +6055,19 @@ async function openChat(contact){
     var avatar=contact.partner.avatar_url||DEFAULT_AVATAR;
     var html='<div class="msg-chat-header"><button class="msg-back-btn" id="msgBackBtn"><i class="fas fa-arrow-left"></i></button><img src="'+avatar+'" alt="'+name+'" style="width:36px;height:36px;border-radius:50%;object-fit:cover;cursor:pointer;" data-uid="'+contact.partnerId+'"><h4>'+name+'</h4></div>';
     html+='<div class="msg-chat-messages" id="chatMessages"><div style="text-align:center;padding:20px;color:var(--gray);"><i class="fas fa-spinner fa-spin"></i> Loading...</div></div>';
-    html+='<div class="msg-chat-input"><button id="msgImgBtn" title="Send image" style="background:none;border:none;color:var(--primary);font-size:18px;padding:8px;cursor:pointer;"><i class="fas fa-image"></i></button><input type="file" id="msgImgInput" accept="image/*" style="display:none;"><input type="text" placeholder="Type a message..." id="msgInput" style="flex:1;"><button id="sendMsgBtn"><i class="fas fa-paper-plane"></i></button></div>';
+    // Input bar with image, GIF, text input, and send
+    html+='<div class="msg-chat-input" style="position:relative;">';
+    html+='<div id="msgGifPicker" class="msg-gif-picker">';
+    html+='<div class="gif-picker-header"><input type="text" id="msgGifSearch" placeholder="Search GIFs..." style="flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:20px;font-size:13px;background:var(--light-bg);color:var(--dark);outline:none;font-family:inherit;"><button id="msgGifClose" style="background:none;border:none;color:var(--gray);font-size:16px;cursor:pointer;padding:4px 8px;"><i class="fas fa-times"></i></button></div>';
+    html+='<div class="gif-picker-grid" id="msgGifGrid"></div>';
+    html+='<div class="gif-picker-footer">Powered by <strong>KLIPY</strong></div>';
+    html+='</div>';
+    html+='<button id="msgImgBtn" title="Send image" style="background:none;border:none;color:var(--primary);font-size:18px;padding:8px;cursor:pointer;flex-shrink:0;"><i class="fas fa-image"></i></button>';
+    html+='<input type="file" id="msgImgInput" accept="image/*" style="display:none;">';
+    html+='<button id="msgGifBtn" title="Send GIF" style="background:none;border:none;color:var(--primary);font-size:18px;padding:8px;cursor:pointer;flex-shrink:0;"><i class="fas fa-film"></i></button>';
+    html+='<input type="text" placeholder="Type a message..." id="msgInput" style="flex:1;min-width:0;">';
+    html+='<button id="sendMsgBtn"><i class="fas fa-paper-plane"></i></button>';
+    html+='</div>';
     $('#msgChat').innerHTML=html;
     // Mobile: show chat area, hide sidebar
     var msgLayout=document.querySelector('.messages-layout');
@@ -6066,13 +6086,8 @@ async function openChat(contact){
             var mhtml='';
             messages.forEach(function(m){
                 var isMine=m.sender_id===currentUser.id;
-                var content=m.content;
-                var isImg=/^\[img\]/.test(content);
-                // Render image messages
-                var imgMatch=content.match(/^\[img\](.*?)\[\/img\]$/);
-                if(imgMatch){content='<img src="'+escapeHtml(imgMatch[1])+'" style="max-width:200px;border-radius:8px;">';}
-                else{content=escapeHtmlNl(content);}
-                mhtml+='<div class="msg-bubble '+(isMine?'sent':'received')+'" data-mid="'+m.id+'" data-raw="'+(isImg?'':escapeHtml(m.content))+'">'+content+(isMine&&!isImg?'<button class="msg-edit-btn" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:10px;padding:2px 0 0;cursor:pointer;display:block;text-align:right;"><i class="fas fa-pen"></i></button>':'')+'</div>';
+                var rendered=_renderMsgContent(m.content);
+                mhtml+='<div class="msg-bubble '+(isMine?'sent':'received')+'" data-mid="'+m.id+'" data-raw="'+(rendered.isMedia?'':escapeHtml(m.content))+'">'+rendered.html+(isMine&&!rendered.isMedia?'<button class="msg-edit-btn" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:10px;padding:2px 0 0;cursor:pointer;display:block;text-align:right;"><i class="fas fa-pen"></i></button>':'')+'</div>';
             });
             msgArea.innerHTML=mhtml;
             // Bind message edit buttons
@@ -6084,7 +6099,6 @@ async function openChat(contact){
                     var raw=bubble.dataset.raw;
                     showEditMessageModal(mid,raw,function(newText){
                         bubble.dataset.raw=newText;
-                        // Replace text content, keep edit button
                         var editBtn=bubble.querySelector('.msg-edit-btn');
                         bubble.textContent='';
                         bubble.appendChild(document.createTextNode(newText));
@@ -6131,10 +6145,63 @@ async function openChat(contact){
         this.value='';
     });
 
+    // GIF picker handler
+    _initMsgGifPicker();
+
     // Click avatar to view profile
     var avatarEl=$('#msgChat').querySelector('.msg-chat-header img');
     if(avatarEl) avatarEl.addEventListener('click',async function(){
         try{var p=await sbGetProfile(contact.partnerId);if(p)showProfileView(profileToPerson(p));}catch(e){}
+    });
+}
+function _initMsgGifPicker(){
+    var picker=document.getElementById('msgGifPicker');
+    var grid=document.getElementById('msgGifGrid');
+    var searchInput=document.getElementById('msgGifSearch');
+    var gifBtn=document.getElementById('msgGifBtn');
+    var closeBtn=document.getElementById('msgGifClose');
+    if(!picker||!grid||!gifBtn) return;
+    var _debounce=null;
+    function renderGrid(gifs){
+        if(!gifs||!gifs.length){grid.innerHTML='<p style="color:var(--gray);text-align:center;grid-column:1/-1;padding:20px 0;">No GIFs found</p>';return;}
+        grid.innerHTML=gifs.map(function(g){return '<img src="'+escapeHtml(g.preview||g.full)+'" alt="'+escapeHtml(g.title)+'" data-full="'+escapeHtml(g.full)+'" loading="lazy">';}).join('');
+    }
+    async function openPicker(){
+        picker.classList.add('open');
+        searchInput.value='';
+        grid.innerHTML='<p style="color:var(--gray);text-align:center;grid-column:1/-1;padding:20px 0;">Loading...</p>';
+        searchInput.focus();
+        renderGrid(await getKlipyTrending(20));
+    }
+    function closePicker(){picker.classList.remove('open');grid.innerHTML='';}
+    gifBtn.addEventListener('click',function(){
+        if(picker.classList.contains('open')) closePicker();
+        else openPicker();
+    });
+    closeBtn.addEventListener('click',closePicker);
+    searchInput.addEventListener('input',function(){
+        clearTimeout(_debounce);
+        var q=searchInput.value.trim();
+        if(!q){_debounce=setTimeout(async function(){renderGrid(await getKlipyTrending(20));},200);return;}
+        _debounce=setTimeout(async function(){
+            grid.innerHTML='<p style="color:var(--gray);text-align:center;grid-column:1/-1;padding:20px 0;">Searching...</p>';
+            renderGrid(await searchKlipyGifs(q,20));
+        },400);
+    });
+    grid.addEventListener('click',async function(e){
+        var img=e.target.closest('img');if(!img)return;
+        var fullUrl=img.dataset.full;if(!fullUrl||!activeChat||!currentUser)return;
+        closePicker();
+        var gifContent='[gif]'+fullUrl+'[/gif]';
+        var msgArea=$('#chatMessages');
+        var placeholder=msgArea.querySelector('div[style*="text-align:center"]');
+        if(placeholder&&placeholder.textContent.indexOf('No messages')!==-1) msgArea.innerHTML='';
+        msgArea.insertAdjacentHTML('beforeend','<div class="msg-bubble sent"><img src="'+escapeHtml(fullUrl)+'" style="max-width:200px;border-radius:8px;"></div>');
+        msgArea.scrollTop=msgArea.scrollHeight;
+        try{
+            await sbSendMessage(currentUser.id,activeChat.partnerId,gifContent);
+            await loadConversations();
+        }catch(err){console.error('Send GIF:',err);showToast('Failed to send GIF');}
     });
 }
 

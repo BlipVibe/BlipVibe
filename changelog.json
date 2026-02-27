@@ -6,7 +6,9 @@
       "Structured display name system — first name, last name, and optional nickname fields",
       "Display mode toggle in Edit Profile — choose to show 'First & Last Name' or 'Nickname'",
       "Live name preview in Edit Profile modal shows how your name will appear across the app",
-      "First and last name collected during signup"
+      "First and last name collected during signup",
+      "GIF picker in messages — search and send GIFs via Klipy API",
+      "GIF messages render inline in chat bubbles"
     ],
     "changed": [
       "Edit Profile modal now has separate First Name, Last Name, and Nickname fields instead of a single Name input",
@@ -15,7 +17,10 @@
       "Mobile message badge now shows a small themed-color dot instead of a number count",
       "Message search now shows a full scrollable people list — following first, then others"
     ],
-    "fixed": []
+    "fixed": [
+      "Mobile message chat — header and input bar now stay fixed while messages scroll between them",
+      "Message input bar visible on all mobile devices (fixed layout applied at ≤768px, not just ≤640px)"
+    ]
   },
   {
     "version": "0.2.11",
