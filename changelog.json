@@ -1,5 +1,22 @@
 [
   {
+    "version": "0.2.13",
+    "date": "2026-02-27",
+    "added": [],
+    "changed": [
+      "Mobile nav bar redesigned — search icon replaces full search bar, notifications bell moved next to profile avatar, coins and dropdown pushed to far right",
+      "Mobile chat opens full-screen — top and bottom nav bars hidden while chatting, restored on back",
+      "Saved Posts moved from mobile bottom nav to settings dropdown menu",
+      "Profile view defaults to Photos tab instead of Albums",
+      "Following feed tab no longer shows your own posts",
+      "App always opens to home feed on new visits (removed session-based last page restore)"
+    ],
+    "fixed": [
+      "Negative like/dislike counts could appear across all feed handlers",
+      "Message notification dot clipping behind nav highlight box on mobile (now uses separate absolute-positioned layer)"
+    ]
+  },
+  {
     "version": "0.2.12",
     "date": "2026-02-26",
     "added": [
