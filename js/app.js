@@ -6056,16 +6056,16 @@ async function openChat(contact){
     var html='<div class="msg-chat-header"><button class="msg-back-btn" id="msgBackBtn"><i class="fas fa-arrow-left"></i></button><img src="'+avatar+'" alt="'+name+'" style="width:36px;height:36px;border-radius:50%;object-fit:cover;cursor:pointer;" data-uid="'+contact.partnerId+'"><h4>'+name+'</h4></div>';
     html+='<div class="msg-chat-messages" id="chatMessages"><div style="text-align:center;padding:20px;color:var(--gray);"><i class="fas fa-spinner fa-spin"></i> Loading...</div></div>';
     // Input bar with image, GIF, text input, and send
-    html+='<div class="msg-chat-input" style="position:relative;">';
+    html+='<div class="msg-chat-input">';
     html+='<div id="msgGifPicker" class="msg-gif-picker">';
     html+='<div class="gif-picker-header"><input type="text" id="msgGifSearch" placeholder="Search GIFs..." style="flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:20px;font-size:13px;background:var(--light-bg);color:var(--dark);outline:none;font-family:inherit;"><button id="msgGifClose" style="background:none;border:none;color:var(--gray);font-size:16px;cursor:pointer;padding:4px 8px;"><i class="fas fa-times"></i></button></div>';
     html+='<div class="gif-picker-grid" id="msgGifGrid"></div>';
     html+='<div class="gif-picker-footer">Powered by <strong>KLIPY</strong></div>';
     html+='</div>';
-    html+='<button id="msgImgBtn" title="Send image" style="background:none;border:none;color:var(--primary);font-size:18px;padding:8px;cursor:pointer;flex-shrink:0;"><i class="fas fa-image"></i></button>';
+    html+='<button id="msgImgBtn" class="msg-media-btn" title="Send image"><i class="fas fa-image"></i></button>';
     html+='<input type="file" id="msgImgInput" accept="image/*" style="display:none;">';
-    html+='<button id="msgGifBtn" title="Send GIF" style="background:none;border:none;color:var(--primary);font-size:18px;padding:8px;cursor:pointer;flex-shrink:0;"><i class="fas fa-film"></i></button>';
-    html+='<input type="text" placeholder="Type a message..." id="msgInput" style="flex:1;min-width:0;">';
+    html+='<button id="msgGifBtn" class="msg-media-btn" title="Send GIF"><i class="fas fa-film"></i></button>';
+    html+='<input type="text" placeholder="Type a message..." id="msgInput">';
     html+='<button id="sendMsgBtn"><i class="fas fa-paper-plane"></i></button>';
     html+='</div>';
     $('#msgChat').innerHTML=html;
