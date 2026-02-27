@@ -5931,10 +5931,6 @@ function renderMsgContacts(search){
             return name.indexOf(q)!==-1;
         });
     }
-    if(!convos.length){
-        list.innerHTML='<div class="empty-state" style="padding:40px 20px;"><i class="fas fa-envelope-open-text"></i><p>No messages yet.</p></div>';
-        return;
-    }
     var html='';
     convos.forEach(function(c){
         var name=c.partner.display_name||c.partner.username||'User';
@@ -5951,15 +5947,69 @@ function renderMsgContacts(search){
         html+='<span class="msg-contact-time">'+time+'</span>';
         html+='</div>';
     });
+    // Show search results section when searching
+    if(search && search.trim().length >= 2){
+        html+='<div id="msgSearchResults" style="border-top:1px solid var(--border);padding-top:8px;"><div style="padding:8px 16px;font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;"><i class="fas fa-search" style="margin-right:4px;"></i>Search results</div><div style="padding:12px;text-align:center;color:var(--gray);font-size:13px;"><i class="fas fa-spinner fa-spin"></i> Searching...</div></div>';
+    }
+    if(!convos.length && (!search || search.trim().length < 2)){
+        list.innerHTML='<div class="empty-state" style="padding:40px 20px;"><i class="fas fa-envelope-open-text"></i><p>No messages yet.</p></div>';
+        return;
+    }
     list.innerHTML=html;
-    // Click to open chat
-    list.querySelectorAll('.msg-contact').forEach(function(el){
+    _bindMsgContactClicks(list);
+    // If searching, also search Supabase for new people
+    if(search && search.trim().length >= 2) _msgSearchPeople(search.trim(), convos);
+}
+function _bindMsgContactClicks(container){
+    container.querySelectorAll('.msg-contact').forEach(function(el){
         el.addEventListener('click',function(){
             var pid=el.getAttribute('data-partner-id');
             var convo=msgConversations.find(function(c){return c.partnerId===pid;});
             if(convo) openChat({partnerId:convo.partnerId,partner:convo.partner});
+            else openChat({partnerId:pid,partner:{id:pid,display_name:el.querySelector('.msg-contact-name').textContent,username:'',avatar_url:el.querySelector('img').src}});
         });
     });
+}
+var _msgSearchTimer=null;
+async function _msgSearchPeople(query, existingConvos){
+    clearTimeout(_msgSearchTimer);
+    _msgSearchTimer=setTimeout(async function(){
+        var resultsEl=document.getElementById('msgSearchResults');
+        if(!resultsEl) return;
+        try{
+            var results=await sbSearchProfiles(query, 10);
+            // Filter out self, blocked, and people already shown in conversations
+            var convoIds={};
+            existingConvos.forEach(function(c){convoIds[c.partnerId]=true;});
+            results=(results||[]).filter(function(p){
+                return p.id!==(currentUser&&currentUser.id)&&!blockedUsers[p.id]&&!convoIds[p.id];
+            });
+            if(!results.length){
+                resultsEl.innerHTML='<div style="padding:8px 16px;font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;"><i class="fas fa-search" style="margin-right:4px;"></i>Search results</div><div style="padding:12px;text-align:center;color:var(--gray);font-size:13px;">No users found</div>';
+                return;
+            }
+            var h='<div style="padding:8px 16px;font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;"><i class="fas fa-search" style="margin-right:4px;"></i>Search results</div>';
+            results.forEach(function(p){
+                var name=p.display_name||p.username||'User';
+                var avatar=p.avatar_url||DEFAULT_AVATAR;
+                h+='<div class="msg-contact" data-partner-id="'+p.id+'">';
+                h+='<img src="'+avatar+'" alt="'+escapeHtml(name)+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;">';
+                h+='<div class="msg-contact-info"><div class="msg-contact-name">'+escapeHtml(name)+'</div>';
+                h+='<div class="msg-contact-preview" style="color:var(--gray);">@'+escapeHtml(p.username||'')+'</div></div></div>';
+            });
+            resultsEl.innerHTML=h;
+            resultsEl.querySelectorAll('.msg-contact').forEach(function(el){
+                el.addEventListener('click',function(){
+                    var pid=el.getAttribute('data-partner-id');
+                    var r=results.find(function(p){return p.id===pid;});
+                    if(r) startConversation(r.id, r.display_name||r.username, r.avatar_url);
+                });
+            });
+        }catch(e){
+            console.error('msgSearchPeople:', e);
+            resultsEl.innerHTML='<div style="padding:8px 16px;font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;"><i class="fas fa-search" style="margin-right:4px;"></i>Search results</div><div style="padding:12px;text-align:center;color:var(--gray);font-size:13px;">Search failed</div>';
+        }
+    }, 300);
 }
 
 async function openChat(contact){
@@ -6092,7 +6142,7 @@ function startConversation(userId, userName, userAvatar){
     },100);
 }
 
-$('#msgSearch').addEventListener('input',function(){renderMsgContacts(this.value);});
+$('#msgSearch').addEventListener('input',function(){clearTimeout(_msgSearchTimer);renderMsgContacts(this.value);});
 
 // Following sidebar for messages
 async function renderMsgFollowing(){
@@ -6925,6 +6975,7 @@ function showHiddenPostsModal(){
 
 // ======================== BLOCK USER SYSTEM ========================
 function showBlockConfirmModal(person,onDone){
+    if(currentUser&&person.id===currentUser.id){showToast('You can\'t block yourself');return;}
     var h='<div class="modal-header"><h3><i class="fas fa-ban" style="color:#e74c3c;margin-right:8px;"></i>Block '+person.name+'?</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     h+='<div class="modal-body">';
     h+='<p style="color:var(--gray);font-size:14px;text-align:center;margin-bottom:16px;">They won\'t be able to see your posts or interact with you. Their posts will be hidden from your feed.</p>';
@@ -6938,6 +6989,7 @@ function showBlockConfirmModal(person,onDone){
     });
 }
 function blockUser(uid){
+    if(currentUser&&uid===currentUser.id){showToast('You can\'t block yourself');return;}
     blockedUsers[uid]=true;
     persistBlocked();
     // Unfollow them if following
