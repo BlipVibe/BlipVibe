@@ -2591,7 +2591,7 @@ async function showGroupProfileModal(person,group){
     var html='<div class="modal-header"><h3>Profile</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     html+='<div class="modal-body" style="padding:16px;">';
     html+='<div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;">';
-    html+='<img src="'+personAvatar+'" alt="'+personName+'" style="width:56px;height:56px;border-radius:50%;object-fit:cover;flex-shrink:0;">';
+    html+='<div style="width:56px;height:56px;border-radius:50%;overflow:hidden;flex-shrink:0;background:transparent;"><img src="'+personAvatar+'" alt="'+personName+'" style="width:100%;height:100%;object-fit:cover;display:block;border:none;"></div>';
     html+='<div><h3 style="font-size:16px;font-weight:600;margin:0;">'+personName+'</h3><p style="font-size:13px;color:var(--gray);margin:2px 0 0;">'+personBio+'</p>';
     if(theirRole!=='Member') html+='<span style="font-size:10px;background:'+(theirRole==='Admin'?'#e74c3c':gc)+';color:#fff;padding:1px 7px;border-radius:8px;display:inline-block;margin-top:3px;">'+theirRole+'</span>';
     html+='</div></div>';

@@ -16,7 +16,8 @@
     "fixed": [
       "Blurry text on premium skin backgrounds — removed heavy glow text-shadow (was 8px blur) and replaced with crisp 2px drop shadow",
       "Premium backgrounds and group skins not persisting — loadSkinDataFromSupabase used sbGetProfile (which has skin_data column revoked) instead of sbGetOwnProfile (SECURITY DEFINER RPC that can read it)",
-      "Card transparency slider not working in groups — gpremium-dark CSS used hardcoded background overriding the color-mix opacity variable"
+      "Card transparency slider not working in groups — gpremium-dark CSS used hardcoded background overriding the color-mix opacity variable",
+      "Profile picture background color jutting out as square — added background:var(--card) to avatar wraps, removed border from modal avatars, added overflow:hidden clipping to profile view and group profile modal"
     ]
   },
   {
