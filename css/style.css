@@ -2742,9 +2742,10 @@ body.has-premium-bg .profile-title,
 body.has-premium-bg .nav-coins,
 body.has-premium-bg .pv-posts-heading{text-shadow:0 1px 4px rgba(0,0,0,.5),0 0 8px rgba(0,0,0,.3);color:var(--ps-text);}
 body.has-premium-bg .search-tabs{padding:4px 0;}
-body.has-premium-bg .search-tab{color:var(--ps-muted,rgba(255,255,255,.7));background:rgba(0,0,0,.25);border-color:rgba(255,255,255,.08);}
-body.has-premium-bg .search-tab.active{color:var(--ps-text,#fff);background:var(--primary);border-color:var(--primary);}
-body.has-premium-bg .search-tab:hover{color:var(--ps-text,#fff);background:rgba(255,255,255,.15);}
+body.has-premium-bg .search-tab{color:var(--ps-text,#fff);background:color-mix(in srgb,var(--ps-card,#000) 80%,transparent);border-color:var(--ps-border,rgba(255,255,255,.12));backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
+body.has-premium-bg .search-tab.active{color:#fff;background:var(--primary);border-color:var(--primary);backdrop-filter:none;-webkit-backdrop-filter:none;}
+body.has-premium-bg .search-tab:hover{color:var(--ps-text,#fff);background:color-mix(in srgb,var(--ps-card,#000) 90%,transparent);}
+body.has-premium-bg .btn-outline{background:color-mix(in srgb,var(--ps-card,#000) 70%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
 body.has-premium-bg .page-header{background:color-mix(in srgb,var(--ps-card,rgba(0,0,0,.3)) var(--card-opacity,90%),transparent);border-radius:12px;padding:16px 20px;margin-left:-20px;margin-right:-20px;border:1px solid var(--ps-border,transparent);}
 body.has-premium-bg .suggestion-name,
 body.has-premium-bg .suggestion-info p,

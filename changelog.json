@@ -12,6 +12,7 @@
       "App always opens to home feed on new visits (removed session-based last page restore)"
     ],
     "fixed": [
+      "Pill tabs and outline buttons unreadable on premium background skins — now use skin-themed solid backgrounds with backdrop blur instead of thin transparent overlays",
       "Developer Updates modal text unreadable on themed skins — now inherits skin colors instead of using hardcoded values",
       "Negative like/dislike counts could appear across all feed handlers",
       "Message notification dot clipping behind nav highlight box on mobile (now uses separate absolute-positioned layer)"
