@@ -2236,7 +2236,7 @@ function profileToPerson(p){
 async function showProfileView(person){
     // Allow viewing own profile even if somehow in blockedUsers; block viewing others
     if(person.id&&!person.isMe&&blockedUsers[person.id]){showToast('This user is blocked');return;}
-    pvPhotoTab='albums';
+    pvPhotoTab='photos';
     $$('.page').forEach(function(p){p.classList.remove('active');});
     document.getElementById('page-profile-view').classList.add('active');
     $$('.nav-link').forEach(function(l){l.classList.remove('active');});
@@ -2303,7 +2303,7 @@ async function showProfileView(person){
     cardHtml+='</div>';
     $('#pvProfileCard').innerHTML=cardHtml;
 
-    // Photos card - tabbed: Albums | Photos (albums first)
+    // Photos card - tabbed: Photos | Albums (photos first)
     var pvUserId=isMe?currentUser.id:person.id;
     // Load viewed user's post photos if not own profile
     if(!isMe){
@@ -2322,8 +2322,8 @@ async function showProfileView(person){
     try{_pvAlbums=await sbGetAlbums(pvUserId);console.log('[Albums] Loaded',_pvAlbums.length,'albums for',pvUserId);}catch(e){console.error('[Albums] Fetch error:',e);_pvAlbums=[];}
     var photosHtml='<div class="card photos-card"><h4 class="card-heading"><i class="fas fa-images" style="margin-right:8px;color:var(--primary);"></i>Photos</h4>';
     photosHtml+='<div class="search-tabs" id="pvPhotoTabs">';
-    photosHtml+='<button class="search-tab'+(pvPhotoTab==='albums'?' active':'')+'" data-pvpt="albums"><i class="fas fa-folder"></i> Albums</button>';
     photosHtml+='<button class="search-tab'+(pvPhotoTab==='photos'?' active':'')+'" data-pvpt="photos"><i class="fas fa-image"></i> Photos</button>';
+    photosHtml+='<button class="search-tab'+(pvPhotoTab==='albums'?' active':'')+'" data-pvpt="albums"><i class="fas fa-folder"></i> Albums</button>';
     photosHtml+='</div>';
     photosHtml+='<div id="pvPhotoContent"></div>';
     photosHtml+='</div>';
@@ -6158,7 +6158,7 @@ function initMessageSubscription(){
 }
 
 // ======================== PHOTOS ========================
-var pvPhotoTab='albums';
+var pvPhotoTab='photos';
 var _pvAlbums=[];var _pvPostPhotos=[];var _pvIsMe=false;var _pvUserId=null;
 
 function renderPvPhotoTab(isMe){
