@@ -12,6 +12,9 @@
       "App always opens to home feed on new visits (removed session-based last page restore)"
     ],
     "fixed": [
+      "Group skins/templates resetting randomly — now synced to Supabase so they persist across devices and tab switches",
+      "Group cover photo not visible after cropping — view now refreshes after save",
+      "Group icon selection not saving — now persisted to database (requires running add-group-icon-color.sql migration)",
       "Pill tabs and outline buttons unreadable on premium background skins — now use skin-themed solid backgrounds with backdrop blur instead of thin transparent overlays",
       "Developer Updates modal text unreadable on themed skins — now inherits skin colors instead of using hardcoded values",
       "Negative like/dislike counts could appear across all feed handlers",

@@ -805,7 +805,10 @@ function _buildSkinData(){
         savedFolders:savedFolders||[],
         hiddenPosts:hiddenPosts||{},
         reportedPosts:reportedPosts||[],
-        tosAcceptedVersion:_tosAccepted?TOS_VERSION:((currentUser&&currentUser.skin_data&&currentUser.skin_data.tosAcceptedVersion)||0)
+        tosAcceptedVersion:_tosAccepted?TOS_VERSION:((currentUser&&currentUser.skin_data&&currentUser.skin_data.tosAcceptedVersion)||0),
+        groupActiveSkin:state.groupActiveSkin||{},
+        groupActivePremiumSkin:state.groupActivePremiumSkin||{},
+        groupPremiumBg:state.groupPremiumBg||{}
     };
 }
 function syncSkinDataToSupabase(immediate){
@@ -863,6 +866,10 @@ async function loadSkinDataFromSupabase(){
         if(Array.isArray(sd.savedFolders)&&sd.savedFolders.length) savedFolders=sd.savedFolders;
         if(sd.hiddenPosts&&typeof sd.hiddenPosts==='object') hiddenPosts=sd.hiddenPosts;
         if(Array.isArray(sd.reportedPosts)) reportedPosts=sd.reportedPosts;
+        // Group skin data (merge — never lose active skins)
+        if(sd.groupActiveSkin&&typeof sd.groupActiveSkin==='object') Object.assign(state.groupActiveSkin,sd.groupActiveSkin);
+        if(sd.groupActivePremiumSkin&&typeof sd.groupActivePremiumSkin==='object') Object.assign(state.groupActivePremiumSkin,sd.groupActivePremiumSkin);
+        if(sd.groupPremiumBg&&typeof sd.groupPremiumBg==='object') Object.assign(state.groupPremiumBg,sd.groupPremiumBg);
     }catch(e){console.warn('Load skin data from Supabase:',e);}
 }
 function loadState(){
@@ -2603,7 +2610,7 @@ function showGroupCoverCropModal(src,group,banner){
             group.coverPhoto=fallback;
             banner.style.background='url('+fallback+') center/cover';
         }
-        closeModal();
+        closeModal();showGroupView(group);renderGroups();
     });
 }
 async function showGroupProfileModal(person,group){
@@ -3112,7 +3119,7 @@ async function showGroupView(group){
                     closeModal();showGroupView(group);renderGroups();
                 });
             });
-            $$('.gv-icon-pick').forEach(function(btn){btn.addEventListener('click',function(){group.icon=btn.dataset.icon;closeModal();showGroupView(group);renderGroups();});});
+            $$('.gv-icon-pick').forEach(function(btn){btn.addEventListener('click',async function(){group.icon=btn.dataset.icon;try{await sbUpdateGroup(group.id,{icon:group.icon});}catch(e){console.warn('Save group icon:',e);}closeModal();showGroupView(group);renderGroups();});});
         });}
     }
     $$('.gv-rules-btn').forEach(function(btn){btn.addEventListener('click',function(){
@@ -4881,7 +4888,7 @@ function bindGroupEvents(container){
             h+='<div class="gv-icon-grid">';
             icons.forEach(function(ic){h+='<button class="gv-icon-pick'+(group.icon===ic?' active':'')+'" data-icon="'+ic+'"><i class="fas '+ic+'"></i></button>';});
             h+='</div></div>';showModal(h);
-            $$('.gv-icon-pick').forEach(function(pick){pick.addEventListener('click',function(){group.icon=pick.dataset.icon;closeModal();renderGroups();});});
+            $$('.gv-icon-pick').forEach(function(pick){pick.addEventListener('click',async function(){group.icon=pick.dataset.icon;try{await sbUpdateGroup(group.id,{icon:group.icon});}catch(e){console.warn('Save group icon:',e);}closeModal();renderGroups();});});
         });
     });
 }
