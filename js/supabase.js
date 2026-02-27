@@ -675,6 +675,22 @@ async function sbUploadPostImage(userId, file) {
   return sbUploadFile('posts', path, file);
 }
 
+async function sbDeleteStorageFile(bucket, path) {
+  const { error } = await sb.storage.from(bucket).remove([path]);
+  if (error) throw error;
+}
+
+async function sbRemovePhotoFromAllAlbums(photoUrlBase) {
+  const { error } = await sb.from('album_photos').delete().like('photo_url', photoUrlBase + '%');
+  if (error) throw error;
+}
+
+async function sbUpdatePostMediaUrls(postId, mediaUrls, imageUrl) {
+  const updates = { media_urls: mediaUrls, image_url: imageUrl || null };
+  const { error } = await sb.from('posts').update(updates).eq('id', postId);
+  if (error) throw error;
+}
+
 async function sbUploadGroupImage(groupId, file, type) {
   validateUploadFile(file, { maxSize: 5 * 1024 * 1024, label: 'Group ' + type });
   const ext = file.name.split('.').pop();

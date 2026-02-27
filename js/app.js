@@ -463,6 +463,11 @@ async function initApp() {
         }
     }
     state.coins = currentUser.coin_balance || 0;
+    // Instant UI from localStorage cache (read-only hint — Supabase overwrites below)
+    try{
+        var cached=JSON.parse(localStorage.getItem('blipvibe_cache_'+authUser.id));
+        if(cached){_applySkinDataFromCache(cached);reapplyCustomizations();}
+    }catch(e){}
     // Load all state from Supabase (sole source of truth for cross-device sync)
     await loadSkinDataFromSupabase();
     // Check TOS acceptance — existing users must accept updated terms before proceeding
@@ -511,7 +516,7 @@ async function initApp() {
     // Load photos from Supabase storage and posts
     try {
         var prevAvatars = await sbListUserAvatars(currentUser.id);
-        state.photos.profile = prevAvatars.map(function(a){ return { src: a.src, date: a.date }; });
+        state.photos.profile = prevAvatars.map(function(a){ return { src: a.src, date: a.date, name: a.name }; });
         // Auto-recover avatar if profile lost reference but storage still has files
         if(!currentUser.avatar_url && prevAvatars.length > 0){
             var latestAvatar = prevAvatars[0].src;
@@ -522,7 +527,7 @@ async function initApp() {
     } catch(e){ console.warn('Could not load avatar history:', e); }
     try {
         var prevCovers = await sbListUserCovers(currentUser.id);
-        state.photos.cover = prevCovers.map(function(c){ return { src: c.src, date: c.date }; });
+        state.photos.cover = prevCovers.map(function(c){ return { src: c.src, date: c.date, name: c.name }; });
         // Auto-recover cover if profile lost reference but storage still has files
         if(!currentUser.cover_photo_url && prevCovers.length > 0){
             var latestCover = prevCovers[0].src;
@@ -538,9 +543,9 @@ async function initApp() {
         (myPosts||[]).forEach(function(p){
             var ts = new Date(p.created_at).getTime();
             if(p.media_urls && p.media_urls.length){
-                p.media_urls.forEach(function(u){ postPhotos.push({src:u, date:ts}); });
+                p.media_urls.forEach(function(u){ postPhotos.push({src:u, date:ts, postId:p.id, postMediaUrls:p.media_urls}); });
             } else if(p.image_url){
-                postPhotos.push({src:p.image_url, date:ts});
+                postPhotos.push({src:p.image_url, date:ts, postId:p.id, postMediaUrls:null});
             }
         });
         state.photos.post = postPhotos;
@@ -791,56 +796,62 @@ function syncSkinDataToSupabase(immediate){
     if(immediate) doSync();
     else _skinSyncTimer=setTimeout(doSync,2000);
 }
+function _applySkinDataFromCache(sd){
+    if(!sd) return;
+    // Override active customizations
+    if('activeSkin' in sd) state.activeSkin=sd.activeSkin||null;
+    if('activePremiumSkin' in sd) state.activePremiumSkin=sd.activePremiumSkin||null;
+    if('activeFont' in sd) state.activeFont=sd.activeFont||null;
+    if('activeTemplate' in sd) state.activeTemplate=sd.activeTemplate||null;
+    if('activeNavStyle' in sd) state.activeNavStyle=sd.activeNavStyle||null;
+    if('activeIconSet' in sd) state.activeIconSet=sd.activeIconSet||null;
+    if('activeLogo' in sd) state.activeLogo=sd.activeLogo||null;
+    if('activeCoinSkin' in sd) state.activeCoinSkin=sd.activeCoinSkin||null;
+    if('premiumBgUrl' in sd) premiumBgImage=sd.premiumBgUrl||null;
+    if(sd.premiumBgOverlay!==undefined) premiumBgOverlay=sd.premiumBgOverlay;
+    if(sd.premiumBgDarkness!==undefined) premiumBgDarkness=sd.premiumBgDarkness;
+    if(sd.premiumCardTransparency!==undefined) premiumCardTransparency=sd.premiumCardTransparency;
+    // Replace owned items
+    state.ownedSkins=sd.ownedSkins||{};
+    state.ownedPremiumSkins=sd.ownedPremiumSkins||{};
+    state.ownedFonts=sd.ownedFonts||{};
+    state.ownedTemplates=sd.ownedTemplates||{};
+    state.ownedNavStyles=sd.ownedNavStyles||{};
+    state.ownedIconSets=sd.ownedIconSets||{};
+    state.ownedLogos=sd.ownedLogos||{};
+    state.ownedCoinSkins=sd.ownedCoinSkins||{};
+    // Sync settings (dark mode, etc.)
+    if(sd.settings){
+        if(sd.settings.darkMode!==undefined) settings.darkMode=!!sd.settings.darkMode;
+        if(sd.settings.notifSound!==undefined) settings.notifSound=sd.settings.notifSound;
+        if(sd.settings.privateProfile!==undefined) settings.privateProfile=!!sd.settings.privateProfile;
+        if(sd.settings.commentOrder) settings.commentOrder=sd.settings.commentOrder;
+        if(sd.settings.showLocation!==undefined) settings.showLocation=sd.settings.showLocation;
+    }
+    // Restore social/preference data (full replacement — not merge)
+    if(sd.blockedUsers&&typeof sd.blockedUsers==='object') blockedUsers=sd.blockedUsers;
+    if(sd.dislikedPosts&&typeof sd.dislikedPosts==='object') state.dislikedPosts=sd.dislikedPosts;
+    if(sd.dislikedComments&&typeof sd.dislikedComments==='object') dislikedComments=sd.dislikedComments;
+    if(sd.commentCoinAwarded&&typeof sd.commentCoinAwarded==='object') commentCoinAwarded=sd.commentCoinAwarded;
+    if(Array.isArray(sd.savedFolders)&&sd.savedFolders.length) savedFolders=sd.savedFolders;
+    if(sd.hiddenPosts&&typeof sd.hiddenPosts==='object') hiddenPosts=sd.hiddenPosts;
+    if(Array.isArray(sd.reportedPosts)) reportedPosts=sd.reportedPosts;
+    // Group skin data (full replace)
+    state.groupActiveSkin=sd.groupActiveSkin||{};
+    state.groupActivePremiumSkin=sd.groupActivePremiumSkin||{};
+    state.groupPremiumBg=sd.groupPremiumBg||{};
+    state.groupOwnedSkins=sd.groupOwnedSkins||{};
+    state.groupOwnedPremiumSkins=sd.groupOwnedPremiumSkins||{};
+}
 async function loadSkinDataFromSupabase(){
     if(!currentUser) return;
     try{
         var profile=await sbGetProfile(currentUser.id);
         if(!profile||!profile.skin_data) return;
         var sd=profile.skin_data;
-        // Override active customizations from Supabase (source of truth for cross-device)
-        if('activeSkin' in sd) state.activeSkin=sd.activeSkin||null;
-        if('activePremiumSkin' in sd) state.activePremiumSkin=sd.activePremiumSkin||null;
-        if('activeFont' in sd) state.activeFont=sd.activeFont||null;
-        if('activeTemplate' in sd) state.activeTemplate=sd.activeTemplate||null;
-        if('activeNavStyle' in sd) state.activeNavStyle=sd.activeNavStyle||null;
-        if('activeIconSet' in sd) state.activeIconSet=sd.activeIconSet||null;
-        if('activeLogo' in sd) state.activeLogo=sd.activeLogo||null;
-        if('activeCoinSkin' in sd) state.activeCoinSkin=sd.activeCoinSkin||null;
-        if('premiumBgUrl' in sd) premiumBgImage=sd.premiumBgUrl||null;
-        if(sd.premiumBgOverlay!==undefined) premiumBgOverlay=sd.premiumBgOverlay;
-        if(sd.premiumBgDarkness!==undefined) premiumBgDarkness=sd.premiumBgDarkness;
-        if(sd.premiumCardTransparency!==undefined) premiumCardTransparency=sd.premiumCardTransparency;
-        // Replace owned items from Supabase (sole source of truth)
-        state.ownedSkins=sd.ownedSkins||{};
-        state.ownedPremiumSkins=sd.ownedPremiumSkins||{};
-        state.ownedFonts=sd.ownedFonts||{};
-        state.ownedTemplates=sd.ownedTemplates||{};
-        state.ownedNavStyles=sd.ownedNavStyles||{};
-        state.ownedIconSets=sd.ownedIconSets||{};
-        state.ownedLogos=sd.ownedLogos||{};
-        state.ownedCoinSkins=sd.ownedCoinSkins||{};
-        // Sync settings (dark mode, etc.) across devices
-        if(sd.settings){
-            if(sd.settings.darkMode!==undefined) settings.darkMode=!!sd.settings.darkMode;
-            if(sd.settings.notifSound!==undefined) settings.notifSound=sd.settings.notifSound;
-            if(sd.settings.privateProfile!==undefined) settings.privateProfile=!!sd.settings.privateProfile;
-            if(sd.settings.commentOrder) settings.commentOrder=sd.settings.commentOrder;
-            if(sd.settings.showLocation!==undefined) settings.showLocation=sd.settings.showLocation;
-        }
-        // Restore social/preference data (full replacement — not merge)
-        if(sd.blockedUsers&&typeof sd.blockedUsers==='object') blockedUsers=sd.blockedUsers;
-        if(sd.dislikedPosts&&typeof sd.dislikedPosts==='object') state.dislikedPosts=sd.dislikedPosts;
-        if(sd.dislikedComments&&typeof sd.dislikedComments==='object') dislikedComments=sd.dislikedComments;
-        if(sd.commentCoinAwarded&&typeof sd.commentCoinAwarded==='object') commentCoinAwarded=sd.commentCoinAwarded;
-        if(Array.isArray(sd.savedFolders)&&sd.savedFolders.length) savedFolders=sd.savedFolders;
-        if(sd.hiddenPosts&&typeof sd.hiddenPosts==='object') hiddenPosts=sd.hiddenPosts;
-        if(Array.isArray(sd.reportedPosts)) reportedPosts=sd.reportedPosts;
-        // Group skin data (full replace from Supabase)
-        state.groupActiveSkin=sd.groupActiveSkin||{};
-        state.groupActivePremiumSkin=sd.groupActivePremiumSkin||{};
-        state.groupPremiumBg=sd.groupPremiumBg||{};
-        state.groupOwnedSkins=sd.groupOwnedSkins||{};
-        state.groupOwnedPremiumSkins=sd.groupOwnedPremiumSkins||{};
+        _applySkinDataFromCache(sd);
+        // Write to localStorage as read-only cache for instant load on next visit
+        try{localStorage.setItem('blipvibe_cache_'+currentUser.id,JSON.stringify(sd));}catch(e){}
     }catch(e){console.warn('Load skin data from Supabase:',e);}
 }
 function loadState(){}
@@ -1131,6 +1142,7 @@ var _gvSaved=null;
 var _navCurrent='home';var _navPrev='home';var _navFromPopstate=false;var _activeGroupId=null;
 function navigateTo(page,skipPush){
     revertTryOn();
+    _exitPhotoSelectMode();
     // Restore user's skin/font/template when leaving profile view
     if(_pvSaved&&page!=='profile-view'){
         premiumBgImage=_pvSaved.bgImage;premiumBgOverlay=_pvSaved.bgOverlay;premiumBgDarkness=_pvSaved.bgDarkness||0;premiumCardTransparency=_pvSaved.cardTrans!=null?_pvSaved.cardTrans:0.1;
@@ -6521,6 +6533,7 @@ function showPhotoMenu(photoSrc,albumPhotoId,anchorEl){
     var h='';
     if(!albumPhotoId){
         h+='<button class="photo-ctx-item" data-action="add-to-album"><i class="fas fa-folder-plus"></i> Add to Album</button>';
+        h+='<button class="photo-ctx-item photo-ctx-danger" data-action="delete-photo"><i class="fas fa-trash"></i> Delete Photo</button>';
     } else {
         h+='<button class="photo-ctx-item" data-action="remove-from-album"><i class="fas fa-trash"></i> Remove from Album</button>';
     }
@@ -6533,6 +6546,12 @@ function showPhotoMenu(photoSrc,albumPhotoId,anchorEl){
     // Actions
     menu.querySelector('[data-action="add-to-album"]')&&menu.querySelector('[data-action="add-to-album"]').addEventListener('click',function(){
         menu.remove();showAlbumSelectorModal(photoSrc);
+    });
+    menu.querySelector('[data-action="delete-photo"]')&&menu.querySelector('[data-action="delete-photo"]').addEventListener('click',function(){
+        menu.remove();
+        var found=_findPhotoInState(photoSrc);
+        var ptype=found?found.type:'profile';
+        _confirmDeletePhoto(photoSrc,ptype);
     });
     menu.querySelector('[data-action="remove-from-album"]')&&menu.querySelector('[data-action="remove-from-album"]').addEventListener('click',function(){
         menu.remove();
@@ -6688,12 +6707,12 @@ async function renderPhotoAlbum(){
     var html='';
     // 1. Profile Pictures
     html+='<div class="photo-album-section"><h3><i class="fas fa-user-circle"></i> Profile Pictures</h3>';
-    if(state.photos.profile.length){html+='<div class="photo-album-grid">';state.photos.profile.forEach(function(p){html+='<div class="photo-wrap"><img src="'+p.src+'"><button class="photo-menu-btn" data-psrc="'+p.src+'"><i class="fas fa-ellipsis-h"></i></button></div>';});html+='</div>';}
+    if(state.photos.profile.length){html+='<div class="photo-album-grid">';state.photos.profile.forEach(function(p){html+='<div class="photo-wrap" data-ptype="profile" data-psrc="'+p.src+'"><img src="'+p.src+'"><button class="photo-delete-btn" title="Delete photo"><i class="fas fa-trash"></i></button><button class="photo-menu-btn" data-psrc="'+p.src+'"><i class="fas fa-ellipsis-h"></i></button></div>';});html+='</div>';}
     else html+='<p class="photo-album-empty">No profile pictures yet.</p>';
     html+='</div>';
     // 2. Cover Photos
     html+='<div class="photo-album-section"><h3><i class="fas fa-panorama"></i> Cover Photos</h3>';
-    if(state.photos.cover.length){html+='<div class="photo-album-grid">';state.photos.cover.forEach(function(p){html+='<div class="photo-wrap"><img src="'+p.src+'"><button class="photo-menu-btn" data-psrc="'+p.src+'"><i class="fas fa-ellipsis-h"></i></button></div>';});html+='</div>';}
+    if(state.photos.cover.length){html+='<div class="photo-album-grid">';state.photos.cover.forEach(function(p){html+='<div class="photo-wrap" data-ptype="cover" data-psrc="'+p.src+'"><img src="'+p.src+'"><button class="photo-delete-btn" title="Delete photo"><i class="fas fa-trash"></i></button><button class="photo-menu-btn" data-psrc="'+p.src+'"><i class="fas fa-ellipsis-h"></i></button></div>';});html+='</div>';}
     else html+='<p class="photo-album-empty">No cover photos yet.</p>';
     html+='</div>';
     // 3. Created Albums — pill tab system (mirrors Skin Shop tabs)
@@ -6715,10 +6734,14 @@ async function renderPhotoAlbum(){
     html+='</div>';
     // 4. Post Photos
     html+='<div class="photo-album-section"><h3><i class="fas fa-newspaper"></i> Post Photos</h3>';
-    if(state.photos.post.length){html+='<div class="photo-album-grid">';state.photos.post.forEach(function(p){html+='<div class="photo-wrap"><img src="'+p.src+'"><button class="photo-menu-btn" data-psrc="'+p.src+'"><i class="fas fa-ellipsis-h"></i></button></div>';});html+='</div>';}
+    if(state.photos.post.length){html+='<div class="photo-album-grid">';state.photos.post.forEach(function(p){html+='<div class="photo-wrap" data-ptype="post" data-psrc="'+p.src+'"><img src="'+p.src+'"><button class="photo-delete-btn" title="Delete photo"><i class="fas fa-trash"></i></button><button class="photo-menu-btn" data-psrc="'+p.src+'"><i class="fas fa-ellipsis-h"></i></button></div>';});html+='</div>';}
     else html+='<p class="photo-album-empty">No post photos yet.</p>';
     html+='</div>';
     $('#photoAlbumContent').innerHTML=html;
+    // Show/hide Select button based on whether photos exist
+    var selectBtn=$('#photoSelectBtn');
+    var hasPhotos=state.photos.profile.length||state.photos.cover.length||state.photos.post.length;
+    if(selectBtn) selectBtn.style.display=hasPhotos?'':'none';
     // Drag-scroll on pill tabs
     var pillTabs=document.getElementById('albumPillTabs');
     if(pillTabs) _bindDragScroll(pillTabs);
@@ -6796,6 +6819,186 @@ function _bindAlbumUpload(){
         showToast(files.length>1?files.length+' photos uploaded':'Photo uploaded');
     });
 }
+// ---- Photo deletion helpers ----
+function _extractStoragePath(url){
+    // Parse Supabase public URL → {bucket, path}
+    // Format: .../storage/v1/object/public/<bucket>/<path>?t=...
+    try{
+        var u=new URL(url.split('?')[0]);
+        var parts=u.pathname.split('/storage/v1/object/public/');
+        if(parts.length<2) return null;
+        var rest=parts[1];
+        var slash=rest.indexOf('/');
+        if(slash===-1) return null;
+        return {bucket:rest.substring(0,slash),path:rest.substring(slash+1)};
+    }catch(e){return null;}
+}
+function _findPhotoInState(src){
+    var base=src.split('?')[0];
+    var types=['profile','cover','post'];
+    for(var i=0;i<types.length;i++){
+        var arr=state.photos[types[i]];
+        for(var j=0;j<arr.length;j++){
+            if(arr[j].src.split('?')[0]===base) return {type:types[i],index:j,photo:arr[j]};
+        }
+    }
+    return null;
+}
+function _isCurrentAvatar(src){
+    if(!currentUser||!currentUser.avatar_url) return false;
+    return currentUser.avatar_url.split('?')[0]===src.split('?')[0];
+}
+function _isCurrentCover(src){
+    if(!currentUser||!currentUser.cover_photo_url) return false;
+    return currentUser.cover_photo_url.split('?')[0]===src.split('?')[0];
+}
+async function _executePhotoDelete(src,ptype,skipRender){
+    var info=_extractStoragePath(src);
+    if(!info){showToast('Could not determine file path');return false;}
+    try{
+        // 1. Delete from storage
+        await sbDeleteStorageFile(info.bucket,info.path);
+        // 2. Remove from all albums
+        await sbRemovePhotoFromAllAlbums(src.split('?')[0]).catch(function(){});
+        // 3. If post photo, update the post's media_urls
+        if(ptype==='post'){
+            var found=_findPhotoInState(src);
+            if(found&&found.photo.postId){
+                var p=found.photo;
+                var base=src.split('?')[0];
+                if(p.postMediaUrls&&p.postMediaUrls.length){
+                    var updated=p.postMediaUrls.filter(function(u){return u.split('?')[0]!==base;});
+                    await sbUpdatePostMediaUrls(p.postId,updated.length?updated:null,updated.length?updated[0]:null);
+                } else {
+                    await sbUpdatePostMediaUrls(p.postId,null,null);
+                }
+            }
+        }
+        // 4. Remove from state
+        var types=['profile','cover','post'];
+        var base2=src.split('?')[0];
+        types.forEach(function(t){
+            state.photos[t]=state.photos[t].filter(function(ph){return ph.src.split('?')[0]!==base2;});
+        });
+        if(!skipRender){
+            renderPhotoAlbum();
+            renderPhotosCard();
+        }
+        return true;
+    }catch(e){
+        console.error('Photo delete error:',e);
+        showToast('Error deleting photo');
+        return false;
+    }
+}
+function _bindPhotoDeleteBtns(){
+    $$('#photoAlbumContent .photo-delete-btn').forEach(function(btn){
+        if(btn._bound) return;btn._bound=true;
+        btn.addEventListener('click',function(e){
+            e.stopPropagation();
+            var wrap=btn.closest('.photo-wrap');
+            if(!wrap) return;
+            var src=wrap.dataset.psrc;
+            var ptype=wrap.dataset.ptype;
+            _confirmDeletePhoto(src,ptype);
+        });
+    });
+}
+function _confirmDeletePhoto(src,ptype){
+    if(ptype==='profile'&&_isCurrentAvatar(src)){
+        showToast('Cannot delete your current profile picture — change it first');return;
+    }
+    if(ptype==='cover'&&_isCurrentCover(src)){
+        showToast('Cannot delete your current cover photo — change it first');return;
+    }
+    var msg='Delete this photo permanently?';
+    if(ptype==='post') msg='Delete this photo? It will also be removed from the original post.';
+    if(!confirm(msg)) return;
+    _executePhotoDelete(src,ptype,false).then(function(ok){
+        if(ok) showToast('Photo deleted');
+    });
+}
+// ---- Multi-select photo mode ----
+var _photoSelectMode=false;
+var _selectedPhotos=[];
+function _togglePhotoSelectMode(){
+    _photoSelectMode=!_photoSelectMode;
+    _selectedPhotos=[];
+    var content=$('#photoAlbumContent');
+    var btn=$('#photoSelectBtn');
+    if(_photoSelectMode){
+        if(content) content.classList.add('photo-select-mode');
+        if(btn){btn.innerHTML='<i class="fas fa-times"></i> Cancel';btn.classList.add('active');}
+        _showPhotoSelectBar();
+    } else {
+        if(content) content.classList.remove('photo-select-mode');
+        if(btn){btn.innerHTML='<i class="fas fa-check-circle"></i> Select';btn.classList.remove('active');}
+        $$('#photoAlbumContent .photo-wrap.selected').forEach(function(w){w.classList.remove('selected');});
+        _hidePhotoSelectBar();
+    }
+}
+function _exitPhotoSelectMode(){
+    if(!_photoSelectMode) return;
+    _photoSelectMode=false;
+    _selectedPhotos=[];
+    var content=$('#photoAlbumContent');
+    var btn=$('#photoSelectBtn');
+    if(content) content.classList.remove('photo-select-mode');
+    if(btn){btn.innerHTML='<i class="fas fa-check-circle"></i> Select';btn.classList.remove('active');}
+    $$('#photoAlbumContent .photo-wrap.selected').forEach(function(w){w.classList.remove('selected');});
+    _hidePhotoSelectBar();
+}
+function _showPhotoSelectBar(){
+    var existing=$('#photoSelectBar');
+    if(existing) existing.remove();
+    var bar=document.createElement('div');
+    bar.id='photoSelectBar';
+    bar.className='photo-select-bar';
+    bar.innerHTML='<span class="photo-select-count">0 selected</span><button class="btn btn-danger photo-select-delete" disabled><i class="fas fa-trash"></i> Delete</button><button class="btn btn-outline photo-select-cancel">Cancel</button>';
+    document.body.appendChild(bar);
+    bar.querySelector('.photo-select-delete').addEventListener('click',_confirmBulkDeletePhotos);
+    bar.querySelector('.photo-select-cancel').addEventListener('click',_togglePhotoSelectMode);
+}
+function _hidePhotoSelectBar(){
+    var bar=$('#photoSelectBar');
+    if(bar) bar.remove();
+}
+function _updatePhotoSelectBar(){
+    var bar=$('#photoSelectBar');
+    if(!bar) return;
+    bar.querySelector('.photo-select-count').textContent=_selectedPhotos.length+' selected';
+    bar.querySelector('.photo-select-delete').disabled=_selectedPhotos.length===0;
+}
+function _confirmBulkDeletePhotos(){
+    if(!_selectedPhotos.length) return;
+    // Filter out current avatar/cover
+    var toDelete=[];
+    var skipped=0;
+    _selectedPhotos.forEach(function(s){
+        if(s.ptype==='profile'&&_isCurrentAvatar(s.src)){skipped++;return;}
+        if(s.ptype==='cover'&&_isCurrentCover(s.src)){skipped++;return;}
+        toDelete.push(s);
+    });
+    if(!toDelete.length){
+        showToast('All selected photos are in use — cannot delete');return;
+    }
+    var msg='Delete '+toDelete.length+' photo'+(toDelete.length>1?'s':'')+'?';
+    if(skipped) msg+='\n('+skipped+' in-use photo'+(skipped>1?'s':'')+' will be skipped)';
+    if(!confirm(msg)) return;
+    var bar=$('#photoSelectBar');
+    if(bar) bar.querySelector('.photo-select-delete').innerHTML='<i class="fas fa-spinner fa-spin"></i> Deleting...';
+    (async function(){
+        var deleted=0;
+        for(var i=0;i<toDelete.length;i++){
+            var ok=await _executePhotoDelete(toDelete[i].src,toDelete[i].ptype,true);
+            if(ok) deleted++;
+        }
+        _exitPhotoSelectMode();
+        renderPhotoAlbum();
+        renderPhotosCard();
+        showToast(deleted+' photo'+(deleted>1?'s':'')+' deleted');
+    })();
+}
 function _bindPhotoAlbumMenus(){
     $$('#photoAlbumContent .photo-menu-btn').forEach(function(btn){
         if(btn._bound) return;btn._bound=true;
@@ -6805,8 +7008,25 @@ function _bindPhotoAlbumMenus(){
             showPhotoMenu(btn.dataset.psrc,apid,btn);
         });
     });
+    _bindPhotoDeleteBtns();
 }
 $('#viewAllPhotos').addEventListener('click',function(e){e.preventDefault();renderPhotoAlbum();navigateTo('photos');});
+// Photo select mode — button + delegated click
+$('#photoSelectBtn').addEventListener('click',function(){_togglePhotoSelectMode();});
+$('#photoAlbumContent').addEventListener('click',function(e){
+    if(!_photoSelectMode) return;
+    var wrap=e.target.closest('.photo-wrap');
+    if(!wrap||!wrap.dataset.psrc) return;
+    // Ignore clicks on menu/delete buttons
+    if(e.target.closest('.photo-menu-btn')||e.target.closest('.photo-delete-btn')) return;
+    e.preventDefault();e.stopPropagation();
+    var src=wrap.dataset.psrc;
+    var ptype=wrap.dataset.ptype||'profile';
+    var idx=_selectedPhotos.findIndex(function(s){return s.src===src;});
+    if(idx>=0){_selectedPhotos.splice(idx,1);wrap.classList.remove('selected');}
+    else{_selectedPhotos.push({src:src,ptype:ptype});wrap.classList.add('selected');}
+    _updatePhotoSelectBar();
+});
 $$('.photos-back-link').forEach(function(l){l.addEventListener('click',function(e){e.preventDefault();navigateTo(_navPrev&&_navPrev!=='photos'?_navPrev:'home');});});
 $$('.privacy-back-link').forEach(function(l){l.addEventListener('click',function(e){e.preventDefault();navigateTo(_navPrev&&_navPrev!=='privacy'?_navPrev:'home');});});
 $$('.admin-back-link').forEach(function(l){l.addEventListener('click',function(e){e.preventDefault();navigateTo(_navPrev&&_navPrev!=='admin'?_navPrev:'home');});});

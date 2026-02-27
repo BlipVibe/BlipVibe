@@ -1,5 +1,19 @@
 [
   {
+    "version": "0.2.16",
+    "date": "2026-02-27",
+    "added": [
+      "Read-only localStorage cache — app loads instantly from cached skin data while Supabase fetches fresh state in the background",
+      "Single photo delete — trash button on hover for profile pictures, cover photos, and post photos",
+      "Bulk photo delete — 'Select' button enables multi-select mode with floating action bar for batch deletion",
+      "Delete Photo option in photo context menu (three-dot menu)"
+    ],
+    "changed": [
+      "Photo state now tracks storage file names and post IDs for proper deletion across storage, albums, and posts"
+    ],
+    "fixed": []
+  },
+  {
     "version": "0.2.15",
     "date": "2026-02-27",
     "added": [],
