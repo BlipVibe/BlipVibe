@@ -1911,7 +1911,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .search-bar{display:none!important;}
     .mobile-search-btn{display:flex!important;align-items:center;}
     .nav-username{display:none!important;}
-    .nav-coins{padding:4px 8px!important;font-size:12px!important;}
+    .nav-coins{padding:4px 8px!important;font-size:12px!important;margin-left:auto!important;}
     .nav-user .fa-chevron-down{display:none!important;}
     .nav-saved-link{display:none!important;}
     .nav-notif-link{display:none!important;}
@@ -2466,7 +2466,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .nav-container{padding:0 6px!important;gap:4px!important;}
     .search-bar{width:70px!important;}
     .search-bar input{padding:5px 8px 5px 26px!important;font-size:11px!important;}
-    .nav-coins{padding:3px 6px!important;font-size:11px!important;}
+    .nav-coins{padding:3px 6px!important;font-size:11px!important;margin-left:auto!important;}
     .nav-avatar{width:28px!important;height:28px!important;}
     .main-container{padding:0 8px!important;}
     .feed-post{padding:12px 10px!important;}

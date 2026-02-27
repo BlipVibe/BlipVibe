@@ -5935,14 +5935,12 @@ function updateMsgBadge(){
 function renderMsgContacts(search){
     var list=$('#msgContactList');
     if(!list) return;
-    var convos=msgConversations.filter(function(c){return !blockedUsers[c.partnerId];});
-    if(search){
-        var q=search.toLowerCase();
-        convos=convos.filter(function(c){
-            var name=(c.partner.display_name||c.partner.username||'').toLowerCase();
-            return name.indexOf(q)!==-1;
-        });
+    // If searching, show the people search splash instead
+    if(search && search.trim().length >= 1){
+        _showMsgSearchSplash(list, search.trim());
+        return;
     }
+    var convos=msgConversations.filter(function(c){return !blockedUsers[c.partnerId];});
     var html='';
     convos.forEach(function(c){
         var name=c.partner.display_name||c.partner.username||'User';
@@ -5959,18 +5957,12 @@ function renderMsgContacts(search){
         html+='<span class="msg-contact-time">'+time+'</span>';
         html+='</div>';
     });
-    // Show search results section when searching
-    if(search && search.trim().length >= 2){
-        html+='<div id="msgSearchResults" style="border-top:1px solid var(--border);padding-top:8px;"><div style="padding:8px 16px;font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;"><i class="fas fa-search" style="margin-right:4px;"></i>Search results</div><div style="padding:12px;text-align:center;color:var(--gray);font-size:13px;"><i class="fas fa-spinner fa-spin"></i> Searching...</div></div>';
-    }
-    if(!convos.length && (!search || search.trim().length < 2)){
+    if(!convos.length){
         list.innerHTML='<div class="empty-state" style="padding:40px 20px;"><i class="fas fa-envelope-open-text"></i><p>No messages yet.</p></div>';
         return;
     }
     list.innerHTML=html;
     _bindMsgContactClicks(list);
-    // If searching, also search Supabase for new people
-    if(search && search.trim().length >= 2) _msgSearchPeople(search.trim(), convos);
 }
 function _bindMsgContactClicks(container){
     container.querySelectorAll('.msg-contact').forEach(function(el){
@@ -5983,45 +5975,68 @@ function _bindMsgContactClicks(container){
     });
 }
 var _msgSearchTimer=null;
-async function _msgSearchPeople(query, existingConvos){
+// Full-screen splash overlay for people search in messages
+function _showMsgSearchSplash(list, query){
+    // Show loading state immediately
+    list.innerHTML='<div style="padding:32px 16px;text-align:center;color:var(--gray);font-size:14px;"><i class="fas fa-spinner fa-spin" style="font-size:20px;margin-bottom:12px;display:block;"></i>Searching people...</div>';
     clearTimeout(_msgSearchTimer);
-    _msgSearchTimer=setTimeout(async function(){
-        var resultsEl=document.getElementById('msgSearchResults');
-        if(!resultsEl) return;
-        try{
-            var results=await sbSearchProfiles(query, 10);
-            // Filter out self, blocked, and people already shown in conversations
-            var convoIds={};
-            existingConvos.forEach(function(c){convoIds[c.partnerId]=true;});
-            results=(results||[]).filter(function(p){
-                return p.id!==(currentUser&&currentUser.id)&&!blockedUsers[p.id]&&!convoIds[p.id];
-            });
-            if(!results.length){
-                resultsEl.innerHTML='<div style="padding:8px 16px;font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;"><i class="fas fa-search" style="margin-right:4px;"></i>Search results</div><div style="padding:12px;text-align:center;color:var(--gray);font-size:13px;">No users found</div>';
-                return;
-            }
-            var h='<div style="padding:8px 16px;font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;"><i class="fas fa-search" style="margin-right:4px;"></i>Search results</div>';
-            results.forEach(function(p){
-                var name=p.display_name||p.username||'User';
-                var avatar=p.avatar_url||DEFAULT_AVATAR;
-                h+='<div class="msg-contact" data-partner-id="'+p.id+'">';
-                h+='<img src="'+avatar+'" alt="'+escapeHtml(name)+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;">';
-                h+='<div class="msg-contact-info"><div class="msg-contact-name">'+escapeHtml(name)+'</div>';
-                h+='<div class="msg-contact-preview" style="color:var(--gray);">@'+escapeHtml(p.username||'')+'</div></div></div>';
-            });
-            resultsEl.innerHTML=h;
-            resultsEl.querySelectorAll('.msg-contact').forEach(function(el){
-                el.addEventListener('click',function(){
-                    var pid=el.getAttribute('data-partner-id');
-                    var r=results.find(function(p){return p.id===pid;});
-                    if(r) startConversation(r.id, r.display_name||r.username, r.avatar_url);
-                });
-            });
-        }catch(e){
-            console.error('msgSearchPeople:', e);
-            resultsEl.innerHTML='<div style="padding:8px 16px;font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;"><i class="fas fa-search" style="margin-right:4px;"></i>Search results</div><div style="padding:12px;text-align:center;color:var(--gray);font-size:13px;">Search failed</div>';
+    _msgSearchTimer=setTimeout(function(){ _runMsgSearchSplash(list, query); }, 300);
+}
+async function _runMsgSearchSplash(list, query){
+    if(!currentUser) return;
+    try{
+        // Fetch search results and following/followers in parallel
+        var results=await sbSearchProfiles(query, 30);
+        results=(results||[]).filter(function(p){
+            return p.id!==currentUser.id && !blockedUsers[p.id];
+        });
+        if(!results.length){
+            list.innerHTML='<div style="padding:32px 16px;text-align:center;color:var(--gray);"><i class="fas fa-user-slash" style="font-size:28px;margin-bottom:12px;display:block;opacity:.5;"></i><div style="font-size:14px;">No people found for "'+escapeHtml(query)+'"</div></div>';
+            return;
         }
-    }, 300);
+        // Build following/follower lookup from state
+        var followingMap=state.followedUsers||{};
+        // Sort: following first, then others
+        var followingList=[];
+        var othersList=[];
+        results.forEach(function(p){
+            if(followingMap[p.id]) followingList.push(p);
+            else othersList.push(p);
+        });
+        // Build HTML
+        var html='<div style="overflow-y:auto;-webkit-overflow-scrolling:touch;">';
+        if(followingList.length){
+            html+='<div style="padding:10px 16px 4px;font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;font-weight:600;"><i class="fas fa-user-check" style="margin-right:4px;"></i>Following</div>';
+            followingList.forEach(function(p){ html+=_msgSearchPersonCard(p); });
+        }
+        if(othersList.length){
+            html+='<div style="padding:10px 16px 4px;font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;font-weight:600;"><i class="fas fa-users" style="margin-right:4px;"></i>Others</div>';
+            othersList.forEach(function(p){ html+=_msgSearchPersonCard(p); });
+        }
+        html+='</div>';
+        list.innerHTML=html;
+        // Bind clicks
+        list.querySelectorAll('.msg-contact').forEach(function(el){
+            el.addEventListener('click',function(){
+                var pid=el.getAttribute('data-partner-id');
+                var match=results.find(function(p){return p.id===pid;});
+                if(match) startConversation(match.id, match.display_name||match.username, match.avatar_url);
+            });
+        });
+    }catch(e){
+        console.error('msgSearchSplash:', e);
+        list.innerHTML='<div style="padding:32px 16px;text-align:center;color:var(--gray);font-size:14px;"><i class="fas fa-exclamation-triangle" style="font-size:20px;margin-bottom:12px;display:block;opacity:.5;"></i>Search failed — try again</div>';
+    }
+}
+function _msgSearchPersonCard(p){
+    var name=p.display_name||p.username||'User';
+    var avatar=p.avatar_url||DEFAULT_AVATAR;
+    var username=p.username||'';
+    var h='<div class="msg-contact" data-partner-id="'+p.id+'" style="cursor:pointer;">';
+    h+='<img src="'+avatar+'" alt="'+escapeHtml(name)+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;">';
+    h+='<div class="msg-contact-info"><div class="msg-contact-name">'+escapeHtml(name)+'</div>';
+    h+='<div class="msg-contact-preview" style="color:var(--gray);font-size:12px;">@'+escapeHtml(username)+'</div></div></div>';
+    return h;
 }
 
 async function openChat(contact){
