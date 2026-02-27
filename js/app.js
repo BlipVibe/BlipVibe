@@ -2546,7 +2546,7 @@ function getGroupThemeColor(group){
     if(basicSkin&&skinColors[basicSkin])return skinColors[basicSkin].primary;
     return group.color||'var(--primary)';
 }
-function showGroupProfileCropModal(src,group){
+function showGroupProfileCropModal(src,group,isRecrop){
     var html='<div class="modal-header"><h3>Crop Group Photo</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     html+='<div class="modal-body" style="text-align:center;"><div class="crop-container" id="cropContainer"><img src="'+src+'" crossorigin="anonymous" id="cropImg"><div class="crop-box" id="cropBox"><div class="crop-resize" id="cropResize"></div></div></div>';
     html+='<div style="margin-top:16px;"><button class="btn btn-primary" id="cropConfirmBtn">Apply</button></div></div>';
@@ -2578,7 +2578,7 @@ function showGroupProfileCropModal(src,group){
             await sbUpdateGroup(group.id,{avatar_url:publicUrl});
             group.profileImg=publicUrl;
             if(!group.photos) group.photos={profile:[],cover:[]};
-            group.photos.profile.unshift({src:publicUrl,date:Date.now()});
+            if(!isRecrop) group.photos.profile.unshift({src:publicUrl,date:Date.now()});
         }catch(e){
             console.error('Group avatar upload:',e);showToast('Failed to save group photo: '+(e.message||''));
             group.profileImg=canvas.toDataURL('image/png');
@@ -2586,7 +2586,7 @@ function showGroupProfileCropModal(src,group){
         closeModal();showGroupView(group);renderGroups();
     });
 }
-function showGroupCoverCropModal(src,group,banner){
+function showGroupCoverCropModal(src,group,banner,isRecrop){
     var html='<div class="modal-header"><h3>Crop Cover Photo</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     html+='<div class="modal-body" style="text-align:center;"><p style="font-size:13px;color:var(--gray);margin-bottom:12px;">Drag to position. Resize the selection area.</p><div class="crop-container" id="coverCropContainer" style="position:relative;display:inline-block;max-width:100%;overflow:hidden;"><img src="'+src+'" crossorigin="anonymous" id="coverCropImg" style="max-width:100%;display:block;"><div id="coverCropBox" style="position:absolute;border:2px solid #fff;box-shadow:0 0 0 9999px rgba(0,0,0,.5);cursor:move;"><div id="coverCropResize" style="position:absolute;bottom:-4px;right:-4px;width:12px;height:12px;background:#fff;border:1px solid #333;cursor:nwse-resize;"></div></div></div>';
     html+='<div style="margin-top:16px;"><button class="btn btn-primary" id="coverCropConfirmBtn">Apply</button></div></div>';
@@ -2619,7 +2619,7 @@ function showGroupCoverCropModal(src,group,banner){
             await sbUpdateGroup(group.id,{cover_photo_url:publicUrl});
             group.coverPhoto=publicUrl;
             if(!group.photos) group.photos={profile:[],cover:[]};
-            group.photos.cover.unshift({src:publicUrl,date:Date.now()});
+            if(!isRecrop) group.photos.cover.unshift({src:publicUrl,date:Date.now()});
             banner.style.background='url('+publicUrl+') center/cover';
         }catch(e){
             console.error('Group cover upload:',e);showToast('Failed to save cover photo: '+(e.message||''));
@@ -3071,7 +3071,7 @@ async function showGroupView(group){
                 thumb.addEventListener('mouseleave',function(){thumb.style.borderColor='transparent';});
                 thumb.addEventListener('click',function(){
                     var src=photos[parseInt(thumb.dataset.idx)].src;
-                    closeModal();showGroupCoverCropModal(src,group,banner);
+                    closeModal();showGroupCoverCropModal(src,group,banner,true);
                 });
             });
         });
@@ -3129,7 +3129,7 @@ async function showGroupView(group){
                 thumb.addEventListener('mouseleave',function(){thumb.style.borderColor='transparent';});
                 thumb.addEventListener('click',function(){
                     var src=photos[parseInt(thumb.dataset.idx)].src;
-                    closeModal();showGroupProfileCropModal(src,group);
+                    closeModal();showGroupProfileCropModal(src,group,true);
                 });
             });
             $$('.gv-icon-pick').forEach(function(btn){btn.addEventListener('click',async function(){group.icon=btn.dataset.icon;try{await sbUpdateGroup(group.id,{icon:group.icon});}catch(e){console.warn('Save group icon:',e);}closeModal();showGroupView(group);renderGroups();});});
@@ -3274,7 +3274,7 @@ function showCoverPickerModal(){
         thumb.addEventListener('mouseleave',function(){thumb.style.borderColor='transparent';});
         thumb.addEventListener('click',function(){
             var src=photos[parseInt(thumb.dataset.idx)].src;
-            closeModal();showCoverCropModal(src);
+            closeModal();showCoverCropModal(src,true);
         });
     });
 }
@@ -3286,7 +3286,7 @@ $('#coverFileInput').addEventListener('change',function(){
     reader.onload=function(e){showCoverCropModal(e.target.result);};
     reader.readAsDataURL(file);
 });
-function showCoverCropModal(src){
+function showCoverCropModal(src,isRecrop){
     var html='<div class="modal-header"><h3>Crop Cover Photo</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     html+='<div class="modal-body" style="text-align:center;"><p style="font-size:13px;color:var(--gray);margin-bottom:12px;">Drag to position. Resize the selection area.</p><div class="crop-container" id="coverCropContainer" style="position:relative;display:inline-block;max-width:100%;overflow:hidden;"><img src="'+src+'" crossorigin="anonymous" id="coverCropImg" style="max-width:100%;display:block;"><div id="coverCropBox" style="position:absolute;border:2px solid #fff;box-shadow:0 0 0 9999px rgba(0,0,0,.5);cursor:move;"><div id="coverCropResize" style="position:absolute;bottom:-4px;right:-4px;width:12px;height:12px;background:#fff;border:1px solid #333;cursor:nwse-resize;"></div></div></div>';
     html+='<div style="margin-top:16px;"><button class="btn btn-primary" id="coverCropConfirmBtn">Apply</button></div></div>';
@@ -3338,21 +3338,21 @@ function showCoverCropModal(src){
                 sbUploadCover(currentUser.id,coverFile).then(function(publicUrl){
                     return sbUpdateProfile(currentUser.id,{cover_photo_url:publicUrl}).then(function(){
                         state.coverPhoto=publicUrl;
-                        state.photos.cover.unshift({src:publicUrl,date:Date.now()});
+                        if(!isRecrop) state.photos.cover.unshift({src:publicUrl,date:Date.now()});
                         renderPhotosCard();
                         applyCoverPhoto();
                     });
                 }).catch(function(e){
                     console.error('Cover upload error:',e);
                     state.coverPhoto=dataUrl;
-                    state.photos.cover.unshift({src:dataUrl,date:Date.now()});
+                    if(!isRecrop) state.photos.cover.unshift({src:dataUrl,date:Date.now()});
                     renderPhotosCard();
                     applyCoverPhoto();
                 });
             },'image/jpeg',0.9);
         } else {
             state.coverPhoto=dataUrl;
-            state.photos.cover.unshift({src:dataUrl,date:Date.now()});
+            if(!isRecrop) state.photos.cover.unshift({src:dataUrl,date:Date.now()});
             renderPhotosCard();
             applyCoverPhoto();
         }
@@ -3588,7 +3588,7 @@ $('#avatarEditBtn').addEventListener('click',function(e){
         thumb.addEventListener('mouseleave',function(){thumb.style.borderColor='transparent';});
         thumb.addEventListener('click',function(){
             var src=photos[parseInt(thumb.dataset.idx)].src;
-            closeModal();showCropModal(src);
+            closeModal();showCropModal(src,true);
         });
     });
 });
@@ -3619,7 +3619,7 @@ $('#avatarFileInput').addEventListener('change', function(){
     }
 });
 
-function showCropModal(src){
+function showCropModal(src,isRecrop){
     var html='<div class="modal-header"><h3>Crop Photo</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     html+='<div class="modal-body" style="text-align:center;"><div class="crop-container" id="cropContainer"><img src="'+src+'" crossorigin="anonymous" id="cropImg"><div class="crop-box" id="cropBox"><div class="crop-resize" id="cropResize"></div></div></div>';
     html+='<div style="margin-top:16px;"><button class="btn btn-primary" id="cropConfirmBtn">Apply</button></div></div>';
@@ -3670,20 +3670,20 @@ function showCropModal(src){
                 sbUploadAvatar(currentUser.id,croppedFile).then(function(publicUrl){
                     return sbUpdateProfile(currentUser.id,{avatar_url:publicUrl}).then(function(){
                         syncAllAvatars(publicUrl);
-                        state.photos.profile.unshift({src:publicUrl,date:Date.now()});
+                        if(!isRecrop) state.photos.profile.unshift({src:publicUrl,date:Date.now()});
                         renderPhotosCard();
                     });
                 }).catch(function(e){
                     console.error('Avatar upload error:',e);
                     // Fallback: use local data URL
                     syncAllAvatars(dataUrl);
-                    state.photos.profile.unshift({src:dataUrl,date:Date.now()});
+                    if(!isRecrop) state.photos.profile.unshift({src:dataUrl,date:Date.now()});
                     renderPhotosCard();
                 });
             },'image/png');
         } else {
             syncAllAvatars(dataUrl);
-            state.photos.profile.unshift({src:dataUrl,date:Date.now()});
+            if(!isRecrop) state.photos.profile.unshift({src:dataUrl,date:Date.now()});
             renderPhotosCard();
         }
         closeModal();
