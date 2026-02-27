@@ -248,6 +248,7 @@ function handleLogout() {
     sbSignOut().then(function () {
         currentUser = null;
         currentAuthUser = null;
+        _initAppDone = false;
         resetAllCustomizations();
         try{sessionStorage.removeItem('blipvibe_lastPage');}catch(e){}
         showLogin();
@@ -442,8 +443,9 @@ function syncAllAvatars(newSrc) {
 
 // ---- Init app after auth ----
 var _initAppRunning = false;
+var _initAppDone = false;
 async function initApp() {
-    if (_initAppRunning) return;
+    if (_initAppRunning || _initAppDone) return;
     _initAppRunning = true;
     var authUser = await sbGetUser();
     if (!authUser) { _initAppRunning = false; showLogin(); return; }
@@ -649,6 +651,7 @@ async function initApp() {
         }
     }
     _initAppRunning = false;
+    _initAppDone = true;
 }
 
 // Listen for auth state changes
