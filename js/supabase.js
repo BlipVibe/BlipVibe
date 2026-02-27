@@ -1118,6 +1118,17 @@ async function sbAdminGetLogs(limit, offset) {
   return data || [];
 }
 
+// ---- UTILITY: extract storage path from a Supabase public URL ----------------
+function sbExtractStoragePath(url, bucket) {
+  var marker = '/object/public/' + bucket + '/';
+  var idx = url.indexOf(marker);
+  if (idx === -1) return null;
+  var path = url.substring(idx + marker.length);
+  var qIdx = path.indexOf('?');
+  if (qIdx !== -1) path = path.substring(0, qIdx);
+  return path;
+}
+
 // ---- 19. UTILITY: timeAgo for real timestamps --------------------------------
 
 function timeAgoReal(dateStr) {

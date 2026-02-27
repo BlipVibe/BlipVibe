@@ -2574,7 +2574,14 @@ function showGroupProfileCropModal(src,group,isRecrop){
         try{
             var blob=await new Promise(function(r){canvas.toBlob(r,'image/png');});
             var file=new File([blob],'group-avatar-'+Date.now()+'.png',{type:'image/png'});
-            var publicUrl=await sbUploadGroupImage(group.id,file,'avatar');
+            var publicUrl;
+            if(isRecrop){
+                var oldPath=sbExtractStoragePath(src,'avatars');
+                if(oldPath) publicUrl=await sbUploadFile('avatars',oldPath,file);
+                else publicUrl=await sbUploadGroupImage(group.id,file,'avatar');
+            } else {
+                publicUrl=await sbUploadGroupImage(group.id,file,'avatar');
+            }
             await sbUpdateGroup(group.id,{avatar_url:publicUrl});
             group.profileImg=publicUrl;
             if(!group.photos) group.photos={profile:[],cover:[]};
@@ -2615,7 +2622,14 @@ function showGroupCoverCropModal(src,group,banner,isRecrop){
         try{
             var blob=await new Promise(function(r){canvas.toBlob(r,'image/jpeg',0.9);});
             var file=new File([blob],'group-cover-'+Date.now()+'.jpg',{type:'image/jpeg'});
-            var publicUrl=await sbUploadGroupImage(group.id,file,'cover');
+            var publicUrl;
+            if(isRecrop){
+                var oldPath=sbExtractStoragePath(src,'avatars');
+                if(oldPath) publicUrl=await sbUploadFile('avatars',oldPath,file);
+                else publicUrl=await sbUploadGroupImage(group.id,file,'cover');
+            } else {
+                publicUrl=await sbUploadGroupImage(group.id,file,'cover');
+            }
             await sbUpdateGroup(group.id,{cover_photo_url:publicUrl});
             group.coverPhoto=publicUrl;
             if(!group.photos) group.photos={profile:[],cover:[]};
@@ -3335,7 +3349,15 @@ function showCoverCropModal(src,isRecrop){
         if(currentUser){
             canvas.toBlob(function(blob){
                 var coverFile=new File([blob],'cover.jpg',{type:'image/jpeg'});
-                sbUploadCover(currentUser.id,coverFile).then(function(publicUrl){
+                var uploadPromise;
+                if(isRecrop){
+                    var oldPath=sbExtractStoragePath(src,'avatars');
+                    if(oldPath) uploadPromise=sbUploadFile('avatars',oldPath,coverFile);
+                    else uploadPromise=sbUploadCover(currentUser.id,coverFile);
+                } else {
+                    uploadPromise=sbUploadCover(currentUser.id,coverFile);
+                }
+                uploadPromise.then(function(publicUrl){
                     return sbUpdateProfile(currentUser.id,{cover_photo_url:publicUrl}).then(function(){
                         state.coverPhoto=publicUrl;
                         if(!isRecrop) state.photos.cover.unshift({src:publicUrl,date:Date.now()});
@@ -3667,7 +3689,15 @@ function showCropModal(src,isRecrop){
         if(currentUser){
             canvas.toBlob(function(blob){
                 var croppedFile=new File([blob],'avatar.png',{type:'image/png'});
-                sbUploadAvatar(currentUser.id,croppedFile).then(function(publicUrl){
+                var uploadPromise;
+                if(isRecrop){
+                    var oldPath=sbExtractStoragePath(src,'avatars');
+                    if(oldPath) uploadPromise=sbUploadFile('avatars',oldPath,croppedFile);
+                    else uploadPromise=sbUploadAvatar(currentUser.id,croppedFile);
+                } else {
+                    uploadPromise=sbUploadAvatar(currentUser.id,croppedFile);
+                }
+                uploadPromise.then(function(publicUrl){
                     return sbUpdateProfile(currentUser.id,{avatar_url:publicUrl}).then(function(){
                         syncAllAvatars(publicUrl);
                         if(!isRecrop) state.photos.profile.unshift({src:publicUrl,date:Date.now()});
@@ -3675,7 +3705,6 @@ function showCropModal(src,isRecrop){
                     });
                 }).catch(function(e){
                     console.error('Avatar upload error:',e);
-                    // Fallback: use local data URL
                     syncAllAvatars(dataUrl);
                     if(!isRecrop) state.photos.profile.unshift({src:dataUrl,date:Date.now()});
                     renderPhotosCard();
