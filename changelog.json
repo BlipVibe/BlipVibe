@@ -1,5 +1,18 @@
 [
   {
+    "version": "0.2.15",
+    "date": "2026-02-27",
+    "added": [],
+    "changed": [
+      "Supabase is now the sole source of truth for all state — localStorage no longer read or written on init/save",
+      "loadSkinDataFromSupabase() now fully replaces owned and group data instead of merging, preventing stale local values from surviving"
+    ],
+    "fixed": [
+      "Cross-device skin sync — changing group skins on phone then opening PC no longer overwrites phone changes with stale localStorage data",
+      "Periodic saveState() no longer pushes stale localStorage data back to Supabase every 10 seconds"
+    ]
+  },
+  {
     "version": "0.2.14",
     "date": "2026-02-27",
     "added": [

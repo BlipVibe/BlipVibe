@@ -463,8 +463,7 @@ async function initApp() {
         }
     }
     state.coins = currentUser.coin_balance || 0;
-    loadState(); // Restore skins, settings, purchases from localStorage (fast)
-    // Always load from Supabase to pick up cross-device changes
+    // Load all state from Supabase (sole source of truth for cross-device sync)
     await loadSkinDataFromSupabase();
     // Check TOS acceptance — existing users must accept updated terms before proceeding
     if(!checkTosAccepted()){
@@ -739,38 +738,6 @@ var userLocation=null; // Detected state/region from geolocation
 // Persist state to localStorage (keyed per user)
 function saveState(){
     if(!currentUser) return;
-    var key='blipvibe_'+currentUser.id;
-    // When viewing another profile/group, skin values are temporarily overridden.
-    // Always save the user's own values (from _pvSaved/_gvSaved backup if active).
-    var _bk=_pvSaved||_gvSaved||null;
-    var save={
-        ownedSkins:state.ownedSkins,activeSkin:_bk?_bk.skin:state.activeSkin,
-        ownedFonts:state.ownedFonts,activeFont:_bk&&_bk.font!==undefined?_bk.font:state.activeFont,
-        ownedLogos:state.ownedLogos,activeLogo:state.activeLogo,
-        ownedIconSets:state.ownedIconSets,activeIconSet:state.activeIconSet,
-        ownedCoinSkins:state.ownedCoinSkins,activeCoinSkin:state.activeCoinSkin,
-        ownedTemplates:state.ownedTemplates,activeTemplate:_bk&&_bk.tpl!==undefined?_bk.tpl:state.activeTemplate,
-        ownedNavStyles:state.ownedNavStyles,activeNavStyle:state.activeNavStyle,
-        ownedPremiumSkins:state.ownedPremiumSkins,activePremiumSkin:_bk?_bk.premiumSkin:state.activePremiumSkin,
-        joinedGroups:state.joinedGroups,privateFollowers:state.privateFollowers,
-        groupCoins:state.groupCoins,groupOwnedSkins:state.groupOwnedSkins,
-        groupOwnedPremiumSkins:state.groupOwnedPremiumSkins,
-        groupActiveSkin:state.groupActiveSkin,groupActivePremiumSkin:state.groupActivePremiumSkin,groupPremiumBg:state.groupPremiumBg,
-        premiumBgUrl:_bk?_bk.bgImage:premiumBgImage,
-        premiumBgOverlay:_bk?_bk.bgOverlay:premiumBgOverlay,
-        premiumBgDarkness:_bk?_bk.bgDarkness:premiumBgDarkness,
-        premiumCardTransparency:_bk?_bk.cardTrans:premiumCardTransparency,
-        settings:settings,
-        blockedUsers:blockedUsers,
-        dislikedPosts:state.dislikedPosts,
-        dislikedComments:dislikedComments,
-        commentCoinAwarded:commentCoinAwarded,
-        savedFolders:savedFolders,
-        hiddenPosts:hiddenPosts,
-        reportedPosts:reportedPosts
-    };
-    try{localStorage.setItem(key,JSON.stringify(save));}catch(e){console.warn('localStorage save failed (quota?):', e.message);}
-    // Sync skin data to Supabase for cross-browser and profile viewing
     syncSkinDataToSupabase();
 }
 var _skinSyncTimer=null;
@@ -843,15 +810,15 @@ async function loadSkinDataFromSupabase(){
         if(sd.premiumBgOverlay!==undefined) premiumBgOverlay=sd.premiumBgOverlay;
         if(sd.premiumBgDarkness!==undefined) premiumBgDarkness=sd.premiumBgDarkness;
         if(sd.premiumCardTransparency!==undefined) premiumCardTransparency=sd.premiumCardTransparency;
-        // Merge owned items (union — never lose purchases)
-        if(sd.ownedSkins) Object.assign(state.ownedSkins,sd.ownedSkins);
-        if(sd.ownedPremiumSkins) Object.assign(state.ownedPremiumSkins,sd.ownedPremiumSkins);
-        if(sd.ownedFonts) Object.assign(state.ownedFonts,sd.ownedFonts);
-        if(sd.ownedTemplates) Object.assign(state.ownedTemplates,sd.ownedTemplates);
-        if(sd.ownedNavStyles) Object.assign(state.ownedNavStyles,sd.ownedNavStyles);
-        if(sd.ownedIconSets) Object.assign(state.ownedIconSets,sd.ownedIconSets);
-        if(sd.ownedLogos) Object.assign(state.ownedLogos,sd.ownedLogos);
-        if(sd.ownedCoinSkins) Object.assign(state.ownedCoinSkins,sd.ownedCoinSkins);
+        // Replace owned items from Supabase (sole source of truth)
+        state.ownedSkins=sd.ownedSkins||{};
+        state.ownedPremiumSkins=sd.ownedPremiumSkins||{};
+        state.ownedFonts=sd.ownedFonts||{};
+        state.ownedTemplates=sd.ownedTemplates||{};
+        state.ownedNavStyles=sd.ownedNavStyles||{};
+        state.ownedIconSets=sd.ownedIconSets||{};
+        state.ownedLogos=sd.ownedLogos||{};
+        state.ownedCoinSkins=sd.ownedCoinSkins||{};
         // Sync settings (dark mode, etc.) across devices
         if(sd.settings){
             if(sd.settings.darkMode!==undefined) settings.darkMode=!!sd.settings.darkMode;
@@ -868,79 +835,15 @@ async function loadSkinDataFromSupabase(){
         if(Array.isArray(sd.savedFolders)&&sd.savedFolders.length) savedFolders=sd.savedFolders;
         if(sd.hiddenPosts&&typeof sd.hiddenPosts==='object') hiddenPosts=sd.hiddenPosts;
         if(Array.isArray(sd.reportedPosts)) reportedPosts=sd.reportedPosts;
-        // Group skin data (merge — never lose active skins)
-        if(sd.groupActiveSkin&&typeof sd.groupActiveSkin==='object') Object.assign(state.groupActiveSkin,sd.groupActiveSkin);
-        if(sd.groupActivePremiumSkin&&typeof sd.groupActivePremiumSkin==='object') Object.assign(state.groupActivePremiumSkin,sd.groupActivePremiumSkin);
-        if(sd.groupPremiumBg&&typeof sd.groupPremiumBg==='object') Object.assign(state.groupPremiumBg,sd.groupPremiumBg);
-        // Group owned skins (merge — never lose purchases)
-        if(sd.groupOwnedSkins&&typeof sd.groupOwnedSkins==='object'){
-            Object.keys(sd.groupOwnedSkins).forEach(function(gid){
-                if(!state.groupOwnedSkins[gid]) state.groupOwnedSkins[gid]={};
-                Object.assign(state.groupOwnedSkins[gid],sd.groupOwnedSkins[gid]);
-            });
-        }
-        if(sd.groupOwnedPremiumSkins&&typeof sd.groupOwnedPremiumSkins==='object'){
-            Object.keys(sd.groupOwnedPremiumSkins).forEach(function(gid){
-                if(!state.groupOwnedPremiumSkins[gid]) state.groupOwnedPremiumSkins[gid]={};
-                Object.assign(state.groupOwnedPremiumSkins[gid],sd.groupOwnedPremiumSkins[gid]);
-            });
-        }
+        // Group skin data (full replace from Supabase)
+        state.groupActiveSkin=sd.groupActiveSkin||{};
+        state.groupActivePremiumSkin=sd.groupActivePremiumSkin||{};
+        state.groupPremiumBg=sd.groupPremiumBg||{};
+        state.groupOwnedSkins=sd.groupOwnedSkins||{};
+        state.groupOwnedPremiumSkins=sd.groupOwnedPremiumSkins||{};
     }catch(e){console.warn('Load skin data from Supabase:',e);}
 }
-function loadState(){
-    if(!currentUser) return;
-    var key='blipvibe_'+currentUser.id;
-    try{
-        var raw=localStorage.getItem(key);
-        if(!raw) return;
-        var save=JSON.parse(raw);
-        // Restore owned items and active customizations
-        if(save.ownedSkins) state.ownedSkins=save.ownedSkins;
-        if(save.activeSkin) state.activeSkin=save.activeSkin;
-        if(save.ownedFonts) state.ownedFonts=save.ownedFonts;
-        if(save.activeFont) state.activeFont=save.activeFont;
-        if(save.ownedLogos) state.ownedLogos=save.ownedLogos;
-        if(save.activeLogo) state.activeLogo=save.activeLogo;
-        if(save.ownedIconSets) state.ownedIconSets=save.ownedIconSets;
-        if(save.activeIconSet) state.activeIconSet=save.activeIconSet;
-        if(save.ownedCoinSkins) state.ownedCoinSkins=save.ownedCoinSkins;
-        if(save.activeCoinSkin) state.activeCoinSkin=save.activeCoinSkin;
-        if(save.ownedTemplates) state.ownedTemplates=save.ownedTemplates;
-        if(save.activeTemplate) state.activeTemplate=save.activeTemplate;
-        if(save.ownedNavStyles) state.ownedNavStyles=save.ownedNavStyles;
-        if(save.activeNavStyle) state.activeNavStyle=save.activeNavStyle;
-        if(save.ownedPremiumSkins) state.ownedPremiumSkins=save.ownedPremiumSkins;
-        if(save.activePremiumSkin) state.activePremiumSkin=save.activePremiumSkin;
-        if(save.joinedGroups) state.joinedGroups=save.joinedGroups;
-        if(save.privateFollowers!==undefined) state.privateFollowers=save.privateFollowers;
-        if(save.groupCoins) state.groupCoins=save.groupCoins;
-        if(save.groupOwnedSkins) state.groupOwnedSkins=save.groupOwnedSkins;
-        if(save.groupOwnedPremiumSkins) state.groupOwnedPremiumSkins=save.groupOwnedPremiumSkins;
-        if(save.groupActiveSkin) state.groupActiveSkin=save.groupActiveSkin;
-        if(save.groupActivePremiumSkin) state.groupActivePremiumSkin=save.groupActivePremiumSkin;
-        if(save.groupPremiumBg) state.groupPremiumBg=save.groupPremiumBg;
-        if(save.premiumBgUrl) premiumBgImage=save.premiumBgUrl;
-        if(save.premiumBgOverlay!==undefined) premiumBgOverlay=save.premiumBgOverlay;
-        else if(save.premiumBgSaturation!==undefined) premiumBgOverlay=0; // migrate old data
-        if(save.premiumBgDarkness!==undefined) premiumBgDarkness=save.premiumBgDarkness;
-        if(save.premiumCardTransparency!==undefined) premiumCardTransparency=save.premiumCardTransparency;
-        if(save.settings){
-            settings.darkMode=!!save.settings.darkMode;
-            settings.notifSound=save.settings.notifSound!==false;
-            settings.privateProfile=!!save.settings.privateProfile;
-            settings.autoplay=save.settings.autoplay!==false;
-            settings.commentOrder=save.settings.commentOrder||'top';
-            settings.showLocation=save.settings.showLocation!==false;
-        }
-        if(save.blockedUsers) blockedUsers=save.blockedUsers;
-        if(save.dislikedPosts) state.dislikedPosts=save.dislikedPosts;
-        if(save.dislikedComments) dislikedComments=save.dislikedComments;
-        if(save.commentCoinAwarded) commentCoinAwarded=save.commentCoinAwarded;
-        if(save.savedFolders&&save.savedFolders.length) savedFolders=save.savedFolders;
-        if(save.hiddenPosts) hiddenPosts=save.hiddenPosts;
-        if(save.reportedPosts) reportedPosts=save.reportedPosts;
-    }catch(e){console.warn('loadState:',e);}
-}
+function loadState(){}
 function reapplyCustomizations(){
     if(state.activePremiumSkin) applyPremiumSkin(state.activePremiumSkin,true);
     else if(state.activeSkin) applySkin(state.activeSkin,true);
