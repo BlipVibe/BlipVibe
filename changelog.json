@@ -11,7 +11,8 @@
     "changed": [
       "Edit Profile modal now has separate First Name, Last Name, and Nickname fields instead of a single Name input",
       "Search now matches against first name, last name, and nickname in addition to username and display name",
-      "Existing users' display names automatically parsed into first/last name fields via migration"
+      "Existing users' display names automatically parsed into first/last name fields via migration",
+      "Mobile message badge now shows a small themed-color dot instead of a number count"
     ],
     "fixed": []
   },
