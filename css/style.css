@@ -674,6 +674,7 @@ body.modal-open{overflow:hidden!important;position:fixed!important;width:100%!im
 .group-card-body .group-members{font-size:12px;}
 .group-card-actions{padding:0 16px 16px;display:flex;gap:8px;}
 .group-card-actions .btn{flex:1;text-align:center;padding:8px;font-size:13px;}
+.gc-btn-icon{display:none;}
 
 /* ========== PROFILE CARDS ========== */
 .profile-card-item{background:var(--card);border-radius:12px;box-shadow:var(--shadow);padding:20px;text-align:center;transition:transform .2s,box-shadow .2s;}
@@ -2060,6 +2061,11 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .right-sidebar .suggestions-card,
     .right-sidebar .groups-card{display:none!important;}
     .mobile-pills-bar{display:flex!important;}
+
+    /* --- Group card buttons — icon-only on mobile --- */
+    .gc-btn-icon{display:inline!important;}
+    .gc-btn-text{display:none!important;}
+    .group-card-actions .btn{flex:none!important;width:40px!important;height:40px!important;padding:0!important;display:flex!important;align-items:center!important;justify-content:center!important;border-radius:50%!important;font-size:15px!important;}
 
     /* --- Profile view — single column --- */
     .pv-layout{
