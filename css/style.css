@@ -613,6 +613,7 @@ body.modal-open{overflow:hidden!important;position:fixed!important;width:100%!im
 .cpm-emoji-btn:hover,.comment-emoji-btn:hover{border-color:var(--primary);color:var(--primary);}
 
 .gif-picker-panel{display:none;flex-direction:column;position:absolute;bottom:100%;left:0;right:0;max-height:min(380px,50vh);background:var(--card);border:1px solid var(--border);border-bottom:none;border-radius:14px 14px 0 0;box-shadow:0 -4px 24px rgba(0,0,0,.25);z-index:10;animation:gifPickerIn .2s ease;}
+.gif-picker-panel.comment-gif-flow{position:static;max-height:min(320px,40vh);border:none;border-top:1px solid var(--border);border-radius:0;box-shadow:none;flex-shrink:0;}
 @keyframes gifPickerIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 .gif-picker-header{display:flex;gap:8px;align-items:center;padding:10px 16px;flex-shrink:0;}
 .gif-picker-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:0 12px 8px;overflow-y:auto;flex:1;min-height:0;}
