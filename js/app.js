@@ -1117,7 +1117,8 @@ var navStyles = [
     {id:'glass',name:'Glass',desc:'Transparent frosted glass bar. Content shows through.',price:1,preview:'linear-gradient(135deg,#b2ebf2,#80deea)'},
     {id:'split',name:'Split',desc:'Logo left, nav bottom. Two separate bars.',price:1,preview:'linear-gradient(135deg,#ff7043,#d84315)'},
     {id:'minimal',name:'Minimal',desc:'Just icons. No background. Invisible until hover.',price:1,preview:'linear-gradient(135deg,#cfd8dc,#90a4ae)'},
-    {id:'arcade',name:'Arcade',desc:'Chunky pixel-style bar. Retro gaming feel.',price:1,preview:'linear-gradient(135deg,#7b2ff7,#00f5a0)'}
+    {id:'arcade',name:'Arcade',desc:'Chunky pixel-style bar. Retro gaming feel.',price:1,preview:'linear-gradient(135deg,#7b2ff7,#00f5a0)'},
+    {id:'wheel',name:'Wheel',desc:'Swipeable mobile carousel. Center icon scales up like a wheel.',price:1,preview:'linear-gradient(135deg,#7c4dff,#448aff)'}
 ];
 
 var premiumSkins = [
@@ -1187,6 +1188,7 @@ function navigateTo(page,skipPush){
     if(target) target.classList.add('active');
     $$('.nav-link').forEach(function(l){l.classList.remove('active');});
     $$('.nav-link[data-page="'+page+'"]').forEach(function(l){l.classList.add('active');});
+    if(document.body.classList.contains('nav-wheel')){requestAnimationFrame(function(){_wheelCenterActive();setTimeout(_wheelUpdate,350);});}
     $('#userDropdownMenu').classList.remove('show');
     $$('.post-dropdown.show').forEach(function(m){m.classList.remove('show');});
     closeModal();
@@ -5194,6 +5196,7 @@ function navPreviewHtml(id){
         case 'split':return '<div style="'+wrap+'gap:3px;"><div style="height:10%;background:'+n+';'+r+'flex:none;"></div><div style="flex:1;background:'+c+';'+r+'"></div><div style="height:12%;background:'+n+';'+r+'flex:none;"></div></div>';
         case 'minimal':return '<div style="'+wrap+'gap:3px;"><div style="height:10%;background:rgba(255,255,255,.15);'+r+'flex:none;"></div><div style="flex:1;background:'+c+';'+r+'"></div></div>';
         case 'arcade':return '<div style="'+wrap+'gap:3px;"><div style="height:14%;background:'+n+';'+r+'flex:none;border-bottom:3px solid rgba(0,0,0,.3);"></div><div style="flex:1;background:'+c+';'+r+'"></div></div>';
+        case 'wheel':return '<div style="'+wrap+'gap:3px;"><div style="flex:1;background:'+c+';'+r+'"></div><div style="height:14%;background:'+n+';border-radius:6px 6px 0 0;flex:none;display:flex;align-items:center;justify-content:center;gap:4px;padding:0 6px;"><div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);"></div><div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);"></div><div style="width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.9);"></div><div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);"></div><div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);"></div></div></div>';
         default:return '<i class="fas fa-bars-staggered" style="font-size:36px;color:rgba(255,255,255,.9);"></i>';
     }
 }
@@ -5795,10 +5798,12 @@ function applyTemplate(tplId,silent){
 }
 
 function applyNavStyle(nsId,silent){
+    _wheelCleanup();
     navStyles.forEach(function(n){document.body.classList.remove('nav-'+n.id);});
     if(nsId){document.body.classList.add('nav-'+nsId);state.activeNavStyle=nsId;if(!silent)addNotification('skin','You applied the "'+navStyles.find(function(n){return n.id===nsId;}).name+'" nav style!');}
     else{state.activeNavStyle=null;}
     requestAnimationFrame(syncNavPadding);
+    if(nsId==='wheel'){requestAnimationFrame(function(){_wheelBind();_wheelCenterActive();_wheelUpdate();});}
 }
 function syncNavPadding(){
     var nav=document.querySelector('.navbar');
@@ -5810,8 +5815,8 @@ function syncNavPadding(){
     var isMobile=window.innerWidth<=768;
     // Bottom / side nav styles — no top padding on desktop
     // On mobile, metro/rail/mirror/horizon convert to top bars and need padding
-    var noTop=['nav-dock','nav-pill','nav-horizon','nav-metro','nav-rail','nav-mirror'];
-    var staysBottom=['nav-dock','nav-pill'];
+    var noTop=['nav-dock','nav-pill','nav-horizon','nav-metro','nav-rail','nav-mirror','nav-wheel'];
+    var staysBottom=['nav-dock','nav-pill','nav-wheel'];
     for(var i=0;i<noTop.length;i++){
         if(document.body.classList.contains(noTop[i])){
             if(!isMobile){home.style.setProperty('padding-top','0px','important');return;}
@@ -5824,6 +5829,48 @@ function syncNavPadding(){
     // Top navbar (or mobile-converted top bar) — set padding to exact navbar height
     var h=nav.offsetHeight;
     if(h>0) home.style.setProperty('padding-top',h+'px','important');
+}
+
+// ========== NAV STYLE: WHEEL ==========
+var _wheelRAF=null;
+var _wheelBound=false;
+function _wheelUpdate(){
+    if(window.innerWidth>768||!document.body.classList.contains('nav-wheel'))return;
+    var container=document.querySelector('.nav-center');
+    if(!container)return;
+    var cx=container.scrollLeft+container.offsetWidth/2;
+    var links=container.querySelectorAll('.nav-link');
+    links.forEach(function(link){
+        var linkCx=link.offsetLeft+link.offsetWidth/2;
+        var dist=Math.abs(cx-linkCx);
+        var maxDist=container.offsetWidth*0.5;
+        var ratio=Math.min(dist/maxDist,1);
+        var scale=1.4-0.55*ratio;
+        var opacity=1-0.5*ratio;
+        var lift=-6*(1-ratio);
+        link.style.transform='scale('+scale+') translateY('+lift+'px)';
+        link.style.opacity=opacity;
+    });
+}
+function _wheelCenterActive(){
+    var container=document.querySelector('.nav-center');
+    var active=container&&container.querySelector('.nav-link.active');
+    if(active&&container){
+        var scrollTo=active.offsetLeft-container.offsetWidth/2+active.offsetWidth/2;
+        container.scrollTo({left:scrollTo,behavior:'smooth'});
+    }
+}
+function _wheelBind(){
+    if(_wheelBound)return;
+    var container=document.querySelector('.nav-center');
+    if(!container)return;
+    container.addEventListener('scroll',function(){
+        if(!_wheelRAF){_wheelRAF=requestAnimationFrame(function(){_wheelUpdate();_wheelRAF=null;});}
+    });
+    _wheelBound=true;
+}
+function _wheelCleanup(){
+    document.querySelectorAll('.nav-link').forEach(function(l){l.style.transform='';l.style.opacity='';});
 }
 
 // Premium background (runtime only, no persistence)
