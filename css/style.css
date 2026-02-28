@@ -275,9 +275,9 @@ img{display:block;}
 .timeline-cover-btn{position:absolute;top:16px;right:20px;background:rgba(0,0,0,.55);color:#fff;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;transition:background .2s;z-index:2;}
 .timeline-cover-btn:hover{background:rgba(0,0,0,.75);}
 .profile-info{padding:0 18px 18px;word-wrap:break-word;overflow-wrap:anywhere;}
-.profile-avatar-wrap{position:relative;width:clamp(100px,80%,200px);margin:-50% auto 10px;margin-top:clamp(-100px,-50%,-60px);border-radius:8px;background:var(--card);}
+.profile-avatar-wrap{position:relative;width:clamp(100px,80%,200px);margin:-50% auto 10px;margin-top:clamp(-100px,-50%,-60px);border-radius:8px;}
 .profile-avatar-wrap:not(:has(.premium-border)){overflow:hidden;}
-.profile-avatar{width:100%;aspect-ratio:1;border-radius:8px;border:none;box-shadow:none;object-fit:cover;display:block;background:transparent;}
+.profile-avatar{width:100%;aspect-ratio:1;border-radius:8px;border:none;box-shadow:none;object-fit:cover;display:block;}
 .avatar-edit-btn{position:absolute;bottom:2px;right:2px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;transition:background .2s;cursor:pointer;z-index:2;}
 .avatar-edit-btn:hover{background:rgba(0,0,0,.75);}
 .profile-name{font-size:calc(18px * var(--font-scale));font-weight:600;color:var(--dark);margin-bottom:2px;word-wrap:break-word;overflow-wrap:anywhere;white-space:normal;}
@@ -795,8 +795,8 @@ body.skin-midnight .photos-empty,body.skin-midnight .photo-album-empty{color:#bb
 .pv-profile-card{text-align:center;overflow:visible;}
 .pv-profile-card .profile-cover{height:70px;}
 .pv-profile-card .profile-info{padding:0 18px 18px;word-wrap:break-word;overflow-wrap:anywhere;}
-.pv-profile-card .profile-avatar-wrap{position:relative;width:clamp(100px,80%,200px);margin:clamp(-100px,-50%,-60px) auto 10px;background:var(--card);border-radius:8px;overflow:hidden;}
-.pv-profile-card .profile-avatar{width:100%;aspect-ratio:1;border-radius:8px;border:none;box-shadow:none;object-fit:cover;display:block;background:transparent;}
+.pv-profile-card .profile-avatar-wrap{position:relative;width:clamp(100px,80%,200px);margin:clamp(-100px,-50%,-60px) auto 10px;}
+.pv-profile-card .profile-avatar{width:100%;aspect-ratio:1;border-radius:8px;border:none;box-shadow:none;object-fit:cover;display:block;}
 .pv-profile-card .profile-name{font-size:calc(18px * var(--font-scale));font-weight:600;color:var(--dark);margin-bottom:2px;word-wrap:break-word;overflow-wrap:anywhere;white-space:normal;}
 .pv-profile-card .profile-title{font-size:13px;color:var(--gray);margin-bottom:10px;word-wrap:break-word;overflow-wrap:anywhere;white-space:normal;}
 .pv-profile-card .profile-stats{display:flex;justify-content:center;gap:16px 30px;padding:12px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:14px;flex-wrap:wrap;}
