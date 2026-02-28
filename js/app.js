@@ -31,6 +31,7 @@ function safeTruncate(str,max,ellipsis){var a=Array.from(str||'');if(a.length<=m
 // ======================== XSS PROTECTION ========================
 function escapeHtml(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function escapeHtmlNl(s){return escapeHtml(s).replace(/\n/g,'<br>');}
+function looksLikeEmail(s){return /[^\s@]+@[^\s@]+\.[^\s@]+/.test(s);}
 
 // ======================== RATE-LIMIT COOLDOWN HELPER ========================
 var _cooldowns = {};
@@ -162,6 +163,7 @@ signupForm.addEventListener('submit', async function (e) {
     var birthday = document.getElementById('signupBirthday').value;
     var termsChecked = document.getElementById('signupTerms').checked;
     if (!firstName || !lastName) { signupError.textContent = 'First and last name are required.'; signupError.classList.add('show'); return; }
+    if (looksLikeEmail(firstName)||looksLikeEmail(lastName)||looksLikeEmail(username)) { signupError.textContent = 'Names and usernames cannot be email addresses.'; signupError.classList.add('show'); return; }
     if (!username || !email || !pw) { signupError.textContent = 'All fields are required.'; signupError.classList.add('show'); return; }
     if (pw.length < 6) { signupError.textContent = 'Password must be at least 6 characters.'; signupError.classList.add('show'); return; }
     if (!birthday) { signupError.textContent = 'Please enter your date of birth.'; signupError.classList.add('show'); return; }
@@ -3536,6 +3538,7 @@ $('#editProfileBtn').addEventListener('click',function(e){
         var fn=$('#editFirstName').value.trim();
         var ln=$('#editLastName').value.trim();
         var nn=$('#editNickname').value.trim();
+        if(looksLikeEmail(fn)||looksLikeEmail(ln)||looksLikeEmail(nn)){showToast('Names cannot be email addresses');return;}
         var mode=document.querySelector('input[name="displayMode"]:checked').value;
         var uname=currentUser?currentUser.username:'User';
         var n=computeDisplayName(fn,ln,nn,mode,uname);
