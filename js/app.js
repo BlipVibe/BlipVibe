@@ -4886,7 +4886,7 @@ async function renderSuggestions(){
                 try{var p=await sbGetProfile(uid);if(p) showProfileView(profileToPerson(p));}catch(e){}
             });
         });
-    }catch(e){console.error('renderSuggestions:',e);}
+    }catch(e){console.error('renderSuggestions:',e);renderMobilePills();return;}
     renderMobilePills();
 }
 
@@ -4918,19 +4918,17 @@ function renderMobilePills(){
     var bar=$('#mobilePills');
     if(!bar) return;
     var html='';
-    if(_pillSuggestions.length) html+='<button class="mobile-pill" id="pillPeopleYouKnow"><i class="fas fa-user-plus"></i>People You May Know</button>';
-    if(groups.length) html+='<button class="mobile-pill" id="pillTrendingGroups"><i class="fas fa-fire"></i>Trending Groups</button>';
+    html+='<button class="mobile-pill" id="pillPeopleYouKnow"><i class="fas fa-user-plus"></i>People You May Know</button>';
+    html+='<button class="mobile-pill" id="pillTrendingGroups"><i class="fas fa-fire"></i>Trending Groups</button>';
     bar.innerHTML=html;
-    var pymk=document.getElementById('pillPeopleYouKnow');
-    if(pymk) pymk.addEventListener('click',function(){ showPeopleYouKnowModal(); });
-    var tg=document.getElementById('pillTrendingGroups');
-    if(tg) tg.addEventListener('click',function(){ showTrendingGroupsModal(); });
+    document.getElementById('pillPeopleYouKnow').addEventListener('click',function(){ showPeopleYouKnowModal(); });
+    document.getElementById('pillTrendingGroups').addEventListener('click',function(){ showTrendingGroupsModal(); });
 }
 
 function showPeopleYouKnowModal(){
-    if(!_pillSuggestions.length) return;
     var html='<div class="modal-header"><h3>People You May Know</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     html+='<div class="modal-body pill-modal-scroll">';
+    if(!_pillSuggestions.length){html+='<p style="text-align:center;color:var(--gray);padding:24px 0;">No suggestions right now. Check back later!</p>';}
     _pillSuggestions.forEach(function(p){
         var name=p.display_name||p.username;
         var avatar=p.avatar_url||DEFAULT_AVATAR;
