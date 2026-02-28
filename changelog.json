@@ -7,7 +7,8 @@
       "Single photo delete — trash button on hover for profile pictures, cover photos, and post photos",
       "Bulk photo delete — 'Select' button enables multi-select mode with floating action bar for batch deletion",
       "Delete Photo option in photo context menu (three-dot menu)",
-      "Group fonts — buy, apply, and reset fonts per group via the group shop Fonts tab"
+      "Group fonts — buy, apply, and reset fonts per group via the group shop Fonts tab",
+      "Dark Prism premium skin — dark variant of Geo Prism with rainbow borders, spinning gradient nav, and pulsing prismatic glow"
     ],
     "changed": [
       "Photo state now tracks storage file names and post IDs for proper deletion across storage, albums, and posts",

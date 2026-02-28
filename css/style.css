@@ -2665,6 +2665,8 @@ body.premium-kawaii-cats{--ps-bg:#fff0f6;--ps-nav:linear-gradient(135deg,#e91e8c
 --ps-pattern:url("../images/premium-kawaii-cats.svg");}
 body.premium-geo-prism{--ps-bg:#f0f4ff;--ps-nav:linear-gradient(90deg,#ff0000,#ff8800,#ffff00,#00ff00,#0088ff,#8800ff,#ff0000);--ps-card:#fff;--ps-text:#1e293b;--ps-muted:#6b7280;--ps-border:#e0e7ff;--ps-tag:#e0e7ff;--ps-input:#f5f7ff;--ps-hover:#e0e7ff;--ps-glow:rgba(79,70,229,.3);--ps-post-border:#4f46e5;--ps-badge-bg:#e0e7ff;--ps-anim:none;
 --ps-pattern:url("../images/premium-geo-prism.svg");}
+body.premium-dark-prism{--ps-bg:#0a0a14;--ps-nav:linear-gradient(90deg,#ff0000,#ff8800,#ffff00,#00ff00,#0088ff,#8800ff,#ff0000);--ps-card:#141422;--ps-text:#d8d8f0;--ps-muted:#8080a0;--ps-border:#2a2a42;--ps-tag:#1a1a30;--ps-input:#0c0c18;--ps-hover:#2a2a42;--ps-glow:rgba(100,100,255,.4);--ps-post-border:#6366f1;--ps-badge-bg:#1a1a30;--ps-anim:none;
+--ps-pattern:url("../images/premium-geo-prism.svg");}
 body.premium-autumn-leaves{--ps-bg:#fef7ed;--ps-nav:linear-gradient(135deg,#b45309,#f12711);--ps-card:#fff;--ps-text:#4a2c1a;--ps-muted:#92633a;--ps-border:#fed7aa;--ps-tag:#fed7aa;--ps-input:#fffaf5;--ps-hover:#fed7aa;--ps-glow:rgba(212,84,0,.3);--ps-post-border:#d35400;--ps-badge-bg:#fed7aa;--ps-anim:none;
 --ps-pattern:url("../images/premium-autumn-leaves.svg");}
 body.premium-neon-wave{--ps-bg:#0a0a1a;--ps-nav:linear-gradient(135deg,#0d0d2b,#1a0a2e);--ps-card:#12122a;--ps-text:#c0ffd0;--ps-muted:#80d0a0;--ps-border:#1a2a30;--ps-tag:#0d1f1a;--ps-input:#080818;--ps-hover:#1a2a25;--ps-glow:rgba(0,245,160,.35);--ps-post-border:#00f5a0;--ps-badge-bg:#0d1f1a;--ps-anim:neonFlicker 4s ease infinite;
@@ -2817,6 +2819,7 @@ body.premium-witchcraft .profile-avatar-wrap::before{background:conic-gradient(f
 body.premium-anime-blaze .profile-avatar-wrap::before{background:conic-gradient(from 45deg,#ff0844,#ff6b6b,#ffb199,#ff0844);box-shadow:0 0 20px var(--ps-glow);animation:premiumGlow 2s ease infinite,blazePulse 2s ease infinite;}
 body.premium-kawaii-cats .profile-avatar-wrap::before{background:conic-gradient(from 0deg,#fbc2eb,#f8a4d2,#a6c1ee,#fbc2eb);box-shadow:0 0 20px var(--ps-glow);}
 body.premium-geo-prism .profile-avatar-wrap::before{background:conic-gradient(from 0deg,#ff0000,#ff8800,#ffff00,#00ff00,#0088ff,#8800ff,#ff0000);box-shadow:0 0 20px var(--ps-glow);animation:premiumSpin 4s linear infinite;}
+body.premium-dark-prism .profile-avatar-wrap::before{background:conic-gradient(from 0deg,#ff0000,#ff8800,#ffff00,#00ff00,#0088ff,#8800ff,#ff0000);box-shadow:0 0 24px rgba(100,100,255,.5),0 0 60px rgba(100,100,255,.2);animation:premiumSpin 4s linear infinite,darkPrismGlow 3s ease infinite;}
 body.premium-autumn-leaves .profile-avatar-wrap::before{background:conic-gradient(from 30deg,#f5af19,#f12711,#c0392b,#e67e22,#f5af19);box-shadow:0 0 20px var(--ps-glow);}
 body.premium-neon-wave .profile-avatar-wrap::before{background:conic-gradient(from 0deg,#00f5a0,#00d9f5,#7b2ff7,#f500e5,#00f5a0);box-shadow:0 0 20px var(--ps-glow);animation:premiumSpin 3s linear infinite;}
 body.premium-sakura .profile-avatar-wrap::before{background:conic-gradient(from 0deg,#fcb69f,#ff9a9e,#ffecd2,#f8b4b4,#fcb69f);box-shadow:0 0 20px var(--ps-glow);}
@@ -2840,5 +2843,9 @@ body.premium-matrix .profile-avatar-wrap::before{background:conic-gradient(from 
 
 body.premium-anime-blaze .feed-post{animation:blazePulse 2s ease infinite;}
 body.premium-geo-prism .navbar{background-size:auto,400% 100%;animation:gradientShift 4s linear infinite;}
+body.premium-dark-prism .navbar{background-size:auto,400% 100%;animation:gradientShift 4s linear infinite;}
+body.premium-dark-prism .card{box-shadow:0 0 12px rgba(100,100,255,.08),0 2px 8px rgba(0,0,0,.3);}
+body.premium-dark-prism .feed-post{border-left:2px solid rgba(100,100,255,.15);}
+@keyframes darkPrismGlow{0%,100%{box-shadow:0 0 20px rgba(100,100,255,.4),0 0 50px rgba(100,100,255,.15);}50%{box-shadow:0 0 30px rgba(130,80,255,.6),0 0 70px rgba(100,100,255,.3);}}
 body.premium-neon-wave::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(transparent,transparent 2px,rgba(0,245,160,.015) 2px,rgba(0,245,160,.015) 4px);pointer-events:none;z-index:9999;}
 body.premium-molten-gold .card{animation:goldShimmer 3s ease infinite;}
