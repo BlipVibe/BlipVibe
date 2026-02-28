@@ -7475,9 +7475,11 @@ function showEditPostModal(pid){
 }
 function showEditCommentModal(cid,currentText,onSaved){
     var h='<div class="modal-header"><h3>Edit Comment</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
-    h+='<div class="modal-body"><textarea id="editCommentText" class="cpm-textarea" style="min-height:80px;">'+currentText+'</textarea>';
-    h+='<div class="modal-actions" style="margin-top:12px;"><button class="btn btn-outline modal-close">Cancel</button><button class="btn btn-primary" id="saveEditCommentBtn">Save</button></div></div>';
+    h+='<div class="modal-body" style="position:relative;"><textarea id="editCommentText" class="cpm-textarea" style="min-height:80px;">'+currentText+'</textarea>';
+    h+='<div id="editCommentEmojiPanel" class="emoji-picker-panel"></div>';
+    h+='<div class="modal-actions" style="margin-top:12px;display:flex;gap:8px;align-items:center;"><button class="cpm-emoji-btn" id="editCommentEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button><div style="flex:1;"></div><button class="btn btn-outline modal-close">Cancel</button><button class="btn btn-primary" id="saveEditCommentBtn">Save</button></div></div>';
     showModal(h);
+    document.getElementById('editCommentEmojiBtn').addEventListener('click',function(){openEmojiPicker('editCommentEmojiPanel',document.getElementById('editCommentText'));});
     document.getElementById('saveEditCommentBtn').addEventListener('click',async function(){
         var newText=$('#editCommentText').value.trim();
         if(!newText){showToast('Comment cannot be empty');return;}
