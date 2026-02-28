@@ -3093,8 +3093,11 @@ async function showGroupView(group){
         $('#gvCoverEditBtn').addEventListener('click',function(e){
             e.stopPropagation();
             var photos=group.photos.cover;
+            var hasCover=!!group.coverPhoto;
             var h='<div class="modal-header"><h3>Change Cover Photo</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body">';
-            h+='<div style="text-align:center;margin-bottom:16px;"><button class="btn btn-primary" id="gvCoverUploadNewBtn"><i class="fas fa-upload"></i> Upload New Photo</button></div>';
+            h+='<div style="text-align:center;margin-bottom:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><button class="btn btn-primary" id="gvCoverUploadNewBtn"><i class="fas fa-upload"></i> Upload New Photo</button>';
+            if(hasCover) h+='<button class="btn btn-outline" id="gvCoverRemoveBtn" style="color:#e74c3c;border-color:#e74c3c;"><i class="fas fa-trash"></i> Remove Cover</button>';
+            h+='</div>';
             if(photos.length>0){
                 h+='<p style="font-size:13px;color:var(--gray);margin-bottom:12px;text-align:center;">Or select from previous uploads:</p>';
                 h+='<div class="shop-scroll-row" id="gvCoverPickRow" style="gap:12px;padding:8px 4px 12px;">';
@@ -3105,6 +3108,14 @@ async function showGroupView(group){
             showModal(h);
             if(photos.length>0) initDragScroll('#modalContent');
             document.getElementById('gvCoverUploadNewBtn').addEventListener('click',function(){closeModal();$('#gvCoverFileInput').click();});
+            var gvRemoveBtn=document.getElementById('gvCoverRemoveBtn');
+            if(gvRemoveBtn) gvRemoveBtn.addEventListener('click',function(){
+                group.coverPhoto=null;
+                banner.style.background=themeColor;
+                sbUpdateGroup(group.id,{cover_photo_url:null}).catch(function(e){console.error('Remove group cover error:',e);});
+                closeModal();
+                showToast('Group cover photo removed');
+            });
             $$('.gv-cover-pick-thumb').forEach(function(thumb){
                 thumb.addEventListener('mouseenter',function(){thumb.style.borderColor='var(--primary)';});
                 thumb.addEventListener('mouseleave',function(){thumb.style.borderColor='transparent';});
@@ -3297,8 +3308,11 @@ function openGroupPostModal(group){
 // Cover photo upload with crop + previous picker
 function showCoverPickerModal(){
     var photos=state.photos.cover;
+    var hasCover=!!state.coverPhoto;
     var h='<div class="modal-header"><h3>Change Cover Photo</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body">';
-    h+='<div style="text-align:center;margin-bottom:16px;"><button class="btn btn-primary" id="coverUploadNewBtn"><i class="fas fa-upload"></i> Upload New Photo</button></div>';
+    h+='<div style="text-align:center;margin-bottom:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><button class="btn btn-primary" id="coverUploadNewBtn"><i class="fas fa-upload"></i> Upload New Photo</button>';
+    if(hasCover) h+='<button class="btn btn-outline" id="coverRemoveBtn" style="color:#e74c3c;border-color:#e74c3c;"><i class="fas fa-trash"></i> Remove Cover</button>';
+    h+='</div>';
     if(photos.length>0){
         h+='<p style="font-size:13px;color:var(--gray);margin-bottom:12px;text-align:center;">Or select from previous uploads:</p>';
         h+='<div class="shop-scroll-row" id="coverPickRow" style="gap:12px;padding:8px 4px 12px;">';
@@ -3309,6 +3323,21 @@ function showCoverPickerModal(){
     showModal(h);
     if(photos.length>0) initDragScroll('#modalContent');
     document.getElementById('coverUploadNewBtn').addEventListener('click',function(){closeModal();$('#coverFileInput').click();});
+    var removeBtn=document.getElementById('coverRemoveBtn');
+    if(removeBtn) removeBtn.addEventListener('click',function(){
+        state.coverPhoto=null;
+        $('#timelineCover').style.backgroundImage='';
+        var btn=$('#coverEditBtn');if(btn) btn.innerHTML='<i class="fas fa-camera"></i> Add Cover Photo';
+        var pvBtn=$('#pvCoverEditBtn');if(pvBtn) pvBtn.innerHTML='<i class="fas fa-camera"></i> Add Cover Photo';
+        var pvBanner=$('#pvCoverBanner');if(pvBanner) pvBanner.style.backgroundImage='';
+        if(currentUser){
+            currentUser.cover_photo_url=null;
+            sbUpdateProfile(currentUser.id,{cover_photo_url:null}).catch(function(e){console.error('Remove cover error:',e);});
+        }
+        saveState();
+        closeModal();
+        showToast('Cover photo removed');
+    });
     $$('.cover-pick-thumb').forEach(function(thumb){
         thumb.addEventListener('mouseenter',function(){thumb.style.borderColor='var(--primary)';});
         thumb.addEventListener('mouseleave',function(){thumb.style.borderColor='transparent';});

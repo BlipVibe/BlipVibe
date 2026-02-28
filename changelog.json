@@ -10,7 +10,8 @@
       "Group fonts — buy, apply, and reset fonts per group via the group shop Fonts tab",
       "Dark Prism premium skin — dark variant of Geo Prism with rainbow borders, spinning gradient nav, and pulsing prismatic glow",
       "Wheel nav style — mobile-only swipeable bottom nav where the center icon scales up like a rolling wheel",
-      "Privacy Policy v2.0 — full legal rewrite with GDPR, CCPA/CPRA, COPPA, DMCA, Section 230, international transfers, advertising disclosure, Apple App Store terms, and liability/dispute provisions"
+      "Privacy Policy v2.0 — full legal rewrite with GDPR, CCPA/CPRA, COPPA, DMCA, Section 230, international transfers, advertising disclosure, Apple App Store terms, and liability/dispute provisions",
+      "Remove Cover Photo button — red trash button in the cover photo picker modal for both user profiles and groups, clears cover from UI and Supabase"
     ],
     "changed": [
       "Photo state now tracks storage file names and post IDs for proper deletion across storage, albums, and posts",
