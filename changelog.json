@@ -35,7 +35,8 @@
       "Viewing someone else's profile then navigating to your own copied their skin/font — previous profile skin now properly restored before applying own",
       "GIF picker clipped in comment modal on mobile — moved from absolute-positioned overlay to flow-based flex child so it's no longer cut off by overflow:hidden",
       "Crop modal closing when dragging slightly off the crop area — overlay click-to-close now suppressed during active crop drag",
-      "Home feed photos preview changed from 3-column grid (2 rows) to a single scrollable row"
+      "Home feed photos preview changed from 3-column grid (2 rows) to a single scrollable row",
+      "People You May Know pill not showing on mobile — pill now always renders regardless of async suggestion load timing"
     ]
   },
   {
