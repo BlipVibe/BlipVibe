@@ -545,8 +545,9 @@ img{display:block;}
 .group-members i{font-size:10px;margin-right:2px;}
 
 /* ========== PHOTOS CARD & ALBUM ========== */
-.photos-preview{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:8px 12px;}
-.photos-preview img{width:100%;aspect-ratio:1;object-fit:cover;object-position:center;border-radius:6px;cursor:pointer;transition:opacity .2s;}
+.photos-preview{display:flex;gap:6px;padding:8px 12px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.photos-preview::-webkit-scrollbar{display:none;}
+.photos-preview img{flex:0 0 80px;width:80px;height:80px;object-fit:cover;object-position:center;border-radius:6px;cursor:pointer;transition:opacity .2s;}
 .photos-preview img:hover{opacity:.8;}
 .photos-empty{grid-column:1/-1;text-align:center;color:var(--gray);font-size:13px;padding:16px 0;}
 .photo-album-section{margin-bottom:24px;}

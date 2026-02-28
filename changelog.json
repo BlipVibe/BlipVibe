@@ -31,7 +31,9 @@
       "Card transparency slider not working in groups — gpremium-dark CSS used hardcoded background overriding the color-mix opacity variable",
       "Profile picture background color jutting out as square — added background:var(--card) to avatar wraps, removed border from modal avatars, added overflow:hidden clipping to profile view and group profile modal",
       "Viewing someone else's profile then navigating to your own copied their skin/font — previous profile skin now properly restored before applying own",
-      "GIF picker clipped in comment modal on mobile — moved from absolute-positioned overlay to flow-based flex child so it's no longer cut off by overflow:hidden"
+      "GIF picker clipped in comment modal on mobile — moved from absolute-positioned overlay to flow-based flex child so it's no longer cut off by overflow:hidden",
+      "Crop modal closing when dragging slightly off the crop area — overlay click-to-close now suppressed during active crop drag",
+      "Home feed photos preview changed from 3-column grid (2 rows) to a single scrollable row"
     ]
   },
   {
