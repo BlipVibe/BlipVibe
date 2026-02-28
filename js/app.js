@@ -2291,6 +2291,15 @@ async function showProfileView(person){
     if(isMe){ following=state.following; followers=state.followers; }
     else { try{ var fc=await sbGetFollowCounts(person.id); following=fc.following; followers=fc.followers; }catch(e){} }
 
+    // Restore previous skin if we're coming from another profile view
+    if(_pvSaved){
+        premiumBgImage=_pvSaved.bgImage;premiumBgOverlay=_pvSaved.bgOverlay;premiumBgDarkness=_pvSaved.bgDarkness||0;premiumCardTransparency=_pvSaved.cardTrans!=null?_pvSaved.cardTrans:0.1;
+        state.activePremiumSkin=_pvSaved.premiumSkin||null;state.activeSkin=_pvSaved.skin||null;state.activeFont=_pvSaved.font||null;state.activeTemplate=_pvSaved.tpl||null;
+        applySkin(_pvSaved.skin||null,true);
+        if(_pvSaved.premiumSkin)applyPremiumSkin(_pvSaved.premiumSkin,true);else updatePremiumBg();
+        applyFont(_pvSaved.font||null,true);
+        _pvSaved=null;
+    }
     // Apply viewed person's skin/font/template (silent, don't change state)
     _pvSaved={skin:state.activeSkin,premiumSkin:state.activePremiumSkin,font:state.activeFont,tpl:state.activeTemplate,bgImage:premiumBgImage,bgOverlay:premiumBgOverlay,bgDarkness:premiumBgDarkness,cardTrans:premiumCardTransparency};
     if(!isMe){
