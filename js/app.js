@@ -987,6 +987,13 @@ async function loadGroups() {
 function getMyGroupRole(group){ return currentUser && group.owner && group.owner.id === currentUser.id ? 'Admin' : (state.joinedGroups[group.id] ? 'Member' : null); }
 function getPersonGroupRole(){ return 'Member'; }
 function roleRank(role){ return role==='Admin'?4:role==='Co-Admin'?3:role==='Moderator'?2:1; }
+function canManageGroupSkins(group){
+    if(!currentUser) return false;
+    if(group.owner&&group.owner.id===currentUser.id) return true;
+    if(!group.mods||!group.mods.length) return false;
+    var myName=currentUser.display_name||currentUser.username||'';
+    return group.mods.some(function(m){return m.name===myName;});
+}
 
 var skins = [
     {id:'classic',name:'Classic',desc:'Clean teal and white. The original BlipVibe look.',price:1,preview:'linear-gradient(135deg,#5cbdb9,#4aada9)',cardBg:'#fff',cardText:'#333',cardMuted:'#777'},
@@ -5467,17 +5474,20 @@ function groupShopBuy(groupId,owned,price,cls,attr){
     return '<div class="skin-price"><i class="fas fa-coins" style="color:#f59e0b;"></i> '+price+' Group Coins</div><button class="btn '+(gc>=price?'btn-primary':'btn-disabled')+' '+cls+'" '+attr+(gc<price?' disabled':'')+'>Buy</button>';
 }
 
-function getGroupShopCategories(groupId){
+function getGroupShopCategories(groupId,canManage){
     var cats=[];
     if(!state.groupOwnedSkins[groupId]) state.groupOwnedSkins[groupId]={};
     if(!state.groupOwnedPremiumSkins[groupId]) state.groupOwnedPremiumSkins[groupId]={};
+    var _lockHtml=canManage?'':'<div style="font-size:11px;color:var(--muted);margin-top:4px;"><i class="fas fa-lock" style="margin-right:4px;"></i>Only admins &amp; mods can manage</div>';
 
     cats.push({key:'basic',label:'<i class="fas fa-palette"></i> Basic Skins',items:skins,render:function(s){
-        return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="skin-preview-inner" style="color:#333;background:#fff;">Preview</div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';">'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p>'+groupShopBuy(groupId,state.groupOwnedSkins[groupId][s.id],s.price,'buy-gskin-btn','data-sid="'+s.id+'" data-gid="'+groupId+'"')+'</div></div>';
+        var buyHtml=canManage?groupShopBuy(groupId,state.groupOwnedSkins[groupId][s.id],s.price,'buy-gskin-btn','data-sid="'+s.id+'" data-gid="'+groupId+'"'):(state.groupOwnedSkins[groupId][s.id]?'<button class="btn btn-disabled">Owned</button>':_lockHtml);
+        return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="skin-preview-inner" style="color:#333;background:#fff;">Preview</div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';">'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p>'+buyHtml+'</div></div>';
     }});
 
     cats.push({key:'premium',label:'<i class="fas fa-gem"></i> Premium Skins',items:premiumSkins,render:function(s){
-        return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="premium-preview-frame" style="background:'+s.border+';"><img src="images/default-avatar.svg" class="premium-preview-avatar"></div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';"><i class="fas '+s.icon+'" style="color:'+s.iconColor+';margin-right:6px;"></i>'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p>'+groupShopBuy(groupId,state.groupOwnedPremiumSkins[groupId][s.id],s.price,'buy-gspremium-btn','data-pid="'+s.id+'" data-gid="'+groupId+'"')+'</div></div>';
+        var buyHtml=canManage?groupShopBuy(groupId,state.groupOwnedPremiumSkins[groupId][s.id],s.price,'buy-gspremium-btn','data-pid="'+s.id+'" data-gid="'+groupId+'"'):(state.groupOwnedPremiumSkins[groupId][s.id]?'<button class="btn btn-disabled">Owned</button>':_lockHtml);
+        return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="premium-preview-frame" style="background:'+s.border+';"><img src="images/default-avatar.svg" class="premium-preview-avatar"></div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';"><i class="fas '+s.icon+'" style="color:'+s.iconColor+';margin-right:6px;"></i>'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p>'+buyHtml+'</div></div>';
     }});
 
     // Fonts tab
@@ -5485,7 +5495,13 @@ function getGroupShopCategories(groupId){
     cats.push({key:'fonts',label:'<i class="fas fa-font"></i> Fonts',items:fonts,render:function(f){
         var owned=state.groupOwnedFonts[groupId][f.id];
         var isActive=state.groupActiveFont[groupId]===f.id;
-        return '<div class="skin-card"><div class="skin-preview" style="display:flex;align-items:center;justify-content:center;font-family:\''+f.family+'\',sans-serif;font-size:'+(f.scale?Math.round(18*f.scale):18)+'px;background:#f0f2f5;color:#333;">Aa Bb 123</div><div class="skin-card-body"><h4>'+f.name+'</h4><p>'+f.desc+'</p>'+(owned?'<button class="btn '+(isActive?'btn-disabled':'btn-primary')+' apply-gfont-btn" data-fid="'+f.id+'" data-gid="'+groupId+'">'+(isActive?'Active':'Apply')+'</button>':groupShopBuy(groupId,false,f.price,'buy-gfont-btn','data-fid="'+f.id+'" data-gid="'+groupId+'"'))+'</div></div>';
+        var btnHtml;
+        if(!canManage){
+            btnHtml=owned?(isActive?'<button class="btn btn-disabled">Active</button>':'<button class="btn btn-disabled">Owned</button>'):_lockHtml;
+        } else {
+            btnHtml=owned?'<button class="btn '+(isActive?'btn-disabled':'btn-primary')+' apply-gfont-btn" data-fid="'+f.id+'" data-gid="'+groupId+'">'+(isActive?'Active':'Apply')+'</button>':groupShopBuy(groupId,false,f.price,'buy-gfont-btn','data-fid="'+f.id+'" data-gid="'+groupId+'"');
+        }
+        return '<div class="skin-card"><div class="skin-preview" style="display:flex;align-items:center;justify-content:center;font-family:\''+f.family+'\',sans-serif;font-size:'+(f.scale?Math.round(18*f.scale):18)+'px;background:#f0f2f5;color:#333;">Aa Bb 123</div><div class="skin-card-body"><h4>'+f.name+'</h4><p>'+f.desc+'</p>'+btnHtml+'</div></div>';
     }});
 
     // Apply Skins tab (always visible)
@@ -5500,7 +5516,13 @@ function getGroupShopCategories(groupId){
             var titleStyle=s.cardText?'color:'+s.cardText+';':'';
             var descStyle=s.cardMuted?'color:'+s.cardMuted+';':'';
             var inner=isPremium?'<div class="premium-preview-frame" style="background:'+s.border+';"><img src="images/default-avatar.svg" class="premium-preview-avatar"></div>':'<div class="skin-preview-inner" style="color:#333;background:#fff;">Preview</div>';
-            return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';">'+inner+'</div><div class="skin-card-body" style="'+bodyStyle+'"><h4 style="'+titleStyle+'">'+(s.icon?'<i class="fas '+s.icon+'" style="color:'+s.iconColor+';margin-right:6px;"></i>':'')+s.name+'</h4><p style="'+descStyle+'">'+s.desc+'</p><button class="btn '+(isActive?'btn-disabled':'btn-primary')+' apply-gskin-btn" data-sid="'+s.id+'" data-gid="'+groupId+'" data-premium="'+(isPremium?'1':'0')+'">'+(isActive?'Active':'Apply')+'</button></div></div>';
+            var applyBtn;
+            if(!canManage){
+                applyBtn='<button class="btn btn-disabled">'+(isActive?'Active':'<i class="fas fa-lock" style="margin-right:4px;"></i>Locked')+'</button>';
+            } else {
+                applyBtn='<button class="btn '+(isActive?'btn-disabled':'btn-primary')+' apply-gskin-btn" data-sid="'+s.id+'" data-gid="'+groupId+'" data-premium="'+(isPremium?'1':'0')+'">'+(isActive?'Active':'Apply')+'</button>';
+            }
+            return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';">'+inner+'</div><div class="skin-card-body" style="'+bodyStyle+'"><h4 style="'+titleStyle+'">'+(s.icon?'<i class="fas '+s.icon+'" style="color:'+s.iconColor+';margin-right:6px;"></i>':'')+s.name+'</h4><p style="'+descStyle+'">'+s.desc+'</p>'+applyBtn+'</div></div>';
         }});
     } else {
         cats.push({key:'owned',label:'<i class="fas fa-check-circle"></i> Apply Skins',items:[null],render:function(){
@@ -5514,7 +5536,9 @@ function getGroupShopCategories(groupId){
 function renderGroupShop(groupId){
     var container=document.getElementById('gvShopContent');
     if(!container) return;
-    var cats=getGroupShopCategories(groupId);
+    var _grp=groups.find(function(g){return g.id===groupId;});
+    var _canManage=_grp?canManageGroupSkins(_grp):false;
+    var cats=getGroupShopCategories(groupId,_canManage);
     if(!currentGroupShopTab) currentGroupShopTab=cats[0].key;
     if(!cats.find(function(c){return c.key===currentGroupShopTab;})) currentGroupShopTab=cats[0].key;
 
@@ -5526,12 +5550,12 @@ function renderGroupShop(groupId){
     var html='<div class="shop-scroll-row scroll-2row">';
     active.items.forEach(function(item){html+=active.render(item);});
     html+='</div>';
-    // Reset font button on fonts tab
-    if(currentGroupShopTab==='fonts'&&state.groupActiveFont[groupId]){
+    // Reset font button on fonts tab (admin/mod only)
+    if(_canManage&&currentGroupShopTab==='fonts'&&state.groupActiveFont[groupId]){
         html+='<div style="margin-top:12px;text-align:center;"><button class="btn btn-outline" id="resetGroupFont" style="font-size:13px;"><i class="fas fa-undo" style="margin-right:6px;"></i>Reset to Default Font</button></div>';
     }
-    // Group premium background controls (on owned tab with active premium skin)
-    if(currentGroupShopTab==='owned'&&state.groupActivePremiumSkin[groupId]){
+    // Group premium background controls (on owned tab with active premium skin — admin/mod only)
+    if(_canManage&&currentGroupShopTab==='owned'&&state.groupActivePremiumSkin[groupId]){
         if(!state.groupPremiumBg[groupId]) state.groupPremiumBg[groupId]={};
         var _gbg=state.groupPremiumBg[groupId];
         var bgHtml='<div class="premium-bg-controls card" style="margin-top:16px;padding:16px;border-radius:12px;">';
