@@ -4012,8 +4012,8 @@ function renderFeed(tab){
         // My Posts tab: only the current user's posts
         posts=feedPosts.filter(function(p){return currentUser&&p.person.id===currentUser.id&&!hiddenPosts[p.idx];});
     } else if(tab==='following'){
-        // Following tab: only posts from people you follow (not your own — those go in My Posts)
-        posts=feedPosts.filter(function(p){return state.followedUsers[p.person.id]&&!(currentUser&&p.person.id===currentUser.id)&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id];});
+        // Following tab: posts from people you follow + your own posts
+        posts=feedPosts.filter(function(p){return (state.followedUsers[p.person.id]||(currentUser&&p.person.id===currentUser.id))&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id];});
     } else {
         // Discover tab: posts from friends-of-friends (people followed by people you follow, but not already followed by you)
         var myIds=getFollowingIds();
