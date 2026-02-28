@@ -4740,7 +4740,8 @@ async function renderSuggestions(){
     try{
         var all=await sbGetAllProfiles(20);
         var suggestions=all.filter(function(p){return p.id!==currentUser.id&&!state.followedUsers[p.id]&&!blockedUsers[p.id];}).slice(0,5);
-        if(!suggestions.length){list.innerHTML='<p style="text-align:center;color:var(--gray);font-size:13px;">No suggestions yet</p>';return;}
+        _pillSuggestions=suggestions;
+        if(!suggestions.length){list.innerHTML='<p style="text-align:center;color:var(--gray);font-size:13px;">No suggestions yet</p>';renderMobilePills();return;}
         var html='';
         suggestions.forEach(function(p){
             var name=p.display_name||p.username;
@@ -4794,23 +4795,13 @@ function renderTrendingSidebar(){
 }
 
 // ======================== MOBILE PILLS BAR ========================
+var _pillSuggestions=[];
 function renderMobilePills(){
     var bar=$('#mobilePills');
     if(!bar) return;
     var html='';
-    // People You May Know pill (opens modal)
-    try{
-        var list=$('#suggestionList');
-        if(list&&list.querySelectorAll('.suggestion-item').length){
-            html+='<button class="mobile-pill" id="pillPeopleYouKnow"><i class="fas fa-user-plus"></i>People You May Know</button>';
-        }
-    }catch(e){}
-    // Trending Groups pill (opens modal)
-    try{
-        if(groups.length){
-            html+='<button class="mobile-pill" id="pillTrendingGroups"><i class="fas fa-fire"></i>Trending Groups</button>';
-        }
-    }catch(e){}
+    if(_pillSuggestions.length) html+='<button class="mobile-pill" id="pillPeopleYouKnow"><i class="fas fa-user-plus"></i>People You May Know</button>';
+    if(groups.length) html+='<button class="mobile-pill" id="pillTrendingGroups"><i class="fas fa-fire"></i>Trending Groups</button>';
     bar.innerHTML=html;
     var pymk=document.getElementById('pillPeopleYouKnow');
     if(pymk) pymk.addEventListener('click',function(){ showPeopleYouKnowModal(); });
@@ -4819,34 +4810,29 @@ function renderMobilePills(){
 }
 
 function showPeopleYouKnowModal(){
-    var list=$('#suggestionList');
-    if(!list) return;
-    var items=list.querySelectorAll('.suggestion-item');
+    if(!_pillSuggestions.length) return;
     var html='<div class="modal-header"><h3>People You May Know</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     html+='<div class="modal-body pill-modal-scroll">';
-    if(!items.length){ html+='<p style="text-align:center;color:var(--gray);">No suggestions yet</p>'; }
-    items.forEach(function(item){
-        var uid=item.querySelector('.suggestion-follow-btn')?.dataset.uid;
-        var img=item.querySelector('.suggestion-avatar');
-        var nameEl=item.querySelector('.suggestion-info h4');
-        var bioEl=item.querySelector('.suggestion-info p');
-        if(!uid||!nameEl) return;
-        var avatar=img?img.src:DEFAULT_AVATAR;
-        var name=nameEl.textContent;
-        var bio=bioEl?bioEl.textContent:'';
-        var followed=state.followedUsers[uid];
-        html+='<div class="pill-modal-item" data-uid="'+uid+'">';
+    _pillSuggestions.forEach(function(p){
+        var name=p.display_name||p.username;
+        var avatar=p.avatar_url||DEFAULT_AVATAR;
+        var bio=safeTruncate(p.bio||'',50);
+        var followed=state.followedUsers[p.id];
+        html+='<div class="pill-modal-item" data-uid="'+p.id+'">';
         html+='<img src="'+avatar+'" class="pill-modal-avatar">';
         html+='<div class="pill-modal-info"><strong>'+escapeHtml(name)+'</strong><p>'+escapeHtml(bio)+'</p></div>';
-        html+='<button class="suggestion-follow-btn pill-modal-follow" data-uid="'+uid+'">'+(followed?'<i class="fas fa-check"></i>':'<i class="fas fa-plus"></i>')+'</button>';
+        html+='<button class="suggestion-follow-btn pill-modal-follow" data-uid="'+p.id+'">'+(followed?'<i class="fas fa-check"></i>':'<i class="fas fa-plus"></i>')+'</button>';
         html+='</div>';
     });
     html+='</div>';
     showModal(html);
-    $$('.pill-modal-item').forEach(function(el){
-        el.querySelector('.pill-modal-avatar, .pill-modal-info')?.addEventListener('click',async function(){
-            var uid=el.dataset.uid;
-            try{var p=await sbGetProfile(uid);if(p){closeModal();showProfileView(profileToPerson(p));}}catch(e){}
+    $$('.pill-modal-item[data-uid]').forEach(function(el){
+        el.querySelectorAll('.pill-modal-avatar, .pill-modal-info').forEach(function(target){
+            target.style.cursor='pointer';
+            target.addEventListener('click',async function(){
+                var uid=el.dataset.uid;
+                try{var p=await sbGetProfile(uid);if(p){closeModal();showProfileView(profileToPerson(p));}}catch(e){}
+            });
         });
     });
     $$('.pill-modal-follow').forEach(function(btn){
