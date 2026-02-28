@@ -1570,18 +1570,27 @@ function renderNotifications(){
 }
 
 // ======================== MODAL ========================
+var _modalScrollY=0;
 function showModal(html){
     $('#modalContent').innerHTML=html;
     $('#modalOverlay').classList.add('show');
-    document.body.style.overflow='hidden';
+    _modalScrollY=window.scrollY;
+    document.body.classList.add('modal-open');
+    document.body.style.top=(-_modalScrollY)+'px';
 }
 function closeModal(){
     $('#modalOverlay').classList.remove('show');
-    document.body.style.overflow='';
+    document.body.classList.remove('modal-open');
+    document.body.style.top='';
+    window.scrollTo(0,_modalScrollY);
 }
 $('#modalOverlay').addEventListener('click',function(e){
     if(e.target===this) closeModal();
 });
+$('#modalOverlay').addEventListener('touchmove',function(e){
+    // Allow scrolling inside scrollable children, block scroll on backdrop
+    if(!e.target.closest('.comment-modal-scroll, .comment-post-embed, .modal-content')) e.preventDefault();
+},{passive:false});
 document.addEventListener('click',function(e){
     if(e.target.closest('.modal-close')) closeModal();
 });

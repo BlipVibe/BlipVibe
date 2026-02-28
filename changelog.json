@@ -17,6 +17,7 @@
       "Group font saved/restored when entering/leaving group view (personal font preserved)"
     ],
     "fixed": [
+      "Comment modal scrolling the feed behind it on mobile — body now position-locks when modal is open and touch events are blocked on the backdrop",
       "Blurry text on premium skin backgrounds — removed heavy glow text-shadow (was 8px blur) and replaced with crisp 2px drop shadow",
       "Premium backgrounds and group skins not persisting — loadSkinDataFromSupabase used sbGetProfile (which has skin_data column revoked) instead of sbGetOwnProfile (SECURITY DEFINER RPC that can read it)",
       "Card transparency slider not working in groups — gpremium-dark CSS used hardcoded background overriding the color-mix opacity variable",
