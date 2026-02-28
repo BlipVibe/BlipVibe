@@ -769,14 +769,7 @@ function _buildSkinData(){
         savedFolders:savedFolders||[],
         hiddenPosts:hiddenPosts||{},
         reportedPosts:reportedPosts||[],
-        tosAcceptedVersion:_tosAccepted?TOS_VERSION:((currentUser&&currentUser.skin_data&&currentUser.skin_data.tosAcceptedVersion)||0),
-        groupActiveSkin:state.groupActiveSkin||{},
-        groupActivePremiumSkin:state.groupActivePremiumSkin||{},
-        groupActiveFont:state.groupActiveFont||{},
-        groupPremiumBg:state.groupPremiumBg||{},
-        groupOwnedSkins:state.groupOwnedSkins||{},
-        groupOwnedPremiumSkins:state.groupOwnedPremiumSkins||{},
-        groupOwnedFonts:state.groupOwnedFonts||{}
+        tosAcceptedVersion:_tosAccepted?TOS_VERSION:((currentUser&&currentUser.skin_data&&currentUser.skin_data.tosAcceptedVersion)||0)
     };
 }
 function syncSkinDataToSupabase(immediate){
@@ -830,14 +823,7 @@ function _applySkinDataFromCache(sd){
     if(Array.isArray(sd.savedFolders)&&sd.savedFolders.length) savedFolders=sd.savedFolders;
     if(sd.hiddenPosts&&typeof sd.hiddenPosts==='object') hiddenPosts=sd.hiddenPosts;
     if(Array.isArray(sd.reportedPosts)) reportedPosts=sd.reportedPosts;
-    // Group skin data (full replace)
-    state.groupActiveSkin=sd.groupActiveSkin||{};
-    state.groupActivePremiumSkin=sd.groupActivePremiumSkin||{};
-    state.groupActiveFont=sd.groupActiveFont||{};
-    state.groupPremiumBg=sd.groupPremiumBg||{};
-    state.groupOwnedSkins=sd.groupOwnedSkins||{};
-    state.groupOwnedPremiumSkins=sd.groupOwnedPremiumSkins||{};
-    state.groupOwnedFonts=sd.groupOwnedFonts||{};
+    // Group skin data now loaded from group's own skin_data column (see loadGroups)
 }
 async function loadSkinDataFromSupabase(){
     if(!currentUser) return;
@@ -962,6 +948,15 @@ async function loadGroups() {
     try {
         var raw = await sbGetGroups();
         groups = raw.map(function(g){
+            var gsd=g.skin_data||{};
+            // Hydrate shared group skin state from group's skin_data
+            if(gsd.activeSkin) state.groupActiveSkin[g.id]=gsd.activeSkin;
+            if(gsd.activePremiumSkin) state.groupActivePremiumSkin[g.id]=gsd.activePremiumSkin;
+            if(gsd.activeFont) state.groupActiveFont[g.id]=gsd.activeFont;
+            if(gsd.premiumBg) state.groupPremiumBg[g.id]=gsd.premiumBg;
+            if(gsd.ownedSkins) state.groupOwnedSkins[g.id]=gsd.ownedSkins;
+            if(gsd.ownedPremiumSkins) state.groupOwnedPremiumSkins[g.id]=gsd.ownedPremiumSkins;
+            if(gsd.ownedFonts) state.groupOwnedFonts[g.id]=gsd.ownedFonts;
             return {
                 id: g.id,
                 name: g.name,
@@ -5505,6 +5500,17 @@ function renderShop(){
 }
 
 // ======================== GROUP SHOP ========================
+function syncGroupSkinData(groupId){
+    var sd={};
+    if(state.groupActiveSkin[groupId]) sd.activeSkin=state.groupActiveSkin[groupId];
+    if(state.groupActivePremiumSkin[groupId]) sd.activePremiumSkin=state.groupActivePremiumSkin[groupId];
+    if(state.groupActiveFont[groupId]) sd.activeFont=state.groupActiveFont[groupId];
+    if(state.groupPremiumBg[groupId]&&state.groupPremiumBg[groupId].src) sd.premiumBg=state.groupPremiumBg[groupId];
+    if(state.groupOwnedSkins[groupId]) sd.ownedSkins=state.groupOwnedSkins[groupId];
+    if(state.groupOwnedPremiumSkins[groupId]) sd.ownedPremiumSkins=state.groupOwnedPremiumSkins[groupId];
+    if(state.groupOwnedFonts[groupId]) sd.ownedFonts=state.groupOwnedFonts[groupId];
+    sbUpdateGroup(groupId,{skin_data:sd}).catch(function(e){console.error('syncGroupSkinData:',e);});
+}
 var currentGroupShopTab=null;
 
 function groupShopBuy(groupId,owned,price,cls,attr){
@@ -5632,7 +5638,7 @@ function renderGroupShop(groupId){
             addGroupCoins(gid,-skin.price);
             if(!state.groupOwnedSkins[gid]) state.groupOwnedSkins[gid]={};
             state.groupOwnedSkins[gid][sid]=true;
-            saveState();syncSkinDataToSupabase();
+            saveState();syncGroupSkinData(gid);
             gShopPurchased(btn);
             addNotification('skin','Group purchased the "'+skin.name+'" skin!');
         }
@@ -5647,7 +5653,7 @@ function renderGroupShop(groupId){
             addGroupCoins(gid,-skin.price);
             if(!state.groupOwnedPremiumSkins[gid]) state.groupOwnedPremiumSkins[gid]={};
             state.groupOwnedPremiumSkins[gid][pid]=true;
-            saveState();syncSkinDataToSupabase();
+            saveState();syncGroupSkinData(gid);
             gShopPurchased(btn);
             addNotification('skin','Group purchased the "'+skin.name+'" premium skin!');
         }
@@ -5658,7 +5664,7 @@ function renderGroupShop(groupId){
         var isPremium=btn.getAttribute('data-premium')==='1';
         if(isPremium){state.groupActivePremiumSkin[gid]=sid;state.groupActiveSkin[gid]=null;}
         else{state.groupActiveSkin[gid]=sid;state.groupActivePremiumSkin[gid]=null;}
-        applyGroupSkin(gid);renderGroupShop(gid);renderGroups();saveState();
+        applyGroupSkin(gid);renderGroupShop(gid);renderGroups();saveState();syncGroupSkinData(gid);
     });});
 
     // Font buy handlers
@@ -5671,7 +5677,7 @@ function renderGroupShop(groupId){
             addGroupCoins(gid,-font.price);
             if(!state.groupOwnedFonts[gid]) state.groupOwnedFonts[gid]={};
             state.groupOwnedFonts[gid][fid]=true;
-            saveState();syncSkinDataToSupabase();
+            saveState();syncGroupSkinData(gid);
             gShopPurchased(btn);
             addNotification('skin','Group purchased the "'+font.name+'" font!');
         }
@@ -5682,7 +5688,7 @@ function renderGroupShop(groupId){
         var fid=btn.getAttribute('data-fid');var gid=btn.getAttribute('data-gid');
         state.groupActiveFont[gid]=fid;
         applyFont(fid,true);
-        renderGroupShop(gid);saveState();
+        renderGroupShop(gid);saveState();syncGroupSkinData(gid);
     });});
 
     // Reset group font
@@ -5690,7 +5696,7 @@ function renderGroupShop(groupId){
     if(resetFontBtn) resetFontBtn.addEventListener('click',function(){
         state.groupActiveFont[groupId]=null;
         applyFont(null,true);
-        renderGroupShop(groupId);saveState();
+        renderGroupShop(groupId);saveState();syncGroupSkinData(groupId);
     });
 
     initDragScroll('#gvShopContent');
@@ -5710,10 +5716,10 @@ function renderGroupShop(groupId){
             }catch(e){
                 console.warn('Group BG upload failed, using local:',e);
                 var reader=new FileReader();
-                reader.onload=function(ev){state.groupPremiumBg[groupId].src=ev.target.result;applyGroupSkin(groupId);renderGroupShop(groupId);saveState();};
+                reader.onload=function(ev){state.groupPremiumBg[groupId].src=ev.target.result;applyGroupSkin(groupId);renderGroupShop(groupId);saveState();syncGroupSkinData(groupId);};
                 reader.readAsDataURL(file);return;
             }
-            applyGroupSkin(groupId);renderGroupShop(groupId);saveState();
+            applyGroupSkin(groupId);renderGroupShop(groupId);saveState();syncGroupSkinData(groupId);
         });
     }
     // Load group background history thumbnails
@@ -5733,7 +5739,7 @@ function renderGroupShop(groupId){
                 t.addEventListener('click',function(){
                     if(!state.groupPremiumBg[groupId]) state.groupPremiumBg[groupId]={};
                     state.groupPremiumBg[groupId].src=bgArr[parseInt(t.dataset.idx)].src;
-                    applyGroupSkin(groupId);renderGroupShop(groupId);saveState();
+                    applyGroupSkin(groupId);renderGroupShop(groupId);saveState();syncGroupSkinData(groupId);
                 });
             });
         }).catch(function(e){console.warn('Group BG history load:',e);});
@@ -5742,7 +5748,7 @@ function renderGroupShop(groupId){
     if(_gBgRemove){
         _gBgRemove.addEventListener('click',function(){
             state.groupPremiumBg[groupId]={};
-            applyGroupSkin(groupId);renderGroupShop(groupId);saveState();
+            applyGroupSkin(groupId);renderGroupShop(groupId);saveState();syncGroupSkinData(groupId);
         });
     }
     var _gBgDSlider=document.getElementById('gBgDarknessSlider');
@@ -5753,7 +5759,7 @@ function renderGroupShop(groupId){
             document.getElementById('gBgDarknessLabel').textContent=Math.round(v*100)+'%';
             premiumBgDarkness=v;updatePremiumBg();
         });
-        _gBgDSlider.addEventListener('change',function(){saveState();});
+        _gBgDSlider.addEventListener('change',function(){saveState();syncGroupSkinData(groupId);});
     }
     var _gBgOSlider=document.getElementById('gBgOverlaySlider');
     if(_gBgOSlider){
@@ -5763,7 +5769,7 @@ function renderGroupShop(groupId){
             document.getElementById('gBgOverlayLabel').textContent=Math.round(v*100)+'%';
             premiumBgOverlay=v;updatePremiumBg();
         });
-        _gBgOSlider.addEventListener('change',function(){saveState();});
+        _gBgOSlider.addEventListener('change',function(){saveState();syncGroupSkinData(groupId);});
     }
     var _gBgCTSlider=document.getElementById('gBgCardTransSlider');
     if(_gBgCTSlider){
@@ -5773,7 +5779,7 @@ function renderGroupShop(groupId){
             document.getElementById('gBgCardTransLabel').textContent=Math.round(v*100)+'%';
             premiumCardTransparency=v;updatePremiumBg();
         });
-        _gBgCTSlider.addEventListener('change',function(){saveState();});
+        _gBgCTSlider.addEventListener('change',function(){saveState();syncGroupSkinData(groupId);});
     }
 
     $$('#gvShopTabs .search-tab').forEach(function(tab){tab.addEventListener('click',function(){

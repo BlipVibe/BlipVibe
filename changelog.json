@@ -16,7 +16,8 @@
     "changed": [
       "Photo state now tracks storage file names and post IDs for proper deletion across storage, albums, and posts",
       "Group font saved/restored when entering/leaving group view (personal font preserved)",
-      "Group Shop skin management restricted to Admin, Co-Admin, and Moderator — regular members can browse the shop and see applied skins but cannot buy, apply, or change them"
+      "Group Shop skin management restricted to Admin, Co-Admin, and Moderator — regular members can browse the shop and see applied skins but cannot buy, apply, or change them",
+      "Group skins now stored on the group itself (shared skin_data column) — all members see the same skin, font, and background set by admins/mods instead of each user having their own local copy"
     ],
     "fixed": [
       "Comment modal scrolling the feed behind it on mobile — body now position-locks when modal is open and touch events are blocked on the backdrop",
