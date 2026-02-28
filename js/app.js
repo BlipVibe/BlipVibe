@@ -1585,6 +1585,76 @@ document.addEventListener('click',function(e){
     if(e.target.closest('.modal-close')) closeModal();
 });
 
+// ======================== EMOJI PICKER ========================
+var _emojiData={
+    'Smileys':['😀','😁','😂','🤣','😃','😄','😅','😆','😉','😊','😋','😎','😍','🥰','😘','😗','😙','😚','🙂','🤗','🤩','🤔','🤨','😐','😑','😶','🙄','😏','😣','😥','😮','🤐','😯','😪','😫','🥱','😴','😌','😛','😜','🤪','😝','🤑','🤭','🤫','🤥','😬','😈','👿','🤡','💀','👻','👽','🤖','💩','🥳','🥺','🥹','😤','😡','🤬','😭','😱','😳','🫣','🫡','🫠'],
+    'Gestures':['👍','👎','👊','✊','🤛','🤜','👏','🙌','👐','🤲','🤝','🙏','✌️','🤞','🤟','🤘','🤙','👈','👉','👆','👇','☝️','✋','🤚','🖐️','🖖','👋','🤏','💪','🦾','🖕','✍️','💅'],
+    'Hearts':['❤️','🧡','💛','💚','💙','💜','🖤','🤍','🤎','💔','❣️','💕','💞','💓','💗','💖','💘','💝','💟','♥️','🫶','💯','💢','💥','💫','💦','💨','🔥','⭐','🌟','✨','🎉','🎊'],
+    'Animals':['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮','🐷','🐸','🐵','🐔','🐧','🐦','🐤','🦆','🦅','🦉','🦇','🐺','🐗','🐴','🦄','🐝','🐛','🦋','🐌','🐞','🐜','🐢','🐍','🦎','🐙','🦑','🐠','🐟','🐡','🐬','🐳','🐋','🦈','🐊'],
+    'Food':['🍎','🍐','🍊','🍋','🍌','🍉','🍇','🍓','🫐','🍈','🍒','🍑','🥭','🍍','🥥','🥝','🍅','🥑','🍆','🌶️','🫑','🥒','🥬','🥦','🧄','🧅','🥔','🍕','🍔','🍟','🌭','🍿','🧂','🥚','🍳','🧀','🥞','🧇','🍞','🥐','🥖','🍩','🍪','🎂','🍰','🧁','🍫','🍬','🍭','🍮','🍦','🍧'],
+    'Activities':['⚽','🏀','🏈','⚾','🥎','🎾','🏐','🏉','🥏','🎱','🏓','🏸','🏒','🥊','🥋','🎯','⛳','🎮','🕹️','🎲','🎰','🎳','🎪','🎭','🎨','🎬','🎤','🎧','🎼','🎹','🥁','🎷','🎺','🎸','🪕','🎻','🎵','🎶'],
+    'Travel':['🚗','🚕','🚙','🚌','🚎','🏎️','🚓','🚑','🚒','🚐','🛻','🚚','🚛','🚜','🏍️','🛵','🚲','🛴','🚁','✈️','🛩️','🚀','🛸','🚢','⛵','🚤','🛥️','🏠','🏡','🏢','🏣','🏥','🏦','🏰','🏯','🗼','🗽','⛪','🕌','🏝️','🌍','🌎','🌏'],
+    'Objects':['⌚','📱','💻','⌨️','🖥️','🖨️','🖱️','💾','💿','📷','📸','📹','🎥','📺','📻','🎙️','⏰','🔋','🔌','💡','🔦','📡','💰','💳','💎','🔧','🔨','⚒️','🛠️','⚙️','🔩','🔑','🗝️','🔒','🔓','📦','📫','📬','📮','✏️','✒️','🖊️','🖋️','📝','📁','📂']
+};
+var _activeEmojiPanel=null;
+function openEmojiPicker(panelId,targetEl){
+    var panel=document.getElementById(panelId);
+    if(!panel) return;
+    if(_activeEmojiPanel&&_activeEmojiPanel!==panel){_activeEmojiPanel.classList.remove('open');_activeEmojiPanel.innerHTML='';}
+    if(panel.classList.contains('open')){panel.classList.remove('open');panel.innerHTML='';_activeEmojiPanel=null;return;}
+    var cats=Object.keys(_emojiData);
+    var h='<div class="emoji-picker-header"><input type="text" class="post-input emoji-search-input" placeholder="Search emoji..."><button class="emoji-picker-close" style="background:none;color:#999;font-size:16px;cursor:pointer;padding:4px 8px;"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="emoji-picker-cats">';
+    var catIcons={'Smileys':'😀','Gestures':'👍','Hearts':'❤️','Animals':'🐶','Food':'🍕','Activities':'🎮','Travel':'🚗','Objects':'💻'};
+    cats.forEach(function(c,i){h+='<button data-cat="'+c+'" title="'+c+'"'+(i===0?' class="active"':'')+'>'+catIcons[c]+'</button>';});
+    h+='</div>';
+    h+='<div class="emoji-picker-grid">';
+    _emojiData[cats[0]].forEach(function(e){h+='<span data-emoji="'+e+'">'+e+'</span>';});
+    h+='</div>';
+    panel.innerHTML=h;
+    panel.classList.add('open');
+    _activeEmojiPanel=panel;
+    // Category tabs
+    panel.querySelectorAll('.emoji-picker-cats button').forEach(function(btn){
+        btn.addEventListener('click',function(){
+            panel.querySelectorAll('.emoji-picker-cats button').forEach(function(b){b.classList.remove('active');});
+            btn.classList.add('active');
+            var grid=panel.querySelector('.emoji-picker-grid');
+            var emojis=_emojiData[btn.dataset.cat]||[];
+            grid.innerHTML='';emojis.forEach(function(e){grid.innerHTML+='<span data-emoji="'+e+'">'+e+'</span>';});
+            bindEmojiClicks(grid,targetEl);
+            panel.querySelector('.emoji-search-input').value='';
+        });
+    });
+    // Search
+    panel.querySelector('.emoji-search-input').addEventListener('input',function(){
+        var q=this.value.toLowerCase().trim();
+        var grid=panel.querySelector('.emoji-picker-grid');
+        if(!q){panel.querySelectorAll('.emoji-picker-cats button')[0].click();return;}
+        var all=[];Object.keys(_emojiData).forEach(function(c){_emojiData[c].forEach(function(e){all.push(e);});});
+        grid.innerHTML='';all.forEach(function(e){grid.innerHTML+='<span data-emoji="'+e+'">'+e+'</span>';});
+        bindEmojiClicks(grid,targetEl);
+    });
+    // Close button
+    panel.querySelector('.emoji-picker-close').addEventListener('click',function(){panel.classList.remove('open');panel.innerHTML='';_activeEmojiPanel=null;});
+    bindEmojiClicks(panel.querySelector('.emoji-picker-grid'),targetEl);
+}
+function bindEmojiClicks(grid,targetEl){
+    grid.querySelectorAll('span[data-emoji]').forEach(function(span){
+        span.addEventListener('click',function(){
+            var emoji=span.dataset.emoji;
+            if(targetEl.tagName==='TEXTAREA'||targetEl.tagName==='INPUT'){
+                var start=targetEl.selectionStart||targetEl.value.length;
+                var end=targetEl.selectionEnd||targetEl.value.length;
+                targetEl.value=targetEl.value.substring(0,start)+emoji+targetEl.value.substring(end);
+                targetEl.selectionStart=targetEl.selectionEnd=start+emoji.length;
+                targetEl.focus();
+                targetEl.dispatchEvent(new Event('input',{bubbles:true}));
+            }
+        });
+    });
+}
+
 function handleShare(btn){
     var post=btn.closest('.feed-post')||btn.closest('.card');
     if(!post)return;
@@ -1788,7 +1858,8 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
     html+='<div class="gif-picker-grid" id="gifPickerGrid"></div>';
     html+='<div class="gif-picker-footer">Powered by <strong>KLIPY</strong></div>';
     html+='</div>';
-    html+='<div id="replyIndicator" style="display:none;font-size:12px;color:var(--primary);margin-bottom:6px;">Replying to <span id="replyToName"></span> <button id="cancelReply" style="background:none;color:#999;font-size:12px;margin-left:8px;cursor:pointer;">Cancel</button></div><div style="display:flex;gap:10px;align-items:center;"><input type="text" class="post-input" id="commentInput" placeholder="Write a comment..." style="flex:1;"><button class="comment-gif-btn" id="commentGifBtn" title="Search GIFs">GIF</button><button class="btn btn-primary" id="postCommentBtn">Post</button></div></div>';
+    html+='<div id="commentEmojiPanel" class="emoji-picker-panel"></div>';
+    html+='<div id="replyIndicator" style="display:none;font-size:12px;color:var(--primary);margin-bottom:6px;">Replying to <span id="replyToName"></span> <button id="cancelReply" style="background:none;color:#999;font-size:12px;margin-left:8px;cursor:pointer;">Cancel</button></div><div style="display:flex;gap:10px;align-items:center;"><input type="text" class="post-input" id="commentInput" placeholder="Write a comment..." style="flex:1;"><button class="comment-emoji-btn" id="commentEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="comment-gif-btn" id="commentGifBtn" title="Search GIFs">GIF</button><button class="btn btn-primary" id="postCommentBtn">Post</button></div></div>';
     html+='</div>';
     showModal(html);
     // Scroll comments to bottom
@@ -1796,6 +1867,7 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
     if(scrollArea) scrollArea.scrollTop=0;
     bindCommentLikes();
     bindCommentDeletes(postId,countEl);
+    document.getElementById('commentEmojiBtn').addEventListener('click',function(){openEmojiPicker('commentEmojiPanel',document.getElementById('commentInput'));});
     // Add mini link previews to comment text
     var commentsList=document.getElementById('commentsList');
     if(commentsList) autoFetchLinkPreviewsMini(commentsList,'.comment-text');
@@ -3159,8 +3231,9 @@ function openGroupPostModal(group){
     html+='<div class="cpm-scroll"><div style="display:flex;align-items:center;gap:10px;padding:16px 20px 0;"><img src="'+$('#profileAvatarImg').src+'" style="width:40px;height:40px;border-radius:50%;"><strong style="font-size:14px;">'+(currentUser?(currentUser.display_name||currentUser.username):'You')+'</strong></div>';
     html+='<textarea class="cpm-textarea" id="gvCpmText" placeholder="Write something..."></textarea>';
     html+='<div class="cpm-media-zone" id="gvCpmMediaZone"><div class="cpm-media-grid" id="gvCpmGrid"></div><div id="gvCpmDropZone"><i class="fas fa-photo-video"></i><br>Add Photos/Videos</div><input type="file" accept="image/*,video/*" multiple id="gvCpmFileInput" style="display:none;"></div>';
-    html+='</div><div class="cpm-footer"><button class="btn btn-primary" id="gvCpmPublish">Publish</button></div></div>';
+    html+='</div><div class="cpm-footer"><div id="gvCpmEmojiPanel" class="emoji-picker-panel"></div><div style="display:flex;gap:8px;align-items:center;width:100%;"><button class="cpm-emoji-btn" id="gvCpmEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="btn btn-primary" id="gvCpmPublish" style="flex:1;">Publish</button></div></div></div>';
     showModal(html);
+    document.getElementById('gvCpmEmojiBtn').addEventListener('click',function(){openEmojiPicker('gvCpmEmojiPanel',document.getElementById('gvCpmText'));});
     var mediaList=[];
     var zone=document.getElementById('gvCpmMediaZone'),grid=document.getElementById('gvCpmGrid'),dropZone=document.getElementById('gvCpmDropZone'),fileInput=document.getElementById('gvCpmFileInput');
     dropZone.addEventListener('click',function(){fileInput.click();});
@@ -4443,8 +4516,9 @@ $('#openPostModal').addEventListener('click',function(){
     html+='<div class="cpm-media-zone" id="cpmMediaZone"><div class="cpm-media-grid" id="cpmGrid"></div><div id="cpmDropZone"><i class="fas fa-photo-video"></i><br>Add Photos/Videos</div><input type="file" accept="image/*,video/*" multiple id="cpmFileInput" style="display:none;"></div>';
     html+='<div class="cpm-tags-section"><div class="cpm-tags-wrap" id="cpmTagsWrap"></div></div>';
     html+='<div class="cpm-link-section" id="cpmLinkSection" style="display:none;"><div id="cpmLinkPreview"></div></div>';
-    html+='</div><div class="cpm-footer"><button class="btn btn-primary" id="cpmPublish">Publish</button></div></div>';
+    html+='</div><div class="cpm-footer"><div id="cpmEmojiPanel" class="emoji-picker-panel"></div><div style="display:flex;gap:8px;align-items:center;width:100%;"><button class="cpm-emoji-btn" id="cpmEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="btn btn-primary" id="cpmPublish" style="flex:1;">Publish</button></div></div></div>';
     showModal(html);
+    document.getElementById('cpmEmojiBtn').addEventListener('click',function(){openEmojiPicker('cpmEmojiPanel',document.getElementById('cpmText'));});
     var mediaList=[];
     var zone=document.getElementById('cpmMediaZone');
     var grid=document.getElementById('cpmGrid');
