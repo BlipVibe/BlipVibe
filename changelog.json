@@ -18,6 +18,7 @@
     ],
     "fixed": [
       "Comment modal scrolling the feed behind it on mobile — body now position-locks when modal is open and touch events are blocked on the backdrop",
+      "Posting a comment jumping to top of page — showModal was overwriting saved scroll position when re-rendering comments inside an already-open modal",
       "New users seeing no posts on Following tab — own posts were excluded from the default feed, now included alongside followed users' posts",
       "App auto-navigating to a group page on restart — group-view hash no longer persists across fresh loads",
       "Mobile home pills — 'People You May Know' and 'Trending Groups' are now single pills that open scrollable popup modals instead of inline items",

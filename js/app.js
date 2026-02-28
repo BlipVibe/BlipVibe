@@ -1563,10 +1563,13 @@ function renderNotifications(){
 var _modalScrollY=0;
 function showModal(html){
     $('#modalContent').innerHTML=html;
+    var alreadyOpen=document.body.classList.contains('modal-open');
     $('#modalOverlay').classList.add('show');
-    _modalScrollY=window.scrollY;
-    document.body.classList.add('modal-open');
-    document.body.style.top=(-_modalScrollY)+'px';
+    if(!alreadyOpen){
+        _modalScrollY=window.scrollY;
+        document.body.classList.add('modal-open');
+        document.body.style.top=(-_modalScrollY)+'px';
+    }
 }
 function closeModal(){
     $('#modalOverlay').classList.remove('show');
