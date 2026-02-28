@@ -642,16 +642,6 @@ async function initApp() {
     loadConversations();
     renderMsgFollowing();
     initMessageSubscription();
-    // Restore group-view from hash (needs groups loaded, so handled here at the end)
-    var hashPage2=(location.hash||'').replace('#','');
-    if(hashPage2&&hashPage2.indexOf('group-view:')===0){
-        var gvId=hashPage2.split(':')[1];
-        if(gvId){
-            var gvGroup=groups.find(function(g){return g.id===gvId;});
-            if(gvGroup){_navFromPopstate=true;showGroupView(gvGroup);_navFromPopstate=false;}
-            else navigateTo('groups',true);
-        }
-    }
     _initAppRunning = false;
     _initAppDone = true;
 }
@@ -1219,7 +1209,7 @@ var _initHash=(location.hash||'').replace('#','')||'home';
 if(_initHash==='profile-view') _initHash='home';
 if(_initHash==='skins'){_initHash='shop';_skinPageView='mine';}
 if(_initHash==='group-view') _initHash='groups';
-if(_initHash.indexOf('group-view:')===0) _initHash=_initHash; // keep as-is, handled in initApp
+if(_initHash.indexOf('group-view:')===0) _initHash='home';
 history.replaceState({page:_initHash},'','#'+_initHash);
 window.addEventListener('popstate',function(e){
     var page=(e.state&&e.state.page)?e.state.page:'home';
