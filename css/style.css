@@ -509,6 +509,14 @@ img{display:block;}
 .mobile-pill:hover,.mobile-pill:active{background:var(--border);border-color:var(--primary);}
 .mobile-pill i{font-size:12px;color:var(--primary);}
 .mobile-pill img{width:22px;height:22px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+.pill-modal-scroll{max-height:60vh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:8px 0!important;}
+.pill-modal-item{display:flex;align-items:center;gap:12px;padding:12px 20px;cursor:pointer;transition:background .15s;border-radius:8px;}
+.pill-modal-item:hover,.pill-modal-item:active{background:var(--border);}
+.pill-modal-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+.pill-modal-info{flex:1;min-width:0;}
+.pill-modal-info strong{display:block;font-size:14px;margin-bottom:2px;}
+.pill-modal-info p{font-size:12px;color:var(--gray);margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pill-modal-follow{flex-shrink:0;}
 
 /* ========== RIGHT SIDEBAR ========== */
 .right-sidebar{display:flex;flex-direction:column;gap:20px;position:sticky;top:80px;align-self:start;min-width:0;word-wrap:break-word;overflow-wrap:anywhere;}

@@ -4798,37 +4798,88 @@ function renderMobilePills(){
     var bar=$('#mobilePills');
     if(!bar) return;
     var html='';
-    // People You May Know pills
+    // People You May Know pill (opens modal)
     try{
         var list=$('#suggestionList');
-        if(list){
-            var items=list.querySelectorAll('.suggestion-item');
-            items.forEach(function(item){
-                var uid=item.querySelector('.suggestion-follow-btn')?.dataset.uid;
-                var img=item.querySelector('.suggestion-avatar');
-                var name=item.querySelector('.suggestion-info h4');
-                if(!uid||!name) return;
-                html+='<button class="mobile-pill" data-pill-uid="'+uid+'">'+(img?'<img src="'+img.src+'">':'<i class="fas fa-user"></i>')+escapeHtml(name.textContent)+'</button>';
-            });
+        if(list&&list.querySelectorAll('.suggestion-item').length){
+            html+='<button class="mobile-pill" id="pillPeopleYouKnow"><i class="fas fa-user-plus"></i>People You May Know</button>';
         }
     }catch(e){}
-    // Trending Groups pills
+    // Trending Groups pill (opens modal)
     try{
-        var sorted=groups.slice().sort(function(a,b){return (b.members||0)-(a.members||0);});
-        sorted.slice(0,4).forEach(function(g){
-            html+='<button class="mobile-pill" data-pill-gid="'+g.id+'"><i class="fas '+(g.icon||'fa-users')+'" style="color:'+(g.color||'var(--primary)')+';"></i>'+escapeHtml(g.name)+'</button>';
-        });
+        if(groups.length){
+            html+='<button class="mobile-pill" id="pillTrendingGroups"><i class="fas fa-fire"></i>Trending Groups</button>';
+        }
     }catch(e){}
     bar.innerHTML=html;
-    bar.querySelectorAll('[data-pill-uid]').forEach(function(pill){
-        pill.addEventListener('click',async function(){
-            try{var p=await sbGetProfile(pill.dataset.pillUid);if(p) showProfileView(profileToPerson(p));}catch(e){}
+    var pymk=document.getElementById('pillPeopleYouKnow');
+    if(pymk) pymk.addEventListener('click',function(){ showPeopleYouKnowModal(); });
+    var tg=document.getElementById('pillTrendingGroups');
+    if(tg) tg.addEventListener('click',function(){ showTrendingGroupsModal(); });
+}
+
+function showPeopleYouKnowModal(){
+    var list=$('#suggestionList');
+    if(!list) return;
+    var items=list.querySelectorAll('.suggestion-item');
+    var html='<div class="modal-header"><h3>People You May Know</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    html+='<div class="modal-body pill-modal-scroll">';
+    if(!items.length){ html+='<p style="text-align:center;color:var(--gray);">No suggestions yet</p>'; }
+    items.forEach(function(item){
+        var uid=item.querySelector('.suggestion-follow-btn')?.dataset.uid;
+        var img=item.querySelector('.suggestion-avatar');
+        var nameEl=item.querySelector('.suggestion-info h4');
+        var bioEl=item.querySelector('.suggestion-info p');
+        if(!uid||!nameEl) return;
+        var avatar=img?img.src:DEFAULT_AVATAR;
+        var name=nameEl.textContent;
+        var bio=bioEl?bioEl.textContent:'';
+        var followed=state.followedUsers[uid];
+        html+='<div class="pill-modal-item" data-uid="'+uid+'">';
+        html+='<img src="'+avatar+'" class="pill-modal-avatar">';
+        html+='<div class="pill-modal-info"><strong>'+escapeHtml(name)+'</strong><p>'+escapeHtml(bio)+'</p></div>';
+        html+='<button class="suggestion-follow-btn pill-modal-follow" data-uid="'+uid+'">'+(followed?'<i class="fas fa-check"></i>':'<i class="fas fa-plus"></i>')+'</button>';
+        html+='</div>';
+    });
+    html+='</div>';
+    showModal(html);
+    $$('.pill-modal-item').forEach(function(el){
+        el.querySelector('.pill-modal-avatar, .pill-modal-info')?.addEventListener('click',async function(){
+            var uid=el.dataset.uid;
+            try{var p=await sbGetProfile(uid);if(p){closeModal();showProfileView(profileToPerson(p));}}catch(e){}
         });
     });
-    bar.querySelectorAll('[data-pill-gid]').forEach(function(pill){
-        pill.addEventListener('click',function(){
-            var g=groups.find(function(gr){return gr.id===pill.dataset.pillGid;});
-            if(g) showGroupView(g);
+    $$('.pill-modal-follow').forEach(function(btn){
+        btn.addEventListener('click',async function(e){
+            e.stopPropagation();
+            var uid=btn.dataset.uid;
+            if(state.followedUsers[uid]){await sbUnfollow(currentUser.id,uid);delete state.followedUsers[uid];btn.innerHTML='<i class="fas fa-plus"></i>';}
+            else{await sbFollow(currentUser.id,uid);state.followedUsers[uid]=true;btn.innerHTML='<i class="fas fa-check"></i>';}
+            await loadFollowCounts();
+            renderSuggestions();
+        });
+    });
+}
+
+function showTrendingGroupsModal(){
+    var sorted=groups.slice().sort(function(a,b){return (b.members||0)-(a.members||0);});
+    var top=sorted.slice(0,10);
+    var html='<div class="modal-header"><h3>Trending Groups</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    html+='<div class="modal-body pill-modal-scroll">';
+    if(!top.length){ html+='<p style="text-align:center;color:var(--gray);">No groups yet</p>'; }
+    top.forEach(function(g){
+        html+='<div class="pill-modal-item" data-gid="'+g.id+'">';
+        html+='<div class="group-icon" style="background:'+(g.color||'#5cbdb9')+'22;color:'+(g.color||'#5cbdb9')+';"><i class="fas '+(g.icon||'fa-users')+'"></i></div>';
+        html+='<div class="pill-modal-info"><strong>'+escapeHtml(g.name)+'</strong><p>'+escapeHtml(safeTruncate(g.desc||'',50))+'</p>';
+        html+='<span style="font-size:11px;color:var(--gray);"><i class="fas fa-users"></i> '+fmtNum(g.members||0)+' members</span></div>';
+        html+='</div>';
+    });
+    html+='</div>';
+    showModal(html);
+    $$('.pill-modal-item[data-gid]').forEach(function(el){
+        el.addEventListener('click',function(){
+            var g=groups.find(function(gr){return gr.id===el.dataset.gid;});
+            if(g){closeModal();showGroupView(g);}
         });
     });
 }
