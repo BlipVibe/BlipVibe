@@ -1155,6 +1155,9 @@ var _navCurrent='home';var _navPrev='home';var _navFromPopstate=false;var _activ
 function navigateTo(page,skipPush){
     revertTryOn();
     _exitPhotoSelectMode();
+    // Restore navbars if mobile chat hid them
+    var _tn=document.querySelector('.navbar');var _bn=document.querySelector('.nav-center');
+    if(_tn) _tn.style.display='';if(_bn) _bn.style.display='';
     // Restore user's skin/font/template when leaving profile view
     if(_pvSaved&&page!=='profile-view'){
         premiumBgImage=_pvSaved.bgImage;premiumBgOverlay=_pvSaved.bgOverlay;premiumBgDarkness=_pvSaved.bgDarkness||0;premiumCardTransparency=_pvSaved.cardTrans!=null?_pvSaved.cardTrans:0.1;
