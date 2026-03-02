@@ -31,7 +31,7 @@ function safeTruncate(str,max,ellipsis){var a=Array.from(str||'');if(a.length<=m
 // ======================== XSS PROTECTION ========================
 function escapeHtml(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function escapeHtmlNl(s){return escapeHtml(s).replace(/\n/g,'<br>');}
-function isVideoUrl(u){return /\.(mp4|webm|mov)(\?|$)/i.test(u);}
+function isVideoUrl(u){return /\.(mp4|webm|mov)([?#]|$)/i.test(u);}
 function looksLikeEmail(s){return /[^\s@]+@[^\s@]+\.[^\s@]+/.test(s);}
 
 // ======================== RATE-LIMIT COOLDOWN HELPER ========================
@@ -3267,7 +3267,7 @@ function openGroupPostModal(group){
     var zone=document.getElementById('gvCpmMediaZone'),grid=document.getElementById('gvCpmGrid'),dropZone=document.getElementById('gvCpmDropZone'),fileInput=document.getElementById('gvCpmFileInput');
     dropZone.addEventListener('click',function(){fileInput.click();});
     function renderGrid(){
-        grid.innerHTML='';mediaList.forEach(function(m,i){var t=document.createElement('div');t.className='cpm-thumb';t.innerHTML=(m.type==='video'?'<video src="'+m.src+'" muted></video>':'<img src="'+m.src+'">')+'<button class="remove-thumb" data-idx="'+i+'"><i class="fas fa-times"></i></button>';grid.appendChild(t);});
+        grid.innerHTML='';mediaList.forEach(function(m,i){var t=document.createElement('div');t.className='cpm-thumb';t.innerHTML=(m.type==='video'?'<video src="'+m.src+'#t=0.5" preload="metadata" muted></video>':'<img src="'+m.src+'">')+'<button class="remove-thumb" data-idx="'+i+'"><i class="fas fa-times"></i></button>';grid.appendChild(t);});
         zone.classList.toggle('has-media',mediaList.length>0);
         grid.querySelectorAll('.remove-thumb').forEach(function(btn){btn.addEventListener('click',function(e){e.stopPropagation();mediaList.splice(parseInt(btn.dataset.idx),1);renderGrid();});});
     }
@@ -3951,7 +3951,7 @@ function buildMediaGrid(imgs){
     shown.forEach(function(src,i){
         var isVid=isVideoUrl(src);
         var inner=isVid
-            ?'<video src="'+src+'" preload="metadata" muted playsinline></video><div class="pm-play-overlay"><i class="fas fa-play"></i></div>'
+            ?'<video src="'+src+'#t=0.5" preload="metadata" muted playsinline></video><div class="pm-play-overlay"><i class="fas fa-play"></i></div>'
             :'<img src="'+src+'" alt="Post photo">';
         if(i===4&&extra>0){
             h+='<div class="pm-thumb pm-more" data-pgid="'+pid+'">'+inner+'<div class="pm-more-overlay">+'+extra+'</div></div>';
@@ -4475,7 +4475,7 @@ $('#openPostModal').addEventListener('click',function(){
         grid.innerHTML='';
         mediaList.forEach(function(m,i){
             var thumb=document.createElement('div');thumb.className='cpm-thumb';
-            thumb.innerHTML=(m.type==='video'?'<video src="'+m.src+'" muted></video>':'<img src="'+m.src+'">')+'<button class="remove-thumb" data-idx="'+i+'"><i class="fas fa-times"></i></button>';
+            thumb.innerHTML=(m.type==='video'?'<video src="'+m.src+'#t=0.5" preload="metadata" muted></video>':'<img src="'+m.src+'">')+'<button class="remove-thumb" data-idx="'+i+'"><i class="fas fa-times"></i></button>';
             grid.appendChild(thumb);
         });
         zone.classList.toggle('has-media',mediaList.length>0);
@@ -4701,7 +4701,7 @@ $('#openPostModal').addEventListener('click',function(){
             shown.forEach(function(m,i){
                 var isVid=m.type==='video';
                 var inner=isVid
-                    ?'<video src="'+m.src+'" preload="metadata" muted playsinline></video><div class="pm-play-overlay"><i class="fas fa-play"></i></div>'
+                    ?'<video src="'+m.src+'#t=0.5" preload="metadata" muted playsinline></video><div class="pm-play-overlay"><i class="fas fa-play"></i></div>'
                     :'<img src="'+m.src+'">';
                 if(i===4&&extra>0){
                     mediaHtml+='<div class="pm-thumb pm-more" data-pgid="'+pid+'">'+inner+'<div class="pm-more-overlay">+'+extra+'</div></div>';
