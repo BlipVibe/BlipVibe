@@ -7981,6 +7981,7 @@ updateFollowCounts();
         pulling=false;
         if(ptrDist>=threshold&&!refreshing){
             refreshing=true;
+            var ic=ptrEl.querySelector('i');if(ic)ic.style.transform='';
             ptrEl.classList.add('ptr-loading');
             ptrEl.classList.remove('ptr-ready');
             ptrEl.style.transform='translateY(20px)';ptrEl.style.opacity='1';
