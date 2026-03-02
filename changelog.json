@@ -1,5 +1,20 @@
 [
   {
+    "version": "0.2.17",
+    "date": "2026-03-01",
+    "added": [
+      "Video posts — upload MP4, WebM, or MOV videos (up to 50MB) in feed and group posts, displayed with play overlay in media grids and full controls in lightbox",
+      "Pull-to-refresh on mobile — swipe down from the top of any page to refresh content (feed, groups, notifications, messages, profiles)"
+    ],
+    "changed": [
+      "Group posts now support multiple images and videos (previously only uploaded the first image)"
+    ],
+    "fixed": [
+      "Videos selected in post creation modal silently failed to upload — entire pipeline (validation, upload, rendering, lightbox) now handles video types",
+      "Lightbox skipped videos when navigating media — now plays videos inline with controls and pauses on close"
+    ]
+  },
+  {
     "version": "0.2.16",
     "date": "2026-02-27",
     "added": [

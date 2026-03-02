@@ -31,6 +31,7 @@ function safeTruncate(str,max,ellipsis){var a=Array.from(str||'');if(a.length<=m
 // ======================== XSS PROTECTION ========================
 function escapeHtml(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function escapeHtmlNl(s){return escapeHtml(s).replace(/\n/g,'<br>');}
+function isVideoUrl(u){return /\.(mp4|webm|mov)(\?|$)/i.test(u);}
 function looksLikeEmail(s){return /[^\s@]+@[^\s@]+\.[^\s@]+/.test(s);}
 
 // ======================== RATE-LIMIT COOLDOWN HELPER ========================
@@ -3270,27 +3271,28 @@ function openGroupPostModal(group){
         zone.classList.toggle('has-media',mediaList.length>0);
         grid.querySelectorAll('.remove-thumb').forEach(function(btn){btn.addEventListener('click',function(e){e.stopPropagation();mediaList.splice(parseInt(btn.dataset.idx),1);renderGrid();});});
     }
-    fileInput.addEventListener('change',function(){Array.from(this.files).forEach(function(f){var isV=f.type.startsWith('video/');var r=new FileReader();r.onload=function(e){mediaList.push({src:e.target.result,type:isV?'video':'image'});renderGrid();};r.readAsDataURL(f);});this.value='';});
+    fileInput.addEventListener('change',function(){Array.from(this.files).forEach(function(f){var isV=f.type.startsWith('video/');if(isV){mediaList.push({src:URL.createObjectURL(f),type:'video',file:f});renderGrid();}else{var r=new FileReader();r.onload=function(e){mediaList.push({src:e.target.result,type:'image',file:f});renderGrid();};r.readAsDataURL(f);}});this.value='';});
     document.getElementById('gvCpmPublish').addEventListener('click',async function(){
         var text=document.getElementById('gvCpmText').value.trim();
         if(!text&&!mediaList.length)return;
         if(!currentUser){showToast('Please sign in to post');return;}
         var publishBtn=this;publishBtn.disabled=true;publishBtn.textContent='Publishing...';
         try{
-            // Upload first image to Supabase Storage (if any)
             var imageUrl=null;
-            if(mediaList.length>0){
+            var allMediaUrls=[];
+            for(var mi=0;mi<mediaList.length;mi++){
                 try{
-                    var firstImg=mediaList[0];
-                    if(firstImg.type==='image'&&firstImg.src.startsWith('data:')){
-                        var resp=await fetch(firstImg.src);
-                        var blob=await resp.blob();
-                        var file=new File([blob],'gpost-'+Date.now()+'.jpg',{type:blob.type});
-                        imageUrl=await sbUploadPostImage(currentUser.id,file);
-                    }
-                }catch(e){console.error('Group image upload:',e);}
+                    var mItem=mediaList[mi];
+                    var file=mItem.file;
+                    if(!file&&mItem.src.startsWith('data:')){var resp=await fetch(mItem.src);var blob=await resp.blob();file=new File([blob],'gpost-'+Date.now()+'-'+mi+(mItem.type==='video'?'.mp4':'.jpg'),{type:blob.type});}
+                    if(!file) continue;
+                    var url;
+                    if(mItem.type==='video') url=await sbUploadPostVideo(currentUser.id,file);
+                    else url=await sbUploadPostImage(currentUser.id,file);
+                    if(url){allMediaUrls.push(url);if(!imageUrl)imageUrl=url;}
+                }catch(e){console.error('Group media upload:',e);showToast('Upload failed: '+(e.message||''));}
             }
-            await sbCreatePost(currentUser.id,text||'',imageUrl,group.id);
+            await sbCreatePost(currentUser.id,text||'',imageUrl,group.id,null,null,allMediaUrls.length>1?allMediaUrls:null);
             if(state.postCoinCount<10){state.coins+=5;state.postCoinCount++;updateCoins();}
             if(canEarnGroupPostCoin(group.id)){addGroupCoins(group.id,5);trackGroupPostCoin(group.id);}
             saveState();
@@ -3947,14 +3949,18 @@ function buildMediaGrid(imgs){
     var h='<div class="post-media-grid pm-count-'+cnt+'" data-pgid="'+pid+'">';
     var shown=imgs.slice(0,5);var extra=imgs.length-5;
     shown.forEach(function(src,i){
+        var isVid=isVideoUrl(src);
+        var inner=isVid
+            ?'<video src="'+src+'" preload="metadata" muted playsinline></video><div class="pm-play-overlay"><i class="fas fa-play"></i></div>'
+            :'<img src="'+src+'" alt="Post photo">';
         if(i===4&&extra>0){
-            h+='<div class="pm-thumb pm-more" data-pgid="'+pid+'"><img src="'+src+'" alt="Post photo"><div class="pm-more-overlay">+'+extra+'</div></div>';
+            h+='<div class="pm-thumb pm-more" data-pgid="'+pid+'">'+inner+'<div class="pm-more-overlay">+'+extra+'</div></div>';
         } else {
-            h+='<div class="pm-thumb"><img src="'+src+'" alt="Post photo"></div>';
+            h+='<div class="pm-thumb">'+inner+'</div>';
         }
     });
     h+='</div>';
-    window['_media_'+pid]=imgs.map(function(s){return {type:'image',src:s};});
+    window['_media_'+pid]=imgs.map(function(s){return {type:isVideoUrl(s)?'video':'image',src:s};});
     return h;
 }
 async function generatePosts(){
@@ -4476,12 +4482,16 @@ $('#openPostModal').addEventListener('click',function(){
         grid.querySelectorAll('.remove-thumb').forEach(function(btn){btn.addEventListener('click',function(e){e.stopPropagation();mediaList.splice(parseInt(btn.dataset.idx),1);renderGrid();});});
     }
     fileInput.addEventListener('change',function(){
-        var files=Array.from(this.files);
-        files.forEach(function(f){
+        Array.from(this.files).forEach(function(f){
             var isV=f.type.startsWith('video/');
-            var r=new FileReader();
-            r.onload=function(e){mediaList.push({src:e.target.result,type:isV?'video':'image'});renderGrid();};
-            r.readAsDataURL(f);
+            if(isV){
+                mediaList.push({src:URL.createObjectURL(f),type:'video',file:f});
+                renderGrid();
+            } else {
+                var r=new FileReader();
+                r.onload=function(e){mediaList.push({src:e.target.result,type:'image',file:f});renderGrid();};
+                r.readAsDataURL(f);
+            }
         });
         this.value='';
     });
@@ -4649,14 +4659,18 @@ $('#openPostModal').addEventListener('click',function(){
             for(var mi=0;mi<mediaList.length;mi++){
                 try {
                     var mItem = mediaList[mi];
-                    if(mItem.type === 'image' && mItem.src.startsWith('data:')) {
+                    var file = mItem.file;
+                    if(!file && mItem.src.startsWith('data:')){
                         var resp = await fetch(mItem.src);
                         var blob = await resp.blob();
-                        var file = new File([blob], 'post-' + Date.now() + '-' + mi + '.jpg', { type: blob.type });
-                        var url = await sbUploadPostImage(currentUser.id, file);
-                        if(url){allImageUrls.push(url);if(!imageUrl)imageUrl=url;}
+                        file = new File([blob], 'post-'+Date.now()+'-'+mi+(mItem.type==='video'?'.mp4':'.jpg'), {type:blob.type});
                     }
-                } catch(e) { console.error('Image upload ' + mi + ':', e); }
+                    if(!file) continue;
+                    var url;
+                    if(mItem.type === 'video') url = await sbUploadPostVideo(currentUser.id, file);
+                    else url = await sbUploadPostImage(currentUser.id, file);
+                    if(url){allImageUrls.push(url);if(!imageUrl)imageUrl=url;}
+                } catch(e) { console.error('Media upload ' + mi + ':', e); showToast('Upload failed: '+(e.message||'')); }
             }
         }
 
@@ -4677,21 +4691,27 @@ $('#openPostModal').addEventListener('click',function(){
         }
 
         var mediaHtml='';
-        if(mediaList.length>0){
+        // Use uploaded URLs if available, fall back to local previews
+        var previewMedia=allImageUrls.length?allImageUrls.map(function(u){return {src:u,type:isVideoUrl(u)?'video':'image'};}):mediaList;
+        if(previewMedia.length>0){
             var pid='pg-'+Date.now();
-            var cnt=Math.min(mediaList.length,5);
+            var cnt=Math.min(previewMedia.length,5);
             mediaHtml='<div class="post-media-grid pm-count-'+cnt+'" data-pgid="'+pid+'">';
-            var shown=mediaList.slice(0,5);var extra=mediaList.length-5;
+            var shown=previewMedia.slice(0,5);var extra=previewMedia.length-5;
             shown.forEach(function(m,i){
+                var isVid=m.type==='video';
+                var inner=isVid
+                    ?'<video src="'+m.src+'" preload="metadata" muted playsinline></video><div class="pm-play-overlay"><i class="fas fa-play"></i></div>'
+                    :'<img src="'+m.src+'">';
                 if(i===4&&extra>0){
-                    mediaHtml+='<div class="pm-thumb pm-more" data-pgid="'+pid+'"><img src="'+m.src+'"><div class="pm-more-overlay">+'+extra+'</div></div>';
+                    mediaHtml+='<div class="pm-thumb pm-more" data-pgid="'+pid+'">'+inner+'<div class="pm-more-overlay">+'+extra+'</div></div>';
                 } else {
-                    mediaHtml+='<div class="pm-thumb">'+(m.type==='video'?'<video src="'+m.src+'" controls></video>':'<img src="'+m.src+'">')+'</div>';
+                    mediaHtml+='<div class="pm-thumb">'+inner+'</div>';
                 }
             });
             mediaHtml+='</div>';
-            window['_media_'+pid]=mediaList;
-            mediaList.forEach(function(m){if(m.type==='image')state.photos.post.unshift({src:m.src,date:Date.now()});});
+            window['_media_'+pid]=previewMedia;
+            previewMedia.forEach(function(m){if(m.type==='image')state.photos.post.unshift({src:m.src,date:Date.now()});});
             renderPhotosCard();
         }
         var linkHtml='';
@@ -7926,6 +7946,64 @@ renderPhotosCard();
 updateCoins();
 updateFollowCounts();
 
+// ======================== PULL-TO-REFRESH (mobile) ========================
+(function(){
+    var ptrEl=document.createElement('div');ptrEl.className='ptr-indicator';
+    ptrEl.innerHTML='<div class="ptr-spinner"><i class="fas fa-sync-alt"></i></div>';
+    document.body.prepend(ptrEl);
+    var startY=0,pulling=false,ptrDist=0,threshold=70,refreshing=false;
+    function isAtTop(){return window.scrollY<=0;}
+    function isMobile(){return window.innerWidth<=768;}
+    document.addEventListener('touchstart',function(e){
+        if(!isMobile()||refreshing||!isAtTop()) return;
+        // Don't trigger inside scrollable sub-containers
+        var el=e.target;
+        while(el&&el!==document.body){
+            if(el.scrollTop>0) return;
+            el=el.parentElement;
+        }
+        startY=e.touches[0].clientY;pulling=true;ptrDist=0;
+    },{passive:true});
+    document.addEventListener('touchmove',function(e){
+        if(!pulling||refreshing) return;
+        var dy=e.touches[0].clientY-startY;
+        if(dy<0){ptrDist=0;ptrEl.style.transform='translateY(-50px)';ptrEl.style.opacity='0';return;}
+        ptrDist=Math.min(dy*0.4,120);
+        ptrEl.style.transform='translateY('+(ptrDist-50)+'px)';
+        ptrEl.style.opacity=Math.min(ptrDist/threshold,1);
+        var icon=ptrEl.querySelector('i');
+        if(icon) icon.style.transform='rotate('+Math.min(ptrDist/threshold*360,360)+'deg)';
+        if(ptrDist>=threshold) ptrEl.classList.add('ptr-ready');
+        else ptrEl.classList.remove('ptr-ready');
+    },{passive:true});
+    document.addEventListener('touchend',function(){
+        if(!pulling) return;
+        pulling=false;
+        if(ptrDist>=threshold&&!refreshing){
+            refreshing=true;
+            ptrEl.classList.add('ptr-loading');
+            ptrEl.classList.remove('ptr-ready');
+            ptrEl.style.transform='translateY(20px)';ptrEl.style.opacity='1';
+            (async function(){
+                try{
+                    var pg=document.querySelector('.page.active');
+                    var pageId=pg?pg.id.replace('page-',''):'home';
+                    if(pageId==='home'){await generatePosts();renderFeed(activeFeedTab);}
+                    else if(pageId==='groups'){await loadGroups();renderGroups();}
+                    else if(pageId==='notifications'){if(currentUser){var n=await sbGetNotifications(currentUser.id,500);state.notifications=(n||[]).map(function(x){var ot=(x.data&&x.data.originalType)||x.type||'system';var tx=x.title||x.body||'';if(!tx&&x.data&&x.data.message)tx=x.data.message;if(!tx)tx='Notification';return{type:ot,text:tx,time:timeAgoReal(x.created_at),read:x.is_read,id:x.id,postId:(x.data&&x.data.post_id)||null,data:x.data||{}};});updateNotifBadge();renderNotifications();}}
+                    else if(pageId==='profiles'){renderProfiles(currentProfileTab);}
+                    else if(pageId==='messages'){loadConversations();}
+                    else{await generatePosts();renderFeed(activeFeedTab);}
+                }catch(e){console.error('PTR refresh error:',e);}
+                setTimeout(function(){refreshing=false;ptrEl.classList.remove('ptr-loading');ptrEl.style.transform='translateY(-50px)';ptrEl.style.opacity='0';},300);
+            })();
+        } else {
+            ptrEl.style.transform='translateY(-50px)';ptrEl.style.opacity='0';
+            ptrEl.classList.remove('ptr-ready');
+        }
+    });
+})();
+
 // ======================== LIGHTBOX ========================
 (function(){
     var overlay=document.createElement('div');overlay.className='lightbox-overlay';
@@ -7935,6 +8013,7 @@ updateFollowCounts();
             '<div class="lightbox-media">'+
                 '<button class="lightbox-arrow lightbox-prev"><i class="fas fa-chevron-left"></i></button>'+
                 '<img src="" alt="">'+
+                '<video src="" controls playsinline style="display:none;max-width:90vw;max-height:80vh;"></video>'+
                 '<button class="lightbox-arrow lightbox-next"><i class="fas fa-chevron-right"></i></button>'+
                 '<div class="lightbox-bar">'+
                     '<div class="lightbox-counter"></div>'+
@@ -7959,6 +8038,7 @@ updateFollowCounts();
     var layout=overlay.querySelector('.lightbox-layout');
     var media=overlay.querySelector('.lightbox-media');
     var img=overlay.querySelector('.lightbox-media img');
+    var vid=overlay.querySelector('.lightbox-media video');
     var prev=overlay.querySelector('.lightbox-prev');
     var next=overlay.querySelector('.lightbox-next');
     var counter=overlay.querySelector('.lightbox-counter');
@@ -7985,7 +8065,9 @@ updateFollowCounts();
     window._openLightbox=open;
 
     function show(){
-        img.src=srcs[idx];
+        var isVid=isVideoUrl(srcs[idx]);
+        if(isVid){img.style.display='none';vid.style.display='';vid.src=srcs[idx];vid.load();}
+        else{vid.style.display='none';vid.pause();vid.src='';img.style.display='';img.src=srcs[idx];}
         counter.textContent=(idx+1)+' / '+srcs.length;
         prev.style.display=srcs.length>1?'':'none';
         next.style.display=srcs.length>1?'':'none';
@@ -7996,7 +8078,7 @@ updateFollowCounts();
         loadPhotoComments();
         loadPhotoReactions();
     }
-    function close(){overlay.classList.remove('show');document.body.style.overflow='';commentsPanel.classList.remove('lb-open');}
+    function close(){vid.pause();vid.src='';overlay.classList.remove('show');document.body.style.overflow='';commentsPanel.classList.remove('lb-open');}
     function go(d){idx=(idx+d+srcs.length)%srcs.length;show();}
     function resetReply(){replyTarget=null;replyIndicator.style.display='none';commentInput.placeholder='Write a comment...';}
 
@@ -8201,12 +8283,14 @@ updateFollowCounts();
     commentsPanel.addEventListener('touchstart',function(e){e.stopPropagation();},{passive:true});
     commentsPanel.addEventListener('touchend',function(e){e.stopPropagation();});
 
-    // Collect image srcs from a container
-    function collect(container){return Array.from(container.querySelectorAll('img')).map(function(i){return i.src;}).filter(Boolean);}
+    // Collect image/video srcs from a container
+    function collect(container){return Array.from(container.querySelectorAll('img,video')).map(function(i){return i.src;}).filter(Boolean);}
 
-    // Delegate clicks on images in posts, albums, previews
+    // Delegate clicks on images/videos in posts, albums, previews
     document.addEventListener('click',function(e){
         var t=e.target;
+        // Handle play overlay clicks — find the video in the same thumb
+        if(t.closest('.pm-play-overlay')){t=t.closest('.pm-thumb').querySelector('video')||t;}
         // Handle +X overlay clicks — open lightbox at the overflow image
         var moreOverlay=t.closest('.pm-more-overlay');
         if(moreOverlay){
@@ -8215,9 +8299,9 @@ updateFollowCounts();
             if(grid){
                 var pgid=grid.dataset.pgid;var allMedia=pgid&&window['_media_'+pgid];
                 if(allMedia){
-                    var list=allMedia.filter(function(m){return m.type==='image';}).map(function(m){return m.src;});
-                    var thumbImg=pmThumb.querySelector('img');
-                    var startIdx=thumbImg?list.indexOf(thumbImg.src):0;
+                    var list=allMedia.map(function(m){return m.src;});
+                    var thumbEl=pmThumb.querySelector('img')||pmThumb.querySelector('video');
+                    var startIdx=thumbEl?list.indexOf(thumbEl.src):0;
                     if(startIdx<0)startIdx=0;
                     var feedPost=grid.closest('.feed-post');
                     var pid=feedPost?(feedPost.querySelector('.like-btn[data-post-id]')||{}).getAttribute&&feedPost.querySelector('.like-btn[data-post-id]').getAttribute('data-post-id'):null;
@@ -8225,12 +8309,12 @@ updateFollowCounts();
                 }
             }
         }
-        if(t.tagName!=='IMG')return;
+        if(t.tagName!=='IMG'&&t.tagName!=='VIDEO')return;
         // Post media grid
         var grid=t.closest('.post-media-grid');
         if(grid){
             var pgid=grid.dataset.pgid;var allMedia=pgid&&window['_media_'+pgid];var list;
-            if(allMedia){list=allMedia.filter(function(m){return m.type==='image';}).map(function(m){return m.src;});}else{list=collect(grid);}
+            if(allMedia){list=allMedia.map(function(m){return m.src;});}else{list=collect(grid);}
             var feedPost=grid.closest('.feed-post');
             var pid=feedPost?(feedPost.querySelector('.like-btn[data-post-id]')||{}).getAttribute&&feedPost.querySelector('.like-btn[data-post-id]').getAttribute('data-post-id'):null;
             if(list.length){open(list,list.indexOf(t.src),pid);e.stopPropagation();return;}

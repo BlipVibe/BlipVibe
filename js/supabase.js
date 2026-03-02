@@ -572,7 +572,10 @@ var _UPLOAD_ALLOWED_MIMES = {
   'image/jpeg': ['jpg','jpeg'],
   'image/png': ['png'],
   'image/webp': ['webp'],
-  'image/gif': ['gif']
+  'image/gif': ['gif'],
+  'video/mp4': ['mp4'],
+  'video/webm': ['webm'],
+  'video/quicktime': ['mov']
 };
 var _UPLOAD_BLOCKED_MIMES = ['image/svg+xml','text/html','application/javascript','application/x-javascript','text/javascript'];
 
@@ -587,7 +590,7 @@ function validateUploadFile(file, opts) {
   }
   // Check MIME whitelist
   if (!_UPLOAD_ALLOWED_MIMES[file.type]) {
-    throw new Error(label + ': unsupported file type (' + (file.type || 'unknown') + '). Allowed: JPEG, PNG, WebP, GIF.');
+    throw new Error(label + ': unsupported file type (' + (file.type || 'unknown') + '). Allowed: JPEG, PNG, WebP, GIF, MP4, WebM, MOV.');
   }
   // Check file size
   if (file.size > maxSize) {
@@ -672,6 +675,13 @@ async function sbUploadPostImage(userId, file) {
   validateUploadFile(file, { maxSize: 10 * 1024 * 1024, label: 'Image' });
   const ext = file.name.split('.').pop();
   const path = `${userId}/${Date.now()}.${ext}`;
+  return sbUploadFile('posts', path, file);
+}
+
+async function sbUploadPostVideo(userId, file) {
+  validateUploadFile(file, { maxSize: 50 * 1024 * 1024, label: 'Video' });
+  const ext = file.name.split('.').pop();
+  const path = `${userId}/vid-${Date.now()}.${ext}`;
   return sbUploadFile('posts', path, file);
 }
 
