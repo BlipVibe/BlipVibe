@@ -368,7 +368,7 @@ function showTosModal(){
             +'<h5>17. Indemnification</h5>'
             +'<p>You agree to indemnify, defend, and hold harmless BlipVibe, its operators, affiliates, and agents from any claims, damages, losses, liabilities, and expenses (including reasonable attorneys\' fees) arising from your use of BlipVibe, your content, or your violation of these Terms.</p>'
             +'<h5>18. Governing Law</h5>'
-            +'<p>These Terms are governed by the laws of the State of Texas, United States. Any legal action shall be brought exclusively in the state or federal courts located in Texas.</p>'
+            +'<p>These Terms are governed by the laws of the State of Tennessee and applicable federal law. Any legal action shall be brought exclusively in the state or federal courts located in Fayette County, Tennessee.</p>'
             +'<h5>19. Severability</h5>'
             +'<p>If any provision of these Terms is found unenforceable or invalid, that provision shall be limited or eliminated to the minimum extent necessary, and the remaining provisions shall remain in full force and effect.</p>'
             +'<h5>20. Changes to Terms</h5>'

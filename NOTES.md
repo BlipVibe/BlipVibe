@@ -369,7 +369,7 @@
 
 ## Legal & Compliance Updates (added 2026-02-23)
 - **Privacy Policy:** Added GDPR section (Section 11) — legal basis for processing, EEA user rights, breach notification (72hr), international transfer basis. Renumbered subsequent sections.
-- **TOS:** Added indemnification (Section 17), severability (Section 19) clauses. Governing law now names **State of Texas** specifically. Renumbered to 21 sections total.
+- **TOS:** Added indemnification (Section 17), severability (Section 19) clauses. Governing law now names **State of Tennessee** (Fayette County venue) specifically. Renumbered to 21 sections total.
 - **Search injection fix:** `sbSearchProfiles()` now sanitizes query by stripping PostgREST filter-injection characters (`,`, `(`, `)`, `.`) before use in `.or()` filter
 
 ## Super Admin Panel (added 2026-02-23)
