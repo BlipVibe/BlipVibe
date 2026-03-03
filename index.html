@@ -555,7 +555,7 @@
             </div>
             <div class="card" style="padding:24px 28px;line-height:1.7;font-size:14px;">
                 <h3 style="margin:0 0 6px;">BlipVibe Privacy Policy</h3>
-                <p style="color:var(--gray);margin-bottom:16px;"><strong>Effective Date:</strong> February 27, 2026 &nbsp;|&nbsp; <strong>Version:</strong> 2.0</p>
+                <p style="color:var(--gray);margin-bottom:16px;"><strong>Effective Date:</strong> March 3, 2026 &nbsp;|&nbsp; <strong>Version:</strong> 3.0</p>
 
                 <p>BlipVibe ("we," "us," "our") operates the BlipVibe social media platform, accessible via web browser and the BlipVibe mobile application (collectively, the "Service"). This Privacy Policy describes the categories of personal information we collect, how we use and protect it, and your rights. By creating an account or using the Service, you acknowledge that you have read and understood this Privacy Policy.</p>
                 <p>BlipVibe is currently in <strong>beta</strong>. Certain features, data structures, and retention practices may change before general availability. We will notify users of material changes as described in Section 17.</p>
@@ -637,6 +637,8 @@
                 </ul>
                 <p>Uploaded images (avatars, post photos) are stored in Supabase Storage buckets. <strong>These images are accessible by URL</strong> to enable display within the platform. You should not upload images that contain sensitive information you do not wish to be publicly viewable.</p>
                 <p><strong>No security measure is absolute.</strong> While we implement commercially reasonable administrative, technical, and organizational safeguards appropriate to the size and stage of our company, we cannot and do not guarantee that unauthorized access, data loss, or a security breach will never occur. You use the Service at your own risk, and you are responsible for maintaining the confidentiality of your account credentials.</p>
+                <p><strong>Data Processing Agreement:</strong> Supabase acts as a data processor on our behalf under a Data Processing Agreement ("DPA") that governs its processing of your personal data, including obligations related to data security, confidentiality, sub-processor management, and data subject rights assistance.</p>
+                <p><strong>Data Breach Notification:</strong> In the event of a security breach involving your personal information, we will notify affected users without undue delay and no later than required by applicable law. Where required, we will also notify the relevant regulatory authorities. Notifications will describe the nature of the breach, the categories of data affected, and the measures taken or proposed to address the breach.</p>
 
                 <h4 style="margin:20px 0 8px;">5. Advertising (Planned)</h4>
                 <p>BlipVibe is not currently monetized. We plan to introduce third-party advertising in a future update. When advertising is implemented:</p>
@@ -672,6 +674,9 @@
                     <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">Spotify</td><td style="padding:6px 8px;">Music/podcast embeds</td><td style="padding:6px 8px;">IP, cookies</td></tr>
                     <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">Vimeo</td><td style="padding:6px 8px;">Video embeds</td><td style="padding:6px 8px;">IP, cookies</td></tr>
                     <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">SoundCloud</td><td style="padding:6px 8px;">Audio embeds</td><td style="padding:6px 8px;">IP, cookies</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">FxTwitter API</td><td style="padding:6px 8px;">Tweet/X post preview data</td><td style="padding:6px 8px;">URLs shared in posts</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">TikTok oEmbed API</td><td style="padding:6px 8px;">Video preview data</td><td style="padding:6px 8px;">URLs shared in posts</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">Klipy</td><td style="padding:6px 8px;">GIF search and delivery</td><td style="padding:6px 8px;">Search queries, IP address</td></tr>
                     <tr><td style="padding:6px 8px;">Apple (App Store)</td><td style="padding:6px 8px;">App distribution, in-app purchases</td><td style="padding:6px 8px;">Per Apple's privacy policy</td></tr>
                 </table>
                 <p><strong>Important:</strong> When embedded media loads (e.g., a YouTube video in a post), the third-party platform's scripts execute in your browser and may set cookies, collect IP addresses, and track activity according to that platform's own privacy policy. BlipVibe has no control over the data practices of these third parties. We use YouTube's privacy-enhanced mode (<code>youtube-nocookie.com</code>) where available to reduce tracking. You may block third-party cookies in your browser settings.</p>
@@ -776,7 +781,7 @@
 
                 <h4 style="margin:20px 0 8px;">15. User-Generated Content</h4>
                 <p>BlipVibe is a platform for user-generated content. You are solely responsible for the content you post, upload, or transmit through the Service. Content you post publicly (posts, comments, profile information) may be viewed, copied, or shared by other users, and we cannot control how others use content you make publicly available.</p>
-                <p>We do not endorse, verify, or assume liability for any user-generated content. Under Section 230 of the Communications Decency Act (47 U.S.C. &sect; 230), interactive computer service providers are generally not treated as the publisher or speaker of content provided by users. BlipVibe reserves the right, but has no obligation, to monitor, edit, or remove content that violates our Terms of Use.</p>
+                <p>We do not endorse, verify, or assume liability for any user-generated content. For information about our content moderation practices, prohibited content, and your responsibilities as a user, please refer to our Terms of Use and Acceptable Use Policy.</p>
 
                 <h4 style="margin:20px 0 8px;">16. DMCA &amp; Copyright</h4>
                 <p>BlipVibe respects intellectual property rights and complies with the Digital Millennium Copyright Act (17 U.S.C. &sect; 512). We respond to valid takedown notices and maintain a repeat-infringer termination policy. Our designated DMCA agent can be reached at:</p>
@@ -805,21 +810,13 @@
                     <li>Apple and its subsidiaries are third-party beneficiaries of our Terms of Use and may enforce them against you.</li>
                 </ul>
 
-                <h4 style="margin:20px 0 8px;">19. Limitation of Liability</h4>
-                <p>To the fullest extent permitted by applicable law, BlipVibe's total liability for any claims arising out of or related to this Privacy Policy or our data practices shall not exceed the greater of (a) the amounts you have paid to BlipVibe in the 12 months preceding the claim, or (b) $100 USD. This limitation applies regardless of the theory of liability (contract, tort, strict liability, or otherwise).</p>
-                <p>This limitation does not apply where prohibited by law, including where liability arises from our gross negligence or willful misconduct.</p>
-
-                <h4 style="margin:20px 0 8px;">20. Dispute Resolution</h4>
-                <p>Any dispute arising from this Privacy Policy or our data practices shall be governed by the laws of the State of Delaware, without regard to conflict-of-law principles. You agree to submit to the exclusive jurisdiction of the state and federal courts located in the State of Delaware for any claims not subject to arbitration.</p>
-                <p>Before filing a formal claim, you agree to contact us at <strong>hello@blipvibe.com</strong> and attempt to resolve the dispute informally for at least 30 days.</p>
-
-                <h4 style="margin:20px 0 8px;">21. Third-Party Credits</h4>
+                <h4 style="margin:20px 0 8px;">19. Third-Party Credits</h4>
                 <ul>
                     <li><strong>Icons:</strong> <a href="https://fontawesome.com" target="_blank" rel="noopener">Font Awesome</a> (CC BY 4.0 / SIL OFL 1.1)</li>
                     <li><strong>Fonts:</strong> <a href="https://fonts.google.com" target="_blank" rel="noopener">Google Fonts</a> (SIL Open Font License)</li>
                 </ul>
 
-                <h4 style="margin:20px 0 8px;">22. Contact Us</h4>
+                <h4 style="margin:20px 0 8px;">20. Contact Us</h4>
                 <p>If you have questions about this Privacy Policy, wish to exercise your data rights, or need to report a privacy concern:</p>
                 <ul>
                     <li><strong>General &amp; Privacy Requests:</strong> hello@blipvibe.com</li>
