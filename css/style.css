@@ -1,5 +1,6 @@
 /* ========== RESET & BASE ========== */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;cursor:default;}
+html{overscroll-behavior-y:none;}
 input,textarea,select,[contenteditable="true"]{cursor:text;}
 a,button,label,[role="button"],[onclick]{cursor:pointer;}
 body{font-family:'Roboto',sans-serif;background:var(--light-bg);color:var(--dark);line-height:1.6;background-image:radial-gradient(ellipse at 20% 50%,rgba(139,92,246,.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(92,189,185,.06) 0%,transparent 50%);background-attachment:fixed;}
