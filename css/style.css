@@ -205,7 +205,7 @@ img{display:block;}
 }
 
 /* ========== NAVBAR ========== */
-.navbar{background:var(--nav-bg);position:fixed;top:0;left:0;right:0;height:60px;max-height:60px;z-index:1000;box-shadow:0 2px 10px rgba(0,0,0,.3);overflow:visible;}
+.navbar{background:var(--nav-bg);position:fixed;top:0;left:0;right:0;height:calc(60px + env(safe-area-inset-top,0px));max-height:calc(60px + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px);z-index:1000;box-shadow:0 2px 10px rgba(0,0,0,.3);overflow:visible;}
 .nav-container{max-width:1600px;margin:0 auto;height:100%;display:flex;align-items:center;padding:0 20px;gap:16px;}
 .nav-left{display:flex;align-items:center;gap:12px;flex-shrink:0;}
 .nav-logo{font-size:calc(20px * var(--font-scale));font-weight:700;color:#fff;background:rgba(255,255,255,.2);padding:6px 14px;border-radius:8px;transition:background .3s;letter-spacing:.5px;}
@@ -246,9 +246,9 @@ img{display:block;}
 .mobile-notif-btn .notif-badge{position:absolute;top:-4px;right:-6px;min-width:1.5em;height:1.5em;font-size:10px;display:flex;align-items:center;justify-content:center;}
 
 /* ========== PAGES ========== */
-.page{display:none;padding-top:80px;min-height:100vh;}
+.page{display:none;padding-top:calc(80px + env(safe-area-inset-top,0px));min-height:100vh;}
 .page.active{display:block;}
-#page-home{padding-top:60px;}
+#page-home{padding-top:calc(60px + env(safe-area-inset-top,0px));}
 .page-container{max-width:1400px;margin:0 auto;padding:0 20px 40px;}
 .page-header{margin-bottom:24px;}
 .page-header h2{font-size:calc(24px * var(--font-scale));font-weight:700;color:var(--dark);display:flex;align-items:center;gap:10px;margin-bottom:6px;}
@@ -824,7 +824,7 @@ body.modal-open{overflow:hidden!important;position:fixed!important;width:100%!im
 .profile-card.skin-sunset .view-profile-link{color:#ef6c00;}
 
 /* ========== PROFILE VIEW PAGE ========== */
-#page-profile-view{padding-top:60px;}
+#page-profile-view{padding-top:calc(60px + env(safe-area-inset-top,0px));}
 .pv-cover-banner{max-width:1600px;margin:0 auto;height:350px;background:linear-gradient(135deg,var(--primary),var(--primary-hover));background-size:cover;background-position:center;position:relative;border-radius:0 0 10px 10px;}
 .pv-main-container{max-width:900px;margin:-60px auto 0;padding:0 20px 40px;position:relative;z-index:1;}
 .pv-feed{display:flex;flex-direction:column;gap:16px;}
@@ -1726,7 +1726,7 @@ body.nav-float .nav-link:hover span:not(.notif-badge),body.nav-slim .nav-link:ho
 body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:hover span:not(.notif-badge){display:block!important;position:absolute;bottom:100%;top:auto;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;padding:4px 10px;border-radius:6px;font-size:calc(11px * var(--font-scale));font-family:inherit;white-space:nowrap;pointer-events:none;z-index:1001;margin-bottom:6px;line-height:1.4;}
 
 /* ========== GROUP VIEW PAGE ========== */
-#page-group-view{padding-top:60px;}
+#page-group-view{padding-top:calc(60px + env(safe-area-inset-top,0px));}
 .gv-layout{max-width:1600px;margin:-60px auto 0;padding:0 20px 40px;position:relative;z-index:1;display:grid;grid-template-columns:260px 1fr 300px;gap:24px;align-items:start;}
 .gv-center{display:flex;flex-direction:column;gap:16px;min-width:0;}
 .gv-left,.gv-right{display:flex;flex-direction:column;gap:16px;position:sticky;top:80px;}
@@ -1974,7 +1974,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     input,textarea,select{font-size:16px!important;}
 
     /* --- Navbar — top bar compact --- */
-    .navbar{height:48px!important;max-height:48px!important;}
+    .navbar{height:calc(48px + env(safe-area-inset-top,0px))!important;max-height:calc(48px + env(safe-area-inset-top,0px))!important;padding-top:env(safe-area-inset-top,0px)!important;}
     .nav-container{padding:0 10px!important;gap:6px!important;}
     .nav-logo{font-size:clamp(13px,3.5vw,18px)!important;padding:4px 10px!important;}
     .search-bar{display:none!important;}
@@ -2354,8 +2354,8 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .feed-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;}
 
     /* --- Spacing — mobile (with bottom nav) --- */
-    .page{padding-top:58px!important;padding-bottom:72px!important;}
-    #page-home{padding-top:48px!important;}
+    .page{padding-top:calc(58px + env(safe-area-inset-top,0px))!important;padding-bottom:72px!important;}
+    #page-home{padding-top:calc(48px + env(safe-area-inset-top,0px))!important;}
     .page-container{padding:0 12px 40px!important;}
     .page-header{margin-bottom:16px;}
     .promo-card{padding:18px 14px;}
