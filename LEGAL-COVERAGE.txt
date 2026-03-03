@@ -1,6 +1,6 @@
 =========================================================================
 BLIPVIBE — LEGAL COVERAGE SUMMARY
-Last Updated: February 23, 2026
+Last Updated: March 3, 2026
 =========================================================================
 
 This document summarizes all legal protections currently in place for
@@ -8,198 +8,297 @@ BlipVibe across the Terms of Service, Privacy Policy, and technical
 implementation.
 
 =========================================================================
-TERMS OF SERVICE (21 Sections)
+TERMS OF USE (26 Sections)
 =========================================================================
 
 1. ELIGIBILITY & AGE (COPPA COMPLIANCE)
    - Minimum age: 13 years old
+   - Parental consent required for minors 13-17
    - Age verification at signup (birthday field)
    - Accounts of users under 13 will be terminated and data deleted
    - Compliant with Children's Online Privacy Protection Act (COPPA)
 
-2. FREE EXPRESSION POLICY
+2. ACCOUNT REGISTRATION & SECURITY
+   - Accurate information required
+   - Credentials must be kept confidential
+   - No account transfer or sharing
+   - Unauthorized access must be reported immediately
+   - User responsible for all activity under account
+
+3. FREE EXPRESSION POLICY
    - Supports open conversation
    - Strictly prohibits: racial slurs, sexual orientation slurs,
      credible threats of violence, doxing, direct harassment
+   - References Acceptable Use Policy for complete list
 
-3. USER CONTENT & RESPONSIBILITY
+4. USER CONTENT & RESPONSIBILITY
    - Users own their content
-   - Non-exclusive, worldwide, royalty-free license to display on platform
-   - License ends when content/account is deleted
+   - Non-exclusive, worldwide, royalty-free, sublicensable license
+   - License ends when content/account is deleted (except shared
+     content or legal retention requirements)
    - Users responsible for copyright compliance
    - Prohibited: illegal content, spam, malicious code, copyrighted
      material without authorization
 
-4. EMBEDDED & THIRD-PARTY MEDIA
+5. EMBEDDED & THIRD-PARTY MEDIA
    - Uses official embed tools (YouTube, Spotify, TikTok, Instagram,
      Twitter/X, Vimeo, SoundCloud)
    - BlipVibe does not host or redistribute third-party content
    - Third-party tracking disclosure for embedded media
+   - General third-party links disclaimer
 
-5. COPYRIGHT & DMCA POLICY
-   - Full DMCA compliance
+6. COPYRIGHT & DMCA POLICY
+   - Full DMCA compliance (17 U.S.C. § 512)
    - Takedown process documented (notice requirements listed)
+   - Penalty of perjury statement required
    - Designated contact: copyright@blipvibe.com
-   - Counter-notification process supported
+   - Detailed counter-notification procedure
+   - Fayette County, Tennessee jurisdiction for counter-notifications
+   - § 512(f) misrepresentation warning
 
-6. REPEAT INFRINGER POLICY
+7. REPEAT INFRINGER POLICY
    - Accounts with multiple valid DMCA notices may be terminated
 
-7. VIRTUAL CURRENCY (COINS)
-   - No real-world monetary value
-   - Non-transferable, non-refundable
+8. VIRTUAL CURRENCY (COINS)
+   - Limited, revocable license — not ownership
+   - No real-world, cash, investment, or speculative value
+   - Non-transferable, non-refundable (except where required by law)
    - Used only for cosmetic items
    - BlipVibe may modify/reset balances at any time
+   - Forfeited upon account termination or deletion
+   - Apple App Store purchase compliance (Apple's terms/refund apply)
 
-8. DIRECT MESSAGES
+9. DIRECT MESSAGES
    - Not end-to-end encrypted (disclosed)
    - May be accessed if required by law or to enforce Terms
    - Users warned not to share sensitive info via messages
 
-9. LOCATION FEATURES
-   - Off by default (opt-in only)
-   - Only approximate area shown (city/region)
-   - Precise GPS coordinates not stored
+10. LOCATION FEATURES
+    - Off by default (opt-in only)
+    - Only approximate area shown (city/region)
+    - Precise GPS coordinates not stored
 
-10. REPORT FEATURE
+11. REPORT FEATURE
     - Users can report content violations
     - BlipVibe reviews reports and takes action
 
-11. PRIVACY & DATA
+12. PRIVACY & DATA
+    - Governed by Privacy Policy (incorporated by reference)
     - All data categories disclosed
     - Third-party services listed
-    - Data deletion available via hello@blipvibe.com
+    - Data deletion available via Settings or hello@blipvibe.com
     - Does not sell personal data
 
-12. BETA PLATFORM NOTICE
-    - "As is" beta — features may change, data may be reset
+13. PLATFORM STATUS & AVAILABILITY
+    - Beta — features may change, data may be reset
+    - No guarantee of uptime, availability, or error-free service
+    - May suspend/change/discontinue Service without notice
 
-13. NO WARRANTY
-    - Provided "as is" without warranties of any kind
+14. SECTION 230 SAFE HARBOR
+    - Interactive computer service under 47 U.S.C. § 230
+    - Not publisher or speaker of user-generated content
+    - No endorsement or responsibility for user content
+    - Good-faith moderation ≠ editorial control
 
-14. LIMITATION OF LIABILITY
-    - Not liable for data loss, user disputes, or damages
-    - Total liability capped at $100 USD
+15. NO WARRANTY
+    - "AS IS" / "AS AVAILABLE" — ALL CAPS conspicuous disclaimer
+    - Disclaims: merchantability, fitness for particular purpose,
+      title, non-infringement (Tennessee UCC § 2-316 compliant)
 
-15. ACCOUNT TERMINATION
-    - BlipVibe may suspend/terminate violating accounts
-    - Users may delete their own account via Settings or email
-
-16. DISPUTE RESOLUTION
-    - Good-faith negotiation first
-    - Binding arbitration (American Arbitration Association)
-    - Class action waiver
+16. LIMITATION OF LIABILITY
+    - ALL CAPS conspicuous disclaimer
+    - No indirect, incidental, special, consequential, exemplary,
+      or punitive damages regardless of theory of liability
+    - Total liability capped at greater of 12-month payments or $100
+    - Jurisdictional savings clause
 
 17. INDEMNIFICATION
     - Users agree to indemnify and hold harmless BlipVibe
     - Covers claims from user's content, use, or TOS violation
 
-18. GOVERNING LAW
-    - State of Tennessee and applicable federal law
-    - Exclusive jurisdiction in Fayette County, Tennessee state/federal courts
+18. ACCOUNT TERMINATION
+    - Sole discretion, any reason or no reason, with or without notice
+    - Users may delete via Settings or email
 
-19. SEVERABILITY
+19. DISPUTE RESOLUTION & ARBITRATION
+    - 30-day informal resolution period required
+    - Binding individual arbitration (AAA Consumer Rules)
+    - Federal Arbitration Act (9 U.S.C. § 1 et seq.) governs
+    - Venue: Fayette County, Tennessee
+    - Fee allocation: BlipVibe reimburses filing fee (non-frivolous)
+    - CLASS ACTION WAIVER (ALL CAPS)
+    - JURY TRIAL WAIVER (ALL CAPS)
+    - Small claims court exception (Fayette County)
+    - 30-day opt-out window from account creation
+    - Arbitration-specific severability clause
+
+20. GOVERNING LAW
+    - State of Tennessee and applicable federal law
+    - Exclusive jurisdiction in Fayette County, Tennessee
+
+21. EXPORT COMPLIANCE
+    - OFAC sanctions/embargo representation
+    - Not on prohibited/restricted parties lists
+    - Compliance with U.S. export laws
+
+22. SEVERABILITY
     - Invalid provisions don't void remaining terms
 
-20. CHANGES TO TERMS
+23. WAIVER
+    - Failure to enforce ≠ waiver of rights
+    - Waivers must be in writing
+
+24. ENTIRE AGREEMENT
+    - TOS + incorporated policies = complete agreement
+    - Supersedes prior agreements
+
+25. CHANGES TO TERMS
     - Users must accept updated terms before continuing
 
-21. ACCEPTANCE
-    - Confirms age, agreement, and beta understanding
+26. ACCEPTANCE
+    - Confirms age, parental consent (13-17), agreement to all
+      incorporated policies, and beta understanding
 
 =========================================================================
-PRIVACY POLICY (14 Sections)
+PRIVACY POLICY (21 Sections, Version 3.0)
 =========================================================================
 
 1. INFORMATION WE COLLECT
-   - Account info: email, username, display name, DOB, password (hashed),
-     profile bio, avatar, cover photo
-   - Content: posts, comments, replies, DMs, uploaded images, saved posts
+   - Account info: email, username, first name, last name, nickname,
+     display name, DOB, password (hashed), profile bio, avatar, cover
+   - Content: posts, comments, replies, DMs, uploaded images, saved
+     posts, photo albums, group memberships, group posts, group content
    - Usage data: likes, dislikes, follows, preferences, coin balance,
-     blocked users, reported content
-   - Technical data: auth session tokens, last visited page
+     blocked users, reported content, in-app notifications, group coin
+     balances, group skin purchases
+   - Technical data: auth session tokens, IP address, browser/device info
    - Location data: only if opted in, approximate area only
+   - What we do NOT collect: no analytics/tracking pixels, no contacts/
+     call logs, no automated decision-making/profiling
 
 2. HOW WE USE YOUR INFORMATION
    - Platform operation, authentication, content display, messaging,
-     notifications, Terms enforcement, DMCA compliance
+     notifications, Terms enforcement, DMCA compliance, fraud/abuse
+     detection, future advertising, service announcements
 
-3. INFORMATION WE DO NOT COLLECT
-   - No analytics/tracking pixels
-   - No selling/renting/sharing data with advertisers
-   - No precise GPS storage
-   - No message reading (except by law/Terms)
+3. SHARING OF INFORMATION
+   - No sale of personal data
+   - Service providers (contractually bound)
+   - Advertising partners (future, with update before launch)
+   - Legal requirements (good faith disclosure)
+   - Business transfers (with notice)
+   - With consent
 
 4. DATA STORAGE & SECURITY
-   - Supabase cloud infrastructure
+   - Supabase cloud infrastructure (US-hosted)
    - Encrypted at rest and in transit (TLS/SSL)
    - Row-level security policies
    - Secure password hashing
    - DMs not end-to-end encrypted (disclosed)
+   - Data Processing Agreement (DPA) with Supabase
+   - Data breach notification policy (all users)
 
-5. THIRD-PARTY SERVICES (full table)
-   - Supabase (database, auth, storage)
-   - Google Fonts (font loading)
-   - Cloudflare/Font Awesome (icons)
-   - Microlink (link previews)
-   - OpenStreetMap/Nominatim (location lookup)
-   - YouTube, TikTok, Instagram, Twitter/X, Spotify, Vimeo, SoundCloud
-     (media embeds)
+5. ADVERTISING (PLANNED)
+   - Not currently monetized
+   - Future ad networks disclosed before launch
+   - Opt-out mechanism for personalized ads
+   - DMs, private data, DOB not shared with advertisers
+
+6. DIRECT MESSAGES
+   - Not end-to-end encrypted
+   - Admin access for TOS enforcement/legal process
+   - Included in account deletion
+
+7. THIRD-PARTY SERVICES (full table)
+   - Supabase, Google Fonts, Cloudflare/Font Awesome, Microlink,
+     OpenStreetMap/Nominatim, YouTube, TikTok, Instagram, Twitter/X,
+     Spotify, Vimeo, SoundCloud, FxTwitter API, TikTok oEmbed API,
+     Klipy, Apple (App Store)
    - Each service's data sharing disclosed
 
-6. COOKIES & LOCAL STORAGE
+8. COOKIES & LOCAL STORAGE
    - No BlipVibe tracking cookies
-   - localStorage for: auth tokens, preferences, TOS status, last page
+   - localStorage for: auth tokens, preferences, TOS status
    - Third-party embed cookies disclosed
-   - Cookie consent banner with accept/decline
-   - Manage cookies option in Settings
+   - Do Not Track disclosure
 
-7. CHILDREN'S PRIVACY (COPPA)
+9. CHILDREN'S PRIVACY (COPPA)
    - Not directed at children under 13
-   - Age verification at signup
+   - Age verification at signup (self-reported)
    - Will delete account if child under 13 discovered
    - Contact: hello@blipvibe.com
 
-8. YOUR RIGHTS
-   - Access: view all data within platform
-   - Correction: edit profile, posts, settings anytime
-   - Deletion: Delete My Account in Settings or email
-   - Data portability: request copy via email
-   - Opt-out of location: toggle in Settings
+10. DATA RETENTION
+    - Active accounts: data retained while active
+    - Deleted content: removed, backups overwritten in 30 days
+    - Deleted accounts: all data deleted within 30 days
+    - Legal holds exception
+    - Anonymized/aggregated data retained
+    - Beta resets with 7-day notice
 
-9. DATA RETENTION
-   - Active accounts: data retained while active
-   - Deleted content: removed from database
-   - Deleted accounts: all data deleted within 30 days
-   - Beta resets possible
-
-10. CALIFORNIA RESIDENTS (CCPA)
-    - Right to know what data is collected
-    - Right to request deletion
-    - Right to opt out of data sale (N/A — we don't sell)
+11. YOUR RIGHTS
+    - Access, correction, deletion, data portability, location opt-out,
+      withdraw consent
     - Non-discrimination for exercising rights
-    - Contact: hello@blipvibe.com
+    - Identity verification process
+    - No fee for reasonable requests
 
-11. EUROPEAN USERS (GDPR)
-    - Legal bases: contract, consent, legitimate interest
-    - Rights: access, rectification, erasure, restrict processing,
-      data portability, object, withdraw consent
-    - Response within 30 days
-    - Data breach notification within 72 hours
-    - International transfer basis: explicit consent (Article 49(1)(a))
+12. CALIFORNIA RESIDENTS (CCPA/CPRA)
+    - CCPA disclosure categories (identifiers, Cal. Civ. Code § 1798.80,
+      internet activity, geolocation, visual info, inferences)
+    - Right to know, delete, correct, opt out of sale/sharing
+    - Right to limit sensitive personal information use
+    - Authorized agents supported
+    - 45-day response (extendable)
 
-12. INTERNATIONAL USERS
+13. EUROPEAN USERS (GDPR)
+    - Data controller: BlipVibe
+    - Legal bases: Art. 6(1)(a) consent, (b) contract, (c) legal
+      obligation, (f) legitimate interest
+    - Rights: access (Art. 15), rectification (16), erasure (17),
+      restrict processing (18), portability (20), object (21),
+      withdraw consent (Art. 7(3)), lodge complaint
+    - 30-day response (extendable by 60 days)
+    - Data breach notification within 72 hours (Arts. 33-34)
+
+14. TENNESSEE RESIDENTS (TIPA)
+    - Tennessee Information Protection Act acknowledgment
+    - Rights: know, delete, correct, data portability, opt out
+    - No sale of personal information, no profiling
+    - 45-day response (extendable), appeal process
+
+15. INTERNATIONAL DATA TRANSFERS
     - Servers in United States
-    - Data transferred to and processed in US
-    - Consent obtained for transfer
+    - Standard Contractual Clauses (SCCs) via Supabase
+    - Explicit consent (Art. 49(1)(a)) as supplementary measure
 
-13. CHANGES TO THIS POLICY
-    - Effective date updated on changes
+16. USER-GENERATED CONTENT
+    - User responsibility for public content
+    - References Terms of Use and Acceptable Use Policy
+
+17. DMCA & COPYRIGHT
+    - 17 U.S.C. § 512 compliance
+    - Designated agent: copyright@blipvibe.com
+    - Repeat infringer termination policy
+
+18. CHANGES TO THIS POLICY
+    - Effective date/version updated
+    - 14-day notice for material changes
     - Continued use = acceptance
 
-14. CONTACT US
+19. APPLE APP STORE
+    - Apple not responsible for Service
+    - In-app purchases subject to Apple's terms
+    - Apple as third-party beneficiary
+
+20. THIRD-PARTY CREDITS
+    - Font Awesome (CC BY 4.0 / SIL OFL)
+    - Google Fonts (SIL Open Font License)
+
+21. CONTACT US
     - Email: hello@blipvibe.com
     - Copyright/DMCA: copyright@blipvibe.com
+    - 30-day response target
 
 =========================================================================
 TECHNICAL SECURITY MEASURES

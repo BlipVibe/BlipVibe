@@ -751,3 +751,41 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - **`computeDisplayName(firstName, lastName, nickname, displayMode, username)`** — pure helper in supabase.js encoding all fallback rules: nickname mode uses nickname if available, otherwise falls back to real name, then username
 - **Migration** (`supabase/add-display-name-fields.sql`): adds columns, backfills existing display_name into first/last, updates `handle_new_user` trigger, updates `search_profiles` and `admin_get_users` RPCs to search new fields
 - **Search** now matches first_name, last_name, and nickname in addition to username/display_name/bio
+
+## Legal Compliance Audit & TOS/Privacy Policy Update (v0.2.18 — 2026-03-03)
+
+### Terms of Use (21 → 26 sections, TOS_VERSION bumped to 4)
+- **Binding contract formation language** added to intro — explicitly states Terms are a legally binding agreement
+- **Sub-policy incorporation by reference** — intro now incorporates Privacy Policy, Acceptable Use Policy, DMCA Policy, and Arbitration Agreement
+- **Section 1 (Eligibility):** Added parental consent requirement for minors 13–17
+- **Section 2 (Account Registration & Security):** NEW — accurate info, credential security, no account transfer, unauthorized access notification
+- **Section 3 (Free Expression):** Now references Acceptable Use Policy for complete prohibited conduct list
+- **Section 4 (User Content):** Added sublicensable license right (needed for CDN/Supabase distribution); retention exception for law
+- **Section 5 (Embedded Media):** Added general third-party links disclaimer
+- **Section 6 (DMCA):** Added penalty of perjury statement, detailed counter-notification procedure with Fayette County jurisdiction, § 512(f) misrepresentation warning
+- **Section 8 (Virtual Currency):** Added license-not-ownership language, no investment/speculative value, coins forfeited on account deletion, refund exception for applicable law, Apple App Store purchase compliance
+- **Section 13 (Platform Status):** Merged beta notice + explicit no-uptime-guarantee
+- **Section 14 (Section 230 Safe Harbor):** NEW — 47 U.S.C. § 230 protection, not publisher of user content, good-faith moderation defense
+- **Section 15 (No Warranty):** Strengthened to ALL CAPS conspicuous disclaimer per Tennessee UCC § 2-316 — merchantability, fitness for purpose, title, non-infringement
+- **Section 16 (Limitation of Liability):** Strengthened to ALL CAPS — indirect/incidental/special/consequential/exemplary/punitive damages disclaimed regardless of theory of liability
+- **Section 18 (Account Termination):** Expanded to sole discretion, any reason or no reason, with or without notice
+- **Section 19 (Dispute Resolution & Arbitration):** Complete rewrite — Federal Arbitration Act (9 U.S.C. § 1), 30-day informal resolution, binding individual arbitration (AAA Consumer Rules), Fayette County venue, fee allocation, explicit class action + jury trial waiver (ALL CAPS), small claims exception, 30-day opt-out window, arbitration-specific severability
+- **Section 21 (Export Compliance):** NEW — OFAC sanctions/embargo representation
+- **Section 23 (Waiver):** NEW — failure to enforce ≠ waiver
+- **Section 24 (Entire Agreement):** NEW — TOS + incorporated policies = full agreement
+- **Section 26 (Acceptance):** Updated with parental consent for 13–17
+
+### Privacy Policy (20 → 21 sections, Version 3.0)
+- **Section 1a:** Added first_name, last_name, nickname to collected account info
+- **Section 1b:** Added photo albums, group memberships, group posts, group content
+- **Section 1c:** Added in-app notifications, group coin balances, group skin purchases
+- **Section 3:** Updated advertising opt-out cross-reference to include TIPA section
+- **Section 14 (Tennessee Residents — TIPA):** NEW — Tennessee Information Protection Act acknowledgment with know/delete/correct/portability/opt-out rights, 45-day response, appeal process
+- Sections 15–21 renumbered (was 14–20)
+- Cross-references updated (Section 17→18 for changes notification, Sections 12/13→12/13/14 for opt-out)
+
+### Both Documents (index.html + app.js modal)
+- TOS updated in both index.html signup form and app.js modal (kept in sync)
+- TOS_VERSION bumped from 3 → 4 (forces all existing users to re-accept)
+- Effective dates updated to March 3, 2026
+- Governing law: State of Tennessee, venue: Fayette County, Tennessee (confirmed in both)

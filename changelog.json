@@ -1,5 +1,37 @@
 [
   {
+    "version": "0.2.18",
+    "date": "2026-03-03",
+    "added": [
+      "Section 230 safe harbor clause in Terms of Use (47 U.S.C. § 230)",
+      "Account Registration & Security section in Terms of Use",
+      "Export Compliance (OFAC) representation in Terms of Use",
+      "Waiver and Entire Agreement clauses in Terms of Use",
+      "Tennessee Information Protection Act (TIPA) section in Privacy Policy",
+      "Data Processing Agreement (DPA) disclosure in Privacy Policy",
+      "General data breach notification policy for all users"
+    ],
+    "changed": [
+      "Terms of Use expanded from 21 to 26 sections with full legal compliance audit",
+      "Privacy Policy expanded from 20 to 21 sections (Version 3.0)",
+      "Arbitration clause completely rewritten — Federal Arbitration Act, 30-day informal resolution, Fayette County venue, fee allocation, opt-out window, small claims exception",
+      "Warranty disclaimer strengthened to conspicuous ALL CAPS format (Tennessee UCC § 2-316)",
+      "Limitation of liability strengthened — all damage types disclaimed regardless of theory of liability",
+      "Virtual Currency section expanded — license-not-ownership, Apple compliance, forfeiture on deletion",
+      "DMCA section expanded — penalty of perjury, counter-notification procedure, § 512(f) warning",
+      "Governing law corrected from Texas to Tennessee, venue Fayette County",
+      "TOS_VERSION bumped to 4 (forces re-acceptance by all users)",
+      "Added FxTwitter API, TikTok oEmbed, and Klipy to third-party services disclosure"
+    ],
+    "fixed": [
+      "Governing law incorrectly referenced Texas instead of Tennessee",
+      "Privacy Policy contained Limitation of Liability and Dispute Resolution sections (removed — belong in TOS)",
+      "Privacy Policy Section 230 reference removed (belongs in TOS)",
+      "Missing parental consent requirement for minors 13-17",
+      "Account data collection did not list first_name, last_name, nickname fields"
+    ]
+  },
+  {
     "version": "0.2.17",
     "date": "2026-03-01",
     "added": [
