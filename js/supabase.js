@@ -9,6 +9,27 @@ const SUPABASE_ANON = 'sb_publishable_PPMPXSazIqUTmkgAx6f3Tg_VVyn1VbB';
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
+// ---- EMAIL MASKING (hide email-as-username from public display) -------------
+function _isEmailStr(s){return s&&/[^\s@]+@[^\s@]+\.[^\s@]+/.test(s);}
+function _maskEmail(s){var at=s.indexOf('@');return s.substring(0,Math.min(at,2))+'***';}
+function _sanitizeProfile(p){
+  if(!p||typeof p!=='object')return p;
+  if(_isEmailStr(p.display_name))p.display_name=_maskEmail(p.display_name);
+  if(_isEmailStr(p.username))p.username=_maskEmail(p.username);
+  return p;
+}
+function _sanitizeData(d){
+  if(!d)return d;
+  if(Array.isArray(d)){d.forEach(_sanitizeData);return d;}
+  if(typeof d==='object'){
+    _sanitizeProfile(d);
+    ['author','owner','sender','receiver','user','partner','follower','followed'].forEach(function(k){
+      if(d[k])_sanitizeProfile(d[k]);
+    });
+  }
+  return d;
+}
+
 // ---- 2. AUTH ----------------------------------------------------------------
 
 async function sbSignUp(email, password, username, birthday = null, firstName = '', lastName = '') {
@@ -76,7 +97,7 @@ async function sbEnsureProfile(authUser) {
     .select('*')
     .eq('id', authUser.id)
     .maybeSingle();
-  if (existing) return existing;
+  if (existing) return _sanitizeProfile(existing);
   // If the fetch failed (network error), don't create/overwrite — just throw
   if (fetchErr) throw fetchErr;
 
@@ -98,7 +119,7 @@ async function sbEnsureProfile(authUser) {
     .select()
     .single();
   if (error) throw error;
-  return data;
+  return _sanitizeProfile(data);
 }
 
 function sbOnAuthChange(callback) {
@@ -115,7 +136,7 @@ async function sbGetProfile(userId) {
     .eq('id', userId)
     .single();
   if (error) throw error;
-  return data;
+  return _sanitizeProfile(data);
 }
 
 // Get OWN profile with private columns (skin_data, birthday, email)
@@ -123,7 +144,7 @@ async function sbGetProfile(userId) {
 async function sbGetOwnProfile() {
   const { data, error } = await sb.rpc('get_own_profile');
   if (error) throw error;
-  return data;
+  return _sanitizeProfile(data);
 }
 
 async function sbGetProfileByUsername(username) {
@@ -132,7 +153,7 @@ async function sbGetProfileByUsername(username) {
     .eq('username', username)
     .single();
   if (error) throw error;
-  return data;
+  return _sanitizeProfile(data);
 }
 
 async function sbUpdateProfile(userId, updates) {
@@ -179,7 +200,7 @@ async function sbSearchProfiles(query, limit = 20) {
     p_limit: limit || 20
   });
   if (error) throw error;
-  return data || [];
+  return _sanitizeData(data || []);
 }
 
 async function sbGetAllProfiles(limit = 50) {
@@ -187,7 +208,7 @@ async function sbGetAllProfiles(limit = 50) {
     .select('*')
     .limit(limit);
   if (error) throw error;
-  return data;
+  return _sanitizeData(data);
 }
 
 // ---- 4. POSTS ---------------------------------------------------------------
@@ -205,7 +226,7 @@ async function sbCreatePost(authorId, content, imageUrl = null, groupId = null, 
     `)
     .single();
   if (error) throw error;
-  return data;
+  return _sanitizeData(data);
 }
 
 async function sbGetFeed(limit = 50, offset = 0) {
@@ -227,7 +248,7 @@ async function sbGetFeed(limit = 50, offset = 0) {
       .eq('target_id', post.id);
     post.like_count = count || 0;
   }
-  return data;
+  return _sanitizeData(data);
 }
 
 async function sbGetFollowingFeed(userId, limit = 50, offset = 0) {
@@ -259,7 +280,7 @@ async function sbGetFollowingFeed(userId, limit = 50, offset = 0) {
       .eq('target_id', post.id);
     post.like_count = count || 0;
   }
-  return data;
+  return _sanitizeData(data);
 }
 
 async function sbGetPostsByIds(ids) {
@@ -268,7 +289,7 @@ async function sbGetPostsByIds(ids) {
     .select('*, author:profiles!posts_author_id_fkey(id, username, display_name, avatar_url)')
     .in('id', ids);
   if (error) throw error;
-  return data || [];
+  return _sanitizeData(data || []);
 }
 
 async function sbGetUserPosts(userId, limit = 20) {
@@ -283,7 +304,7 @@ async function sbGetUserPosts(userId, limit = 20) {
     .order('created_at', { ascending: false })
     .limit(limit);
   if (error) throw error;
-  return data;
+  return _sanitizeData(data);
 }
 
 async function sbDeletePost(postId) {
@@ -324,7 +345,7 @@ async function sbGetCommentsLite(postId, limit = 20) {
     .order('created_at', { ascending: true })
     .limit(limit);
   if (error) throw error;
-  return data || [];
+  return _sanitizeData(data || []);
 }
 
 async function sbGetComments(postId, sortBy = 'top') {
@@ -348,7 +369,7 @@ async function sbGetComments(postId, sortBy = 'top') {
   if (sortBy === 'top') {
     data.sort((a, b) => (b.like_count || 0) - (a.like_count || 0));
   }
-  return data;
+  return _sanitizeData(data);
 }
 
 async function sbDeleteComment(commentId) {
@@ -420,7 +441,7 @@ async function sbGetLikers(targetType, targetId, limit = 10) {
     .eq('target_id', targetId)
     .limit(limit);
   if (error) throw error;
-  return (data || []).map(d => d.user);
+  return (data || []).map(d => _sanitizeProfile(d.user));
 }
 
 // ---- 7. FOLLOWS -------------------------------------------------------------
@@ -455,7 +476,7 @@ async function sbGetFollowing(userId) {
     `)
     .eq('follower_id', userId);
   if (error) throw error;
-  return (data || []).map(d => d.followed);
+  return (data || []).map(d => _sanitizeProfile(d.followed));
 }
 
 async function sbGetFollowers(userId) {
@@ -465,7 +486,7 @@ async function sbGetFollowers(userId) {
     `)
     .eq('followed_id', userId);
   if (error) throw error;
-  return (data || []).map(d => d.follower);
+  return (data || []).map(d => _sanitizeProfile(d.follower));
 }
 
 async function sbGetFriendsOfFriends(userId) {
@@ -719,7 +740,7 @@ async function sbGetGroups(limit = 50) {
     `)
     .limit(limit);
   if (error) throw error;
-  return data;
+  return _sanitizeData(data);
 }
 
 async function sbGetGroupMembers(groupId) {
@@ -730,7 +751,7 @@ async function sbGetGroupMembers(groupId) {
     `)
     .eq('group_id', groupId);
   if (error) throw error;
-  return data;
+  return _sanitizeData(data);
 }
 
 async function sbJoinGroup(groupId, userId) {
@@ -752,7 +773,7 @@ async function sbCreateGroup(ownerId, name, description) {
   // Auto-add owner as member
   await sb.from('group_members')
     .insert({ group_id: data.id, user_id: ownerId, role: 'owner' });
-  return data;
+  return _sanitizeData(data);
 }
 
 async function sbDeleteGroup(groupId) {
@@ -786,7 +807,7 @@ async function sbGetGroupPosts(groupId, limit = 50) {
       .eq('target_id', post.id);
     post.like_count = count || 0;
   }
-  return data || [];
+  return _sanitizeData(data || []);
 }
 
 async function sbUpdateGroup(groupId, updates) {
@@ -881,6 +902,7 @@ async function sbGetConversations(userId) {
     .or('sender_id.eq.' + userId + ',receiver_id.eq.' + userId)
     .order('created_at', { ascending: false });
   if (error) throw error;
+  _sanitizeData(data);
 
   // Group by conversation partner
   var convos = {};
@@ -916,7 +938,7 @@ async function sbGetMessages(userId, partnerId, limit = 100) {
     .order('created_at', { ascending: true })
     .limit(limit);
   if (error) throw error;
-  return data;
+  return _sanitizeData(data);
 }
 
 async function sbEditMessage(messageId, newContent) {
@@ -1027,7 +1049,7 @@ async function sbGetPhotoComments(photoUrl, sortBy = 'newest') {
     .eq('photo_url', photoUrl)
     .order('created_at', { ascending: sortBy === 'oldest' });
   if (error) throw error;
-  return data || [];
+  return _sanitizeData(data || []);
 }
 
 async function sbCreatePhotoComment(photoUrl, postId, authorId, content, parentCommentId = null) {
