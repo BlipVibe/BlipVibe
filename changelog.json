@@ -11,7 +11,8 @@
     ],
     "fixed": [
       "Profile cover gradient now has rounded top corners (10px) — no more sharp square edges behind avatar on profile cards and profile views",
-      "Mobile bottom nav bar no longer floats with a gap when the browser address bar hides on scroll — background extends to fill the space"
+      "Mobile bottom nav bar no longer floats with a gap when the browser address bar hides on scroll — background extends to fill the space",
+      "Comment modal GIF and Post buttons no longer get cut off on mobile — reduced sizing and gap for small screens"
     ]
   },
   {
