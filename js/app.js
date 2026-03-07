@@ -663,6 +663,8 @@ async function initApp() {
     initMessageSubscription();
     _initAppRunning = false;
     _initAppDone = true;
+    // Show first-time feed tutorial after everything loads
+    setTimeout(function(){showFeedTutorial();},500);
 }
 
 // Listen for auth state changes
@@ -788,7 +790,8 @@ function _buildSkinData(){
         savedFolders:savedFolders||[],
         hiddenPosts:hiddenPosts||{},
         reportedPosts:reportedPosts||[],
-        tosAcceptedVersion:_tosAccepted?TOS_VERSION:((currentUser&&currentUser.skin_data&&currentUser.skin_data.tosAcceptedVersion)||0)
+        tosAcceptedVersion:_tosAccepted?TOS_VERSION:((currentUser&&currentUser.skin_data&&currentUser.skin_data.tosAcceptedVersion)||0),
+        tutorialsSeen:_tutorialsSeen||{}
     };
 }
 function syncSkinDataToSupabase(immediate){
@@ -842,6 +845,7 @@ function _applySkinDataFromCache(sd){
     if(Array.isArray(sd.savedFolders)&&sd.savedFolders.length) savedFolders=sd.savedFolders;
     if(sd.hiddenPosts&&typeof sd.hiddenPosts==='object') hiddenPosts=sd.hiddenPosts;
     if(Array.isArray(sd.reportedPosts)) reportedPosts=sd.reportedPosts;
+    if(sd.tutorialsSeen&&typeof sd.tutorialsSeen==='object') _tutorialsSeen=sd.tutorialsSeen;
     // Group skin data now loaded from group's own skin_data column (see loadGroups)
 }
 async function loadSkinDataFromSupabase(){
@@ -935,6 +939,7 @@ var blockedUsers={};
 var likedComments={};
 var dislikedComments={};
 var commentCoinAwarded={};
+var _tutorialsSeen={};
 function persistBlocked(){saveState();syncSkinDataToSupabase(true);}
 function findPostFolder(pid){var s=String(pid);for(var i=0;i<savedFolders.length;i++){if(savedFolders[i].posts.indexOf(s)!==-1)return savedFolders[i];}return null;}
 
@@ -1217,7 +1222,7 @@ function navigateTo(page,skipPush){
     if(page==='profiles') renderProfiles(currentProfileTab);
     if(page==='groups'){currentGroupTab='yours';renderGroups();}
     if(page==='skins'){page='shop';_skinPageView='mine';target=document.getElementById('page-shop');if(target)target.classList.add('active');$$('.nav-link[data-page="shop"]').forEach(function(l){l.classList.add('active');});if(!skipPush){history.replaceState({page:'shop'},'','#shop');}}
-    if(page==='shop') renderSkinPage();
+    if(page==='shop'){renderSkinPage();setTimeout(function(){showShopTutorial();},300);}
     if(page==='photos'){
         if(currentUser&&(!_pvAlbums||!_pvAlbums.length)){
             sbGetAlbums(currentUser.id).then(function(a){_pvAlbums=a;renderPhotoAlbum();}).catch(function(){renderPhotoAlbum();});
@@ -1613,6 +1618,61 @@ $('#modalOverlay').addEventListener('touchmove',function(e){
 document.addEventListener('click',function(e){
     if(e.target.closest('.modal-close')) closeModal();
 });
+
+// ======================== FIRST-TIME TUTORIALS ========================
+function _showTutorial(key,html){
+    if(!currentUser) return;
+    if(_tutorialsSeen[key]) return;
+    var overlay=document.createElement('div');
+    overlay.className='tut-overlay';
+    overlay.innerHTML='<div class="tut-modal">'+html+'<button class="tut-ok btn btn-primary">Got it!</button></div>';
+    document.body.appendChild(overlay);
+    requestAnimationFrame(function(){overlay.classList.add('show');});
+    function dismiss(){
+        overlay.classList.remove('show');
+        setTimeout(function(){overlay.remove();},300);
+        _tutorialsSeen[key]=1;
+        syncSkinDataToSupabase(true);
+    }
+    overlay.querySelector('.tut-ok').addEventListener('click',dismiss);
+    overlay.addEventListener('click',function(e){if(e.target===overlay) dismiss();});
+}
+function showFeedTutorial(){
+    _showTutorial('feed',
+        '<div class="tut-header"><div class="tut-logo">BV</div><h2>Welcome to BlipVibe!</h2></div>'
+        +'<p class="tut-intro">Post, Like &amp; Comment to earn coins!</p>'
+        +'<div class="tut-rules">'
+        +'<div class="tut-rule"><i class="fas fa-pen-to-square"></i><span>Post <strong>+5 coins</strong></span></div>'
+        +'<div class="tut-rule"><i class="fas fa-comment"></i><span>Comment <strong>+2 coins</strong></span></div>'
+        +'<div class="tut-rule"><i class="fas fa-reply"></i><span>Reply <strong>+2 coins</strong></span></div>'
+        +'<div class="tut-rule"><i class="fas fa-heart"></i><span>Like <strong>+1 coin</strong></span></div>'
+        +'</div>'
+        +'<div class="tut-divider"></div>'
+        +'<h3><i class="fas fa-scroll" style="color:var(--primary);margin-right:6px;"></i>Community Rules</h3>'
+        +'<ul class="tut-list">'
+        +'<li>Be respectful to everyone</li>'
+        +'<li>No spam or self-promotion</li>'
+        +'<li>No hate speech or harassment</li>'
+        +'<li>Keep it fun &amp; positive</li>'
+        +'</ul>'
+        +'<div class="tut-divider"></div>'
+        +'<p class="tut-tip"><i class="fas fa-coins" style="color:#f59e0b;"></i> Spend your coins in the <strong>Skin Shop</strong> to customize your profile!</p>'
+    );
+}
+function showShopTutorial(){
+    _showTutorial('shop',
+        '<div class="tut-header"><div class="tut-logo"><i class="fas fa-palette"></i></div><h2>Welcome to the Skin Shop!</h2></div>'
+        +'<p class="tut-intro">Spend your coins here — make your page uniquely yours.</p>'
+        +'<div class="tut-features">'
+        +'<div class="tut-feat"><i class="fas fa-palette"></i><strong>Skins</strong><span>Change your color theme</span></div>'
+        +'<div class="tut-feat"><i class="fas fa-font"></i><strong>Fonts</strong><span>Pick your text style</span></div>'
+        +'<div class="tut-feat"><i class="fas fa-columns"></i><strong>Templates</strong><span>Choose your layout</span></div>'
+        +'<div class="tut-feat"><i class="fas fa-star"></i><strong>Premium Skins</strong><span>Animated borders &amp; effects</span></div>'
+        +'</div>'
+        +'<div class="tut-divider"></div>'
+        +'<p class="tut-tip"><i class="fas fa-image" style="color:var(--primary);"></i> Premium skins let you upload a <strong>custom background</strong> — scroll down in the shop and make it yours. The sky is the limit!</p>'
+    );
+}
 
 // ======================== EMOJI PICKER ========================
 var _emojiData={

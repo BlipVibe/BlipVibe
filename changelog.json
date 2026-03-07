@@ -2,6 +2,11 @@
   {
     "version": "0.2.19",
     "date": "2026-03-07",
+    "added": [
+      "First-time tutorial popup on Home feed — explains coin earning (Post +5, Comment +2, Reply +2, Like +1), community rules, and Skin Shop",
+      "First-time tutorial popup on Skin Shop — explains skins, fonts, templates, premium skins, and custom backgrounds",
+      "Tutorial state synced to Supabase (cross-device) — shows once per account, not per browser"
+    ],
     "changed": [
       "Notification tab counts now show only unread (new) notifications — resets to 0 once viewed",
       "Unread notifications highlighted with accent border and 'New' badge"
