@@ -278,7 +278,7 @@ img{display:block;}
 /* ========== LEFT SIDEBAR ========== */
 .left-sidebar{display:flex;flex-direction:column;gap:20px;position:sticky;top:80px;}
 .profile-card{text-align:center;overflow:visible;}
-.profile-cover{height:70px;background:linear-gradient(135deg,var(--primary),var(--primary-hover));transition:background .4s;}
+.profile-cover{height:70px;background:linear-gradient(135deg,var(--primary),var(--primary-hover));transition:background .4s;border-radius:10px 10px 0 0;}
 
 /* Timeline Cover Banner */
 .timeline-cover{max-width:1600px;margin:0 auto;height:350px;background:linear-gradient(135deg,var(--primary),var(--primary-hover));background-size:cover;background-position:center;position:relative;border-radius:0 0 10px 10px;}
@@ -2043,6 +2043,12 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
         height:auto!important;max-height:none!important;
         overflow:visible!important;border:none!important;margin:0!important;
         pointer-events:auto!important;
+    }
+    /* Extend nav background below viewport to prevent gap when mobile browser chrome hides */
+    .nav-center::after{
+        content:'';position:absolute;left:0;right:0;top:100%;
+        height:env(safe-area-inset-bottom,34px);min-height:34px;
+        background:inherit;pointer-events:none;
     }
     .nav-link{
         flex-direction:column!important;align-items:center!important;

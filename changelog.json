@@ -8,6 +8,10 @@
       "Mentioned usernames render as clickable links (purple, opens profile) in feed, group, search, saved, and profile posts",
       "@mentions also work in comments",
       "Tagged users receive a notification when mentioned in a post"
+    ],
+    "fixed": [
+      "Profile cover gradient now has rounded top corners (10px) — no more sharp square edges behind avatar on profile cards and profile views",
+      "Mobile bottom nav bar no longer floats with a gap when the browser address bar hides on scroll — background extends to fill the space"
     ]
   },
   {
