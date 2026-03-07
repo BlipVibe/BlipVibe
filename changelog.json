@@ -7,6 +7,7 @@
       "Unread notifications highlighted with accent border and 'New' badge"
     ],
     "fixed": [
+      "Profile avatar background corners now properly rounded (16px) on profile pages, profile views, and modals — no more sharp square edges behind the photo",
       "Email addresses used as usernames/display names are now masked (e.g. 'jo***') across all public views — posts, comments, profiles, messages, groups, search results",
       "Existing users with email-as-username are protected without requiring account changes"
     ]
