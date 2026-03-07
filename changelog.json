@@ -1,5 +1,16 @@
 [
   {
+    "version": "0.2.20",
+    "date": "2026-03-07",
+    "added": [
+      "@mention tagging system — type @ in posts to tag any user (autocomplete with avatar, name, username)",
+      "Group posts restrict @mentions to group members only",
+      "Mentioned usernames render as clickable links (purple, opens profile) in feed, group, search, saved, and profile posts",
+      "@mentions also work in comments",
+      "Tagged users receive a notification when mentioned in a post"
+    ]
+  },
+  {
     "version": "0.2.19",
     "date": "2026-03-07",
     "added": [

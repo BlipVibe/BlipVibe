@@ -1355,8 +1355,8 @@ async function renderSearchResults(q,tab){
                 var text=fp.text;
                 var tags=fp.tags||[];
                 var badge=fp.badge||badgeTypes[0];
-                var short=escapeHtmlNl(safeSlice(text,0,200));
-                var rest=escapeHtmlNl(safeSlice(text,200));
+                var short=renderMentionsInText(escapeHtmlNl(safeSlice(text,0,200)));
+                var rest=renderMentionsInText(escapeHtmlNl(safeSlice(text,200)));
                 var hasMore=rest.length>0;
                 html+='<div class="card feed-post search-post-card">';
                 var avatarSrc=person.avatar_url||DEFAULT_AVATAR;
@@ -1370,6 +1370,7 @@ async function renderSearchResults(q,tab){
             });
         }
         container.innerHTML=html;
+        bindMentionClicks('#searchResults');
         // Bind view more buttons in search results
         $$('#searchResults .view-more-btn').forEach(function(btn){
             btn.addEventListener('click',function(){
@@ -1674,6 +1675,152 @@ function showShopTutorial(){
     );
 }
 
+// ======================== @MENTION AUTOCOMPLETE ========================
+// groupId: if provided, only search group members; otherwise search all users
+function initMentionAutocomplete(textareaId, groupId){
+    var ta=document.getElementById(textareaId);
+    if(!ta) return;
+    // Create dropdown
+    var dd=document.createElement('div');
+    dd.className='mention-dropdown';
+    dd.style.display='none';
+    ta.parentElement.style.position='relative';
+    ta.parentElement.appendChild(dd);
+    var _mentionTimer=null;
+    var _mentionCache={};
+    function hideMention(){dd.style.display='none';dd.innerHTML='';}
+    function getMentionQuery(){
+        var val=ta.value;var pos=ta.selectionStart;
+        // Walk backward from cursor to find @
+        var i=pos-1;
+        while(i>=0 && val[i]!==' ' && val[i]!=='\n' && val[i]!=='@') i--;
+        if(i<0 || val[i]!=='@') return null;
+        // Must be start of line or preceded by space/newline
+        if(i>0 && val[i-1]!==' ' && val[i-1]!=='\n') return null;
+        var q=val.substring(i+1,pos);
+        return {start:i,end:pos,query:q};
+    }
+    async function fetchMentions(q){
+        if(q.length<1){hideMention();return;}
+        var key=(groupId||'all')+'_'+q.toLowerCase();
+        if(_mentionCache[key]){renderMentionDropdown(_mentionCache[key],q);return;}
+        try{
+            var results;
+            if(groupId){
+                // Search group members only
+                var members=await sbGetGroupMembers(groupId);
+                var ql=q.toLowerCase();
+                results=(members||[]).map(function(m){return m.user||m;}).filter(function(u){
+                    return u&&u.id!==currentUser.id&&((u.display_name||'').toLowerCase().indexOf(ql)!==-1||(u.username||'').toLowerCase().indexOf(ql)!==-1);
+                }).slice(0,8);
+            } else {
+                results=await sbSearchProfiles(q,8);
+                results=(results||[]).filter(function(u){return u.id!==currentUser.id;});
+            }
+            _mentionCache[key]=results;
+            renderMentionDropdown(results,q);
+        }catch(e){console.warn('Mention search error:',e);}
+    }
+    function renderMentionDropdown(users,q){
+        if(!users||!users.length){hideMention();return;}
+        dd.innerHTML='';
+        users.forEach(function(u){
+            var name=u.display_name||u.username||'User';
+            var uname=u.username||'';
+            var avatar=u.avatar_url||DEFAULT_AVATAR;
+            var item=document.createElement('div');
+            item.className='mention-item';
+            item.innerHTML='<img src="'+avatar+'" class="mention-avatar"><div class="mention-info"><span class="mention-name">'+escapeHtml(name)+'</span><span class="mention-uname">@'+escapeHtml(uname)+'</span></div>';
+            item.addEventListener('mousedown',function(e){
+                e.preventDefault(); // prevent textarea blur
+                var mq=getMentionQuery();
+                if(mq){
+                    var before=ta.value.substring(0,mq.start);
+                    var after=ta.value.substring(mq.end);
+                    ta.value=before+'@'+uname+' '+after;
+                    var newPos=mq.start+uname.length+2;
+                    ta.setSelectionRange(newPos,newPos);
+                    ta.focus();
+                }
+                hideMention();
+            });
+            dd.appendChild(item);
+        });
+        dd.style.display='block';
+    }
+    ta.addEventListener('input',function(){
+        var mq=getMentionQuery();
+        if(!mq){hideMention();return;}
+        clearTimeout(_mentionTimer);
+        _mentionTimer=setTimeout(function(){fetchMentions(mq.query);},250);
+    });
+    ta.addEventListener('keydown',function(e){
+        if(dd.style.display==='none') return;
+        var items=dd.querySelectorAll('.mention-item');
+        var active=dd.querySelector('.mention-item.active');
+        var idx=-1;
+        items.forEach(function(it,i){if(it===active)idx=i;});
+        if(e.key==='ArrowDown'){
+            e.preventDefault();
+            if(active) active.classList.remove('active');
+            idx=(idx+1)%items.length;
+            items[idx].classList.add('active');
+        } else if(e.key==='ArrowUp'){
+            e.preventDefault();
+            if(active) active.classList.remove('active');
+            idx=(idx-1+items.length)%items.length;
+            items[idx].classList.add('active');
+        } else if(e.key==='Enter'&&active){
+            e.preventDefault();
+            active.dispatchEvent(new Event('mousedown'));
+        } else if(e.key==='Escape'){
+            hideMention();
+        }
+    });
+    ta.addEventListener('blur',function(){setTimeout(hideMention,200);});
+}
+
+// Render @mentions as clickable links in post/comment text
+function renderMentionsInText(html){
+    // Match @username patterns (already escaped via escapeHtml/escapeHtmlNl)
+    return html.replace(/@([a-zA-Z0-9_]+)/g,function(match,uname){
+        return '<span class="mention-link" data-mention="'+uname+'">@'+uname+'</span>';
+    });
+}
+
+// Bind click handlers for rendered mention links
+function bindMentionClicks(containerSel){
+    $$(containerSel+' .mention-link').forEach(function(el){
+        el.style.cursor='pointer';
+        el.addEventListener('click',function(){
+            var uname=el.dataset.mention;
+            if(!uname) return;
+            sbGetProfileByUsername(uname).then(function(p){
+                if(p) showProfileView(profileToPerson(p));
+            }).catch(function(e){console.warn('Mention profile load:',e);});
+        });
+    });
+}
+
+// Send notifications to all @mentioned users in text
+function notifyMentionedUsers(text,postId){
+    if(!text||!currentUser) return;
+    var mentions=text.match(/@([a-zA-Z0-9_]+)/g);
+    if(!mentions) return;
+    var seen={};
+    var myName=currentUser.display_name||currentUser.username||'Someone';
+    mentions.forEach(function(m){
+        var uname=m.substring(1);
+        if(seen[uname]) return;
+        seen[uname]=true;
+        sbGetProfileByUsername(uname).then(function(p){
+            if(p&&p.id&&p.id!==currentUser.id){
+                sbCreateNotification(p.id,'mention',myName+' mentioned you in a post','',{originalType:'mention',post_id:postId}).catch(function(e){console.warn('Mention notif:',e);});
+            }
+        }).catch(function(){});
+    });
+}
+
 // ======================== EMOJI PICKER ========================
 var _emojiData={
     'Smileys':['😀','😁','😂','🤣','😃','😄','😅','😆','😉','😊','😋','😎','😍','🥰','😘','😗','😙','😚','🙂','🤗','🤩','🤔','🤨','😐','😑','😶','🙄','😏','😣','😥','😮','🤐','😯','😪','😫','🥱','😴','😌','😛','😜','🤪','😝','🤑','🤭','🤫','🤥','😬','😈','👿','🤡','💀','👻','👽','🤖','💩','🥳','🥺','🥹','😤','😡','🤬','😭','😱','😳','🫣','🫡','🫠'],
@@ -1830,7 +1977,7 @@ function buildCommentHtml(cid,name,img,text,likes,isReply,authorId,replyToName){
     if(gifMatch){
         h+='<div style="margin-top:4px;">'+replyTag+'<img src="'+escapeHtml(gifMatch[1])+'" class="comment-gif" alt="GIF" loading="lazy"></div>';
     }else{
-        h+='<p class="comment-text" style="font-size:13px;color:#555;margin-top:2px;">'+replyTag+escapeHtmlNl(text)+'</p>';
+        h+='<p class="comment-text" style="font-size:13px;color:#555;margin-top:2px;">'+replyTag+renderMentionsInText(escapeHtmlNl(text))+'</p>';
     }
     h+='<div class="comment-actions-row" style="display:flex;gap:12px;margin-top:8px;">';
     h+='<button class="comment-like-btn" data-cid="'+cid+'" data-aid="'+(authorId||'')+'" style="background:none;font-size:12px;color:'+(liked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:4px;"><i class="'+(liked?'fas':'far')+' fa-thumbs-up"></i><span>'+lc+'</span></button>';
@@ -2498,7 +2645,7 @@ async function showProfileView(person){
                 feedHtml+='<div class="post-header">';
                 feedHtml+='<img src="'+authorAvatar+'" alt="'+escapeHtml(authorName)+'" class="post-avatar">';
                 feedHtml+='<div class="post-user-info"><div class="post-user-top"><h4 class="post-username">'+escapeHtml(authorName)+'</h4><span class="post-time">'+postTime+'</span></div></div></div>';
-                feedHtml+='<div class="post-description"><p>'+escapeHtmlNl(post.content)+'</p></div>';
+                feedHtml+='<div class="post-description"><p>'+renderMentionsInText(escapeHtmlNl(post.content))+'</p></div>';
                 var pvImgs=post.media_urls&&post.media_urls.length?post.media_urls:(post.image_url?[post.image_url]:[]);
                 feedHtml+=buildMediaGrid(pvImgs);
                 var pvLikes=post.like_count||0;
@@ -2516,6 +2663,7 @@ async function showProfileView(person){
         feedHtml+='<div class="card" style="padding:40px;text-align:center;color:var(--gray);"><i class="fas fa-pen" style="font-size:32px;margin-bottom:12px;display:block;"></i><p>No posts yet.</p></div>';
     }
     $('#pvPostsFeed').innerHTML=feedHtml;
+    bindMentionClicks('#pvPostsFeed');
     autoFetchLinkPreviews(document.getElementById('pvPostsFeed'));
 
     // Event: Back
@@ -3050,7 +3198,7 @@ async function showGroupView(group){
                 feedHtml+='</div>';
                 feedHtml+='</div>';
                 feedHtml+='<div class="post-description">';
-                if(p.content) feedHtml+='<p>'+escapeHtmlNl(p.content)+'</p>';
+                if(p.content) feedHtml+='<p>'+renderMentionsInText(escapeHtmlNl(p.content))+'</p>';
                 feedHtml+='</div>';
                 var gvImgs=p.media_urls&&p.media_urls.length?p.media_urls:(p.image_url?[p.image_url]:[]);
                 feedHtml+=buildMediaGrid(gvImgs);
@@ -3062,6 +3210,7 @@ async function showGroupView(group){
             var feedEl=$('#gvPostsFeed');
             if(feedEl){feedEl.innerHTML=feedHtml;$('#gvPostCount').textContent=groupPosts.length;}
             bindGvPostEvents();
+            bindMentionClicks('#gvPostsFeed');
             autoFetchLinkPreviews(feedEl);
             // Author click → profile
             $$('#gvPostsFeed .gv-post-author').forEach(function(el){
@@ -3340,6 +3489,7 @@ function openGroupPostModal(group){
     html+='</div><div class="cpm-footer"><div id="gvCpmEmojiPanel" class="emoji-picker-panel"></div><div style="display:flex;gap:8px;align-items:center;width:100%;"><button class="cpm-emoji-btn" id="gvCpmEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="btn btn-primary" id="gvCpmPublish" style="flex:1;">Publish</button></div></div></div>';
     showModal(html);
     document.getElementById('gvCpmEmojiBtn').addEventListener('click',function(){openEmojiPicker('gvCpmEmojiPanel',document.getElementById('gvCpmText'));});
+    initMentionAutocomplete('gvCpmText',group.id);
     var mediaList=[];
     var zone=document.getElementById('gvCpmMediaZone'),grid=document.getElementById('gvCpmGrid'),dropZone=document.getElementById('gvCpmDropZone'),fileInput=document.getElementById('gvCpmFileInput');
     dropZone.addEventListener('click',function(){fileInput.click();});
@@ -3369,7 +3519,8 @@ function openGroupPostModal(group){
                     if(url){allMediaUrls.push(url);if(!imageUrl)imageUrl=url;}
                 }catch(e){console.error('Group media upload:',e);showToast('Upload failed: '+(e.message||''));}
             }
-            await sbCreatePost(currentUser.id,text||'',imageUrl,group.id,null,null,allMediaUrls.length>1?allMediaUrls:null);
+            var gPost=await sbCreatePost(currentUser.id,text||'',imageUrl,group.id,null,null,allMediaUrls.length>1?allMediaUrls:null);
+            if(gPost) notifyMentionedUsers(text,gPost.id);
             if(state.postCoinCount<10){state.coins+=5;state.postCoinCount++;updateCoins();}
             if(canEarnGroupPostCoin(group.id)){addGroupCoins(group.id,5);trackGroupPostCoin(group.id);}
             saveState();
@@ -4128,7 +4279,7 @@ function renderFeed(tab){
         var i=p.idx,person=p.person,text=p.text,tags=p.tags||[],badge=p.badge,loc=p.loc,likes=p.likes,genComments=p.comments||[],shares=p.shares;
         var commentCount=p.commentCount||genComments.length;
         var menuId='post-menu-'+i;
-        var short=escapeHtmlNl(safeSlice(text,0,160));var rest=escapeHtmlNl(safeSlice(text,160));var hasMore=rest.length>0;
+        var short=renderMentionsInText(escapeHtmlNl(safeSlice(text,0,160)));var rest=renderMentionsInText(escapeHtmlNl(safeSlice(text,160)));var hasMore=rest.length>0;
         var avatarSrc=person.avatar_url||'images/default-avatar.svg';
         var timeStr=p.created_at?timeAgoReal(p.created_at):timeAgo(typeof i==='number'?i:0);
         html+='<div class="card feed-post">';
@@ -4171,6 +4322,7 @@ function renderFeed(tab){
     });
     container.innerHTML=html;
     bindPostEvents();
+    bindMentionClicks('#feedContainer');
     autoFetchLinkPreviews(container);
     posts.forEach(function(p){renderInlineComments(p.idx);});
     // Load liker avatars asynchronously for Supabase posts
@@ -4542,6 +4694,7 @@ $('#openPostModal').addEventListener('click',function(){
     html+='</div><div class="cpm-footer"><div id="cpmEmojiPanel" class="emoji-picker-panel"></div><div style="display:flex;gap:8px;align-items:center;width:100%;"><button class="cpm-emoji-btn" id="cpmEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="btn btn-primary" id="cpmPublish" style="flex:1;">Publish</button></div></div></div>';
     showModal(html);
     document.getElementById('cpmEmojiBtn').addEventListener('click',function(){openEmojiPicker('cpmEmojiPanel',document.getElementById('cpmText'));});
+    initMentionAutocomplete('cpmText',null);
     var mediaList=[];
     var zone=document.getElementById('cpmMediaZone');
     var grid=document.getElementById('cpmGrid');
@@ -4759,6 +4912,7 @@ $('#openPostModal').addEventListener('click',function(){
             try {
                 var postLoc=settings.showLocation?userLocation:null;
                 sbPost = await sbCreatePost(currentUser.id, fullContent || '', imageUrl, null, null, postLoc, allImageUrls.length>1?allImageUrls:null);
+                if(sbPost) notifyMentionedUsers(fullContent,sbPost.id);
             } catch(e) {
                 console.error('Create post:', e);
                 showToast('Post failed to save: ' + (e.message || e.details || 'Unknown error'));
@@ -7867,6 +8021,7 @@ async function renderSavedPage(){
     h+=_renderSavedTabPosts();
     h+='</div>';
     container.innerHTML=h;
+    bindMentionClicks('#savedTabContent');
     // Drag-scroll on pill tabs
     var pillTabs=document.getElementById('savedPillTabs');
     if(pillTabs) _bindDragScroll(pillTabs);
@@ -7892,7 +8047,7 @@ function _renderSavedTabPosts(){
 }
 function renderSavedPostCard(p){
     var i=p.idx,person=p.person,text=p.text,badge=p.badge,likes=p.likes,genComments=p.comments,shares=p.shares;
-    var short=escapeHtmlNl(safeSlice(text,0,160));var rest=escapeHtmlNl(safeSlice(text,160));var hasMore=rest.length>0;
+    var short=renderMentionsInText(escapeHtmlNl(safeSlice(text,0,160)));var rest=renderMentionsInText(escapeHtmlNl(safeSlice(text,160)));var hasMore=rest.length>0;
     var folder=findPostFolder(i);
     var html='<div class="card feed-post saved-post-item" data-spid="'+i+'">';
     html+='<div class="post-header">';
