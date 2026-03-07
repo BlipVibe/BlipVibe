@@ -2,6 +2,10 @@
   {
     "version": "0.2.19",
     "date": "2026-03-07",
+    "changed": [
+      "Notification tab counts now show only unread (new) notifications — resets to 0 once viewed",
+      "Unread notifications highlighted with accent border and 'New' badge"
+    ],
     "fixed": [
       "Email addresses used as usernames/display names are now masked (e.g. 'jo***') across all public views — posts, comments, profiles, messages, groups, search results",
       "Existing users with email-as-username are protected without requiring account changes"

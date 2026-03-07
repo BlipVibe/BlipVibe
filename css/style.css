@@ -771,6 +771,8 @@ body.modal-open{overflow:hidden!important;position:fixed!important;width:100%!im
 .notif-item{background:var(--card);border-radius:10px;box-shadow:var(--shadow);padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:12px;transition:background .2s;}
 .notif-item[data-post-id]:hover{background:var(--border);transform:translateX(4px);}
 .notif-item[data-post-id]::after{content:'\f054';font-family:'Font Awesome 6 Free';font-weight:900;margin-left:auto;color:var(--gray);font-size:12px;flex-shrink:0;}
+.notif-item.unread{border-left:3px solid var(--primary);}
+.notif-new-badge{display:inline-block;background:var(--primary);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:6px;vertical-align:middle;}
 .notif-item:hover{background:var(--border);}
 .notif-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
 .notif-icon.skin{background:rgba(139,92,246,.15);color:#8b5cf6;}

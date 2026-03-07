@@ -1544,7 +1544,7 @@ function renderNotifications(){
     if(tabsContainer){
         var tabsHtml='';
         notifTabDefs.forEach(function(t){
-            var count=t.filter?state.notifications.filter(t.filter).length:state.notifications.length;
+            var count=t.filter?state.notifications.filter(function(n){return !n.read&&t.filter(n);}).length:state.notifications.filter(function(n){return !n.read;}).length;
             tabsHtml+='<button class="search-tab'+(t.key===activeNotifTab?' active':'')+'" data-ntab="'+t.key+'">'+t.label+(count>0?' <span class="tab-count">'+count+'</span>':'')+'</button>';
         });
         tabsContainer.innerHTML=tabsHtml;
@@ -1569,7 +1569,8 @@ function renderNotifications(){
     filtered.forEach(function(n,i){
         var ic=getNotifIcon(n.type);
         var clickable=n.postId?' data-post-id="'+n.postId+'" style="cursor:pointer;"':'';
-        html+='<div class="notif-item"'+clickable+'><div class="notif-icon '+ic.cls+'"><i class="fas '+ic.icon+'"></i></div><div class="notif-text"><p>'+escapeHtml(n.text)+'</p><span>'+n.time+'</span></div></div>';
+        var newBadge=!n.read?'<span class="notif-new-badge">New</span>':'';
+        html+='<div class="notif-item'+(n.read?'':' unread')+'"'+clickable+'><div class="notif-icon '+ic.cls+'"><i class="fas '+ic.icon+'"></i></div><div class="notif-text"><p>'+escapeHtml(n.text)+newBadge+'</p><span>'+n.time+'</span></div></div>';
     });
     container.innerHTML=html;
     // Click handler for post-linked notifications
