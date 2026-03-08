@@ -2266,6 +2266,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .nav-right{flex:1!important;justify-content:flex-end!important;}
     body[class*="premium-"] .nav-center{background:var(--ps-nav)!important;background-size:200% 200%!important;animation:gradientShift 6s ease infinite!important;}
     body.premium-neon-wave .nav-center{background:linear-gradient(135deg,#00f5a0,#00d9f5,#7b2ff7,#00f5a0,#005f40,#7b2ff7,#00d9f5,#00f5a0)!important;background-size:400% 400%!important;animation:neonWaveShift 8s linear infinite!important;}
+    body.premium-deep-wave .nav-center{background:linear-gradient(135deg,#00a67e,#007a5e,#004d40,#003d2e,#00a67e,#0a2a3f,#007a5e,#00a67e)!important;background-size:400% 400%!important;animation:deepWaveFlow 8s linear infinite!important;}
 
     /* --- Main layout — force single column --- */
     .main-container{
@@ -3129,6 +3130,18 @@ body.premium-pastel-aurora .navbar{background-size:400% 400%!important;animation
 body.premium-pastel-aurora .profile-card .profile-cover{background-size:400% 400%!important;animation:pastelAuroraShift 10s ease infinite!important;}
 body.premium-pastel-aurora .profile-avatar-wrap::before{background:conic-gradient(from 0deg,#c3aed6,#b8e6d0,#ffd8be,#f5c6e0,#c3aed6);box-shadow:0 0 20px var(--ps-glow);animation:premiumSpin 6s linear infinite;}
 @keyframes pastelAuroraShift{0%{background-position:0% 50%;}20%{background-position:50% 0%;}40%{background-position:100% 50%;}60%{background-position:50% 100%;}80%{background-position:0% 80%;}100%{background-position:0% 50%;}}
+/* ========== PREMIUM: DEEP WAVE ========== */
+body.premium-deep-wave{--ps-bg:#060f0c;--ps-nav:linear-gradient(135deg,#00a67e,#007a5e,#004d40,#003d2e,#00a67e,#0a2a3f,#007a5e,#00a67e);--ps-card:#0a1f1a;--ps-text:#80ddc0;--ps-muted:#408a70;--ps-border:#163830;--ps-tag:#0d2a22;--ps-input:#081a14;--ps-hover:#163830;--ps-glow:rgba(0,166,126,.45);--ps-post-border:#00a67e;--ps-badge-bg:#0d2a22;--ps-anim:deepWavePulse 4s ease infinite;--ps-pattern:none;}
+body.premium-deep-wave .navbar,
+body.premium-deep-wave .nav-center,
+body.premium-deep-wave.nav-dock .nav-center,
+body.premium-deep-wave.nav-pill .nav-center,
+body.premium-deep-wave.nav-split .nav-center{background:linear-gradient(135deg,#00a67e,#007a5e,#004d40,#003d2e,#00a67e,#0a2a3f,#007a5e,#00a67e)!important;background-size:400% 400%!important;animation:deepWaveFlow 8s linear infinite!important;}
+body.premium-deep-wave .profile-card .profile-cover{background:linear-gradient(135deg,#00a67e,#007a5e,#004d40,#003d2e,#00a67e)!important;background-size:400% 400%!important;animation:deepWaveFlow 8s linear infinite!important;}
+body.premium-deep-wave .profile-avatar-wrap::before{background:conic-gradient(from 0deg,#00a67e,#007a5e,#00c9a0,#004d40,#00a67e);box-shadow:0 0 24px rgba(0,166,126,.5),0 0 60px rgba(0,166,126,.2);animation:premiumSpin 4s linear infinite,deepWaveGlow 3s ease infinite;}
+@keyframes deepWaveFlow{0%{background-position:0% 0%;}50%{background-position:100% 100%;}100%{background-position:0% 0%;}}
+@keyframes deepWavePulse{0%,100%{opacity:1;}50%{opacity:.95;}}
+@keyframes deepWaveGlow{0%,100%{box-shadow:0 0 24px rgba(0,166,126,.5),0 0 60px rgba(0,166,126,.2);}50%{box-shadow:0 0 35px rgba(0,200,160,.7),0 0 80px rgba(0,166,126,.35);}}
 
 /* ========== PREMIUM — UNIQUE EFFECTS ========== */
 @keyframes blazePulse{0%,100%{box-shadow:0 0 10px rgba(255,8,68,.2);}50%{box-shadow:0 0 25px rgba(255,8,68,.4);}}
