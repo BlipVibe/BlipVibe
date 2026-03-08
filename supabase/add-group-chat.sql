@@ -48,10 +48,10 @@ CREATE POLICY "Group owner can manage sections" ON group_chat_sections FOR ALL U
 );
 CREATE POLICY "Group mods can manage sections" ON group_chat_sections FOR ALL USING (
     EXISTS (
-        SELECT 1 FROM groups g, profiles p
-        WHERE g.id = group_chat_sections.group_id
-        AND p.id = auth.uid()
-        AND g.mods::jsonb @> to_jsonb(p.username)
+        SELECT 1 FROM group_members gm
+        WHERE gm.group_id = group_chat_sections.group_id
+        AND gm.user_id = auth.uid()
+        AND gm.role IN ('moderator', 'admin', 'owner')
     )
 );
 
@@ -62,10 +62,10 @@ CREATE POLICY "Group owner can manage channels" ON group_chat_channels FOR ALL U
 );
 CREATE POLICY "Group mods can manage channels" ON group_chat_channels FOR ALL USING (
     EXISTS (
-        SELECT 1 FROM groups g, profiles p
-        WHERE g.id = group_chat_channels.group_id
-        AND p.id = auth.uid()
-        AND g.mods::jsonb @> to_jsonb(p.username)
+        SELECT 1 FROM group_members gm
+        WHERE gm.group_id = group_chat_channels.group_id
+        AND gm.user_id = auth.uid()
+        AND gm.role IN ('moderator', 'admin', 'owner')
     )
 );
 
@@ -90,10 +90,10 @@ CREATE POLICY "Group owner can delete messages" ON group_chat_messages FOR DELET
 CREATE POLICY "Group mods can delete messages" ON group_chat_messages FOR DELETE USING (
     EXISTS (
         SELECT 1 FROM group_chat_channels gcc
-        JOIN groups g ON g.id = gcc.group_id
-        JOIN profiles p ON p.id = auth.uid()
+        JOIN group_members gm ON gm.group_id = gcc.group_id
         WHERE gcc.id = group_chat_messages.channel_id
-        AND g.mods::jsonb @> to_jsonb(p.username)
+        AND gm.user_id = auth.uid()
+        AND gm.role IN ('moderator', 'admin', 'owner')
     )
 );
 

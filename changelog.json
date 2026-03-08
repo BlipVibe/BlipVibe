@@ -13,7 +13,7 @@
       "Templates are now desktop-only — hidden from shop and My Skins on mobile",
       "New 'Pastel Dream' basic skin — soft candy pastels with flowing animated gradient on navbar and cover",
       "New 'Pastel Aurora' premium skin — shifting lavender, mint, and peach northern lights with animated gradient movement",
-      "Group Chat system — Discord-style channels inside groups with sections, sub-channels, realtime messaging, image/video/GIF support, and admin/mod channel management",
+      "Group Chat system — Discord-style channels inside groups with sections, sub-channels, realtime messaging, image/video/GIF support, and admin/mod channel management (fullscreen view with back button)",
       "Neon Wave premium skin now shows vibrant turquoise-to-purple animated gradient on top navbar, bottom mobile nav, and profile cover",
       "New 'Deep Wave' premium skin — dark moody mints and teals with flowing gradient animation and glowing pulsing avatar border"
     ],
@@ -21,7 +21,8 @@
       "Profile cover gradient now has rounded top corners (10px) — no more sharp square edges behind avatar on profile cards and profile views",
       "Mobile bottom nav bar no longer floats with a gap when the browser address bar hides on scroll — background extends to fill the space",
       "Comment modal GIF and Post buttons no longer get cut off on mobile — reduced sizing and gap for small screens",
-      "Panorama template mobile layout no longer has a gap on the right side of posts"
+      "Panorama template mobile layout no longer has a gap on the right side of posts",
+      "Fixed group chat SQL migration — mod permission policies now correctly reference group_members table instead of non-existent mods column"
     ]
   },
   {

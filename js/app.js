@@ -3480,6 +3480,7 @@ async function showGroupView(group){
         } else if(mode==='chat'){
             $('#gvPostBar').style.display='none';$('#gvPostsFeed').style.display='none';
             if(ss)ss.style.display='none';if(cs)cs.style.display='';
+            _enterGroupChatFullscreen(group);
             initGroupChat(group);
         } else if(mode==='shop'){
             $('#gvPostBar').style.display='none';$('#gvPostsFeed').style.display='none';
@@ -3495,10 +3496,57 @@ var _gcActiveChannel=null;
 var _gcSubscription=null;
 var _gcGroup=null;
 var _gcMemberCache={};
+var _gcFullscreen=false;
+
+function _enterGroupChatFullscreen(group){
+    _gcFullscreen=true;
+    var topNav=document.querySelector('.navbar');
+    var botNav=document.querySelector('.nav-center');
+    if(topNav) topNav.style.display='none';
+    if(botNav) botNav.style.display='none';
+    var cs=document.getElementById('gvChatSection');
+    if(cs){
+        cs.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;display:flex;flex-direction:column;background:var(--bg);';
+    }
+    // Add back button to chat section
+    var existing=document.getElementById('gcBackBar');
+    if(!existing&&cs){
+        var bar=document.createElement('div');
+        bar.id='gcBackBar';
+        bar.style.cssText='flex-shrink:0;display:flex;align-items:center;gap:10px;padding:12px 16px;padding-top:calc(12px + env(safe-area-inset-top,0px));background:var(--card);border-bottom:1px solid var(--border);';
+        bar.innerHTML='<button id="gcBackBtn" style="background:none;border:none;color:var(--text);font-size:18px;cursor:pointer;padding:4px 8px;"><i class="fas fa-arrow-left"></i></button><span style="font-weight:600;font-size:15px;color:var(--text);"><i class="fas fa-comments" style="margin-right:6px;color:var(--accent);"></i>'+escapeHtml(group.name)+' Chat</span>';
+        cs.insertBefore(bar,cs.firstChild);
+        document.getElementById('gcBackBtn').addEventListener('click',function(){
+            _exitGroupChatFullscreen();
+            // Switch back to feed tab
+            var tabs=$$('#gvModeTabs .search-tab');
+            tabs.forEach(function(t){t.classList.remove('active');});
+            tabs.forEach(function(t){if(t.dataset.gvmode==='feed')t.classList.add('active');});
+            $('#gvPostBar').style.display='';$('#gvPostsFeed').style.display='';
+            var chatSec=document.getElementById('gvChatSection');
+            if(chatSec)chatSec.style.display='none';
+            _cleanupGroupChat();
+        });
+    }
+}
+
+function _exitGroupChatFullscreen(){
+    if(!_gcFullscreen) return;
+    _gcFullscreen=false;
+    var topNav=document.querySelector('.navbar');
+    var botNav=document.querySelector('.nav-center');
+    if(topNav) topNav.style.display='';
+    if(botNav) botNav.style.display='';
+    var cs=document.getElementById('gvChatSection');
+    if(cs) cs.style.cssText='';
+    var bar=document.getElementById('gcBackBar');
+    if(bar) bar.remove();
+}
 
 function _cleanupGroupChat(){
     if(_gcSubscription){try{sb.removeChannel(_gcSubscription);}catch(e){}_gcSubscription=null;}
     _gcActiveChannel=null;
+    _exitGroupChatFullscreen();
 }
 
 async function initGroupChat(group){

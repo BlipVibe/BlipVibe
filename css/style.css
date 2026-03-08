@@ -1182,6 +1182,8 @@ body.skin-pastel.tpl-cinema .pv-col-photos .photos-preview::-webkit-scrollbar-th
 
 /* ========== GROUP CHAT ========== */
 .gc-layout{display:flex;height:calc(100vh - 280px);min-height:400px;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--card);}
+#gvChatSection[style*="position:fixed"] .gc-layout{height:auto;flex:1;min-height:0;border:none;border-radius:0;}
+#gcBackBar{z-index:1;}
 .gc-sidebar{width:220px;flex-shrink:0;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;background:color-mix(in srgb,var(--card) 95%,#000);}
 .gc-sidebar-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border);font-weight:600;font-size:14px;}
 .gc-sidebar-title{display:flex;align-items:center;gap:8px;}
