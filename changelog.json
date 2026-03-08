@@ -8,8 +8,9 @@
       "Mentioned usernames render as clickable links (purple, opens profile) in feed, group, search, saved, and profile posts",
       "@mentions also work in comments",
       "Tagged users receive a notification when mentioned in a post",
-      "Mobile template personalities — each template now looks noticeably different on mobile: Zen (minimal dividers), Cinema (edge-to-edge bold), Magazine (bordered editorial), Focus (large reading text), Journal (narrow centered), Spotlight (centered avatar), and more",
-      "New 'Stream' template — single-column stacked layout: cover photo, horizontal profile + about me, album, suggestions + groups side-by-side, then feed. Works on both desktop and mobile"
+      "New 'Stream' template — single-column stacked layout: cover photo, horizontal profile + about me, album, suggestions + groups side-by-side, then feed (desktop only)",
+      "Mobile now uses Cinema template by default — edge-to-edge bold layout optimized for small screens",
+      "Templates are now desktop-only — hidden from shop and My Skins on mobile"
     ],
     "fixed": [
       "Profile cover gradient now has rounded top corners (10px) — no more sharp square edges behind avatar on profile cards and profile views",
