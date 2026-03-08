@@ -1409,7 +1409,7 @@ body.tpl-hub .pv-col-feed{grid-column:1;grid-row:3;}
 body.tpl-hub .pv-col-skin{grid-column:2;grid-row:2/4;align-self:start;}
 
 /* ========== TEMPLATE: STREAM ========== */
-body.tpl-stream .main-container{display:grid;grid-template-columns:1fr;max-width:700px;gap:14px;}
+body.tpl-stream .main-container{display:grid;grid-template-columns:1fr;max-width:700px;margin:0 auto;gap:14px;}
 body.tpl-stream .left-sidebar{display:contents;}
 body.tpl-stream .right-sidebar{display:contents;}
 body.tpl-stream .left-sidebar .profile-card{grid-column:1;grid-row:1;overflow:visible;}
