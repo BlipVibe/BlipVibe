@@ -1408,6 +1408,29 @@ body.tpl-hub .pv-col-photos{grid-column:1;grid-row:2;}
 body.tpl-hub .pv-col-feed{grid-column:1;grid-row:3;}
 body.tpl-hub .pv-col-skin{grid-column:2;grid-row:2/4;align-self:start;}
 
+/* ========== TEMPLATE: STREAM ========== */
+body.tpl-stream .main-container{display:grid;grid-template-columns:1fr;max-width:700px;gap:14px;}
+body.tpl-stream .left-sidebar{display:contents;}
+body.tpl-stream .right-sidebar{display:contents;}
+body.tpl-stream .left-sidebar .profile-card{grid-column:1;grid-row:1;}
+/* Horizontal profile: avatar left, info right */
+body.tpl-stream .profile-card .profile-info-section{display:flex;flex-direction:row;align-items:center;gap:16px;}
+body.tpl-stream .profile-card .profile-avatar-wrap{margin:0;flex-shrink:0;}
+body.tpl-stream .profile-card .profile-stats{justify-content:flex-start;}
+body.tpl-stream .left-sidebar .photos-card{grid-column:1;grid-row:2;}
+/* Suggestions + Groups side by side */
+body.tpl-stream .right-sidebar .promo-card{display:none;}
+body.tpl-stream .right-sidebar .suggestions-card{grid-column:1;grid-row:3;}
+body.tpl-stream .right-sidebar .groups-card{grid-column:1;grid-row:3;}
+body.tpl-stream .right-sidebar{display:grid;grid-template-columns:1fr 1fr;gap:14px;grid-row:3;position:static;}
+body.tpl-stream .center-feed{grid-column:1;grid-row:4;}
+/* Profile view */
+body.tpl-stream .pv-layout{grid-template-columns:1fr;max-width:700px;}
+body.tpl-stream .pv-col-left{grid-column:1;grid-row:1;position:static;}
+body.tpl-stream .pv-col-photos{grid-column:1;grid-row:2;}
+body.tpl-stream .pv-col-feed{grid-column:1;grid-row:3;}
+body.tpl-stream .pv-col-skin{grid-column:1;grid-row:4;position:static;max-width:400px;margin:0 auto;}
+
 /* ========== MOBILE TEMPLATE PERSONALITIES ========== */
 /* Give each template a distinct feel on mobile (single-column) */
 @media(max-width:768px){
@@ -1500,6 +1523,11 @@ body.tpl-hub .pv-col-skin{grid-column:2;grid-row:2/4;align-self:start;}
     /* HUB — pill-shaped cards */
     body.tpl-hub .feed-post{border-left:none!important;border-radius:24px!important;padding:18px 20px!important;}
     body.tpl-hub .feed-post .post-avatar{border-radius:8px!important;}
+
+    /* STREAM — stacked stream, suggestions+groups stack vertically on mobile */
+    body.tpl-stream .right-sidebar{grid-template-columns:1fr!important;}
+    body.tpl-stream .feed-post{border-left:none!important;border-radius:12px!important;}
+    body.tpl-stream #feedContainer{gap:12px!important;}
 }
 
 /* ========== NAV STYLE: METRO ========== */

@@ -1115,7 +1115,8 @@ var templates = [
     {id:'grid',name:'Grid',desc:'Two equal columns. Feed and sidebar side by side.',price:1,preview:'linear-gradient(135deg,#8e44ad,#2c3e50)'},
     {id:'journal',name:'Journal',desc:'Narrow centered feed with wide margins. Blog-style reading.',price:1,preview:'linear-gradient(135deg,#f8b500,#e74c3c)'},
     {id:'wing',name:'Wing',desc:'Wide left sidebar with compact feed. Profile-forward layout.',price:1,preview:'linear-gradient(135deg,#00b4db,#0083b0)'},
-    {id:'hub',name:'Hub',desc:'Profile and feed centered. Sidebars hidden until hovered.',price:1,preview:'linear-gradient(135deg,#c0392b,#8e44ad)'}
+    {id:'hub',name:'Hub',desc:'Profile and feed centered. Sidebars hidden until hovered.',price:1,preview:'linear-gradient(135deg,#c0392b,#8e44ad)'},
+    {id:'stream',name:'Stream',desc:'Everything stacked top-down. Cover, profile, album, suggestions + groups, then feed.',price:1,preview:'linear-gradient(135deg,#4a90d9,#357abd)'}
 ];
 
 var navStyles = [
@@ -5473,6 +5474,7 @@ function tplPreviewHtml(id){
         case 'journal':return '<div style="'+base+'align-items:center;"><div style="width:38%;flex:1;background:'+f+';'+r+'"></div></div>';
         case 'wing':return '<div style="'+base+'"><div style="'+row+'"><div style="flex:0 0 40%;background:'+s+';'+r+'"></div><div style="flex:1;background:'+f+';'+r+'"></div></div></div>';
         case 'hub':return '<div style="'+base+'align-items:center;"><div style="width:55%;flex:1;background:'+f+';'+r+'"></div></div>';
+        case 'stream':return '<div style="'+base+'"><div style="height:18%;background:'+h+';'+r+'flex:none;"></div><div style="display:flex;gap:3px;height:14%;flex:none;"><div style="width:18px;height:18px;border-radius:50%;background:'+s+';flex:none;"></div><div style="flex:1;background:'+s+';'+r+'"></div></div><div style="height:12%;background:'+s+';'+r+'flex:none;"></div><div style="display:flex;gap:3px;height:14%;flex:none;"><div style="flex:1;background:'+s+';'+r+'"></div><div style="flex:1;background:'+s+';'+r+'"></div></div><div style="flex:1;background:'+f+';'+r+'"></div></div>';
         default:return '<i class="fas fa-table-columns" style="font-size:36px;color:rgba(255,255,255,.9);"></i>';
     }
 }
