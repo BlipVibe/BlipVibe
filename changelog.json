@@ -12,12 +12,14 @@
       "Mobile now uses Cinema template by default — edge-to-edge bold layout optimized for small screens",
       "Templates are now desktop-only — hidden from shop and My Skins on mobile",
       "New 'Pastel Dream' basic skin — soft candy pastels with flowing animated gradient on navbar and cover",
-      "New 'Pastel Aurora' premium skin — shifting lavender, mint, and peach northern lights with animated gradient movement"
+      "New 'Pastel Aurora' premium skin — shifting lavender, mint, and peach northern lights with animated gradient movement",
+      "Neon Wave premium skin now shows vibrant turquoise-to-purple animated gradient on top navbar, bottom mobile nav, and profile cover"
     ],
     "fixed": [
       "Profile cover gradient now has rounded top corners (10px) — no more sharp square edges behind avatar on profile cards and profile views",
       "Mobile bottom nav bar no longer floats with a gap when the browser address bar hides on scroll — background extends to fill the space",
-      "Comment modal GIF and Post buttons no longer get cut off on mobile — reduced sizing and gap for small screens"
+      "Comment modal GIF and Post buttons no longer get cut off on mobile — reduced sizing and gap for small screens",
+      "Panorama template mobile layout no longer has a gap on the right side of posts"
     ]
   },
   {
