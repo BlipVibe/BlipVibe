@@ -1115,8 +1115,7 @@ var templates = [
     {id:'grid',name:'Grid',desc:'Two equal columns. Feed and sidebar side by side.',price:1,preview:'linear-gradient(135deg,#8e44ad,#2c3e50)'},
     {id:'journal',name:'Journal',desc:'Narrow centered feed with wide margins. Blog-style reading.',price:1,preview:'linear-gradient(135deg,#f8b500,#e74c3c)'},
     {id:'wing',name:'Wing',desc:'Wide left sidebar with compact feed. Profile-forward layout.',price:1,preview:'linear-gradient(135deg,#00b4db,#0083b0)'},
-    {id:'hub',name:'Hub',desc:'Profile and feed centered. Sidebars hidden until hovered.',price:1,preview:'linear-gradient(135deg,#c0392b,#8e44ad)'},
-    {id:'lookbook',name:'Lookbook',desc:'Instagram-style grid feed. Image-first cards in a 2-column masonry layout.',price:2,preview:'linear-gradient(135deg,#d4a574,#c9927a)'}
+    {id:'hub',name:'Hub',desc:'Profile and feed centered. Sidebars hidden until hovered.',price:1,preview:'linear-gradient(135deg,#c0392b,#8e44ad)'}
 ];
 
 var navStyles = [
@@ -5474,7 +5473,6 @@ function tplPreviewHtml(id){
         case 'journal':return '<div style="'+base+'align-items:center;"><div style="width:38%;flex:1;background:'+f+';'+r+'"></div></div>';
         case 'wing':return '<div style="'+base+'"><div style="'+row+'"><div style="flex:0 0 40%;background:'+s+';'+r+'"></div><div style="flex:1;background:'+f+';'+r+'"></div></div></div>';
         case 'hub':return '<div style="'+base+'align-items:center;"><div style="width:55%;flex:1;background:'+f+';'+r+'"></div></div>';
-        case 'lookbook':return '<div style="'+base+'"><div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;flex:1;"><div style="background:'+f+';'+r+'grid-row:span 2;"></div><div style="background:'+s+';'+r+'"></div><div style="background:'+h+';'+r+'"></div><div style="background:'+s+';'+r+'"></div><div style="background:'+f+';'+r+'"></div></div></div>';
         default:return '<i class="fas fa-table-columns" style="font-size:36px;color:rgba(255,255,255,.9);"></i>';
     }
 }

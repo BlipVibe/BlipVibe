@@ -1408,112 +1408,98 @@ body.tpl-hub .pv-col-photos{grid-column:1;grid-row:2;}
 body.tpl-hub .pv-col-feed{grid-column:1;grid-row:3;}
 body.tpl-hub .pv-col-skin{grid-column:2;grid-row:2/4;align-self:start;}
 
-/* ========== TEMPLATE: LOOKBOOK ========== */
-/* Instagram/Pinterest-style grid feed — image-first cards, 2-column masonry */
-body.tpl-lookbook .main-container{grid-template-columns:1fr;max-width:900px;grid-template-rows:auto auto 1fr;}
-body.tpl-lookbook .left-sidebar{display:contents;}
-body.tpl-lookbook .left-sidebar .profile-card{grid-column:1;grid-row:1;max-width:100%;}
-body.tpl-lookbook .left-sidebar .photos-card{display:none;}
-body.tpl-lookbook .left-sidebar .suggestions-card{display:none;}
-body.tpl-lookbook .center-feed{grid-column:1;grid-row:2;}
-body.tpl-lookbook .right-sidebar{display:none;}
-
-/* Feed becomes a 2-column grid */
-body.tpl-lookbook #feedContainer,
-body.tpl-lookbook #pvPostsFeed,
-body.tpl-lookbook #gvPostsFeed{display:grid!important;grid-template-columns:1fr 1fr;gap:14px;overflow:hidden;}
-
-/* Post cards — compact image-first style */
-body.tpl-lookbook .feed-post{padding:0!important;border-left:none!important;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;max-height:360px;}
-body.tpl-lookbook #feedContainer>.card,
-body.tpl-lookbook #pvPostsFeed>.card,
-body.tpl-lookbook #gvPostsFeed>.card{background:var(--card)!important;box-shadow:var(--shadow);border-radius:12px;overflow:hidden;min-width:0;max-width:100%;}
-body.has-premium-bg.tpl-lookbook #feedContainer>.card,
-body.has-premium-bg.tpl-lookbook #pvPostsFeed>.card,
-body.has-premium-bg.tpl-lookbook #gvPostsFeed>.card{background:var(--ps-card,#1e293b)!important;}
-body.tpl-lookbook .feed-post .post-header{padding:10px 12px 0;margin-bottom:8px;gap:8px;}
-body.tpl-lookbook .feed-post .post-avatar{width:28px;height:28px;}
-body.tpl-lookbook .feed-post .post-username{font-size:12px!important;}
-body.tpl-lookbook .feed-post .post-time{font-size:10px;}
-body.tpl-lookbook .feed-post .post-badges{display:none;}
-body.tpl-lookbook .feed-post .post-menu-btn{font-size:13px;padding:4px;}
-
-/* Images fill width, no border-radius inside card */
-body.tpl-lookbook .feed-post .post-description{margin-bottom:0;order:0;flex-shrink:1;overflow:hidden;}
-body.tpl-lookbook .feed-post .post-description p{font-size:13px!important;line-height:1.5;padding:0 12px 8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
-body.tpl-lookbook .feed-post .post-media-grid{order:-1;border-radius:0!important;margin:0;flex-shrink:0;max-height:200px;overflow:hidden;}
-body.tpl-lookbook .feed-post .post-media-grid .pm-thumb{border-radius:0!important;}
-body.tpl-lookbook .feed-post .post-media-grid .pm-thumb img,
-body.tpl-lookbook .feed-post .post-media-grid .pm-thumb video{border-radius:0!important;object-fit:contain;}
-
-/* Text-only posts get a soft gradient card look */
-body.tpl-lookbook .feed-post:not(:has(.post-media-grid)):not(:has(.link-preview)):not(:has(.video-embed)){background:linear-gradient(135deg,rgba(139,92,246,.08),rgba(92,189,185,.06))!important;}
-body.tpl-lookbook .feed-post:not(:has(.post-media-grid)):not(:has(.link-preview)):not(:has(.video-embed)) .post-description p{font-size:15px!important;font-weight:500;padding:16px 14px;line-height:1.6;-webkit-line-clamp:6;}
-
-/* Actions row — compact, pinned to bottom */
-body.tpl-lookbook .feed-post .post-actions{padding:6px 12px 10px;border-top:none;margin-top:auto;flex-shrink:0;}
-body.tpl-lookbook .feed-post .action-left{gap:12px;}
-body.tpl-lookbook .feed-post .action-btn{font-size:12px;}
-body.tpl-lookbook .feed-post .action-btn i{font-size:14px;}
-body.tpl-lookbook .feed-post .action-right{display:none;}
-body.tpl-lookbook .feed-post .share-btn{display:none;}
-body.tpl-lookbook .feed-post .dislike-btn{display:none;}
-
-/* Inline comments hidden in grid view */
-body.tpl-lookbook .feed-post .post-comments{display:none;}
-body.tpl-lookbook .feed-post .post-tags{padding:0 12px 4px;margin-bottom:0;}
-body.tpl-lookbook .feed-post .post-tags .skill-tag{font-size:10px;padding:2px 8px;}
-
-/* Embeds & link previews — constrained */
-body.tpl-lookbook .feed-post .video-embed{order:-1;max-width:100%!important;max-height:160px;aspect-ratio:16/9;margin:0!important;border-radius:0!important;flex-shrink:0;}
-body.tpl-lookbook .feed-post .link-preview{order:-1;border-radius:0;margin:0;flex-shrink:0;max-height:180px;overflow:hidden;}
-body.tpl-lookbook .feed-post .link-preview-image{max-height:120px;object-fit:contain;width:100%;}
-body.tpl-lookbook .feed-post .link-preview-info{padding:8px 12px;}
-body.tpl-lookbook .feed-post .link-preview-title{font-size:12px;-webkit-line-clamp:1;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;}
-body.tpl-lookbook .feed-post .link-preview-url{font-size:10px;}
-body.tpl-lookbook .feed-post .link-preview-desc{display:none;}
-/* Twitter/X embeds */
-body.tpl-lookbook .feed-post .twitter-tweet,
-body.tpl-lookbook .feed-post blockquote{max-height:160px!important;overflow:hidden!important;margin:0!important;border-radius:0!important;}
-body.tpl-lookbook .feed-post .view-more-btn{display:none;}
-
-/* Post create bar — full width span */
-body.tpl-lookbook .post-create-bar{grid-column:1/-1;}
-body.tpl-lookbook .card:has(.post-create-bar){grid-column:1/-1;}
-
-/* Feed tabs span full width */
-body.tpl-lookbook .search-tabs,
-body.tpl-lookbook #feedTabs{grid-column:1/-1;}
-body.tpl-lookbook .center-feed>.card:first-child{grid-column:1/-1;}
-
-/* Profile view */
-body.tpl-lookbook .pv-layout{grid-template-columns:1fr;max-width:900px;}
-body.tpl-lookbook .pv-col-left{grid-column:1;grid-row:1;position:static;max-width:100%;}
-body.tpl-lookbook .pv-col-left .pv-profile-card{max-width:100%;}
-body.tpl-lookbook .pv-col-photos{grid-column:1;grid-row:2;}
-body.tpl-lookbook .pv-col-feed{grid-column:1;grid-row:3;}
-body.tpl-lookbook .pv-col-skin{display:none;}
-
-/* Mobile: tighter grid, shorter cards */
+/* ========== MOBILE TEMPLATE PERSONALITIES ========== */
+/* Give each template a distinct feel on mobile (single-column) */
 @media(max-width:768px){
-    body.tpl-lookbook .feed-post{max-height:300px;}
-    body.tpl-lookbook #feedContainer,
-    body.tpl-lookbook #pvPostsFeed,
-    body.tpl-lookbook #gvPostsFeed{grid-template-columns:1fr 1fr!important;gap:8px!important;}
-    body.tpl-lookbook .feed-post .post-header{padding:8px 8px 0;gap:6px;}
-    body.tpl-lookbook .feed-post .post-avatar{width:22px;height:22px;}
-    body.tpl-lookbook .feed-post .post-username{font-size:11px!important;}
-    body.tpl-lookbook .feed-post .post-description p{font-size:12px!important;padding:0 8px 6px;-webkit-line-clamp:2;}
-    body.tpl-lookbook .feed-post .post-actions{padding:4px 8px 8px;}
-    body.tpl-lookbook .feed-post .action-left{gap:8px;}
-    body.tpl-lookbook .feed-post .action-btn{font-size:11px;}
-    body.tpl-lookbook .feed-post .action-btn i{font-size:12px;}
-    body.tpl-lookbook .feed-post .post-tags{padding:0 8px 2px;}
-    body.tpl-lookbook .feed-post:not(:has(.post-media-grid)):not(:has(.link-preview)):not(:has(.video-embed)) .post-description p{font-size:13px!important;padding:12px 10px;}
-    body.tpl-lookbook .feed-post .post-media-grid{max-height:160px;}
-    body.tpl-lookbook .feed-post .video-embed{max-height:120px;}
-    body.tpl-lookbook .feed-post .link-preview{max-height:150px;}
-    body.tpl-lookbook .feed-post .link-preview-image{max-height:90px;object-fit:contain;}
+    /* COMPACT — tight spacing, rounded bubble cards, no border-left */
+    body.tpl-compact .feed-post{border-left:none!important;border-radius:16px!important;margin:0 4px;}
+    body.tpl-compact #feedContainer{gap:10px!important;}
+    body.tpl-compact .feed-post .post-actions{border-top:none;padding-top:8px;}
+
+    /* ZEN — ultra minimal, no shadows, thin separator lines, lots of whitespace */
+    body.tpl-zen .card{box-shadow:none!important;border:none!important;border-radius:0!important;}
+    body.tpl-zen .feed-post{border-left:none!important;border-bottom:1px solid var(--border)!important;border-radius:0!important;padding:20px 16px!important;}
+    body.tpl-zen #feedContainer{gap:0!important;}
+    body.tpl-zen .feed-post .post-badges{display:none;}
+    body.tpl-zen .profile-card{box-shadow:none!important;border-bottom:1px solid var(--border)!important;border-radius:0!important;}
+
+    /* CINEMA — edge-to-edge cards, no gaps, no border-radius, bold look */
+    body.tpl-cinema .card{border-radius:0!important;margin:0 -12px!important;box-shadow:none!important;}
+    body.tpl-cinema .feed-post{border-left:none!important;border-radius:0!important;border-bottom:2px solid var(--primary)!important;}
+    body.tpl-cinema #feedContainer{gap:0!important;}
+    body.tpl-cinema .feed-post .post-avatar{width:36px;height:36px;}
+    body.tpl-cinema .feed-post .post-username{font-weight:700!important;}
+
+    /* MAGAZINE — card with visible border, smaller text, newspaper feel */
+    body.tpl-magazine .feed-post{border-left:none!important;border:1px solid var(--border)!important;border-radius:8px!important;}
+    body.tpl-magazine .feed-post .post-description p{font-size:13px!important;line-height:1.7!important;}
+    body.tpl-magazine .feed-post .post-username{text-transform:uppercase!important;font-size:11px!important;letter-spacing:.5px!important;}
+    body.tpl-magazine .feed-post .post-time{font-style:italic;}
+
+    /* FOCUS — wide padding, large text, reading-optimized */
+    body.tpl-focus .feed-post{border-left:none!important;padding:24px 20px!important;border-radius:14px!important;}
+    body.tpl-focus .feed-post .post-description p{font-size:16px!important;line-height:1.8!important;}
+    body.tpl-focus .feed-post .post-avatar{width:40px;height:40px;}
+    body.tpl-focus #feedContainer{gap:20px!important;}
+
+    /* JOURNAL — narrow centered, handwritten vibe, extra round */
+    body.tpl-journal .feed-post{border-left:none!important;border-radius:20px!important;padding:18px!important;}
+    body.tpl-journal #feedContainer{max-width:380px;margin:0 auto;}
+    body.tpl-journal .feed-post .post-description p{line-height:1.8!important;}
+    body.tpl-journal .feed-post .post-actions{justify-content:center;}
+
+    /* STACK — stacked full-width, no gaps between cards, divider lines */
+    body.tpl-stack .card{border-radius:0!important;box-shadow:none!important;}
+    body.tpl-stack .feed-post{border-left:none!important;border-radius:0!important;border-top:3px solid var(--primary)!important;padding:16px 14px!important;}
+    body.tpl-stack #feedContainer{gap:0!important;}
+
+    /* GRID — compact cards with accent left border thicker */
+    body.tpl-grid .feed-post{border-left:5px solid var(--primary)!important;border-radius:0 10px 10px 0!important;}
+    body.tpl-grid #feedContainer{gap:10px!important;}
+
+    /* DUO — avatar on right side, flipped header */
+    body.tpl-duo .feed-post{border-left:none!important;border-right:3px solid var(--primary)!important;border-radius:10px 0 0 10px!important;}
+    body.tpl-duo .feed-post .post-header{flex-direction:row-reverse;}
+
+    /* HEADLINE — large username, small avatar, editorial style */
+    body.tpl-headline .feed-post{border-left:none!important;border-radius:4px!important;}
+    body.tpl-headline .feed-post .post-username{font-size:17px!important;font-weight:700!important;}
+    body.tpl-headline .feed-post .post-avatar{width:28px;height:28px;}
+    body.tpl-headline .feed-post .post-badges{display:none;}
+
+    /* PANORAMA — full-bleed images, card extends to edges */
+    body.tpl-panorama .card{border-radius:0!important;margin:0 -12px!important;}
+    body.tpl-panorama .feed-post{border-left:none!important;border-radius:0!important;}
+    body.tpl-panorama #feedContainer{gap:6px!important;}
+    body.tpl-panorama .feed-post .post-media-grid{margin:0 -20px!important;}
+
+    /* REVERSE — right-aligned text, flipped feel */
+    body.tpl-reverse .feed-post{border-left:none!important;border-right:3px solid var(--primary)!important;text-align:right;}
+    body.tpl-reverse .feed-post .post-header{flex-direction:row-reverse;}
+    body.tpl-reverse .feed-post .post-actions{justify-content:flex-end;}
+    body.tpl-reverse .feed-post .action-left{flex-direction:row-reverse;}
+
+    /* SPOTLIGHT — oversized avatar, centered header */
+    body.tpl-spotlight .feed-post{border-left:none!important;text-align:center;border-radius:14px!important;}
+    body.tpl-spotlight .feed-post .post-header{flex-direction:column;align-items:center;gap:6px;}
+    body.tpl-spotlight .feed-post .post-avatar{width:48px;height:48px;}
+    body.tpl-spotlight .feed-post .post-actions{justify-content:center;}
+
+    /* DASHBOARD — compact list-style, small padding */
+    body.tpl-dashboard .feed-post{border-left:none!important;padding:12px!important;border-radius:8px!important;}
+    body.tpl-dashboard #feedContainer{gap:8px!important;}
+    body.tpl-dashboard .feed-post .post-avatar{width:32px;height:32px;}
+    body.tpl-dashboard .feed-post .post-description p{font-size:13px!important;}
+
+    /* WIDESCREEN — no left border, subtle bottom shadow */
+    body.tpl-widescreen .feed-post{border-left:none!important;box-shadow:0 2px 0 var(--border)!important;border-radius:12px 12px 0 0!important;}
+
+    /* WING — bold left accent bar, extra padding */
+    body.tpl-wing .feed-post{border-left:6px solid var(--primary)!important;padding-left:20px!important;border-radius:0!important;}
+
+    /* HUB — pill-shaped cards */
+    body.tpl-hub .feed-post{border-left:none!important;border-radius:24px!important;padding:18px 20px!important;}
+    body.tpl-hub .feed-post .post-avatar{border-radius:8px!important;}
 }
 
 /* ========== NAV STYLE: METRO ========== */
