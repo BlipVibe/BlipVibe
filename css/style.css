@@ -2265,6 +2265,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     #msgBadge.has-unread{display:block!important;opacity:1!important;}
     .nav-right{flex:1!important;justify-content:flex-end!important;}
     body[class*="premium-"] .nav-center{background:var(--ps-nav)!important;background-size:200% 200%!important;animation:gradientShift 6s ease infinite!important;}
+    body.premium-neon-wave .nav-center{background:linear-gradient(135deg,#00f5a0,#7b2ff7)!important;background-size:300% 300%!important;animation:neonWaveShift 6s ease infinite!important;}
 
     /* --- Main layout — force single column --- */
     .main-container{
@@ -2789,6 +2790,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
 
     /* --- Premium nav — bottom bar styling --- */
     body[class*="premium-"] .nav-center{background:var(--ps-nav)!important;background-size:200% 200%!important;animation:gradientShift 6s ease infinite!important;}
+    body.premium-neon-wave .nav-center{background:linear-gradient(135deg,#00f5a0,#7b2ff7)!important;background-size:300% 300%!important;animation:neonWaveShift 6s ease infinite!important;}
 }
 
 @media(max-width:480px){
@@ -2961,12 +2963,6 @@ body.premium-autumn-leaves{--ps-bg:#fef7ed;--ps-nav:linear-gradient(135deg,#b453
 --ps-pattern:url("../images/premium-autumn-leaves.svg");}
 body.premium-neon-wave{--ps-bg:#0a0a1a;--ps-nav:linear-gradient(135deg,#00f5a0,#7b2ff7);--ps-card:#12122a;--ps-text:#c0ffd0;--ps-muted:#80d0a0;--ps-border:#1a2a30;--ps-tag:#0d1f1a;--ps-input:#080818;--ps-hover:#1a2a25;--ps-glow:rgba(0,245,160,.35);--ps-post-border:#00f5a0;--ps-badge-bg:#0d1f1a;--ps-anim:neonFlicker 4s ease infinite;
 --ps-pattern:url("../images/premium-neon-wave.svg");}
-body.premium-neon-wave .navbar,
-body.premium-neon-wave .nav-center,
-body.premium-neon-wave.nav-dock .nav-center,
-body.premium-neon-wave.nav-pill .nav-center,
-body.premium-neon-wave.nav-split .nav-center{background:var(--ps-nav)!important;background-size:300% 300%!important;animation:neonWaveShift 6s ease infinite!important;}
-body.premium-neon-wave .profile-card .profile-cover{background-size:300% 300%!important;animation:neonWaveShift 6s ease infinite!important;}
 @keyframes neonWaveShift{0%{background-position:0% 50%;}25%{background-position:100% 0%;}50%{background-position:100% 100%;}75%{background-position:0% 100%;}100%{background-position:0% 50%;}}
 body.premium-sakura{--ps-bg:#fff5f7;--ps-nav:linear-gradient(135deg,#e11d73,#f472b6);--ps-card:#fff;--ps-text:#4a1942;--ps-muted:#a0607a;--ps-border:#ffe4e6;--ps-tag:#ffe4e6;--ps-input:#fff8f9;--ps-hover:#ffe4e6;--ps-glow:rgba(225,29,115,.3);--ps-post-border:#e11d73;--ps-badge-bg:#ffe4e6;--ps-anim:none;
 --ps-pattern:url("../images/premium-sakura.svg");}
@@ -3149,5 +3145,13 @@ body.premium-dark-prism .navbar{background-size:auto,400% 100%;animation:gradien
 body.premium-dark-prism .card{box-shadow:0 0 12px rgba(100,100,255,.08),0 2px 8px rgba(0,0,0,.3);}
 body.premium-dark-prism .feed-post{border-left:2px solid rgba(100,100,255,.15);}
 @keyframes darkPrismGlow{0%,100%{box-shadow:0 0 20px rgba(100,100,255,.4),0 0 50px rgba(100,100,255,.15);}50%{box-shadow:0 0 30px rgba(130,80,255,.6),0 0 70px rgba(100,100,255,.3);}}
+/* Neon Wave — vibrant gradient on all navbars */
+body.premium-neon-wave .navbar,
+body.premium-neon-wave .nav-center,
+body.premium-neon-wave.nav-dock .nav-center,
+body.premium-neon-wave.nav-pill .nav-center,
+body.premium-neon-wave.nav-split .nav-center,
+body.premium-neon-wave.nav-horizon .navbar{background:linear-gradient(135deg,#00f5a0,#7b2ff7)!important;background-size:300% 300%!important;animation:neonWaveShift 6s ease infinite!important;}
+body.premium-neon-wave .profile-card .profile-cover{background:linear-gradient(135deg,#00f5a0,#7b2ff7)!important;background-size:300% 300%!important;animation:neonWaveShift 6s ease infinite!important;}
 body.premium-neon-wave::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(transparent,transparent 2px,rgba(0,245,160,.015) 2px,rgba(0,245,160,.015) 4px);pointer-events:none;z-index:9999;}
 body.premium-molten-gold .card{animation:goldShimmer 3s ease infinite;}
