@@ -1501,10 +1501,10 @@ body.tpl-stream .pv-col-skin{grid-column:1;grid-row:4;position:static;max-width:
     body.tpl-headline .feed-post .post-badges{display:none;}
 
     /* PANORAMA — full-bleed images, card extends to edges */
-    body.tpl-panorama .card{border-radius:0!important;margin:0 -12px!important;}
-    body.tpl-panorama .feed-post{border-left:none!important;border-radius:0!important;}
+    body.tpl-panorama .card{border-radius:0!important;margin-left:-8px!important;margin-right:-8px!important;}
+    body.tpl-panorama .feed-post{border-left:none!important;border-radius:0!important;margin-left:-8px!important;margin-right:-8px!important;}
     body.tpl-panorama #feedContainer{gap:6px!important;}
-    body.tpl-panorama .feed-post .post-media-grid{margin:0 -20px!important;}
+    body.tpl-panorama .feed-post .post-media-grid{margin-left:-12px!important;margin-right:-12px!important;}
 
     /* REVERSE — right-aligned text, flipped feel */
     body.tpl-reverse .feed-post{border-left:none!important;border-right:3px solid var(--primary)!important;text-align:right;}
