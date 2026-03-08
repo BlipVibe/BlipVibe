@@ -7,7 +7,8 @@
       "Group posts restrict @mentions to group members only",
       "Mentioned usernames render as clickable links (purple, opens profile) in feed, group, search, saved, and profile posts",
       "@mentions also work in comments",
-      "Tagged users receive a notification when mentioned in a post"
+      "Tagged users receive a notification when mentioned in a post",
+      "New 'Lookbook' template — Instagram/Pinterest-style 2-column grid feed with image-first cards, compact actions, text-only posts get soft gradient backgrounds, works on both desktop and mobile"
     ],
     "fixed": [
       "Profile cover gradient now has rounded top corners (10px) — no more sharp square edges behind avatar on profile cards and profile views",

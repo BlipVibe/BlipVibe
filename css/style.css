@@ -1408,6 +1408,94 @@ body.tpl-hub .pv-col-photos{grid-column:1;grid-row:2;}
 body.tpl-hub .pv-col-feed{grid-column:1;grid-row:3;}
 body.tpl-hub .pv-col-skin{grid-column:2;grid-row:2/4;align-self:start;}
 
+/* ========== TEMPLATE: LOOKBOOK ========== */
+/* Instagram/Pinterest-style grid feed — image-first cards, 2-column masonry */
+body.tpl-lookbook .main-container{grid-template-columns:1fr;max-width:900px;grid-template-rows:auto auto 1fr;}
+body.tpl-lookbook .left-sidebar{display:contents;}
+body.tpl-lookbook .left-sidebar .profile-card{grid-column:1;grid-row:1;max-width:100%;}
+body.tpl-lookbook .left-sidebar .photos-card{display:none;}
+body.tpl-lookbook .left-sidebar .suggestions-card{display:none;}
+body.tpl-lookbook .center-feed{grid-column:1;grid-row:2;}
+body.tpl-lookbook .right-sidebar{display:none;}
+
+/* Feed becomes a 2-column grid */
+body.tpl-lookbook #feedContainer,
+body.tpl-lookbook #pvPostsFeed,
+body.tpl-lookbook #gvPostsFeed{display:grid!important;grid-template-columns:1fr 1fr;gap:14px;}
+
+/* Post cards — compact image-first style */
+body.tpl-lookbook .feed-post{padding:0!important;border-left:none!important;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
+body.tpl-lookbook .feed-post .post-header{padding:10px 12px 0;margin-bottom:8px;gap:8px;}
+body.tpl-lookbook .feed-post .post-avatar{width:28px;height:28px;}
+body.tpl-lookbook .feed-post .post-username{font-size:12px!important;}
+body.tpl-lookbook .feed-post .post-time{font-size:10px;}
+body.tpl-lookbook .feed-post .post-badges{display:none;}
+body.tpl-lookbook .feed-post .post-menu-btn{font-size:13px;padding:4px;}
+
+/* Images fill width, no border-radius inside card */
+body.tpl-lookbook .feed-post .post-description{margin-bottom:0;order:0;}
+body.tpl-lookbook .feed-post .post-description p{font-size:13px!important;line-height:1.5;padding:0 12px 8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+body.tpl-lookbook .feed-post .post-media-grid{order:-1;border-radius:0!important;margin:0;}
+body.tpl-lookbook .feed-post .post-media-grid .pm-thumb{border-radius:0!important;}
+body.tpl-lookbook .feed-post .post-media-grid .pm-thumb img,
+body.tpl-lookbook .feed-post .post-media-grid .pm-thumb video{border-radius:0!important;}
+
+/* Text-only posts get a soft gradient card look */
+body.tpl-lookbook .feed-post:not(:has(.post-media-grid)):not(:has(.link-preview)){background:linear-gradient(135deg,rgba(139,92,246,.08),rgba(92,189,185,.06))!important;}
+body.tpl-lookbook .feed-post:not(:has(.post-media-grid)):not(:has(.link-preview)) .post-description p{font-size:15px!important;font-weight:500;padding:16px 14px;line-height:1.6;-webkit-line-clamp:6;}
+
+/* Actions row — compact */
+body.tpl-lookbook .feed-post .post-actions{padding:6px 12px 10px;border-top:none;}
+body.tpl-lookbook .feed-post .action-left{gap:12px;}
+body.tpl-lookbook .feed-post .action-btn{font-size:12px;}
+body.tpl-lookbook .feed-post .action-btn i{font-size:14px;}
+body.tpl-lookbook .feed-post .action-right{display:none;}
+body.tpl-lookbook .feed-post .share-btn{display:none;}
+body.tpl-lookbook .feed-post .dislike-btn{display:none;}
+
+/* Inline comments hidden in grid view */
+body.tpl-lookbook .feed-post .post-comments{display:none;}
+body.tpl-lookbook .feed-post .post-tags{padding:0 12px 4px;margin-bottom:0;}
+body.tpl-lookbook .feed-post .post-tags .skill-tag{font-size:10px;padding:2px 8px;}
+
+/* Post create bar — full width span */
+body.tpl-lookbook .post-create-bar{grid-column:1/-1;}
+body.tpl-lookbook .card:has(.post-create-bar){grid-column:1/-1;}
+
+/* Feed tabs span full width */
+body.tpl-lookbook .search-tabs,
+body.tpl-lookbook #feedTabs{grid-column:1/-1;}
+body.tpl-lookbook .center-feed>.card:first-child{grid-column:1/-1;}
+
+/* Link previews compact */
+body.tpl-lookbook .feed-post .link-preview{border-radius:0;margin:0;}
+body.tpl-lookbook .feed-post .link-preview-image{max-height:140px;}
+
+/* Profile view */
+body.tpl-lookbook .pv-layout{grid-template-columns:1fr;max-width:900px;}
+body.tpl-lookbook .pv-col-left{grid-column:1;grid-row:1;position:static;max-width:100%;}
+body.tpl-lookbook .pv-col-left .pv-profile-card{max-width:100%;}
+body.tpl-lookbook .pv-col-photos{grid-column:1;grid-row:2;}
+body.tpl-lookbook .pv-col-feed{grid-column:1;grid-row:3;}
+body.tpl-lookbook .pv-col-skin{display:none;}
+
+/* Mobile: tighter grid */
+@media(max-width:768px){
+    body.tpl-lookbook #feedContainer,
+    body.tpl-lookbook #pvPostsFeed,
+    body.tpl-lookbook #gvPostsFeed{grid-template-columns:1fr 1fr!important;gap:8px!important;}
+    body.tpl-lookbook .feed-post .post-header{padding:8px 8px 0;gap:6px;}
+    body.tpl-lookbook .feed-post .post-avatar{width:22px;height:22px;}
+    body.tpl-lookbook .feed-post .post-username{font-size:11px!important;}
+    body.tpl-lookbook .feed-post .post-description p{font-size:12px!important;padding:0 8px 6px;-webkit-line-clamp:2;}
+    body.tpl-lookbook .feed-post .post-actions{padding:4px 8px 8px;}
+    body.tpl-lookbook .feed-post .action-left{gap:8px;}
+    body.tpl-lookbook .feed-post .action-btn{font-size:11px;}
+    body.tpl-lookbook .feed-post .action-btn i{font-size:12px;}
+    body.tpl-lookbook .feed-post .post-tags{padding:0 8px 2px;}
+    body.tpl-lookbook .feed-post:not(:has(.post-media-grid)):not(:has(.link-preview)) .post-description p{font-size:13px!important;padding:12px 10px;}
+}
+
 /* ========== NAV STYLE: METRO ========== */
 /* Navbar → vertical left sidebar */
 body.nav-metro .navbar{position:fixed;top:0;left:0;right:auto;bottom:0;width:210px;height:100vh;max-height:100vh;box-shadow:2px 0 12px rgba(0,0,0,.15);overflow-y:auto;overflow-x:hidden;}
