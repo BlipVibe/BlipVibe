@@ -1412,16 +1412,25 @@ body.tpl-hub .pv-col-skin{grid-column:2;grid-row:2/4;align-self:start;}
 body.tpl-stream .main-container{display:grid;grid-template-columns:1fr;max-width:700px;gap:14px;}
 body.tpl-stream .left-sidebar{display:contents;}
 body.tpl-stream .right-sidebar{display:contents;}
-body.tpl-stream .left-sidebar .profile-card{grid-column:1;grid-row:1;}
-/* Horizontal profile: avatar left, info right */
-body.tpl-stream .profile-card .profile-info-section{display:flex;flex-direction:row;align-items:center;gap:16px;}
-body.tpl-stream .profile-card .profile-avatar-wrap{margin:0;flex-shrink:0;}
-body.tpl-stream .profile-card .profile-stats{justify-content:flex-start;}
+body.tpl-stream .left-sidebar .profile-card{grid-column:1;grid-row:1;overflow:visible;}
+/* Cover becomes a short accent strip */
+body.tpl-stream .profile-card .profile-cover{height:40px;border-radius:10px 10px 0 0;}
+/* Grid layout: circle avatar left, all info right */
+body.tpl-stream .profile-card .profile-info{display:grid;grid-template-columns:100px 1fr;grid-template-rows:auto;column-gap:0;row-gap:2px;padding:0 18px 14px;align-items:start;}
+body.tpl-stream .profile-card .profile-avatar-wrap{grid-column:1;grid-row:1 / -1;width:100px!important;margin:-30px 0 0 0!important;border-radius:50%!important;align-self:start;z-index:2;position:relative;}
+body.tpl-stream .profile-card .profile-avatar{border-radius:50%!important;}
+body.tpl-stream .profile-card .profile-avatar-wrap:has(.premium-border)::before{border-radius:50%!important;}
+/* Right column: text items with left padding + groove indent */
+body.tpl-stream .profile-card .profile-name,
+body.tpl-stream .profile-card .profile-title,
+body.tpl-stream .profile-card .profile-about,
+body.tpl-stream .profile-card .profile-stats,
+body.tpl-stream .profile-card .profile-links{grid-column:2;padding-left:16px;}
+body.tpl-stream .profile-card .profile-name{margin-top:8px;}
+body.tpl-stream .profile-card .profile-stats{justify-content:flex-start;gap:16px;}
 body.tpl-stream .left-sidebar .photos-card{grid-column:1;grid-row:2;}
 /* Suggestions + Groups side by side */
 body.tpl-stream .right-sidebar .promo-card{display:none;}
-body.tpl-stream .right-sidebar .suggestions-card{grid-column:1;grid-row:3;}
-body.tpl-stream .right-sidebar .groups-card{grid-column:1;grid-row:3;}
 body.tpl-stream .right-sidebar{display:grid;grid-template-columns:1fr 1fr;gap:14px;grid-row:3;position:static;}
 body.tpl-stream .center-feed{grid-column:1;grid-row:4;}
 /* Profile view */
