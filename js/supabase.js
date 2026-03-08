@@ -981,6 +981,108 @@ function sbSubscribeMessages(userId, callback) {
     .subscribe();
 }
 
+// ---- 14b. GROUP CHAT --------------------------------------------------------
+
+async function sbGetGroupChatLayout(groupId) {
+  const { data, error } = await sb.from('group_chat_sections')
+    .select('*, channels:group_chat_channels(*)')
+    .eq('group_id', groupId)
+    .order('position');
+  if (error) throw error;
+  // Sort channels within each section
+  (data || []).forEach(function(s) {
+    s.channels = (s.channels || []).sort(function(a, b) { return a.position - b.position; });
+  });
+  return data || [];
+}
+
+async function sbCreateGroupChatSection(groupId, name) {
+  // Get max position
+  const { data: existing } = await sb.from('group_chat_sections')
+    .select('position').eq('group_id', groupId).order('position', { ascending: false }).limit(1);
+  var pos = (existing && existing.length) ? existing[0].position + 1 : 0;
+  const { data, error } = await sb.from('group_chat_sections')
+    .insert({ group_id: groupId, name: name, position: pos })
+    .select().single();
+  if (error) throw error;
+  return data;
+}
+
+async function sbUpdateGroupChatSection(sectionId, updates) {
+  const { error } = await sb.from('group_chat_sections').update(updates).eq('id', sectionId);
+  if (error) throw error;
+}
+
+async function sbDeleteGroupChatSection(sectionId) {
+  const { error } = await sb.from('group_chat_sections').delete().eq('id', sectionId);
+  if (error) throw error;
+}
+
+async function sbCreateGroupChatChannel(groupId, sectionId, name) {
+  const { data: existing } = await sb.from('group_chat_channels')
+    .select('position').eq('section_id', sectionId).order('position', { ascending: false }).limit(1);
+  var pos = (existing && existing.length) ? existing[0].position + 1 : 0;
+  const { data, error } = await sb.from('group_chat_channels')
+    .insert({ group_id: groupId, section_id: sectionId, name: name, position: pos })
+    .select().single();
+  if (error) throw error;
+  return data;
+}
+
+async function sbUpdateGroupChatChannel(channelId, updates) {
+  const { error } = await sb.from('group_chat_channels').update(updates).eq('id', channelId);
+  if (error) throw error;
+}
+
+async function sbDeleteGroupChatChannel(channelId) {
+  const { error } = await sb.from('group_chat_channels').delete().eq('id', channelId);
+  if (error) throw error;
+}
+
+async function sbGetGroupChatMessages(channelId, limit, before) {
+  limit = limit || 80;
+  var q = sb.from('group_chat_messages')
+    .select('*, author:profiles!group_chat_messages_author_id_fkey(id, username, display_name, avatar_url)')
+    .eq('channel_id', channelId)
+    .order('created_at', { ascending: false })
+    .limit(limit);
+  if (before) q = q.lt('created_at', before);
+  const { data, error } = await q;
+  if (error) throw error;
+  return _sanitizeData((data || []).reverse());
+}
+
+async function sbSendGroupChatMessage(channelId, content, mediaUrl, mediaType) {
+  var row = { channel_id: channelId, author_id: currentUser.id, content: content || '' };
+  if (mediaUrl) { row.media_url = mediaUrl; row.media_type = mediaType || 'image'; }
+  const { data, error } = await sb.from('group_chat_messages')
+    .insert(row).select('*, author:profiles!group_chat_messages_author_id_fkey(id, username, display_name, avatar_url)').single();
+  if (error) throw error;
+  return _sanitizeData(data);
+}
+
+async function sbDeleteGroupChatMessage(messageId) {
+  const { error } = await sb.from('group_chat_messages').delete().eq('id', messageId);
+  if (error) throw error;
+}
+
+function sbSubscribeGroupChat(channelId, callback) {
+  return sb.channel('group-chat:' + channelId)
+    .on('postgres_changes', {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'group_chat_messages',
+      filter: 'channel_id=eq.' + channelId
+    }, function(payload) { callback(payload.new); })
+    .on('postgres_changes', {
+      event: 'DELETE',
+      schema: 'public',
+      table: 'group_chat_messages',
+      filter: 'channel_id=eq.' + channelId
+    }, function(payload) { callback(null, payload.old); })
+    .subscribe();
+}
+
 // ---- 15. ALBUMS -------------------------------------------------------------
 
 async function sbGetAlbums(userId) {
