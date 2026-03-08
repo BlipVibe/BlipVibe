@@ -1025,7 +1025,8 @@ var skins = [
     {id:'slate',name:'Slate Storm',desc:'Cool dark gray sophistication. Sleek and modern.',price:1,preview:'linear-gradient(135deg,#37474f,#263238)',cardBg:'#37474f',cardText:'#eceff1',cardMuted:'#90a4ae'},
     {id:'ember',name:'Ember Glow',desc:'Warm smoldering red-orange. Bold and fiery.',price:1,preview:'linear-gradient(135deg,#e64a19,#bf360c)',cardBg:'#fbe9e7',cardText:'#bf360c',cardMuted:'#e64a19'},
     {id:'arctic',name:'Arctic Frost',desc:'Icy cyan chill. Clean and refreshing.',price:1,preview:'linear-gradient(135deg,#00acc1,#00838f)',cardBg:'#e0f7fa',cardText:'#00838f',cardMuted:'#00acc1'},
-    {id:'moss',name:'Moss Garden',desc:'Olive earth tones. Calm and grounded.',price:1,preview:'linear-gradient(135deg,#689f38,#558b2f)',cardBg:'#f1f8e9',cardText:'#558b2f',cardMuted:'#689f38'}
+    {id:'moss',name:'Moss Garden',desc:'Olive earth tones. Calm and grounded.',price:1,preview:'linear-gradient(135deg,#689f38,#558b2f)',cardBg:'#f1f8e9',cardText:'#558b2f',cardMuted:'#689f38'},
+    {id:'pastel',name:'Pastel Dream',desc:'Soft candy pastels with flowing gradient movement. Sweet and dreamy.',price:1,preview:'linear-gradient(135deg,#fbc2eb,#a6c1ee,#fdcbf1,#e6dee9)',cardBg:'#fef5ff',cardText:'#7b4a8e',cardMuted:'#b07cc3'}
 ];
 
 var fonts = [
@@ -1154,7 +1155,8 @@ var premiumSkins = [
     {id:'vaporwave',name:'Vaporwave',desc:'Retro 80s pink and cyan. Nostalgic aesthetic vibes.',price:1,preview:'linear-gradient(135deg,#ff71ce,#01cdfe)',border:'conic-gradient(from 0deg,#ff71ce,#01cdfe,#b967ff,#05ffa1,#ff71ce)',icon:'fa-vr-cardboard',iconColor:'#ff71ce',accent:'#b967ff',accentHover:'#9b4dca',dark:true,cardBg:'#1a0a2e',cardText:'#ff71ce',cardMuted:'#b967ff'},
     {id:'blood-moon',name:'Blood Moon',desc:'Deep crimson and obsidian. Dark and brooding intensity.',price:1,preview:'linear-gradient(135deg,#1a0000,#8b0000)',border:'conic-gradient(from 0deg,#8b0000,#cc0000,#660000,#990000,#8b0000)',icon:'fa-moon',iconColor:'#cc0000',accent:'#cc0000',accentHover:'#990000',dark:true,cardBg:'#1a0505',cardText:'#e05050',cardMuted:'#990000'},
     {id:'cotton-candy',name:'Cotton Candy',desc:'Soft pastel pink and baby blue. Sweet and dreamy.',price:1,preview:'linear-gradient(135deg,#ffd1dc,#b5e8ff)',border:'conic-gradient(from 0deg,#ffd1dc,#b5e8ff,#e8d5f5,#ffd1dc)',icon:'fa-cloud',iconColor:'#ffa6c9',accent:'#e91e8c',accentHover:'#c2185b',dark:false,cardBg:'#fff0f5',cardText:'#c2185b',cardMuted:'#e91e8c'},
-    {id:'matrix',name:'Matrix',desc:'Digital rain green on black. Enter the simulation.',price:1,preview:'linear-gradient(135deg,#000000,#003300)',border:'conic-gradient(from 0deg,#00ff41,#008f11,#00ff41,#003300,#00ff41)',icon:'fa-terminal',iconColor:'#00ff41',accent:'#00ff41',accentHover:'#00cc33',dark:true,cardBg:'#001a00',cardText:'#00ff41',cardMuted:'#008f11'}
+    {id:'matrix',name:'Matrix',desc:'Digital rain green on black. Enter the simulation.',price:1,preview:'linear-gradient(135deg,#000000,#003300)',border:'conic-gradient(from 0deg,#00ff41,#008f11,#00ff41,#003300,#00ff41)',icon:'fa-terminal',iconColor:'#00ff41',accent:'#00ff41',accentHover:'#00cc33',dark:true,cardBg:'#001a00',cardText:'#00ff41',cardMuted:'#008f11'},
+    {id:'pastel-aurora',name:'Pastel Aurora',desc:'Flowing pastel northern lights. Lavender, mint, and peach shift endlessly.',price:1,preview:'linear-gradient(135deg,#c3aed6,#b8e6d0,#ffd8be,#c3aed6)',border:'conic-gradient(from 0deg,#c3aed6,#b8e6d0,#ffd8be,#f5c6e0,#c3aed6)',icon:'fa-rainbow',iconColor:'#c3aed6',accent:'#9b72b0',accentHover:'#7d5a96',dark:false,cardBg:'#faf5ff',cardText:'#6b4080',cardMuted:'#9b72b0'}
 ];
 
 var guildSkins = [];

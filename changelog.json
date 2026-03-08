@@ -10,7 +10,9 @@
       "Tagged users receive a notification when mentioned in a post",
       "New 'Stream' template — single-column stacked layout: cover photo, horizontal profile + about me, album, suggestions + groups side-by-side, then feed (desktop only)",
       "Mobile now uses Cinema template by default — edge-to-edge bold layout optimized for small screens",
-      "Templates are now desktop-only — hidden from shop and My Skins on mobile"
+      "Templates are now desktop-only — hidden from shop and My Skins on mobile",
+      "New 'Pastel Dream' basic skin — soft candy pastels with flowing animated gradient on navbar and cover",
+      "New 'Pastel Aurora' premium skin — shifting lavender, mint, and peach northern lights with animated gradient movement"
     ],
     "fixed": [
       "Profile cover gradient now has rounded top corners (10px) — no more sharp square edges behind avatar on profile cards and profile views",
