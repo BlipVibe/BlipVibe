@@ -1413,21 +1413,22 @@ body.tpl-stream .main-container{display:grid;grid-template-columns:1fr;max-width
 body.tpl-stream .left-sidebar{display:contents;}
 body.tpl-stream .right-sidebar{display:contents;}
 body.tpl-stream .left-sidebar .profile-card{grid-column:1;grid-row:1;overflow:visible;}
-/* Profile card becomes transparent shell — cover + about-me appear separate */
+/* Profile card: transparent shell so cover + about-me bar look separate */
 body.tpl-stream .profile-card{background:none!important;box-shadow:none!important;border:none!important;overflow:visible;}
-/* Large cover photo */
-body.tpl-stream .profile-card .profile-cover{height:160px;border-radius:12px;}
-/* Profile-info is the "about me" card — its own box offset right */
-body.tpl-stream .profile-card .profile-info{position:relative;margin:-40px 0 0 60px;background:var(--card);border-radius:12px;padding:14px 18px 14px 60px;box-shadow:0 2px 8px rgba(0,0,0,.12);}
-/* Circle avatar overlapping cover + about-me left edge */
-body.tpl-stream .profile-card .profile-avatar-wrap{position:absolute!important;left:-50px;top:-30px;width:100px!important;margin:0!important;border-radius:50%!important;z-index:3;box-shadow:0 2px 10px rgba(0,0,0,.2);}
+/* Big cover photo — fills top area */
+body.tpl-stream .profile-card .profile-cover{height:200px;border-radius:12px 12px 0 0;}
+/* About-me: full-width frosted strip below cover, avatar overlaps from left */
+body.tpl-stream .profile-card .profile-info{position:relative;margin:0;background:color-mix(in srgb,var(--card) 90%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:16px 18px 14px 130px;border-radius:0 0 12px 12px;box-shadow:0 2px 8px rgba(0,0,0,.1);}
+/* Circle avatar: large, overlaps cover bottom + about-me bar left */
+body.tpl-stream .profile-card .profile-avatar-wrap{position:absolute!important;left:14px;top:-55px;width:110px!important;margin:0!important;border-radius:50%!important;z-index:3;box-shadow:0 3px 12px rgba(0,0,0,.25);border:4px solid var(--card)!important;}
 body.tpl-stream .profile-card .profile-avatar{border-radius:50%!important;}
 body.tpl-stream .profile-card .profile-avatar-wrap:has(.premium-border)::before{border-radius:50%!important;}
-body.tpl-stream .profile-card .profile-name{margin-top:0;}
+body.tpl-stream .profile-card .profile-avatar-wrap:has(.premium-border){border:none!important;}
+body.tpl-stream .profile-card .profile-name{margin-top:0;font-size:17px;}
 body.tpl-stream .profile-card .profile-stats{justify-content:flex-start;gap:16px;}
-/* Premium bg compat — about-me card keeps solid bg */
-body.has-premium-bg body.tpl-stream .profile-card .profile-info,
-body.has-premium-bg.tpl-stream .profile-card .profile-info{background:var(--ps-card,var(--card))!important;}
+body.tpl-stream .profile-card .profile-links{display:flex;gap:10px;margin-top:6px;}
+/* Premium bg compat */
+body.has-premium-bg.tpl-stream .profile-card .profile-info{background:color-mix(in srgb,var(--ps-card,var(--card)) 90%,transparent)!important;}
 body.tpl-stream .left-sidebar .photos-card{grid-column:1;grid-row:2;}
 /* Suggestions + Groups side by side */
 body.tpl-stream .right-sidebar .promo-card{display:none;}
@@ -1533,7 +1534,10 @@ body.tpl-stream .pv-col-skin{grid-column:1;grid-row:4;position:static;max-width:
     body.tpl-hub .feed-post{border-left:none!important;border-radius:24px!important;padding:18px 20px!important;}
     body.tpl-hub .feed-post .post-avatar{border-radius:8px!important;}
 
-    /* STREAM — stacked stream, suggestions+groups stack vertically on mobile */
+    /* STREAM — stacked stream, smaller avatar, suggestions stack on mobile */
+    body.tpl-stream .profile-card .profile-cover{height:150px;}
+    body.tpl-stream .profile-card .profile-avatar-wrap{width:90px!important;left:10px;top:-45px;}
+    body.tpl-stream .profile-card .profile-info{padding-left:110px!important;}
     body.tpl-stream .right-sidebar{grid-template-columns:1fr!important;}
     body.tpl-stream .feed-post{border-left:none!important;border-radius:12px!important;}
     body.tpl-stream #feedContainer{gap:12px!important;}
