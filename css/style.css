@@ -1413,21 +1413,21 @@ body.tpl-stream .main-container{display:grid;grid-template-columns:1fr;max-width
 body.tpl-stream .left-sidebar{display:contents;}
 body.tpl-stream .right-sidebar{display:contents;}
 body.tpl-stream .left-sidebar .profile-card{grid-column:1;grid-row:1;overflow:visible;}
-/* Cover becomes a short accent strip */
-body.tpl-stream .profile-card .profile-cover{height:40px;border-radius:10px 10px 0 0;}
-/* Grid layout: circle avatar left, all info right */
-body.tpl-stream .profile-card .profile-info{display:grid;grid-template-columns:100px 1fr;grid-template-rows:auto;column-gap:0;row-gap:2px;padding:0 18px 14px;align-items:start;}
-body.tpl-stream .profile-card .profile-avatar-wrap{grid-column:1;grid-row:1 / -1;width:100px!important;margin:-30px 0 0 0!important;border-radius:50%!important;align-self:start;z-index:2;position:relative;}
+/* Profile card becomes transparent shell — cover + about-me appear separate */
+body.tpl-stream .profile-card{background:none!important;box-shadow:none!important;border:none!important;overflow:visible;}
+/* Large cover photo */
+body.tpl-stream .profile-card .profile-cover{height:160px;border-radius:12px;}
+/* Profile-info is the "about me" card — its own box offset right */
+body.tpl-stream .profile-card .profile-info{position:relative;margin:-40px 0 0 60px;background:var(--card);border-radius:12px;padding:14px 18px 14px 60px;box-shadow:0 2px 8px rgba(0,0,0,.12);}
+/* Circle avatar overlapping cover + about-me left edge */
+body.tpl-stream .profile-card .profile-avatar-wrap{position:absolute!important;left:-50px;top:-30px;width:100px!important;margin:0!important;border-radius:50%!important;z-index:3;box-shadow:0 2px 10px rgba(0,0,0,.2);}
 body.tpl-stream .profile-card .profile-avatar{border-radius:50%!important;}
 body.tpl-stream .profile-card .profile-avatar-wrap:has(.premium-border)::before{border-radius:50%!important;}
-/* Right column: text items with left padding + groove indent */
-body.tpl-stream .profile-card .profile-name,
-body.tpl-stream .profile-card .profile-title,
-body.tpl-stream .profile-card .profile-about,
-body.tpl-stream .profile-card .profile-stats,
-body.tpl-stream .profile-card .profile-links{grid-column:2;padding-left:16px;}
-body.tpl-stream .profile-card .profile-name{margin-top:8px;}
+body.tpl-stream .profile-card .profile-name{margin-top:0;}
 body.tpl-stream .profile-card .profile-stats{justify-content:flex-start;gap:16px;}
+/* Premium bg compat — about-me card keeps solid bg */
+body.has-premium-bg body.tpl-stream .profile-card .profile-info,
+body.has-premium-bg.tpl-stream .profile-card .profile-info{background:var(--ps-card,var(--card))!important;}
 body.tpl-stream .left-sidebar .photos-card{grid-column:1;grid-row:2;}
 /* Suggestions + Groups side by side */
 body.tpl-stream .right-sidebar .promo-card{display:none;}
