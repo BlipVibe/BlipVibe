@@ -1424,7 +1424,7 @@ body.tpl-lookbook #pvPostsFeed,
 body.tpl-lookbook #gvPostsFeed{display:grid!important;grid-template-columns:1fr 1fr;gap:14px;}
 
 /* Post cards — compact image-first style */
-body.tpl-lookbook .feed-post{padding:0!important;border-left:none!important;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
+body.tpl-lookbook .feed-post{padding:0!important;border-left:none!important;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;background:var(--card)!important;box-shadow:var(--shadow);}
 body.tpl-lookbook .feed-post .post-header{padding:10px 12px 0;margin-bottom:8px;gap:8px;}
 body.tpl-lookbook .feed-post .post-avatar{width:28px;height:28px;}
 body.tpl-lookbook .feed-post .post-username{font-size:12px!important;}
