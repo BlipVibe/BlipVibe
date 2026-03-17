@@ -3862,13 +3862,14 @@ function openGroupPostModal(group){
     html+='<div class="cpm-scroll"><div style="display:flex;align-items:center;gap:10px;padding:16px 20px 0;"><img src="'+$('#profileAvatarImg').src+'" style="width:40px;height:40px;border-radius:50%;"><strong style="font-size:14px;">'+(currentUser?(currentUser.display_name||currentUser.username):'You')+'</strong></div>';
     html+='<textarea class="cpm-textarea" id="gvCpmText" placeholder="Write something..."></textarea>';
     html+='<div class="cpm-media-zone" id="gvCpmMediaZone"><div class="cpm-media-grid" id="gvCpmGrid"></div><div id="gvCpmDropZone"><i class="fas fa-photo-video"></i><br>Add Photos/Videos</div><input type="file" accept="image/*,video/*" multiple id="gvCpmFileInput" style="display:none;"></div>';
-    html+='</div><div class="cpm-footer"><div id="gvCpmEmojiPanel" class="emoji-picker-panel"></div><div style="display:flex;gap:8px;align-items:center;width:100%;"><button class="cpm-emoji-btn" id="gvCpmEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="btn btn-primary" id="gvCpmPublish" style="flex:1;">Publish</button></div></div></div>';
+    html+='</div><div class="cpm-footer"><div id="gvCpmEmojiPanel" class="emoji-picker-panel"></div><div style="display:flex;gap:8px;align-items:center;width:100%;"><button class="cpm-emoji-btn" id="gvCpmEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="cpm-emoji-btn" id="gvCpmCameraBtn" title="Add Photos/Videos"><i class="fas fa-camera"></i></button><button class="btn btn-primary" id="gvCpmPublish" style="flex:1;">Publish</button></div></div></div>';
     showModal(html);
     document.getElementById('gvCpmEmojiBtn').addEventListener('click',function(){openEmojiPicker('gvCpmEmojiPanel',document.getElementById('gvCpmText'));});
     initMentionAutocomplete('gvCpmText',group.id);
     var mediaList=[];
     var zone=document.getElementById('gvCpmMediaZone'),grid=document.getElementById('gvCpmGrid'),dropZone=document.getElementById('gvCpmDropZone'),fileInput=document.getElementById('gvCpmFileInput');
     dropZone.addEventListener('click',function(){fileInput.click();});
+    document.getElementById('gvCpmCameraBtn').addEventListener('click',function(){fileInput.click();});
     function renderGrid(){
         grid.innerHTML='';mediaList.forEach(function(m,i){var t=document.createElement('div');t.className='cpm-thumb';t.innerHTML=(m.type==='video'?'<video src="'+m.src+'#t=0.5" preload="metadata" muted></video>':'<img src="'+m.src+'">')+'<button class="remove-thumb" data-idx="'+i+'"><i class="fas fa-times"></i></button>';grid.appendChild(t);});
         zone.classList.toggle('has-media',mediaList.length>0);
@@ -5067,7 +5068,7 @@ $('#openPostModal').addEventListener('click',function(){
     html+='<div class="cpm-media-zone" id="cpmMediaZone"><div class="cpm-media-grid" id="cpmGrid"></div><div id="cpmDropZone"><i class="fas fa-photo-video"></i><br>Add Photos/Videos</div><input type="file" accept="image/*,video/*" multiple id="cpmFileInput" style="display:none;"></div>';
     html+='<div class="cpm-tags-section"><div class="cpm-tags-wrap" id="cpmTagsWrap"></div></div>';
     html+='<div class="cpm-link-section" id="cpmLinkSection" style="display:none;"><div id="cpmLinkPreview"></div></div>';
-    html+='</div><div class="cpm-footer"><div id="cpmEmojiPanel" class="emoji-picker-panel"></div><div style="display:flex;gap:8px;align-items:center;width:100%;"><button class="cpm-emoji-btn" id="cpmEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="btn btn-primary" id="cpmPublish" style="flex:1;">Publish</button></div></div></div>';
+    html+='</div><div class="cpm-footer"><div id="cpmEmojiPanel" class="emoji-picker-panel"></div><div style="display:flex;gap:8px;align-items:center;width:100%;"><button class="cpm-emoji-btn" id="cpmEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="cpm-emoji-btn" id="cpmCameraBtn" title="Add Photos/Videos"><i class="fas fa-camera"></i></button><button class="btn btn-primary" id="cpmPublish" style="flex:1;">Publish</button></div></div></div>';
     showModal(html);
     document.getElementById('cpmEmojiBtn').addEventListener('click',function(){openEmojiPicker('cpmEmojiPanel',document.getElementById('cpmText'));});
     initMentionAutocomplete('cpmText',null);
@@ -5077,6 +5078,7 @@ $('#openPostModal').addEventListener('click',function(){
     var dropZone=document.getElementById('cpmDropZone');
     var fileInput=document.getElementById('cpmFileInput');
     dropZone.addEventListener('click',function(){fileInput.click();});
+    document.getElementById('cpmCameraBtn').addEventListener('click',function(){fileInput.click();});
     function renderGrid(){
         grid.innerHTML='';
         mediaList.forEach(function(m,i){

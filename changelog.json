@@ -7,7 +7,8 @@
       "New Mentions tab in notifications — filter to see only @mention notifications with @ icon",
       "@mention notifications now work in comments, photo comments, and group chat messages (previously only posts and group posts)",
       "Mention notifications show context — 'mentioned you in a comment', 'a photo comment', 'a group chat message' instead of generic 'a post'",
-      "@mention autocomplete now prioritizes your followers and following — connections show first, remaining slots filled by global search, max 5 results"
+      "@mention autocomplete now prioritizes your followers and following — connections show first, remaining slots filled by global search, max 5 results",
+      "Camera icon button in post and group post footers — quick shortcut to add photos/videos without scrolling to the drop zone"
     ],
     "fixed": []
   },
