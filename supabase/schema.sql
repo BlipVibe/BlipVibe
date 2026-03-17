@@ -28,7 +28,7 @@ END $$;
 
 DO $$ BEGIN
     CREATE TYPE public.notification_type AS ENUM (
-        'comment', 'reply', 'like', 'follow', 'purchase', 'system'
+        'comment', 'reply', 'like', 'follow', 'purchase', 'system', 'mention'
     );
 EXCEPTION WHEN duplicate_object THEN NULL;
 END $$;

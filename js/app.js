@@ -1520,6 +1520,7 @@ async function toggleFollow(userId,btn){
 var activeNotifTab='all';
 var notifTabDefs=[
     {key:'all',label:'<i class="fas fa-bell"></i> All',filter:function(n){return n.type!=='system'&&n.type!=='skin'&&n.type!=='group'&&n.type!=='coin'&&n.type!=='purchase';}},
+    {key:'mention',label:'<i class="fas fa-at"></i> Mentions',filter:function(n){return n.type==='mention';}},
     {key:'comment',label:'<i class="fas fa-comment"></i> Comments',filter:function(n){return n.type==='comment';}},
     {key:'reply',label:'<i class="fas fa-reply"></i> Replies',filter:function(n){return n.type==='reply';}},
     {key:'like',label:'<i class="fas fa-heart"></i> Likes',filter:function(n){return n.type==='like';}},
@@ -1547,7 +1548,7 @@ function updateNotifBadge(){
     else{badge.style.display='none';if(mobileBadge) mobileBadge.style.display='none';}
 }
 function getNotifIcon(type){
-    var map={comment:{cls:'skin',icon:'fa-comment'},reply:{cls:'skin',icon:'fa-reply'},like:{cls:'coin',icon:'fa-heart'},follow:{cls:'follow',icon:'fa-user-plus'},message:{cls:'group',icon:'fa-envelope'},system:{cls:'coin',icon:'fa-cog'},skin:{cls:'skin',icon:'fa-palette'},group:{cls:'group',icon:'fa-users'},coin:{cls:'coin',icon:'fa-coins'}};
+    var map={comment:{cls:'skin',icon:'fa-comment'},reply:{cls:'skin',icon:'fa-reply'},like:{cls:'coin',icon:'fa-heart'},follow:{cls:'follow',icon:'fa-user-plus'},mention:{cls:'follow',icon:'fa-at'},message:{cls:'group',icon:'fa-envelope'},system:{cls:'coin',icon:'fa-cog'},skin:{cls:'skin',icon:'fa-palette'},group:{cls:'group',icon:'fa-users'},coin:{cls:'coin',icon:'fa-coins'}};
     return map[type]||{cls:'coin',icon:'fa-bell'};
 }
 function renderNotifications(){
@@ -1809,19 +1810,20 @@ function bindMentionClicks(containerSel){
 }
 
 // Send notifications to all @mentioned users in text
-function notifyMentionedUsers(text,postId){
+function notifyMentionedUsers(text,postId,context){
     if(!text||!currentUser) return;
     var mentions=text.match(/@([a-zA-Z0-9_]+)/g);
     if(!mentions) return;
     var seen={};
     var myName=currentUser.display_name||currentUser.username||'Someone';
+    var ctx=context||'a post';
     mentions.forEach(function(m){
         var uname=m.substring(1);
         if(seen[uname]) return;
         seen[uname]=true;
         sbGetProfileByUsername(uname).then(function(p){
             if(p&&p.id&&p.id!==currentUser.id){
-                sbCreateNotification(p.id,'mention',myName+' mentioned you in a post','',{originalType:'mention',post_id:postId}).catch(function(e){console.warn('Mention notif:',e);});
+                sbCreateNotification(p.id,'mention',myName+' mentioned you in '+ctx,'',{originalType:'mention',post_id:postId}).catch(function(e){console.warn('Mention notif:',e);});
             }
         }).catch(function(){});
     });
@@ -2158,6 +2160,7 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
                     var myName=currentUser.display_name||currentUser.username||'Someone';
                     sbCreateNotification(fp.person.id,'comment',myName+' commented on your post',text,{originalType:'comment',post_id:postId}).catch(function(e){console.error('Comment notif error:',e);});
                 }
+                notifyMentionedUsers(text,postId,'a comment');
             } catch(e) { console.error('Comment error:', e); showToast('Comment failed: '+(e.message||'Unknown error')); return; }
         } else {
             if(!state.comments[postId])state.comments[postId]=[];
@@ -3712,7 +3715,7 @@ async function openGroupChannel(channel){
     function doSend(){
         var text=(msgInput.value||'').trim();if(!text)return;
         msgInput.value='';
-        sbSendGroupChatMessage(channel.id,text).then(function(msg){appendGcMessage(msg,isAdmin);}).catch(function(e){showToast('Failed to send');});
+        sbSendGroupChatMessage(channel.id,text).then(function(msg){appendGcMessage(msg,isAdmin);notifyMentionedUsers(text,null,'a group chat message');}).catch(function(e){showToast('Failed to send');});
     }
     sendBtn.addEventListener('click',doSend);
     msgInput.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSend();}});
@@ -8767,6 +8770,7 @@ updateFollowCounts();
             if(owner&&owner.id&&owner.id!==currentUser.id){
                 sbCreateNotification(owner.id,'comment',myName+' commented on your photo',text,{originalType:'comment',post_id:currentPostId}).catch(function(e){console.error('Photo comment notif error:',e);});
             }
+            notifyMentionedUsers(text,currentPostId,'a photo comment');
             // Notify parent comment author about reply
             if(parentId){
                 var parentEl=commentsPanel.querySelector('[data-cid="'+parentId+'"]');

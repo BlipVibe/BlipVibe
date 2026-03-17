@@ -789,3 +789,13 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - TOS_VERSION bumped from 3 → 4 (forces all existing users to re-accept)
 - Effective dates updated to March 3, 2026
 - Governing law: State of Tennessee, venue: Fayette County, Tennessee (confirmed in both)
+
+## @Mention Tagging System (updated 2026-03-17)
+- `@username` autocomplete works in post textareas — triggered by typing `@`, shows dropdown with avatar + username + display name
+- Group posts restrict autocomplete to group members only
+- `notifyMentionedUsers(text, postId, context)` sends mention notifications — now called from posts, group posts, comments, photo comments, and group chat messages
+- `'mention'` is a proper DB enum value in `notification_type` — no longer mapped to `'system'`
+- Migration: `supabase/add-mention-notification-type.sql` adds `'mention'` to existing databases
+- Mentions tab in notifications page — `<i class="fas fa-at"></i>` icon, filters to `type==='mention'`
+- `renderMentionsInText(html)` converts `@username` to clickable purple links
+- Notification messages include context: "mentioned you in a post", "a comment", "a photo comment", "a group chat message"
