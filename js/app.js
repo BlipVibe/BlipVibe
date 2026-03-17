@@ -1864,6 +1864,45 @@ var _emojiData={
     'Travel':['🚗','🚕','🚙','🚌','🚎','🏎️','🚓','🚑','🚒','🚐','🛻','🚚','🚛','🚜','🏍️','🛵','🚲','🛴','🚁','✈️','🛩️','🚀','🛸','🚢','⛵','🚤','🛥️','🏠','🏡','🏢','🏣','🏥','🏦','🏰','🏯','🗼','🗽','⛪','🕌','🏝️','🌍','🌎','🌏'],
     'Objects':['⌚','📱','💻','⌨️','🖥️','🖨️','🖱️','💾','💿','📷','📸','📹','🎥','📺','📻','🎙️','⏰','🔋','🔌','💡','🔦','📡','💰','💳','💎','🔧','🔨','⚒️','🛠️','⚙️','🔩','🔑','🗝️','🔒','🔓','📦','📫','📬','📮','✏️','✒️','🖊️','🖋️','📝','📁','📂']
 };
+// ======================== CAMERA MENU ========================
+var _activeCameraMenu=null;
+function showCameraMenu(btn,galleryInput,onCaptureFile){
+    // Close existing menu
+    if(_activeCameraMenu){_activeCameraMenu.remove();_activeCameraMenu=null;}
+    var menu=document.createElement('div');
+    menu.className='camera-menu';
+    menu.innerHTML='<button class="camera-menu-item" data-action="photo"><i class="fas fa-camera"></i> Take Photo</button><button class="camera-menu-item" data-action="gallery"><i class="fas fa-images"></i> Choose from Gallery</button>';
+    btn.parentElement.style.position='relative';
+    btn.parentElement.appendChild(menu);
+    _activeCameraMenu=menu;
+    // Position above the button
+    menu.style.display='flex';
+    // Take Photo — uses capture input
+    menu.querySelector('[data-action="photo"]').addEventListener('click',function(){
+        menu.remove();_activeCameraMenu=null;
+        var capInput=document.createElement('input');
+        capInput.type='file';capInput.accept='image/*';capInput.setAttribute('capture','environment');
+        capInput.style.display='none';
+        document.body.appendChild(capInput);
+        capInput.addEventListener('change',function(){
+            if(capInput.files&&capInput.files.length){onCaptureFile(capInput.files);}
+            capInput.remove();
+        });
+        capInput.click();
+    });
+    // Choose from Gallery
+    menu.querySelector('[data-action="gallery"]').addEventListener('click',function(){
+        menu.remove();_activeCameraMenu=null;
+        galleryInput.click();
+    });
+    // Close on outside click
+    setTimeout(function(){
+        document.addEventListener('click',function closeMenu(e){
+            if(menu&&!menu.contains(e.target)&&e.target!==btn){menu.remove();_activeCameraMenu=null;document.removeEventListener('click',closeMenu);}
+        });
+    },0);
+}
+
 var _activeEmojiPanel=null;
 function openEmojiPicker(panelId,targetEl){
     var panel=document.getElementById(panelId);
@@ -3869,13 +3908,16 @@ function openGroupPostModal(group){
     var mediaList=[];
     var zone=document.getElementById('gvCpmMediaZone'),grid=document.getElementById('gvCpmGrid'),dropZone=document.getElementById('gvCpmDropZone'),fileInput=document.getElementById('gvCpmFileInput');
     dropZone.addEventListener('click',function(){fileInput.click();});
-    document.getElementById('gvCpmCameraBtn').addEventListener('click',function(){fileInput.click();});
+    function gvAddFilesToMedia(files){
+        Array.from(files).forEach(function(f){var isV=f.type.startsWith('video/');if(isV){mediaList.push({src:URL.createObjectURL(f),type:'video',file:f});renderGrid();}else{var r=new FileReader();r.onload=function(e){mediaList.push({src:e.target.result,type:'image',file:f});renderGrid();};r.readAsDataURL(f);}});
+    }
+    document.getElementById('gvCpmCameraBtn').addEventListener('click',function(){showCameraMenu(this,fileInput,gvAddFilesToMedia);});
     function renderGrid(){
         grid.innerHTML='';mediaList.forEach(function(m,i){var t=document.createElement('div');t.className='cpm-thumb';t.innerHTML=(m.type==='video'?'<video src="'+m.src+'#t=0.5" preload="metadata" muted></video>':'<img src="'+m.src+'">')+'<button class="remove-thumb" data-idx="'+i+'"><i class="fas fa-times"></i></button>';grid.appendChild(t);});
         zone.classList.toggle('has-media',mediaList.length>0);
         grid.querySelectorAll('.remove-thumb').forEach(function(btn){btn.addEventListener('click',function(e){e.stopPropagation();mediaList.splice(parseInt(btn.dataset.idx),1);renderGrid();});});
     }
-    fileInput.addEventListener('change',function(){Array.from(this.files).forEach(function(f){var isV=f.type.startsWith('video/');if(isV){mediaList.push({src:URL.createObjectURL(f),type:'video',file:f});renderGrid();}else{var r=new FileReader();r.onload=function(e){mediaList.push({src:e.target.result,type:'image',file:f});renderGrid();};r.readAsDataURL(f);}});this.value='';});
+    fileInput.addEventListener('change',function(){gvAddFilesToMedia(this.files);this.value='';});
     document.getElementById('gvCpmPublish').addEventListener('click',async function(){
         var text=document.getElementById('gvCpmText').value.trim();
         if(!text&&!mediaList.length)return;
@@ -5078,7 +5120,20 @@ $('#openPostModal').addEventListener('click',function(){
     var dropZone=document.getElementById('cpmDropZone');
     var fileInput=document.getElementById('cpmFileInput');
     dropZone.addEventListener('click',function(){fileInput.click();});
-    document.getElementById('cpmCameraBtn').addEventListener('click',function(){fileInput.click();});
+    function addFilesToMedia(files){
+        Array.from(files).forEach(function(f){
+            var isV=f.type.startsWith('video/');
+            if(isV){
+                mediaList.push({src:URL.createObjectURL(f),type:'video',file:f});
+                renderGrid();
+            } else {
+                var r=new FileReader();
+                r.onload=function(e){mediaList.push({src:e.target.result,type:'image',file:f});renderGrid();};
+                r.readAsDataURL(f);
+            }
+        });
+    }
+    document.getElementById('cpmCameraBtn').addEventListener('click',function(){showCameraMenu(this,fileInput,addFilesToMedia);});
     function renderGrid(){
         grid.innerHTML='';
         mediaList.forEach(function(m,i){
@@ -5090,17 +5145,7 @@ $('#openPostModal').addEventListener('click',function(){
         grid.querySelectorAll('.remove-thumb').forEach(function(btn){btn.addEventListener('click',function(e){e.stopPropagation();mediaList.splice(parseInt(btn.dataset.idx),1);renderGrid();});});
     }
     fileInput.addEventListener('change',function(){
-        Array.from(this.files).forEach(function(f){
-            var isV=f.type.startsWith('video/');
-            if(isV){
-                mediaList.push({src:URL.createObjectURL(f),type:'video',file:f});
-                renderGrid();
-            } else {
-                var r=new FileReader();
-                r.onload=function(e){mediaList.push({src:e.target.result,type:'image',file:f});renderGrid();};
-                r.readAsDataURL(f);
-            }
-        });
+        addFilesToMedia(this.files);
         this.value='';
     });
     // Auto-detect URLs in textarea and fetch OG metadata
