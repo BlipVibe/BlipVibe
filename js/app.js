@@ -1733,24 +1733,20 @@ function initMentionAutocomplete(textareaId, groupId){
                 var ql=q.toLowerCase();
                 results=(members||[]).map(function(m){return m.user||m;}).filter(function(u){
                     return u&&u.id!==currentUser.id&&((u.display_name||'').toLowerCase().indexOf(ql)!==-1||(u.username||'').toLowerCase().indexOf(ql)!==-1);
-                }).slice(0,5);
+                });
             } else {
-                // Prioritize followers/following, then fall back to global search
+                // Prioritize followers/following, then fill with global search
                 var connections=await getConnections();
                 var ql=q.toLowerCase();
                 var connMatches=connections.filter(function(u){
                     return (u.username||'').toLowerCase().indexOf(ql)!==-1||(u.display_name||'').toLowerCase().indexOf(ql)!==-1;
                 });
-                if(connMatches.length>=5){
-                    results=connMatches.slice(0,5);
-                } else {
-                    // Fill remaining slots with global search
-                    var connIds={};
-                    connMatches.forEach(function(u){connIds[u.id]=true;});
-                    var globalResults=await sbSearchProfiles(q,5);
-                    var extras=(globalResults||[]).filter(function(u){return u.id!==currentUser.id&&!connIds[u.id];});
-                    results=connMatches.concat(extras).slice(0,5);
-                }
+                // Add global results that aren't already in connections
+                var connIds={};
+                connMatches.forEach(function(u){connIds[u.id]=true;});
+                var globalResults=await sbSearchProfiles(q,20);
+                var extras=(globalResults||[]).filter(function(u){return u.id!==currentUser.id&&!connIds[u.id];});
+                results=connMatches.concat(extras);
             }
             _mentionCache[key]=results;
             renderMentionDropdown(results,q);
