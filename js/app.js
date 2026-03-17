@@ -1687,15 +1687,21 @@ function showShopTutorial(){
 function initMentionAutocomplete(textareaId, groupId){
     var ta=document.getElementById(textareaId);
     if(!ta) return;
-    // Create dropdown
+    // Create dropdown — append to body with fixed positioning to escape overflow containers
     var dd=document.createElement('div');
     dd.className='mention-dropdown';
     dd.style.display='none';
-    ta.parentElement.style.position='relative';
-    ta.parentElement.appendChild(dd);
+    document.body.appendChild(dd);
     var _mentionTimer=null;
     var _mentionCache={};
     function hideMention(){dd.style.display='none';dd.innerHTML='';}
+    function positionDropdown(){
+        var rect=ta.getBoundingClientRect();
+        dd.style.position='fixed';
+        dd.style.left=rect.left+'px';
+        dd.style.width=rect.width+'px';
+        dd.style.bottom=(window.innerHeight-rect.top+4)+'px';
+    }
     function getMentionQuery(){
         var val=ta.value;var pos=ta.selectionStart;
         // Walk backward from cursor to find @
@@ -1777,6 +1783,7 @@ function initMentionAutocomplete(textareaId, groupId){
             });
             dd.appendChild(item);
         });
+        positionDropdown();
         dd.style.display='block';
     }
     ta.addEventListener('input',function(){
@@ -1809,6 +1816,11 @@ function initMentionAutocomplete(textareaId, groupId){
         }
     });
     ta.addEventListener('blur',function(){setTimeout(hideMention,200);});
+    // Clean up dropdown when textarea is removed from DOM (modal close)
+    var _cleanupObserver=new MutationObserver(function(){
+        if(!document.body.contains(ta)){dd.remove();_cleanupObserver.disconnect();}
+    });
+    _cleanupObserver.observe(document.body,{childList:true,subtree:true});
 }
 
 // Render @mentions as clickable links in post/comment text
