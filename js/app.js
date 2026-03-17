@@ -1707,6 +1707,20 @@ function initMentionAutocomplete(textareaId, groupId){
         var q=val.substring(i+1,pos);
         return {start:i,end:pos,query:q};
     }
+    var _connectionsCache=null;
+    async function getConnections(){
+        if(_connectionsCache) return _connectionsCache;
+        try{
+            var following=await sbGetFollowing(currentUser.id);
+            var followers=await sbGetFollowers(currentUser.id);
+            // Merge and deduplicate — following first
+            var seen={};var merged=[];
+            (following||[]).forEach(function(u){if(u&&u.id!==currentUser.id&&!seen[u.id]){seen[u.id]=true;merged.push(u);}});
+            (followers||[]).forEach(function(u){if(u&&u.id!==currentUser.id&&!seen[u.id]){seen[u.id]=true;merged.push(u);}});
+            _connectionsCache=merged;
+            return merged;
+        }catch(e){console.warn('Connections fetch error:',e);return [];}
+    }
     async function fetchMentions(q){
         if(q.length<1){hideMention();return;}
         var key=(groupId||'all')+'_'+q.toLowerCase();
@@ -1719,10 +1733,24 @@ function initMentionAutocomplete(textareaId, groupId){
                 var ql=q.toLowerCase();
                 results=(members||[]).map(function(m){return m.user||m;}).filter(function(u){
                     return u&&u.id!==currentUser.id&&((u.display_name||'').toLowerCase().indexOf(ql)!==-1||(u.username||'').toLowerCase().indexOf(ql)!==-1);
-                }).slice(0,8);
+                }).slice(0,5);
             } else {
-                results=await sbSearchProfiles(q,8);
-                results=(results||[]).filter(function(u){return u.id!==currentUser.id;});
+                // Prioritize followers/following, then fall back to global search
+                var connections=await getConnections();
+                var ql=q.toLowerCase();
+                var connMatches=connections.filter(function(u){
+                    return (u.username||'').toLowerCase().indexOf(ql)!==-1||(u.display_name||'').toLowerCase().indexOf(ql)!==-1;
+                });
+                if(connMatches.length>=5){
+                    results=connMatches.slice(0,5);
+                } else {
+                    // Fill remaining slots with global search
+                    var connIds={};
+                    connMatches.forEach(function(u){connIds[u.id]=true;});
+                    var globalResults=await sbSearchProfiles(q,5);
+                    var extras=(globalResults||[]).filter(function(u){return u.id!==currentUser.id&&!connIds[u.id];});
+                    results=connMatches.concat(extras).slice(0,5);
+                }
             }
             _mentionCache[key]=results;
             renderMentionDropdown(results,q);

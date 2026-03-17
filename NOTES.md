@@ -799,3 +799,5 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - Mentions tab in notifications page — `<i class="fas fa-at"></i>` icon, filters to `type==='mention'`
 - `renderMentionsInText(html)` converts `@username` to clickable purple links
 - Notification messages include context: "mentioned you in a post", "a comment", "a photo comment", "a group chat message"
+- **Autocomplete prioritizes followers/following** — connections loaded once per autocomplete instance, cached; matched connections shown first, remaining slots filled by global search; max 5 results
+- Group context still restricts to group members only
