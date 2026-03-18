@@ -5178,7 +5178,7 @@ function bindPostEvents(){
             var postId=btn.getAttribute('data-post-id');
             var countEl=btn.querySelector('.like-count');
             var count=parseInt(countEl.textContent);
-            var had=!!(state.likedPosts[postId]||state.dislikedPosts[postId]);
+            var had=!!(state.likedPosts[postId]||state.dislikedPosts[postId]||_postReactions[postId]);
 
             // If this is a UUID (Supabase post), call Supabase toggle
             var isUUID = /^[0-9a-f]{8}-/.test(postId);
@@ -5188,14 +5188,6 @@ function bindPostEvents(){
                     var db=btn.closest('.action-left').querySelector('.dislike-btn');
                     if(db){var dc=db.querySelector('.dislike-count');dc.textContent=Math.max(0,parseInt(dc.textContent)-1);db.classList.remove('disliked');db.querySelector('i').className='far fa-thumbs-down';}
                     delete state.dislikedPosts[postId];
-                }
-                // Clear reaction if active (only earn coins for like OR reaction, not both)
-                if(_postReactions[postId]){
-                    delete _postReactions[postId];
-                    try{localStorage.setItem('blipvibe_reactions',JSON.stringify(_postReactions));}catch(e2){}
-                    var rb=btn.closest('.action-left').querySelector('.react-btn');
-                    if(rb) rb.innerHTML='<i class="far fa-face-smile"></i>';
-                    if(currentUser) sbRemoveReaction(currentUser.id,'post',postId).catch(function(){});
                 }
                 try {
                     var nowLiked = await sbToggleLike(currentUser.id, 'post', postId);
@@ -5232,7 +5224,7 @@ function bindPostEvents(){
                     countEl.textContent=count+1;
                 }
             }
-            var has=!!(state.likedPosts[postId]||state.dislikedPosts[postId]);
+            var has=!!(state.likedPosts[postId]||state.dislikedPosts[postId]||_postReactions[postId]);
             if(!isOwnPost(postId)){if(!had&&has){state.coins++;updateCoins();}else if(had&&!has){state.coins--;updateCoins();}}
         });
     });
@@ -5243,7 +5235,7 @@ function bindPostEvents(){
             var postId=btn.getAttribute('data-post-id');
             var countEl=btn.querySelector('.dislike-count');
             var count=parseInt(countEl.textContent);
-            var had=!!(state.likedPosts[postId]||state.dislikedPosts[postId]);
+            var had=!!(state.likedPosts[postId]||state.dislikedPosts[postId]||_postReactions[postId]);
             if(state.dislikedPosts[postId]){
                 delete state.dislikedPosts[postId];
                 btn.classList.remove('disliked');
@@ -5262,7 +5254,7 @@ function bindPostEvents(){
                 btn.querySelector('i').className='fas fa-thumbs-down';
                 countEl.textContent=count+1;
             }
-            var has=!!(state.likedPosts[postId]||state.dislikedPosts[postId]);
+            var has=!!(state.likedPosts[postId]||state.dislikedPosts[postId]||_postReactions[postId]);
             if(!isOwnPost(postId)){if(!had&&has){state.coins++;updateCoins();}else if(had&&!has){state.coins--;updateCoins();}}
         });
     });
@@ -8975,25 +8967,11 @@ function showReactionPicker(postId,btn){
 var _postReactions={};
 try{_postReactions=JSON.parse(localStorage.getItem('blipvibe_reactions')||'{}');}catch(e){}
 function toggleReaction(postId,emoji,btn){
+    var had=!!(state.likedPosts[postId]||state.dislikedPosts[postId]||_postReactions[postId]);
     if(_postReactions[postId]===emoji){
         delete _postReactions[postId];
     } else {
         _postReactions[postId]=emoji;
-        // Remove like/dislike if setting a reaction (only earn coins for one)
-        var post=btn.closest('.feed-post')||btn.closest('.card');
-        if(post){
-            if(state.likedPosts[postId]){
-                delete state.likedPosts[postId];
-                var likeBtn=post.querySelector('.like-btn[data-post-id="'+postId+'"]');
-                if(likeBtn){likeBtn.classList.remove('liked');likeBtn.querySelector('i').className='far fa-thumbs-up';var lc=likeBtn.querySelector('.like-count');if(lc)lc.textContent=Math.max(0,parseInt(lc.textContent)-1);}
-            }
-            if(state.dislikedPosts[postId]){
-                delete state.dislikedPosts[postId];
-                var disBtn=post.querySelector('.dislike-btn[data-post-id="'+postId+'"]');
-                if(disBtn){disBtn.classList.remove('disliked');disBtn.querySelector('i').className='far fa-thumbs-down';var dc=disBtn.querySelector('.dislike-count');if(dc)dc.textContent=Math.max(0,parseInt(dc.textContent)-1);}
-            }
-            saveState();
-        }
     }
     try{localStorage.setItem('blipvibe_reactions',JSON.stringify(_postReactions));}catch(e){}
     // Update the react button to show selected emoji or reset to default icon
@@ -9002,6 +8980,10 @@ function toggleReaction(postId,emoji,btn){
     } else {
         btn.innerHTML='<i class="far fa-face-smile"></i>';
     }
+    // Coin logic: 1 coin for first interaction (like, dislike, or reaction), no extra for additional types
+    var has=!!(state.likedPosts[postId]||state.dislikedPosts[postId]||_postReactions[postId]);
+    if(!isOwnPost(postId)){if(!had&&has){state.coins++;updateCoins();}else if(had&&!has){state.coins--;updateCoins();}}
+    saveState();
     // Save to DB if available
     if(currentUser&&/^[0-9a-f]{8}-/.test(postId)){
         if(_postReactions[postId]){
