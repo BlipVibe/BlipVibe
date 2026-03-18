@@ -3822,8 +3822,9 @@ function _enterGroupChatFullscreen(group){
     if(botNav) botNav.style.display='none';
     var cs=document.getElementById('gvChatSection');
     if(cs){
-        cs.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;display:flex;flex-direction:column;background:var(--bg);';
+        cs.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;z-index:9999;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;';
     }
+    document.body.style.overflow='hidden';
     // Add back button to chat section
     var existing=document.getElementById('gcBackBar');
     if(!existing&&cs){
@@ -3853,6 +3854,7 @@ function _exitGroupChatFullscreen(){
     var botNav=document.querySelector('.nav-center');
     if(topNav) topNav.style.display='';
     if(botNav) botNav.style.display='';
+    document.body.style.overflow='';
     var cs=document.getElementById('gvChatSection');
     if(cs) cs.style.cssText='';
     var bar=document.getElementById('gcBackBar');
