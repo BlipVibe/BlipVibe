@@ -64,6 +64,19 @@
 - `sbGetPhotoComments(photoUrl, sortBy)` — fetch comments for a photo URL
 - `sbCreatePhotoComment(photoUrl, postId, authorId, content, parentId)` — add comment
 - `sbDeletePhotoComment(commentId)` — delete comment
+- `sbEditPhotoComment(commentId, content)` — edit comment content (added 2026-03-18)
+
+### Lightbox Comment Features (updated 2026-03-18)
+- **Full feature parity** with post comment modal:
+  - Emoji picker button (opens emoji panel above input)
+  - GIF search button (opens Klipy-powered GIF search modal)
+  - @mention autocomplete (via `initMentionAutocomplete('lbCommentInput')`)
+  - Comment likes and dislikes (toggle, same `likedComments`/`dislikedComments` state)
+  - Edit button for own comments (repurposes input + post button in edit mode)
+  - Delete button for own comments
+  - Clickable @mention links (open user profile, close lightbox)
+  - GIF comments rendered inline as images
+  - `renderMentionsInText()` + `escapeHtmlNl()` applied to all comment text
 
 ### Lightbox Restructure
 - New HTML: `.lightbox-layout` wraps `.lightbox-media` + `.lightbox-comments`
@@ -71,7 +84,7 @@
 - `.lightbox-comments` has header, scrollable comment list, and input area
 - Touch swipe confined to `.lightbox-media` (doesn't trigger on comment panel)
 - Post ID passed through from feed posts for photo-post association
-- `buildLbComment()` renders individual comments with reply/delete buttons
+- `buildLbComment()` renders individual comments with reply/delete/like/dislike/edit buttons
 - `loadPhotoComments()` called on show and photo navigation
 - Escape key closes comment panel first (if open), then lightbox
 
@@ -119,6 +132,15 @@
 - Covers: post likes/dislikes (feed, profile view, groups), comment likes/dislikes (modal + inline), commenting/replying on own posts
 - `data-aid` attribute added to comment like/dislike buttons for author-level checking
 - You can still like/dislike your own stuff — it just won't award coins
+
+## Comment Modal Image Auto-Fit (fixed 2026-03-18)
+- **Cause:** `.comment-post-embed` had `overflow-y:auto` and images inside could be any height, making the post preview scrollable
+- **Fix:** Changed to `overflow:hidden`, added `max-height:25vh` with `object-fit:contain` on images so they scale down to fit without scrolling
+
+## @Mention Dropdown Direction Fix (fixed 2026-03-18)
+- **Cause:** Dropdown always appeared above the input (used `bottom` positioning), which was wrong for comment/post modals where input is in the middle of the screen
+- **Fix:** Smart positioning — if input is in the bottom half of the viewport, dropdown appears above; if in the top half, dropdown appears below
+- Box shadow direction also adapts
 
 ## Bug Fixes
 
@@ -791,13 +813,41 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - Governing law: State of Tennessee, venue: Fayette County, Tennessee (confirmed in both)
 
 ## @Mention Tagging System (updated 2026-03-17)
-- `@username` autocomplete works in post textareas — triggered by typing `@`, shows dropdown with avatar + username + display name
+- `@username` autocomplete works in post textareas, comment inputs, and group chat — triggered by typing `@`, shows dropdown with avatar + username + display name
 - Group posts restrict autocomplete to group members only
 - `notifyMentionedUsers(text, postId, context)` sends mention notifications — now called from posts, group posts, comments, photo comments, and group chat messages
 - `'mention'` is a proper DB enum value in `notification_type` — no longer mapped to `'system'`
 - Migration: `supabase/add-mention-notification-type.sql` adds `'mention'` to existing databases
 - Mentions tab in notifications page — `<i class="fas fa-at"></i>` icon, filters to `type==='mention'`
 - `renderMentionsInText(html)` converts `@username` to clickable purple links
+- **Clicking @mention links opens the tagged user's profile** — `bindMentionClicks()` now called in feed, profile posts, group posts, comments modal, group chat messages, search results, and saved posts
 - Notification messages include context: "mentioned you in a post", "a comment", "a photo comment", "a group chat message"
 - **Autocomplete prioritizes followers/following** — connections loaded once per autocomplete instance, cached; matched connections shown first, remaining slots filled by global search; max 5 results
+- **Search fallback:** `sbSearchProfiles` falls back to direct table query if `search_profiles` RPC is not deployed
+- **Resilient autocomplete:** If global search fails, still shows matching connections
+- `viewProfile(userId)` helper added — fetches profile and opens `showProfileView`
 - Group context still restricts to group members only
+
+## Invite to Group (added 2026-03-17)
+
+### Overview
+- "Invite to Group" button appears on every profile view (non-self users) alongside Follow, Message, and Block buttons
+- Opens modal listing all groups the current user belongs to or owns
+- Each group row shows icon/avatar, name, member count, and an Invite button
+- Checks if the person is already a member before sending invite
+- Sends a `group_invite` notification to the invited user
+
+### Notifications
+- `group_invite` type mapped to `system` in DB enum, but preserved as `group_invite` via `data.originalType`
+- Notification icon: `fa-envelope-open-text` with group styling
+- Clickable: opens a join confirmation modal with group name
+- Accepting joins the group and navigates to the group view
+- Shows in "All" notification tab (not filtered as system)
+- `sbCreateNotification` updated to map `group_invite` → `system` for DB compatibility
+
+### Code Changes
+- `showInviteToGroupModal(person)` — new function in app.js
+- "Invite to Group" button added to `showProfileView` action buttons
+- `getNotifIcon` map updated with `group_invite` entry
+- Notification rendering adds `data-group-id` attribute for group invite notifications
+- Click handler on group invite notifications: loads group, shows join modal, navigates to group on accept

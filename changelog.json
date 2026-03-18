@@ -1,5 +1,39 @@
 [
   {
+    "version": "0.2.23",
+    "date": "2026-03-18",
+    "added": [
+      "Lightbox photo comments now have full feature parity with post comments — emoji button, GIF search, @mention autocomplete, comment likes/dislikes, edit and delete buttons",
+      "GIF comments in lightbox photo viewer — search and post GIFs via Klipy",
+      "@mention autocomplete in lightbox photo comment input",
+      "Comment like/dislike buttons in lightbox photo comments",
+      "Edit button for own comments in lightbox photo viewer",
+      "Clickable @mentions in lightbox photo comments open user profile"
+    ],
+    "fixed": [
+      "Comment modal post image now auto-fits instead of being scrollable — constrained to max 25vh with object-fit:contain",
+      "@mention dropdown now appears below the input field in post/comment modals, and above when input is at the bottom of the screen (lightbox)",
+      "sbEditPhotoComment() function added for editing photo comments"
+    ]
+  },
+  {
+    "version": "0.2.22",
+    "date": "2026-03-17",
+    "added": [
+      "Invite to Group — new button on profile view lets you invite any user to any group you're in",
+      "Group invite notifications — invited users receive a clickable notification to join the group",
+      "Clicking a group invite notification opens a join confirmation modal and navigates to the group",
+      "@mention autocomplete now works in comment input fields and group chat messages",
+      "Clicking @mention tags in posts, comments, and group chat now opens that user's profile"
+    ],
+    "fixed": [
+      "@mention search now has a fallback when the search_profiles RPC is unavailable — uses direct table query",
+      "@mention autocomplete is more resilient — if global search fails, still shows results from your connections",
+      "Missing viewProfile() function added — fixes clicking usernames in group chat messages",
+      "Mention click handlers now bound in comment modals and group chat messages (were previously missing)"
+    ]
+  },
+  {
     "version": "0.2.21",
     "date": "2026-03-17",
     "added": [

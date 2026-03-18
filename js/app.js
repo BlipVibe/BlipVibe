@@ -1548,7 +1548,7 @@ function updateNotifBadge(){
     else{badge.style.display='none';if(mobileBadge) mobileBadge.style.display='none';}
 }
 function getNotifIcon(type){
-    var map={comment:{cls:'skin',icon:'fa-comment'},reply:{cls:'skin',icon:'fa-reply'},like:{cls:'coin',icon:'fa-heart'},follow:{cls:'follow',icon:'fa-user-plus'},mention:{cls:'follow',icon:'fa-at'},message:{cls:'group',icon:'fa-envelope'},system:{cls:'coin',icon:'fa-cog'},skin:{cls:'skin',icon:'fa-palette'},group:{cls:'group',icon:'fa-users'},coin:{cls:'coin',icon:'fa-coins'}};
+    var map={comment:{cls:'skin',icon:'fa-comment'},reply:{cls:'skin',icon:'fa-reply'},like:{cls:'coin',icon:'fa-heart'},follow:{cls:'follow',icon:'fa-user-plus'},mention:{cls:'follow',icon:'fa-at'},message:{cls:'group',icon:'fa-envelope'},system:{cls:'coin',icon:'fa-cog'},skin:{cls:'skin',icon:'fa-palette'},group:{cls:'group',icon:'fa-users'},group_invite:{cls:'group',icon:'fa-envelope-open-text'},coin:{cls:'coin',icon:'fa-coins'}};
     return map[type]||{cls:'coin',icon:'fa-bell'};
 }
 function renderNotifications(){
@@ -1582,6 +1582,7 @@ function renderNotifications(){
     filtered.forEach(function(n,i){
         var ic=getNotifIcon(n.type);
         var clickable=n.postId?' data-post-id="'+n.postId+'" style="cursor:pointer;"':'';
+        if(n.type==='group_invite'&&n.data&&n.data.group_id) clickable=' data-group-id="'+n.data.group_id+'" style="cursor:pointer;"';
         var newBadge=!n.read?'<span class="notif-new-badge">New</span>':'';
         html+='<div class="notif-item'+(n.read?'':' unread')+'"'+clickable+'><div class="notif-icon '+ic.cls+'"><i class="fas '+ic.icon+'"></i></div><div class="notif-text"><p>'+escapeHtml(n.text)+newBadge+'</p><span>'+n.time+'</span></div></div>';
     });
@@ -1593,6 +1594,45 @@ function renderNotifications(){
             // Navigate to home feed first, then open the post comments
             navigateTo('home');
             setTimeout(function(){ showComments(postId); },200);
+        });
+    });
+    // Click handler for group invite notifications
+    $$('#notifList .notif-item[data-group-id]').forEach(function(el){
+        el.addEventListener('click',async function(){
+            var gid=el.getAttribute('data-group-id');
+            var g=groups.find(function(gr){return gr.id===gid;});
+            if(!g){
+                // Group may not be loaded yet, reload groups
+                await loadGroups();
+                g=groups.find(function(gr){return gr.id===gid;});
+            }
+            if(g){
+                if(state.joinedGroups[gid]){
+                    // Already a member, just navigate
+                    navigateTo('groups');
+                    setTimeout(function(){showGroupView(g);},200);
+                } else {
+                    // Show join confirmation
+                    showModal('<div class="modal-header"><h3><i class="fas fa-envelope-open-text" style="color:var(--primary);margin-right:8px;"></i>Group Invite</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body"><p style="text-align:center;margin-bottom:16px;">You\'ve been invited to join <strong>'+escapeHtml(g.name)+'</strong></p><div class="modal-actions"><button class="btn btn-outline modal-close">Decline</button><button class="btn btn-primary" id="acceptGroupInvite" data-gid="'+gid+'">Join Group</button></div></div>');
+                    document.getElementById('acceptGroupInvite').addEventListener('click',async function(){
+                        try{
+                            await sbJoinGroup(gid,currentUser.id);
+                            state.joinedGroups[gid]=true;
+                            g.members++;
+                            saveState();
+                            closeModal();
+                            showToast('Joined '+g.name+'!');
+                            navigateTo('groups');
+                            setTimeout(function(){showGroupView(g);},200);
+                        }catch(e2){
+                            closeModal();
+                            showToast('Failed to join group');
+                        }
+                    });
+                }
+            } else {
+                showToast('Group no longer exists');
+            }
         });
     });
 }
@@ -1700,7 +1740,14 @@ function initMentionAutocomplete(textareaId, groupId){
         dd.style.position='fixed';
         dd.style.left=rect.left+'px';
         dd.style.width=rect.width+'px';
-        dd.style.bottom=(window.innerHeight-rect.top+4)+'px';
+        // If input is in the bottom half of the screen, show dropdown above; otherwise below
+        if(rect.top > window.innerHeight * 0.5){
+            dd.style.top='auto';
+            dd.style.bottom=(window.innerHeight-rect.top+4)+'px';
+        } else {
+            dd.style.bottom='auto';
+            dd.style.top=(rect.bottom+4)+'px';
+        }
     }
     function getMentionQuery(){
         var val=ta.value;var pos=ta.selectionStart;
@@ -1750,9 +1797,14 @@ function initMentionAutocomplete(textareaId, groupId){
                 // Add global results that aren't already in connections
                 var connIds={};
                 connMatches.forEach(function(u){connIds[u.id]=true;});
-                var globalResults=await sbSearchProfiles(q,20);
-                var extras=(globalResults||[]).filter(function(u){return u.id!==currentUser.id&&!connIds[u.id];});
-                results=connMatches.concat(extras);
+                try{
+                    var globalResults=await sbSearchProfiles(q,20);
+                    var extras=(globalResults||[]).filter(function(u){return u.id!==currentUser.id&&!connIds[u.id];});
+                    results=connMatches.concat(extras);
+                }catch(searchErr){
+                    console.warn('Global mention search failed, using connections only:',searchErr);
+                    results=connMatches;
+                }
             }
             _mentionCache[key]=results;
             renderMentionDropdown(results,q);
@@ -2147,7 +2199,7 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
         postEmbed+='</div>';
     }
 
-    var tabsHtml='<div class="search-tabs" style="margin-bottom:0;padding:0;">';
+    var tabsHtml='<div class="search-tabs" style="margin-bottom:12px;padding:0;">';
     tabsHtml+='<button class="search-tab comment-sort-tab'+(sortMode==='top'?' active':'')+'" data-sort="top">Top</button>';
     tabsHtml+='<button class="search-tab comment-sort-tab'+(sortMode==='newest'?' active':'')+'" data-sort="newest">Newest</button>';
     tabsHtml+='<button class="search-tab comment-sort-tab'+(sortMode==='oldest'?' active':'')+'" data-sort="oldest">Oldest</button>';
@@ -2186,6 +2238,8 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
     if(scrollArea) scrollArea.scrollTop=0;
     bindCommentLikes();
     bindCommentDeletes(postId,countEl);
+    bindMentionClicks('#commentsList');
+    initMentionAutocomplete('commentInput',null);
     document.getElementById('commentEmojiBtn').addEventListener('click',function(){openEmojiPicker('commentEmojiPanel',document.getElementById('commentInput'));});
     // Add mini link previews to comment text
     var commentsList=document.getElementById('commentsList');
@@ -2434,8 +2488,8 @@ async function renderInlineComments(postId){
         var editBtn=isOwnComment?'<button class="inline-comment-edit" data-cid="'+c.cid+'" data-postid="'+postId+'" data-text="'+escapeHtml(c.text)+'" style="background:none;font-size:11px;color:#999;cursor:pointer;"><i class="fas fa-pen"></i></button>':'';
         var deleteBtn=isOwnComment?'<button class="inline-comment-delete" data-cid="'+c.cid+'" data-postid="'+postId+'" style="background:none;font-size:11px;color:#e74c3c;cursor:pointer;"><i class="fas fa-trash"></i></button>':'';
         var cGifMatch=c.text.match(/^\[gif\](.*?)\[\/gif\]$/);
-        var cContent=cGifMatch?'<img src="'+escapeHtml(cGifMatch[1])+'" class="comment-gif" alt="GIF" loading="lazy">':'<span style="font-size:12px;color:#555;">'+escapeHtmlNl(c.text)+'</span>';
-        html+='<div class="inline-comment" data-cid="'+c.cid+'"><img src="'+avatarSrc+'" class="inline-comment-avatar" style="object-fit:cover;"><div><div class="inline-comment-bubble"><strong style="font-size:12px;">'+escapeHtml(c.name)+'</strong> '+cContent+'</div><div style="display:flex;gap:10px;margin-top:6px;margin-left:4px;"><button class="inline-comment-like" data-cid="'+c.cid+'" data-aid="'+(c.authorId||'')+'" style="background:none;font-size:11px;color:'+(liked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(liked?'fas':'far')+' fa-thumbs-up"></i>'+lc+'</button><button class="inline-comment-dislike" data-cid="'+c.cid+'" data-aid="'+(c.authorId||'')+'" style="background:none;font-size:11px;color:'+(disliked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(disliked?'fas':'far')+' fa-thumbs-down"></i>'+dc+'</button><button class="inline-comment-reply" data-cid="'+c.cid+'" style="background:none;font-size:11px;color:#999;cursor:pointer;"><i class="far fa-comment"></i> Reply</button>'+editBtn+deleteBtn+'</div></div></div>';
+        var cContent=cGifMatch?'<img src="'+escapeHtml(cGifMatch[1])+'" class="comment-gif" alt="GIF" loading="lazy">':'<p style="font-size:12px;color:#555;margin-top:2px;">'+renderMentionsInText(escapeHtmlNl(c.text))+'</p>';
+        html+='<div class="inline-comment" data-cid="'+c.cid+'"><img src="'+avatarSrc+'" class="inline-comment-avatar" style="object-fit:cover;"><div><div class="inline-comment-bubble"><strong style="font-size:12px;display:block;">'+escapeHtml(c.name)+'</strong>'+cContent+'</div><div style="display:flex;gap:10px;margin-top:6px;margin-left:4px;"><button class="inline-comment-like" data-cid="'+c.cid+'" data-aid="'+(c.authorId||'')+'" style="background:none;font-size:11px;color:'+(liked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(liked?'fas':'far')+' fa-thumbs-up"></i>'+lc+'</button><button class="inline-comment-dislike" data-cid="'+c.cid+'" data-aid="'+(c.authorId||'')+'" style="background:none;font-size:11px;color:'+(disliked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(disliked?'fas':'far')+' fa-thumbs-down"></i>'+dc+'</button><button class="inline-comment-reply" data-cid="'+c.cid+'" style="background:none;font-size:11px;color:#999;cursor:pointer;"><i class="far fa-comment"></i> Reply</button>'+editBtn+deleteBtn+'</div></div></div>';
         // Show replies threaded under this comment
         var replies=repliesByParent[c.cid]||[];
         var shownReplies=replies.slice(0,2);
@@ -2448,8 +2502,8 @@ async function renderInlineComments(postId){
             var rEdit=rIsOwn?'<button class="inline-comment-edit" data-cid="'+r.cid+'" data-postid="'+postId+'" data-text="'+escapeHtml(r.text)+'" style="background:none;font-size:11px;color:#999;cursor:pointer;"><i class="fas fa-pen"></i></button>':'';
             var rDel=rIsOwn?'<button class="inline-comment-delete" data-cid="'+r.cid+'" data-postid="'+postId+'" style="background:none;font-size:11px;color:#e74c3c;cursor:pointer;"><i class="fas fa-trash"></i></button>':'';
             var rGifMatch=r.text.match(/^\[gif\](.*?)\[\/gif\]$/);
-            var rContent=rGifMatch?'<img src="'+escapeHtml(rGifMatch[1])+'" class="comment-gif" alt="GIF" loading="lazy">':'<span style="font-size:12px;color:#555;">'+escapeHtmlNl(r.text)+'</span>';
-            html+='<div class="inline-comment" style="margin-left:28px;" data-cid="'+r.cid+'"><img src="'+rAvatar+'" class="inline-comment-avatar" style="object-fit:cover;"><div><div class="inline-comment-bubble"><i class="fas fa-reply" style="font-size:9px;color:var(--primary);margin-right:4px;transform:scaleX(-1);"></i><span style="color:var(--primary);font-size:11px;margin-right:3px;">@'+escapeHtml(c.name)+'</span><strong style="font-size:12px;">'+escapeHtml(r.name)+'</strong> '+rContent+'</div><div style="display:flex;gap:10px;margin-top:6px;margin-left:4px;"><button class="inline-comment-like" data-cid="'+r.cid+'" data-aid="'+(r.authorId||'')+'" style="background:none;font-size:11px;color:'+(rLiked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(rLiked?'fas':'far')+' fa-thumbs-up"></i>'+rlc+'</button><button class="inline-comment-dislike" data-cid="'+r.cid+'" data-aid="'+(r.authorId||'')+'" style="background:none;font-size:11px;color:'+(rDisliked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(rDisliked?'fas':'far')+' fa-thumbs-down"></i>'+rdc+'</button><button class="inline-comment-reply" data-cid="'+c.cid+'" style="background:none;font-size:11px;color:#999;cursor:pointer;"><i class="far fa-comment"></i> Reply</button>'+rEdit+rDel+'</div></div></div>';
+            var rContent=rGifMatch?'<img src="'+escapeHtml(rGifMatch[1])+'" class="comment-gif" alt="GIF" loading="lazy">':'<p style="font-size:12px;color:#555;margin-top:2px;"><i class="fas fa-reply" style="font-size:9px;color:var(--primary);margin-right:4px;transform:scaleX(-1);"></i><span style="color:var(--primary);font-size:11px;margin-right:3px;">@'+escapeHtml(c.name)+'</span>'+renderMentionsInText(escapeHtmlNl(r.text))+'</p>';
+            html+='<div class="inline-comment" style="margin-left:28px;" data-cid="'+r.cid+'"><img src="'+rAvatar+'" class="inline-comment-avatar" style="object-fit:cover;"><div><div class="inline-comment-bubble"><strong style="font-size:12px;display:block;">'+escapeHtml(r.name)+'</strong>'+rContent+'</div><div style="display:flex;gap:10px;margin-top:6px;margin-left:4px;"><button class="inline-comment-like" data-cid="'+r.cid+'" data-aid="'+(r.authorId||'')+'" style="background:none;font-size:11px;color:'+(rLiked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(rLiked?'fas':'far')+' fa-thumbs-up"></i>'+rlc+'</button><button class="inline-comment-dislike" data-cid="'+r.cid+'" data-aid="'+(r.authorId||'')+'" style="background:none;font-size:11px;color:'+(rDisliked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(rDisliked?'fas':'far')+' fa-thumbs-down"></i>'+rdc+'</button><button class="inline-comment-reply" data-cid="'+c.cid+'" style="background:none;font-size:11px;color:#999;cursor:pointer;"><i class="far fa-comment"></i> Reply</button>'+rEdit+rDel+'</div></div></div>';
         });
         if(replies.length>2) html+='<a href="#" class="show-more-comments" style="font-size:11px;color:var(--primary);display:block;margin-left:28px;margin-top:2px;margin-bottom:4px;">'+( replies.length-2)+' more repl'+(replies.length-2===1?'y':'ies')+'</a>';
     });
@@ -2583,6 +2637,11 @@ function profileToPerson(p){
         premiumBg:sd.premiumBgUrl?{src:sd.premiumBgUrl,overlay:sd.premiumBgOverlay!=null?sd.premiumBgOverlay:0,darkness:sd.premiumBgDarkness!=null?sd.premiumBgDarkness:0,cardTrans:sd.premiumCardTransparency!=null?sd.premiumCardTransparency:0.1}:null
     };
 }
+function viewProfile(userId){
+    sbGetProfile(userId).then(function(p){
+        if(p) showProfileView(profileToPerson(p));
+    }).catch(function(e){console.warn('viewProfile error:',e);});
+}
 // ======================== PROFILE VIEW PAGE ========================
 async function showProfileView(person){
     // Allow viewing own profile even if somehow in blockedUsers; block viewing others
@@ -2650,7 +2709,8 @@ async function showProfileView(person){
     if(!isMe){
         cardHtml+='<div class="pv-actions"><button class="btn '+(isFollowed?'btn-disabled':'btn-primary')+'" id="pvFollowBtn" data-uid="'+person.id+'">'+(isFollowed?'<i class="fas fa-check"></i> Following':'<i class="fas fa-plus"></i> Follow')+'</button>';
         cardHtml+='<button class="btn btn-primary" id="pvMsgBtn"><i class="fas fa-envelope"></i> Message</button>';
-        cardHtml+='<button class="btn btn-outline" id="pvBlockBtn" style="color:#e74c3c;border-color:#e74c3c;">'+(blockedUsers[person.id]?'<i class="fas fa-unlock"></i> Unblock':'<i class="fas fa-ban"></i> Block')+'</button></div>';
+        cardHtml+='<button class="btn btn-outline" id="pvBlockBtn" style="color:#e74c3c;border-color:#e74c3c;">'+(blockedUsers[person.id]?'<i class="fas fa-unlock"></i> Unblock':'<i class="fas fa-ban"></i> Block')+'</button>';
+        cardHtml+='<button class="btn btn-outline" id="pvInviteGroupBtn" style="color:var(--primary);border-color:var(--primary);"><i class="fas fa-user-plus"></i> Invite to Group</button></div>';
         if(_isAdmin){
             cardHtml+='<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">';
             cardHtml+='<span style="font-size:11px;color:var(--gray);display:flex;align-items:center;gap:4px;"><i class="fas fa-shield-halved" style="color:#e74c3c;"></i>Admin:</span>';
@@ -2790,6 +2850,13 @@ async function showProfileView(person){
             } else {
                 showBlockConfirmModal(person,function(){showProfileView(person);});
             }
+        });
+    }
+    // Event: Invite to Group
+    var inviteGroupBtn=document.getElementById('pvInviteGroupBtn');
+    if(inviteGroupBtn){
+        inviteGroupBtn.addEventListener('click',function(){
+            showInviteToGroupModal(person);
         });
     }
     // Event: Admin actions on profile
@@ -2977,6 +3044,64 @@ function showGroupCoverCropModal(src,group,banner,isRecrop){
         }
     });
 }
+// ======================== INVITE TO GROUP ========================
+function showInviteToGroupModal(person){
+    var personName=person.display_name||person.name||person.username||'User';
+    // Filter to groups where current user is owner or member, and person is NOT already a member
+    var myGroups=groups.filter(function(g){
+        return g.owner_id===currentUser.id||state.joinedGroups[g.id];
+    });
+    if(!myGroups.length){showToast('You aren\'t in any groups yet');return;}
+    var html='<div class="modal-header"><h3><i class="fas fa-user-plus" style="color:var(--primary);margin-right:8px;"></i>Invite to Group</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    html+='<div class="modal-body" style="padding:16px;">';
+    html+='<p style="text-align:center;margin-bottom:14px;font-size:14px;">Invite <strong>'+escapeHtml(personName)+'</strong> to a group:</p>';
+    html+='<div id="inviteGroupList" style="display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto;">';
+    myGroups.forEach(function(g){
+        var gIcon=g.profileImg?'<img src="'+g.profileImg+'" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">':'<div style="width:36px;height:36px;border-radius:50%;background:'+(g.color||'var(--primary)')+';display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;"><i class="fas '+(g.icon||'fa-users')+'"></i></div>';
+        html+='<div class="invite-group-row" data-gid="'+g.id+'" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;border:1px solid var(--border);cursor:pointer;transition:background .15s;">';
+        html+=gIcon;
+        html+='<div style="flex:1;min-width:0;"><div style="font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+escapeHtml(g.name)+'</div>';
+        html+='<div style="font-size:12px;color:var(--gray);">'+g.members+' members</div></div>';
+        html+='<button class="btn btn-primary invite-grp-btn" data-gid="'+g.id+'" style="font-size:12px;padding:5px 14px;flex-shrink:0;">Invite</button>';
+        html+='</div>';
+    });
+    html+='</div></div>';
+    showModal(html);
+    $$('#inviteGroupList .invite-grp-btn').forEach(function(btn){
+        btn.addEventListener('click',async function(e){
+            e.stopPropagation();
+            var gid=btn.dataset.gid;
+            var g=groups.find(function(gr){return gr.id===gid;});
+            if(!g) return;
+            // Check if user is already a member
+            try{
+                var members=await sbGetGroupMembers(gid);
+                if(members&&members.some(function(m){return m.user_id===person.id;})){
+                    showToast(personName+' is already in '+g.name);
+                    return;
+                }
+            }catch(e2){}
+            // Send invite notification to the person
+            var myName=currentUser.display_name||currentUser.username||'Someone';
+            try{
+                await sbCreateNotification(person.id,'group_invite',myName+' invited you to join "'+g.name+'"','',{originalType:'group_invite',group_id:gid,group_name:g.name,inviter_id:currentUser.id});
+                btn.innerHTML='<i class="fas fa-check"></i> Sent';
+                btn.disabled=true;
+                btn.style.opacity='0.6';
+                showToast('Invite sent to '+personName);
+            }catch(e3){
+                console.error('Invite error:',e3);
+                showToast('Failed to send invite');
+            }
+        });
+    });
+    // Hover effect
+    $$('#inviteGroupList .invite-group-row').forEach(function(row){
+        row.addEventListener('mouseenter',function(){row.style.background='var(--border)';});
+        row.addEventListener('mouseleave',function(){row.style.background='';});
+    });
+}
+
 async function showGroupProfileModal(person,group){
     var personName=person.display_name||person.name||person.username||'User';
     var personBio=person.bio||'';
@@ -3808,6 +3933,8 @@ async function openGroupChannel(channel){
     });
     // GIF picker
     _initGcGifPicker(channel.id,isAdmin);
+    // Mention autocomplete for group chat input
+    initMentionAutocomplete('gcMsgInput',_gcGroup?_gcGroup.id:null);
 }
 
 function _initGcGifPicker(channelId,isAdmin){
@@ -3894,6 +4021,17 @@ function appendGcMessage(msg,isAdmin,skipScroll){
     // Bind avatar/name click to profile
     div.querySelector('.gc-msg-avatar').addEventListener('click',function(){if(msg.author_id)viewProfile(msg.author_id);});
     div.querySelector('.gc-msg-name').addEventListener('click',function(){if(msg.author_id)viewProfile(msg.author_id);});
+    // Bind mention clicks in this message
+    div.querySelectorAll('.mention-link').forEach(function(el){
+        el.style.cursor='pointer';
+        el.addEventListener('click',function(){
+            var uname=el.dataset.mention;
+            if(!uname) return;
+            sbGetProfileByUsername(uname).then(function(p){
+                if(p) showProfileView(profileToPerson(p));
+            }).catch(function(e){console.warn('Mention profile load:',e);});
+        });
+    });
     if(!skipScroll) container.scrollTop=container.scrollHeight;
 }
 
@@ -8705,8 +8843,9 @@ updateFollowCounts();
                 '<div class="lb-comments-header"><h4>Comments</h4><button class="lb-comments-close"><i class="fas fa-times"></i></button></div>'+
                 '<div class="lb-comments-scroll"><div class="lb-comments-list"></div></div>'+
                 '<div class="lb-comments-input">'+
+                    '<div id="lbEmojiPanel" class="emoji-picker-panel"></div>'+
                     '<div class="lb-reply-indicator" style="display:none;">Replying to <span class="lb-reply-name"></span> <button class="lb-cancel-reply" style="background:none;color:#999;font-size:12px;margin-left:8px;cursor:pointer;">Cancel</button></div>'+
-                    '<div style="display:flex;gap:8px;"><input type="text" class="post-input lb-comment-input" placeholder="Write a comment..." style="flex:1;"><button class="btn btn-primary lb-post-btn">Post</button></div>'+
+                    '<div style="display:flex;gap:8px;align-items:center;"><input type="text" class="post-input lb-comment-input" id="lbCommentInput" placeholder="Write a comment..." style="flex:1;"><button class="lb-emoji-btn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="lb-gif-btn" title="Search GIFs">GIF</button><button class="btn btn-primary lb-post-btn">Post</button></div>'+
                 '</div>'+
             '</div>'+
         '</div>';
@@ -8803,14 +8942,25 @@ updateFollowCounts();
         var src=avatar||DEFAULT_AVATAR;
         var sz=isReply?26:30;
         var isOwn=currentUser&&authorId&&authorId===currentUser.id;
-        var tag=isReply&&replyToName?'<span style="color:var(--primary);font-size:11px;margin-right:3px;"><i class="fas fa-reply" style="transform:scaleX(-1);font-size:9px;margin-right:2px;"></i>@'+replyToName+'</span>':'';
+        var tag=isReply&&replyToName?'<span style="color:var(--primary);font-size:11px;margin-right:3px;"><i class="fas fa-reply" style="transform:scaleX(-1);font-size:9px;margin-right:2px;"></i>@'+escapeHtml(replyToName)+'</span>':'';
+        var gifMatch=text.match(/^\[gif\](.*?)\[\/gif\]$/);
+        var contentHtml;
+        if(gifMatch){
+            contentHtml='<div style="margin-top:4px;">'+tag+'<img src="'+escapeHtml(gifMatch[1])+'" class="comment-gif" alt="GIF" loading="lazy" style="max-width:200px;max-height:150px;border-radius:8px;"></div>';
+        } else {
+            contentHtml='<p class="lb-comment-text" style="font-size:12px;color:var(--gray,#aaa);margin-top:2px;word-break:break-word;">'+tag+renderMentionsInText(escapeHtmlNl(text))+'</p>';
+        }
+        var liked=likedComments[cid];var disliked=dislikedComments[cid];
         var h='<div class="lb-comment'+(isReply?' lb-comment-reply':'')+'" data-cid="'+cid+'">';
         h+='<img src="'+src+'" style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;flex-shrink:0;object-fit:cover;">';
-        h+='<div style="flex:1;min-width:0;"><strong style="font-size:12px;">'+name+'</strong>';
-        h+='<p style="font-size:12px;color:var(--gray,#aaa);margin-top:2px;word-break:break-word;">'+tag+text+'</p>';
+        h+='<div style="flex:1;min-width:0;"><strong style="font-size:12px;">'+escapeHtml(name)+'</strong>';
+        h+=contentHtml;
         h+='<div style="display:flex;gap:10px;margin-top:4px;">';
-        h+='<button class="lb-reply-btn" data-cid="'+cid+'" data-name="'+name+'" style="background:none;font-size:11px;color:var(--gray,#999);cursor:pointer;"><i class="far fa-comment"></i> Reply</button>';
-        if(isOwn) h+='<button class="lb-del-btn" data-cid="'+cid+'" style="background:none;font-size:11px;color:#e74c3c;cursor:pointer;"><i class="fas fa-trash"></i></button>';
+        h+='<button class="lb-like-comment" data-cid="'+cid+'" data-aid="'+(authorId||'')+'" style="background:none;font-size:11px;color:'+(liked?'var(--primary)':'var(--gray,#999)')+';cursor:pointer;display:flex;align-items:center;gap:3px;"><i class="'+(liked?'fas':'far')+' fa-thumbs-up"></i><span>'+(liked?1:0)+'</span></button>';
+        h+='<button class="lb-dislike-comment" data-cid="'+cid+'" data-aid="'+(authorId||'')+'" style="background:none;font-size:11px;color:'+(disliked?'var(--primary)':'var(--gray,#999)')+';cursor:pointer;display:flex;align-items:center;gap:3px;"><i class="'+(disliked?'fas':'far')+' fa-thumbs-down"></i><span>'+(disliked?1:0)+'</span></button>';
+        h+='<button class="lb-reply-btn" data-cid="'+cid+'" data-name="'+escapeHtml(name)+'" style="background:none;font-size:11px;color:var(--gray,#999);cursor:pointer;"><i class="far fa-comment"></i> Reply</button>';
+        if(isOwn) h+='<button class="lb-edit-btn" data-cid="'+cid+'" data-text="'+escapeHtml(text)+'" style="background:none;font-size:11px;color:var(--gray,#999);cursor:pointer;"><i class="fas fa-pen"></i> Edit</button>';
+        if(isOwn) h+='<button class="lb-del-btn" data-cid="'+cid+'" style="background:none;font-size:11px;color:#e74c3c;cursor:pointer;"><i class="fas fa-trash"></i> Delete</button>';
         h+='</div></div></div>';
         return h;
     }
@@ -8832,6 +8982,50 @@ updateFollowCounts();
                 catch(e){console.error('Delete photo comment error:',e);}
             });
         });
+        // Comment like/dislike
+        commentsPanel.querySelectorAll('.lb-like-comment').forEach(function(btn){
+            btn.addEventListener('click',async function(){
+                var cid=btn.dataset.cid;var countEl=btn.querySelector('span');var count=parseInt(countEl.textContent);
+                if(likedComments[cid]){delete likedComments[cid];btn.style.color='var(--gray,#999)';btn.querySelector('i').className='far fa-thumbs-up';countEl.textContent=Math.max(0,count-1);}
+                else{if(dislikedComments[cid]){delete dislikedComments[cid];var db=btn.parentNode.querySelector('.lb-dislike-comment');db.style.color='var(--gray,#999)';db.querySelector('i').className='far fa-thumbs-down';db.querySelector('span').textContent=Math.max(0,parseInt(db.querySelector('span').textContent)-1);}
+                likedComments[cid]=true;btn.style.color='var(--primary)';btn.querySelector('i').className='fas fa-thumbs-up';countEl.textContent=count+1;}
+                if(/^[0-9a-f]{8}-/.test(cid)&&currentUser){try{await sbToggleLike(currentUser.id,'comment',cid);}catch(e2){}}
+                saveState();
+            });
+        });
+        commentsPanel.querySelectorAll('.lb-dislike-comment').forEach(function(btn){
+            btn.addEventListener('click',async function(){
+                var cid=btn.dataset.cid;var countEl=btn.querySelector('span');var count=parseInt(countEl.textContent);
+                if(dislikedComments[cid]){delete dislikedComments[cid];btn.style.color='var(--gray,#999)';btn.querySelector('i').className='far fa-thumbs-down';countEl.textContent=Math.max(0,count-1);}
+                else{if(likedComments[cid]){delete likedComments[cid];var lb=btn.parentNode.querySelector('.lb-like-comment');lb.style.color='var(--gray,#999)';lb.querySelector('i').className='far fa-thumbs-up';lb.querySelector('span').textContent=Math.max(0,parseInt(lb.querySelector('span').textContent)-1);}
+                dislikedComments[cid]=true;btn.style.color='var(--primary)';btn.querySelector('i').className='fas fa-thumbs-down';countEl.textContent=count+1;}
+                if(/^[0-9a-f]{8}-/.test(cid)&&currentUser){try{await sbToggleLike(currentUser.id,'comment',cid);}catch(e2){}}
+                saveState();
+            });
+        });
+        // Edit comment
+        commentsPanel.querySelectorAll('.lb-edit-btn').forEach(function(btn){
+            btn.addEventListener('click',function(){
+                var cid=btn.dataset.cid;var oldText=btn.dataset.text;
+                commentInput.value=oldText;commentInput.focus();
+                // Temporarily repurpose post button for edit
+                postBtn._editCid=cid;
+                replyIndicator.style.display='block';
+                replyNameEl.textContent='Editing comment';
+                cancelReply.addEventListener('click',function editCancel(){postBtn._editCid=null;cancelReply.removeEventListener('click',editCancel);},{once:true});
+            });
+        });
+        // Bind mention clicks in comments
+        commentsPanel.querySelectorAll('.mention-link').forEach(function(el){
+            el.style.cursor='pointer';
+            el.addEventListener('click',function(){
+                var uname=el.dataset.mention;
+                if(!uname) return;
+                sbGetProfileByUsername(uname).then(function(p){
+                    if(p){close();showProfileView(profileToPerson(p));}
+                }).catch(function(e){console.warn('Mention profile load:',e);});
+            });
+        });
     }
 
     // Helper: find post owner from currentPostId
@@ -8841,9 +9035,19 @@ updateFollowCounts();
         return fp&&fp.person?fp.person:null;
     }
 
-    // Post comment
+    // Post comment (or edit)
     postBtn.addEventListener('click',async function(){
         var text=commentInput.value.trim();if(!text||!currentUser)return;
+        // Edit mode
+        if(postBtn._editCid){
+            try{
+                await sbEditPhotoComment(postBtn._editCid,text);
+                postBtn._editCid=null;
+                commentInput.value='';resetReply();
+                loadPhotoComments();
+            }catch(e){console.error('Edit photo comment error:',e);showToast('Edit failed');}
+            return;
+        }
         try{
             var parentId=replyTarget&&/^[0-9a-f]{8}-/.test(replyTarget)?replyTarget:null;
             await sbCreatePhotoComment(srcs[idx],currentPostId,currentUser.id,text,parentId);
@@ -8877,6 +9081,51 @@ updateFollowCounts();
     });
     commentInput.addEventListener('keypress',function(e){if(e.key==='Enter')postBtn.click();});
     cancelReply.addEventListener('click',resetReply);
+
+    // Emoji button for lightbox comments
+    var lbEmojiBtn=overlay.querySelector('.lb-emoji-btn');
+    if(lbEmojiBtn) lbEmojiBtn.addEventListener('click',function(){openEmojiPicker('lbEmojiPanel',commentInput);});
+
+    // GIF button for lightbox comments
+    var lbGifBtn=overlay.querySelector('.lb-gif-btn');
+    if(lbGifBtn) lbGifBtn.addEventListener('click',async function(){
+        // Quick GIF picker: search modal approach
+        var gifHtml='<div class="modal-header"><h3>Search GIFs</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+        gifHtml+='<div class="modal-body" style="padding:12px;"><input type="text" id="lbGifSearch" class="post-input" placeholder="Search GIFs..." style="width:100%;margin-bottom:10px;"><div id="lbGifGrid" class="gif-picker-grid" style="max-height:300px;overflow-y:auto;"></div><div style="text-align:center;font-size:11px;color:var(--gray);margin-top:8px;">Powered by <strong>KLIPY</strong></div></div>';
+        showModal(gifHtml);
+        var lbGifGrid=document.getElementById('lbGifGrid');
+        var lbGifSearchInput=document.getElementById('lbGifSearch');
+        // Load trending
+        var trending=await getKlipyTrending(20);
+        if(trending&&trending.length) lbGifGrid.innerHTML=trending.map(function(g){return '<img src="'+escapeHtml(g.preview||g.full)+'" alt="'+escapeHtml(g.title)+'" data-full="'+escapeHtml(g.full)+'" loading="lazy">';}).join('');
+        else lbGifGrid.innerHTML='<p style="color:#777;text-align:center;padding:20px;">No GIFs found</p>';
+        lbGifGrid.addEventListener('click',async function(e){
+            var img=e.target.closest('img');if(!img)return;
+            var gifUrl=img.dataset.full;if(!gifUrl)return;
+            closeModal();
+            // Submit GIF as comment
+            try{
+                var gifText='[gif]'+gifUrl+'[/gif]';
+                var parentId=replyTarget&&/^[0-9a-f]{8}-/.test(replyTarget)?replyTarget:null;
+                await sbCreatePhotoComment(srcs[idx],currentPostId,currentUser.id,gifText,parentId);
+                notifyMentionedUsers(gifText,currentPostId,'a photo comment');
+                resetReply();loadPhotoComments();
+            }catch(e2){showToast('GIF comment failed');}
+        });
+        var _lbGifTimer=null;
+        lbGifSearchInput.addEventListener('input',function(){
+            clearTimeout(_lbGifTimer);
+            _lbGifTimer=setTimeout(async function(){
+                var q=lbGifSearchInput.value.trim();
+                var results=q?await searchKlipyGifs(q,20):await getKlipyTrending(20);
+                if(results&&results.length) lbGifGrid.innerHTML=results.map(function(g){return '<img src="'+escapeHtml(g.preview||g.full)+'" alt="'+escapeHtml(g.title)+'" data-full="'+escapeHtml(g.full)+'" loading="lazy">';}).join('');
+                else lbGifGrid.innerHTML='<p style="color:#777;text-align:center;padding:20px;">No GIFs found</p>';
+            },400);
+        });
+    });
+
+    // Mention autocomplete for lightbox comment input
+    initMentionAutocomplete('lbCommentInput',null);
 
     // Photo like/dislike
     async function loadPhotoReactions(){

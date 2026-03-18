@@ -192,15 +192,27 @@ async function sbDeleteAccount(userId) {
 }
 
 async function sbSearchProfiles(query, limit = 20) {
-  // Uses parameterized SECURITY DEFINER RPC — no client-side string interpolation
   var safe = query.replace(/[,().]/g, '').trim();
   if (!safe) return [];
-  const { data, error } = await sb.rpc('search_profiles', {
-    p_query: safe,
-    p_limit: limit || 20
-  });
-  if (error) throw error;
-  return _sanitizeData(data || []);
+  // Try parameterized SECURITY DEFINER RPC first, fall back to direct query
+  try {
+    const { data, error } = await sb.rpc('search_profiles', {
+      p_query: safe,
+      p_limit: limit || 20
+    });
+    if (error) throw error;
+    return _sanitizeData(data || []);
+  } catch(rpcErr) {
+    console.warn('search_profiles RPC failed, using fallback:', rpcErr);
+    // Fallback: direct table query with ILIKE
+    var pattern = '%' + safe + '%';
+    const { data, error } = await sb.from('profiles')
+      .select('id, username, display_name, bio, avatar_url, cover_photo_url')
+      .or('username.ilike.' + pattern + ',display_name.ilike.' + pattern)
+      .limit(limit || 20);
+    if (error) throw error;
+    return _sanitizeData(data || []);
+  }
 }
 
 async function sbGetAllProfiles(limit = 50) {
@@ -549,7 +561,7 @@ async function sbGetUnreadCount(userId) {
 
 async function sbCreateNotification(userId, type, title, body, data) {
   // Map app-internal types to the DB enum: comment, reply, like, follow, purchase, system
-  const typeMap = { group: 'system', skin: 'purchase', coin: 'purchase', message: 'system' };
+  const typeMap = { group: 'system', group_invite: 'system', skin: 'purchase', coin: 'purchase', message: 'system' };
   const dbType = typeMap[type] || ((['comment','reply','like','follow','purchase','system','mention'].indexOf(type) !== -1) ? type : 'system');
   const { error } = await sb.from('notifications')
     .insert({ user_id: userId, type: dbType, title: title || '', body: body || '', data: data || {} });
@@ -1168,6 +1180,11 @@ async function sbCreatePhotoComment(photoUrl, postId, authorId, content, parentC
 
 async function sbDeletePhotoComment(commentId) {
   const { error } = await sb.from('photo_comments').delete().eq('id', commentId);
+  if (error) throw error;
+}
+
+async function sbEditPhotoComment(commentId, content) {
+  const { error } = await sb.from('photo_comments').update({ content }).eq('id', commentId);
   if (error) throw error;
 }
 
