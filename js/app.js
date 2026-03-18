@@ -8822,19 +8822,17 @@ async function submitStoryComment(storyId,storyUser){
     if(!input) return;
     var text=input.value.trim();
     if(!text||!currentUser) return;
+    if(!storyUser||!storyUser.id||storyUser.id===currentUser.id){showToast('Can\'t reply to your own story');return;}
     input.value='';
     try{
-        await sbCreateStoryComment(storyId,currentUser.id,text);
-        // Notify story owner
-        if(storyUser&&storyUser.id&&storyUser.id!==currentUser.id){
-            var myName=currentUser.display_name||currentUser.username||'Someone';
-            sbCreateNotification(storyUser.id,'comment',myName+' commented on your story','',{originalType:'comment'}).catch(function(){});
-        }
-        notifyMentionedUsers(text,null,'a story');
-        loadStoryComments(storyId);
+        // Send as DM to story owner (like Instagram)
+        var storyReply='Replied to your story: '+text;
+        await sbSendMessage(currentUser.id,storyUser.id,storyReply);
+        showToast('Reply sent to '+escapeHtml(storyUser.display_name||storyUser.username||'user'));
+        recordInteraction(storyUser.id);
     }catch(e){
-        console.error('Story comment error:',e);
-        showToast('Comment failed');
+        console.error('Story reply error:',e);
+        showToast('Reply failed');
     }
 }
 
@@ -8864,19 +8862,14 @@ function openStoryViewer(userId){
             '<div class="story-content">'+mediaHtml+(s.text?'<div class="story-text">'+escapeHtml(s.text)+'</div>':'')+'</div>'+
             '<div class="story-nav"><div class="story-nav-left"></div><div class="story-nav-right"></div></div>'+
             (isOwn?'<div class="story-viewers"><button class="story-viewers-btn"><i class="fas fa-eye"></i> Views</button><button class="story-delete-btn" style="color:#e74c3c;"><i class="fas fa-trash"></i></button></div>':'')+
-            '<div class="story-comments-panel" id="storyCommentsPanel" style="display:none;"><div class="story-comments-list" id="storyCommentsList"></div></div>'+
-            '<div class="story-input-bar"><button class="story-toggle-comments-btn"><i class="far fa-comment"></i> <span class="story-comment-count"></span></button><input type="text" class="story-comment-input" id="storyCommentInput" placeholder="Reply to story..."><button class="story-emoji-btn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="story-send-btn"><i class="fas fa-paper-plane"></i></button></div>';
+            (isOwn?'':'<div class="story-input-bar"><input type="text" class="story-comment-input" id="storyCommentInput" placeholder="Reply to '+escapeHtml(name)+'..."><button class="story-send-btn"><i class="fas fa-paper-plane"></i></button></div>');
         // Mark as viewed
         _storyViewed[s.id]=true;
         try{localStorage.setItem('blipvibe_story_viewed',JSON.stringify(_storyViewed));}catch(e){}
         if(currentUser) sbViewStory(s.id,currentUser.id);
-        // Load and bind story comments
-        loadStoryComments(s.id);
+        // Story reply input (sends as DM)
         var storyInput=overlay.querySelector('#storyCommentInput');
         var storySendBtn=overlay.querySelector('.story-send-btn');
-        var storyEmojiBtn=overlay.querySelector('.story-emoji-btn');
-        var storyToggleBtn=overlay.querySelector('.story-toggle-comments-btn');
-        var storyPanel=overlay.querySelector('#storyCommentsPanel');
         if(storySendBtn) storySendBtn.addEventListener('click',function(){submitStoryComment(s.id,user);});
         if(storyInput){
             storyInput.addEventListener('keypress',function(e){if(e.key==='Enter')submitStoryComment(s.id,user);});
@@ -8889,11 +8882,6 @@ function openStoryViewer(userId){
                 },3000);
             });
         }
-        if(storyToggleBtn) storyToggleBtn.addEventListener('click',function(e){
-            e.stopPropagation();
-            var panel=overlay.querySelector('#storyCommentsPanel');
-            if(panel) panel.style.display=panel.style.display==='none'?'flex':'none';
-        });
         // Auto-advance: 5s for images/text, video duration for videos
         var fill=overlay.querySelector('.story-progress-fill');
         var storyDuration=5000;
