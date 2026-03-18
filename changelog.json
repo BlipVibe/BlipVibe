@@ -1,5 +1,26 @@
 [
   {
+    "version": "0.2.26",
+    "date": "2026-03-18",
+    "added": [
+      "Post view counts — eye icon shows how many times each post has been viewed (IntersectionObserver tracking)",
+      "Online / last seen status — green dot on DM contacts who are online, 'Active Xm ago' text on profiles",
+      "Read receipts in DMs — double-check 'Seen' indicator on your last sent message",
+      "Typing indicator in DMs — animated bouncing dots (CSS animation)",
+      "Streaks — consecutive days of interaction tracked between you and other users, fire icon + day count on profiles",
+      "User badges / achievements — 10 earnable badges (Early Adopter, First Post, Social Butterfly, Popular, Group Leader, Skin Collector, Streak Master, Photographer, Generous, Commenter) displayed on profile",
+      "Notification preferences — toggle individual notification types on/off (likes, comments, replies, follows, mentions, messages, group invites) in Settings",
+      "Message privacy setting — control who can message you (Everyone / Followers Only / Nobody) in Settings",
+      "Scheduled posts — schedule a post for future publication with date/time picker, manage pending posts in Settings",
+      "Muted users list in Settings — view and unmute muted users",
+      "Scheduled posts manager in Settings — view and cancel pending scheduled posts"
+    ],
+    "fixed": [
+      "Last seen interval and view observer properly cleaned up on logout",
+      "Pinned posts, badges, muted users, and notification preferences now sync to Supabase via skin_data"
+    ]
+  },
+  {
     "version": "0.2.25",
     "date": "2026-03-18",
     "added": [

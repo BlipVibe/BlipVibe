@@ -252,8 +252,9 @@ function handleLogout() {
     // Clean up all realtime subscriptions to prevent duplicate listeners on re-login
     _realtimeSubs.forEach(function(ch){try{sb.removeChannel(ch);}catch(e){}});
     _realtimeSubs=[];
-    // Clear the saveState interval
+    // Clear the saveState interval and last seen updater
     if(_saveStateInterval){clearInterval(_saveStateInterval);_saveStateInterval=null;}
+    if(_lastSeenInterval){clearInterval(_lastSeenInterval);_lastSeenInterval=null;}
     sbSignOut().then(function () {
         currentUser = null;
         currentAuthUser = null;
@@ -275,7 +276,7 @@ function resetAllCustomizations(){
     state.ownedIconSets={};state.activeIconSet=null;state.ownedCoinSkins={};state.activeCoinSkin=null;
     state.ownedTemplates={};state.activeTemplate=null;state.ownedNavStyles={};state.activeNavStyle=null;
     state.ownedPremiumSkins={};state.activePremiumSkin=null;state.groupPosts={};
-    state.privateFollowers=false;state.dislikedPosts={};state.pinnedPosts={};
+    state.privateFollowers=false;state.dislikedPosts={};state.pinnedPosts={};state.earnedBadges={};
     state.photos={profile:[],cover:[],post:[],albums:[]};
     // Reset social/preference data
     blockedUsers={};likedComments={};dislikedComments={};commentCoinAwarded={};
@@ -662,6 +663,12 @@ async function initApp() {
     initMessageSubscription();
     _initAppRunning = false;
     _initAppDone = true;
+    // Start last seen updater
+    startLastSeenUpdater();
+    // Check badges
+    checkBadges();
+    // Check scheduled posts
+    checkScheduledPosts();
     // Show first-time feed tutorial after everything loads
     setTimeout(function(){showFeedTutorial();},500);
 }
@@ -789,6 +796,10 @@ function _buildSkinData(){
         savedFolders:savedFolders||[],
         hiddenPosts:hiddenPosts||{},
         reportedPosts:reportedPosts||[],
+        pinnedPosts:state.pinnedPosts||{},
+        earnedBadges:state.earnedBadges||{},
+        mutedUsers:mutedUsers||{},
+        notifPrefs:_notifPrefs||{},
         tosAcceptedVersion:_tosAccepted?TOS_VERSION:((currentUser&&currentUser.skin_data&&currentUser.skin_data.tosAcceptedVersion)||0),
         tutorialsSeen:_tutorialsSeen||{}
     };
@@ -845,6 +856,11 @@ function _applySkinDataFromCache(sd){
     if(sd.hiddenPosts&&typeof sd.hiddenPosts==='object') hiddenPosts=sd.hiddenPosts;
     if(Array.isArray(sd.reportedPosts)) reportedPosts=sd.reportedPosts;
     if(sd.tutorialsSeen&&typeof sd.tutorialsSeen==='object') _tutorialsSeen=sd.tutorialsSeen;
+    if(sd.pinnedPosts&&typeof sd.pinnedPosts==='object') state.pinnedPosts=sd.pinnedPosts;
+    if(sd.earnedBadges&&typeof sd.earnedBadges==='object') state.earnedBadges=sd.earnedBadges;
+    if(sd.mutedUsers&&typeof sd.mutedUsers==='object') mutedUsers=sd.mutedUsers;
+    if(sd.notifPrefs&&typeof sd.notifPrefs==='object') _notifPrefs=sd.notifPrefs;
+    if(sd.settings&&sd.settings.messagePrivacy) settings.messagePrivacy=sd.settings.messagePrivacy;
     // Group skin data now loaded from group's own skin_data column (see loadGroups)
 }
 async function loadSkinDataFromSupabase(){
@@ -2678,6 +2694,7 @@ function profileToPerson(p){
         bio:p.bio||'',
         avatar_url:p.avatar_url,
         cover_photo_url:p.cover_photo_url||null,
+        last_seen:p.last_seen||null,
         premiumSkin:sd.activePremiumSkin||null,
         skin:sd.activeSkin||null,
         font:sd.activeFont||null,
@@ -2747,6 +2764,22 @@ async function showProfileView(person){
     var pvAvatarSrc=person.avatar_url||DEFAULT_AVATAR;
     cardHtml+='<div class="profile-avatar-wrap"><img src="'+pvAvatarSrc+'" alt="'+escapeHtml(person.name)+'" class="profile-avatar"></div>';
     cardHtml+='<h3 class="profile-name">'+escapeHtml(person.name)+'</h3>';
+    // Badges
+    if(isMe&&state.earnedBadges){
+        var badgeHtml='';
+        _badgeDefs.forEach(function(b){if(state.earnedBadges[b.id]) badgeHtml+='<span class="user-badge" title="'+escapeHtml(b.name)+'" style="background:'+b.color+';"><i class="fas '+b.icon+'"></i></span>';});
+        if(badgeHtml) cardHtml+='<div class="badge-row" style="margin-top:4px;">'+badgeHtml+'</div>';
+    }
+    // Streak
+    if(!isMe&&currentUser){
+        var streak=getStreak(person.id);
+        if(streak>0) cardHtml+='<div style="font-size:12px;color:#f59e0b;margin-top:4px;"><i class="fas fa-fire"></i> '+streak+' day streak</div>';
+    }
+    // Online status
+    if(!isMe&&person.last_seen){
+        var onlineInfo=getOnlineStatus(person.last_seen);
+        cardHtml+='<div style="font-size:11px;margin-top:2px;color:'+(onlineInfo.online?'#10b981':'var(--gray)')+';">'+(onlineInfo.online?'<i class="fas fa-circle" style="font-size:8px;margin-right:4px;"></i>':'')+onlineInfo.text+'</div>';
+    }
     if(person.status) cardHtml+='<p class="profile-title">'+escapeHtml(person.status)+'</p>';
     if(person.bio) cardHtml+='<p class="profile-about">'+escapeHtml(person.bio)+'</p>';
     var pvPriv=isMe?state.privateFollowers:!!person.priv;
@@ -4552,6 +4585,22 @@ document.addEventListener('click',function(e){
             h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Blocked Users</span><button class="btn btn-outline" id="settingsViewBlocked" style="padding:4px 14px;font-size:12px;color:#e74c3c;border-color:#e74c3c;">View ('+blockedCount+')</button></div>';
             var cookieStatus=_cookieConsent?'Accepted':'Essential Only';
             h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Cookie Consent</span><button class="btn btn-outline" id="settingsManageCookies" style="padding:4px 14px;font-size:12px;">'+cookieStatus+'</button></div>';
+            // Muted users
+            var mutedCount=Object.keys(mutedUsers).length;
+            h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Muted Users</span><button class="btn btn-outline" id="settingsViewMuted" style="padding:4px 14px;font-size:12px;">View ('+mutedCount+')</button></div>';
+            // Message privacy
+            var msgPriv=settings.messagePrivacy||'everyone';
+            h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Who Can Message Me</span><select id="msgPrivacySelect" style="padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:#fff;color:var(--dark);cursor:pointer;"><option value="everyone"'+(msgPriv==='everyone'?' selected':'')+'>Everyone</option><option value="followers"'+(msgPriv==='followers'?' selected':'')+'>Followers Only</option><option value="nobody"'+(msgPriv==='nobody'?' selected':'')+'>Nobody</option></select></div>';
+            // Notification preferences
+            h+='<div style="padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;font-weight:600;">Notification Preferences</span>';
+            ['like','comment','reply','follow','mention','message','group_invite'].forEach(function(type){
+                var label={like:'Likes',comment:'Comments',reply:'Replies',follow:'Follows',mention:'Mentions',message:'Messages',group_invite:'Group Invites'}[type]||type;
+                var enabled=isNotifEnabled(type);
+                h+='<label style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;font-size:13px;cursor:pointer;"><span>'+label+'</span><span class="notif-pref-toggle" data-ntype="'+type+'" style="width:36px;height:20px;border-radius:10px;background:'+(enabled?'var(--green)':'#ccc')+';position:relative;display:inline-block;transition:background .2s;cursor:pointer;"><span style="width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:2px;'+(enabled?'left:18px':'left:2px')+';transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);"></span></span></label>';
+            });
+            h+='</div>';
+            // Scheduled posts
+            h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Scheduled Posts</span><button class="btn btn-outline" id="settingsScheduled" style="padding:4px 14px;font-size:12px;">'+(_scheduledPosts.length||0)+' pending</button></div>';
             h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Developer Updates</span><button class="btn btn-outline" id="settingsDevUpdates" style="padding:4px 14px;font-size:12px;"><i class="fas fa-code-branch" style="margin-right:4px;"></i>View</button></div>';
             h+='<div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--border);text-align:center;"><button class="btn" id="settingsDeleteAccount" style="background:#e74c3c;color:#fff;padding:8px 20px;font-size:13px;border-radius:8px;cursor:pointer;"><i class="fas fa-trash" style="margin-right:6px;"></i>Delete My Account</button></div>';
             h+='<div style="margin-top:16px;text-align:center;"><button class="btn btn-primary modal-close">Done</button></div></div>';
@@ -4585,6 +4634,37 @@ document.addEventListener('click',function(e){
                 else{grantCookieConsent();closeModal();showToast('Cookies accepted — embeds will now load.');setTimeout(function(){location.reload();},800);}
             });
             document.getElementById('commentOrderSelect').addEventListener('change',function(){settings.commentOrder=this.value;saveState();});
+            // Message privacy
+            var msgPrivSel=document.getElementById('msgPrivacySelect');
+            if(msgPrivSel) msgPrivSel.addEventListener('change',function(){settings.messagePrivacy=this.value;saveState();});
+            // Muted users
+            var viewMutedBtn=document.getElementById('settingsViewMuted');
+            if(viewMutedBtn) viewMutedBtn.addEventListener('click',function(){
+                var ids=Object.keys(mutedUsers);
+                if(!ids.length){showToast('No muted users');return;}
+                var mh='<div class="modal-header"><h3>Muted Users</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body" style="max-height:50vh;overflow-y:auto;">';
+                ids.forEach(function(uid){mh+='<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);"><span style="font-size:13px;">'+uid.substring(0,8)+'...</span><button class="btn btn-outline unmute-btn" data-uid="'+uid+'" style="font-size:11px;padding:3px 10px;">Unmute</button></div>';});
+                mh+='</div>';closeModal();showModal(mh);
+                $$('.unmute-btn').forEach(function(b){b.addEventListener('click',function(){unmuteUser(b.dataset.uid);b.textContent='Unmuted';b.disabled=true;});});
+            });
+            // Notification preferences
+            $$('.notif-pref-toggle').forEach(function(t){t.style.cursor='pointer';t.addEventListener('click',function(){
+                var ntype=t.dataset.ntype;
+                _notifPrefs[ntype]=!isNotifEnabled(ntype);
+                persistNotifPrefs();
+                var enabled=isNotifEnabled(ntype);
+                t.style.background=enabled?'var(--green)':'#ccc';
+                t.firstElementChild.style.left=enabled?'18px':'2px';
+            });});
+            // Scheduled posts
+            var schedBtn=document.getElementById('settingsScheduled');
+            if(schedBtn) schedBtn.addEventListener('click',function(){
+                if(!_scheduledPosts.length){showToast('No scheduled posts');return;}
+                var sh='<div class="modal-header"><h3>Scheduled Posts</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body" style="max-height:50vh;overflow-y:auto;">';
+                _scheduledPosts.forEach(function(s,i){sh+='<div style="padding:8px 0;border-bottom:1px solid var(--border);"><p style="font-size:13px;">'+escapeHtml(s.content.substring(0,80))+'</p><span style="font-size:11px;color:var(--gray);">Scheduled: '+new Date(s.scheduledAt).toLocaleString()+'</span> <button class="btn btn-outline cancel-sched" data-idx="'+i+'" style="font-size:11px;padding:2px 8px;color:#e74c3c;border-color:#e74c3c;">Cancel</button></div>';});
+                sh+='</div>';closeModal();showModal(sh);
+                $$('.cancel-sched').forEach(function(b){b.addEventListener('click',function(){_scheduledPosts.splice(parseInt(b.dataset.idx),1);persistScheduled();b.textContent='Cancelled';b.disabled=true;});});
+            });
             $$('.stoggle').forEach(function(t){t.style.cursor='pointer';t.addEventListener('click',function(){
                 var k=t.dataset.key;settings[k]=!settings[k];
                 t.style.background=settings[k]?'var(--green)':'#ccc';
@@ -5031,6 +5111,8 @@ function renderFeed(tab){
         html+='<button class="action-btn dislike-btn" data-post-id="'+i+'"><i class="'+(state.dislikedPosts[i]?'fas':'far')+' fa-thumbs-down"></i><span class="dislike-count">0</span></button>';
         html+='<button class="action-btn comment-btn"><i class="far fa-comment"></i><span>'+commentCount+'</span></button>';
         html+='<button class="action-btn share-btn"><i class="fas fa-share-from-square"></i><span>'+shares+'</span></button>';
+        var vc=_postViews[i]||0;
+        html+='<button class="action-btn view-count-btn" style="cursor:default;opacity:.6;"><i class="far fa-eye"></i><span>'+vc+'</span></button>';
         html+='</div><div class="action-right"><div class="liked-avatars" data-post-id="'+i+'"></div></div></div>';
         html+='<div class="post-comments" data-post-id="'+i+'"></div>';
         html+='</div>';
@@ -5041,6 +5123,7 @@ function renderFeed(tab){
     bindHashtagClicks('#feedContainer');
     bindPollVotes('#feedContainer');
     autoFetchLinkPreviews(container);
+    initViewTracking();
     posts.forEach(function(p){renderInlineComments(p.idx);});
     // Load liker avatars asynchronously for Supabase posts
     posts.forEach(function(p){
@@ -5411,7 +5494,7 @@ $('#openPostModal').addEventListener('click',function(){
     html+='<div class="cpm-tags-section"><div class="cpm-tags-wrap" id="cpmTagsWrap"></div></div>';
     html+='<div class="cpm-link-section" id="cpmLinkSection" style="display:none;"><div id="cpmLinkPreview"></div></div>';
     html+='<div id="cpmPollSection" style="display:none;padding:0 20px 12px;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><strong style="font-size:13px;"><i class="fas fa-chart-bar" style="margin-right:6px;color:var(--primary);"></i>Poll</strong><button id="cpmRemovePoll" style="background:none;color:#e74c3c;font-size:12px;cursor:pointer;"><i class="fas fa-times"></i> Remove</button></div><div id="cpmPollOptions"><div class="cpm-poll-opt"><input type="text" class="post-input cpm-poll-input" placeholder="Option 1" maxlength="80" style="font-size:13px;"></div><div class="cpm-poll-opt"><input type="text" class="post-input cpm-poll-input" placeholder="Option 2" maxlength="80" style="font-size:13px;"></div></div><button id="cpmAddPollOpt" style="background:none;color:var(--primary);font-size:12px;cursor:pointer;margin-top:6px;"><i class="fas fa-plus"></i> Add option</button></div>';
-    html+='</div><div class="cpm-footer"><div id="cpmEmojiPanel" class="emoji-picker-panel"></div><div style="display:flex;gap:8px;align-items:center;width:100%;"><button class="cpm-emoji-btn" id="cpmEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="cpm-emoji-btn" id="cpmCameraBtn" title="Add Photos/Videos"><i class="fas fa-camera"></i></button><button class="cpm-emoji-btn" id="cpmPollBtn" title="Add Poll"><i class="fas fa-chart-bar"></i></button><button class="btn btn-primary" id="cpmPublish" style="flex:1;">Publish</button></div></div></div>';
+    html+='</div><div class="cpm-footer"><div id="cpmEmojiPanel" class="emoji-picker-panel"></div><div style="display:flex;gap:8px;align-items:center;width:100%;"><button class="cpm-emoji-btn" id="cpmEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="cpm-emoji-btn" id="cpmCameraBtn" title="Add Photos/Videos"><i class="fas fa-camera"></i></button><button class="cpm-emoji-btn" id="cpmPollBtn" title="Add Poll"><i class="fas fa-chart-bar"></i></button><button class="cpm-emoji-btn" id="cpmScheduleBtn" title="Schedule Post"><i class="far fa-clock"></i></button><button class="btn btn-primary" id="cpmPublish" style="flex:1;">Publish</button></div></div></div>';
     showModal(html);
     document.getElementById('cpmEmojiBtn').addEventListener('click',function(){openEmojiPicker('cpmEmojiPanel',document.getElementById('cpmText'));});
     initMentionAutocomplete('cpmText',null);
@@ -5434,6 +5517,29 @@ $('#openPostModal').addEventListener('click',function(){
         var div=document.createElement('div');div.className='cpm-poll-opt';
         div.innerHTML='<input type="text" class="post-input cpm-poll-input" placeholder="Option '+(opts.length+1)+'" maxlength="80" style="font-size:13px;">';
         document.getElementById('cpmPollOptions').appendChild(div);
+    });
+    // Schedule post handler
+    document.getElementById('cpmScheduleBtn').addEventListener('click',function(){
+        var sh='<div class="modal-header"><h3><i class="far fa-clock" style="color:var(--primary);margin-right:8px;"></i>Schedule Post</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+        sh+='<div class="modal-body"><p style="font-size:13px;color:var(--gray);margin-bottom:12px;">Choose when to publish this post:</p>';
+        sh+='<input type="datetime-local" id="scheduleDateTime" class="post-input" style="width:100%;margin-bottom:16px;">';
+        sh+='<div class="modal-actions"><button class="btn btn-outline modal-close">Cancel</button><button class="btn btn-primary" id="confirmSchedule">Schedule</button></div></div>';
+        showModal(sh);
+        // Set min to now
+        var now=new Date();now.setMinutes(now.getMinutes()-now.getTimezoneOffset());
+        document.getElementById('scheduleDateTime').min=now.toISOString().slice(0,16);
+        document.getElementById('confirmSchedule').addEventListener('click',function(){
+            var dt=document.getElementById('scheduleDateTime').value;
+            if(!dt){showToast('Pick a date and time');return;}
+            var schedTime=new Date(dt).getTime();
+            if(schedTime<=Date.now()){showToast('Must be in the future');return;}
+            var text=document.getElementById('cpmText')?document.getElementById('cpmText').value.trim():'';
+            if(!text){showToast('Write something first');return;}
+            _scheduledPosts.push({content:text,scheduledAt:schedTime,createdAt:Date.now()});
+            persistScheduled();
+            closeModal();
+            showToast('Post scheduled for '+new Date(schedTime).toLocaleString());
+        });
     });
     var mediaList=[];
     var zone=document.getElementById('cpmMediaZone');
@@ -7220,7 +7326,8 @@ function renderMsgContacts(search){
         var time=timeAgoReal(c.lastMessage.created_at);
         var isActive=activeChat&&activeChat.partnerId===c.partnerId;
         html+='<div class="msg-contact'+(isActive?' active':'')+'" data-partner-id="'+c.partnerId+'">';
-        html+='<img src="'+avatar+'" alt="'+name+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;">';
+        var onlineInfo=getOnlineStatus(c.partner.last_seen);
+        html+='<div style="position:relative;"><img src="'+avatar+'" alt="'+name+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;">'+(onlineInfo.online?'<span class="online-dot"></span>':'')+'</div>';
         html+='<div class="msg-contact-info"><div class="msg-contact-name">'+name+(c.unread>0?' <span style="background:var(--primary);color:#fff;font-size:11px;padding:1px 7px;border-radius:10px;margin-left:6px;">'+c.unread+'</span>':'')+'</div>';
         html+='<div class="msg-contact-preview">'+preview+'</div></div>';
         html+='<span class="msg-contact-time">'+time+'</span>';
@@ -7405,6 +7512,9 @@ async function openChat(contact){
             });
             msgArea.scrollTop=msgArea.scrollHeight;
             autoFetchLinkPreviewsMini(msgArea,'.msg-bubble');
+            // Add read receipts to own messages
+            var lastSent=msgArea.querySelector('.msg-bubble.sent:last-child');
+            if(lastSent) renderReadReceipt(lastSent,true);
         }
         // Mark as read
         await sbMarkMessagesRead(currentUser.id,contact.partnerId);
@@ -7517,6 +7627,7 @@ async function sendMessage(){
     msgArea.scrollTop=msgArea.scrollHeight;
     try{
         await sbSendMessage(currentUser.id,activeChat.partnerId,text);
+        recordInteraction(activeChat.partnerId);
         // Update conversation list
         await loadConversations();
     }catch(e){
@@ -7527,6 +7638,7 @@ async function sendMessage(){
 
 // Start a conversation from a profile (called by Message buttons)
 function startConversation(userId, userName, userAvatar){
+    // Check message privacy (own setting doesn't block outgoing, only incoming)
     navigateTo('messages');
     setTimeout(function(){
         openChat({partnerId:userId,partner:{id:userId,display_name:userName,username:userName,avatar_url:userAvatar}});
@@ -8484,6 +8596,202 @@ function showReportUserModal(person){
         });
     });
 }
+
+// ======================== POST VIEW COUNTS ========================
+var _postViews={};
+try{_postViews=JSON.parse(localStorage.getItem('blipvibe_views')||'{}');}catch(e){}
+function trackPostView(postId){
+    if(!postId) return;
+    if(!_postViews[postId]) _postViews[postId]=0;
+    _postViews[postId]++;
+    try{localStorage.setItem('blipvibe_views',JSON.stringify(_postViews));}catch(e){}
+}
+// Track views when posts enter viewport
+var _viewObserver=null;
+function initViewTracking(){
+    if(_viewObserver) _viewObserver.disconnect();
+    _viewObserver=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+            if(e.isIntersecting){
+                var post=e.target;
+                var likeBtn=post.querySelector('.like-btn');
+                if(likeBtn){
+                    var pid=likeBtn.getAttribute('data-post-id');
+                    if(pid&&!post._viewed){post._viewed=true;trackPostView(pid);
+                        var vc=post.querySelector('.view-count-btn span');
+                        if(vc) vc.textContent=_postViews[pid]||0;
+                    }
+                }
+            }
+        });
+    },{threshold:0.5});
+    document.querySelectorAll('.feed-post').forEach(function(p){_viewObserver.observe(p);});
+}
+
+// ======================== ONLINE / LAST SEEN STATUS ========================
+var _lastSeenInterval=null;
+function updateLastSeen(){
+    if(!currentUser) return;
+    sbUpdateProfile(currentUser.id,{last_seen:new Date().toISOString()}).catch(function(){});
+}
+function startLastSeenUpdater(){
+    updateLastSeen();
+    if(_lastSeenInterval) clearInterval(_lastSeenInterval);
+    _lastSeenInterval=setInterval(updateLastSeen,60000); // update every 60s
+}
+function getOnlineStatus(lastSeen){
+    if(!lastSeen) return {text:'Offline',online:false};
+    var diff=Date.now()-new Date(lastSeen).getTime();
+    if(diff<120000) return {text:'Online',online:true}; // within 2 min
+    if(diff<3600000) return {text:'Active '+Math.round(diff/60000)+'m ago',online:false};
+    if(diff<86400000) return {text:'Active '+Math.round(diff/3600000)+'h ago',online:false};
+    return {text:'Offline',online:false};
+}
+
+// ======================== READ RECEIPTS IN DMs ========================
+function renderReadReceipt(msgEl,isRead){
+    var existing=msgEl.querySelector('.msg-read-receipt');
+    if(existing) existing.remove();
+    if(!msgEl.classList.contains('sent')) return;
+    var receipt=document.createElement('span');
+    receipt.className='msg-read-receipt';
+    receipt.innerHTML=isRead?'<i class="fas fa-check-double" style="color:var(--primary);"></i> Seen':'<i class="fas fa-check"></i>';
+    msgEl.appendChild(receipt);
+}
+
+// ======================== TYPING INDICATOR IN DMs ========================
+var _typingTimer=null;
+var _typingShowing=false;
+function showTypingIndicator(){
+    var area=$('#chatMessages');
+    if(!area||_typingShowing) return;
+    _typingShowing=true;
+    var div=document.createElement('div');
+    div.className='msg-typing-indicator';
+    div.id='typingIndicator';
+    div.innerHTML='<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+    area.appendChild(div);
+    area.scrollTop=area.scrollHeight;
+}
+function hideTypingIndicator(){
+    _typingShowing=false;
+    var el=document.getElementById('typingIndicator');
+    if(el) el.remove();
+}
+
+// ======================== STREAKS ========================
+var _streaks={};
+try{_streaks=JSON.parse(localStorage.getItem('blipvibe_streaks')||'{}');}catch(e){}
+function persistStreaks(){try{localStorage.setItem('blipvibe_streaks',JSON.stringify(_streaks));}catch(e){}}
+function recordInteraction(userId){
+    if(!currentUser||userId===currentUser.id) return;
+    var key=userId;
+    var today=new Date().toISOString().slice(0,10); // YYYY-MM-DD
+    if(!_streaks[key]) _streaks[key]={lastDate:null,count:0};
+    var s=_streaks[key];
+    if(s.lastDate===today) return; // already recorded today
+    var yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10);
+    if(s.lastDate===yesterday){
+        s.count++;
+    } else {
+        s.count=1; // reset streak
+    }
+    s.lastDate=today;
+    persistStreaks();
+}
+function getStreak(userId){
+    if(!_streaks[userId]) return 0;
+    var s=_streaks[userId];
+    var today=new Date().toISOString().slice(0,10);
+    var yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10);
+    if(s.lastDate===today||s.lastDate===yesterday) return s.count;
+    return 0; // streak expired
+}
+
+// ======================== USER BADGES / ACHIEVEMENTS ========================
+var _badgeDefs=[
+    {id:'early_adopter',name:'Early Adopter',icon:'fa-seedling',color:'#10b981',desc:'Joined during beta'},
+    {id:'first_post',name:'First Post',icon:'fa-pen',color:'#3b82f6',desc:'Created your first post'},
+    {id:'social_butterfly',name:'Social Butterfly',icon:'fa-users',color:'#8b5cf6',desc:'Followed 10+ people'},
+    {id:'popular',name:'Popular',icon:'fa-fire',color:'#ef4444',desc:'Received 50+ likes total'},
+    {id:'commenter',name:'Commenter',icon:'fa-comment',color:'#f59e0b',desc:'Left 25+ comments'},
+    {id:'group_leader',name:'Group Leader',icon:'fa-crown',color:'#eab308',desc:'Created a group'},
+    {id:'skin_collector',name:'Skin Collector',icon:'fa-palette',color:'#ec4899',desc:'Own 5+ skins'},
+    {id:'streak_master',name:'Streak Master',icon:'fa-fire-flame-curved',color:'#f97316',desc:'7-day streak with someone'},
+    {id:'photographer',name:'Photographer',icon:'fa-camera',color:'#06b6d4',desc:'Posted 10+ photos'},
+    {id:'generous',name:'Generous',icon:'fa-heart',color:'#e11d48',desc:'Liked 100+ posts'}
+];
+function checkBadges(){
+    if(!currentUser) return;
+    var earned=state.earnedBadges||{};
+    var changed=false;
+    // Early Adopter — always earned during beta
+    if(!earned.early_adopter){earned.early_adopter=Date.now();changed=true;}
+    // First Post
+    if(!earned.first_post&&state.photos&&state.photos.post&&state.photos.post.length>0){earned.first_post=Date.now();changed=true;}
+    // Social Butterfly
+    if(!earned.social_butterfly&&state.following>=10){earned.social_butterfly=Date.now();changed=true;}
+    // Popular
+    var totalLikes=Object.keys(state.likedPosts).length;
+    if(!earned.popular&&totalLikes>=50){earned.popular=Date.now();changed=true;}
+    // Group Leader
+    if(!earned.group_leader&&groups&&groups.some(function(g){return g.owner_id===currentUser.id;})){earned.group_leader=Date.now();changed=true;}
+    // Skin Collector
+    var skinCount=Object.keys(state.ownedSkins||{}).length+Object.keys(state.ownedPremiumSkins||{}).length;
+    if(!earned.skin_collector&&skinCount>=5){earned.skin_collector=Date.now();changed=true;}
+    // Streak Master
+    var hasStreak7=Object.keys(_streaks).some(function(k){return getStreak(k)>=7;});
+    if(!earned.streak_master&&hasStreak7){earned.streak_master=Date.now();changed=true;}
+    // Photographer
+    if(!earned.photographer&&state.photos&&state.photos.post&&state.photos.post.filter(function(p){return !p.isVideo;}).length>=10){earned.photographer=Date.now();changed=true;}
+    if(changed){state.earnedBadges=earned;saveState();}
+}
+function renderBadgesForProfile(container){
+    if(!container) return;
+    var earned=state.earnedBadges||{};
+    var html='';
+    _badgeDefs.forEach(function(b){
+        if(earned[b.id]){
+            html+='<span class="user-badge" title="'+escapeHtml(b.name)+': '+escapeHtml(b.desc)+'" style="background:'+b.color+';"><i class="fas '+b.icon+'"></i></span>';
+        }
+    });
+    if(html) container.innerHTML='<div class="badge-row">'+html+'</div>';
+}
+
+// ======================== NOTIFICATION PREFERENCES ========================
+var _notifPrefs={};
+try{_notifPrefs=JSON.parse(localStorage.getItem('blipvibe_notifprefs')||'{}');}catch(e){}
+function persistNotifPrefs(){try{localStorage.setItem('blipvibe_notifprefs',JSON.stringify(_notifPrefs));}catch(e){}}
+function isNotifEnabled(type){
+    if(_notifPrefs[type]===false) return false;
+    return true; // default: all enabled
+}
+
+// ======================== WHO CAN MESSAGE ME ========================
+// Stored in settings.messagePrivacy: 'everyone' | 'followers' | 'nobody'
+// Checked when someone tries to message via startConversation
+
+// ======================== SCHEDULED POSTS ========================
+var _scheduledPosts=[];
+try{_scheduledPosts=JSON.parse(localStorage.getItem('blipvibe_scheduled')||'[]');}catch(e){}
+function persistScheduled(){try{localStorage.setItem('blipvibe_scheduled',JSON.stringify(_scheduledPosts));}catch(e){}}
+function checkScheduledPosts(){
+    if(!currentUser||!_scheduledPosts.length) return;
+    var now=Date.now();
+    var toPublish=_scheduledPosts.filter(function(s){return s.scheduledAt<=now;});
+    var remaining=_scheduledPosts.filter(function(s){return s.scheduledAt>now;});
+    if(!toPublish.length) return;
+    _scheduledPosts=remaining;
+    persistScheduled();
+    toPublish.forEach(function(s){
+        sbCreatePost(currentUser.id,s.content,null,null,null,null,null).then(function(){
+            showToast('Scheduled post published!');
+            generatePosts();
+        }).catch(function(e){console.error('Scheduled post publish:',e);});
+    });
+}
+// Check scheduled posts every 30s
+setInterval(checkScheduledPosts,30000);
 
 // ======================== REPORT MODAL ========================
 function showReportModal(pid){
