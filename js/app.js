@@ -2170,7 +2170,7 @@ function buildCommentHtml(cid,name,img,text,likes,isReply,authorId,replyToName){
     var sz=isReply?'28':'32';
     var isOwn=currentUser&&authorId&&authorId===currentUser.id;
     var replyTag=isReply&&replyToName?'<span style="color:var(--primary);font-size:12px;margin-right:4px;"><i class="fas fa-reply" style="transform:scaleX(-1);font-size:10px;margin-right:2px;"></i>@'+escapeHtml(replyToName)+'</span>':'';
-    var h='<div class="comment-item'+(isReply?' comment-reply':'')+'" data-cid="'+cid+'">';
+    var h='<div class="comment-item'+(isReply?' comment-reply':'')+'" data-cid="'+cid+'" data-author-id="'+(authorId||'')+'">';
     h+='<img src="'+avatarSrc+'" style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;flex-shrink:0;object-fit:cover;">';
     h+='<div style="flex:1;"><strong style="font-size:13px;">'+escapeHtml(name)+'</strong>';
     var gifMatch=text.match(/^\[gif\](.*?)\[\/gif\]$/);
@@ -2316,6 +2316,7 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
         tab.addEventListener('click',function(){showComments(postId,countEl,tab.dataset.sort);});
     });
     // Bind reply buttons helper
+    var _replyTargetAuthorId=null;
     function bindReplyBtns(){
         $$('.comment-reply-btn').forEach(function(btn){
             if(btn._bound)return;btn._bound=true;
@@ -2323,6 +2324,7 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
                 var cid=btn.dataset.cid;
                 replyTarget=cid;
                 var item=btn.closest('.comment-item');
+                _replyTargetAuthorId=item?item.getAttribute('data-author-id'):null;
                 var name=item?item.querySelector('strong').textContent:'';
                 document.getElementById('replyIndicator').style.display='block';
                 document.getElementById('replyToName').textContent=name;
@@ -2338,7 +2340,7 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
         if(autoBtn) autoBtn.click();
     }
     document.getElementById('cancelReply').addEventListener('click',function(){
-        replyTarget=null;
+        replyTarget=null;_replyTargetAuthorId=null;
         document.getElementById('replyIndicator').style.display='none';
         document.getElementById('commentInput').placeholder='Write a comment...';
     });
@@ -2363,10 +2365,11 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
         }
 
         if(replyTarget){
-            if(!isOwnPost(postId)&&!state.replyCoinPosts[postId]){state.replyCoinPosts[postId]=true;state.coins+=2;updateCoins();
+            var isReplyToSelf=currentUser&&_replyTargetAuthorId&&_replyTargetAuthorId===currentUser.id;
+            if(!isOwnPost(postId)&&!isReplyToSelf&&!state.replyCoinPosts[postId]){state.replyCoinPosts[postId]=true;state.coins+=2;updateCoins();
                 if(_activeGroupId&&canEarnGroupReplyCoin(_activeGroupId,postId)){addGroupCoins(_activeGroupId,2);trackGroupReplyCoin(_activeGroupId,postId);}
             }
-            replyTarget=null;
+            replyTarget=null;_replyTargetAuthorId=null;
             document.getElementById('replyIndicator').style.display='none';
             input.placeholder='Write a comment...';
         }else{
