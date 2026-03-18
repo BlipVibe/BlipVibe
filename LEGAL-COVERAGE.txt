@@ -53,7 +53,7 @@ TERMS OF USE (26 Sections)
    - Penalty of perjury statement required
    - Designated contact: copyright@blipvibe.com
    - Detailed counter-notification procedure
-   - Fayette County, Tennessee jurisdiction for counter-notifications
+   - Knox County, Tennessee jurisdiction for counter-notifications
    - § 512(f) misrepresentation warning
 
 7. REPEAT INFRINGER POLICY
@@ -124,17 +124,17 @@ TERMS OF USE (26 Sections)
     - 30-day informal resolution period required
     - Binding individual arbitration (AAA Consumer Rules)
     - Federal Arbitration Act (9 U.S.C. § 1 et seq.) governs
-    - Venue: Fayette County, Tennessee
+    - Venue: Knox County, Tennessee
     - Fee allocation: BlipVibe reimburses filing fee (non-frivolous)
     - CLASS ACTION WAIVER (ALL CAPS)
     - JURY TRIAL WAIVER (ALL CAPS)
-    - Small claims court exception (Fayette County)
+    - Small claims court exception (Knox County)
     - 30-day opt-out window from account creation
     - Arbitration-specific severability clause
 
 20. GOVERNING LAW
     - State of Tennessee and applicable federal law
-    - Exclusive jurisdiction in Fayette County, Tennessee
+    - Exclusive jurisdiction in Knox County, Tennessee
 
 21. EXPORT COMPLIANCE
     - OFAC sanctions/embargo representation

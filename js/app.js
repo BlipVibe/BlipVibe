@@ -336,7 +336,7 @@ function resetAllCustomizations(){
 
 // ======================== TERMS OF SERVICE ACCEPTANCE ========================
 // Bump this version whenever the TOS changes — all users must re-accept
-var TOS_VERSION = 4; // v4 = Mar 3 2026 legal compliance audit (contract formation, parental consent, Section 230, arbitration rewrite, warranty/liability strengthening, OFAC, waiver, entire agreement)
+var TOS_VERSION = 5; // v5 = Mar 18 2026 LLC formation — BlipVibe LLC, Knox County TN venue, business address added
 var _tosAccepted = false;
 
 function checkTosAccepted(){
@@ -367,7 +367,7 @@ function showTosModal(){
             +'<div class="tos-splash-scroll">'
             +'<h4>BlipVibe \u2013 Terms of Use (Beta)</h4>'
             +'<p><strong>Effective Date:</strong> March 3, 2026</p>'
-            +'<p>These Terms of Use ("Terms") constitute a <strong>legally binding agreement</strong> between you and BlipVibe, a Tennessee-organized company. By continuing to use BlipVibe, you agree to be bound by these Terms, our <strong>Privacy Policy</strong>, <strong>Acceptable Use Policy</strong>, <strong>DMCA Policy</strong>, and <strong>Arbitration &amp; Dispute Resolution Agreement</strong> (Section 19), each incorporated herein by reference.</p>'
+            +'<p>These Terms of Use ("Terms") constitute a <strong>legally binding agreement</strong> between you and <strong>BlipVibe LLC</strong>, a Tennessee limited liability company ("BlipVibe", "we", "us", "our"), with its principal place of business at 116 Agnes Rd Ste 200, Knoxville, TN 37919. By continuing to use BlipVibe, you agree to be bound by these Terms, our <strong>Privacy Policy</strong>, <strong>Acceptable Use Policy</strong>, <strong>DMCA Policy</strong>, and <strong>Arbitration &amp; Dispute Resolution Agreement</strong> (Section 19), each incorporated herein by reference.</p>'
             +'<h5>1. Eligibility &amp; Age Requirement</h5>'
             +'<p>You must be at least <strong>13 years old</strong> to use BlipVibe. If you are between 13 and 17, you represent that your parent or legal guardian has reviewed and consents to these Terms. BlipVibe does not knowingly collect personal information from children under 13 (COPPA). If we discover a user is under 13, their account will be terminated and data deleted.</p>'
             +'<h5>2. Account Registration &amp; Security</h5>'
@@ -408,13 +408,13 @@ function showTosModal(){
             +'<h5>19. Dispute Resolution &amp; Arbitration</h5>'
             +'<p><strong>PLEASE READ CAREFULLY. THIS AFFECTS YOUR RIGHT TO FILE A LAWSUIT AND HAVE A JURY TRIAL.</strong></p>'
             +'<p><strong>Informal Resolution:</strong> Contact hello@blipvibe.com and attempt to resolve disputes informally for at least 30 days before formal proceedings.</p>'
-            +'<p><strong>Binding Arbitration:</strong> Unresolved disputes shall be resolved by binding individual arbitration (AAA Consumer Rules). The Federal Arbitration Act (9 U.S.C. \u00a7 1 et seq.) governs this provision. Venue: Fayette County, Tennessee.</p>'
+            +'<p><strong>Binding Arbitration:</strong> Unresolved disputes shall be resolved by binding individual arbitration (AAA Consumer Rules). The Federal Arbitration Act (9 U.S.C. \u00a7 1 et seq.) governs this provision. Venue: Knox County, Tennessee.</p>'
             +'<p><strong>CLASS ACTION AND JURY TRIAL WAIVER: CLAIMS MAY ONLY BE BROUGHT INDIVIDUALLY, NOT AS PART OF ANY CLASS OR REPRESENTATIVE ACTION. YOU WAIVE THE RIGHT TO A JURY TRIAL.</strong></p>'
-            +'<p><strong>Small Claims Exception:</strong> Either party may bring individual claims in small claims court in Fayette County, Tennessee.</p>'
+            +'<p><strong>Small Claims Exception:</strong> Either party may bring individual claims in small claims court in Knox County, Tennessee.</p>'
             +'<p><strong>Opt-Out:</strong> Send written notice to hello@blipvibe.com within 30 days of account creation to opt out of arbitration.</p>'
-            +'<p><strong>Arbitration Severability:</strong> If the class action waiver is unenforceable, the entire arbitration provision is void and disputes proceed in court in Fayette County, Tennessee.</p>'
+            +'<p><strong>Arbitration Severability:</strong> If the class action waiver is unenforceable, the entire arbitration provision is void and disputes proceed in court in Knox County, Tennessee.</p>'
             +'<h5>20. Governing Law</h5>'
-            +'<p>These Terms are governed by the laws of the State of Tennessee and applicable federal law. Any legal action not subject to arbitration shall be brought exclusively in the state or federal courts located in Fayette County, Tennessee.</p>'
+            +'<p>These Terms are governed by the laws of the State of Tennessee and applicable federal law. Any legal action not subject to arbitration shall be brought exclusively in the state or federal courts located in Knox County, Tennessee.</p>'
             +'<h5>21. Export Compliance</h5>'
             +'<p>You represent that you are not located in a U.S.-embargoed country and are not on any U.S. prohibited or restricted parties list (including OFAC Specially Designated Nationals). You agree not to use the Service in violation of U.S. export laws.</p>'
             +'<h5>22. Severability</h5>'
