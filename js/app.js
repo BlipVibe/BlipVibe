@@ -5127,6 +5127,8 @@ function renderFeed(tab){
         html+='<div class="post-actions"><div class="action-left">';
         html+='<button class="action-btn like-btn'+(state.likedPosts[i]?' liked':'')+'" data-post-id="'+i+'"><i class="'+(state.likedPosts[i]?'fas':'far')+' fa-thumbs-up"></i><span class="like-count">'+likes+'</span></button>';
         html+='<button class="action-btn dislike-btn" data-post-id="'+i+'"><i class="'+(state.dislikedPosts[i]?'fas':'far')+' fa-thumbs-down"></i><span class="dislike-count">0</span></button>';
+        var myReaction=_postReactions[i];
+        html+='<button class="action-btn react-btn" data-post-id="'+i+'" title="React">'+(myReaction?'<span style="font-size:16px;">'+myReaction+'</span>':'<i class="far fa-face-smile"></i>')+'</button>';
         html+='<button class="action-btn comment-btn"><i class="far fa-comment"></i><span>'+commentCount+'</span></button>';
         html+='<button class="action-btn share-btn"><i class="fas fa-share-from-square"></i><span>'+shares+'</span></button>';
         var vc=_postViews[i]||0;
@@ -5172,13 +5174,7 @@ function bindPostEvents(){
     function _$$(sel){return Array.from(_fc.querySelectorAll(sel));}
     // Like buttons (Supabase-backed for UUID post IDs, local for legacy numeric IDs)
     _$$('.like-btn').forEach(function(btn){
-        // Long-press for emoji reactions
-        var _lpTimer=null;
-        btn.addEventListener('mousedown',function(){_lpTimer=setTimeout(function(){showReactionPicker(btn.getAttribute('data-post-id'),btn);_lpTimer='fired';},500);});
-        btn.addEventListener('mouseup',function(){if(_lpTimer&&_lpTimer!=='fired')clearTimeout(_lpTimer);});
-        btn.addEventListener('mouseleave',function(){if(_lpTimer&&_lpTimer!=='fired')clearTimeout(_lpTimer);});
         btn.addEventListener('click', async function(e){
-            if(_lpTimer==='fired'){_lpTimer=null;return;} // skip click after long-press
             var postId=btn.getAttribute('data-post-id');
             var countEl=btn.querySelector('.like-count');
             var count=parseInt(countEl.textContent);
@@ -5319,6 +5315,15 @@ function bindPostEvents(){
 
     // Share buttons
     _$$('.share-btn').forEach(function(btn){btn.addEventListener('click',function(){handleShare(btn);});});
+
+    // Emoji reaction buttons
+    _$$('.react-btn').forEach(function(btn){
+        btn.addEventListener('click',function(e){
+            e.stopPropagation();
+            var postId=btn.getAttribute('data-post-id');
+            showReactionPicker(postId,btn);
+        });
+    });
 
     // Tag clicks
     _$$('.skill-tag').forEach(function(tag){
@@ -8675,13 +8680,13 @@ async function loadStories(){
             return 0;
         });
         renderStoriesBar();
-    }catch(e){console.warn('Stories load error:',e);}
+    }catch(e){console.warn('Stories load error:',e);renderStoriesBar();}
 }
 
 function renderStoriesBar(){
     var bar=document.getElementById('storiesBar');
     if(!bar) return;
-    if(!_storiesData.length&&!currentUser){bar.innerHTML='';return;}
+    if(!currentUser){bar.innerHTML='';return;}
     var html='';
     // "Your Story" add button
     if(currentUser){
@@ -8973,10 +8978,11 @@ function toggleReaction(postId,emoji,btn){
         _postReactions[postId]=emoji;
     }
     try{localStorage.setItem('blipvibe_reactions',JSON.stringify(_postReactions));}catch(e){}
-    // Update the like button to show reaction
+    // Update the react button to show selected emoji or reset to default icon
     if(_postReactions[postId]){
-        btn.innerHTML='<span style="font-size:16px;">'+_postReactions[postId]+'</span><span class="like-count">'+btn.querySelector('.like-count').textContent+'</span>';
-        btn.classList.add('liked');
+        btn.innerHTML='<span style="font-size:16px;">'+_postReactions[postId]+'</span>';
+    } else {
+        btn.innerHTML='<i class="far fa-face-smile"></i>';
     }
     // Save to DB if available
     if(currentUser&&/^[0-9a-f]{8}-/.test(postId)){
