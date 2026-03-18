@@ -1213,7 +1213,7 @@ function navigateTo(page,skipPush){
     }
     // Clear active group context when leaving group view
     _activeGroupId=null;
-    _cleanupGroupChat();
+    _cleanupGroupChat(true);
     // Restore user's skin when leaving group view
     if(_gvSaved){
         state.activeSkin=_gvSaved.skin||null;
@@ -3792,17 +3792,17 @@ async function showGroupView(group){
         if(mode==='feed'){
             $('#gvPostBar').style.display='';$('#gvPostsFeed').style.display='';
             if(ss)ss.style.display='none';if(cs)cs.style.display='none';
-            _cleanupGroupChat();
+            _cleanupGroupChat(true);
         } else if(mode==='chat'){
             $('#gvPostBar').style.display='none';$('#gvPostsFeed').style.display='none';
             if(ss)ss.style.display='none';
-            // Chat always opens fullscreen — don't show inline first
+            // Chat always opens fullscreen
             _enterGroupChatFullscreen(group);
             initGroupChat(group);
         } else if(mode==='shop'){
             $('#gvPostBar').style.display='none';$('#gvPostsFeed').style.display='none';
             if(ss){ss.style.display='';renderGroupShop(group.id);}if(cs)cs.style.display='none';
-            _cleanupGroupChat();
+            _cleanupGroupChat(true);
         }
     });});
     bindGvPostEvents();
@@ -3844,9 +3844,7 @@ function _enterGroupChatFullscreen(group){
             tabs.forEach(function(t){t.classList.remove('active');});
             tabs.forEach(function(t){if(t.dataset.gvmode==='feed')t.classList.add('active');});
             $('#gvPostBar').style.display='';$('#gvPostsFeed').style.display='';
-            var chatSec=document.getElementById('gvChatSection');
-            if(chatSec)chatSec.style.display='none';
-            _cleanupGroupChat();
+            _cleanupGroupChat(true);
         });
     }
 }
@@ -3871,10 +3869,10 @@ function _exitGroupChatFullscreen(){
     if(bar) bar.remove();
 }
 
-function _cleanupGroupChat(){
+function _cleanupGroupChat(exitFullscreen){
     if(_gcSubscription){try{sb.removeChannel(_gcSubscription);}catch(e){}_gcSubscription=null;}
     _gcActiveChannel=null;
-    _exitGroupChatFullscreen();
+    if(exitFullscreen) _exitGroupChatFullscreen();
 }
 
 async function initGroupChat(group){
@@ -3994,10 +3992,13 @@ async function openGroupChannel(channel){
     _gcActiveChannel=channel;
     // Highlight in sidebar
     $$('#gcSidebar .gc-channel').forEach(function(el){el.classList.toggle('active',el.dataset.cid===channel.id);});
+    // On mobile: switch from sidebar view to chat view
+    var cs=document.getElementById('gvChatSection');
+    if(cs) cs.classList.add('gc-chat-open');
     var area=document.getElementById('gcChatArea');if(!area)return;
     var isAdmin=_gcGroup?canManageGroupSkins(_gcGroup):false;
     // Build chat area
-    var html='<div class="gc-chat-header"><span class="gc-channel-hash">#</span> <span class="gc-chat-channel-name">'+escapeHtml(channel.name)+'</span></div>';
+    var html='<div class="gc-chat-header"><button class="gc-mobile-nav-btn" id="gcMobileNavBtn"><i class="fas fa-bars"></i></button><span class="gc-channel-hash">#</span> <span class="gc-chat-channel-name">'+escapeHtml(channel.name)+'</span></div>';
     html+='<div class="gc-messages" id="gcMessages"><div style="text-align:center;padding:40px;color:var(--gray);"><i class="fas fa-spinner fa-spin"></i></div></div>';
     html+='<div class="gc-input-bar">';
     html+='<button class="gc-media-btn" id="gcImgBtn" title="Upload image/video"><i class="fas fa-image"></i></button>';
@@ -4065,6 +4066,12 @@ async function openGroupChannel(channel){
     // Emoji button for group chat
     var gcEmojiBtn=document.getElementById('gcEmojiBtn');
     if(gcEmojiBtn) gcEmojiBtn.addEventListener('click',function(){openEmojiPicker('gcEmojiPanel',document.getElementById('gcMsgInput'));});
+    // Mobile: back to channel list button
+    var mobileNavBtn=document.getElementById('gcMobileNavBtn');
+    if(mobileNavBtn) mobileNavBtn.addEventListener('click',function(){
+        var cs=document.getElementById('gvChatSection');
+        if(cs) cs.classList.remove('gc-chat-open');
+    });
 }
 
 function _initGcGifPicker(channelId,isAdmin){
