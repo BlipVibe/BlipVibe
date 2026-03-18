@@ -3904,6 +3904,120 @@ function _cleanupGroupChat(exitFullscreen){
     if(exitFullscreen) _exitGroupChatFullscreen();
 }
 
+// ======================== GROUP CHAT SETTINGS ========================
+var _gcLockedChannels={};
+try{_gcLockedChannels=JSON.parse(localStorage.getItem('blipvibe_gc_locked')||'{}');}catch(e){}
+function persistGcLocked(){try{localStorage.setItem('blipvibe_gc_locked',JSON.stringify(_gcLockedChannels));}catch(e){}}
+
+var _gcChatMods={};
+try{_gcChatMods=JSON.parse(localStorage.getItem('blipvibe_gc_mods')||'{}');}catch(e){}
+function persistGcMods(){try{localStorage.setItem('blipvibe_gc_mods',JSON.stringify(_gcChatMods));}catch(e){}}
+
+function isGcAdmin(group){
+    return canManageGroupSkins(group);
+}
+function isGcMod(groupId){
+    if(!currentUser) return false;
+    var mods=_gcChatMods[groupId]||{};
+    return !!mods[currentUser.id];
+}
+function canSendInChannel(group,channelId){
+    if(isGcAdmin(group)) return true;
+    if(isGcMod(group.id)) return true;
+    return !_gcLockedChannels[channelId];
+}
+
+function showGcChannelContextMenu(group,channelId,channelName,x,y){
+    // Remove existing
+    var existing=document.querySelector('.gc-context-menu');
+    if(existing) existing.remove();
+    var menu=document.createElement('div');
+    menu.className='gc-context-menu';
+    var isLocked=_gcLockedChannels[channelId];
+    menu.innerHTML='<button class="gc-ctx-item" data-action="lock"><i class="fas fa-'+(isLocked?'lock-open':'lock')+'"></i> '+(isLocked?'Unlock Channel':'Lock Channel')+'</button>'+
+        '<button class="gc-ctx-item" data-action="mods"><i class="fas fa-shield-halved"></i> Chat Moderators</button>'+
+        '<button class="gc-ctx-item" data-action="rename"><i class="fas fa-pen"></i> Rename</button>'+
+        '<button class="gc-ctx-item gc-ctx-danger" data-action="delete"><i class="fas fa-trash"></i> Delete</button>';
+    menu.style.cssText='position:fixed;top:'+y+'px;left:'+x+'px;';
+    document.body.appendChild(menu);
+    menu.querySelectorAll('.gc-ctx-item').forEach(function(btn){
+        btn.addEventListener('click',function(){
+            menu.remove();
+            var action=btn.dataset.action;
+            if(action==='lock'){
+                if(isLocked) delete _gcLockedChannels[channelId];
+                else _gcLockedChannels[channelId]=true;
+                persistGcLocked();
+                showToast(isLocked?'Channel unlocked':'Channel locked — only admins and mods can post');
+                renderGroupChatSidebar(group);
+            } else if(action==='mods'){
+                showGcModsModal(group);
+            } else if(action==='rename'){
+                showGcChannelModal(group,null,channelId,channelName);
+            } else if(action==='delete'){
+                confirmGcDeleteChannel(group,channelId);
+            }
+        });
+    });
+    // Close on outside click
+    setTimeout(function(){
+        document.addEventListener('click',function _cls(){menu.remove();document.removeEventListener('click',_cls);},{once:true});
+    },10);
+}
+
+function showGcModsModal(group){
+    var gid=group.id;
+    var mods=_gcChatMods[gid]||{};
+    var modIds=Object.keys(mods);
+    var h='<div class="modal-header"><h3><i class="fas fa-shield-halved" style="color:var(--primary);margin-right:8px;"></i>Chat Moderators</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body" style="max-height:50vh;overflow-y:auto;">';
+    h+='<p style="font-size:13px;color:var(--gray);margin-bottom:12px;">Chat mods can post in locked channels and delete messages.</p>';
+    if(!modIds.length) h+='<p style="color:var(--gray);text-align:center;padding:12px;">No chat mods yet.</p>';
+    modIds.forEach(function(uid){
+        var m=_gcMemberCache[uid];
+        var name=m?(m.user?(m.user.display_name||m.user.username):(m.display_name||m.username)):'User';
+        var avatar=m?(m.user?m.user.avatar_url:m.avatar_url):null;
+        h+='<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);">';
+        h+='<img src="'+(avatar||DEFAULT_AVATAR)+'" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">';
+        h+='<span style="flex:1;font-size:13px;">'+escapeHtml(name)+'</span>';
+        h+='<button class="btn btn-outline gc-remove-mod" data-uid="'+uid+'" style="font-size:11px;padding:3px 10px;color:#e74c3c;border-color:#e74c3c;">Remove</button>';
+        h+='</div>';
+    });
+    h+='<div style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px;">';
+    h+='<p style="font-size:13px;font-weight:600;margin-bottom:8px;">Add a mod:</p>';
+    h+='<div style="display:flex;flex-direction:column;gap:6px;" id="gcModCandidates">';
+    // Show group members who aren't already mods
+    Object.keys(_gcMemberCache).forEach(function(uid){
+        if(mods[uid]) return;
+        if(currentUser&&uid===currentUser.id) return;
+        var m=_gcMemberCache[uid];
+        var name=m?(m.user?(m.user.display_name||m.user.username):(m.display_name||m.username)):'User';
+        var avatar=m?(m.user?m.user.avatar_url:m.avatar_url):null;
+        h+='<div style="display:flex;align-items:center;gap:10px;padding:6px 0;">';
+        h+='<img src="'+(avatar||DEFAULT_AVATAR)+'" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">';
+        h+='<span style="flex:1;font-size:13px;">'+escapeHtml(name)+'</span>';
+        h+='<button class="btn btn-outline gc-add-mod" data-uid="'+uid+'" style="font-size:11px;padding:3px 10px;color:var(--primary);border-color:var(--primary);">Make Mod</button>';
+        h+='</div>';
+    });
+    h+='</div></div></div>';
+    showModal(h);
+    $$('.gc-remove-mod').forEach(function(b){b.addEventListener('click',function(){
+        var uid=b.dataset.uid;
+        if(!_gcChatMods[gid]) _gcChatMods[gid]={};
+        delete _gcChatMods[gid][uid];
+        persistGcMods();
+        b.textContent='Removed';b.disabled=true;
+    });});
+    $$('.gc-add-mod').forEach(function(b){b.addEventListener('click',function(){
+        var uid=b.dataset.uid;
+        if(!_gcChatMods[gid]) _gcChatMods[gid]={};
+        _gcChatMods[gid][uid]=true;
+        persistGcMods();
+        b.textContent='Added';b.disabled=true;
+        showToast('Chat mod added');
+    });});
+}
+
 async function initGroupChat(group){
     _gcGroup=group;
     _gcMemberCache={};
@@ -3937,7 +4051,8 @@ async function renderGroupChatSidebar(group){
         (sec.channels||[]).forEach(function(ch){
             var active=_gcActiveChannel&&_gcActiveChannel.id===ch.id;
             html+='<div class="gc-channel'+(active?' active':'')+'" data-cid="'+ch.id+'" data-cname="'+escapeHtml(ch.name)+'">';
-            html+='<span class="gc-channel-hash">#</span> '+escapeHtml(ch.name);
+            var chLocked=_gcLockedChannels[ch.id];
+            html+='<span class="gc-channel-hash">'+(chLocked?'<i class="fas fa-lock" style="font-size:10px;"></i>':'#')+'</span> '+escapeHtml(ch.name);
             if(isAdmin) html+='<div class="gc-ch-actions"><button class="gc-add-btn gc-edit-ch-btn" data-cid="'+ch.id+'" data-cname="'+escapeHtml(ch.name)+'" title="Rename"><i class="fas fa-pen"></i></button><button class="gc-add-btn gc-del-ch-btn" data-cid="'+ch.id+'" title="Delete"><i class="fas fa-trash"></i></button></div>';
             html+='</div>';
         });
@@ -3945,11 +4060,28 @@ async function renderGroupChatSidebar(group){
     });
     sidebar.innerHTML=html;
     // Bind events
-    $$('#gcSidebar .gc-channel').forEach(function(el){el.addEventListener('click',function(e){
-        if(e.target.closest('.gc-ch-actions'))return;
-        var cid=el.dataset.cid;var cname=el.dataset.cname;
-        openGroupChannel({id:cid,name:cname});
-    });});
+    $$('#gcSidebar .gc-channel').forEach(function(el){
+        el.addEventListener('click',function(e){
+            if(e.target.closest('.gc-ch-actions'))return;
+            var cid=el.dataset.cid;var cname=el.dataset.cname;
+            openGroupChannel({id:cid,name:cname});
+        });
+        // Right-click context menu for admins
+        if(isAdmin) el.addEventListener('contextmenu',function(e){
+            e.preventDefault();
+            showGcChannelContextMenu(group,el.dataset.cid,el.dataset.cname,e.clientX,e.clientY);
+        });
+        // Long-press for mobile admins
+        if(isAdmin){
+            var _lpTimer=null;
+            el.addEventListener('touchstart',function(e){_lpTimer=setTimeout(function(){
+                _lpTimer='fired';
+                showGcChannelContextMenu(group,el.dataset.cid,el.dataset.cname,e.touches[0].clientX,e.touches[0].clientY);
+            },600);},{passive:true});
+            el.addEventListener('touchend',function(){if(_lpTimer&&_lpTimer!=='fired')clearTimeout(_lpTimer);});
+            el.addEventListener('touchmove',function(){if(_lpTimer&&_lpTimer!=='fired')clearTimeout(_lpTimer);});
+        }
+    });
     var addSecBtn=document.getElementById('gcAddSection');
     if(addSecBtn) addSecBtn.addEventListener('click',function(){showGcSectionModal(group);});
     $$('#gcSidebar .gc-add-ch-btn').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();showGcChannelModal(group,b.dataset.sid);});});
@@ -4040,8 +4172,13 @@ async function openGroupChannel(channel){
     html+='<div class="gif-picker-grid" id="gcGifGrid"></div>';
     html+='<div class="gif-picker-footer">Powered by <strong>KLIPY</strong></div>';
     html+='</div>';
-    html+='<input type="text" id="gcMsgInput" placeholder="Message #'+escapeHtml(channel.name)+'...">';
-    html+='<button id="gcSendBtn"><i class="fas fa-paper-plane"></i></button>';
+    var channelLocked=_gcLockedChannels[channel.id]&&!canSendInChannel(_gcGroup,channel.id);
+    if(channelLocked){
+        html+='<div style="flex:1;text-align:center;color:var(--gray);font-size:13px;padding:8px;"><i class="fas fa-lock" style="margin-right:6px;"></i>This channel is locked</div>';
+    } else {
+        html+='<input type="text" id="gcMsgInput" placeholder="Message #'+escapeHtml(channel.name)+'...">';
+        html+='<button id="gcSendBtn"><i class="fas fa-paper-plane"></i></button>';
+    }
     html+='</div>';
     area.innerHTML=html;
     // Load messages
@@ -4070,12 +4207,13 @@ async function openGroupChannel(channel){
     var imgBtn=document.getElementById('gcImgBtn');
     var gifBtn=document.getElementById('gcGifBtn');
     function doSend(){
+        if(!msgInput) return;
         var text=(msgInput.value||'').trim();if(!text)return;
         msgInput.value='';
         sbSendGroupChatMessage(channel.id,text).then(function(msg){appendGcMessage(msg,isAdmin);notifyMentionedUsers(text,null,'a group chat message');}).catch(function(e){console.error('Group chat send:',e);showToast('Failed to send: '+(e.message||'Check console'));});
     }
-    sendBtn.addEventListener('click',doSend);
-    msgInput.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSend();}});
+    if(sendBtn) sendBtn.addEventListener('click',doSend);
+    if(msgInput) msgInput.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSend();}});
     // Image/video upload
     imgBtn.addEventListener('click',function(){fileInput.click();});
     fileInput.addEventListener('change',async function(){
