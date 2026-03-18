@@ -1,5 +1,24 @@
 [
   {
+    "version": "0.2.27",
+    "date": "2026-03-18",
+    "added": [
+      "Stories — create photo/video/text stories that disappear after 24 hours, view stories in full-screen viewer with progress bar, tap to advance, view counts for own stories, delete own stories",
+      "Stories bar above feed — circular avatar rings (gradient border for unviewed, gray for viewed), 'Your Story' add button",
+      "Emoji reactions on posts — long-press/hold the like button to pick from 6 emoji reactions (❤️ 😂 😮 😢 🔥 👏)",
+      "Voice notes in DMs — tap microphone button to record, tap again to stop and send, plays inline with audio controls",
+      "Close Friends list — star button on profiles to add/remove, manage list in Settings",
+      "Download My Data (GDPR) — export all your data (profile, posts, followers, following, notifications, settings) as JSON file",
+      "Close Friends manager in Settings",
+      "Download Data button in Settings"
+    ],
+    "changed": [
+      "DM messages now render @mentions as clickable links",
+      "DM message content supports voice note [voice]url[/voice] format with audio player"
+    ],
+    "fixed": []
+  },
+  {
     "version": "0.2.26",
     "date": "2026-03-18",
     "added": [

@@ -663,6 +663,8 @@ async function initApp() {
     initMessageSubscription();
     _initAppRunning = false;
     _initAppDone = true;
+    // Load stories
+    loadStories();
     // Start last seen updater
     startLastSeenUpdater();
     // Check badges
@@ -2793,6 +2795,7 @@ async function showProfileView(person){
         cardHtml+='<button class="btn btn-outline" id="pvMuteBtn" style="color:var(--gray);border-color:var(--gray);">'+(mutedUsers[person.id]?'<i class="fas fa-volume-up"></i> Unmute':'<i class="fas fa-volume-mute"></i> Mute')+'</button>';
         cardHtml+='<button class="btn btn-outline" id="pvBlockBtn" style="color:#e74c3c;border-color:#e74c3c;">'+(blockedUsers[person.id]?'<i class="fas fa-unlock"></i> Unblock':'<i class="fas fa-ban"></i> Block')+'</button>';
         cardHtml+='<button class="btn btn-outline" id="pvReportUserBtn" style="color:#e74c3c;border-color:#e74c3c;"><i class="fas fa-flag"></i> Report</button>';
+        cardHtml+='<button class="btn btn-outline" id="pvCloseFriendBtn" style="color:#f59e0b;border-color:#f59e0b;">'+(_closeFriends[person.id]?'<i class="fas fa-star"></i> Close Friend':'<i class="far fa-star"></i> Add Close Friend')+'</button>';
         cardHtml+='<button class="btn btn-outline" id="pvInviteGroupBtn" style="color:var(--primary);border-color:var(--primary);"><i class="fas fa-user-plus"></i> Invite to Group</button></div>';
         if(_isAdmin){
             cardHtml+='<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">';
@@ -2947,6 +2950,11 @@ async function showProfileView(person){
             if(mutedUsers[person.id]){unmuteUser(person.id);showProfileView(person);}
             else showMuteConfirmModal(person,function(){showProfileView(person);});
         });
+    }
+    // Event: Close Friend
+    var cfBtn=document.getElementById('pvCloseFriendBtn');
+    if(cfBtn){
+        cfBtn.addEventListener('click',function(){toggleCloseFriend(person.id);showProfileView(person);});
     }
     // Event: Report User
     var reportUserBtn=document.getElementById('pvReportUserBtn');
@@ -4602,6 +4610,10 @@ document.addEventListener('click',function(e){
             // Scheduled posts
             h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Scheduled Posts</span><button class="btn btn-outline" id="settingsScheduled" style="padding:4px 14px;font-size:12px;">'+(_scheduledPosts.length||0)+' pending</button></div>';
             h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Developer Updates</span><button class="btn btn-outline" id="settingsDevUpdates" style="padding:4px 14px;font-size:12px;"><i class="fas fa-code-branch" style="margin-right:4px;"></i>View</button></div>';
+            // Close Friends
+            h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Close Friends</span><button class="btn btn-outline" id="settingsCloseFriends" style="padding:4px 14px;font-size:12px;color:#f59e0b;border-color:#f59e0b;"><i class="fas fa-star" style="margin-right:4px;"></i>'+Object.keys(_closeFriends).length+'</button></div>';
+            // Download My Data
+            h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Download My Data</span><button class="btn btn-outline" id="settingsDownloadData" style="padding:4px 14px;font-size:12px;"><i class="fas fa-download" style="margin-right:4px;"></i>Export</button></div>';
             h+='<div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--border);text-align:center;"><button class="btn" id="settingsDeleteAccount" style="background:#e74c3c;color:#fff;padding:8px 20px;font-size:13px;border-radius:8px;cursor:pointer;"><i class="fas fa-trash" style="margin-right:6px;"></i>Delete My Account</button></div>';
             h+='<div style="margin-top:16px;text-align:center;"><button class="btn btn-primary modal-close">Done</button></div></div>';
             showModal(h);
@@ -4656,6 +4668,12 @@ document.addEventListener('click',function(e){
                 t.style.background=enabled?'var(--green)':'#ccc';
                 t.firstElementChild.style.left=enabled?'18px':'2px';
             });});
+            // Close Friends manager
+            var cfMgrBtn=document.getElementById('settingsCloseFriends');
+            if(cfMgrBtn) cfMgrBtn.addEventListener('click',function(){closeModal();showCloseFriendsManager();});
+            // Download My Data
+            var dlBtn=document.getElementById('settingsDownloadData');
+            if(dlBtn) dlBtn.addEventListener('click',function(){closeModal();downloadMyData();});
             // Scheduled posts
             var schedBtn=document.getElementById('settingsScheduled');
             if(schedBtn) schedBtn.addEventListener('click',function(){
@@ -5154,7 +5172,13 @@ function bindPostEvents(){
     function _$$(sel){return Array.from(_fc.querySelectorAll(sel));}
     // Like buttons (Supabase-backed for UUID post IDs, local for legacy numeric IDs)
     _$$('.like-btn').forEach(function(btn){
+        // Long-press for emoji reactions
+        var _lpTimer=null;
+        btn.addEventListener('mousedown',function(){_lpTimer=setTimeout(function(){showReactionPicker(btn.getAttribute('data-post-id'),btn);_lpTimer='fired';},500);});
+        btn.addEventListener('mouseup',function(){if(_lpTimer&&_lpTimer!=='fired')clearTimeout(_lpTimer);});
+        btn.addEventListener('mouseleave',function(){if(_lpTimer&&_lpTimer!=='fired')clearTimeout(_lpTimer);});
         btn.addEventListener('click', async function(e){
+            if(_lpTimer==='fired'){_lpTimer=null;return;} // skip click after long-press
             var postId=btn.getAttribute('data-post-id');
             var countEl=btn.querySelector('.like-count');
             var count=parseInt(countEl.textContent);
@@ -7420,7 +7444,9 @@ function _renderMsgContent(content){
     if(imgMatch) return {html:'<img src="'+escapeHtml(imgMatch[1])+'" style="max-width:200px;border-radius:8px;">',isMedia:true};
     var gifMatch=content.match(/^\[gif\](.*?)\[\/gif\]$/);
     if(gifMatch) return {html:'<img src="'+escapeHtml(gifMatch[1])+'" style="max-width:200px;border-radius:8px;">',isMedia:true};
-    return {html:escapeHtmlNl(content),isMedia:false};
+    var voiceMatch=content.match(/^\[voice\](.*?)\[\/voice\]$/);
+    if(voiceMatch) return {html:'<audio src="'+escapeHtml(voiceMatch[1])+'" controls style="max-width:220px;height:36px;"></audio>',isMedia:true};
+    return {html:renderMentionsInText(escapeHtmlNl(content)),isMedia:false};
 }
 async function openChat(contact){
     if(blockedUsers[contact.partnerId]){showToast('This user is blocked');return;}
@@ -7440,6 +7466,7 @@ async function openChat(contact){
     html+='<button id="msgImgBtn" class="msg-media-btn" title="Send image"><i class="fas fa-image"></i></button>';
     html+='<input type="file" id="msgImgInput" accept="image/*" style="display:none;">';
     html+='<button id="msgGifBtn" class="msg-media-btn" title="Send GIF"><i class="fas fa-film"></i></button>';
+    html+='<button id="msgVoiceBtn" class="msg-media-btn" title="Voice note"><i class="fas fa-microphone"></i></button>';
     html+='<input type="text" placeholder="Type a message..." id="msgInput">';
     html+='<button id="sendMsgBtn"><i class="fas fa-paper-plane"></i></button>';
     html+='</div>';
@@ -7532,6 +7559,30 @@ async function openChat(contact){
     $('#msgInput').addEventListener('keypress',function(e){if(e.key==='Enter')sendMessage();});
     $('#msgInput').focus();
 
+    // Voice note handler
+    var _voiceRecording=false;
+    $('#msgVoiceBtn').addEventListener('click',function(){
+        if(_voiceRecording){
+            _voiceRecording=false;
+            this.style.color='';
+            stopVoiceRecording();
+        } else {
+            _voiceRecording=true;
+            this.style.color='#e74c3c';
+            startVoiceRecording(async function(blob){
+                _voiceRecording=false;
+                var voiceBtn=$('#msgVoiceBtn');if(voiceBtn)voiceBtn.style.color='';
+                try{
+                    var url=await sbUploadVoiceNote(currentUser.id,blob);
+                    await sbSendMessage(currentUser.id,activeChat.partnerId,'[voice]'+url+'[/voice]');
+                    var msgArea=$('#chatMessages');
+                    msgArea.insertAdjacentHTML('beforeend','<div class="msg-bubble sent"><audio src="'+url+'" controls style="max-width:200px;"></audio></div>');
+                    msgArea.scrollTop=msgArea.scrollHeight;
+                    await loadConversations();
+                }catch(e){showToast('Voice note failed: '+escapeHtml(e.message||''));}
+            });
+        }
+    });
     // Image send handler
     $('#msgImgBtn').addEventListener('click',function(){$('#msgImgInput').click();});
     $('#msgImgInput').addEventListener('change',async function(){
@@ -8595,6 +8646,316 @@ function showReportUserModal(person){
             showToast('Report submitted. Thank you.');
         });
     });
+}
+
+// ======================== STORIES (24hr Ephemeral) ========================
+var _storiesData=[];
+var _storyViewed={};
+try{_storyViewed=JSON.parse(localStorage.getItem('blipvibe_story_viewed')||'{}');}catch(e){}
+
+async function loadStories(){
+    try{
+        var raw=await sbGetStories(100);
+        // Group by user
+        var byUser={};
+        (raw||[]).forEach(function(s){
+            var uid=s.user_id;
+            if(!byUser[uid]) byUser[uid]={user:s.author||{id:uid},stories:[]};
+            byUser[uid].stories.push(s);
+        });
+        _storiesData=Object.values(byUser);
+        // Sort: own stories first, then unviewed, then viewed
+        _storiesData.sort(function(a,b){
+            var aOwn=currentUser&&a.user.id===currentUser.id?-1:0;
+            var bOwn=currentUser&&b.user.id===currentUser.id?-1:0;
+            if(aOwn!==bOwn) return aOwn-bOwn;
+            var aViewed=a.stories.every(function(s){return _storyViewed[s.id];});
+            var bViewed=b.stories.every(function(s){return _storyViewed[s.id];});
+            if(aViewed!==bViewed) return aViewed?1:-1;
+            return 0;
+        });
+        renderStoriesBar();
+    }catch(e){console.warn('Stories load error:',e);}
+}
+
+function renderStoriesBar(){
+    var bar=document.getElementById('storiesBar');
+    if(!bar) return;
+    if(!_storiesData.length&&!currentUser){bar.innerHTML='';return;}
+    var html='';
+    // "Your Story" add button
+    if(currentUser){
+        var myStory=_storiesData.find(function(s){return s.user.id===currentUser.id;});
+        var myAvatar=getMyAvatarUrl();
+        html+='<div class="story-item story-add" data-uid="'+(currentUser.id)+'">';
+        html+='<div class="story-ring'+(myStory?' story-has':'')+'"><img src="'+myAvatar+'" alt="You"></div>';
+        html+='<span class="story-name">Your Story</span>';
+        if(!myStory) html+='<div class="story-plus"><i class="fas fa-plus"></i></div>';
+        html+='</div>';
+    }
+    _storiesData.forEach(function(group){
+        if(currentUser&&group.user.id===currentUser.id) return; // skip own (shown above)
+        var user=group.user;
+        var avatar=user.avatar_url||DEFAULT_AVATAR;
+        var name=user.display_name||user.username||'User';
+        var allViewed=group.stories.every(function(s){return _storyViewed[s.id];});
+        html+='<div class="story-item" data-uid="'+user.id+'">';
+        html+='<div class="story-ring'+(allViewed?' story-viewed':'')+'"><img src="'+avatar+'" alt="'+escapeHtml(name)+'"></div>';
+        html+='<span class="story-name">'+escapeHtml(name.split(' ')[0])+'</span>';
+        html+='</div>';
+    });
+    bar.innerHTML=html;
+    // Bind clicks
+    bar.querySelectorAll('.story-item').forEach(function(item){
+        item.addEventListener('click',function(){
+            var uid=item.dataset.uid;
+            if(item.classList.contains('story-add')){
+                var myStory=_storiesData.find(function(s){return s.user.id===uid;});
+                if(myStory) openStoryViewer(uid);
+                else openCreateStory();
+            } else {
+                openStoryViewer(uid);
+            }
+        });
+    });
+}
+
+function openCreateStory(){
+    var html='<div class="modal-header"><h3><i class="fas fa-plus-circle" style="color:var(--primary);margin-right:8px;"></i>Create Story</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    html+='<div class="modal-body">';
+    html+='<textarea id="storyText" class="post-input" placeholder="What\'s on your mind?" style="width:100%;min-height:60px;margin-bottom:12px;font-size:14px;"></textarea>';
+    html+='<div style="display:flex;gap:8px;margin-bottom:16px;"><button class="btn btn-outline" id="storyAddPhoto"><i class="fas fa-image"></i> Add Photo/Video</button><input type="file" id="storyFileInput" accept="image/*,video/*" style="display:none;"></div>';
+    html+='<div id="storyPreview" style="margin-bottom:12px;"></div>';
+    html+='<button class="btn btn-primary" id="storyPublish" style="width:100%;">Share Story</button>';
+    html+='<p style="font-size:11px;color:var(--gray);text-align:center;margin-top:8px;">Stories disappear after 24 hours</p>';
+    html+='</div>';
+    showModal(html);
+    var _storyFile=null;
+    document.getElementById('storyAddPhoto').addEventListener('click',function(){document.getElementById('storyFileInput').click();});
+    document.getElementById('storyFileInput').addEventListener('change',function(){
+        var file=this.files[0];if(!file) return;
+        _storyFile=file;
+        var preview=document.getElementById('storyPreview');
+        if(file.type.startsWith('video/')){
+            preview.innerHTML='<video src="'+URL.createObjectURL(file)+'" controls style="max-width:100%;max-height:200px;border-radius:8px;"></video>';
+        } else {
+            preview.innerHTML='<img src="'+URL.createObjectURL(file)+'" style="max-width:100%;max-height:200px;border-radius:8px;object-fit:contain;">';
+        }
+    });
+    document.getElementById('storyPublish').addEventListener('click',async function(){
+        var text=document.getElementById('storyText').value.trim();
+        if(!text&&!_storyFile){showToast('Add text or a photo');return;}
+        this.disabled=true;this.textContent='Sharing...';
+        try{
+            var mediaUrl=null;var mediaType='text';
+            if(_storyFile){
+                if(_storyFile.type.startsWith('video/')){mediaUrl=await sbUploadPostVideo(currentUser.id,_storyFile);mediaType='video';}
+                else{mediaUrl=await sbUploadPostImage(currentUser.id,_storyFile);mediaType='image';}
+            }
+            await sbCreateStory(currentUser.id,mediaUrl,mediaType,text);
+            closeModal();
+            showToast('Story shared!');
+            await loadStories();
+        }catch(e){
+            console.error('Create story:',e);
+            showToast('Failed to share story: '+escapeHtml(e.message||''));
+            this.disabled=false;this.textContent='Share Story';
+        }
+    });
+}
+
+function openStoryViewer(userId){
+    var group=_storiesData.find(function(g){return g.user.id===userId;});
+    if(!group||!group.stories.length){showToast('No stories to show');return;}
+    var stories=group.stories;
+    var idx=0;
+    // Find first unviewed
+    for(var si=0;si<stories.length;si++){if(!_storyViewed[stories[si].id]){idx=si;break;}}
+    var overlay=document.createElement('div');
+    overlay.className='story-viewer-overlay';
+    function render(){
+        var s=stories[idx];
+        var user=group.user;
+        var avatar=user.avatar_url||DEFAULT_AVATAR;
+        var name=user.display_name||user.username||'User';
+        var time=timeAgoReal(s.created_at);
+        var isOwn=currentUser&&user.id===currentUser.id;
+        var mediaHtml='';
+        if(s.media_url){
+            if(s.media_type==='video') mediaHtml='<video src="'+s.media_url+'" autoplay playsinline muted class="story-media"></video>';
+            else mediaHtml='<img src="'+s.media_url+'" class="story-media">';
+        }
+        overlay.innerHTML='<div class="story-progress"><div class="story-progress-fill" style="width:0%;"></div></div>'+
+            '<div class="story-header"><img src="'+avatar+'" class="story-header-avatar"><div><strong>'+escapeHtml(name)+'</strong><span style="font-size:11px;color:rgba(255,255,255,.6);margin-left:6px;">'+time+'</span></div><button class="story-close"><i class="fas fa-times"></i></button></div>'+
+            '<div class="story-content">'+mediaHtml+(s.text?'<div class="story-text">'+escapeHtml(s.text)+'</div>':'')+'</div>'+
+            '<div class="story-nav"><div class="story-nav-left"></div><div class="story-nav-right"></div></div>'+
+            (isOwn?'<div class="story-viewers"><button class="story-viewers-btn"><i class="fas fa-eye"></i> Views</button><button class="story-delete-btn" style="color:#e74c3c;"><i class="fas fa-trash"></i></button></div>':'');
+        // Mark as viewed
+        _storyViewed[s.id]=true;
+        try{localStorage.setItem('blipvibe_story_viewed',JSON.stringify(_storyViewed));}catch(e){}
+        if(currentUser) sbViewStory(s.id,currentUser.id);
+        // Auto-advance progress bar (5s per story)
+        var fill=overlay.querySelector('.story-progress-fill');
+        fill.style.transition='width 5s linear';
+        requestAnimationFrame(function(){fill.style.width='100%';});
+        clearTimeout(overlay._timer);
+        overlay._timer=setTimeout(function(){
+            if(idx<stories.length-1){idx++;render();}
+            else{overlay.remove();renderStoriesBar();}
+        },5000);
+    }
+    overlay.addEventListener('click',function(e){
+        if(e.target.closest('.story-close')){clearTimeout(overlay._timer);overlay.remove();renderStoriesBar();return;}
+        if(e.target.closest('.story-delete-btn')){
+            var sid=stories[idx].id;
+            sbDeleteStory(sid).then(function(){overlay.remove();loadStories();showToast('Story deleted');}).catch(function(){showToast('Delete failed');});
+            return;
+        }
+        if(e.target.closest('.story-viewers-btn')){
+            sbGetStoryViews(stories[idx].id).then(function(views){
+                var vh='<div style="padding:12px;color:#fff;"><strong>'+views.length+' view'+(views.length!==1?'s':'')+'</strong>';
+                views.forEach(function(v){var vn=v.viewer?(v.viewer.display_name||v.viewer.username):'User';vh+='<div style="padding:4px 0;font-size:13px;">'+escapeHtml(vn)+'</div>';});
+                vh+='</div>';
+                var infoEl=overlay.querySelector('.story-content');
+                if(infoEl) infoEl.insertAdjacentHTML('beforeend','<div class="story-view-list">'+vh+'</div>');
+            }).catch(function(){});
+            return;
+        }
+        if(e.target.closest('.story-nav-right')){clearTimeout(overlay._timer);if(idx<stories.length-1){idx++;render();}else{overlay.remove();renderStoriesBar();}return;}
+        if(e.target.closest('.story-nav-left')){clearTimeout(overlay._timer);if(idx>0){idx--;render();}return;}
+    });
+    document.body.appendChild(overlay);
+    render();
+}
+
+// ======================== EMOJI REACTIONS ON POSTS ========================
+var _reactionEmojis=['❤️','😂','😮','😢','🔥','👏'];
+function showReactionPicker(postId,btn){
+    // Remove existing picker
+    var existing=document.querySelector('.reaction-picker');
+    if(existing) existing.remove();
+    var picker=document.createElement('div');
+    picker.className='reaction-picker';
+    _reactionEmojis.forEach(function(em){
+        var b=document.createElement('button');
+        b.className='reaction-emoji-btn';
+        b.textContent=em;
+        b.addEventListener('click',function(e){
+            e.stopPropagation();
+            toggleReaction(postId,em,btn);
+            picker.remove();
+        });
+        picker.appendChild(b);
+    });
+    btn.closest('.action-left').appendChild(picker);
+    // Auto-close after 3s or on outside click
+    setTimeout(function(){picker.remove();},3000);
+}
+var _postReactions={};
+try{_postReactions=JSON.parse(localStorage.getItem('blipvibe_reactions')||'{}');}catch(e){}
+function toggleReaction(postId,emoji,btn){
+    if(_postReactions[postId]===emoji){
+        delete _postReactions[postId];
+    } else {
+        _postReactions[postId]=emoji;
+    }
+    try{localStorage.setItem('blipvibe_reactions',JSON.stringify(_postReactions));}catch(e){}
+    // Update the like button to show reaction
+    if(_postReactions[postId]){
+        btn.innerHTML='<span style="font-size:16px;">'+_postReactions[postId]+'</span><span class="like-count">'+btn.querySelector('.like-count').textContent+'</span>';
+        btn.classList.add('liked');
+    }
+    // Save to DB if available
+    if(currentUser&&/^[0-9a-f]{8}-/.test(postId)){
+        if(_postReactions[postId]){
+            sbSetReaction(currentUser.id,'post',postId,emoji).catch(function(){});
+        } else {
+            sbRemoveReaction(currentUser.id,'post',postId).catch(function(){});
+        }
+    }
+}
+
+// ======================== VOICE NOTES IN DMs ========================
+var _voiceRecorder=null;
+var _voiceChunks=[];
+function startVoiceRecording(onComplete){
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){showToast('Voice recording not supported in this browser');return;}
+    navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
+        _voiceRecorder=new MediaRecorder(stream,{mimeType:'audio/webm'});
+        _voiceChunks=[];
+        _voiceRecorder.ondataavailable=function(e){if(e.data.size>0)_voiceChunks.push(e.data);};
+        _voiceRecorder.onstop=function(){
+            stream.getTracks().forEach(function(t){t.stop();});
+            var blob=new Blob(_voiceChunks,{type:'audio/webm'});
+            _voiceChunks=[];
+            if(onComplete) onComplete(blob);
+        };
+        _voiceRecorder.start();
+        showToast('Recording... tap again to stop');
+    }).catch(function(e){showToast('Microphone access denied');});
+}
+function stopVoiceRecording(){
+    if(_voiceRecorder&&_voiceRecorder.state==='recording'){
+        _voiceRecorder.stop();
+        _voiceRecorder=null;
+    }
+}
+
+// ======================== CLOSE FRIENDS ========================
+var _closeFriends={};
+try{_closeFriends=JSON.parse(localStorage.getItem('blipvibe_closefriends')||'{}');}catch(e){}
+function persistCloseFriends(){try{localStorage.setItem('blipvibe_closefriends',JSON.stringify(_closeFriends));}catch(e){}}
+function toggleCloseFriend(userId){
+    if(_closeFriends[userId]){delete _closeFriends[userId];showToast('Removed from Close Friends');}
+    else{_closeFriends[userId]=true;showToast('Added to Close Friends');}
+    persistCloseFriends();
+}
+function showCloseFriendsManager(){
+    var ids=Object.keys(_closeFriends);
+    var h='<div class="modal-header"><h3><i class="fas fa-star" style="color:#f59e0b;margin-right:8px;"></i>Close Friends</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body" style="max-height:50vh;overflow-y:auto;">';
+    if(!ids.length) h+='<p style="text-align:center;color:var(--gray);padding:20px;">No close friends added yet.<br><span style="font-size:12px;">Add people from their profile page.</span></p>';
+    else{
+        ids.forEach(function(uid){
+            h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);"><span style="font-size:13px;">'+uid.substring(0,8)+'...</span><button class="btn btn-outline remove-cf-btn" data-uid="'+uid+'" style="font-size:11px;padding:3px 10px;color:#e74c3c;border-color:#e74c3c;">Remove</button></div>';
+        });
+    }
+    h+='</div>';
+    showModal(h);
+    $$('.remove-cf-btn').forEach(function(b){b.addEventListener('click',function(){delete _closeFriends[b.dataset.uid];persistCloseFriends();b.textContent='Removed';b.disabled=true;});});
+}
+
+// ======================== DOWNLOAD MY DATA (GDPR) ========================
+async function downloadMyData(){
+    if(!currentUser){showToast('Must be logged in');return;}
+    showToast('Preparing your data...');
+    try{
+        var profile=await sbGetOwnProfile();
+        var posts=await sbGetUserPosts(currentUser.id,500);
+        var followers=await sbGetFollowers(currentUser.id);
+        var following=await sbGetFollowing(currentUser.id);
+        var notifs=await sbGetNotifications(currentUser.id,500);
+        var data={
+            exportDate:new Date().toISOString(),
+            profile:{id:profile.id,username:profile.username,display_name:profile.display_name,first_name:profile.first_name,last_name:profile.last_name,bio:profile.bio,avatar_url:profile.avatar_url,created_at:profile.created_at},
+            posts:(posts||[]).map(function(p){return {id:p.id,content:p.content,image_url:p.image_url,media_urls:p.media_urls,created_at:p.created_at};}),
+            followers:(followers||[]).map(function(f){return {id:f.id,username:f.username,display_name:f.display_name};}),
+            following:(following||[]).map(function(f){return {id:f.id,username:f.username,display_name:f.display_name};}),
+            notifications:(notifs||[]).map(function(n){return {type:n.type,title:n.title,created_at:n.created_at};}),
+            settings:settings,
+            coins:state.coins
+        };
+        var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+        var url=URL.createObjectURL(blob);
+        var a=document.createElement('a');
+        a.href=url;a.download='blipvibe-data-'+currentUser.username+'-'+new Date().toISOString().slice(0,10)+'.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('Data downloaded!');
+    }catch(e){
+        console.error('Download data error:',e);
+        showToast('Failed to download data: '+escapeHtml(e.message||''));
+    }
 }
 
 // ======================== POST VIEW COUNTS ========================

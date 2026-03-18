@@ -1245,7 +1245,87 @@ async function sbGetUserPhotoReaction(photoUrl, userId) {
   return data ? data.reaction : null;
 }
 
-// ---- 18. ADMIN ---------------------------------------------------------------
+// ---- 18. STORIES --------------------------------------------------------------
+
+async function sbCreateStory(userId, mediaUrl, mediaType, text) {
+  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(); // 24hrs
+  const { data, error } = await sb.from('stories')
+    .insert({ user_id: userId, media_url: mediaUrl || null, media_type: mediaType || 'image', text: text || '', expires_at: expiresAt })
+    .select('*, author:profiles!stories_user_id_fkey(id, username, display_name, avatar_url)')
+    .single();
+  if (error) throw error;
+  return _sanitizeData(data);
+}
+
+async function sbGetStories(limit = 100) {
+  const { data, error } = await sb.from('stories')
+    .select('*, author:profiles!stories_user_id_fkey(id, username, display_name, avatar_url)')
+    .gt('expires_at', new Date().toISOString())
+    .order('created_at', { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return _sanitizeData(data || []);
+}
+
+async function sbDeleteStory(storyId) {
+  const { error } = await sb.from('stories').delete().eq('id', storyId);
+  if (error) throw error;
+}
+
+async function sbViewStory(storyId, userId) {
+  const { error } = await sb.from('story_views')
+    .upsert({ story_id: storyId, user_id: userId }, { onConflict: 'story_id,user_id' });
+  if (error) console.warn('Story view error:', error);
+}
+
+async function sbGetStoryViews(storyId) {
+  const { data, error } = await sb.from('story_views')
+    .select('*, viewer:profiles!story_views_user_id_fkey(id, username, display_name, avatar_url)')
+    .eq('story_id', storyId);
+  if (error) throw error;
+  return _sanitizeData(data || []);
+}
+
+// ---- 18b. REACTIONS (EMOJI) ---------------------------------------------------
+
+async function sbSetReaction(userId, targetType, targetId, emoji) {
+  // Upsert: one reaction per user per target
+  const { data, error } = await sb.from('reactions')
+    .upsert({ user_id: userId, target_type: targetType, target_id: targetId, emoji: emoji },
+      { onConflict: 'user_id,target_type,target_id' })
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+async function sbRemoveReaction(userId, targetType, targetId) {
+  const { error } = await sb.from('reactions')
+    .delete()
+    .eq('user_id', userId)
+    .eq('target_type', targetType)
+    .eq('target_id', targetId);
+  if (error) throw error;
+}
+
+async function sbGetReactions(targetType, targetId) {
+  const { data, error } = await sb.from('reactions')
+    .select('emoji, user_id, user:profiles!reactions_user_id_fkey(id, username, display_name, avatar_url)')
+    .eq('target_type', targetType)
+    .eq('target_id', targetId);
+  if (error) throw error;
+  return _sanitizeData(data || []);
+}
+
+// ---- 18c. VOICE NOTES ---------------------------------------------------------
+
+async function sbUploadVoiceNote(userId, blob) {
+  const path = userId + '/voice-' + Date.now() + '.webm';
+  const file = new File([blob], 'voice.webm', { type: 'audio/webm' });
+  return sbUploadFile('posts', path, file);
+}
+
+// ---- 19. ADMIN ---------------------------------------------------------------
 
 async function sbIsAdmin() {
   try {
