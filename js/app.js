@@ -30,7 +30,36 @@ function safeTruncate(str,max,ellipsis){var a=Array.from(str||'');if(a.length<=m
 
 // ======================== XSS PROTECTION ========================
 function escapeHtml(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
-function escapeHtmlNl(s){return escapeHtml(s).replace(/\n/g,'<br>');}
+function escapeHtmlNl(s){return convertTextEmojis(escapeHtml(s)).replace(/\n/g,'<br>');}
+var _emojiMap={
+    ':)':'😊','(:':'😊',':-)':'😊',
+    ';)':'😉',';-)':'😉',
+    ':(':'😞',':-(':'😞',
+    ':D':'😃',':-D':'😃',
+    'D:':'😩',
+    ':P':'😛',':-P':'😛',':p':'😛',
+    'XD':'😆','xD':'😆',
+    ':O':'😮',':-O':'😮',':o':'😮',
+    'B)':'😎','B-)':'😎',
+    ':/':'😕',':-/':'😕',
+    ':*':'😘',':-*':'😘',
+    '&lt;3':'❤️', // <3 after escapeHtml
+    ':fire:':'🔥',':heart:':'❤️',':thumbsup:':'👍',':thumbsdown:':'👎',
+    ':laugh:':'😂',':cry:':'😢',':angry:':'😡',':clap:':'👏',
+    ':100:':'💯',':star:':'⭐',':check:':'✅',':x:':'❌',
+    ':wave:':'👋',':pray:':'🙏',':muscle:':'💪',':eyes:':'👀',
+    ':skull:':'💀',':ghost:':'👻',':party:':'🎉',':rocket:':'🚀',
+    ':crown:':'👑',':gem:':'💎',':rainbow:':'🌈',':sun:':'☀️',
+    ':moon:':'🌙',':snow:':'❄️',':tree:':'🌳',':flower:':'🌸'
+};
+// Build regex from keys (escape special chars, sort longest first to match :-)  before :) )
+var _emojiKeys=Object.keys(_emojiMap).sort(function(a,b){return b.length-a.length;});
+var _emojiRegex=new RegExp('(^|\\s|>)('+_emojiKeys.map(function(k){return k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}).join('|')+')(?=\\s|<|$)','g');
+function convertTextEmojis(s){
+    return s.replace(_emojiRegex,function(match,before,emoticon){
+        return before+(_emojiMap[emoticon]||emoticon);
+    });
+}
 function linkifyText(s){return s.replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');}
 function isVideoUrl(u){return /\.(mp4|webm|mov)([?#]|$)/i.test(u);}
 function looksLikeEmail(s){return /[^\s@]+@[^\s@]+\.[^\s@]+/.test(s);}
