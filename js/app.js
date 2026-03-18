@@ -3795,7 +3795,8 @@ async function showGroupView(group){
             _cleanupGroupChat();
         } else if(mode==='chat'){
             $('#gvPostBar').style.display='none';$('#gvPostsFeed').style.display='none';
-            if(ss)ss.style.display='none';if(cs)cs.style.display='';
+            if(ss)ss.style.display='none';
+            // Chat always opens fullscreen — don't show inline first
             _enterGroupChatFullscreen(group);
             initGroupChat(group);
         } else if(mode==='shop'){
@@ -3993,6 +3994,8 @@ async function openGroupChannel(channel){
     html+='<button class="gc-media-btn" id="gcImgBtn" title="Upload image/video"><i class="fas fa-image"></i></button>';
     html+='<input type="file" id="gcFileInput" accept="image/*,video/mp4,video/webm,video/quicktime" style="display:none;">';
     html+='<button class="gc-media-btn" id="gcGifBtn" title="Send GIF"><i class="fas fa-film"></i></button>';
+    html+='<button class="gc-media-btn" id="gcEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button>';
+    html+='<div id="gcEmojiPanel" class="emoji-picker-panel"></div>';
     html+='<div id="gcGifPicker" class="msg-gif-picker" style="display:none;">';
     html+='<div class="gif-picker-header"><input type="text" id="gcGifSearch" placeholder="Search GIFs..." style="flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:20px;font-size:13px;background:var(--light-bg);color:var(--dark);outline:none;font-family:inherit;"><button id="gcGifClose" style="background:none;border:none;color:var(--gray);font-size:16px;cursor:pointer;padding:4px 8px;"><i class="fas fa-times"></i></button></div>';
     html+='<div class="gif-picker-grid" id="gcGifGrid"></div>';
@@ -4030,7 +4033,7 @@ async function openGroupChannel(channel){
     function doSend(){
         var text=(msgInput.value||'').trim();if(!text)return;
         msgInput.value='';
-        sbSendGroupChatMessage(channel.id,text).then(function(msg){appendGcMessage(msg,isAdmin);notifyMentionedUsers(text,null,'a group chat message');}).catch(function(e){showToast('Failed to send');});
+        sbSendGroupChatMessage(channel.id,text).then(function(msg){appendGcMessage(msg,isAdmin);notifyMentionedUsers(text,null,'a group chat message');}).catch(function(e){console.error('Group chat send:',e);showToast('Failed to send: '+(e.message||'Check console'));});
     }
     sendBtn.addEventListener('click',doSend);
     msgInput.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSend();}});
@@ -4050,6 +4053,9 @@ async function openGroupChannel(channel){
     _initGcGifPicker(channel.id,isAdmin);
     // Mention autocomplete for group chat input
     initMentionAutocomplete('gcMsgInput',_gcGroup?_gcGroup.id:null);
+    // Emoji button for group chat
+    var gcEmojiBtn=document.getElementById('gcEmojiBtn');
+    if(gcEmojiBtn) gcEmojiBtn.addEventListener('click',function(){openEmojiPicker('gcEmojiPanel',document.getElementById('gcMsgInput'));});
 }
 
 function _initGcGifPicker(channelId,isAdmin){

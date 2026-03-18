@@ -1330,6 +1330,9 @@ body.skin-pastel.tpl-cinema .pv-col-photos .photos-preview::-webkit-scrollbar-th
 #gcSendBtn:hover{background:var(--primary-hover);}
 /* GIF picker positioning */
 .gc-input-bar .msg-gif-picker{position:absolute;bottom:100%;left:0;right:0;max-height:300px;}
+.gc-input-bar .emoji-picker-panel{position:absolute;bottom:100%;left:0;right:0;}
+.gc-input-bar #gcEmojiBtn{background:none;border:none;color:var(--gray);font-size:16px;cursor:pointer;padding:4px 8px;}
+.gc-input-bar #gcEmojiBtn:hover{color:var(--primary);}
 
 /* Mobile group chat */
 @media(max-width:768px){
