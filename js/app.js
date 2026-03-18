@@ -4332,23 +4332,30 @@ function appendGcMessage(msg,isAdmin,skipScroll){
     if(editBtn) editBtn.addEventListener('click',function(){
         var contentEl=div.querySelector('.gc-msg-content');
         var raw=contentEl?contentEl.dataset.raw:'';
+        // Hide fullscreen chat so modal appears on top
+        var cs=document.getElementById('gvChatSection');
+        if(cs) cs.style.visibility='hidden';
         var h='<div class="modal-header"><h3><i class="fas fa-pen" style="color:var(--primary);margin-right:8px;"></i>Edit Message</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
         h+='<div class="modal-body"><textarea id="gcEditMsgText" class="cpm-textarea" style="min-height:200px;font-size:14px;line-height:1.5;">'+escapeHtml(raw)+'</textarea>';
-        h+='<div class="modal-actions" style="margin-top:12px;"><button class="btn btn-outline modal-close">Cancel</button><button class="btn btn-primary" id="gcEditMsgSave">Save</button></div></div>';
+        h+='<div class="modal-actions" style="margin-top:12px;"><button class="btn btn-outline" id="gcEditMsgCancel">Cancel</button><button class="btn btn-primary" id="gcEditMsgSave">Save</button></div></div>';
         showModal(h);
+        function _restoreChat(){if(cs) cs.style.visibility='';}
+        document.getElementById('gcEditMsgCancel').addEventListener('click',function(){closeModal();_restoreChat();});
+        // Also restore on modal close button
+        var closeBtn=document.querySelector('#modalContent .modal-close');
+        if(closeBtn) closeBtn.addEventListener('click',function(){_restoreChat();});
         document.getElementById('gcEditMsgSave').addEventListener('click',async function(){
             var newText=document.getElementById('gcEditMsgText').value.trim();
             if(!newText){showToast('Message cannot be empty');return;}
             try{
                 await sbEditGroupChatMessage(msg.id,newText);
-                // Update the message in the DOM
                 var parsed=_renderMsgContent(newText);
                 var newHtml=parsed.isMedia?parsed.html:'<div class="gc-msg-text">'+renderMentionsInText(linkifyText(parsed.html))+'</div>';
                 contentEl.innerHTML=newHtml;
                 contentEl.dataset.raw=newText;
-                closeModal();
+                closeModal();_restoreChat();
                 showToast('Message edited');
-            }catch(e){showToast('Edit failed: '+(e.message||''));}
+            }catch(e){showToast('Edit failed: '+(e.message||''));_restoreChat();}
         });
     });
     // Bind avatar/name click to profile
