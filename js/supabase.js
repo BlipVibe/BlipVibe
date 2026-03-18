@@ -1073,7 +1073,9 @@ async function sbGetGroupChatMessages(channelId, limit, before) {
 }
 
 async function sbSendGroupChatMessage(channelId, content, mediaUrl, mediaType) {
-  var row = { channel_id: channelId, author_id: currentUser.id, content: content || '' };
+  var user = await sbGetUser();
+  if (!user) throw new Error('Not logged in');
+  var row = { channel_id: channelId, author_id: user.id, content: content || '' };
   if (mediaUrl) { row.media_url = mediaUrl; row.media_type = mediaType || 'image'; }
   const { data, error } = await sb.from('group_chat_messages')
     .insert(row).select('*, author:profiles!group_chat_messages_author_id_fkey(id, username, display_name, avatar_url)').single();
