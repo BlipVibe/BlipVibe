@@ -249,6 +249,11 @@ function handleLogout() {
     syncSkinDataToSupabase(true); // flush User A's data immediately
     clearTimeout(_skinSyncTimer); // kill any pending debounce so it can't write to User B
     _skinSyncTimer=null;
+    // Clean up all realtime subscriptions to prevent duplicate listeners on re-login
+    _realtimeSubs.forEach(function(ch){try{sb.removeChannel(ch);}catch(e){}});
+    _realtimeSubs=[];
+    // Clear the saveState interval
+    if(_saveStateInterval){clearInterval(_saveStateInterval);_saveStateInterval=null;}
     sbSignOut().then(function () {
         currentUser = null;
         currentAuthUser = null;
@@ -464,6 +469,8 @@ function syncAllAvatars(newSrc) {
 // ---- Init app after auth ----
 var _initAppRunning = false;
 var _initAppDone = false;
+var _realtimeSubs = []; // track all realtime subscriptions for cleanup
+var _saveStateInterval = null; // track the saveState interval
 async function initApp() {
     if (_initAppRunning || _initAppDone) return;
     _initAppRunning = true;
@@ -523,69 +530,56 @@ async function initApp() {
     showCookieConsent(); // Show cookie banner if not yet accepted
     if(settings.showLocation) detectUserLocation(); // Only request location when user opted in
     if(currentUser.cover_photo_url) { state.coverPhoto = currentUser.cover_photo_url; applyCoverPhoto(); }
-    // Load user's existing likes from Supabase so UI reflects correct state
-    try {
-        var myLikes = await sbGetUserLikes(currentUser.id, 'post');
-        myLikes.forEach(function(l){ state.likedPosts[l.target_id] = true; });
-    } catch(e){ console.warn('Could not load user likes:', e); }
-    // Load comment likes from Supabase
-    try {
-        var commentLikeRows = await sbGetUserLikes(currentUser.id, 'comment');
-        commentLikeRows.forEach(function(l){ likedComments[l.target_id] = true; });
-    } catch(e){ console.warn('Could not load comment likes:', e); }
-    // Load photos from Supabase storage and posts
-    try {
-        var prevAvatars = await sbListUserAvatars(currentUser.id);
-        state.photos.profile = prevAvatars.map(function(a){ return { src: a.src, date: a.date, name: a.name }; });
-        // Auto-recover avatar if profile lost reference but storage still has files
-        if(!currentUser.avatar_url && prevAvatars.length > 0){
-            var latestAvatar = prevAvatars[0].src;
-            currentUser.avatar_url = latestAvatar;
-            populateUserUI();
-            sbUpdateProfile(currentUser.id, { avatar_url: latestAvatar }).catch(function(e){ console.warn('Avatar recovery error:', e); });
+    // Parallel batch 1: Load likes, photos, follow counts, friends-of-friends concurrently
+    var _parallelResults = await Promise.allSettled([
+        sbGetUserLikes(currentUser.id, 'post'),
+        sbGetUserLikes(currentUser.id, 'comment'),
+        sbListUserAvatars(currentUser.id),
+        sbListUserCovers(currentUser.id),
+        sbGetUserPosts(currentUser.id, 50),
+        loadFollowCounts(),
+        sbGetFriendsOfFriends(currentUser.id)
+    ]);
+    // Process results from parallel batch
+    if(_parallelResults[0].status==='fulfilled'){(_parallelResults[0].value||[]).forEach(function(l){state.likedPosts[l.target_id]=true;});}
+    if(_parallelResults[1].status==='fulfilled'){(_parallelResults[1].value||[]).forEach(function(l){likedComments[l.target_id]=true;});}
+    if(_parallelResults[2].status==='fulfilled'){
+        var prevAvatars=_parallelResults[2].value||[];
+        state.photos.profile=prevAvatars.map(function(a){return{src:a.src,date:a.date,name:a.name};});
+        if(!currentUser.avatar_url&&prevAvatars.length>0){
+            var latestAvatar=prevAvatars[0].src;currentUser.avatar_url=latestAvatar;populateUserUI();
+            sbUpdateProfile(currentUser.id,{avatar_url:latestAvatar}).catch(function(e){console.warn('Avatar recovery error:',e);});
         }
-    } catch(e){ console.warn('Could not load avatar history:', e); }
-    try {
-        var prevCovers = await sbListUserCovers(currentUser.id);
-        state.photos.cover = prevCovers.map(function(c){ return { src: c.src, date: c.date, name: c.name }; });
-        // Auto-recover cover if profile lost reference but storage still has files
-        if(!currentUser.cover_photo_url && prevCovers.length > 0){
-            var latestCover = prevCovers[0].src;
-            currentUser.cover_photo_url = latestCover;
-            state.coverPhoto = latestCover;
-            applyCoverPhoto();
-            sbUpdateProfile(currentUser.id, { cover_photo_url: latestCover }).catch(function(e){ console.warn('Cover recovery error:', e); });
+    }
+    if(_parallelResults[3].status==='fulfilled'){
+        var prevCovers=_parallelResults[3].value||[];
+        state.photos.cover=prevCovers.map(function(c){return{src:c.src,date:c.date,name:c.name};});
+        if(!currentUser.cover_photo_url&&prevCovers.length>0){
+            var latestCover=prevCovers[0].src;currentUser.cover_photo_url=latestCover;state.coverPhoto=latestCover;applyCoverPhoto();
+            sbUpdateProfile(currentUser.id,{cover_photo_url:latestCover}).catch(function(e){console.warn('Cover recovery error:',e);});
         }
-    } catch(e){ console.warn('Could not load cover history:', e); }
-    try {
-        var myPosts = await sbGetUserPosts(currentUser.id, 50);
-        var postPhotos = [];
-        (myPosts||[]).forEach(function(p){
-            var ts = new Date(p.created_at).getTime();
-            if(p.media_urls && p.media_urls.length){
-                p.media_urls.forEach(function(u){ postPhotos.push({src:u, date:ts, postId:p.id, postMediaUrls:p.media_urls, isVideo:isVideoUrl(u)}); });
+    }
+    if(_parallelResults[4].status==='fulfilled'){
+        var myPosts=_parallelResults[4].value||[];
+        var postPhotos=[];
+        myPosts.forEach(function(p){
+            var ts=new Date(p.created_at).getTime();
+            if(p.media_urls&&p.media_urls.length){
+                p.media_urls.forEach(function(u){postPhotos.push({src:u,date:ts,postId:p.id,postMediaUrls:p.media_urls,isVideo:isVideoUrl(u)});});
             } else if(p.image_url){
-                postPhotos.push({src:p.image_url, date:ts, postId:p.id, postMediaUrls:null, isVideo:isVideoUrl(p.image_url)});
+                postPhotos.push({src:p.image_url,date:ts,postId:p.id,postMediaUrls:null,isVideo:isVideoUrl(p.image_url)});
             }
         });
-        state.photos.post = postPhotos;
-    } catch(e){ console.warn('Could not load post photos:', e); }
+        state.photos.post=postPhotos;
+    }
+    if(_parallelResults[6].status==='fulfilled'){_fofIds=_parallelResults[6].value||{};}else{_fofIds={};}
     renderPhotosCard();
-    // Re-render full photos page if user is currently viewing it (fixes empty photos on reload)
     if(_navCurrent==='photos') renderPhotoAlbum();
-    await loadFollowCounts();
-    // Load friends-of-friends for discover tab
-    try { _fofIds = await sbGetFriendsOfFriends(currentUser.id); } catch(e){ console.warn('Could not load friends-of-friends:', e); _fofIds={}; }
     await loadGroups();
-    // Load joined groups from group_members table
+    // Load joined groups — single query instead of per-group membership check
     try {
-        var allGroups = groups || [];
-        for(var gi=0;gi<allGroups.length;gi++){
-            var members = await sbGetGroupMembers(allGroups[gi].id);
-            if(members && members.some(function(m){ return m.user_id === currentUser.id; })){
-                state.joinedGroups[allGroups[gi].id] = true;
-            }
-        }
+        var myGroupIds = await sbGetUserGroupIds(currentUser.id);
+        myGroupIds.forEach(function(gid){ state.joinedGroups[gid] = true; });
     } catch(e){ console.warn('Could not load group memberships:', e); }
     renderGroups();
     renderTrendingSidebar();
@@ -607,16 +601,17 @@ async function initApp() {
     } catch(e){ console.error('Could not load notifications:', e); }
     // Subscribe to realtime notifications
     try {
-        sbSubscribeNotifications(currentUser.id, function(newNotif){
+        var _subNotif = sbSubscribeNotifications(currentUser.id, function(newNotif){
             var origType=(newNotif.data&&newNotif.data.originalType)||newNotif.type||'system';
             state.notifications.unshift({ type: origType, text: newNotif.title||newNotif.body||'', time: 'just now', read: false, id: newNotif.id, postId: (newNotif.data&&newNotif.data.post_id)||null, data: newNotif.data||{} });
             updateNotifBadge();
             renderNotifications();
         });
+        if(_subNotif) _realtimeSubs.push(_subNotif);
     } catch(e){ console.warn('Realtime notifications error:', e); }
     // Subscribe to realtime posts — new posts appear without refresh
     try {
-        sbSubscribePosts(async function(newPost){
+        var _subPosts = sbSubscribePosts(async function(newPost){
             if(!newPost||newPost.group_id) return; // skip group posts
             if(newPost.author_id===currentUser.id) return; // skip own posts (already in feed)
             if(blockedUsers[newPost.author_id]) return;
@@ -637,16 +632,18 @@ async function initApp() {
                 renderFeed(activeFeedTab);
             }catch(e){console.warn('Realtime post enrich error:',e);}
         });
+        if(_subPosts) _realtimeSubs.push(_subPosts);
     } catch(e){ console.warn('Realtime posts error:', e); }
     // Subscribe to realtime follows — follow counts update without refresh
     try {
-        sbSubscribeFollows(currentUser.id, function(eventType){
+        var _subFollows = sbSubscribeFollows(currentUser.id, function(eventType){
             loadFollowCounts().then(function(){updateFollowCounts();});
         });
+        if(_subFollows) _realtimeSubs.push(_subFollows);
     } catch(e){ console.warn('Realtime follows error:', e); }
     // Subscribe to realtime likes — like counts update without refresh
     try {
-        sbSubscribeLikes(currentUser.id, function(eventType, row){
+        var _subLikes = sbSubscribeLikes(currentUser.id, function(eventType, row){
             if(!row||row.target_type!=='post') return;
             var post=feedPosts.find(function(p){return p.idx===row.target_id;});
             if(post){
@@ -657,6 +654,7 @@ async function initApp() {
                 if(likeEl) likeEl.textContent=post.likes;
             }
         });
+        if(_subLikes) _realtimeSubs.push(_subLikes);
     } catch(e){ console.warn('Realtime likes error:', e); }
     // Load conversations and subscribe to realtime messages
     loadConversations();
@@ -880,7 +878,7 @@ function reapplyCustomizations(){
 }
 // Auto-save state on page leave and periodically
 window.addEventListener('beforeunload',function(){saveState();});
-setInterval(function(){saveState();},10000); // save every 10s as safety net
+_saveStateInterval=setInterval(function(){saveState();},10000); // save every 10s as safety net
 // Cross-device sync: push when leaving, pull when returning
 document.addEventListener('visibilitychange',function(){
     if(!currentUser) return;
@@ -2450,7 +2448,7 @@ async function renderInlineComments(postId){
             });
         }catch(e){
             console.error('Inline comments error for post '+postId+':',e);
-            el.innerHTML='<p style="color:#e74c3c;font-size:11px;padding:4px 20px;">Comments failed: '+(e.message||'Unknown error')+'</p>';
+            el.innerHTML='<p style="color:#e74c3c;font-size:11px;padding:4px 20px;">Comments failed: '+escapeHtml(e.message||'Unknown error')+'</p>';
             return;
         }
     } else {
@@ -7388,7 +7386,7 @@ async function renderMsgFollowing(){
 // Subscribe to realtime messages
 function initMessageSubscription(){
     if(!currentUser) return;
-    sbSubscribeMessages(currentUser.id, function(newMsg){
+    var _subMsg = sbSubscribeMessages(currentUser.id, function(newMsg){
         // Reload conversations to update sidebar
         loadConversations();
         // If we're in the chat with this sender, append the message
@@ -7418,6 +7416,7 @@ function initMessageSubscription(){
             });
         }
     });
+    if(_subMsg) _realtimeSubs.push(_subMsg);
 }
 
 // ======================== PHOTOS ========================

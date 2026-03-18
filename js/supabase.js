@@ -755,6 +755,14 @@ async function sbGetGroups(limit = 50) {
   return _sanitizeData(data);
 }
 
+async function sbGetUserGroupIds(userId) {
+  const { data, error } = await sb.from('group_members')
+    .select('group_id')
+    .eq('user_id', userId);
+  if (error) throw error;
+  return (data || []).map(function(r) { return r.group_id; });
+}
+
 async function sbGetGroupMembers(groupId) {
   const { data, error } = await sb.from('group_members')
     .select(`
