@@ -1317,10 +1317,9 @@ body.skin-pastel.tpl-cinema .pv-col-photos .photos-preview::-webkit-scrollbar-th
 .gc-msg-name{font-weight:600;font-size:14px;color:var(--primary);cursor:pointer;}
 .gc-msg-name:hover{text-decoration:underline;}
 .gc-msg-time{font-size:11px;color:var(--gray);}
-.gc-msg-del,.gc-msg-edit{background:none;border:none;color:var(--gray);cursor:pointer;font-size:11px;padding:2px 4px;opacity:0;transition:opacity .2s;}
-.gc-msg:hover .gc-msg-del,.gc-msg:hover .gc-msg-edit{opacity:.6;}
-.gc-msg-del:hover{opacity:1!important;color:#e74c3c;}
-.gc-msg-edit:hover{opacity:1!important;color:var(--primary);}
+.gc-msg-del,.gc-msg-edit{background:none;border:none;color:var(--gray);cursor:pointer;font-size:11px;padding:2px 4px;opacity:.5;transition:opacity .2s,color .2s;}
+.gc-msg-del:hover{opacity:1;color:#e74c3c;}
+.gc-msg-edit:hover{opacity:1;color:var(--primary);}
 .gc-msg-content{margin-top:2px;word-wrap:break-word;overflow-wrap:anywhere;}
 .gc-msg-content img,.gc-msg-content video{display:block;margin-top:4px;}
 .gc-msg-text{font-size:14px;line-height:1.5;white-space:pre-wrap;}

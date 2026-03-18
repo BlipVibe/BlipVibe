@@ -4318,7 +4318,7 @@ function appendGcMessage(msg,isAdmin,skipScroll){
     div.dataset.mid=msg.id;
     div.innerHTML='<img src="'+avatar+'" class="gc-msg-avatar" data-uid="'+(msg.author_id||'')+'">'
         +'<div class="gc-msg-body"><div class="gc-msg-header"><span class="gc-msg-name" data-uid="'+(msg.author_id||'')+'">'+escapeHtml(name)+'</span><span class="gc-msg-time">'+dateStr+' '+timeStr+'</span>'
-        +(isOwn&&msg.content&&!msg.media_url?'<button class="gc-msg-edit" data-mid="'+msg.id+'" title="Edit"><i class="fas fa-pen"></i></button>':'')
+        +(isOwn&&msg.content?'<button class="gc-msg-edit" data-mid="'+msg.id+'" title="Edit"><i class="fas fa-pen"></i></button>':'')
         +(canDelete?'<button class="gc-msg-del" data-mid="'+msg.id+'" title="Delete"><i class="fas fa-trash"></i></button>':'')
         +'</div><div class="gc-msg-content" data-raw="'+escapeHtml(msg.content||'')+'">'+contentHtml+'</div></div>';
     container.appendChild(div);
