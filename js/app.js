@@ -1901,9 +1901,9 @@ function renderMentionsInText(html){
     html=html.replace(/@([a-zA-Z0-9_]+)/g,function(match,uname){
         return '<span class="mention-link" data-mention="'+uname+'">@'+uname+'</span>';
     });
-    // Match #hashtag patterns and make them clickable
-    html=html.replace(/#([a-zA-Z0-9_]+)/g,function(match,tag){
-        return '<span class="hashtag-link" data-tag="'+tag+'">#'+tag+'</span>';
+    // Match #hashtag patterns — must NOT be preceded by & (to avoid matching &#39; etc.)
+    html=html.replace(/(^|[\s>])#([a-zA-Z][a-zA-Z0-9_]*)/g,function(match,before,tag){
+        return before+'<span class="hashtag-link" data-tag="'+tag+'">#'+tag+'</span>';
     });
     return html;
 }
