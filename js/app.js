@@ -4318,13 +4318,38 @@ function appendGcMessage(msg,isAdmin,skipScroll){
     div.dataset.mid=msg.id;
     div.innerHTML='<img src="'+avatar+'" class="gc-msg-avatar" data-uid="'+(msg.author_id||'')+'">'
         +'<div class="gc-msg-body"><div class="gc-msg-header"><span class="gc-msg-name" data-uid="'+(msg.author_id||'')+'">'+escapeHtml(name)+'</span><span class="gc-msg-time">'+dateStr+' '+timeStr+'</span>'
+        +(isOwn&&msg.content&&!msg.media_url?'<button class="gc-msg-edit" data-mid="'+msg.id+'" title="Edit"><i class="fas fa-pen"></i></button>':'')
         +(canDelete?'<button class="gc-msg-del" data-mid="'+msg.id+'" title="Delete"><i class="fas fa-trash"></i></button>':'')
-        +'</div><div class="gc-msg-content">'+contentHtml+'</div></div>';
+        +'</div><div class="gc-msg-content" data-raw="'+escapeHtml(msg.content||'')+'">'+contentHtml+'</div></div>';
     container.appendChild(div);
     // Bind delete
     var delBtn=div.querySelector('.gc-msg-del');
     if(delBtn) delBtn.addEventListener('click',async function(){
         try{await sbDeleteGroupChatMessage(msg.id);div.remove();}catch(e){showToast('Could not delete');}
+    });
+    // Bind edit
+    var editBtn=div.querySelector('.gc-msg-edit');
+    if(editBtn) editBtn.addEventListener('click',function(){
+        var contentEl=div.querySelector('.gc-msg-content');
+        var raw=contentEl?contentEl.dataset.raw:'';
+        var h='<div class="modal-header"><h3>Edit Message</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+        h+='<div class="modal-body"><textarea id="gcEditMsgText" class="cpm-textarea" style="min-height:80px;">'+escapeHtml(raw)+'</textarea>';
+        h+='<div class="modal-actions" style="margin-top:12px;"><button class="btn btn-outline modal-close">Cancel</button><button class="btn btn-primary" id="gcEditMsgSave">Save</button></div></div>';
+        showModal(h);
+        document.getElementById('gcEditMsgSave').addEventListener('click',async function(){
+            var newText=document.getElementById('gcEditMsgText').value.trim();
+            if(!newText){showToast('Message cannot be empty');return;}
+            try{
+                await sbEditGroupChatMessage(msg.id,newText);
+                // Update the message in the DOM
+                var parsed=_renderMsgContent(newText);
+                var newHtml=parsed.isMedia?parsed.html:'<div class="gc-msg-text">'+renderMentionsInText(linkifyText(parsed.html))+'</div>';
+                contentEl.innerHTML=newHtml;
+                contentEl.dataset.raw=newText;
+                closeModal();
+                showToast('Message edited');
+            }catch(e){showToast('Edit failed: '+(e.message||''));}
+        });
     });
     // Bind avatar/name click to profile
     div.querySelector('.gc-msg-avatar').addEventListener('click',function(){if(msg.author_id)viewProfile(msg.author_id);});

@@ -1088,6 +1088,11 @@ async function sbDeleteGroupChatMessage(messageId) {
   if (error) throw error;
 }
 
+async function sbEditGroupChatMessage(messageId, content) {
+  const { error } = await sb.from('group_chat_messages').update({ content }).eq('id', messageId);
+  if (error) throw error;
+}
+
 function sbSubscribeGroupChat(channelId, callback) {
   return sb.channel('group-chat:' + channelId)
     .on('postgres_changes', {
