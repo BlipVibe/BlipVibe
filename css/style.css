@@ -1393,6 +1393,14 @@ body.skin-pastel.tpl-cinema .pv-col-photos .photos-preview::-webkit-scrollbar-th
 .gc-modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;animation:fadeIn .15s ease;}
 .gc-modal-content{background:var(--card);border-radius:14px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:modalIn .2s ease;}
 
+/* Drag and drop */
+.gc-drag-handle{color:var(--gray);cursor:grab;padding:0 6px 0 0;font-size:11px;opacity:.5;transition:opacity .15s;}
+.gc-drag-handle:hover{opacity:1;}
+.gc-dragging{opacity:.4;}
+.gc-drag-over{border-top:2px solid var(--primary)!important;}
+.gc-drop-target{background:rgba(var(--primary-rgb,92,189,185),.1);border-radius:4px;}
+.gc-channel-list{min-height:8px;} /* ensures empty sections have a drop zone */
+
 /* ========== TEMPLATE: PANORAMA ========== */
 body.tpl-panorama .main-container{grid-template-columns:280px 1fr 320px;grid-template-rows:auto 1fr;}
 body.tpl-panorama .left-sidebar{display:contents;}

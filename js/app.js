@@ -4084,20 +4084,23 @@ async function renderGroupChatSidebar(group){
         if(isAdmin) html+='<p style="font-size:12px;color:var(--gray);">Click + to create a section.</p>';
         html+='</div>';
     }
-    sections.forEach(function(sec){
-        html+='<div class="gc-section" data-sid="'+sec.id+'">';
+    sections.forEach(function(sec,si){
+        html+='<div class="gc-section" data-sid="'+sec.id+'"'+(isAdmin?' draggable="true"':'')+'>';
         html+='<div class="gc-section-header">';
+        if(isAdmin) html+='<span class="gc-drag-handle" title="Drag to reorder"><i class="fas fa-grip-vertical"></i></span>';
         html+='<span class="gc-section-name">'+escapeHtml(sec.name)+'</span>';
         if(isAdmin) html+='<div class="gc-section-actions"><button class="gc-add-btn gc-add-ch-btn" data-sid="'+sec.id+'" title="Add Channel"><i class="fas fa-plus"></i></button><button class="gc-add-btn gc-edit-sec-btn" data-sid="'+sec.id+'" data-sname="'+escapeHtml(sec.name)+'" title="Edit Section"><i class="fas fa-pen"></i></button><button class="gc-add-btn gc-del-sec-btn" data-sid="'+sec.id+'" title="Delete Section"><i class="fas fa-trash"></i></button></div>';
         html+='</div>';
-        (sec.channels||[]).forEach(function(ch){
+        html+='<div class="gc-channel-list" data-sid="'+sec.id+'">';
+        (sec.channels||[]).forEach(function(ch,ci){
             var active=_gcActiveChannel&&_gcActiveChannel.id===ch.id;
-            html+='<div class="gc-channel'+(active?' active':'')+'" data-cid="'+ch.id+'" data-cname="'+escapeHtml(ch.name)+'">';
+            html+='<div class="gc-channel'+(active?' active':'')+'" data-cid="'+ch.id+'" data-cname="'+escapeHtml(ch.name)+'" data-sid="'+sec.id+'"'+(isAdmin?' draggable="true"':'')+'>';
             var chLocked=_gcLockedChannels[ch.id];
             html+='<span class="gc-channel-hash">'+(chLocked?'<i class="fas fa-lock" style="font-size:10px;"></i>':'#')+'</span> '+escapeHtml(ch.name);
             if(isAdmin) html+='<div class="gc-ch-actions"><button class="gc-add-btn gc-edit-ch-btn" data-cid="'+ch.id+'" data-cname="'+escapeHtml(ch.name)+'" title="Rename"><i class="fas fa-pen"></i></button><button class="gc-add-btn gc-del-ch-btn" data-cid="'+ch.id+'" title="Delete"><i class="fas fa-trash"></i></button></div>';
             html+='</div>';
         });
+        html+='</div>';
         html+='</div>';
     });
     sidebar.innerHTML=html;
@@ -4131,6 +4134,122 @@ async function renderGroupChatSidebar(group){
     $$('#gcSidebar .gc-del-sec-btn').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();confirmGcDeleteSection(group,b.dataset.sid);});});
     $$('#gcSidebar .gc-edit-ch-btn').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();showGcChannelModal(group,null,b.dataset.cid,b.dataset.cname);});});
     $$('#gcSidebar .gc-del-ch-btn').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();confirmGcDeleteChannel(group,b.dataset.cid);});});
+
+    // Drag and drop for sections and channels (admin only)
+    if(isAdmin) _initGcDragDrop(group,sidebar);
+}
+
+function _initGcDragDrop(group,sidebar){
+    var _dragEl=null;
+    var _dragType=null; // 'section' or 'channel'
+
+    // --- Section drag (reorder sections) ---
+    sidebar.querySelectorAll('.gc-section[draggable]').forEach(function(sec){
+        sec.addEventListener('dragstart',function(e){
+            // Only drag from the handle
+            if(!e.target.closest('.gc-drag-handle')&&e.target.closest('.gc-channel')){e.preventDefault();return;}
+            _dragEl=sec;_dragType='section';
+            sec.classList.add('gc-dragging');
+            e.dataTransfer.effectAllowed='move';
+            e.dataTransfer.setData('text/plain',sec.dataset.sid);
+        });
+        sec.addEventListener('dragend',function(){
+            sec.classList.remove('gc-dragging');
+            sidebar.querySelectorAll('.gc-drag-over').forEach(function(el){el.classList.remove('gc-drag-over');});
+            _dragEl=null;_dragType=null;
+        });
+        sec.addEventListener('dragover',function(e){
+            if(_dragType!=='section') return;
+            e.preventDefault();e.dataTransfer.dropEffect='move';
+            sec.classList.add('gc-drag-over');
+        });
+        sec.addEventListener('dragleave',function(){sec.classList.remove('gc-drag-over');});
+        sec.addEventListener('drop',async function(e){
+            e.preventDefault();
+            sec.classList.remove('gc-drag-over');
+            if(_dragType!=='section'||!_dragEl||_dragEl===sec) return;
+            // Reorder: move dragged section before this one
+            sec.parentNode.insertBefore(_dragEl,sec);
+            // Save new positions
+            var allSections=sidebar.querySelectorAll('.gc-section');
+            for(var i=0;i<allSections.length;i++){
+                await sbUpdateGroupChatSection(allSections[i].dataset.sid,{position:i}).catch(function(){});
+            }
+            showToast('Section reordered');
+        });
+    });
+
+    // --- Channel drag (reorder + move between sections) ---
+    sidebar.querySelectorAll('.gc-channel[draggable]').forEach(function(ch){
+        ch.addEventListener('dragstart',function(e){
+            e.stopPropagation(); // don't trigger section drag
+            _dragEl=ch;_dragType='channel';
+            ch.classList.add('gc-dragging');
+            e.dataTransfer.effectAllowed='move';
+            e.dataTransfer.setData('text/plain',ch.dataset.cid);
+        });
+        ch.addEventListener('dragend',function(){
+            ch.classList.remove('gc-dragging');
+            sidebar.querySelectorAll('.gc-drag-over,.gc-drop-target').forEach(function(el){el.classList.remove('gc-drag-over');el.classList.remove('gc-drop-target');});
+            _dragEl=null;_dragType=null;
+        });
+        ch.addEventListener('dragover',function(e){
+            if(_dragType!=='channel') return;
+            e.preventDefault();e.stopPropagation();
+            e.dataTransfer.dropEffect='move';
+            ch.classList.add('gc-drag-over');
+        });
+        ch.addEventListener('dragleave',function(){ch.classList.remove('gc-drag-over');});
+        ch.addEventListener('drop',async function(e){
+            e.preventDefault();e.stopPropagation();
+            ch.classList.remove('gc-drag-over');
+            if(_dragType!=='channel'||!_dragEl||_dragEl===ch) return;
+            // Move dragged channel before this one (possibly in a different section)
+            ch.parentNode.insertBefore(_dragEl,ch);
+            // Update the dragged channel's section_id if it moved
+            var newSid=ch.parentNode.dataset.sid;
+            var oldSid=_dragEl.dataset.sid;
+            _dragEl.dataset.sid=newSid;
+            // Save positions for all channels in the target section
+            var chList=ch.parentNode.querySelectorAll('.gc-channel');
+            for(var i=0;i<chList.length;i++){
+                var updates={position:i};
+                if(chList[i].dataset.cid===_dragEl.dataset.cid&&newSid!==oldSid) updates.section_id=newSid;
+                await sbUpdateGroupChatChannel(chList[i].dataset.cid,updates).catch(function(){});
+            }
+            showToast('Channel moved');
+        });
+    });
+
+    // --- Channel drop zones on sections (drop into empty section or at end) ---
+    sidebar.querySelectorAll('.gc-channel-list').forEach(function(list){
+        list.addEventListener('dragover',function(e){
+            if(_dragType!=='channel') return;
+            e.preventDefault();
+            list.classList.add('gc-drop-target');
+        });
+        list.addEventListener('dragleave',function(e){
+            if(!list.contains(e.relatedTarget)) list.classList.remove('gc-drop-target');
+        });
+        list.addEventListener('drop',async function(e){
+            e.preventDefault();
+            list.classList.remove('gc-drop-target');
+            if(_dragType!=='channel'||!_dragEl) return;
+            // If dropped on the list itself (not on a channel), append to end
+            if(e.target===list||e.target.closest('.gc-channel-list')===list){
+                list.appendChild(_dragEl);
+                var newSid=list.dataset.sid;
+                _dragEl.dataset.sid=newSid;
+                var chList=list.querySelectorAll('.gc-channel');
+                for(var i=0;i<chList.length;i++){
+                    var updates={position:i};
+                    if(chList[i].dataset.cid===_dragEl.dataset.cid) updates.section_id=newSid;
+                    await sbUpdateGroupChatChannel(chList[i].dataset.cid,updates).catch(function(){});
+                }
+                showToast('Channel moved');
+            }
+        });
+    });
 }
 
 // Helper: show modal on top of fullscreen chat (renders inside the chat overlay)
