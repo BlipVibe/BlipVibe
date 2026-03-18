@@ -133,6 +133,55 @@
 - `data-aid` attribute added to comment like/dislike buttons for author-level checking
 - You can still like/dislike your own stuff — it just won't award coins
 
+## Polls in Posts (added 2026-03-18)
+- Poll button in post creation footer — toggle to show/hide poll options
+- 2-6 text options, validated on publish (must have at least 2)
+- Poll data stored as `[poll]{...}[/poll]` tag in post content
+- `renderPollInPost(text, postId)` extracts poll JSON and renders vote buttons or results
+- Votes stored in `localStorage` per post per device (`blipvibe_poll_*`, `blipvibe_pollvotes_*`)
+- After voting: animated progress bars with percentages, highlighted user's choice
+- `bindPollVotes()` handles click → save vote → re-render inline
+- CSS: `.poll-container`, `.poll-option`, `.poll-vote-btn`, `.poll-bar`, `.poll-voted`, `.poll-my-vote`
+
+## Hashtags (added 2026-03-18)
+- `#tag` patterns in posts/comments now rendered as clickable links (`.hashtag-link`)
+- Added to `renderMentionsInText()` — processes both @mentions and #hashtags
+- `bindHashtagClicks()` attached in feed, profile posts, group posts, comments, search, saved posts
+- `showHashtagFeed(tag)` opens modal showing all posts containing that hashtag
+- CSS: `.hashtag-link` styled like mentions (primary color, bold, pointer)
+
+## Copy Link to Post (added 2026-03-18)
+- "Copy Link" option in post dropdown menu
+- `copyPostLink(pid)` generates URL as `{origin}{path}#post/{postId}`
+- Uses `navigator.clipboard.writeText` with `execCommand('copy')` fallback
+- Shows toast confirmation
+
+## Pin Posts to Profile (added 2026-03-18)
+- "Pin to Profile" / "Unpin" option in own post dropdown menu
+- Max 3 pinned posts, stored in `state.pinnedPosts` (saved to localStorage + Supabase skin_data)
+- `togglePinPost(pid)` manages pin state with limit enforcement
+
+## Mute Users (added 2026-03-18)
+- "Mute" button on profile view (separate from Block)
+- `mutedUsers` object stored in localStorage (`blipvibe_muted`)
+- `muteUser()` / `unmuteUser()` with confirmation modal
+- Muted users filtered from Following and Discover feed tabs
+- Unlike blocking: doesn't unfollow, doesn't remove from groups — just hides their posts
+
+## Report Users (added 2026-03-18)
+- "Report" button on profile view for non-self users
+- `showReportUserModal(person)` — modal with reasons: Spam, Harassment, Impersonation, Inappropriate Content, Other
+- Reports stored alongside post reports via `reportedPosts` array
+- Separate from post reporting (includes `type:'user'` and `userId` fields)
+
+## Edit Profile from Profile View (added 2026-03-18)
+- "Edit Profile" button shown on own profile view card
+- Opens `showMyProfileModal()` directly — eliminates Settings → Edit Profile navigation
+
+## Escape Key Closes Modals (fixed 2026-03-18)
+- `keydown` listener for Escape key added globally
+- Closes any open modal (same as clicking the X button)
+
 ## Performance & Stability Fixes (2026-03-18)
 
 ### initApp() Parallelization

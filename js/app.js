@@ -275,7 +275,7 @@ function resetAllCustomizations(){
     state.ownedIconSets={};state.activeIconSet=null;state.ownedCoinSkins={};state.activeCoinSkin=null;
     state.ownedTemplates={};state.activeTemplate=null;state.ownedNavStyles={};state.activeNavStyle=null;
     state.ownedPremiumSkins={};state.activePremiumSkin=null;state.groupPosts={};
-    state.privateFollowers=false;state.dislikedPosts={};
+    state.privateFollowers=false;state.dislikedPosts={};state.pinnedPosts={};
     state.photos={profile:[],cover:[],post:[],albums:[]};
     // Reset social/preference data
     blockedUsers={};likedComments={};dislikedComments={};commentCoinAwarded={};
@@ -1375,6 +1375,7 @@ async function renderSearchResults(q,tab){
         }
         container.innerHTML=html;
         bindMentionClicks('#searchResults');
+        bindHashtagClicks('#searchResults');
         // Bind view more buttons in search results
         $$('#searchResults .view-more-btn').forEach(function(btn){
             btn.addEventListener('click',function(){
@@ -1664,6 +1665,9 @@ $('#modalOverlay').addEventListener('touchmove',function(e){
 document.addEventListener('click',function(e){
     if(e.target.closest('.modal-close')) closeModal();
 });
+document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&$('#modalOverlay').classList.contains('show')) closeModal();
+});
 
 // ======================== FIRST-TIME TUTORIALS ========================
 function _showTutorial(key,html){
@@ -1876,9 +1880,14 @@ function initMentionAutocomplete(textareaId, groupId){
 // Render @mentions as clickable links in post/comment text
 function renderMentionsInText(html){
     // Match @username patterns (already escaped via escapeHtml/escapeHtmlNl)
-    return html.replace(/@([a-zA-Z0-9_]+)/g,function(match,uname){
+    html=html.replace(/@([a-zA-Z0-9_]+)/g,function(match,uname){
         return '<span class="mention-link" data-mention="'+uname+'">@'+uname+'</span>';
     });
+    // Match #hashtag patterns and make them clickable
+    html=html.replace(/#([a-zA-Z0-9_]+)/g,function(match,tag){
+        return '<span class="hashtag-link" data-tag="'+tag+'">#'+tag+'</span>';
+    });
+    return html;
 }
 
 // Bind click handlers for rendered mention links
@@ -1893,6 +1902,46 @@ function bindMentionClicks(containerSel){
             }).catch(function(e){console.warn('Mention profile load:',e);});
         });
     });
+}
+
+// Bind click handlers for hashtag links
+function bindHashtagClicks(containerSel){
+    $$(containerSel+' .hashtag-link').forEach(function(el){
+        if(el._hashBound) return; el._hashBound=true;
+        el.style.cursor='pointer';
+        el.addEventListener('click',function(){
+            var tag=el.dataset.tag;
+            if(!tag) return;
+            showHashtagFeed(tag);
+        });
+    });
+}
+
+function showHashtagFeed(tag){
+    var matching=feedPosts.filter(function(p){
+        return p.text&&p.text.toLowerCase().indexOf('#'+tag.toLowerCase())!==-1;
+    });
+    var html='<div class="modal-header"><h3><i class="fas fa-hashtag" style="color:var(--primary);margin-right:6px;"></i>'+escapeHtml(tag)+'</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    html+='<div class="modal-body" style="max-height:60vh;overflow-y:auto;">';
+    if(!matching.length){
+        html+='<p style="text-align:center;color:var(--gray);padding:20px;">No posts with #'+escapeHtml(tag)+' yet.</p>';
+    } else {
+        html+='<p style="font-size:13px;color:var(--gray);margin-bottom:12px;">'+matching.length+' post'+(matching.length!==1?'s':'')+' with #'+escapeHtml(tag)+'</p>';
+        matching.forEach(function(fp){
+            var person=fp.person;
+            var avatarSrc=person.avatar_url||DEFAULT_AVATAR;
+            var timeStr=fp.created_at?timeAgoReal(fp.created_at):'';
+            html+='<div class="card" style="padding:12px;margin-bottom:10px;">';
+            html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><img src="'+avatarSrc+'" style="width:32px;height:32px;border-radius:50%;object-fit:cover;"><div><strong style="font-size:13px;">'+escapeHtml(person.name)+'</strong><span style="font-size:11px;color:var(--gray);margin-left:6px;">'+timeStr+'</span></div></div>';
+            html+='<p style="font-size:13px;">'+renderMentionsInText(escapeHtmlNl(fp.text))+'</p>';
+            html+='</div>';
+        });
+    }
+    html+='</div>';
+    showModal(html);
+    // Bind hashtag clicks inside the modal too
+    bindHashtagClicks('#modalContent');
+    bindMentionClicks('#modalContent');
 }
 
 // Send notifications to all @mentioned users in text
@@ -2237,6 +2286,7 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
     bindCommentLikes();
     bindCommentDeletes(postId,countEl);
     bindMentionClicks('#commentsList');
+    bindHashtagClicks('#commentsList');
     initMentionAutocomplete('commentInput',null);
     document.getElementById('commentEmojiBtn').addEventListener('click',function(){openEmojiPicker('commentEmojiPanel',document.getElementById('commentInput'));});
     // Add mini link previews to comment text
@@ -2707,7 +2757,9 @@ async function showProfileView(person){
     if(!isMe){
         cardHtml+='<div class="pv-actions"><button class="btn '+(isFollowed?'btn-disabled':'btn-primary')+'" id="pvFollowBtn" data-uid="'+person.id+'">'+(isFollowed?'<i class="fas fa-check"></i> Following':'<i class="fas fa-plus"></i> Follow')+'</button>';
         cardHtml+='<button class="btn btn-primary" id="pvMsgBtn"><i class="fas fa-envelope"></i> Message</button>';
+        cardHtml+='<button class="btn btn-outline" id="pvMuteBtn" style="color:var(--gray);border-color:var(--gray);">'+(mutedUsers[person.id]?'<i class="fas fa-volume-up"></i> Unmute':'<i class="fas fa-volume-mute"></i> Mute')+'</button>';
         cardHtml+='<button class="btn btn-outline" id="pvBlockBtn" style="color:#e74c3c;border-color:#e74c3c;">'+(blockedUsers[person.id]?'<i class="fas fa-unlock"></i> Unblock':'<i class="fas fa-ban"></i> Block')+'</button>';
+        cardHtml+='<button class="btn btn-outline" id="pvReportUserBtn" style="color:#e74c3c;border-color:#e74c3c;"><i class="fas fa-flag"></i> Report</button>';
         cardHtml+='<button class="btn btn-outline" id="pvInviteGroupBtn" style="color:var(--primary);border-color:var(--primary);"><i class="fas fa-user-plus"></i> Invite to Group</button></div>';
         if(_isAdmin){
             cardHtml+='<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">';
@@ -2717,6 +2769,7 @@ async function showProfileView(person){
             cardHtml+='</div>';
         }
     }
+    if(isMe) cardHtml+='<div class="pv-actions"><button class="btn btn-primary" id="pvEditProfileBtn"><i class="fas fa-pen"></i> Edit Profile</button></div>';
     cardHtml+='<div class="profile-links"><a href="#" class="pv-back-link" id="pvBack"><i class="fas fa-arrow-left"></i> Back to Home</a></div>';
     cardHtml+='</div>';
     $('#pvProfileCard').innerHTML=cardHtml;
@@ -2806,10 +2859,14 @@ async function showProfileView(person){
     }
     $('#pvPostsFeed').innerHTML=feedHtml;
     bindMentionClicks('#pvPostsFeed');
+    bindHashtagClicks('#pvPostsFeed');
     autoFetchLinkPreviews(document.getElementById('pvPostsFeed'));
 
     // Event: Back
     document.getElementById('pvBack').addEventListener('click',function(e){e.preventDefault();navigateTo('home');});
+    // Event: Edit Profile (own profile)
+    var pvEditBtn=document.getElementById('pvEditProfileBtn');
+    if(pvEditBtn) pvEditBtn.addEventListener('click',function(){showMyProfileModal();});
     // Event: Follow
     var followBtn=document.getElementById('pvFollowBtn');
     if(followBtn){
@@ -2849,6 +2906,19 @@ async function showProfileView(person){
                 showBlockConfirmModal(person,function(){showProfileView(person);});
             }
         });
+    }
+    // Event: Mute
+    var muteBtn=document.getElementById('pvMuteBtn');
+    if(muteBtn){
+        muteBtn.addEventListener('click',function(){
+            if(mutedUsers[person.id]){unmuteUser(person.id);showProfileView(person);}
+            else showMuteConfirmModal(person,function(){showProfileView(person);});
+        });
+    }
+    // Event: Report User
+    var reportUserBtn=document.getElementById('pvReportUserBtn');
+    if(reportUserBtn){
+        reportUserBtn.addEventListener('click',function(){showReportUserModal(person);});
     }
     // Event: Invite to Group
     var inviteGroupBtn=document.getElementById('pvInviteGroupBtn');
@@ -3418,6 +3488,7 @@ async function showGroupView(group){
             if(feedEl){feedEl.innerHTML=feedHtml;$('#gvPostCount').textContent=groupPosts.length;}
             bindGvPostEvents();
             bindMentionClicks('#gvPostsFeed');
+            bindHashtagClicks('#gvPostsFeed');
             autoFetchLinkPreviews(feedEl);
             // Author click → profile
             $$('#gvPostsFeed .gv-post-author').forEach(function(el){
@@ -4737,6 +4808,79 @@ function pauseAllVideos(){
     observeNewEmbeds();
 })();
 
+// ======================== POLL RENDERING ========================
+function renderPollInPost(text,postId){
+    var match=text.match(/\[poll\](.*?)\[\/poll\]/);
+    if(!match) return {text:text,pollHtml:''};
+    var cleanText=text.replace(/\n?\[poll\].*?\[\/poll\]/,'').trim();
+    var poll;
+    try{poll=JSON.parse(match[1]);}catch(e){return {text:cleanText,pollHtml:''};}
+    if(!poll||!poll.options) return {text:cleanText,pollHtml:''};
+    // Check if user already voted (stored in localStorage)
+    var voteKey='blipvibe_poll_'+postId;
+    var myVote=null;
+    try{myVote=localStorage.getItem(voteKey);}catch(e){}
+    var voted=myVote!==null;
+    // Get vote counts from localStorage (shared across users on same device for now)
+    var votesKey='blipvibe_pollvotes_'+postId;
+    var votes={};var totalVotes=0;
+    try{var stored=JSON.parse(localStorage.getItem(votesKey)||'{}');votes=stored.votes||{};totalVotes=stored.total||0;}catch(e){}
+    var h='<div class="poll-container" data-postid="'+postId+'">';
+    poll.options.forEach(function(opt,i){
+        var count=votes[i]||0;
+        var pct=totalVotes>0?Math.round((count/totalVotes)*100):0;
+        var isMyVote=myVote===String(i);
+        if(voted){
+            h+='<div class="poll-option poll-voted'+(isMyVote?' poll-my-vote':'')+'">';
+            h+='<div class="poll-bar" style="width:'+pct+'%;"></div>';
+            h+='<span class="poll-label">'+escapeHtml(opt)+'</span>';
+            h+='<span class="poll-pct">'+pct+'%</span>';
+            h+='</div>';
+        } else {
+            h+='<button class="poll-option poll-vote-btn" data-optidx="'+i+'" data-postid="'+postId+'">';
+            h+='<span class="poll-label">'+escapeHtml(opt)+'</span>';
+            h+='</button>';
+        }
+    });
+    h+='<div class="poll-footer">'+totalVotes+' vote'+(totalVotes!==1?'s':'')+'</div>';
+    h+='</div>';
+    return {text:cleanText,pollHtml:h};
+}
+
+function bindPollVotes(containerSel){
+    $$(containerSel+' .poll-vote-btn').forEach(function(btn){
+        if(btn._pollBound) return; btn._pollBound=true;
+        btn.addEventListener('click',function(){
+            var postId=btn.dataset.postid;
+            var optIdx=btn.dataset.optidx;
+            // Save vote
+            try{localStorage.setItem('blipvibe_poll_'+postId,optIdx);}catch(e){}
+            // Update counts
+            var votesKey='blipvibe_pollvotes_'+postId;
+            var stored={};
+            try{stored=JSON.parse(localStorage.getItem(votesKey)||'{}');}catch(e){}
+            if(!stored.votes) stored.votes={};
+            stored.votes[optIdx]=(stored.votes[optIdx]||0)+1;
+            stored.total=(stored.total||0)+1;
+            try{localStorage.setItem(votesKey,JSON.stringify(stored));}catch(e){}
+            // Re-render the poll
+            var container=btn.closest('.poll-container');
+            if(container){
+                var feedPost=container.closest('.feed-post');
+                if(feedPost){
+                    var pid=feedPost.querySelector('.like-btn');
+                    var postIdStr=pid?pid.getAttribute('data-post-id'):postId;
+                    var fp=feedPosts.find(function(p){return p.idx===postIdStr;});
+                    if(fp){
+                        var result=renderPollInPost(fp.text,fp.idx);
+                        container.outerHTML=result.pollHtml;
+                    }
+                }
+            }
+        });
+    });
+}
+
 function buildMediaGrid(imgs){
     if(!imgs||!imgs.length) return '';
     var pid='pg-'+Date.now()+'-'+Math.random().toString(36).substr(2,5);
@@ -4827,11 +4971,11 @@ function renderFeed(tab){
         posts=feedPosts.filter(function(p){return currentUser&&p.person.id===currentUser.id&&!hiddenPosts[p.idx];});
     } else if(tab==='following'){
         // Following tab: posts from people you follow + your own posts
-        posts=feedPosts.filter(function(p){return (state.followedUsers[p.person.id]||(currentUser&&p.person.id===currentUser.id))&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id];});
+        posts=feedPosts.filter(function(p){return (state.followedUsers[p.person.id]||(currentUser&&p.person.id===currentUser.id))&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id]&&!mutedUsers[p.person.id];});
     } else {
         // Discover tab: posts from friends-of-friends (people followed by people you follow, but not already followed by you)
         var myIds=getFollowingIds();
-        posts=feedPosts.filter(function(p){return _fofIds[p.person.id]&&!myIds[p.person.id]&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id];});
+        posts=feedPosts.filter(function(p){return _fofIds[p.person.id]&&!myIds[p.person.id]&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id]&&!mutedUsers[p.person.id];});
     }
     var container=$('#feedContainer');
     if(!posts.length){
@@ -4846,6 +4990,9 @@ function renderFeed(tab){
         var i=p.idx,person=p.person,text=p.text,tags=p.tags||[],badge=p.badge,loc=p.loc,likes=p.likes,genComments=p.comments||[],shares=p.shares;
         var commentCount=p.commentCount||genComments.length;
         var menuId='post-menu-'+i;
+        // Extract poll if present
+        var pollResult=renderPollInPost(text,i);
+        text=pollResult.text;var pollHtml=pollResult.pollHtml;
         var short=renderMentionsInText(escapeHtmlNl(safeSlice(text,0,160)));var rest=renderMentionsInText(escapeHtmlNl(safeSlice(text,160)));var hasMore=rest.length>0;
         var avatarSrc=person.avatar_url||'images/default-avatar.svg';
         var timeStr=p.created_at?timeAgoReal(p.created_at):timeAgo(typeof i==='number'?i:0);
@@ -4861,11 +5008,12 @@ function renderFeed(tab){
         html+='</div>';
         html+='<button class="post-menu-btn" data-menu="'+menuId+'"><i class="fas fa-ellipsis-h"></i></button>';
         var isOwnPost=currentUser&&person.id===currentUser.id;
-        html+='<div class="post-dropdown" id="'+menuId+'"><a href="#" data-action="save" data-pid="'+i+'"><i class="fas fa-bookmark"></i> Save Post</a><a href="#" data-action="report" data-pid="'+i+'"><i class="fas fa-flag"></i> Report</a><a href="#" data-action="hide" data-pid="'+i+'"><i class="fas fa-eye-slash"></i> Hide</a>';
-        if(isOwnPost) html+='<a href="#" data-action="edit" data-pid="'+i+'"><i class="fas fa-pen"></i> Edit</a><a href="#" data-action="delete" data-pid="'+i+'" style="color:#e74c3c;"><i class="fas fa-trash"></i> Delete</a>';
+        html+='<div class="post-dropdown" id="'+menuId+'"><a href="#" data-action="save" data-pid="'+i+'"><i class="fas fa-bookmark"></i> Save Post</a><a href="#" data-action="copylink" data-pid="'+i+'"><i class="fas fa-link"></i> Copy Link</a><a href="#" data-action="report" data-pid="'+i+'"><i class="fas fa-flag"></i> Report</a><a href="#" data-action="hide" data-pid="'+i+'"><i class="fas fa-eye-slash"></i> Hide</a>';
+        if(isOwnPost) html+='<a href="#" data-action="pin" data-pid="'+i+'"><i class="fas fa-thumbtack"></i> '+(state.pinnedPosts&&state.pinnedPosts[i]?'Unpin':'Pin to Profile')+'</a><a href="#" data-action="edit" data-pid="'+i+'"><i class="fas fa-pen"></i> Edit</a><a href="#" data-action="delete" data-pid="'+i+'" style="color:#e74c3c;"><i class="fas fa-trash"></i> Delete</a>';
         html+='</div>';
         html+='</div>';
         html+='<div class="post-description"><p>'+short+(hasMore?'<span class="view-more-text hidden">'+rest+'</span>':'')+'</p>'+(hasMore?'<button class="view-more-btn">view more</button>':'')+'</div>';
+        if(pollHtml) html+=pollHtml;
         html+='<div class="post-tags">';
         tags.forEach(function(t){html+='<span class="skill-tag">'+t+'</span>';});
         html+='</div>';
@@ -4890,6 +5038,8 @@ function renderFeed(tab){
     container.innerHTML=html;
     bindPostEvents();
     bindMentionClicks('#feedContainer');
+    bindHashtagClicks('#feedContainer');
+    bindPollVotes('#feedContainer');
     autoFetchLinkPreviews(container);
     posts.forEach(function(p){renderInlineComments(p.idx);});
     // Load liker avatars asynchronously for Supabase posts
@@ -5034,8 +5184,10 @@ function bindPostEvents(){
             var pid=a.dataset.pid;
             var action=a.dataset.action;
             if(action==='save') showSaveModal(pid);
+            else if(action==='copylink') copyPostLink(pid);
             else if(action==='report') showReportModal(pid);
             else if(action==='hide') hidePost(pid);
+            else if(action==='pin') togglePinPost(pid);
             else if(action==='edit') showEditPostModal(pid);
             else if(action==='delete') confirmDeletePost(pid);
         });
@@ -5258,10 +5410,31 @@ $('#openPostModal').addEventListener('click',function(){
     html+='<div class="cpm-media-zone" id="cpmMediaZone"><div class="cpm-media-grid" id="cpmGrid"></div><div id="cpmDropZone"><i class="fas fa-photo-video"></i><br>Add Photos/Videos</div><input type="file" accept="image/*,video/*" multiple id="cpmFileInput" style="display:none;"></div>';
     html+='<div class="cpm-tags-section"><div class="cpm-tags-wrap" id="cpmTagsWrap"></div></div>';
     html+='<div class="cpm-link-section" id="cpmLinkSection" style="display:none;"><div id="cpmLinkPreview"></div></div>';
-    html+='</div><div class="cpm-footer"><div id="cpmEmojiPanel" class="emoji-picker-panel"></div><div style="display:flex;gap:8px;align-items:center;width:100%;"><button class="cpm-emoji-btn" id="cpmEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="cpm-emoji-btn" id="cpmCameraBtn" title="Add Photos/Videos"><i class="fas fa-camera"></i></button><button class="btn btn-primary" id="cpmPublish" style="flex:1;">Publish</button></div></div></div>';
+    html+='<div id="cpmPollSection" style="display:none;padding:0 20px 12px;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><strong style="font-size:13px;"><i class="fas fa-chart-bar" style="margin-right:6px;color:var(--primary);"></i>Poll</strong><button id="cpmRemovePoll" style="background:none;color:#e74c3c;font-size:12px;cursor:pointer;"><i class="fas fa-times"></i> Remove</button></div><div id="cpmPollOptions"><div class="cpm-poll-opt"><input type="text" class="post-input cpm-poll-input" placeholder="Option 1" maxlength="80" style="font-size:13px;"></div><div class="cpm-poll-opt"><input type="text" class="post-input cpm-poll-input" placeholder="Option 2" maxlength="80" style="font-size:13px;"></div></div><button id="cpmAddPollOpt" style="background:none;color:var(--primary);font-size:12px;cursor:pointer;margin-top:6px;"><i class="fas fa-plus"></i> Add option</button></div>';
+    html+='</div><div class="cpm-footer"><div id="cpmEmojiPanel" class="emoji-picker-panel"></div><div style="display:flex;gap:8px;align-items:center;width:100%;"><button class="cpm-emoji-btn" id="cpmEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="cpm-emoji-btn" id="cpmCameraBtn" title="Add Photos/Videos"><i class="fas fa-camera"></i></button><button class="cpm-emoji-btn" id="cpmPollBtn" title="Add Poll"><i class="fas fa-chart-bar"></i></button><button class="btn btn-primary" id="cpmPublish" style="flex:1;">Publish</button></div></div></div>';
     showModal(html);
     document.getElementById('cpmEmojiBtn').addEventListener('click',function(){openEmojiPicker('cpmEmojiPanel',document.getElementById('cpmText'));});
     initMentionAutocomplete('cpmText',null);
+    // Poll UI handlers
+    var _pollActive=false;
+    document.getElementById('cpmPollBtn').addEventListener('click',function(){
+        _pollActive=!_pollActive;
+        document.getElementById('cpmPollSection').style.display=_pollActive?'':'none';
+        this.style.color=_pollActive?'var(--primary)':'';
+    });
+    document.getElementById('cpmRemovePoll').addEventListener('click',function(){
+        _pollActive=false;
+        document.getElementById('cpmPollSection').style.display='none';
+        document.getElementById('cpmPollBtn').style.color='';
+        document.getElementById('cpmPollOptions').innerHTML='<div class="cpm-poll-opt"><input type="text" class="post-input cpm-poll-input" placeholder="Option 1" maxlength="80" style="font-size:13px;"></div><div class="cpm-poll-opt"><input type="text" class="post-input cpm-poll-input" placeholder="Option 2" maxlength="80" style="font-size:13px;"></div>';
+    });
+    document.getElementById('cpmAddPollOpt').addEventListener('click',function(){
+        var opts=document.querySelectorAll('.cpm-poll-input');
+        if(opts.length>=6){showToast('Maximum 6 options');return;}
+        var div=document.createElement('div');div.className='cpm-poll-opt';
+        div.innerHTML='<input type="text" class="post-input cpm-poll-input" placeholder="Option '+(opts.length+1)+'" maxlength="80" style="font-size:13px;">';
+        document.getElementById('cpmPollOptions').appendChild(div);
+    });
     var mediaList=[];
     var zone=document.getElementById('cpmMediaZone');
     var grid=document.getElementById('cpmGrid');
@@ -5447,7 +5620,16 @@ $('#openPostModal').addEventListener('click',function(){
         var linkTitle=_linkData.title||'';
         var linkDesc=_linkData.desc||'';
         var linkImgSrc=_linkData.image||'';
-        if(!text&&!mediaList.length&&!linkUrl)return;
+        // Collect poll data if active
+        var pollData=null;
+        if(_pollActive){
+            var pollInputs=document.querySelectorAll('.cpm-poll-input');
+            var pollOpts=[];
+            pollInputs.forEach(function(inp){var v=inp.value.trim();if(v)pollOpts.push(v);});
+            if(pollOpts.length>=2) pollData={options:pollOpts,votes:{},totalVotes:0};
+            else if(pollOpts.length>0){showToast('Poll needs at least 2 options');_publishing=false;return;}
+        }
+        if(!text&&!mediaList.length&&!linkUrl&&!pollData)return;
         _publishing=true;
         var pubBtn=document.getElementById('cpmPublish');
         pubBtn.disabled=true;pubBtn.textContent='Publishing...';
@@ -5477,6 +5659,7 @@ $('#openPostModal').addEventListener('click',function(){
 
         // Create post in Supabase — don't duplicate URL if it's already in the text
         var fullContent = text;
+        if(pollData) fullContent += '\n[poll]'+JSON.stringify(pollData)+'[/poll]';
         if(linkUrl && text.indexOf(linkUrl)===-1) fullContent += '\n\n' + linkUrl;
         var sbPost = null;
         if(currentUser && (fullContent || imageUrl || allImageUrls.length)) {
@@ -8228,6 +8411,80 @@ function savePostToFolder(pid,fid){
     persistSaved();
 }
 
+// ======================== COPY POST LINK ========================
+function copyPostLink(pid){
+    var url=window.location.origin+window.location.pathname+'#post/'+pid;
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(url).then(function(){showToast('Link copied!');}).catch(function(){_fallbackCopy(url);});
+    } else { _fallbackCopy(url); }
+}
+function _fallbackCopy(text){
+    var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');showToast('Link copied!');}catch(e){showToast('Copy failed');}
+    ta.remove();
+}
+
+// ======================== PIN POST TO PROFILE ========================
+function togglePinPost(pid){
+    if(!state.pinnedPosts) state.pinnedPosts={};
+    if(state.pinnedPosts[pid]){
+        delete state.pinnedPosts[pid];
+        showToast('Post unpinned');
+    } else {
+        // Max 3 pinned posts
+        var pinned=Object.keys(state.pinnedPosts);
+        if(pinned.length>=3){showToast('You can only pin up to 3 posts');return;}
+        state.pinnedPosts[pid]=Date.now();
+        showToast('Post pinned to profile!');
+    }
+    saveState();
+}
+
+// ======================== MUTE USERS ========================
+var mutedUsers={};
+try{var _mu=JSON.parse(localStorage.getItem('blipvibe_muted')||'{}');mutedUsers=_mu;}catch(e){}
+function persistMuted(){try{localStorage.setItem('blipvibe_muted',JSON.stringify(mutedUsers));}catch(e){}}
+function muteUser(userId){
+    mutedUsers[userId]=true;
+    persistMuted();
+    showToast('User muted. Their posts will be hidden.');
+}
+function unmuteUser(userId){
+    delete mutedUsers[userId];
+    persistMuted();
+    showToast('User unmuted');
+}
+function showMuteConfirmModal(person,onDone){
+    var h='<div class="modal-header"><h3><i class="fas fa-volume-mute" style="color:var(--primary);margin-right:8px;"></i>Mute User</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body"><p style="text-align:center;margin-bottom:16px;">Mute <strong>'+escapeHtml(person.name||'this user')+'</strong>?<br><span style="font-size:13px;color:var(--gray);">Their posts will be hidden from your feed. They won\'t be notified.</span></p>';
+    h+='<div class="modal-actions"><button class="btn btn-outline modal-close">Cancel</button><button class="btn btn-primary" id="confirmMuteBtn">Mute</button></div></div>';
+    showModal(h);
+    document.getElementById('confirmMuteBtn').addEventListener('click',function(){
+        muteUser(person.id);closeModal();if(onDone)onDone();
+    });
+}
+
+// ======================== REPORT USER (not just posts) ========================
+function showReportUserModal(person){
+    var h='<div class="modal-header"><h3><i class="fas fa-flag" style="color:#e74c3c;margin-right:8px;"></i>Report User</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body"><p style="font-size:14px;margin-bottom:14px;color:var(--gray);">Why are you reporting <strong>'+escapeHtml(person.name||'this user')+'</strong>?</p>';
+    h+='<div style="display:flex;flex-direction:column;gap:8px;">';
+    ['Spam','Harassment','Impersonation','Inappropriate Content','Other'].forEach(function(r){
+        h+='<button class="btn btn-outline report-reason-btn" data-reason="'+r+'" style="text-align:left;">'+r+'</button>';
+    });
+    h+='</div></div>';
+    showModal(h);
+    $$('.report-reason-btn').forEach(function(btn){
+        btn.addEventListener('click',function(){
+            reportedPosts.push({type:'user',userId:person.id,reason:btn.dataset.reason,time:Date.now()});
+            persistReports();
+            closeModal();
+            showToast('Report submitted. Thank you.');
+        });
+    });
+}
+
 // ======================== REPORT MODAL ========================
 function showReportModal(pid){
     var h='<div class="modal-header"><h3><i class="fas fa-flag" style="color:#e74c3c;margin-right:8px;"></i>Report Post</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
@@ -8607,6 +8864,7 @@ async function renderSavedPage(){
     h+='</div>';
     container.innerHTML=h;
     bindMentionClicks('#savedTabContent');
+    bindHashtagClicks('#savedTabContent');
     // Drag-scroll on pill tabs
     var pillTabs=document.getElementById('savedPillTabs');
     if(pillTabs) _bindDragScroll(pillTabs);

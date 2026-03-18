@@ -1,5 +1,22 @@
 [
   {
+    "version": "0.2.25",
+    "date": "2026-03-18",
+    "added": [
+      "Polls in posts — add a poll with up to 6 options when creating a post, vote on polls in the feed with animated bar results",
+      "Hashtags — #tags in posts are now clickable, showing all posts with that hashtag",
+      "Copy Link — copy a direct link to any post from the post dropdown menu",
+      "Pin to Profile — pin up to 3 posts to your profile from the post dropdown menu",
+      "Mute Users — hide someone's posts without blocking them (separate from block, they won't be notified)",
+      "Report Users — report a user's profile (not just individual posts) with reasons: Spam, Harassment, Impersonation, Inappropriate Content, Other",
+      "Edit Profile button on own profile view — one click to open Edit Profile instead of navigating to Settings",
+      "Escape key closes modals across the entire app"
+    ],
+    "fixed": [
+      "Muted users filtered from Following and Discover feeds"
+    ]
+  },
+  {
     "version": "0.2.24",
     "date": "2026-03-18",
     "added": [],

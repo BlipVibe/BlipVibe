@@ -619,6 +619,22 @@ body.skin-midnight .photos-empty,body.skin-midnight .photo-album-empty{color:#bb
 .mention-uname{font-size:12px;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .mention-link{color:var(--primary);font-weight:600;cursor:pointer!important;}
 .mention-link:hover{text-decoration:underline;}
+.hashtag-link{color:var(--primary);font-weight:600;cursor:pointer!important;}
+.hashtag-link:hover{text-decoration:underline;}
+
+/* ========== POLLS ========== */
+.poll-container{padding:10px 20px 6px;display:flex;flex-direction:column;gap:8px;}
+.poll-option{position:relative;border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;overflow:hidden;transition:border-color .2s;}
+.poll-vote-btn{background:var(--card);cursor:pointer;text-align:left;width:100%;display:block;}
+.poll-vote-btn:hover{border-color:var(--primary);background:var(--light-bg);}
+.poll-voted{cursor:default;}
+.poll-bar{position:absolute;top:0;left:0;bottom:0;background:var(--primary);opacity:.12;border-radius:8px;transition:width .4s ease;}
+.poll-my-vote{border-color:var(--primary);}
+.poll-my-vote .poll-bar{opacity:.2;}
+.poll-label{position:relative;z-index:1;font-weight:500;}
+.poll-pct{position:relative;z-index:1;float:right;font-weight:600;font-size:13px;color:var(--dark);}
+.poll-footer{font-size:12px;color:var(--gray);padding:2px 0;}
+.cpm-poll-opt{margin-bottom:6px;}
 
 /* ========== MODAL ========== */
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px;overscroll-behavior:none;}
