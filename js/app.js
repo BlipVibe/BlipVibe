@@ -8782,7 +8782,7 @@ function openStoryViewer(userId){
         var isOwn=currentUser&&user.id===currentUser.id;
         var mediaHtml='';
         if(s.media_url){
-            if(s.media_type==='video') mediaHtml='<video src="'+s.media_url+'" autoplay playsinline muted class="story-media"></video>';
+            if(s.media_type==='video') mediaHtml='<video src="'+s.media_url+'" autoplay playsinline class="story-media" controls></video>';
             else mediaHtml='<img src="'+s.media_url+'" class="story-media">';
         }
         overlay.innerHTML='<div class="story-progress"><div class="story-progress-fill" style="width:0%;"></div></div>'+
@@ -8794,15 +8794,33 @@ function openStoryViewer(userId){
         _storyViewed[s.id]=true;
         try{localStorage.setItem('blipvibe_story_viewed',JSON.stringify(_storyViewed));}catch(e){}
         if(currentUser) sbViewStory(s.id,currentUser.id);
-        // Auto-advance progress bar (5s per story)
+        // Auto-advance: 5s for images/text, video duration for videos
         var fill=overlay.querySelector('.story-progress-fill');
-        fill.style.transition='width 5s linear';
+        var storyDuration=5000;
+        var vid=overlay.querySelector('video.story-media');
+        if(vid){
+            // Try to play with sound; if blocked, play muted then unmute on tap
+            vid.play().catch(function(){vid.muted=true;vid.play().catch(function(){});});
+            vid.addEventListener('loadedmetadata',function(){
+                storyDuration=Math.max(vid.duration*1000,3000);
+                fill.style.transition='width '+storyDuration+'ms linear';
+                fill.style.width='100%';
+                clearTimeout(overlay._timer);
+                overlay._timer=setTimeout(function(){
+                    if(idx<stories.length-1){idx++;render();}
+                    else{overlay.remove();renderStoriesBar();}
+                },storyDuration);
+            },{once:true});
+            // Tap video to unmute if browser muted it
+            vid.addEventListener('click',function(e){e.stopPropagation();if(vid.muted){vid.muted=false;}},{once:true});
+        }
+        fill.style.transition='width '+storyDuration+'ms linear';
         requestAnimationFrame(function(){fill.style.width='100%';});
         clearTimeout(overlay._timer);
         overlay._timer=setTimeout(function(){
             if(idx<stories.length-1){idx++;render();}
             else{overlay.remove();renderStoriesBar();}
-        },5000);
+        },storyDuration);
     }
     overlay.addEventListener('click',function(e){
         if(e.target.closest('.story-close')){clearTimeout(overlay._timer);overlay.remove();renderStoriesBar();return;}
