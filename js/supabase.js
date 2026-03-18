@@ -1272,6 +1272,29 @@ async function sbDeleteStory(storyId) {
   if (error) throw error;
 }
 
+async function sbGetStoryComments(storyId) {
+  const { data, error } = await sb.from('story_comments')
+    .select('*, author:profiles!story_comments_user_id_fkey(id, username, display_name, avatar_url)')
+    .eq('story_id', storyId)
+    .order('created_at', { ascending: true });
+  if (error) throw error;
+  return _sanitizeData(data || []);
+}
+
+async function sbCreateStoryComment(storyId, userId, content) {
+  const { data, error } = await sb.from('story_comments')
+    .insert({ story_id: storyId, user_id: userId, content: content })
+    .select('*, author:profiles!story_comments_user_id_fkey(id, username, display_name, avatar_url)')
+    .single();
+  if (error) throw error;
+  return _sanitizeData(data);
+}
+
+async function sbDeleteStoryComment(commentId) {
+  const { error } = await sb.from('story_comments').delete().eq('id', commentId);
+  if (error) throw error;
+}
+
 async function sbViewStory(storyId, userId) {
   const { error } = await sb.from('story_views')
     .upsert({ story_id: storyId, user_id: userId }, { onConflict: 'story_id,user_id' });

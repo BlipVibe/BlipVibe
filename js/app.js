@@ -8764,6 +8764,75 @@ function openCreateStory(){
     });
 }
 
+async function loadStoryComments(storyId){
+    var list=document.getElementById('storyCommentsList');
+    var countEl=document.querySelector('.story-comment-count');
+    if(!list) return;
+    try{
+        var comments=await sbGetStoryComments(storyId);
+        if(countEl) countEl.textContent=comments.length||'';
+        if(!comments.length){
+            list.innerHTML='<p style="color:rgba(255,255,255,.5);text-align:center;padding:12px;font-size:12px;">No comments yet</p>';
+            return;
+        }
+        var html='';
+        comments.forEach(function(c){
+            var cName=(c.author?c.author.display_name||c.author.username:'User');
+            var cAvatar=(c.author?c.author.avatar_url:null)||DEFAULT_AVATAR;
+            var isOwn=currentUser&&c.user_id===currentUser.id;
+            html+='<div class="story-comment" data-cid="'+c.id+'">';
+            html+='<img src="'+cAvatar+'" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;">';
+            html+='<div style="flex:1;min-width:0;"><strong style="font-size:12px;color:#fff;">'+escapeHtml(cName)+'</strong>';
+            html+='<p style="font-size:12px;color:rgba(255,255,255,.8);margin-top:1px;word-break:break-word;">'+renderMentionsInText(escapeHtmlNl(c.content))+'</p></div>';
+            if(isOwn) html+='<button class="story-comment-del" data-cid="'+c.id+'" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:11px;cursor:pointer;flex-shrink:0;"><i class="fas fa-trash"></i></button>';
+            html+='</div>';
+        });
+        list.innerHTML=html;
+        // Bind delete buttons
+        list.querySelectorAll('.story-comment-del').forEach(function(btn){
+            btn.addEventListener('click',function(e){
+                e.stopPropagation();
+                sbDeleteStoryComment(btn.dataset.cid).then(function(){loadStoryComments(storyId);}).catch(function(){showToast('Delete failed');});
+            });
+        });
+        // Bind mention clicks
+        list.querySelectorAll('.mention-link').forEach(function(el){
+            el.style.cursor='pointer';
+            el.addEventListener('click',function(e){
+                e.stopPropagation();
+                var uname=el.dataset.mention;if(!uname) return;
+                sbGetProfileByUsername(uname).then(function(p){
+                    if(p){var ov=document.querySelector('.story-viewer-overlay');if(ov)ov.remove();showProfileView(profileToPerson(p));}
+                }).catch(function(){});
+            });
+        });
+    }catch(e){
+        console.warn('Story comments load error:',e);
+        list.innerHTML='<p style="color:rgba(255,255,255,.4);text-align:center;padding:12px;font-size:12px;">Comments unavailable</p>';
+    }
+}
+
+async function submitStoryComment(storyId,storyUser){
+    var input=document.getElementById('storyCommentInput');
+    if(!input) return;
+    var text=input.value.trim();
+    if(!text||!currentUser) return;
+    input.value='';
+    try{
+        await sbCreateStoryComment(storyId,currentUser.id,text);
+        // Notify story owner
+        if(storyUser&&storyUser.id&&storyUser.id!==currentUser.id){
+            var myName=currentUser.display_name||currentUser.username||'Someone';
+            sbCreateNotification(storyUser.id,'comment',myName+' commented on your story','',{originalType:'comment'}).catch(function(){});
+        }
+        notifyMentionedUsers(text,null,'a story');
+        loadStoryComments(storyId);
+    }catch(e){
+        console.error('Story comment error:',e);
+        showToast('Comment failed');
+    }
+}
+
 function openStoryViewer(userId){
     var group=_storiesData.find(function(g){return g.user.id===userId;});
     if(!group||!group.stories.length){showToast('No stories to show');return;}
@@ -8789,11 +8858,37 @@ function openStoryViewer(userId){
             '<div class="story-header"><img src="'+avatar+'" class="story-header-avatar"><div><strong>'+escapeHtml(name)+'</strong><span style="font-size:11px;color:rgba(255,255,255,.6);margin-left:6px;">'+time+'</span></div><button class="story-close"><i class="fas fa-times"></i></button></div>'+
             '<div class="story-content">'+mediaHtml+(s.text?'<div class="story-text">'+escapeHtml(s.text)+'</div>':'')+'</div>'+
             '<div class="story-nav"><div class="story-nav-left"></div><div class="story-nav-right"></div></div>'+
-            (isOwn?'<div class="story-viewers"><button class="story-viewers-btn"><i class="fas fa-eye"></i> Views</button><button class="story-delete-btn" style="color:#e74c3c;"><i class="fas fa-trash"></i></button></div>':'');
+            (isOwn?'<div class="story-viewers"><button class="story-viewers-btn"><i class="fas fa-eye"></i> Views</button><button class="story-delete-btn" style="color:#e74c3c;"><i class="fas fa-trash"></i></button></div>':'')+
+            '<div class="story-comments-panel" id="storyCommentsPanel" style="display:none;"><div class="story-comments-list" id="storyCommentsList"></div></div>'+
+            '<div class="story-input-bar"><button class="story-toggle-comments-btn"><i class="far fa-comment"></i> <span class="story-comment-count"></span></button><input type="text" class="story-comment-input" id="storyCommentInput" placeholder="Reply to story..."><button class="story-emoji-btn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="story-send-btn"><i class="fas fa-paper-plane"></i></button></div>';
         // Mark as viewed
         _storyViewed[s.id]=true;
         try{localStorage.setItem('blipvibe_story_viewed',JSON.stringify(_storyViewed));}catch(e){}
         if(currentUser) sbViewStory(s.id,currentUser.id);
+        // Load and bind story comments
+        loadStoryComments(s.id);
+        var storyInput=overlay.querySelector('#storyCommentInput');
+        var storySendBtn=overlay.querySelector('.story-send-btn');
+        var storyEmojiBtn=overlay.querySelector('.story-emoji-btn');
+        var storyToggleBtn=overlay.querySelector('.story-toggle-comments-btn');
+        var storyPanel=overlay.querySelector('#storyCommentsPanel');
+        if(storySendBtn) storySendBtn.addEventListener('click',function(){submitStoryComment(s.id,user);});
+        if(storyInput){
+            storyInput.addEventListener('keypress',function(e){if(e.key==='Enter')submitStoryComment(s.id,user);});
+            storyInput.addEventListener('focus',function(){clearTimeout(overlay._timer);}); // pause auto-advance while typing
+            storyInput.addEventListener('blur',function(){
+                // Resume auto-advance after typing
+                overlay._timer=setTimeout(function(){
+                    if(idx<stories.length-1){idx++;render();}
+                    else{overlay.remove();renderStoriesBar();}
+                },3000);
+            });
+        }
+        if(storyToggleBtn) storyToggleBtn.addEventListener('click',function(e){
+            e.stopPropagation();
+            var panel=overlay.querySelector('#storyCommentsPanel');
+            if(panel) panel.style.display=panel.style.display==='none'?'flex':'none';
+        });
         // Auto-advance: 5s for images/text, video duration for videos
         var fill=overlay.querySelector('.story-progress-fill');
         var storyDuration=5000;

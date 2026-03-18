@@ -684,6 +684,20 @@ body.skin-midnight .photos-empty,body.skin-midnight .photo-album-empty{color:#bb
 .story-viewers-btn,.story-delete-btn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:6px 14px;border-radius:20px;font-size:12px;cursor:pointer;backdrop-filter:blur(4px);}
 .story-view-list{position:absolute;bottom:60px;left:16px;background:rgba(0,0,0,.8);border-radius:12px;max-height:200px;overflow-y:auto;min-width:180px;z-index:3;}
 
+/* Story Comments */
+.story-input-bar{position:absolute;bottom:0;left:0;right:0;display:flex;align-items:center;gap:8px;padding:10px 16px;background:linear-gradient(transparent,rgba(0,0,0,.8));z-index:4;}
+.story-comment-input{flex:1;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:8px 14px;color:#fff;font-size:13px;outline:none;font-family:inherit;}
+.story-comment-input::placeholder{color:rgba(255,255,255,.5);}
+.story-send-btn,.story-emoji-btn{background:none;border:none;color:rgba(255,255,255,.7);font-size:16px;cursor:pointer;padding:4px;transition:color .15s;flex-shrink:0;}
+.story-send-btn:hover,.story-emoji-btn:hover{color:var(--primary);}
+.story-toggle-comments-btn{background:none;border:none;color:rgba(255,255,255,.7);font-size:13px;cursor:pointer;padding:4px 8px;flex-shrink:0;display:flex;align-items:center;gap:4px;}
+.story-toggle-comments-btn:hover{color:#fff;}
+.story-comment-count{font-size:12px;}
+.story-comments-panel{position:absolute;bottom:52px;left:0;right:0;max-height:40vh;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);display:flex;flex-direction:column;z-index:3;border-radius:16px 16px 0 0;overflow:hidden;}
+.story-comments-list{flex:1;overflow-y:auto;padding:12px 16px;-webkit-overflow-scrolling:touch;}
+.story-comment{display:flex;gap:8px;padding:6px 0;align-items:flex-start;}
+.story-comment+.story-comment{border-top:1px solid rgba(255,255,255,.1);}
+
 /* ========== EMOJI REACTIONS ========== */
 .reaction-picker{position:absolute;bottom:100%;left:0;display:flex;gap:4px;background:var(--card);border:1px solid var(--border);border-radius:24px;padding:4px 8px;box-shadow:0 -4px 16px rgba(0,0,0,.15);z-index:10;animation:fadeIn .15s ease;}
 .reaction-emoji-btn{background:none;border:none;font-size:20px;cursor:pointer;padding:4px;transition:transform .15s;line-height:1;}
