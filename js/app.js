@@ -3585,7 +3585,7 @@ async function showGroupView(group){
 
     // Chat container (hidden by default)
     var _oldChat=document.getElementById('gvChatSection');if(_oldChat)_oldChat.remove();
-    var chatSectionHtml='<div id="gvChatSection" style="display:none;"><div class="gc-layout"><div class="gc-sidebar" id="gcSidebar"></div><div class="gc-chat-area" id="gcChatArea"><div class="gc-empty"><i class="fas fa-comments" style="font-size:48px;opacity:.3;"></i><p>Select a channel to start chatting</p></div></div></div></div>';
+    var chatSectionHtml='<div id="gvChatSection" style="display:none;"><div class="gc-layout"><div class="gc-sidebar" id="gcSidebar"></div><div class="gc-chat-area" id="gcChatArea"><div class="gc-empty"><i class="fas fa-comments" style="font-size:48px;opacity:.3;"></i><p>Select a channel to start chatting</p></div></div><div class="gc-members-panel" id="gcMembersPanel"></div></div></div>';
     $('#gvPostsFeed').insertAdjacentHTML('afterend',chatSectionHtml);
 
     // Shop container (hidden by default)
@@ -4000,7 +4000,7 @@ function showGcModsModal(group){
         h+='</div>';
     });
     h+='</div></div></div>';
-    showModal(h);
+    _gcShowModal(h);
     $$('.gc-remove-mod').forEach(function(b){b.addEventListener('click',function(){
         var uid=b.dataset.uid;
         if(!_gcChatMods[gid]) _gcChatMods[gid]={};
@@ -4022,11 +4022,53 @@ async function initGroupChat(group){
     _gcGroup=group;
     _gcMemberCache={};
     // Cache member profiles
+    var membersList=[];
     try{
-        var members=await sbGetGroupMembers(group.id);
-        (members||[]).forEach(function(m){_gcMemberCache[m.user_id||m.id]=m;});
+        membersList=await sbGetGroupMembers(group.id);
+        (membersList||[]).forEach(function(m){_gcMemberCache[m.user_id||m.id]=m;});
     }catch(e){}
     await renderGroupChatSidebar(group);
+    renderGcMembersPanel(group,membersList);
+}
+
+function renderGcMembersPanel(group,members){
+    var panel=document.getElementById('gcMembersPanel');
+    if(!panel) return;
+    var admins=[];var mods=[];var regular=[];
+    var chatMods=_gcChatMods[group.id]||{};
+    (members||[]).forEach(function(m){
+        var uid=m.user_id||m.id;
+        var u=m.user||m;
+        var entry={id:uid,name:u.display_name||u.username||'User',avatar:u.avatar_url||DEFAULT_AVATAR,role:m.role||'member'};
+        if(uid===group.owner_id||entry.role==='owner'||entry.role==='admin') admins.push(entry);
+        else if(entry.role==='moderator'||chatMods[uid]) mods.push(entry);
+        else regular.push(entry);
+    });
+    var html='<div class="gc-members-header"><i class="fas fa-users" style="margin-right:6px;"></i>Members — '+(members||[]).length+'</div>';
+    if(admins.length){
+        html+='<div class="gc-members-group"><div class="gc-members-label">Admins — '+admins.length+'</div>';
+        admins.forEach(function(a){html+=_gcMemberItem(a);});
+        html+='</div>';
+    }
+    if(mods.length){
+        html+='<div class="gc-members-group"><div class="gc-members-label">Moderators — '+mods.length+'</div>';
+        mods.forEach(function(a){html+=_gcMemberItem(a);});
+        html+='</div>';
+    }
+    if(regular.length){
+        html+='<div class="gc-members-group"><div class="gc-members-label">Members — '+regular.length+'</div>';
+        regular.forEach(function(a){html+=_gcMemberItem(a);});
+        html+='</div>';
+    }
+    panel.innerHTML=html;
+    panel.querySelectorAll('.gc-member-item').forEach(function(el){
+        el.addEventListener('click',function(){
+            var uid=el.dataset.uid;if(uid) viewProfile(uid);
+        });
+    });
+}
+function _gcMemberItem(m){
+    return '<div class="gc-member-item" data-uid="'+m.id+'"><img src="'+m.avatar+'" alt="'+escapeHtml(m.name)+'"><span>'+escapeHtml(m.name)+'</span></div>';
 }
 
 async function renderGroupChatSidebar(group){
@@ -4091,12 +4133,27 @@ async function renderGroupChatSidebar(group){
     $$('#gcSidebar .gc-del-ch-btn').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();confirmGcDeleteChannel(group,b.dataset.cid);});});
 }
 
+// Helper: show modal on top of fullscreen chat
+function _gcShowModal(html){
+    var cs=document.getElementById('gvChatSection');
+    if(cs) cs.style.visibility='hidden';
+    showModal(html);
+    // Restore chat when modal closes
+    var _obs=new MutationObserver(function(){
+        if(!$('#modalOverlay').classList.contains('show')){
+            if(cs) cs.style.visibility='';
+            _obs.disconnect();
+        }
+    });
+    _obs.observe($('#modalOverlay'),{attributes:true,attributeFilter:['class']});
+}
+
 function showGcSectionModal(group,editId,editName){
     var isEdit=!!editId;
     var html='<div class="create-post-modal"><div class="modal-header"><h3>'+(isEdit?'Rename Section':'New Section')+'</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     html+='<div style="padding:16px;"><input type="text" id="gcSecNameInput" placeholder="Section name..." value="'+(editName||'')+'" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:14px;background:var(--light-bg);color:var(--dark);outline:none;font-family:inherit;">';
     html+='<button class="btn btn-primary" id="gcSecSaveBtn" style="margin-top:12px;width:100%;">'+(isEdit?'Save':'Create')+'</button></div></div>';
-    showModal(html);
+    _gcShowModal(html);
     var inp=document.getElementById('gcSecNameInput');if(inp)inp.focus();
     document.getElementById('gcSecSaveBtn').addEventListener('click',async function(){
         var name=(inp.value||'').trim();if(!name){showToast('Enter a name');return;}
@@ -4114,7 +4171,7 @@ function showGcChannelModal(group,sectionId,editId,editName){
     var html='<div class="create-post-modal"><div class="modal-header"><h3>'+(isEdit?'Rename Channel':'New Channel')+'</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     html+='<div style="padding:16px;"><input type="text" id="gcChNameInput" placeholder="Channel name..." value="'+(editName||'')+'" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:14px;background:var(--light-bg);color:var(--dark);outline:none;font-family:inherit;">';
     html+='<button class="btn btn-primary" id="gcChSaveBtn" style="margin-top:12px;width:100%;">'+(isEdit?'Save':'Create')+'</button></div></div>';
-    showModal(html);
+    _gcShowModal(html);
     var inp=document.getElementById('gcChNameInput');if(inp)inp.focus();
     document.getElementById('gcChSaveBtn').addEventListener('click',async function(){
         var name=(inp.value||'').trim();if(!name){showToast('Enter a name');return;}
@@ -4129,7 +4186,7 @@ function showGcChannelModal(group,sectionId,editId,editName){
 }
 
 function confirmGcDeleteSection(group,sectionId){
-    showModal('<div class="create-post-modal"><div class="modal-header"><h3>Delete Section</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div style="padding:16px;"><p>Delete this section and ALL its channels and messages? This cannot be undone.</p><div style="display:flex;gap:10px;margin-top:14px;"><button class="btn btn-primary" id="gcDelSecYes" style="flex:1;background:#e74c3c;">Delete</button><button class="btn btn-outline" id="gcDelSecNo" style="flex:1;">Cancel</button></div></div></div>');
+    _gcShowModal('<div class="create-post-modal"><div class="modal-header"><h3>Delete Section</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div style="padding:16px;"><p>Delete this section and ALL its channels and messages? This cannot be undone.</p><div style="display:flex;gap:10px;margin-top:14px;"><button class="btn btn-primary" id="gcDelSecYes" style="flex:1;background:#e74c3c;">Delete</button><button class="btn btn-outline" id="gcDelSecNo" style="flex:1;">Cancel</button></div></div></div>');
     document.getElementById('gcDelSecYes').addEventListener('click',async function(){
         try{await sbDeleteGroupChatSection(sectionId);closeModal();showToast('Section deleted');await renderGroupChatSidebar(group);}catch(e){showToast('Error: '+e.message);}
     });
@@ -4137,7 +4194,7 @@ function confirmGcDeleteSection(group,sectionId){
 }
 
 function confirmGcDeleteChannel(group,channelId){
-    showModal('<div class="create-post-modal"><div class="modal-header"><h3>Delete Channel</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div style="padding:16px;"><p>Delete this channel and all its messages?</p><div style="display:flex;gap:10px;margin-top:14px;"><button class="btn btn-primary" id="gcDelChYes" style="flex:1;background:#e74c3c;">Delete</button><button class="btn btn-outline" id="gcDelChNo" style="flex:1;">Cancel</button></div></div></div>');
+    _gcShowModal('<div class="create-post-modal"><div class="modal-header"><h3>Delete Channel</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div style="padding:16px;"><p>Delete this channel and all its messages?</p><div style="display:flex;gap:10px;margin-top:14px;"><button class="btn btn-primary" id="gcDelChYes" style="flex:1;background:#e74c3c;">Delete</button><button class="btn btn-outline" id="gcDelChNo" style="flex:1;">Cancel</button></div></div></div>');
     document.getElementById('gcDelChYes').addEventListener('click',async function(){
         try{
             await sbDeleteGroupChatChannel(channelId);closeModal();showToast('Channel deleted');
