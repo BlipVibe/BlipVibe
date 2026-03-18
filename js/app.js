@@ -5189,6 +5189,14 @@ function bindPostEvents(){
                     if(db){var dc=db.querySelector('.dislike-count');dc.textContent=Math.max(0,parseInt(dc.textContent)-1);db.classList.remove('disliked');db.querySelector('i').className='far fa-thumbs-down';}
                     delete state.dislikedPosts[postId];
                 }
+                // Clear reaction if active (only earn coins for like OR reaction, not both)
+                if(_postReactions[postId]){
+                    delete _postReactions[postId];
+                    try{localStorage.setItem('blipvibe_reactions',JSON.stringify(_postReactions));}catch(e2){}
+                    var rb=btn.closest('.action-left').querySelector('.react-btn');
+                    if(rb) rb.innerHTML='<i class="far fa-face-smile"></i>';
+                    if(currentUser) sbRemoveReaction(currentUser.id,'post',postId).catch(function(){});
+                }
                 try {
                     var nowLiked = await sbToggleLike(currentUser.id, 'post', postId);
                     if(nowLiked) {
@@ -8971,6 +8979,21 @@ function toggleReaction(postId,emoji,btn){
         delete _postReactions[postId];
     } else {
         _postReactions[postId]=emoji;
+        // Remove like/dislike if setting a reaction (only earn coins for one)
+        var post=btn.closest('.feed-post')||btn.closest('.card');
+        if(post){
+            if(state.likedPosts[postId]){
+                delete state.likedPosts[postId];
+                var likeBtn=post.querySelector('.like-btn[data-post-id="'+postId+'"]');
+                if(likeBtn){likeBtn.classList.remove('liked');likeBtn.querySelector('i').className='far fa-thumbs-up';var lc=likeBtn.querySelector('.like-count');if(lc)lc.textContent=Math.max(0,parseInt(lc.textContent)-1);}
+            }
+            if(state.dislikedPosts[postId]){
+                delete state.dislikedPosts[postId];
+                var disBtn=post.querySelector('.dislike-btn[data-post-id="'+postId+'"]');
+                if(disBtn){disBtn.classList.remove('disliked');disBtn.querySelector('i').className='far fa-thumbs-down';var dc=disBtn.querySelector('.dislike-count');if(dc)dc.textContent=Math.max(0,parseInt(dc.textContent)-1);}
+            }
+            saveState();
+        }
     }
     try{localStorage.setItem('blipvibe_reactions',JSON.stringify(_postReactions));}catch(e){}
     // Update the react button to show selected emoji or reset to default icon
