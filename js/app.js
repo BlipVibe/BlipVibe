@@ -3821,13 +3821,11 @@ function _enterGroupChatFullscreen(group){
     var botNav=document.querySelector('.nav-center');
     if(topNav) topNav.style.display='none';
     if(botNav) botNav.style.display='none';
-    // Hide the entire group view page content behind the fullscreen chat
-    var gvPage=document.getElementById('page-group-view');
-    if(gvPage) gvPage.style.visibility='hidden';
     var cs=document.getElementById('gvChatSection');
     if(cs){
+        // Move chat section to body so it's not clipped by parent
+        document.body.appendChild(cs);
         cs.className='gc-fullscreen-active';
-        cs.style.cssText='';
         cs.removeAttribute('style');
     }
     document.body.style.overflow='hidden';
@@ -3861,10 +3859,14 @@ function _exitGroupChatFullscreen(){
     if(topNav) topNav.style.display='';
     if(botNav) botNav.style.display='';
     document.body.style.overflow='';
-    var gvPage=document.getElementById('page-group-view');
-    if(gvPage) gvPage.style.visibility='';
     var cs=document.getElementById('gvChatSection');
-    if(cs){cs.className='';cs.style.display='none';}
+    if(cs){
+        // Move chat section back into the group view page
+        var gvPostsFeed=document.getElementById('gvPostsFeed');
+        if(gvPostsFeed) gvPostsFeed.parentNode.insertBefore(cs,gvPostsFeed.nextSibling);
+        cs.className='';
+        cs.style.display='none';
+    }
     var bar=document.getElementById('gcBackBar');
     if(bar) bar.remove();
 }
