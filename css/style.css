@@ -637,12 +637,13 @@ body.modal-open{overflow:hidden!important;position:fixed!important;width:100%!im
 /* Comment Modal Layout */
 .modal-content:has(.comment-modal-layout){overflow-y:hidden;}
 .comment-modal-layout{display:flex;flex-direction:column;max-height:calc(85vh - 65px);overflow:hidden;}
-.comment-post-embed{padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0;max-height:40vh;overflow:hidden;}
-.comment-post-embed .post-media-grid{max-height:25vh;}
-.comment-post-embed .post-media-grid .pm-thumb{max-height:25vh;}
-.comment-post-embed .post-media-grid .pm-thumb img,.comment-post-embed .post-media-grid .pm-thumb video{max-height:25vh;object-fit:contain;background:#000;}
+.comment-post-embed{padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0;max-height:45vh;overflow-y:auto;overscroll-behavior:contain;}
+.comment-post-embed .post-media-grid{max-height:22vh;}
+.comment-post-embed .post-media-grid .pm-thumb{max-height:22vh;}
+.comment-post-embed .post-media-grid .pm-thumb img,.comment-post-embed .post-media-grid .pm-thumb video{max-height:22vh;object-fit:contain;background:#000;}
+.comment-post-embed .post-actions{border-top:1px solid var(--border);padding-top:8px;pointer-events:none;opacity:.7;font-size:13px;}
+.comment-post-embed .post-actions .action-btn{font-size:13px;padding:2px 6px;}
 .comment-post-embed .post-description p{font-size:14px;line-height:1.6;}
-.comment-post-embed .post-actions{border-top:1px solid var(--border);padding-top:10px;pointer-events:none;opacity:.7;}
 .comment-modal-scroll{flex:1;overflow-y:auto;padding:12px 20px;min-height:80px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;}
 .comment-modal-input{padding:12px 20px;border-top:1px solid var(--border);flex-shrink:0;}
 
