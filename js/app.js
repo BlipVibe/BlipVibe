@@ -3821,9 +3821,14 @@ function _enterGroupChatFullscreen(group){
     var botNav=document.querySelector('.nav-center');
     if(topNav) topNav.style.display='none';
     if(botNav) botNav.style.display='none';
+    // Hide the entire group view page content behind the fullscreen chat
+    var gvPage=document.getElementById('page-group-view');
+    if(gvPage) gvPage.style.visibility='hidden';
     var cs=document.getElementById('gvChatSection');
     if(cs){
-        cs.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;z-index:9999;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;';
+        cs.className='gc-fullscreen-active';
+        cs.style.cssText='';
+        cs.removeAttribute('style');
     }
     document.body.style.overflow='hidden';
     // Add back button to chat section
@@ -3856,8 +3861,10 @@ function _exitGroupChatFullscreen(){
     if(topNav) topNav.style.display='';
     if(botNav) botNav.style.display='';
     document.body.style.overflow='';
+    var gvPage=document.getElementById('page-group-view');
+    if(gvPage) gvPage.style.visibility='';
     var cs=document.getElementById('gvChatSection');
-    if(cs) cs.style.cssText='';
+    if(cs){cs.className='';cs.style.display='none';}
     var bar=document.getElementById('gcBackBar');
     if(bar) bar.remove();
 }
