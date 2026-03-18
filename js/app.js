@@ -8865,26 +8865,51 @@ function openStoryViewer(userId){
             '<div class="story-content">'+mediaHtml+(s.text?'<div class="story-text">'+escapeHtml(s.text)+'</div>':'')+'</div>'+
             '<div class="story-nav"><div class="story-nav-left"></div><div class="story-nav-right"></div></div>'+
             (isOwn?'<div class="story-viewers"><button class="story-viewers-btn"><i class="fas fa-eye"></i> Views</button><button class="story-delete-btn" style="color:#e74c3c;"><i class="fas fa-trash"></i></button></div>':'')+
-            (isOwn?'':'<div class="story-input-bar"><input type="text" class="story-comment-input" id="storyCommentInput" placeholder="Reply to '+escapeHtml(name)+'..."><button class="story-send-btn"><i class="fas fa-paper-plane"></i></button></div>');
+            (isOwn?'':'<div class="story-input-bar"><div class="story-reactions-row">'+_reactionEmojis.map(function(em){return '<button class="story-react-btn" data-emoji="'+em+'">'+em+'</button>';}).join('')+'</div><input type="text" class="story-comment-input" id="storyCommentInput" placeholder="Send message to '+escapeHtml(name)+'..."><button class="story-send-btn"><i class="fas fa-paper-plane"></i></button></div>');
         // Mark as viewed
         _storyViewed[s.id]=true;
         try{localStorage.setItem('blipvibe_story_viewed',JSON.stringify(_storyViewed));}catch(e){}
         if(currentUser) sbViewStory(s.id,currentUser.id);
-        // Story reply input (sends as DM)
+        // Story reply input (sends as DM) + reactions
         var storyInput=overlay.querySelector('#storyCommentInput');
         var storySendBtn=overlay.querySelector('.story-send-btn');
+        var storyVid=overlay.querySelector('video.story-media');
         if(storySendBtn) storySendBtn.addEventListener('click',function(){submitStoryComment(s.id,user);});
         if(storyInput){
             storyInput.addEventListener('keypress',function(e){if(e.key==='Enter')submitStoryComment(s.id,user);});
-            storyInput.addEventListener('focus',function(){clearTimeout(overlay._timer);}); // pause auto-advance while typing
+            storyInput.addEventListener('focus',function(){
+                // Pause auto-advance and loop video while typing
+                clearTimeout(overlay._timer);
+                if(storyVid){storyVid.loop=true;}
+                var fill=overlay.querySelector('.story-progress-fill');
+                if(fill){fill.style.transition='none';fill.style.width=fill.offsetWidth+'px';}
+            });
             storyInput.addEventListener('blur',function(){
-                // Resume auto-advance after typing
+                // Stop looping video and resume auto-advance
+                if(storyVid){storyVid.loop=false;}
+                var fill=overlay.querySelector('.story-progress-fill');
+                if(fill){fill.style.transition='width 3s linear';fill.style.width='100%';}
                 overlay._timer=setTimeout(function(){
                     if(idx<stories.length-1){idx++;render();}
                     else{overlay.remove();renderStoriesBar();}
                 },3000);
             });
         }
+        // Story emoji reaction buttons — send reaction as DM
+        overlay.querySelectorAll('.story-react-btn').forEach(function(rb){
+            rb.addEventListener('click',function(e){
+                e.stopPropagation();
+                if(!currentUser||!user||user.id===currentUser.id) return;
+                var emoji=rb.dataset.emoji;
+                // Send reaction as DM
+                sbSendMessage(currentUser.id,user.id,'Reacted '+emoji+' to your story').then(function(){
+                    rb.style.transform='scale(1.5)';rb.style.opacity='0.5';
+                    setTimeout(function(){rb.style.transform='';rb.style.opacity='';},400);
+                    showToast(emoji+' sent!');
+                    recordInteraction(user.id);
+                }).catch(function(){showToast('Reaction failed');});
+            });
+        });
         // Auto-advance: 5s for images/text, video duration for videos
         var fill=overlay.querySelector('.story-progress-fill');
         var storyDuration=5000;
