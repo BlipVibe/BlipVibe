@@ -4176,7 +4176,7 @@ async function openGroupChannel(channel){
     if(channelLocked){
         html+='<div style="flex:1;text-align:center;color:var(--gray);font-size:13px;padding:8px;"><i class="fas fa-lock" style="margin-right:6px;"></i>This channel is locked</div>';
     } else {
-        html+='<input type="text" id="gcMsgInput" placeholder="Message #'+escapeHtml(channel.name)+'...">';
+        html+='<textarea id="gcMsgInput" placeholder="Message #'+escapeHtml(channel.name)+'..." rows="1"></textarea>';
         html+='<button id="gcSendBtn"><i class="fas fa-paper-plane"></i></button>';
     }
     html+='</div>';
@@ -4213,7 +4213,11 @@ async function openGroupChannel(channel){
         sbSendGroupChatMessage(channel.id,text).then(function(msg){appendGcMessage(msg,isAdmin);notifyMentionedUsers(text,null,'a group chat message');}).catch(function(e){console.error('Group chat send:',e);showToast('Failed to send: '+(e.message||'Check console'));});
     }
     if(sendBtn) sendBtn.addEventListener('click',doSend);
-    if(msgInput) msgInput.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSend();}});
+    if(msgInput){
+        msgInput.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSend();}});
+        // Auto-resize textarea as user types
+        msgInput.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';});
+    }
     // Image/video upload
     imgBtn.addEventListener('click',function(){fileInput.click();});
     fileInput.addEventListener('change',async function(){
