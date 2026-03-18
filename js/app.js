@@ -8965,9 +8965,16 @@ function showReactionPicker(postId,btn){
         });
         picker.appendChild(b);
     });
-    btn.closest('.action-left').appendChild(picker);
-    // Auto-close after 3s or on outside click
-    setTimeout(function(){picker.remove();},3000);
+    // Position relative to the button using fixed positioning
+    var rect=btn.getBoundingClientRect();
+    picker.style.position='fixed';
+    picker.style.left=rect.left+'px';
+    picker.style.top=(rect.top-44)+'px';
+    picker.style.bottom='auto';
+    document.body.appendChild(picker);
+    // Auto-close after 4s or on outside click
+    var _closeTimer=setTimeout(function(){picker.remove();},4000);
+    document.addEventListener('click',function _closeReact(){picker.remove();clearTimeout(_closeTimer);document.removeEventListener('click',_closeReact);},{once:true});
 }
 var _postReactions={};
 try{_postReactions=JSON.parse(localStorage.getItem('blipvibe_reactions')||'{}');}catch(e){}
