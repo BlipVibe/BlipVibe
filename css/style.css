@@ -1389,6 +1389,10 @@ body.skin-pastel.tpl-cinema .pv-col-photos .photos-preview::-webkit-scrollbar-th
 .gc-ctx-danger{color:#e74c3c!important;}
 .gc-ctx-danger i{color:#e74c3c!important;}
 
+/* In-chat modal overlay (renders inside fullscreen chat) */
+.gc-modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;animation:fadeIn .15s ease;}
+.gc-modal-content{background:var(--card);border-radius:14px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:modalIn .2s ease;}
+
 /* ========== TEMPLATE: PANORAMA ========== */
 body.tpl-panorama .main-container{grid-template-columns:280px 1fr 320px;grid-template-rows:auto 1fr;}
 body.tpl-panorama .left-sidebar{display:contents;}

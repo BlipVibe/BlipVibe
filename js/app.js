@@ -4133,19 +4133,31 @@ async function renderGroupChatSidebar(group){
     $$('#gcSidebar .gc-del-ch-btn').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();confirmGcDeleteChannel(group,b.dataset.cid);});});
 }
 
-// Helper: show modal on top of fullscreen chat
+// Helper: show modal on top of fullscreen chat (renders inside the chat overlay)
 function _gcShowModal(html){
+    _gcCloseModal(); // remove any existing
     var cs=document.getElementById('gvChatSection');
-    if(cs) cs.style.visibility='hidden';
-    showModal(html);
-    // Restore chat when modal closes
-    var _obs=new MutationObserver(function(){
-        if(!$('#modalOverlay').classList.contains('show')){
-            if(cs) cs.style.visibility='';
-            _obs.disconnect();
-        }
+    var target=cs||document.body;
+    var overlay=document.createElement('div');
+    overlay.className='gc-modal-overlay';
+    overlay.innerHTML='<div class="gc-modal-content">'+html+'</div>';
+    target.appendChild(overlay);
+    // Bind close buttons
+    overlay.querySelectorAll('.modal-close').forEach(function(btn){
+        btn.addEventListener('click',function(){_gcCloseModal();});
     });
-    _obs.observe($('#modalOverlay'),{attributes:true,attributeFilter:['class']});
+    // Close on backdrop click
+    overlay.addEventListener('click',function(e){
+        if(e.target===overlay) _gcCloseModal();
+    });
+    // Focus first input
+    var firstInput=overlay.querySelector('input,textarea');
+    if(firstInput) setTimeout(function(){firstInput.focus();},50);
+    return overlay;
+}
+function _gcCloseModal(){
+    var existing=document.querySelector('.gc-modal-overlay');
+    if(existing) existing.remove();
 }
 
 function showGcSectionModal(group,editId,editName){
@@ -4160,7 +4172,7 @@ function showGcSectionModal(group,editId,editName){
         try{
             if(isEdit) await sbUpdateGroupChatSection(editId,{name:name});
             else await sbCreateGroupChatSection(group.id,name);
-            closeModal();showToast(isEdit?'Section renamed':'Section created');
+            _gcCloseModal();showToast(isEdit?'Section renamed':'Section created');
             await renderGroupChatSidebar(group);
         }catch(e){showToast('Error: '+e.message);}
     });
@@ -4179,7 +4191,7 @@ function showGcChannelModal(group,sectionId,editId,editName){
         try{
             if(isEdit) await sbUpdateGroupChatChannel(editId,{name:name});
             else await sbCreateGroupChatChannel(group.id,sectionId,name);
-            closeModal();showToast(isEdit?'Channel renamed':'Channel created');
+            _gcCloseModal();showToast(isEdit?'Channel renamed':'Channel created');
             await renderGroupChatSidebar(group);
         }catch(e){showToast('Error: '+e.message);}
     });
@@ -4188,21 +4200,21 @@ function showGcChannelModal(group,sectionId,editId,editName){
 function confirmGcDeleteSection(group,sectionId){
     _gcShowModal('<div class="create-post-modal"><div class="modal-header"><h3>Delete Section</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div style="padding:16px;"><p>Delete this section and ALL its channels and messages? This cannot be undone.</p><div style="display:flex;gap:10px;margin-top:14px;"><button class="btn btn-primary" id="gcDelSecYes" style="flex:1;background:#e74c3c;">Delete</button><button class="btn btn-outline" id="gcDelSecNo" style="flex:1;">Cancel</button></div></div></div>');
     document.getElementById('gcDelSecYes').addEventListener('click',async function(){
-        try{await sbDeleteGroupChatSection(sectionId);closeModal();showToast('Section deleted');await renderGroupChatSidebar(group);}catch(e){showToast('Error: '+e.message);}
+        try{await sbDeleteGroupChatSection(sectionId);_gcCloseModal();showToast('Section deleted');await renderGroupChatSidebar(group);}catch(e){showToast('Error: '+e.message);}
     });
-    document.getElementById('gcDelSecNo').addEventListener('click',closeModal);
+    document.getElementById('gcDelSecNo').addEventListener('click',_gcCloseModal);
 }
 
 function confirmGcDeleteChannel(group,channelId){
     _gcShowModal('<div class="create-post-modal"><div class="modal-header"><h3>Delete Channel</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div style="padding:16px;"><p>Delete this channel and all its messages?</p><div style="display:flex;gap:10px;margin-top:14px;"><button class="btn btn-primary" id="gcDelChYes" style="flex:1;background:#e74c3c;">Delete</button><button class="btn btn-outline" id="gcDelChNo" style="flex:1;">Cancel</button></div></div></div>');
     document.getElementById('gcDelChYes').addEventListener('click',async function(){
         try{
-            await sbDeleteGroupChatChannel(channelId);closeModal();showToast('Channel deleted');
+            await sbDeleteGroupChatChannel(channelId);_gcCloseModal();showToast('Channel deleted');
             if(_gcActiveChannel&&_gcActiveChannel.id===channelId){_gcActiveChannel=null;var ca=document.getElementById('gcChatArea');if(ca)ca.innerHTML='<div class="gc-empty"><i class="fas fa-comments" style="font-size:48px;opacity:.3;"></i><p>Select a channel to start chatting</p></div>';}
             await renderGroupChatSidebar(_gcGroup);
         }catch(e){showToast('Error: '+e.message);}
     });
-    document.getElementById('gcDelChNo').addEventListener('click',closeModal);
+    document.getElementById('gcDelChNo').addEventListener('click',_gcCloseModal);
 }
 
 async function openGroupChannel(channel){
