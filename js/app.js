@@ -4332,20 +4332,16 @@ function appendGcMessage(msg,isAdmin,skipScroll){
     if(editBtn) editBtn.addEventListener('click',function(){
         var contentEl=div.querySelector('.gc-msg-content');
         var raw=contentEl?contentEl.dataset.raw:'';
-        // Hide fullscreen chat so modal appears on top
-        var cs=document.getElementById('gvChatSection');
-        if(cs) cs.style.visibility='hidden';
-        var h='<div class="modal-header"><h3><i class="fas fa-pen" style="color:var(--primary);margin-right:8px;"></i>Edit Message</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
-        h+='<div class="modal-body"><textarea id="gcEditMsgText" class="cpm-textarea" style="min-height:200px;font-size:14px;line-height:1.5;">'+escapeHtml(raw)+'</textarea>';
-        h+='<div class="modal-actions" style="margin-top:12px;"><button class="btn btn-outline" id="gcEditMsgCancel">Cancel</button><button class="btn btn-primary" id="gcEditMsgSave">Save</button></div></div>';
-        showModal(h);
-        function _restoreChat(){if(cs) cs.style.visibility='';}
-        document.getElementById('gcEditMsgCancel').addEventListener('click',function(){closeModal();_restoreChat();});
-        // Also restore on modal close button
-        var closeBtn=document.querySelector('#modalContent .modal-close');
-        if(closeBtn) closeBtn.addEventListener('click',function(){_restoreChat();});
-        document.getElementById('gcEditMsgSave').addEventListener('click',async function(){
-            var newText=document.getElementById('gcEditMsgText').value.trim();
+        // Inline edit — replace message content with textarea right in the chat
+        var origHtml=contentEl.innerHTML;
+        contentEl.innerHTML='<div class="gc-inline-edit"><textarea class="gc-edit-textarea" id="gcInlineEdit">'+escapeHtml(raw)+'</textarea><div class="gc-edit-actions"><button class="btn btn-outline gc-edit-cancel" style="font-size:12px;padding:4px 12px;">Cancel</button><button class="btn btn-primary gc-edit-save" style="font-size:12px;padding:4px 12px;">Save</button></div></div>';
+        var ta=document.getElementById('gcInlineEdit');
+        if(ta){ta.focus();ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,Math.round(window.innerHeight*0.5))+'px';}
+        contentEl.querySelector('.gc-edit-cancel').addEventListener('click',function(){
+            contentEl.innerHTML=origHtml;contentEl.dataset.raw=raw;
+        });
+        contentEl.querySelector('.gc-edit-save').addEventListener('click',async function(){
+            var newText=ta.value.trim();
             if(!newText){showToast('Message cannot be empty');return;}
             try{
                 await sbEditGroupChatMessage(msg.id,newText);
@@ -4353,9 +4349,8 @@ function appendGcMessage(msg,isAdmin,skipScroll){
                 var newHtml=parsed.isMedia?parsed.html:'<div class="gc-msg-text">'+renderMentionsInText(linkifyText(parsed.html))+'</div>';
                 contentEl.innerHTML=newHtml;
                 contentEl.dataset.raw=newText;
-                closeModal();_restoreChat();
                 showToast('Message edited');
-            }catch(e){showToast('Edit failed: '+(e.message||''));_restoreChat();}
+            }catch(e){showToast('Edit failed: '+(e.message||''));}
         });
     });
     // Bind avatar/name click to profile
