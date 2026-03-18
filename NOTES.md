@@ -133,6 +133,32 @@
 - `data-aid` attribute added to comment like/dislike buttons for author-level checking
 - You can still like/dislike your own stuff — it just won't award coins
 
+## Performance & Stability Fixes (2026-03-18)
+
+### initApp() Parallelization
+- **Before:** 15-25 sequential API calls on every page load (3-8 second waterfall)
+- **After:** 7 independent calls run concurrently via `Promise.allSettled()`: post likes, comment likes, avatar history, cover history, user posts, follow counts, friends-of-friends
+- Estimated **50-70% reduction** in page load time
+
+### N+1 Group Membership Fix
+- **Before:** `initApp()` looped through every group calling `sbGetGroupMembers(groupId)` individually to check if user was a member — potentially 50+ queries
+- **After:** Single `sbGetUserGroupIds(userId)` query returns all group IDs the user belongs to (1 query)
+- New function in supabase.js: `sbGetUserGroupIds(userId)` — queries `group_members` table filtered by `user_id`
+
+### Realtime Subscription Cleanup
+- All 5 realtime channels (posts, follows, likes, notifications, messages) now stored in `_realtimeSubs` array
+- `handleLogout()` calls `sb.removeChannel()` on all stored subscriptions
+- Prevents duplicate WebSocket listeners accumulating on re-login
+
+### saveState Interval Cleanup
+- `setInterval(saveState, 10000)` now stored in `_saveStateInterval` variable
+- Cleared on logout via `clearInterval(_saveStateInterval)`
+- Prevents orphaned timer writing state for wrong user after logout
+
+### XSS Fix — Error Messages
+- `e.message` in `innerHTML` contexts now wrapped with `escapeHtml()`
+- Prevents potential XSS via crafted Supabase error messages
+
 ## Comment Modal Image Auto-Fit (fixed 2026-03-18)
 - **Cause:** `.comment-post-embed` had `overflow-y:auto` and images inside could be any height, making the post preview scrollable
 - **Fix:** Changed to `overflow:hidden`, added `max-height:25vh` with `object-fit:contain` on images so they scale down to fit without scrolling

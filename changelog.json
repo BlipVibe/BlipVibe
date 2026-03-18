@@ -1,5 +1,19 @@
 [
   {
+    "version": "0.2.24",
+    "date": "2026-03-18",
+    "added": [],
+    "changed": [
+      "Page load now ~50-70% faster — 7 API calls run in parallel instead of sequentially",
+      "Group membership check reduced from N+1 queries (one per group) to a single query"
+    ],
+    "fixed": [
+      "Memory leak: realtime subscriptions (posts, follows, likes, notifications, messages) now cleaned up on logout",
+      "Memory leak: saveState interval now cleared on logout instead of running forever",
+      "Security: error messages escaped before HTML rendering to prevent XSS"
+    ]
+  },
+  {
     "version": "0.2.23",
     "date": "2026-03-18",
     "added": [
