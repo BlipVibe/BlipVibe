@@ -563,9 +563,9 @@ async function initApp() {
         (myPosts||[]).forEach(function(p){
             var ts = new Date(p.created_at).getTime();
             if(p.media_urls && p.media_urls.length){
-                p.media_urls.forEach(function(u){ postPhotos.push({src:u, date:ts, postId:p.id, postMediaUrls:p.media_urls}); });
+                p.media_urls.forEach(function(u){ postPhotos.push({src:u, date:ts, postId:p.id, postMediaUrls:p.media_urls, isVideo:isVideoUrl(u)}); });
             } else if(p.image_url){
-                postPhotos.push({src:p.image_url, date:ts, postId:p.id, postMediaUrls:null});
+                postPhotos.push({src:p.image_url, date:ts, postId:p.id, postMediaUrls:null, isVideo:isVideoUrl(p.image_url)});
             }
         });
         state.photos.post = postPhotos;
@@ -2732,8 +2732,8 @@ async function showProfileView(person){
             var theirPhotos=[];
             (theirPosts||[]).forEach(function(p){
                 var ts=new Date(p.created_at).getTime();
-                if(p.media_urls&&p.media_urls.length) p.media_urls.forEach(function(u){theirPhotos.push({src:u,date:ts});});
-                else if(p.image_url) theirPhotos.push({src:p.image_url,date:ts});
+                if(p.media_urls&&p.media_urls.length) p.media_urls.forEach(function(u){if(!isVideoUrl(u)) theirPhotos.push({src:u,date:ts}); else theirPhotos.push({src:u,date:ts,isVideo:true});});
+                else if(p.image_url){if(!isVideoUrl(p.image_url)) theirPhotos.push({src:p.image_url,date:ts}); else theirPhotos.push({src:p.image_url,date:ts,isVideo:true});}
             });
             _pvPostPhotos=theirPhotos;
         }catch(e){_pvPostPhotos=[];}
@@ -7434,8 +7434,14 @@ function renderPvPhotoTab(isMe){
         if(photos.length){
             html+='<div class="photos-preview">';
             photos.slice(0,9).forEach(function(p){
+                var isVid=p.isVideo||isVideoUrl(p.src);
                 html+='<div class="photo-wrap" draggable="true" data-psrc="'+p.src+'">';
-                html+='<img src="'+p.src+'">';
+                if(isVid){
+                    html+='<video src="'+p.src+'#t=0.5" preload="metadata" muted style="width:100%;height:100%;object-fit:cover;"></video>';
+                    html+='<div class="photo-video-badge"><i class="fas fa-play"></i></div>';
+                } else {
+                    html+='<img src="'+p.src+'">';
+                }
                 if(isMe) html+='<button class="photo-menu-btn" data-psrc="'+p.src+'"><i class="fas fa-ellipsis-h"></i></button>';
                 html+='</div>';
             });
@@ -7753,7 +7759,7 @@ async function renderPhotoAlbum(){
     html+='</div>';
     // 4. Post Photos
     html+='<div class="photo-album-section"><h3><i class="fas fa-newspaper"></i> Post Photos</h3>';
-    if(state.photos.post.length){html+='<div class="photo-album-grid">';state.photos.post.forEach(function(p){html+='<div class="photo-wrap" data-ptype="post" data-psrc="'+p.src+'"><img src="'+p.src+'"><button class="photo-delete-btn" title="Delete photo"><i class="fas fa-trash"></i></button><button class="photo-menu-btn" data-psrc="'+p.src+'"><i class="fas fa-ellipsis-h"></i></button></div>';});html+='</div>';}
+    if(state.photos.post.length){html+='<div class="photo-album-grid">';state.photos.post.forEach(function(p){var isVid=p.isVideo||isVideoUrl(p.src);html+='<div class="photo-wrap" data-ptype="post" data-psrc="'+p.src+'">'+(isVid?'<video src="'+p.src+'#t=0.5" preload="metadata" muted></video><div class="photo-video-badge"><i class="fas fa-play"></i></div>':'<img src="'+p.src+'">')+'<button class="photo-delete-btn" title="Delete photo"><i class="fas fa-trash"></i></button><button class="photo-menu-btn" data-psrc="'+p.src+'"><i class="fas fa-ellipsis-h"></i></button></div>';});html+='</div>';}
     else html+='<p class="photo-album-empty">No post photos yet.</p>';
     html+='</div>';
     $('#photoAlbumContent').innerHTML=html;
