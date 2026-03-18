@@ -708,10 +708,10 @@ body.skin-midnight .photos-empty,body.skin-midnight .photo-album-empty{color:#bb
 .reaction-emoji-btn:hover{transform:scale(1.3);}
 
 /* ========== MODAL ========== */
-.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;overscroll-behavior:none;}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:99990;display:none;align-items:center;justify-content:center;padding:20px;overscroll-behavior:none;}
 .modal-overlay.show{display:flex;}
 body.modal-open{overflow:hidden!important;position:fixed!important;width:100%!important;}
-.modal-content{background:var(--card);border-radius:14px;max-width:500px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:modalIn .25s ease;overflow-wrap:break-word;word-break:break-word;min-width:0;}
+.modal-content{background:var(--card);border-radius:14px;max-width:560px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:modalIn .25s ease;overflow-wrap:break-word;word-break:break-word;min-width:0;}
 @keyframes modalIn{from{opacity:0;transform:scale(.9) translateY(20px);}to{opacity:1;transform:scale(1) translateY(0);}}
 .modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border);}
 .modal-header h3{font-size:calc(18px * var(--font-scale));font-weight:600;word-wrap:break-word;overflow-wrap:anywhere;min-width:0;}

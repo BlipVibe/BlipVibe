@@ -4332,8 +4332,8 @@ function appendGcMessage(msg,isAdmin,skipScroll){
     if(editBtn) editBtn.addEventListener('click',function(){
         var contentEl=div.querySelector('.gc-msg-content');
         var raw=contentEl?contentEl.dataset.raw:'';
-        var h='<div class="modal-header"><h3>Edit Message</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
-        h+='<div class="modal-body"><textarea id="gcEditMsgText" class="cpm-textarea" style="min-height:80px;">'+escapeHtml(raw)+'</textarea>';
+        var h='<div class="modal-header"><h3><i class="fas fa-pen" style="color:var(--primary);margin-right:8px;"></i>Edit Message</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+        h+='<div class="modal-body"><textarea id="gcEditMsgText" class="cpm-textarea" style="min-height:200px;font-size:14px;line-height:1.5;">'+escapeHtml(raw)+'</textarea>';
         h+='<div class="modal-actions" style="margin-top:12px;"><button class="btn btn-outline modal-close">Cancel</button><button class="btn btn-primary" id="gcEditMsgSave">Save</button></div></div>';
         showModal(h);
         document.getElementById('gcEditMsgSave').addEventListener('click',async function(){
