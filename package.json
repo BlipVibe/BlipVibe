@@ -1,0 +1,43 @@
+{
+  "name": "blipvibe",
+  "version": "1.0.0",
+  "description": "BlipVibe - Social Media Platform",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo 'No build step needed — static files'",
+    "cap:sync": "npx cap sync",
+    "cap:open:ios": "npx cap open ios",
+    "cap:open:android": "npx cap open android",
+    "cap:run:android": "npx cap run android",
+    "cap:run:ios": "npx cap run ios"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BlipVibe/BlipVibe.git"
+  },
+  "keywords": [
+    "social",
+    "media",
+    "blipvibe"
+  ],
+  "author": "BlipVibe LLC",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/BlipVibe/BlipVibe/issues"
+  },
+  "homepage": "https://github.com/BlipVibe/BlipVibe#readme",
+  "dependencies": {
+    "@capacitor/android": "^8.2.0",
+    "@capacitor/browser": "^8.0.2",
+    "@capacitor/camera": "^8.0.2",
+    "@capacitor/cli": "^8.2.0",
+    "@capacitor/core": "^8.2.0",
+    "@capacitor/haptics": "^8.0.1",
+    "@capacitor/ios": "^8.2.0",
+    "@capacitor/keyboard": "^8.0.1",
+    "@capacitor/push-notifications": "^8.0.2",
+    "@capacitor/share": "^8.0.1",
+    "@capacitor/splash-screen": "^8.0.1",
+    "@capacitor/status-bar": "^8.0.1"
+  }
+}
