@@ -47,5 +47,15 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>BlipVibe needs camera access to take photos and videos for posts and stories.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>BlipVibe needs microphone access to record voice notes.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>BlipVibe needs photo library access to upload images to posts and stories.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>BlipVibe needs permission to save images to your photo library.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>BlipVibe uses your location to show your approximate area on posts (optional).</string>
 </dict>
 </plist>
