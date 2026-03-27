@@ -2,8 +2,8 @@
 
 ## Project Info
 - **Name:** BlipVibe (formerly Dabble)
-- **Repo:** https://github.com/jasonanddanem-sketch/Online
-- **Work folder:** `C:\Users\danea\OneDrive\Desktop\Website\BlipVibe`
+- **Repo:** https://github.com/BlipVibe/BlipVibe
+- **Work folder:** `C:\Users\Jason\Desktop\Website`
 
 ## Workflow Rules
 - **Always push** every commit to `origin main` immediately after committing
