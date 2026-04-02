@@ -27,6 +27,19 @@ document.addEventListener('click',function(e){var btn=e.target.closest('.embed-c
 // Array.from splits by full Unicode code points so surrogate pairs / ZWJ emoji stay intact
 function safeSlice(str,start,end){var a=Array.from(str||'');return a.slice(start,end).join('');}
 function safeTruncate(str,max,ellipsis){var a=Array.from(str||'');if(a.length<=max)return str;return a.slice(0,max).join('')+(ellipsis||'');}
+// Word-boundary-aware split: returns [visible, hidden] without cutting mid-word
+function safeWordSplit(str,max){
+    if(!str) return ['',''];
+    var a=Array.from(str);
+    if(a.length<=max) return [str,''];
+    // Find the last space at or before the limit
+    var cutStr=a.slice(0,max).join('');
+    var lastSpace=cutStr.lastIndexOf(' ');
+    if(lastSpace<max*0.5) lastSpace=max; // if no good break point, just cut at max
+    var visible=a.slice(0,lastSpace).join('');
+    var rest=a.slice(lastSpace).join('').replace(/^\s+/,''); // trim leading space from remainder
+    return [visible,rest];
+}
 
 // ======================== XSS PROTECTION ========================
 function escapeHtml(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
@@ -1419,8 +1432,9 @@ async function renderSearchResults(q,tab){
                 var text=fp.text;
                 var tags=fp.tags||[];
                 var badge=fp.badge||badgeTypes[0];
-                var short=renderMentionsInText(escapeHtmlNl(safeSlice(text,0,200)));
-                var rest=renderMentionsInText(escapeHtmlNl(safeSlice(text,200)));
+                var _ws=safeWordSplit(text,200);
+                var short=renderMentionsInText(escapeHtmlNl(_ws[0]));
+                var rest=_ws[1]?renderMentionsInText(escapeHtmlNl(_ws[1])):'';
                 var hasMore=rest.length>0;
                 html+='<div class="card feed-post search-post-card">';
                 var avatarSrc=person.avatar_url||DEFAULT_AVATAR;
@@ -5569,7 +5583,7 @@ function _buildPostHtml(p){
     var menuId='post-menu-'+i;
     var pollResult=renderPollInPost(text,i);
     text=pollResult.text;var pollHtml=pollResult.pollHtml;
-    var short=renderRichText(renderMentionsInText(escapeHtmlNl(safeSlice(text,0,160))));var rest=renderRichText(renderMentionsInText(escapeHtmlNl(safeSlice(text,160))));var hasMore=rest.length>0;
+    var _ws=safeWordSplit(text,160);var short=renderRichText(renderMentionsInText(escapeHtmlNl(_ws[0])));var rest=_ws[1]?renderRichText(renderMentionsInText(escapeHtmlNl(_ws[1]))):'';var hasMore=rest.length>0;
     var avatarSrc=person.avatar_url||'images/default-avatar.svg';
     var timeStr=p.created_at?timeAgoReal(p.created_at):timeAgo(typeof i==='number'?i:0);
     var html='<div class="card feed-post">';
@@ -5635,7 +5649,7 @@ function renderFeed(tab){
         // Extract poll if present
         var pollResult=renderPollInPost(text,i);
         text=pollResult.text;var pollHtml=pollResult.pollHtml;
-        var short=renderMentionsInText(escapeHtmlNl(safeSlice(text,0,160)));var rest=renderMentionsInText(escapeHtmlNl(safeSlice(text,160)));var hasMore=rest.length>0;
+        var _ws=safeWordSplit(text,160);var short=renderMentionsInText(escapeHtmlNl(_ws[0]));var rest=_ws[1]?renderMentionsInText(escapeHtmlNl(_ws[1])):'';var hasMore=rest.length>0;
         var avatarSrc=person.avatar_url||'images/default-avatar.svg';
         var timeStr=p.created_at?timeAgoReal(p.created_at):timeAgo(typeof i==='number'?i:0);
         html+='<div class="card feed-post">';
@@ -10254,7 +10268,7 @@ function _renderSavedTabPosts(){
 }
 function renderSavedPostCard(p){
     var i=p.idx,person=p.person,text=p.text,badge=p.badge,likes=p.likes,genComments=p.comments,shares=p.shares;
-    var short=renderMentionsInText(escapeHtmlNl(safeSlice(text,0,160)));var rest=renderMentionsInText(escapeHtmlNl(safeSlice(text,160)));var hasMore=rest.length>0;
+    var _ws=safeWordSplit(text,160);var short=renderMentionsInText(escapeHtmlNl(_ws[0]));var rest=_ws[1]?renderMentionsInText(escapeHtmlNl(_ws[1])):'';var hasMore=rest.length>0;
     var folder=findPostFolder(i);
     var html='<div class="card feed-post saved-post-item" data-spid="'+i+'">';
     html+='<div class="post-header">';
