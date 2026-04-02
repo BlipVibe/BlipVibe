@@ -215,6 +215,23 @@ async function sbSearchProfiles(query, limit = 20) {
   }
 }
 
+// Full-text search for posts (requires add-post-search.sql migration)
+async function sbSearchPosts(query, limit = 20) {
+  var safe = query.replace(/[,().]/g, '').trim();
+  if (!safe) return [];
+  try {
+    const { data, error } = await sb.rpc('search_posts', {
+      p_query: safe,
+      p_limit: limit
+    });
+    if (error) throw error;
+    return data || [];
+  } catch(e) {
+    console.warn('search_posts RPC not available:', e);
+    return [];
+  }
+}
+
 async function sbGetAllProfiles(limit = 50) {
   const { data, error } = await sb.from('profiles')
     .select('*')
@@ -644,6 +661,7 @@ function validateUploadFile(file, opts) {
 
 async function sbUploadAvatar(userId, file) {
   validateUploadFile(file, { maxSize: 5 * 1024 * 1024, label: 'Avatar' });
+  file = await _optimizeImage(file, 400, 400, 0.9);
   const ext = file.name.split('.').pop();
   const path = `${userId}/avatar-${Date.now()}.${ext}`;
   return sbUploadFile('avatars', path, file);
@@ -651,6 +669,7 @@ async function sbUploadAvatar(userId, file) {
 
 async function sbUploadCover(userId, file) {
   validateUploadFile(file, { maxSize: 5 * 1024 * 1024, label: 'Cover photo' });
+  file = await _optimizeImage(file, 1400, 600, 0.85);
   const ext = file.name.split('.').pop();
   const path = `${userId}/cover-${Date.now()}.${ext}`;
   return sbUploadFile('avatars', path, file);
@@ -708,8 +727,33 @@ async function sbListGroupBackgrounds(groupId) {
     });
 }
 
+// Client-side image optimization — resize and convert to WebP before upload
+async function _optimizeImage(file, maxW, maxH, quality) {
+  if (!file.type.startsWith('image/') || file.type === 'image/gif') return file;
+  maxW = maxW || 1200; maxH = maxH || 1200; quality = quality || 0.85;
+  return new Promise(function(resolve) {
+    var img = new Image();
+    img.onload = function() {
+      if (img.width <= maxW && img.height <= maxH && file.size < 500000) { resolve(file); return; }
+      var canvas = document.createElement('canvas');
+      var ratio = Math.min(maxW / img.width, maxH / img.height, 1);
+      canvas.width = Math.round(img.width * ratio);
+      canvas.height = Math.round(img.height * ratio);
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob(function(blob) {
+        if (!blob) { resolve(file); return; }
+        resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.webp'), { type: 'image/webp' }));
+      }, 'image/webp', quality);
+    };
+    img.onerror = function() { resolve(file); };
+    img.src = URL.createObjectURL(file);
+  });
+}
+
 async function sbUploadPostImage(userId, file) {
   validateUploadFile(file, { maxSize: 10 * 1024 * 1024, label: 'Image' });
+  file = await _optimizeImage(file, 1200, 1200, 0.85);
   const ext = file.name.split('.').pop();
   const path = `${userId}/${Date.now()}.${ext}`;
   return sbUploadFile('posts', path, file);

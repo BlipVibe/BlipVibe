@@ -1,5 +1,39 @@
 [
   {
+    "version": "0.3.0",
+    "date": "2026-04-02",
+    "added": [
+      "Infinite scroll — feed loads posts in batches as you scroll, no more loading all at once",
+      "Skeleton loading states — shimmer placeholders while feed and content loads",
+      "Post draft auto-save — drafts saved to localStorage, restored when reopening post creation",
+      "Notification grouping — 'X and 4 others liked your post' instead of 5 separate notifications",
+      "Full-text post search — search post content via Postgres tsvector (requires migration)",
+      "Group invite links — shareable join link for any group, button in group view sidebar",
+      "Quote posts — quote a post with your own commentary via post dropdown menu",
+      "Multi-person DMs — create group chat conversations from messages page",
+      "Image optimization — automatic resize and WebP conversion before upload (avatars, covers, posts)",
+      "Comment pinning — post owners can pin a comment to the top of the thread",
+      "Post analytics dashboard — total posts, likes, views, comments, followers, top posts (Settings)",
+      "Daily login rewards — 5-25 coins based on consecutive login streak",
+      "Rich text in posts — **bold**, *italic*, ~~strikethrough~~, `inline code` support",
+      "Video trimming UI — preview and set start/end times before uploading video",
+      "Light mode toggle — full light theme in Settings, persists across sessions",
+      "Shareable bookmark collections — share saved post folders via copyable link",
+      "Push notifications — Capacitor FCM integration for native mobile push (requires setup)",
+      "Service worker — offline caching for static assets, faster repeat loads"
+    ],
+    "changed": [
+      "Feed pagination changed from 50 to 20 posts per batch for better performance",
+      "Search results now query database for posts instead of only searching loaded feed"
+    ],
+    "fixed": [
+      "Comment reply button on nested comments now targets correct reply (was using parent ID)",
+      "Feed like counts now fetched in parallel instead of sequentially (faster load)",
+      "Conversation data now properly sanitized for email masking",
+      "Notifications now sanitized through _sanitizeData"
+    ]
+  },
+  {
     "version": "0.2.27",
     "date": "2026-03-18",
     "added": [

@@ -926,3 +926,110 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - `getNotifIcon` map updated with `group_invite` entry
 - Notification rendering adds `data-group-id` attribute for group invite notifications
 - Click handler on group invite notifications: loads group, shows join modal, navigates to group on accept
+
+## Major Feature Update (v0.3.0 — 2026-04-02)
+
+### Infinite Scroll / Feed Pagination
+- Feed now loads 20 posts at a time instead of 50
+- Scroll-based loading triggers at 600px from bottom
+- `_feedOffset`, `_feedLimit`, `_feedHasMore` control pagination state
+- `_loadMorePosts()` appends new posts without full re-render
+- `_buildFeedPost()` and `_buildPostHtml()` extracted as reusable helpers
+- End-of-feed message shown when no more posts
+
+### Skeleton Loading States
+- `showFeedSkeleton()` renders 3 shimmer placeholder cards while feed loads
+- CSS: `.skeleton`, `.skeleton-post`, `.skeleton-avatar`, `.skeleton-line`, `.skeleton-image`
+- `@keyframes skeletonPulse` animation
+
+### Post Draft Auto-Save
+- `saveDraft()` / `loadDraft()` / `clearDraft()` — localStorage-backed
+- `initDraftAutoSave(textareaId)` — binds to textarea with 1s debounce
+- Draft restored when reopening post creation modal
+- Draft cleared on successful publish
+
+### Notification Grouping
+- `groupNotifications(notifs)` — groups same-type notifications by post/action
+- Like notifications grouped: "X and 4 others liked your post"
+- Follow notifications grouped: "X and 3 others followed you"
+- Integrated into `renderNotifications()`
+
+### Full-Text Post Search
+- **Migration:** `supabase/add-post-search.sql` — adds `search_vector` tsvector column, GIN index, auto-update trigger, `search_posts` RPC
+- `sbSearchPosts(query, limit)` in supabase.js calls RPC
+- Search results page posts tab now queries DB first, falls back to local feed filter
+
+### Group Invite Links
+- `generateInviteLink(groupId)` creates shareable URL (`#join:groupId`)
+- `showInviteLinkModal(group)` — modal with copyable link
+- "Invite Link" button added to group view right sidebar
+- `checkJoinLink()` handles `#join:` URLs on page load — shows join confirmation modal
+
+### Quote Posts
+- "Quote Post" option in post dropdown menu
+- `showQuotePostModal(postId)` — modal with commentary textarea + embedded original post preview
+- Creates new post with `shared_post_id` reference
+- CSS: `.quote-post-embed` styling
+
+### Multi-Person DMs
+- "New Group Chat" button at top of message contact list
+- `showCreateGroupDmModal()` — search and add people, name the chat
+- Group DMs stored in localStorage (`blipvibe_group_dms`)
+
+### Image Optimization
+- `_optimizeImage(file, maxW, maxH, quality)` in supabase.js — resizes and converts to WebP
+- Applied to: `sbUploadAvatar` (400x400), `sbUploadCover` (1400x600), `sbUploadPostImage` (1200x1200)
+- GIFs pass through unchanged
+- Reduces bandwidth and storage usage
+
+### Comment Pinning
+- `_pinnedComments` object — maps postId to pinned commentId
+- `togglePinComment(postId, commentId)` — pin/unpin
+- Persisted to localStorage (`blipvibe_pinned_comments`)
+
+### Post Analytics Dashboard
+- `showPostAnalytics()` — modal with analytics grid
+- Shows: total posts, total likes, total views, total comments, followers, following
+- Top 5 posts ranked by likes with bar chart visualization
+- CSS: `.analytics-grid`, `.analytics-card`, `.analytics-bar`
+- Accessible from Settings → Post Analytics
+
+### Daily Login Rewards
+- `checkDailyLoginReward()` — runs 2s after app init
+- Awards 5-25 coins based on consecutive login streak
+- Animated popup with coin bounce animation
+- Streak tracked in localStorage per user
+- CSS: `.login-reward-popup`, `.login-reward-backdrop`, `@keyframes coinBounce`
+
+### Rich Text in Posts
+- `renderRichText(text)` — parses markdown-style formatting after HTML escaping
+- Supports: `**bold**`, `*italic*`, `~~strikethrough~~`, `` `inline code` ``
+- Applied in `_buildPostHtml()` feed rendering
+
+### Video Trimming
+- `showVideoTrimModal(file, onTrimmed)` — modal with video preview and start/end time inputs
+- "Use Full Video" skip button and "Trim & Use" confirmation
+- Trim metadata attached to file object (`_trimStart`, `_trimEnd`)
+
+### Light Mode Toggle
+- `toggleLightMode()` — toggles `body.light-mode` class
+- Full CSS theme: `body.light-mode` overrides all CSS variables for light appearance
+- Persisted in `settings.lightMode`, syncs to Supabase via skin_data
+- Toggle in Settings modal
+
+### Shareable Bookmark Collections
+- `showShareCollectionModal(folderId)` — generates shareable link for saved post folders
+- Link format: `#collection:userId:folderId`
+- Copy button with clipboard API
+
+### Push Notifications (Capacitor)
+- `initPushNotifications()` — requests permission, registers device, stores FCM token
+- Listens for received notifications and action performed
+- Token saved to profile via `sbUpdateProfile`
+- Only runs on native platforms (Capacitor)
+
+### Service Worker
+- `sw.js` — caches static assets (HTML, CSS, JS, images)
+- Network-first strategy for same-origin assets, cache-first for CDN resources
+- Registered in index.html
+- Enables faster repeat loads and basic offline support
