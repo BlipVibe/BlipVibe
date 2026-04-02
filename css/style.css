@@ -441,7 +441,7 @@ img{display:block;}
 .post-description{margin-bottom:14px;min-width:0;word-wrap:break-word;overflow-wrap:anywhere;}
 .post-description p{font-size:calc(14px * var(--font-scale));color:var(--dark);line-height:1.7;}
 .view-more-text.hidden{display:none;}
-.view-more-btn{background:none;color:var(--primary);font-size:13px;font-weight:500;padding:0;margin-top:4px;transition:color .2s;}
+.view-more-btn{background:none;color:var(--primary);font-size:13px;font-weight:500;padding:0;margin:0;display:inline;text-decoration:underline;transition:color .2s;}
 .view-more-btn:hover{color:var(--primary-hover);}
 .post-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
 .skill-tag{padding:5px 14px;background:var(--border);border-radius:20px;font-size:12px;color:var(--gray);font-weight:500;transition:all .2s;cursor:pointer;}
