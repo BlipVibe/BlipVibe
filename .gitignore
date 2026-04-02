@@ -4,3 +4,5 @@ www/
 *.log
 Testing/
 ~$*
+.idea/
+android/.idea/
