@@ -252,14 +252,16 @@ async function sbGetFeed(limit = 50, offset = 0) {
     .order('created_at', { ascending: false })
     .range(offset, offset + limit - 1);
   if (error) throw error;
-  // Fetch like counts separately (no FK between posts and likes)
-  for (const post of (data || [])) {
-    const { count } = await sb.from('likes')
-      .select('*', { count: 'exact', head: true })
-      .eq('target_type', 'post')
-      .eq('target_id', post.id);
-    post.like_count = count || 0;
-  }
+  // Fetch like counts in parallel (no FK between posts and likes)
+  await Promise.all((data || []).map(async function(post) {
+    try {
+      const { count } = await sb.from('likes')
+        .select('*', { count: 'exact', head: true })
+        .eq('target_type', 'post')
+        .eq('target_id', post.id);
+      post.like_count = count || 0;
+    } catch(e) { post.like_count = 0; }
+  }));
   return _sanitizeData(data);
 }
 
@@ -284,14 +286,16 @@ async function sbGetFollowingFeed(userId, limit = 50, offset = 0) {
     .order('created_at', { ascending: false })
     .range(offset, offset + limit - 1);
   if (error) throw error;
-  // Fetch like counts separately (no FK between posts and likes)
-  for (const post of (data || [])) {
-    const { count } = await sb.from('likes')
-      .select('*', { count: 'exact', head: true })
-      .eq('target_type', 'post')
-      .eq('target_id', post.id);
-    post.like_count = count || 0;
-  }
+  // Fetch like counts in parallel (no FK between posts and likes)
+  await Promise.all((data || []).map(async function(post) {
+    try {
+      const { count } = await sb.from('likes')
+        .select('*', { count: 'exact', head: true })
+        .eq('target_type', 'post')
+        .eq('target_id', post.id);
+      post.like_count = count || 0;
+    } catch(e) { post.like_count = 0; }
+  }));
   return _sanitizeData(data);
 }
 
@@ -539,7 +543,7 @@ async function sbGetNotifications(userId, limit = 500) {
     .order('created_at', { ascending: false })
     .limit(limit);
   if (error) throw error;
-  return data;
+  return _sanitizeData(data);
 }
 
 async function sbMarkNotificationsRead(userId) {
@@ -922,7 +926,7 @@ async function sbGetConversations(userId) {
     .or('sender_id.eq.' + userId + ',receiver_id.eq.' + userId)
     .order('created_at', { ascending: false });
   if (error) throw error;
-  _sanitizeData(data);
+  data = _sanitizeData(data);
 
   // Group by conversation partner
   var convos = {};
