@@ -1484,5 +1484,13 @@ function computeDisplayName(firstName, lastName, nickname, displayMode, username
   return username || 'User';
 }
 
+// ---- DAILY LOGIN REWARD (server-side) ----------------------------------------
+// Returns { awarded, coins, streak, new_balance, next_available } or { awarded: false, hours_remaining }
+async function sbClaimDailyReward() {
+  const { data, error } = await sb.rpc('claim_daily_reward');
+  if (error) throw error;
+  return data;
+}
+
 // ---- EXPORT (globals for vanilla JS) ----------------------------------------
 // All sb* functions are already global. This file must be loaded BEFORE app.js.

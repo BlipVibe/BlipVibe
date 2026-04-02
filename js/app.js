@@ -11092,26 +11092,22 @@ function showPostAnalytics(){
 }
 
 // ======================== DAILY LOGIN REWARDS ========================
-var _dailyRewardKey='blipvibe_daily_reward';
-function checkDailyLoginReward(){
+// Server-side via Supabase RPC — uses server timestamp, not device clock
+// Awards 5 coins per day, once every 24 hours (cheat-proof)
+async function checkDailyLoginReward(){
     if(!currentUser) return;
     try{
-        var last=localStorage.getItem(_dailyRewardKey+'_'+currentUser.id);
-        var today=new Date().toDateString();
-        if(last===today) return; // Already claimed today
-        localStorage.setItem(_dailyRewardKey+'_'+currentUser.id,today);
-        // Calculate streak
-        var streakKey=_dailyRewardKey+'_streak_'+currentUser.id;
-        var lastDate=localStorage.getItem(_dailyRewardKey+'_date_'+currentUser.id);
-        var streak=parseInt(localStorage.getItem(streakKey)||'0');
-        var yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
-        if(lastDate===yesterday.toDateString()) streak++;
-        else streak=1;
-        localStorage.setItem(streakKey,String(streak));
-        localStorage.setItem(_dailyRewardKey+'_date_'+currentUser.id,today);
-        var reward=Math.min(5+streak,25); // 5-25 coins based on streak
-        // Award coins
-        state.coins+=reward;
+        var result=await sbClaimDailyReward();
+        if(!result||!result.awarded) return; // Not eligible yet (< 24h since last claim)
+        var reward=result.coins||5;
+        var streak=result.streak||1;
+        // Update local coin balance from server truth
+        if(result.new_balance!=null){
+            state.coins=result.new_balance;
+            currentUser.coin_balance=result.new_balance;
+        } else {
+            state.coins+=reward;
+        }
         var coinEl=document.getElementById('navCoinCount');
         if(coinEl) coinEl.textContent=state.coins;
         saveState();
@@ -11128,7 +11124,7 @@ function checkDailyLoginReward(){
             document.getElementById('claimDailyReward').addEventListener('click',function(){backdrop.remove();popup.remove();});
             backdrop.addEventListener('click',function(){backdrop.remove();popup.remove();});
         },1500);
-    }catch(e){}
+    }catch(e){console.warn('Daily reward check:',e);}
 }
 
 // ======================== RICH TEXT IN POSTS ========================

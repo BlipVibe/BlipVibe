@@ -994,11 +994,15 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - CSS: `.analytics-grid`, `.analytics-card`, `.analytics-bar`
 - Accessible from Settings → Post Analytics
 
-### Daily Login Rewards
-- `checkDailyLoginReward()` — runs 2s after app init
-- Awards 5-25 coins based on consecutive login streak
+### Daily Login Rewards (server-side, cheat-proof)
+- `checkDailyLoginReward()` — runs 2s after app init, calls `sbClaimDailyReward()` RPC
+- Awards **5 coins** per day, once every **24 hours** (enforced by server timestamp via `now()`)
+- Streak tracked server-side in `profiles.daily_login_streak` column
+- `claim_daily_reward()` SECURITY DEFINER RPC: checks `last_daily_reward` timestamp, enforces 24h cooldown, continues streak if within 48h, resets if beyond
+- Returns `{ awarded, coins, streak, new_balance, next_available }` — client updates from server truth
+- **Cheat-proof:** Uses Postgres `now()` — device clock manipulation has no effect
 - Animated popup with coin bounce animation
-- Streak tracked in localStorage per user
+- **Migration:** `supabase/daily-login-reward.sql` — adds columns + RPC
 - CSS: `.login-reward-popup`, `.login-reward-backdrop`, `@keyframes coinBounce`
 
 ### Rich Text in Posts
