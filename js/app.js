@@ -715,6 +715,8 @@ async function initApp() {
     checkScheduledPosts();
     // Show first-time feed tutorial after everything loads
     setTimeout(function(){showFeedTutorial();},500);
+    // Wire up new features (join links, daily reward, push) — must run after data loads
+    wireNewFeatures();
 }
 
 // Listen for auth state changes
@@ -5643,59 +5645,7 @@ function renderFeed(tab){
         return;
     }
     var html='';
-    posts.forEach(function(p){
-        var i=p.idx,person=p.person,text=p.text,tags=p.tags||[],badge=p.badge,loc=p.loc,likes=p.likes,genComments=p.comments||[],shares=p.shares;
-        var commentCount=p.commentCount||genComments.length;
-        var menuId='post-menu-'+i;
-        // Extract poll if present
-        var pollResult=renderPollInPost(text,i);
-        text=pollResult.text;var pollHtml=pollResult.pollHtml;
-        var _ws=safeWordSplit(text,160);var short=renderMentionsInText(escapeHtmlNl(_ws[0]));var rest=_ws[1]?renderMentionsInText(escapeHtmlNl(_ws[1])):'';var hasMore=rest.length>0;
-        var avatarSrc=person.avatar_url||'images/default-avatar.svg';
-        var timeStr=p.created_at?timeAgoReal(p.created_at):timeAgo(typeof i==='number'?i:0);
-        html+='<div class="card feed-post">';
-        html+='<div class="post-header">';
-        html+='<img src="'+avatarSrc+'" alt="'+escapeHtml(person.name)+'" class="post-avatar" data-person-id="'+person.id+'">';
-        html+='<div class="post-user-info"><div class="post-user-top"><h4 class="post-username" data-person-id="'+person.id+'">'+escapeHtml(person.name)+'</h4><span class="post-time">'+timeStr+'</span></div>';
-        var badgesHtml='';
-        if(badge) badgesHtml+='<span class="badge '+badge.cls+'"><i class="fas '+badge.icon+'"></i> '+badge.text+'</span>';
-        var hideMyLoc=currentUser&&person.id===currentUser.id&&!settings.showLocation;
-        if(loc&&!hideMyLoc) badgesHtml+='<span class="badge badge-blue"><i class="fas fa-map-marker-alt"></i> '+escapeHtml(loc)+'</span>';
-        if(badgesHtml) html+='<div class="post-badges">'+badgesHtml+'</div>';
-        html+='</div>';
-        html+='<button class="post-menu-btn" data-menu="'+menuId+'"><i class="fas fa-ellipsis-h"></i></button>';
-        var isOwnPost=currentUser&&person.id===currentUser.id;
-        html+='<div class="post-dropdown" id="'+menuId+'"><a href="#" data-action="save" data-pid="'+i+'"><i class="fas fa-bookmark"></i> Save Post</a><a href="#" data-action="copylink" data-pid="'+i+'"><i class="fas fa-link"></i> Copy Link</a><a href="#" data-action="report" data-pid="'+i+'"><i class="fas fa-flag"></i> Report</a><a href="#" data-action="hide" data-pid="'+i+'"><i class="fas fa-eye-slash"></i> Hide</a>';
-        if(isOwnPost) html+='<a href="#" data-action="pin" data-pid="'+i+'"><i class="fas fa-thumbtack"></i> '+(state.pinnedPosts&&state.pinnedPosts[i]?'Unpin':'Pin to Profile')+'</a><a href="#" data-action="edit" data-pid="'+i+'"><i class="fas fa-pen"></i> Edit</a><a href="#" data-action="delete" data-pid="'+i+'" style="color:#e74c3c;"><i class="fas fa-trash"></i> Delete</a>';
-        html+='</div>';
-        html+='</div>';
-        html+='<div class="post-description"><p>'+short+(hasMore?'<span class="view-more-text hidden">'+rest+'</span>':'')+(hasMore?' . . . <button class="view-more-btn">View More</button>':'')+'</p></div>';
-        if(pollHtml) html+=pollHtml;
-        html+='<div class="post-tags">';
-        tags.forEach(function(t){html+='<span class="skill-tag">'+t+'</span>';});
-        html+='</div>';
-        html+=buildMediaGrid(p.images);
-        if(p.sharedPost){
-            var sp=p.sharedPost;var spAvatar=sp.avatar_url||DEFAULT_AVATAR;
-            html+='<div class="share-preview" style="margin:0 20px 14px;">';
-            html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><img src="'+spAvatar+'" style="width:28px;height:28px;border-radius:50%;object-fit:cover;"><strong class="share-preview-name" style="font-size:13px;">'+escapeHtml(sp.name)+'</strong><span class="share-preview-time" style="font-size:12px;">'+sp.time+'</span></div>';
-            html+='<div class="share-preview-text" style="font-size:13px;">'+escapeHtmlNl(sp.text)+'</div>';
-            if(sp.images){sp.images.forEach(function(src){html+='<img src="'+src+'" style="max-width:100%;border-radius:8px;margin-top:8px;">';});}
-            html+='</div>';
-        }
-        html+='<div class="post-actions"><div class="action-left">';
-        html+='<button class="action-btn like-btn'+(state.likedPosts[i]?' liked':'')+'" data-post-id="'+i+'"><i class="'+(state.likedPosts[i]?'fas':'far')+' fa-thumbs-up"></i><span class="like-count">'+likes+'</span></button>';
-        html+='<button class="action-btn dislike-btn" data-post-id="'+i+'"><i class="'+(state.dislikedPosts[i]?'fas':'far')+' fa-thumbs-down"></i><span class="dislike-count">0</span></button>';
-        var myReaction=_postReactions[i];
-        html+='<button class="action-btn react-btn" data-post-id="'+i+'" title="React">'+(myReaction?'<span style="font-size:16px;">'+myReaction+'</span>':'<i class="far fa-face-smile"></i>')+'</button>';
-        html+='<button class="action-btn comment-btn"><i class="far fa-comment"></i><span>'+commentCount+'</span></button>';
-        html+='<button class="action-btn share-btn"><i class="fas fa-share-from-square"></i><span>'+shares+'</span></button>';
-        var vc=_postViews[i]||0;
-        html+='<button class="action-btn view-count-btn" style="cursor:default;opacity:.6;"><i class="far fa-eye"></i><span>'+vc+'</span></button>';
-        html+='</div><div class="action-right"><div class="liked-avatars" data-post-id="'+i+'"></div></div></div>';
-        html+='<div class="post-comments" data-post-id="'+i+'"></div>';
-        html+='</div>';
-    });
+    posts.forEach(function(p){ html+=_buildPostHtml(p); });
     container.innerHTML=html;
     bindPostEvents();
     bindMentionClicks('#feedContainer');
@@ -10962,15 +10912,6 @@ function groupNotifications(notifs){
     });
 }
 
-// ======================== FULL-TEXT POST SEARCH ========================
-function searchPostContent(query){
-    var ql=query.toLowerCase();
-    return feedPosts.filter(function(p){
-        return p.text.toLowerCase().indexOf(ql)!==-1||
-            (p.person.name&&p.person.name.toLowerCase().indexOf(ql)!==-1);
-    });
-}
-
 // ======================== GROUP INVITE LINKS ========================
 function generateInviteLink(groupId){
     return location.origin+location.pathname+'#join:'+groupId;
@@ -11033,29 +10974,6 @@ function showQuotePostModal(postId){
             closeModal();showToast('Quote posted!');
             await generatePosts();
         }catch(e){showToast('Failed to post');this.disabled=false;this.textContent='Post Quote';}
-    });
-}
-
-// ======================== IMAGE OPTIMIZATION ========================
-function resizeImageBeforeUpload(file,maxWidth,maxHeight,quality){
-    maxWidth=maxWidth||1200;maxHeight=maxHeight||1200;quality=quality||0.85;
-    return new Promise(function(resolve){
-        if(!file.type.startsWith('image/')){resolve(file);return;}
-        var img=new Image();
-        img.onload=function(){
-            if(img.width<=maxWidth&&img.height<=maxHeight){resolve(file);return;}
-            var canvas=document.createElement('canvas');
-            var ratio=Math.min(maxWidth/img.width,maxHeight/img.height);
-            canvas.width=img.width*ratio;
-            canvas.height=img.height*ratio;
-            var ctx=canvas.getContext('2d');
-            ctx.drawImage(img,0,0,canvas.width,canvas.height);
-            canvas.toBlob(function(blob){
-                var resized=new File([blob],file.name.replace(/\.[^.]+$/,'.webp'),{type:'image/webp'});
-                resolve(resized);
-            },'image/webp',quality);
-        };
-        img.src=URL.createObjectURL(file);
     });
 }
 
@@ -11305,17 +11223,16 @@ async function initPushNotifications(){
     }catch(e){console.warn('Push init error:',e);}
 }
 
-// ======================== WIRE UP NEW FEATURES IN INIT ========================
-// Hook into initApp completion
-var _origInitAppDone=_initAppDone;
-(function wireNewFeatures(){
-    // Check for join links
+// ======================== WIRE UP NEW FEATURES ========================
+// Called from initApp() after all data is loaded
+function wireNewFeatures(){
+    // Check for join links (needs groups to be loaded first)
     checkJoinLink();
-    // Daily login reward (delayed to not block init)
+    // Daily login reward (delayed to not block UI)
     setTimeout(checkDailyLoginReward,2000);
     // Push notifications
     initPushNotifications();
-})();
+}
 
 });
 
