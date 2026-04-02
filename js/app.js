@@ -5536,6 +5536,7 @@ function _appendFeedPosts(newPosts){
     bindMentionClicks('#feedContainer');
     bindHashtagClicks('#feedContainer');
     bindPollVotes('#feedContainer');
+    autoFetchLinkPreviews(container);
     initViewTracking();
     newPosts.forEach(function(p){if(p) renderInlineComments(p.idx);});
 }
@@ -5547,7 +5548,7 @@ async function generatePosts(){
     showFeedSkeleton();
     try {
         // Always load all public posts; tab filtering happens in renderFeed
-        var posts = await sbGetFeed(_feedLimit);
+        var posts = await sbGetFeed(50);
         // Fetch shared post data in batch
         var sharedIds=[];
         posts.forEach(function(p){if(p.shared_post_id)sharedIds.push(p.shared_post_id);});
