@@ -1862,19 +1862,28 @@ function initMentionAutocomplete(textareaId, groupId){
         if(_mentionCache[key]){renderMentionDropdown(_mentionCache[key],q);return;}
         try{
             var results;
+            // Match against all name fields: username, display_name, first_name, last_name, nickname
+            function _mentionMatchesQuery(u, ql){
+                if(!u||u.id===currentUser.id) return false;
+                return (u.username||'').toLowerCase().indexOf(ql)!==-1||
+                    (u.display_name||'').toLowerCase().indexOf(ql)!==-1||
+                    (u.first_name||'').toLowerCase().indexOf(ql)!==-1||
+                    (u.last_name||'').toLowerCase().indexOf(ql)!==-1||
+                    (u.nickname||'').toLowerCase().indexOf(ql)!==-1;
+            }
             if(groupId){
                 // Search group members only
                 var members=await sbGetGroupMembers(groupId);
                 var ql=q.toLowerCase();
                 results=(members||[]).map(function(m){return m.user||m;}).filter(function(u){
-                    return u&&u.id!==currentUser.id&&((u.display_name||'').toLowerCase().indexOf(ql)!==-1||(u.username||'').toLowerCase().indexOf(ql)!==-1);
+                    return _mentionMatchesQuery(u, ql);
                 });
             } else {
                 // Prioritize followers/following, then fill with global search
                 var connections=await getConnections();
                 var ql=q.toLowerCase();
                 var connMatches=connections.filter(function(u){
-                    return (u.username||'').toLowerCase().indexOf(ql)!==-1||(u.display_name||'').toLowerCase().indexOf(ql)!==-1;
+                    return _mentionMatchesQuery(u, ql);
                 });
                 // Add global results that aren't already in connections
                 var connIds={};
@@ -1896,7 +1905,10 @@ function initMentionAutocomplete(textareaId, groupId){
         if(!users||!users.length){hideMention();return;}
         dd.innerHTML='';
         users.forEach(function(u){
+            // Show the user's preferred display name based on their display_mode
             var name=u.display_name||u.username||'User';
+            if(u.display_mode==='nickname'&&u.nickname&&u.nickname.trim()) name=u.nickname.trim();
+            else if(u.first_name||u.last_name) name=((u.first_name||'')+' '+(u.last_name||'')).trim()||name;
             var uname=u.username||'';
             var avatar=u.avatar_url||DEFAULT_AVATAR;
             var item=document.createElement('div');

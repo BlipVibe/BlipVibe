@@ -207,8 +207,8 @@ async function sbSearchProfiles(query, limit = 20) {
     // Fallback: direct table query with ILIKE
     var pattern = '%' + safe + '%';
     const { data, error } = await sb.from('profiles')
-      .select('id, username, display_name, bio, avatar_url, cover_photo_url')
-      .or('username.ilike.' + pattern + ',display_name.ilike.' + pattern)
+      .select('id, username, display_name, first_name, last_name, nickname, display_mode, bio, avatar_url, cover_photo_url')
+      .or('username.ilike.' + pattern + ',display_name.ilike.' + pattern + ',first_name.ilike.' + pattern + ',last_name.ilike.' + pattern + ',nickname.ilike.' + pattern)
       .limit(limit || 20);
     if (error) throw error;
     return _sanitizeData(data || []);
@@ -505,7 +505,7 @@ async function sbIsFollowing(followerId, followedId) {
 async function sbGetFollowing(userId) {
   const { data, error } = await sb.from('follows')
     .select(`
-      followed:profiles!follows_followed_id_fkey(id, username, display_name, avatar_url, bio)
+      followed:profiles!follows_followed_id_fkey(id, username, display_name, first_name, last_name, nickname, display_mode, avatar_url, bio)
     `)
     .eq('follower_id', userId);
   if (error) throw error;
@@ -515,7 +515,7 @@ async function sbGetFollowing(userId) {
 async function sbGetFollowers(userId) {
   const { data, error } = await sb.from('follows')
     .select(`
-      follower:profiles!follows_follower_id_fkey(id, username, display_name, avatar_url, bio)
+      follower:profiles!follows_follower_id_fkey(id, username, display_name, first_name, last_name, nickname, display_mode, avatar_url, bio)
     `)
     .eq('followed_id', userId);
   if (error) throw error;
