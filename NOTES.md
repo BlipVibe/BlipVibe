@@ -1093,3 +1093,39 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - `cacheFeedData()` — saves first 50 posts to sessionStorage after load
 - `loadCachedFeed()` — instant render from cache while fresh data fetches
 - Tab switches show cached content immediately instead of skeleton
+
+## Bug Fixes & Polish (v0.3.2 — 2026-04-02)
+
+### Email Consolidation
+- All `copyright@blipvibe.com` references replaced with `hello@blipvibe.com` (the copyright@ email didn't exist)
+- Updated in: index.html (TOS), js/app.js (TOS modal), dmca.html, LEGAL-COVERAGE.txt
+
+### DMCA Registration Number
+- Added `DMCA-1070726` to all DMCA references: dmca.html designated agent section, index.html TOS, app.js TOS modal, LEGAL-COVERAGE.txt
+
+### @Mention Autocomplete Improvements
+- Search now matches against ALL name fields: `username`, `display_name`, `first_name`, `last_name`, `nickname`
+- So `@Dane`, `@Rion`, or `@dmuller` all find the same person
+- Dropdown shows the user's **preferred display name** based on `display_mode`: nickname mode shows nickname, real name mode shows first+last
+- `_mentionMatchesQuery(u, ql)` helper consolidates name matching logic
+- `sbGetFollowing`/`sbGetFollowers` now fetch `first_name`, `last_name`, `nickname`, `display_mode` fields
+- Fallback `sbSearchProfiles` query also searches `first_name`, `last_name`, `nickname` columns
+
+### Emoji Picker Restyle
+- Changed from full-width bottom sheet to 320px wide floating popout
+- Rounded corners on all sides, smaller emoji grid (20px instead of 22px)
+- Fixes weird overflow in comment edit modals and reply inputs
+
+### View More Word Merge Fix
+- `safeWordSplit()` was stripping the leading space from the hidden portion
+- When expanded, last visible word and first hidden word merged (e.g. "putit")
+- Fix: re-add leading space to remainder so words stay separated
+
+### Modal Close Button Fix
+- `.modal-close` changed from padding-based sizing to fixed 36x36px with flexbox centering
+- Hover circle is now always a perfect circle instead of an elongated oval
+
+### Embed Fix for Infinite Scroll Posts
+- `_appendFeedPosts()` was missing `autoFetchLinkPreviews()` call
+- Posts loaded via infinite scroll had no YouTube/TikTok/Instagram embeds
+- Initial feed load restored to 50 posts (was reduced to 20)

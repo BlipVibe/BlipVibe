@@ -1,5 +1,23 @@
 [
   {
+    "version": "0.3.2",
+    "date": "2026-04-02",
+    "added": [
+      "DMCA registration number (DMCA-1070726) added to all policy pages"
+    ],
+    "changed": [
+      "@mentions now search all name fields (first name, last name, nickname, username, display name) — type any name to find someone",
+      "@mention dropdown shows the user's preferred display name (nickname or real name based on their setting)",
+      "Emoji picker restyled as compact 320px floating popout instead of full-width scrollable box",
+      "Consolidated all email references to hello@blipvibe.com (removed non-existent copyright@ address)"
+    ],
+    "fixed": [
+      "View More text no longer merges words together when expanded (missing space between visible and hidden text)",
+      "Modal close (X) button hover is now a perfect circle instead of elongated oval",
+      "Embeds (YouTube, TikTok, Instagram) now load on infinite scroll posts (missing autoFetchLinkPreviews call)"
+    ]
+  },
+  {
     "version": "0.3.1",
     "date": "2026-04-02",
     "added": [
