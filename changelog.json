@@ -1,5 +1,20 @@
 [
   {
+    "version": "0.3.4",
+    "date": "2026-04-02",
+    "added": [
+      "DMCA substantial compliance shield — can reject sloppy/abusive takedown notices",
+      "DMCA no-liability clause for good faith content removal",
+      "DMCA fair use neutrality section — BlipVibe doesn't judge fair use, follows DMCA framework"
+    ],
+    "changed": [
+      "Counter-notification jurisdiction corrected to 'United States District Court for the Eastern District of Tennessee' (matches § 512(g) statute)",
+      "Restoration timing matches statutory language exactly: 'not less than 10 nor more than 14 business days'",
+      "Repeat infringer policy strengthened with 'multiple valid notices and other relevant factors' language"
+    ],
+    "fixed": []
+  },
+  {
     "version": "0.3.3",
     "date": "2026-04-02",
     "added": [

@@ -1145,4 +1145,19 @@ Group coins are **shared** — they belong to the group, not individual users. A
 ### Strengthened Language
 - **Designated Agent Registration** — Added "BlipVibe has registered its designated agent with the U.S. Copyright Office" (reinforces safe harbor)
 - **Repeat Infringer Policy** — Changed from "more than one valid notice" to "at its sole discretion" (more flexible, not locked into strike count)
-- DMCA page now has 10 sections (was 7)
+- DMCA page now has 11 sections (was 7)
+
+## DMCA Federal Compliance Hardening (v0.3.4 — 2026-04-02)
+
+### Changes to dmca.html
+- **Counter-notification jurisdiction** — changed from "Knox County, Tennessee" to "United States District Court for the Eastern District of Tennessee" (matches § 512(g) statutory language)
+- **Substantial compliance shield** — added: "BlipVibe reserves the right to reject or ignore any notification that does not substantially comply with 17 U.S.C. § 512(c)(3)" (protects against sloppy/abusive takedowns)
+- **No liability for good faith removal** — added: "BlipVibe shall not be liable to any user for removal in response to a good faith DMCA notice" (reinforces § 512(g))
+- **Restoration timing** — changed from "10 to 14 business days" to "not less than ten (10) nor more than fourteen (14) business days" (matches statutory language exactly)
+- **Repeat infringer flexibility** — added "Determinations are made based on multiple valid infringement notices and other relevant factors" (avoids being locked into fixed strike count)
+- **Fair use neutrality** — new Section 9: "BlipVibe does not make determinations regarding fair use and acts in accordance with the DMCA framework upon receipt of facially valid notices"
+- **Effective date** updated to April 2, 2026
+- DMCA page now has 11 sections
+
+### Changes to index.html TOS
+- Counter-notification jurisdiction updated to "Eastern District of Tennessee"
