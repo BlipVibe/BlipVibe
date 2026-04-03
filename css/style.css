@@ -715,7 +715,7 @@ body.modal-open{overflow:hidden!important;position:fixed!important;width:100%!im
 @keyframes modalIn{from{opacity:0;transform:scale(.9) translateY(20px);}to{opacity:1;transform:scale(1) translateY(0);}}
 .modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border);}
 .modal-header h3{font-size:calc(18px * var(--font-scale));font-weight:600;word-wrap:break-word;overflow-wrap:anywhere;min-width:0;}
-.modal-close{background:none;font-size:20px;color:var(--gray);padding:4px;border-radius:50%;transition:background .2s;}
+.modal-close{background:none;font-size:20px;color:var(--gray);width:36px;height:36px;display:flex;align-items:center;justify-content:center;padding:0;border-radius:50%;transition:background .2s;flex-shrink:0;}
 .modal-close:hover{background:var(--border);color:var(--dark);}
 .modal-body{padding:24px;word-wrap:break-word;overflow-wrap:anywhere;}
 .modal-profile-top{text-align:center;margin-bottom:20px;}
