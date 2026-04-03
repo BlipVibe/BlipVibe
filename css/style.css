@@ -3472,3 +3472,29 @@ body.light-mode::before{background:#f8fafc;}
 .login-reward-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:100000;background:var(--card);border-radius:16px;padding:32px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.4);animation:signupSlideIn .3s ease;}
 .login-reward-popup .coin-icon{font-size:48px;color:#ffd700;animation:coinBounce .5s ease .2s both;}
 .login-reward-backdrop{position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;background:rgba(0,0,0,.5);}
+
+/* ========== SCROLL TO TOP BUTTON ========== */
+#scrollToTopBtn{position:fixed;bottom:80px;right:20px;z-index:5000;width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;transform:translateY(10px);}
+#scrollToTopBtn.visible{opacity:1;pointer-events:auto;transform:translateY(0);}
+#scrollToTopBtn:hover{background:var(--primary-hover);transform:translateY(-2px);}
+
+/* ========== CHARACTER COUNTER ========== */
+.char-counter{font-size:11px;color:var(--gray);text-align:right;padding:0 4px;transition:color .2s;}
+.char-counter.warn{color:#f59e0b;}
+.char-counter.over{color:#e74c3c;font-weight:600;}
+
+/* ========== LIKE ANIMATION ========== */
+@keyframes likeBurst{0%{transform:scale(1);}25%{transform:scale(1.4);}50%{transform:scale(.9);}75%{transform:scale(1.1);}100%{transform:scale(1);}}
+@keyframes likeFloat{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-60px) scale(1.5);}}
+.like-btn.animating i{animation:likeBurst .4s ease;}
+.like-float{position:absolute;font-size:24px;pointer-events:none;z-index:100;animation:likeFloat .8s ease forwards;}
+.double-tap-heart{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);font-size:80px;color:#fff;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5));pointer-events:none;z-index:10;opacity:0;}
+@keyframes doubleTapHeart{0%{opacity:1;transform:translate(-50%,-50%) scale(0);}15%{opacity:1;transform:translate(-50%,-50%) scale(1.2);}30%{transform:translate(-50%,-50%) scale(1);}80%{opacity:1;transform:translate(-50%,-50%) scale(1);}100%{opacity:0;transform:translate(-50%,-50%) scale(1.4);}}
+.double-tap-heart.active{animation:doubleTapHeart .9s ease forwards;}
+
+/* ========== UNSEND MESSAGE ========== */
+.msg-unsend-bar{display:flex;align-items:center;justify-content:center;gap:8px;padding:6px 12px;background:rgba(231,76,60,.1);border-radius:8px;margin-top:4px;font-size:12px;color:#e74c3c;animation:signupSlideIn .2s ease;}
+.msg-unsend-bar button{background:#e74c3c;color:#fff;padding:3px 10px;border-radius:6px;font-size:11px;}
+
+/* ========== SHARE PROFILE ========== */
+.share-profile-btn{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--primary);background:none;padding:4px 0;}

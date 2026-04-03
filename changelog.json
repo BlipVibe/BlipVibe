@@ -1,5 +1,25 @@
 [
   {
+    "version": "0.3.1",
+    "date": "2026-04-02",
+    "added": [
+      "Scroll-to-top button — floating arrow appears after scrolling down",
+      "Character counter on post creation (5000 char limit with color warnings)",
+      "Double-tap to like — tap twice on a post to like it (mobile + desktop)",
+      "Animated like feedback — burst animation on like button + floating thumbs-up",
+      "Unsend message — 5-second undo window after sending a DM",
+      "Share Your Profile — dropdown menu option with copyable profile link",
+      "Suggested follows — after following someone, see 3 people they follow",
+      "Confirm before leaving draft — modal warns if you have unsaved post text"
+    ],
+    "changed": [
+      "Images now lazy-loaded automatically via MutationObserver",
+      "Infinite scroll handler debounced with requestAnimationFrame for smoother scrolling",
+      "Feed cached in sessionStorage for instant render on tab switches"
+    ],
+    "fixed": []
+  },
+  {
     "version": "0.3.0",
     "date": "2026-04-02",
     "added": [

@@ -1037,3 +1037,59 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - Network-first strategy for same-origin assets, cache-first for CDN resources
 - Registered in index.html
 - Enables faster repeat loads and basic offline support
+
+## UX & Performance Refinements (v0.3.1 — 2026-04-02)
+
+### Scroll-to-Top Button
+- Floating button (bottom-right, `#scrollToTopBtn`) appears after scrolling 400px
+- Smooth scroll to top on click
+- RAF-throttled visibility toggle for performance
+
+### Character Counter on Posts
+- `initCharCounter(textareaId, counterEl)` — live count, 5000 char limit
+- Yellow warning at <200 remaining, red at over limit
+- Shown in post creation footer (`#cpmCharCounter`)
+
+### Double-Tap to Like
+- Touch: `touchend` listener detects double-tap within 300ms on `.feed-post`
+- Desktop: `dblclick` listener for same behavior
+- Skips buttons, links, inputs, media to avoid conflicts
+- Shows animated heart overlay on the post via `_showDoubleTapHeart()`
+
+### Animated Like Feedback
+- `animateLikeBtn(btn)` — burst scale animation on the like button icon
+- Floating thumbs-up that drifts upward and fades out
+- CSS: `@keyframes likeBurst`, `@keyframes likeFloat`
+
+### Unsend Message (5s window)
+- `showUnsendOption(msgEl, messageId)` — shows "Undo" bar below sent message
+- 5-second window to click Undo before bar disappears
+- Calls `sbDeleteMessage(messageId)` on undo
+
+### Confirm Before Leaving Draft
+- `confirmDraftLeave(callback)` — modal asking to keep or discard draft
+- Shown when closing post modal with unsaved text
+
+### Share Your Profile
+- "Share Profile" in user dropdown menu
+- `showShareProfileModal()` — modal with avatar, name, copyable profile link
+- Link format: `#profile:username`
+
+### Suggested Follows After Following
+- `showSuggestedFollows(justFollowedId)` — fetches who they follow
+- Filters out people you already follow + yourself
+- Shows up to 3 suggestions with quick-follow buttons
+- Appends to the active modal
+
+### Lazy Loading Images
+- `MutationObserver` automatically adds `loading="lazy"` to all new images
+- Skips navbar, profile card, and login page images (above-the-fold)
+
+### Debounced Infinite Scroll
+- Scroll handler now uses `requestAnimationFrame` throttling instead of firing on every pixel
+- `{passive: true}` for better scroll performance
+
+### Feed Cache (sessionStorage)
+- `cacheFeedData()` — saves first 50 posts to sessionStorage after load
+- `loadCachedFeed()` — instant render from cache while fresh data fetches
+- Tab switches show cached content immediately instead of skeleton

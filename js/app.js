@@ -1588,6 +1588,8 @@ async function toggleFollow(userId,btn){
         renderSuggestions();
         // Refresh friends-of-friends for discover tab
         sbGetFriendsOfFriends(currentUser.id).then(function(fof){_fofIds=fof;}).catch(function(){});
+        // Show suggested follows after following someone new
+        if(state.followedUsers[userId]) showSuggestedFollows(userId);
     } catch(err) { console.error('toggleFollow:', err); }
 }
 
@@ -4760,6 +4762,7 @@ $('#viewMyProfile').addEventListener('click',function(e){e.preventDefault();show
 $('#dropdownViewProfile').addEventListener('click',function(e){e.preventDefault();$('#userDropdownMenu').classList.remove('show');showMyProfileModal();});
 $('#dropdownMySkins').addEventListener('click',function(e){e.preventDefault();$('#userDropdownMenu').classList.remove('show');_skinPageView='mine';navigateTo('shop');});
 $('#dropdownSaved').addEventListener('click',function(e){e.preventDefault();$('#userDropdownMenu').classList.remove('show');navigateTo('saved');});
+$('#dropdownShareProfile').addEventListener('click',function(e){e.preventDefault();$('#userDropdownMenu').classList.remove('show');showShareProfileModal();});
 $('#mobileNotifBtn').addEventListener('click',function(e){e.preventDefault();navigateTo('notifications');});
 $('#mobileSearchBtn').addEventListener('click',function(e){e.preventDefault();navigateTo('search');setTimeout(function(){var inp=document.getElementById('searchPageQuery');if(inp)inp.focus();},100);});
 $('#searchPageQuery').addEventListener('keydown',function(e){
@@ -5462,15 +5465,20 @@ var _feedLimit=20;
 var _feedLoading=false;
 var _feedHasMore=true;
 function _initInfiniteScroll(){
+    var _infScrollRAF=null;
     window.addEventListener('scroll',function(){
-        if(_feedLoading||!_feedHasMore) return;
-        if(_navCurrent!=='home') return;
-        var scrollBottom=window.innerHeight+window.scrollY;
-        var docHeight=document.documentElement.scrollHeight;
-        if(scrollBottom>=docHeight-600){
-            _loadMorePosts();
-        }
-    });
+        if(_infScrollRAF) return;
+        _infScrollRAF=requestAnimationFrame(function(){
+            _infScrollRAF=null;
+            if(_feedLoading||!_feedHasMore) return;
+            if(_navCurrent!=='home') return;
+            var scrollBottom=window.innerHeight+window.scrollY;
+            var docHeight=document.documentElement.scrollHeight;
+            if(scrollBottom>=docHeight-600){
+                _loadMorePosts();
+            }
+        });
+    },{passive:true});
 }
 async function _loadMorePosts(){
     if(_feedLoading||!_feedHasMore) return;
@@ -5547,7 +5555,14 @@ _initInfiniteScroll();
 async function generatePosts(){
     feedPosts=[];
     _feedOffset=0;_feedHasMore=true;
-    showFeedSkeleton();
+    // Try cached feed for instant render while fresh data loads
+    var cached=loadCachedFeed();
+    if(cached&&cached.length){
+        feedPosts=cached;
+        renderFeed(activeFeedTab);
+    } else {
+        showFeedSkeleton();
+    }
     try {
         // Always load all public posts; tab filtering happens in renderFeed
         var posts = await sbGetFeed(50);
@@ -5573,6 +5588,7 @@ async function generatePosts(){
         showToast('Feed error: ' + (e.message || 'Could not load posts'));
     }
     renderFeed(activeFeedTab);
+    cacheFeedData();
 }
 function getFollowingIds(){
     var ids={};
@@ -5705,6 +5721,7 @@ function bindPostEvents(){
                         btn.classList.add('liked');
                         btn.querySelector('i').className='fas fa-thumbs-up';
                         countEl.textContent=count+1;
+                        animateLikeBtn(btn);
                         // Notify post author
                         var fp=feedPosts.find(function(x){return x.idx===postId;});
                         if(fp&&fp.person&&fp.person.id&&fp.person.id!==currentUser.id){
@@ -6033,12 +6050,14 @@ $('#openPostModal').addEventListener('click',function(){
     html+='<div class="cpm-tags-section"><div class="cpm-tags-wrap" id="cpmTagsWrap"></div></div>';
     html+='<div class="cpm-link-section" id="cpmLinkSection" style="display:none;"><div id="cpmLinkPreview"></div></div>';
     html+='<div id="cpmPollSection" style="display:none;padding:0 20px 12px;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><strong style="font-size:13px;"><i class="fas fa-chart-bar" style="margin-right:6px;color:var(--primary);"></i>Poll</strong><button id="cpmRemovePoll" style="background:none;color:#e74c3c;font-size:12px;cursor:pointer;"><i class="fas fa-times"></i> Remove</button></div><div id="cpmPollOptions"><div class="cpm-poll-opt"><input type="text" class="post-input cpm-poll-input" placeholder="Option 1" maxlength="80" style="font-size:13px;"></div><div class="cpm-poll-opt"><input type="text" class="post-input cpm-poll-input" placeholder="Option 2" maxlength="80" style="font-size:13px;"></div></div><button id="cpmAddPollOpt" style="background:none;color:var(--primary);font-size:12px;cursor:pointer;margin-top:6px;"><i class="fas fa-plus"></i> Add option</button></div>';
-    html+='</div><div class="cpm-footer"><div id="cpmEmojiPanel" class="emoji-picker-panel"></div><div style="display:flex;gap:8px;align-items:center;width:100%;"><button class="cpm-emoji-btn" id="cpmEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="cpm-emoji-btn" id="cpmCameraBtn" title="Add Photos/Videos"><i class="fas fa-camera"></i></button><button class="cpm-emoji-btn" id="cpmPollBtn" title="Add Poll"><i class="fas fa-chart-bar"></i></button><button class="cpm-emoji-btn" id="cpmScheduleBtn" title="Schedule Post"><i class="far fa-clock"></i></button><button class="btn btn-primary" id="cpmPublish" style="flex:1;">Publish</button></div></div></div>';
+    html+='</div><div class="cpm-footer"><div id="cpmEmojiPanel" class="emoji-picker-panel"></div><div class="char-counter" id="cpmCharCounter">0 / 5000</div><div style="display:flex;gap:8px;align-items:center;width:100%;"><button class="cpm-emoji-btn" id="cpmEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="cpm-emoji-btn" id="cpmCameraBtn" title="Add Photos/Videos"><i class="fas fa-camera"></i></button><button class="cpm-emoji-btn" id="cpmPollBtn" title="Add Poll"><i class="fas fa-chart-bar"></i></button><button class="cpm-emoji-btn" id="cpmScheduleBtn" title="Schedule Post"><i class="far fa-clock"></i></button><button class="btn btn-primary" id="cpmPublish" style="flex:1;">Publish</button></div></div></div>';
     showModal(html);
     document.getElementById('cpmEmojiBtn').addEventListener('click',function(){openEmojiPicker('cpmEmojiPanel',document.getElementById('cpmText'));});
     initMentionAutocomplete('cpmText',null);
     // Draft auto-save
     initDraftAutoSave('cpmText');
+    // Character counter
+    initCharCounter('cpmText',document.getElementById('cpmCharCounter'));
     // Poll UI handlers
     var _pollActive=false;
     document.getElementById('cpmPollBtn').addEventListener('click',function(){
@@ -11223,6 +11242,248 @@ async function initPushNotifications(){
     }catch(e){console.warn('Push init error:',e);}
 }
 
+// ======================== SCROLL TO TOP BUTTON ========================
+(function initScrollToTop(){
+    var btn=document.getElementById('scrollToTopBtn');
+    if(!btn) return;
+    var _scrollThrottle=null;
+    window.addEventListener('scroll',function(){
+        if(_scrollThrottle) return;
+        _scrollThrottle=requestAnimationFrame(function(){
+            btn.classList.toggle('visible',window.scrollY>400);
+            _scrollThrottle=null;
+        });
+    });
+    btn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+})();
+
+// ======================== CHARACTER COUNTER ========================
+var POST_MAX_CHARS=5000;
+function initCharCounter(textareaId,counterEl){
+    var ta=document.getElementById(textareaId);
+    if(!ta||!counterEl) return;
+    function update(){
+        var len=Array.from(ta.value||'').length;
+        var remaining=POST_MAX_CHARS-len;
+        counterEl.textContent=len+' / '+POST_MAX_CHARS;
+        counterEl.classList.remove('warn','over');
+        if(remaining<200) counterEl.classList.add('warn');
+        if(remaining<0) counterEl.classList.add('over');
+    }
+    ta.addEventListener('input',update);
+    update();
+}
+
+// ======================== DOUBLE-TAP TO LIKE ========================
+(function initDoubleTapLike(){
+    var _lastTap={};
+    document.addEventListener('touchend',function(e){
+        var post=e.target.closest('.feed-post');
+        if(!post) return;
+        // Don't trigger on buttons, inputs, links, or media
+        if(e.target.closest('button,a,input,textarea,video,iframe,.post-dropdown,.post-menu-btn')) return;
+        var postId=post.querySelector('.like-btn')&&post.querySelector('.like-btn').getAttribute('data-post-id');
+        if(!postId) return;
+        var now=Date.now();
+        var key='dbl_'+postId;
+        if(_lastTap[key]&&now-_lastTap[key]<300){
+            // Double tap detected
+            delete _lastTap[key];
+            var likeBtn=post.querySelector('.like-btn');
+            if(likeBtn&&!state.likedPosts[postId]){
+                likeBtn.click();
+            }
+            // Show heart animation on the post
+            _showDoubleTapHeart(post);
+        } else {
+            _lastTap[key]=now;
+        }
+    });
+    // Also support double-click on desktop
+    document.addEventListener('dblclick',function(e){
+        var post=e.target.closest('.feed-post');
+        if(!post) return;
+        if(e.target.closest('button,a,input,textarea,video,iframe,.post-dropdown,.post-menu-btn')) return;
+        var postId=post.querySelector('.like-btn')&&post.querySelector('.like-btn').getAttribute('data-post-id');
+        if(!postId) return;
+        var likeBtn=post.querySelector('.like-btn');
+        if(likeBtn&&!state.likedPosts[postId]){
+            likeBtn.click();
+        }
+        _showDoubleTapHeart(post);
+    });
+})();
+function _showDoubleTapHeart(postEl){
+    var heart=document.createElement('div');
+    heart.className='double-tap-heart';
+    heart.innerHTML='<i class="fas fa-heart"></i>';
+    var desc=postEl.querySelector('.post-description')||postEl;
+    desc.style.position='relative';
+    desc.appendChild(heart);
+    requestAnimationFrame(function(){heart.classList.add('active');});
+    setTimeout(function(){if(heart.parentNode) heart.remove();},1000);
+}
+
+// ======================== ANIMATED LIKE FEEDBACK ========================
+// Add burst animation when liking a post
+function animateLikeBtn(btn){
+    btn.classList.add('animating');
+    // Float a small heart upward
+    var rect=btn.getBoundingClientRect();
+    var floater=document.createElement('span');
+    floater.className='like-float';
+    floater.innerHTML='<i class="fas fa-thumbs-up" style="color:var(--primary);"></i>';
+    floater.style.left=rect.left+'px';
+    floater.style.top=(rect.top+window.scrollY)+'px';
+    document.body.appendChild(floater);
+    setTimeout(function(){btn.classList.remove('animating');},400);
+    setTimeout(function(){if(floater.parentNode) floater.remove();},800);
+}
+
+// ======================== UNSEND MESSAGE (5s window) ========================
+var _lastSentMsgId=null;
+var _unsendTimer=null;
+function showUnsendOption(msgEl,messageId){
+    _lastSentMsgId=messageId;
+    var bar=document.createElement('div');
+    bar.className='msg-unsend-bar';
+    bar.innerHTML='<span>Message sent</span><button id="unsendMsgBtn">Undo</button>';
+    msgEl.after(bar);
+    bar.querySelector('#unsendMsgBtn').addEventListener('click',async function(){
+        try{
+            await sbDeleteMessage(messageId);
+            msgEl.remove();
+            bar.remove();
+            showToast('Message unsent');
+        }catch(e){showToast('Could not unsend');}
+        clearTimeout(_unsendTimer);
+    });
+    clearTimeout(_unsendTimer);
+    _unsendTimer=setTimeout(function(){if(bar.parentNode) bar.remove();_lastSentMsgId=null;},5000);
+}
+
+// ======================== CONFIRM BEFORE LEAVING DRAFT ========================
+function confirmDraftLeave(callback){
+    var draft=loadDraft();
+    if(!draft||!draft.trim()){callback();return;}
+    var h='<div class="modal-header"><h3>Discard Draft?</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body"><p style="text-align:center;color:var(--gray);margin-bottom:16px;">You have an unsaved draft. What would you like to do?</p>';
+    h+='<div class="modal-actions"><button class="btn btn-outline" id="draftKeepBtn">Keep Draft</button><button class="btn" id="draftDiscardBtn" style="background:#e74c3c;color:#fff;">Discard</button></div></div>';
+    showModal(h);
+    document.getElementById('draftKeepBtn').addEventListener('click',function(){closeModal();callback();});
+    document.getElementById('draftDiscardBtn').addEventListener('click',function(){clearDraft();closeModal();callback();});
+}
+
+// ======================== SHARE YOUR PROFILE ========================
+function showShareProfileModal(){
+    if(!currentUser) return;
+    var link=location.origin+location.pathname+'#profile:'+currentUser.username;
+    var h='<div class="modal-header"><h3><i class="fas fa-share-nodes" style="color:var(--primary);margin-right:8px;"></i>Share Your Profile</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body">';
+    h+='<div style="text-align:center;margin-bottom:16px;"><img src="'+getMyAvatarUrl()+'" style="width:64px;height:64px;border-radius:50%;object-fit:cover;margin:0 auto 8px;display:block;"><strong>'+escapeHtml(currentUser.display_name||currentUser.username)+'</strong><p style="font-size:12px;color:var(--gray);">@'+escapeHtml(currentUser.username)+'</p></div>';
+    h+='<div class="invite-link-box"><input type="text" value="'+escapeHtml(link)+'" readonly id="shareProfileInput"><button id="copyShareProfile"><i class="fas fa-copy"></i> Copy</button></div>';
+    h+='<div class="modal-actions"><button class="btn btn-primary modal-close">Done</button></div></div>';
+    showModal(h);
+    document.getElementById('copyShareProfile').addEventListener('click',function(){
+        var inp=document.getElementById('shareProfileInput');
+        inp.select();
+        try{navigator.clipboard.writeText(inp.value);showToast('Profile link copied!');}catch(e){document.execCommand('copy');showToast('Profile link copied!');}
+    });
+}
+
+// ======================== SUGGESTED FOLLOWS AFTER FOLLOWING ========================
+async function showSuggestedFollows(justFollowedId){
+    try{
+        var followers=await sbGetFollowing(justFollowedId);
+        if(!followers||!followers.length) return;
+        // Filter out people you already follow and yourself
+        var suggestions=followers.filter(function(p){
+            return p.id!==currentUser.id&&!state.followedUsers[p.id];
+        }).slice(0,3);
+        if(!suggestions.length) return;
+        var h='<div style="margin-top:12px;padding:12px;border:1px solid var(--border);border-radius:10px;background:rgba(139,92,246,.03);">';
+        h+='<p style="font-size:12px;color:var(--gray);margin-bottom:8px;"><i class="fas fa-user-plus" style="margin-right:4px;"></i>People they follow</p>';
+        suggestions.forEach(function(p){
+            var avatar=p.avatar_url||DEFAULT_AVATAR;
+            var name=p.display_name||p.username||'User';
+            h+='<div style="display:flex;align-items:center;gap:8px;padding:6px 0;"><img src="'+avatar+'" style="width:32px;height:32px;border-radius:50%;object-fit:cover;"><div style="flex:1;"><strong style="font-size:13px;">'+escapeHtml(name)+'</strong></div><button class="btn btn-primary suggested-follow-quick" data-uid="'+p.id+'" style="padding:4px 12px;font-size:11px;">Follow</button></div>';
+        });
+        h+='</div>';
+        showToast('');// clear any existing toast
+        // Append to the active modal if one is open, or show as toast-like popup
+        var modal=document.querySelector('.modal-body');
+        if(modal){
+            modal.insertAdjacentHTML('beforeend',h);
+            modal.querySelectorAll('.suggested-follow-quick').forEach(function(btn){
+                btn.addEventListener('click',async function(){
+                    try{
+                        await sbFollow(currentUser.id,btn.dataset.uid);
+                        state.followedUsers[btn.dataset.uid]=true;
+                        btn.textContent='Following';btn.disabled=true;btn.style.opacity='.6';
+                    }catch(e){showToast('Could not follow');}
+                });
+            });
+        }
+    }catch(e){}
+}
+
+// ======================== LAZY LOADING IMAGES ========================
+// MutationObserver to add loading="lazy" to all new images in the feed
+(function initLazyLoadImages(){
+    if(!('MutationObserver' in window)) return;
+    var observer=new MutationObserver(function(mutations){
+        mutations.forEach(function(m){
+            m.addedNodes.forEach(function(node){
+                if(node.nodeType!==1) return;
+                var imgs=node.querySelectorAll?node.querySelectorAll('img:not([loading])'):[];
+                imgs.forEach(function(img){
+                    // Don't lazy load above-the-fold images (nav, profile card)
+                    if(!img.closest('.navbar')&&!img.closest('.profile-card')&&!img.closest('.login-page')){
+                        img.setAttribute('loading','lazy');
+                    }
+                });
+                // Also check if the node itself is an img
+                if(node.tagName==='IMG'&&!node.getAttribute('loading')&&!node.closest('.navbar')){
+                    node.setAttribute('loading','lazy');
+                }
+            });
+        });
+    });
+    observer.observe(document.body,{childList:true,subtree:true});
+})();
+
+// ======================== DEBOUNCE INFINITE SCROLL ========================
+// Replace the raw scroll listener with a throttled version
+(function upgradeInfiniteScroll(){
+    var _scrollRAF=null;
+    window.addEventListener('scroll',function(){
+        if(_scrollRAF) return;
+        _scrollRAF=requestAnimationFrame(function(){
+            _scrollRAF=null;
+            // Scroll-to-top visibility is handled by its own RAF above
+        });
+    },{passive:true});
+})();
+
+// ======================== FEED CACHE (sessionStorage) ========================
+function cacheFeedData(){
+    if(!feedPosts||!feedPosts.length) return;
+    try{
+        // Only cache first 50 posts to keep size reasonable
+        var toCache=feedPosts.slice(0,50).map(function(p){
+            return {idx:p.idx,person:p.person,text:p.text,tags:p.tags,badge:p.badge,loc:p.loc,likes:p.likes,commentCount:p.commentCount,shares:p.shares,images:p.images,created_at:p.created_at,sharedPost:p.sharedPost||null};
+        });
+        sessionStorage.setItem('blipvibe_feed_cache',JSON.stringify(toCache));
+    }catch(e){}
+}
+function loadCachedFeed(){
+    try{
+        var cached=sessionStorage.getItem('blipvibe_feed_cache');
+        if(!cached) return null;
+        return JSON.parse(cached);
+    }catch(e){return null;}
+}
+
 // ======================== WIRE UP NEW FEATURES ========================
 // Called from initApp() after all data is loaded
 function wireNewFeatures(){
@@ -11232,6 +11493,8 @@ function wireNewFeatures(){
     setTimeout(checkDailyLoginReward,2000);
     // Push notifications
     initPushNotifications();
+    // Cache feed data after load
+    cacheFeedData();
 }
 
 });
