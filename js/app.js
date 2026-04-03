@@ -350,7 +350,7 @@ function resetAllCustomizations(){
 
 // ======================== TERMS OF SERVICE ACCEPTANCE ========================
 // Bump this version whenever the TOS changes — all users must re-accept
-var TOS_VERSION = 7; // v7 = Apr 2 2026 — testing re-acceptance modal
+var TOS_VERSION = 8; // v8 = Apr 2 2026 — Privacy Policy updated for push tokens, service worker cache, daily rewards; DMCA fully hardened
 var _tosAccepted = false;
 
 function checkTosAccepted(){
@@ -380,15 +380,14 @@ function showTosModal(){
             +'<p style="margin:0 0 12px;font-size:13px;color:#64748b;">We\'ve updated our Terms of Use. Please review and accept to continue using BlipVibe.</p>'
             +'<div class="tos-splash-scroll">'
             +'<div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:14px 16px;margin-bottom:16px;">'
-            +'<h5 style="margin:0 0 8px;font-size:14px;color:#5b21b6;"><i class="fas fa-bell" style="margin-right:6px;"></i>What\u2019s Changed (v7 \u2014 April 2, 2026)</h5>'
+            +'<h5 style="margin:0 0 8px;font-size:14px;color:#5b21b6;"><i class="fas fa-bell" style="margin-right:6px;"></i>What\u2019s Changed (v8 \u2014 April 2, 2026)</h5>'
             +'<ul style="margin:0 0 0 16px;font-size:13px;color:#1e293b;line-height:1.7;">'
-            +'<li style="color:#1e293b;"><strong style="color:#1e293b;">DMCA Policy expanded</strong> \u2014 dedicated DMCA email (dmca@blipvibe.com), registered designated agent with U.S. Copyright Office</li>'
-            +'<li style="color:#1e293b;"><strong style="color:#1e293b;">No Prior Screening clause</strong> \u2014 BlipVibe does not pre-screen content but may remove violations</li>'
-            +'<li style="color:#1e293b;"><strong style="color:#1e293b;">Audio &amp; Music Content</strong> \u2014 users are responsible for music rights; unauthorized use prohibited</li>'
-            +'<li style="color:#1e293b;"><strong style="color:#1e293b;">Standard Technical Measures</strong> \u2014 BlipVibe accommodates copyright protection tools (\u00a7 512(i))</li>'
-            +'<li style="color:#1e293b;"><strong style="color:#1e293b;">Repeat Infringer Policy</strong> \u2014 strengthened to allow termination at sole discretion</li>'
+            +'<li style="color:#1e293b;"><strong style="color:#1e293b;">DMCA Policy expanded</strong> \u2014 dedicated email (dmca@blipvibe.com), registered agent (DMCA-1070726), no prior screening, audio/music clause, fair use neutrality, standard technical measures (\u00a7 512(i))</li>'
+            +'<li style="color:#1e293b;"><strong style="color:#1e293b;">Privacy Policy updated</strong> \u2014 push notification tokens (FCM/APNs) and service worker caching now disclosed in data collection</li>'
+            +'<li style="color:#1e293b;"><strong style="color:#1e293b;">Counter-notification jurisdiction</strong> \u2014 corrected to United States District Court for the Eastern District of Tennessee</li>'
+            +'<li style="color:#1e293b;"><strong style="color:#1e293b;">Repeat Infringer Policy</strong> \u2014 strengthened to allow termination at sole discretion based on multiple factors</li>'
             +'</ul></div>'
-            +'<h4>BlipVibe \u2013 Terms of Use (Beta)</h4>'
+            +'<h4>BlipVibe LLC \u2013 Terms of Use</h4>'
             +'<p><strong>Effective Date:</strong> April 2, 2026</p>'
             +'<p>These Terms of Use ("Terms") constitute a <strong>legally binding agreement</strong> between you and <strong>BlipVibe LLC</strong>, a Tennessee limited liability company ("BlipVibe", "we", "us", "our"), with its principal place of business at 116 Agnes Rd Ste 200, Knoxville, TN 37919. By continuing to use BlipVibe, you agree to be bound by these Terms, our <strong>Privacy Policy</strong>, <strong>Acceptable Use Policy</strong>, <strong>DMCA Policy</strong>, and <strong>Arbitration &amp; Dispute Resolution Agreement</strong> (Section 19), each incorporated herein by reference.</p>'
             +'<h5>1. Eligibility &amp; Age Requirement</h5>'
