@@ -5721,9 +5721,9 @@ function renderFeed(tab){
         // Following tab: posts from people you follow + your own posts
         posts=feedPosts.filter(function(p){return (state.followedUsers[p.person.id]||(currentUser&&p.person.id===currentUser.id))&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id]&&!mutedUsers[p.person.id];});
     } else {
-        // Discover tab: posts from friends-of-friends (people followed by people you follow, but not already followed by you)
+        // Discover tab: posts from friends-of-friends (people followed by people you follow, but not you or people you already follow)
         var myIds=getFollowingIds();
-        posts=feedPosts.filter(function(p){return _fofIds[p.person.id]&&!myIds[p.person.id]&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id]&&!mutedUsers[p.person.id];});
+        posts=feedPosts.filter(function(p){return p.person.id!==currentUser.id&&_fofIds[p.person.id]&&!myIds[p.person.id]&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id]&&!mutedUsers[p.person.id];});
     }
     var container=$('#feedContainer');
     if(!posts.length){
@@ -12015,19 +12015,6 @@ async function showSuggestedFollows(justFollowedId){
         });
     });
     observer.observe(document.body,{childList:true,subtree:true});
-})();
-
-// ======================== DEBOUNCE INFINITE SCROLL ========================
-// Replace the raw scroll listener with a throttled version
-(function upgradeInfiniteScroll(){
-    var _scrollRAF=null;
-    window.addEventListener('scroll',function(){
-        if(_scrollRAF) return;
-        _scrollRAF=requestAnimationFrame(function(){
-            _scrollRAF=null;
-            // Scroll-to-top visibility is handled by its own RAF above
-        });
-    },{passive:true});
 })();
 
 // ======================== FEED CACHE (sessionStorage) ========================
