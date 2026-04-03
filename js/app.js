@@ -38,6 +38,7 @@ function safeWordSplit(str,max){
     if(lastSpace<max*0.5) lastSpace=max; // if no good break point, just cut at max
     var visible=a.slice(0,lastSpace).join('');
     var rest=a.slice(lastSpace).join('').replace(/^\s+/,''); // trim leading space from remainder
+    if(rest) rest=' '+rest; // preserve space so words don't merge when hidden span is shown
     return [visible,rest];
 }
 
