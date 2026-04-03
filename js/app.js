@@ -350,7 +350,7 @@ function resetAllCustomizations(){
 
 // ======================== TERMS OF SERVICE ACCEPTANCE ========================
 // Bump this version whenever the TOS changes — all users must re-accept
-var TOS_VERSION = 5; // v5 = Mar 18 2026 LLC formation — BlipVibe LLC, Knox County TN venue, business address added
+var TOS_VERSION = 6; // v6 = Apr 2 2026 — DMCA policy strengthened, dedicated dmca@ email, audio/music clause, standard technical measures, no prior screening
 var _tosAccepted = false;
 
 function checkTosAccepted(){
@@ -379,8 +379,17 @@ function showTosModal(){
             +'<h3 style="margin:0 0 12px;font-size:18px;color:var(--dark);">Updated Terms of Use</h3>'
             +'<p style="margin:0 0 12px;font-size:13px;color:var(--gray);">We\'ve updated our Terms of Use. Please review and accept to continue using BlipVibe.</p>'
             +'<div class="tos-splash-scroll">'
+            +'<div style="background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);border-radius:10px;padding:14px 16px;margin-bottom:16px;">'
+            +'<h5 style="margin:0 0 8px;font-size:14px;color:var(--primary);"><i class="fas fa-bell" style="margin-right:6px;"></i>What\u2019s Changed (v6 \u2014 April 2, 2026)</h5>'
+            +'<ul style="margin:0 0 0 16px;font-size:13px;color:var(--dark);line-height:1.7;">'
+            +'<li><strong>DMCA Policy expanded</strong> \u2014 dedicated DMCA email (dmca@blipvibe.com), registered designated agent with U.S. Copyright Office</li>'
+            +'<li><strong>No Prior Screening clause</strong> \u2014 BlipVibe does not pre-screen content but may remove violations</li>'
+            +'<li><strong>Audio &amp; Music Content</strong> \u2014 users are responsible for music rights; unauthorized use prohibited</li>'
+            +'<li><strong>Standard Technical Measures</strong> \u2014 BlipVibe accommodates copyright protection tools (\u00a7 512(i))</li>'
+            +'<li><strong>Repeat Infringer Policy</strong> \u2014 strengthened to allow termination at sole discretion</li>'
+            +'</ul></div>'
             +'<h4>BlipVibe \u2013 Terms of Use (Beta)</h4>'
-            +'<p><strong>Effective Date:</strong> March 3, 2026</p>'
+            +'<p><strong>Effective Date:</strong> April 2, 2026</p>'
             +'<p>These Terms of Use ("Terms") constitute a <strong>legally binding agreement</strong> between you and <strong>BlipVibe LLC</strong>, a Tennessee limited liability company ("BlipVibe", "we", "us", "our"), with its principal place of business at 116 Agnes Rd Ste 200, Knoxville, TN 37919. By continuing to use BlipVibe, you agree to be bound by these Terms, our <strong>Privacy Policy</strong>, <strong>Acceptable Use Policy</strong>, <strong>DMCA Policy</strong>, and <strong>Arbitration &amp; Dispute Resolution Agreement</strong> (Section 19), each incorporated herein by reference.</p>'
             +'<h5>1. Eligibility &amp; Age Requirement</h5>'
             +'<p>You must be at least <strong>13 years old</strong> to use BlipVibe. If you are between 13 and 17, you represent that your parent or legal guardian has reviewed and consents to these Terms. BlipVibe does not knowingly collect personal information from children under 13 (COPPA). If we discover a user is under 13, their account will be terminated and data deleted.</p>'
@@ -394,9 +403,11 @@ function showTosModal(){
             +'<h5>5. Embedded &amp; Third-Party Media</h5>'
             +'<p>BlipVibe displays embedded media from YouTube, Spotify, TikTok, Instagram, Twitter/X, Vimeo, and SoundCloud using their official embed tools. BlipVibe does not host or redistribute third-party content. These embeds may set cookies and collect data per each platform\'s own privacy policy. The Service may contain links to third-party websites; BlipVibe does not control or assume responsibility for third-party content.</p>'
             +'<h5>6. Copyright &amp; DMCA Policy</h5>'
-            +'<p>BlipVibe complies with the DMCA (17 U.S.C. \u00a7 512). Send takedown notices to <strong>dmca@blipvibe.com</strong> (DMCA Registration: DMCA-1070726) with: your name and contact info, identification of the copyrighted work, the URL of the infringing material, a good faith belief statement, a statement under penalty of perjury that the information is accurate, and your signature. Counter-notifications and full procedures are detailed in our DMCA Policy. Knowingly false claims may result in liability under \u00a7 512(f).</p>'
+            +'<p>BlipVibe complies with the DMCA (17 U.S.C. \u00a7 512). BlipVibe has registered its designated agent with the U.S. Copyright Office (DMCA Registration: DMCA-1070726). Send takedown notices to <strong>dmca@blipvibe.com</strong> with: your name and contact info, identification of the copyrighted work, the URL of the infringing material, a good faith belief statement, a statement under penalty of perjury that the information is accurate, and your signature. Counter-notifications and full procedures are detailed in our DMCA Policy. Knowingly false claims may result in liability under \u00a7 512(f).</p>'
+            +'<p>BlipVibe does not pre-screen user content but reserves the right to remove content that violates this policy or applicable law. BlipVibe accommodates and does not interfere with standard technical measures used by copyright owners to identify or protect copyrighted works.</p>'
+            +'<p>Users are responsible for ensuring they have the necessary rights to any audio content uploaded, including music. Unauthorized use of copyrighted music is prohibited.</p>'
             +'<h5>7. Repeat Infringer Policy</h5>'
-            +'<p>Accounts with multiple valid DMCA takedown notices may be suspended or permanently terminated.</p>'
+            +'<p>BlipVibe may terminate, in appropriate circumstances, the accounts of users who are repeat infringers at its sole discretion.</p>'
             +'<h5>8. Virtual Currency (Coins)</h5>'
             +'<p>Coins constitute a <strong>limited, revocable license</strong>, not ownership. Coins have <strong>no real-world monetary value</strong>, no investment or speculative value, cannot be exchanged for cash, are non-transferable, and are used only for cosmetic items. Coins are non-refundable except where required by applicable law. BlipVibe may modify or reset Coin balances at any time. Coins are forfeited upon account termination. App Store purchases are subject to Apple\'s terms and refund policies.</p>'
             +'<h5>9. Direct Messages</h5>'
