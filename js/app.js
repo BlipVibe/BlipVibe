@@ -5721,13 +5721,16 @@ function renderFeed(tab){
         // Following tab: posts from people you follow + your own posts
         posts=feedPosts.filter(function(p){return (state.followedUsers[p.person.id]||(currentUser&&p.person.id===currentUser.id))&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id]&&!mutedUsers[p.person.id];});
     } else {
-        // Discover tab: posts from friends-of-friends (people followed by people you follow, but not you or people you already follow)
-        var myIds=getFollowingIds();
-        posts=feedPosts.filter(function(p){return p.person.id!==currentUser.id&&_fofIds[p.person.id]&&!myIds[p.person.id]&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id]&&!mutedUsers[p.person.id];});
+        // Discover tab: all posts from people you DON'T follow (excluding yourself), ranked by engagement
+        posts=feedPosts.filter(function(p){
+            return currentUser&&p.person.id!==currentUser.id&&!state.followedUsers[p.person.id]&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id]&&!mutedUsers[p.person.id];
+        });
+        // Sort by engagement (likes + comments) descending — trending posts first
+        posts.sort(function(a,b){return ((b.likes||0)+(b.commentCount||0))-((a.likes||0)+(a.commentCount||0));});
     }
     var container=$('#feedContainer');
     if(!posts.length){
-        var emptyMsg=tab==='myposts'?'You haven\'t posted anything yet!':tab==='discover'?'Follow more people to discover posts from their friends!':'No posts yet. Be the first to post!';
+        var emptyMsg=tab==='myposts'?'You haven\'t posted anything yet!':tab==='discover'?'No new posts to discover right now. Check back later!':'No posts yet. Be the first to post!';
         var emptyIcon=tab==='myposts'?'fa-user':tab==='discover'?'fa-compass':'fa-pen';
         container.innerHTML='<div class="card" style="padding:40px;text-align:center;color:var(--gray);"><i class="fas '+emptyIcon+'" style="font-size:32px;margin-bottom:12px;display:block;"></i><p>'+emptyMsg+'</p></div>';
         $$('#feedTabs .search-tab').forEach(function(t){t.classList.toggle('active',t.dataset.feedtab===tab);});
