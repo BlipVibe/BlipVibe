@@ -5183,7 +5183,7 @@ document.addEventListener('click',function(e){
         if(text==='Logout'){
             e.preventDefault();
             $('#userDropdownMenu').classList.remove('show');
-            showModal('<div class="modal-header"><h3>Logout</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body"><p style="color:#777;text-align:center;margin-bottom:16px;">Are you sure you want to logout?</p><div class="modal-actions"><button class="btn btn-primary modal-close">Stay</button><button class="btn btn-outline" id="logoutConfirm">Logout</button></div></div>');
+            showModal('<div class="modal-header"><h3>Logout</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body"><p style="color:#777;text-align:center;margin-bottom:16px;">Are you sure you want to logout?</p><div class="modal-actions"><button class="btn btn-primary modal-close" style="min-width:100px;">Stay</button><button class="btn btn-outline" id="logoutConfirm" style="min-width:100px;">Logout</button></div></div>');
             document.getElementById('logoutConfirm').addEventListener('click',function(){closeModal();handleLogout();});
         }
     }
