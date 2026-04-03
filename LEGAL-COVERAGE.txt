@@ -51,9 +51,9 @@ TERMS OF USE (26 Sections)
    - Full DMCA compliance (17 U.S.C. § 512)
    - Takedown process documented (notice requirements listed)
    - Penalty of perjury statement required
-   - Designated contact: hello@blipvibe.com
+   - Designated contact: dmca@blipvibe.com (DMCA Registration: DMCA-1070726)
    - Detailed counter-notification procedure
-   - Knox County, Tennessee jurisdiction for counter-notifications
+   - United States District Court for the Eastern District of Tennessee jurisdiction for counter-notifications
    - § 512(f) misrepresentation warning
 
 7. REPEAT INFRINGER POLICY
@@ -278,7 +278,7 @@ PRIVACY POLICY (21 Sections, Version 3.0)
 
 17. DMCA & COPYRIGHT
     - 17 U.S.C. § 512 compliance
-    - Designated agent: hello@blipvibe.com (DMCA Registration: DMCA-1070726)
+    - Designated agent: dmca@blipvibe.com (DMCA Registration: DMCA-1070726)
     - Repeat infringer termination policy
 
 18. CHANGES TO THIS POLICY
