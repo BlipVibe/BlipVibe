@@ -380,7 +380,7 @@ function showTosModal(){
             +'<p style="margin:0 0 12px;font-size:13px;color:#64748b;">We\'ve updated our Terms of Use. Please review and accept to continue using BlipVibe.</p>'
             +'<div class="tos-splash-scroll">'
             +'<div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:14px 16px;margin-bottom:16px;">'
-            +'<h5 style="margin:0 0 8px;font-size:14px;color:#5b21b6;"><i class="fas fa-bell" style="margin-right:6px;"></i>What\u2019s Changed (v6 \u2014 April 2, 2026)</h5>'
+            +'<h5 style="margin:0 0 8px;font-size:14px;color:#5b21b6;"><i class="fas fa-bell" style="margin-right:6px;"></i>What\u2019s Changed (v7 \u2014 April 2, 2026)</h5>'
             +'<ul style="margin:0 0 0 16px;font-size:13px;color:#1e293b;line-height:1.7;">'
             +'<li style="color:#1e293b;"><strong style="color:#1e293b;">DMCA Policy expanded</strong> \u2014 dedicated DMCA email (dmca@blipvibe.com), registered designated agent with U.S. Copyright Office</li>'
             +'<li style="color:#1e293b;"><strong style="color:#1e293b;">No Prior Screening clause</strong> \u2014 BlipVibe does not pre-screen content but may remove violations</li>'
