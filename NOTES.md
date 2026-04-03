@@ -1161,3 +1161,70 @@ Group coins are **shared** — they belong to the group, not individual users. A
 
 ### Changes to index.html TOS
 - Counter-notification jurisdiction updated to "Eastern District of Tennessee"
+
+## Security, Accessibility & Admin Features (v0.3.5 — 2026-04-02)
+
+### Change Password In-App
+- `showChangePasswordModal()` — Settings → Account Security → Change Password
+- Uses `sb.auth.updateUser({password})` — Supabase handles validation
+
+### Change Email In-App
+- `showChangeEmailModal()` — Settings → Account Security → Change Email
+- Sends confirmation to new email via `sb.auth.updateUser({email})`
+
+### Two-Factor Authentication (2FA/TOTP)
+- `showSetup2FAModal()` — Settings → Account Security → 2FA
+- Uses Supabase MFA: `sb.auth.mfa.enroll()`, `challenge()`, `verify()`
+- Shows QR code + manual secret for authenticator app setup
+- Can disable via `sb.auth.mfa.unenroll()`
+
+### Alt Text on Post Images
+- "ALT" button overlay on each image thumbnail in post creation
+- Opens modal with textarea for image description
+- Stored in `mediaList[i].altText` — persists through grid re-renders
+- Button turns purple when alt text is set
+
+### Skip-to-Content Link (Accessibility)
+- `<a href="#main-content" class="skip-to-content">Skip to content</a>` added to index.html
+- Hidden off-screen, appears on focus (keyboard navigation)
+- `#main-content` anchor above feed container
+
+### ARIA Labels
+- MutationObserver auto-adds `aria-label` to icon-only buttons
+- Covers: like, dislike, comment, share, react, post menu, modal close, scroll-to-top
+- Re-runs on DOM changes for dynamically added content
+
+### Link in Bio
+- `website_url` column on profiles (migration in `add-post-edit-history.sql`)
+- `showEditLinkInBio()` — Settings → Link in Bio
+- Displays on profile view as clickable link with domain name
+- Added to `profileToPerson()` mapping
+
+### Post Edit History
+- `post_edits` table with auto-trigger on content change (migration: `add-post-edit-history.sql`)
+- `showEditHistory(postId)` — view previous versions of a post
+- Trigger logs old content before each edit via SECURITY DEFINER function
+
+### Seen By on Group Posts
+- `group_post_views` table (migration: `add-post-edit-history.sql`)
+- `trackGroupPostView(postId)` — upserts view record when viewing group posts
+- `showSeenByModal(postId)` — shows who viewed a group post with avatars and timestamps
+
+### Scheduled Posts Calendar View
+- `showScheduledCalendar()` — Settings → Scheduled Posts → Calendar
+- Visual month grid with dots on days that have scheduled posts
+- Today highlighted with border
+- Cancel button on each scheduled post
+- Replaces old flat list view
+
+### DMCA Notice Log
+- `dmca_notices` table (migration: `add-dmca-log.sql`)
+- Tracks: notice type, status, complainant, target content, timestamps
+- Admin-only RLS (SELECT, INSERT, UPDATE)
+- Supports takedown + counter-notification tracking
+
+### Admin Report Queue
+- `showAdminReportQueue()` — Settings → Report Queue (admin only)
+- Lists all user/post reports with type badges (spam, harassment, inappropriate)
+- Dismiss button removes reports
+- Only visible to admin users

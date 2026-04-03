@@ -3498,3 +3498,42 @@ body.light-mode::before{background:#f8fafc;}
 
 /* ========== SHARE PROFILE ========== */
 .share-profile-btn{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--primary);background:none;padding:4px 0;}
+
+/* ========== SKIP TO CONTENT (accessibility) ========== */
+.skip-to-content{position:absolute;top:-100%;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;padding:10px 20px;border-radius:0 0 8px 8px;z-index:100001;font-size:14px;font-weight:600;transition:top .2s;}
+.skip-to-content:focus{top:0;}
+
+/* ========== ALT TEXT INPUT ========== */
+.alt-text-btn{position:absolute;bottom:4px;left:4px;background:rgba(0,0,0,.6);color:#fff;font-size:10px;padding:2px 6px;border-radius:4px;font-weight:600;letter-spacing:.5px;}
+.alt-text-btn:hover{background:rgba(0,0,0,.8);}
+.alt-text-input{width:100%;padding:8px;border:1px solid var(--border);border-radius:6px;font-size:13px;margin-top:6px;background:var(--card);color:var(--dark);resize:none;height:60px;}
+
+/* ========== LINK IN BIO ========== */
+.profile-website{font-size:13px;color:var(--primary);display:flex;align-items:center;gap:4px;margin-top:4px;}
+.profile-website:hover{text-decoration:underline;}
+
+/* ========== POST EDIT HISTORY ========== */
+.edit-history-badge{font-size:11px;color:var(--gray);cursor:pointer;display:inline-flex;align-items:center;gap:3px;}
+.edit-history-badge:hover{color:var(--primary);}
+
+/* ========== SEEN BY ========== */
+.seen-by-row{display:flex;align-items:center;gap:4px;padding:4px 0;font-size:11px;color:var(--gray);}
+.seen-by-row img{width:18px;height:18px;border-radius:50%;object-fit:cover;}
+
+/* ========== SCHEDULE CALENDAR ========== */
+.sched-calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-top:8px;}
+.sched-day{text-align:center;padding:6px 2px;font-size:11px;border-radius:4px;position:relative;}
+.sched-day.has-post{background:rgba(139,92,246,.15);color:var(--primary);font-weight:600;cursor:pointer;}
+.sched-day.today{border:1px solid var(--primary);}
+.sched-day-dot{width:4px;height:4px;border-radius:50%;background:var(--primary);margin:2px auto 0;}
+
+/* ========== ADMIN REPORT QUEUE ========== */
+.report-queue-item{display:flex;gap:12px;padding:12px;border-bottom:1px solid var(--border);align-items:flex-start;}
+.report-queue-item .report-type{font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600;text-transform:uppercase;}
+.report-queue-item .report-type.spam{background:rgba(245,158,11,.15);color:#f59e0b;}
+.report-queue-item .report-type.harassment{background:rgba(239,68,68,.15);color:#ef4444;}
+.report-queue-item .report-type.inappropriate{background:rgba(168,85,247,.15);color:#a855f7;}
+.report-queue-item .report-type.other{background:rgba(100,116,139,.15);color:#64748b;}
+
+/* ========== 2FA SETUP ========== */
+.totp-setup-code{font-family:monospace;font-size:14px;letter-spacing:2px;background:var(--card);border:1px solid var(--border);padding:8px 16px;border-radius:8px;text-align:center;word-break:break-all;}

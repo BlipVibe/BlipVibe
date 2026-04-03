@@ -2784,6 +2784,7 @@ function profileToPerson(p){
         bio:p.bio||'',
         avatar_url:p.avatar_url,
         cover_photo_url:p.cover_photo_url||null,
+        website_url:p.website_url||null,
         last_seen:p.last_seen||null,
         premiumSkin:sd.activePremiumSkin||null,
         skin:sd.activeSkin||null,
@@ -2872,6 +2873,7 @@ async function showProfileView(person){
     }
     if(person.status) cardHtml+='<p class="profile-title">'+escapeHtml(person.status)+'</p>';
     if(person.bio) cardHtml+='<p class="profile-about">'+escapeHtml(person.bio)+'</p>';
+    if(person.website_url) cardHtml+='<a href="'+escapeHtml(person.website_url)+'" target="_blank" rel="noopener" class="profile-website"><i class="fas fa-link"></i> '+escapeHtml(person.website_url.replace(/^https?:\/\/(www\.)?/,'').split('/')[0])+'</a>';
     var pvPriv=isMe?state.privateFollowers:!!person.priv;
     cardHtml+='<div class="profile-stats">';
     cardHtml+='<div class="stat stat-clickable pv-stat-following" style="'+(pvPriv?'opacity:.5;pointer-events:none;cursor:default;':'')+'"><span class="stat-count">'+following+'</span><span class="stat-label">Following'+(pvPriv?' <i class="fas fa-lock" style="font-size:10px;"></i>':'')+'</span></div>';
@@ -5083,12 +5085,27 @@ document.addEventListener('click',function(e){
             });
             h+='</div>';
             // Scheduled posts
-            h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Scheduled Posts</span><button class="btn btn-outline" id="settingsScheduled" style="padding:4px 14px;font-size:12px;">'+(_scheduledPosts.length||0)+' pending</button></div>';
+            // Old scheduled posts list replaced by calendar view above
             h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Developer Updates</span><button class="btn btn-outline" id="settingsDevUpdates" style="padding:4px 14px;font-size:12px;"><i class="fas fa-code-branch" style="margin-right:4px;"></i>View</button></div>';
             // Close Friends
             h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Close Friends</span><button class="btn btn-outline" id="settingsCloseFriends" style="padding:4px 14px;font-size:12px;color:#f59e0b;border-color:#f59e0b;"><i class="fas fa-star" style="margin-right:4px;"></i>'+Object.keys(_closeFriends).length+'</button></div>';
+            // Admin: Report Queue
+            if(_isAdmin){
+                h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;color:#e74c3c;"><i class="fas fa-shield-halved" style="margin-right:4px;"></i>Report Queue</span><button class="btn btn-outline" id="settingsReportQueue" style="padding:4px 14px;font-size:12px;color:#e74c3c;border-color:#e74c3c;"><i class="fas fa-flag" style="margin-right:4px;"></i>'+reportedPosts.length+'</button></div>';
+            }
+            // Account Security section
+            h+='<div style="padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;font-weight:600;">Account Security</span>';
+            h+='<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">';
+            h+='<button class="btn btn-outline" id="settingsChangePassword" style="padding:4px 14px;font-size:12px;"><i class="fas fa-lock" style="margin-right:4px;"></i>Change Password</button>';
+            h+='<button class="btn btn-outline" id="settingsChangeEmail" style="padding:4px 14px;font-size:12px;"><i class="fas fa-envelope" style="margin-right:4px;"></i>Change Email</button>';
+            h+='<button class="btn btn-outline" id="settings2FA" style="padding:4px 14px;font-size:12px;"><i class="fas fa-shield-halved" style="margin-right:4px;"></i>2FA</button>';
+            h+='</div></div>';
+            // Link in Bio
+            h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Link in Bio</span><button class="btn btn-outline" id="settingsLinkInBio" style="padding:4px 14px;font-size:12px;"><i class="fas fa-link" style="margin-right:4px;"></i>'+(currentUser&&currentUser.website_url?'Edit':'Add')+'</button></div>';
             // Post Analytics
             h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Post Analytics</span><button class="btn btn-outline" id="settingsAnalytics" style="padding:4px 14px;font-size:12px;"><i class="fas fa-chart-line" style="margin-right:4px;"></i>View</button></div>';
+            // Scheduled Posts Calendar
+            h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Scheduled Posts</span><button class="btn btn-outline" id="settingsScheduledCal" style="padding:4px 14px;font-size:12px;"><i class="fas fa-calendar" style="margin-right:4px;"></i>Calendar</button></div>';
             // Download My Data
             h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Download My Data</span><button class="btn btn-outline" id="settingsDownloadData" style="padding:4px 14px;font-size:12px;"><i class="fas fa-download" style="margin-right:4px;"></i>Export</button></div>';
             h+='<div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--border);text-align:center;"><button class="btn" id="settingsDeleteAccount" style="background:#e74c3c;color:#fff;padding:8px 20px;font-size:13px;border-radius:8px;cursor:pointer;"><i class="fas fa-trash" style="margin-right:6px;"></i>Delete My Account</button></div>';
@@ -5124,6 +5141,22 @@ document.addEventListener('click',function(e){
             // Light mode toggle
             var lmToggle=document.querySelector('.light-mode-toggle');
             if(lmToggle) lmToggle.addEventListener('click',function(){toggleLightMode();closeModal();});
+            // Account security buttons
+            var cpBtn=document.getElementById('settingsChangePassword');
+            if(cpBtn) cpBtn.addEventListener('click',function(){closeModal();showChangePasswordModal();});
+            var ceBtn=document.getElementById('settingsChangeEmail');
+            if(ceBtn) ceBtn.addEventListener('click',function(){closeModal();showChangeEmailModal();});
+            var tfaBtn=document.getElementById('settings2FA');
+            if(tfaBtn) tfaBtn.addEventListener('click',function(){closeModal();showSetup2FAModal();});
+            // Link in Bio
+            var libBtn=document.getElementById('settingsLinkInBio');
+            if(libBtn) libBtn.addEventListener('click',function(){closeModal();showEditLinkInBio();});
+            // Scheduled Posts Calendar
+            var scBtn=document.getElementById('settingsScheduledCal');
+            if(scBtn) scBtn.addEventListener('click',function(){closeModal();showScheduledCalendar();});
+            // Admin Report Queue
+            var rqBtn=document.getElementById('settingsReportQueue');
+            if(rqBtn) rqBtn.addEventListener('click',function(){closeModal();showAdminReportQueue();});
             document.getElementById('settingsManageCookies').addEventListener('click',function(){
                 if(_cookieConsent){try{localStorage.setItem('blipvibe_cookie_consent','essential');}catch(e){}_cookieConsent=false;closeModal();showToast('Cookies revoked — third-party embeds are now blocked.');setTimeout(function(){location.reload();},800);}
                 else{grantCookieConsent();closeModal();showToast('Cookies accepted — embeds will now load.');setTimeout(function(){location.reload();},800);}
@@ -6149,11 +6182,20 @@ $('#openPostModal').addEventListener('click',function(){
         grid.innerHTML='';
         mediaList.forEach(function(m,i){
             var thumb=document.createElement('div');thumb.className='cpm-thumb';
-            thumb.innerHTML=(m.type==='video'?'<video src="'+m.src+'#t=0.5" preload="metadata" muted></video>':'<img src="'+m.src+'">')+'<button class="remove-thumb" data-idx="'+i+'"><i class="fas fa-times"></i></button>';
+            thumb.innerHTML=(m.type==='video'?'<video src="'+m.src+'#t=0.5" preload="metadata" muted></video>':'<img src="'+m.src+'">')+'<button class="remove-thumb" data-idx="'+i+'"><i class="fas fa-times"></i></button>'+(m.type!=='video'?'<button class="alt-text-btn" data-idx="'+i+'" title="Add alt text">ALT</button>':'');
             grid.appendChild(thumb);
         });
         zone.classList.toggle('has-media',mediaList.length>0);
         grid.querySelectorAll('.remove-thumb').forEach(function(btn){btn.addEventListener('click',function(e){e.stopPropagation();mediaList.splice(parseInt(btn.dataset.idx),1);renderGrid();});});
+        grid.querySelectorAll('.alt-text-btn').forEach(function(btn){btn.addEventListener('click',function(e){
+            e.stopPropagation();var idx=parseInt(btn.dataset.idx);var m=mediaList[idx];
+            var ah='<div class="modal-header"><h3>Alt Text</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+            ah+='<div class="modal-body"><p style="font-size:13px;color:var(--gray);margin-bottom:8px;">Describe this image for people who use screen readers.</p>';
+            ah+='<textarea class="alt-text-input" id="altTextArea" placeholder="Describe what\'s in this image...">'+(m.altText||'')+'</textarea>';
+            ah+='<div class="modal-actions"><button class="btn btn-outline modal-close">Cancel</button><button class="btn btn-primary" id="saveAltText">Save</button></div></div>';
+            showModal(ah);
+            document.getElementById('saveAltText').addEventListener('click',function(){m.altText=document.getElementById('altTextArea').value.trim();closeModal();if(m.altText) btn.style.background='var(--primary)';showToast(m.altText?'Alt text saved':'Alt text cleared');});
+        });});
     }
     fileInput.addEventListener('change',function(){
         addFilesToMedia(this.files);
@@ -11238,6 +11280,269 @@ function showCreateGroupDmModal(){
         showToast('Group chat "'+name+'" created!');
     });
 }
+
+// ======================== CHANGE PASSWORD IN-APP ========================
+function showChangePasswordModal(){
+    var h='<div class="modal-header"><h3><i class="fas fa-lock" style="color:var(--primary);margin-right:8px;"></i>Change Password</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body">';
+    h+='<div class="login-field" style="margin-bottom:12px;"><label style="font-size:13px;color:var(--gray);margin-bottom:4px;display:block;">New Password</label><input type="password" id="newPassword" class="post-input" placeholder="Enter new password" style="width:100%;"></div>';
+    h+='<div class="login-field" style="margin-bottom:16px;"><label style="font-size:13px;color:var(--gray);margin-bottom:4px;display:block;">Confirm New Password</label><input type="password" id="confirmNewPassword" class="post-input" placeholder="Confirm new password" style="width:100%;"></div>';
+    h+='<div class="modal-actions"><button class="btn btn-outline modal-close">Cancel</button><button class="btn btn-primary" id="saveNewPassword">Update Password</button></div></div>';
+    showModal(h);
+    document.getElementById('saveNewPassword').addEventListener('click',async function(){
+        var pw=document.getElementById('newPassword').value;
+        var cpw=document.getElementById('confirmNewPassword').value;
+        if(!pw||pw.length<6){showToast('Password must be at least 6 characters');return;}
+        if(pw!==cpw){showToast('Passwords do not match');return;}
+        this.disabled=true;this.textContent='Updating...';
+        try{
+            await sb.auth.updateUser({password:pw});
+            closeModal();showToast('Password updated successfully!');
+        }catch(e){showToast('Failed: '+(e.message||'Unknown error'));this.disabled=false;this.textContent='Update Password';}
+    });
+}
+
+// ======================== CHANGE EMAIL IN-APP ========================
+function showChangeEmailModal(){
+    var currentEmail=currentUser?currentUser.email||'':'';
+    var h='<div class="modal-header"><h3><i class="fas fa-envelope" style="color:var(--primary);margin-right:8px;"></i>Change Email</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body">';
+    h+='<p style="font-size:13px;color:var(--gray);margin-bottom:12px;">Current email: <strong>'+escapeHtml(currentEmail)+'</strong></p>';
+    h+='<div class="login-field" style="margin-bottom:16px;"><label style="font-size:13px;color:var(--gray);margin-bottom:4px;display:block;">New Email Address</label><input type="email" id="newEmailInput" class="post-input" placeholder="Enter new email" style="width:100%;"></div>';
+    h+='<div class="modal-actions"><button class="btn btn-outline modal-close">Cancel</button><button class="btn btn-primary" id="saveNewEmail">Update Email</button></div></div>';
+    showModal(h);
+    document.getElementById('saveNewEmail').addEventListener('click',async function(){
+        var email=document.getElementById('newEmailInput').value.trim();
+        if(!email||!email.includes('@')){showToast('Enter a valid email');return;}
+        this.disabled=true;this.textContent='Updating...';
+        try{
+            await sb.auth.updateUser({email:email});
+            closeModal();showToast('Confirmation email sent to '+email+'. Check your inbox.');
+        }catch(e){showToast('Failed: '+(e.message||'Unknown error'));this.disabled=false;this.textContent='Update Email';}
+    });
+}
+
+// ======================== TWO-FACTOR AUTHENTICATION ========================
+function showSetup2FAModal(){
+    var h='<div class="modal-header"><h3><i class="fas fa-shield-halved" style="color:var(--primary);margin-right:8px;"></i>Two-Factor Authentication</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body" id="twoFaBody"><p style="text-align:center;"><i class="fas fa-spinner fa-spin" style="font-size:24px;color:var(--primary);"></i></p></div>';
+    showModal(h);
+    (async function(){
+        try{
+            // Check if already enrolled
+            var {data:factors}=await sb.auth.mfa.listFactors();
+            var totp=factors&&factors.totp&&factors.totp.length?factors.totp[0]:null;
+            var body=document.getElementById('twoFaBody');
+            if(totp&&totp.status==='verified'){
+                // Already enabled — show unenroll option
+                body.innerHTML='<div style="text-align:center;"><i class="fas fa-check-circle" style="font-size:32px;color:var(--green);margin-bottom:8px;"></i><p style="font-size:14px;font-weight:600;margin-bottom:8px;">2FA is enabled</p><p style="font-size:13px;color:var(--gray);margin-bottom:16px;">Your account is protected with an authenticator app.</p><button class="btn" id="disable2FA" style="background:#e74c3c;color:#fff;">Disable 2FA</button></div>';
+                document.getElementById('disable2FA').addEventListener('click',async function(){
+                    try{await sb.auth.mfa.unenroll({factorId:totp.id});closeModal();showToast('2FA disabled');}catch(e){showToast('Failed: '+e.message);}
+                });
+            } else {
+                // Enroll new TOTP factor
+                var {data:enroll,error}=await sb.auth.mfa.enroll({factorType:'totp',friendlyName:'BlipVibe Auth'});
+                if(error) throw error;
+                body.innerHTML='<p style="font-size:13px;color:var(--gray);margin-bottom:12px;text-align:center;">Scan this QR code with your authenticator app (Google Authenticator, Authy, etc.):</p>'
+                    +'<div style="text-align:center;margin-bottom:12px;"><img src="'+enroll.totp.qr_code+'" style="width:200px;height:200px;border-radius:8px;margin:0 auto;display:block;"></div>'
+                    +'<p style="font-size:12px;color:var(--gray);margin-bottom:4px;text-align:center;">Or enter this code manually:</p>'
+                    +'<div class="totp-setup-code" style="margin-bottom:16px;">'+enroll.totp.secret+'</div>'
+                    +'<div class="login-field" style="margin-bottom:12px;"><input type="text" id="totpVerifyCode" class="post-input" placeholder="Enter 6-digit code from app" style="width:100%;text-align:center;font-size:18px;letter-spacing:4px;" maxlength="6"></div>'
+                    +'<div class="modal-actions"><button class="btn btn-outline modal-close">Cancel</button><button class="btn btn-primary" id="verify2FA">Verify & Enable</button></div>';
+                document.getElementById('verify2FA').addEventListener('click',async function(){
+                    var code=document.getElementById('totpVerifyCode').value.trim();
+                    if(!code||code.length!==6){showToast('Enter the 6-digit code');return;}
+                    this.disabled=true;this.textContent='Verifying...';
+                    try{
+                        var {data:challenge}=await sb.auth.mfa.challenge({factorId:enroll.id});
+                        var {error:verifyErr}=await sb.auth.mfa.verify({factorId:enroll.id,challengeId:challenge.id,code:code});
+                        if(verifyErr) throw verifyErr;
+                        closeModal();showToast('2FA enabled! Your account is now more secure.');
+                    }catch(e){showToast('Verification failed: '+e.message);this.disabled=false;this.textContent='Verify & Enable';}
+                });
+            }
+        }catch(e){
+            var body=document.getElementById('twoFaBody');
+            if(body) body.innerHTML='<p style="color:#e74c3c;text-align:center;">2FA setup error: '+escapeHtml(e.message||'Unknown error')+'</p><div class="modal-actions"><button class="btn btn-primary modal-close">Close</button></div>';
+        }
+    })();
+}
+
+// ======================== LINK IN BIO ========================
+function showEditLinkInBio(){
+    var current=currentUser?currentUser.website_url||'':'';
+    var h='<div class="modal-header"><h3><i class="fas fa-link" style="color:var(--primary);margin-right:8px;"></i>Link in Bio</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body"><div class="login-field" style="margin-bottom:16px;"><label style="font-size:13px;color:var(--gray);margin-bottom:4px;display:block;">Website URL</label><input type="url" id="bioLinkInput" class="post-input" placeholder="https://yourwebsite.com" value="'+escapeHtml(current)+'" style="width:100%;"></div>';
+    h+='<div class="modal-actions"><button class="btn btn-outline modal-close">Cancel</button><button class="btn btn-primary" id="saveBioLink">Save</button></div></div>';
+    showModal(h);
+    document.getElementById('saveBioLink').addEventListener('click',async function(){
+        var url=document.getElementById('bioLinkInput').value.trim();
+        this.disabled=true;this.textContent='Saving...';
+        try{
+            await sbUpdateProfile(currentUser.id,{website_url:url||null});
+            currentUser.website_url=url||null;
+            closeModal();showToast(url?'Website link saved!':'Website link removed');
+        }catch(e){showToast('Failed to save');this.disabled=false;this.textContent='Save';}
+    });
+}
+
+// ======================== POST EDIT HISTORY ========================
+async function showEditHistory(postId){
+    var h='<div class="modal-header"><h3><i class="fas fa-history" style="color:var(--primary);margin-right:8px;"></i>Edit History</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body" style="max-height:50vh;overflow-y:auto;">';
+    try{
+        var {data,error}=await sb.from('post_edits').select('*').eq('post_id',postId).order('edited_at',{ascending:false});
+        if(error) throw error;
+        if(!data||!data.length){
+            h+='<p style="text-align:center;color:var(--gray);">No edit history for this post.</p>';
+        } else {
+            data.forEach(function(edit,i){
+                var time=timeAgoReal(edit.edited_at);
+                h+='<div style="padding:10px 0;border-bottom:1px solid var(--border);">';
+                h+='<div style="font-size:12px;color:var(--gray);margin-bottom:4px;"><i class="fas fa-clock" style="margin-right:4px;"></i>'+time+'</div>';
+                h+='<p style="font-size:13px;color:var(--dark);background:rgba(231,76,60,.05);padding:8px;border-radius:6px;border-left:3px solid #e74c3c;">'+escapeHtml(edit.previous_content)+'</p>';
+                h+='</div>';
+            });
+        }
+    }catch(e){
+        h+='<p style="color:var(--gray);text-align:center;">Edit history not available (migration may be needed).</p>';
+    }
+    h+='<div class="modal-actions"><button class="btn btn-primary modal-close">Done</button></div></div>';
+    showModal(h);
+}
+
+// ======================== SEEN BY ON GROUP POSTS ========================
+async function trackGroupPostView(postId){
+    if(!currentUser||!_activeGroupId) return;
+    try{
+        await sb.from('group_post_views').upsert({post_id:postId,user_id:currentUser.id},{onConflict:'post_id,user_id'});
+    }catch(e){}
+}
+async function showSeenByModal(postId){
+    var h='<div class="modal-header"><h3><i class="fas fa-eye" style="color:var(--primary);margin-right:8px;"></i>Seen By</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body" style="max-height:50vh;overflow-y:auto;">';
+    try{
+        var {data,error}=await sb.from('group_post_views').select('user_id, viewed_at, user:profiles!group_post_views_user_id_fkey(id, username, display_name, avatar_url)').eq('post_id',postId).order('viewed_at',{ascending:false});
+        if(error) throw error;
+        if(!data||!data.length){
+            h+='<p style="text-align:center;color:var(--gray);">No one has viewed this post yet.</p>';
+        } else {
+            h+='<p style="font-size:13px;color:var(--gray);margin-bottom:12px;">'+data.length+' view'+(data.length!==1?'s':'')+'</p>';
+            data.forEach(function(v){
+                var user=v.user||{};
+                var avatar=user.avatar_url||DEFAULT_AVATAR;
+                var name=user.display_name||user.username||'User';
+                h+='<div class="seen-by-row"><img src="'+avatar+'"><span>'+escapeHtml(name)+'</span><span style="margin-left:auto;">'+timeAgoReal(v.viewed_at)+'</span></div>';
+            });
+        }
+    }catch(e){
+        h+='<p style="color:var(--gray);text-align:center;">Seen by not available (migration may be needed).</p>';
+    }
+    h+='<div class="modal-actions"><button class="btn btn-primary modal-close">Done</button></div></div>';
+    showModal(h);
+}
+
+// ======================== SCHEDULED POSTS CALENDAR VIEW ========================
+function showScheduledCalendar(){
+    var now=new Date();
+    var year=now.getFullYear();var month=now.getMonth();
+    var monthNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    var dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    var firstDay=new Date(year,month,1).getDay();
+    var daysInMonth=new Date(year,month+1,0).getDate();
+    var h='<div class="modal-header"><h3><i class="fas fa-calendar" style="color:var(--primary);margin-right:8px;"></i>Scheduled Posts — '+monthNames[month]+' '+year+'</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body">';
+    // Map scheduled posts to days
+    var dayMap={};
+    (_scheduledPosts||[]).forEach(function(s){
+        var d=new Date(s.scheduledAt);
+        if(d.getMonth()===month&&d.getFullYear()===year){
+            var day=d.getDate();
+            if(!dayMap[day]) dayMap[day]=[];
+            dayMap[day].push(s);
+        }
+    });
+    h+='<div class="sched-calendar">';
+    dayNames.forEach(function(d){h+='<div class="sched-day" style="font-weight:600;color:var(--gray);font-size:10px;">'+d+'</div>';});
+    for(var i=0;i<firstDay;i++) h+='<div class="sched-day"></div>';
+    for(var d=1;d<=daysInMonth;d++){
+        var isToday=d===now.getDate()&&month===now.getMonth();
+        var hasPost=!!dayMap[d];
+        h+='<div class="sched-day'+(isToday?' today':'')+(hasPost?' has-post':'')+'" data-day="'+d+'">'+d+(hasPost?'<div class="sched-day-dot"></div>':'')+'</div>';
+    }
+    h+='</div>';
+    // List scheduled posts below
+    if(_scheduledPosts&&_scheduledPosts.length){
+        h+='<div style="margin-top:16px;">';
+        _scheduledPosts.forEach(function(s,i){
+            h+='<div style="padding:8px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;"><div><p style="font-size:13px;">'+escapeHtml(s.content.substring(0,60))+(s.content.length>60?'...':'')+'</p><span style="font-size:11px;color:var(--gray);">'+new Date(s.scheduledAt).toLocaleString()+'</span></div><button class="btn btn-outline cancel-sched-cal" data-idx="'+i+'" style="font-size:11px;padding:2px 8px;color:#e74c3c;border-color:#e74c3c;flex-shrink:0;">Cancel</button></div>';
+        });
+        h+='</div>';
+    } else {
+        h+='<p style="text-align:center;color:var(--gray);margin-top:16px;">No scheduled posts this month.</p>';
+    }
+    h+='<div class="modal-actions"><button class="btn btn-primary modal-close">Done</button></div></div>';
+    showModal(h);
+    $$('.cancel-sched-cal').forEach(function(b){b.addEventListener('click',function(){_scheduledPosts.splice(parseInt(b.dataset.idx),1);persistScheduled();b.textContent='Cancelled';b.disabled=true;});});
+}
+
+// ======================== ADMIN REPORT QUEUE ========================
+function showAdminReportQueue(){
+    var h='<div class="modal-header"><h3><i class="fas fa-flag" style="color:#e74c3c;margin-right:8px;"></i>Report Queue</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body" style="max-height:60vh;overflow-y:auto;">';
+    // Gather all reports from reportedPosts
+    if(!reportedPosts||!reportedPosts.length){
+        h+='<p style="text-align:center;color:var(--gray);padding:20px;">No reports to review.</p>';
+    } else {
+        reportedPosts.forEach(function(r,i){
+            var typeClass=r.reason?r.reason.toLowerCase().replace(/\s+/g,''):'other';
+            if(typeClass==='inappropriatecontent') typeClass='inappropriate';
+            h+='<div class="report-queue-item">';
+            h+='<div style="flex:1;"><div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;"><span class="report-type '+(typeClass==='spam'?'spam':typeClass==='harassment'?'harassment':typeClass==='inappropriate'?'inappropriate':'other')+'">'+(r.reason||'Report')+'</span><span style="font-size:11px;color:var(--gray);">'+timeAgoReal(r.time||r.created_at||Date.now())+'</span></div>';
+            h+='<p style="font-size:13px;">'+escapeHtml(r.type==='user'?'User: '+(r.userId||'').substring(0,8)+'...':'Post: '+(r.postId||r.pid||'').toString().substring(0,8)+'...')+'</p>';
+            if(r.details) h+='<p style="font-size:12px;color:var(--gray);margin-top:2px;">'+escapeHtml(r.details)+'</p>';
+            h+='</div>';
+            h+='<button class="btn btn-outline dismiss-report" data-idx="'+i+'" style="font-size:11px;padding:4px 10px;flex-shrink:0;">Dismiss</button>';
+            h+='</div>';
+        });
+    }
+    h+='<div class="modal-actions"><button class="btn btn-primary modal-close">Done</button></div></div>';
+    showModal(h);
+    $$('.dismiss-report').forEach(function(b){b.addEventListener('click',function(){
+        reportedPosts.splice(parseInt(b.dataset.idx),1);
+        persistReports();
+        b.closest('.report-queue-item').style.opacity='.3';
+        b.textContent='Dismissed';b.disabled=true;
+    });});
+}
+
+// ======================== ARIA LABELS FOR ICON BUTTONS ========================
+(function addAriaLabels(){
+    // Run after DOM is ready, add labels to common icon-only buttons
+    var ariaMap={
+        '.like-btn':'Like','.dislike-btn':'Dislike','.comment-btn':'Comment',
+        '.share-btn':'Share','.react-btn':'React','.view-count-btn':'Views',
+        '.post-menu-btn':'Post menu','.modal-close':'Close',
+        '.cpm-emoji-btn':'Emoji','.cpm-camera-btn':'Add media',
+        '#scrollToTopBtn':'Scroll to top'
+    };
+    Object.keys(ariaMap).forEach(function(sel){
+        document.querySelectorAll(sel).forEach(function(el){
+            if(!el.getAttribute('aria-label')) el.setAttribute('aria-label',ariaMap[sel]);
+        });
+    });
+    // Re-run on mutations for dynamic content
+    if('MutationObserver' in window){
+        var _ariaObserver=new MutationObserver(function(){
+            Object.keys(ariaMap).forEach(function(sel){
+                document.querySelectorAll(sel).forEach(function(el){
+                    if(!el.getAttribute('aria-label')) el.setAttribute('aria-label',ariaMap[sel]);
+                });
+            });
+        });
+        _ariaObserver.observe(document.body,{childList:true,subtree:true});
+    }
+})();
 
 // ======================== PUSH NOTIFICATIONS (Capacitor) ========================
 async function initPushNotifications(){

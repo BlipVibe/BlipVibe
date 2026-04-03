@@ -1,5 +1,27 @@
 [
   {
+    "version": "0.3.5",
+    "date": "2026-04-02",
+    "added": [
+      "Change Password in Settings — update password without email reset",
+      "Change Email in Settings — update email with confirmation",
+      "Two-Factor Authentication (2FA) — TOTP setup with QR code via Supabase MFA",
+      "Alt text on post images — ALT button on thumbnails for image descriptions (accessibility)",
+      "Skip-to-content link — keyboard-accessible skip link for screen readers",
+      "ARIA labels — auto-applied to all icon-only buttons via MutationObserver",
+      "Link in Bio — website URL field on profiles, shown in profile view",
+      "Post edit history — auto-logged when posts are edited (view previous versions)",
+      "Seen by on group posts — track and view who saw group announcements",
+      "Scheduled posts calendar — visual month grid view replaces flat list",
+      "DMCA notice log — admin table for documenting takedown receipt timestamps",
+      "Admin report queue — review and dismiss user/post reports from Settings"
+    ],
+    "changed": [
+      "Settings reorganized with Account Security section (password, email, 2FA)"
+    ],
+    "fixed": []
+  },
+  {
     "version": "0.3.4",
     "date": "2026-04-02",
     "added": [

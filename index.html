@@ -34,6 +34,7 @@
     </script>
 </head>
 <body>
+    <a href="#main-content" class="skip-to-content">Skip to content</a>
     <div id="premiumBgLayer"><div id="premiumBgDarkness"></div><div id="premiumBgOverlay"></div></div>
 
     <!-- ========== PAGE: LOGIN ========== -->
@@ -353,7 +354,7 @@
     </div>
 
     <!-- ========== PAGE: HOME ========== -->
-    <div class="page active" id="page-home">
+    <div class="page active" id="page-home" role="main" aria-label="Home feed">
         <div class="timeline-cover" id="timelineCover">
             <button class="timeline-cover-btn" id="coverEditBtn" title="Add Cover Photo"><i class="fas fa-camera"></i> Add Cover Photo</button>
             <input type="file" id="coverFileInput" accept="image/*" style="display:none;">
@@ -396,6 +397,7 @@
                     <button class="search-tab" data-feedtab="discover"><i class="fas fa-compass"></i> Discover</button>
                     <button class="search-tab" data-feedtab="myposts"><i class="fas fa-user"></i> My Posts</button>
                 </div>
+                <span id="main-content"></span>
                 <div id="feedContainer"></div>
             </main>
             <aside class="right-sidebar">
