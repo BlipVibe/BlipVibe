@@ -297,7 +297,7 @@ PRIVACY POLICY (21 Sections, Version 3.0)
 
 21. CONTACT US
     - Email: hello@blipvibe.com
-    - Copyright/DMCA: hello@blipvibe.com
+    - Copyright/DMCA: dmca@blipvibe.com
     - 30-day response target
 
 =========================================================================
@@ -399,6 +399,6 @@ CONTACT INFORMATION
 =========================================================================
 
 General: hello@blipvibe.com
-DMCA/Copyright: hello@blipvibe.com
+DMCA/Copyright: dmca@blipvibe.com
 
 =========================================================================

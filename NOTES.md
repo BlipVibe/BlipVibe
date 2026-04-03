@@ -1129,3 +1129,20 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - `_appendFeedPosts()` was missing `autoFetchLinkPreviews()` call
 - Posts loaded via infinite scroll had no YouTube/TikTok/Instagram embeds
 - Initial feed load restored to 50 posts (was reduced to 20)
+
+## DMCA Policy Strengthening (v0.3.3 — 2026-04-02)
+
+### Email Change
+- DMCA-specific email changed from `hello@blipvibe.com` to `dmca@blipvibe.com`
+- General contact remains `hello@blipvibe.com`
+- Updated in: dmca.html, index.html (TOS + Privacy Policy), app.js (TOS modal), LEGAL-COVERAGE.txt
+
+### New DMCA Sections
+- **Section 3: No Prior Screening** — "BlipVibe does not pre-screen user content but reserves the right to remove content that violates this policy" (legal protection)
+- **Section 7: Audio & Music Content** — Users responsible for music rights, unauthorized use prohibited (protects against music copyright claims)
+- **Section 8: Standard Technical Measures** — BlipVibe accommodates § 512(i) standard technical measures (safe harbor requirement)
+
+### Strengthened Language
+- **Designated Agent Registration** — Added "BlipVibe has registered its designated agent with the U.S. Copyright Office" (reinforces safe harbor)
+- **Repeat Infringer Policy** — Changed from "more than one valid notice" to "at its sole discretion" (more flexible, not locked into strike count)
+- DMCA page now has 10 sections (was 7)

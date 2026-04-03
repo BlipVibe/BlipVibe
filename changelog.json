@@ -1,5 +1,21 @@
 [
   {
+    "version": "0.3.3",
+    "date": "2026-04-02",
+    "added": [
+      "DMCA 'No Prior Screening' clause — legal protection for user-generated content",
+      "DMCA 'Audio & Music Content' section — users responsible for music rights",
+      "DMCA 'Standard Technical Measures' section — safe harbor compliance (§ 512(i))",
+      "Designated agent registration confirmation language"
+    ],
+    "changed": [
+      "DMCA contact email changed to dmca@blipvibe.com (separate from general hello@)",
+      "Repeat infringer policy strengthened — 'at sole discretion' instead of fixed strike count",
+      "DMCA policy expanded from 7 to 10 sections"
+    ],
+    "fixed": []
+  },
+  {
     "version": "0.3.2",
     "date": "2026-04-02",
     "added": [
