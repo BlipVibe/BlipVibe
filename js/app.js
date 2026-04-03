@@ -350,7 +350,7 @@ function resetAllCustomizations(){
 
 // ======================== TERMS OF SERVICE ACCEPTANCE ========================
 // Bump this version whenever the TOS changes — all users must re-accept
-var TOS_VERSION = 6; // v6 = Apr 2 2026 — DMCA policy strengthened, dedicated dmca@ email, audio/music clause, standard technical measures, no prior screening
+var TOS_VERSION = 7; // v7 = Apr 2 2026 — testing re-acceptance modal
 var _tosAccepted = false;
 
 function checkTosAccepted(){
