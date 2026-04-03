@@ -1,5 +1,21 @@
 [
   {
+    "version": "0.3.6",
+    "date": "2026-04-02",
+    "added": [
+      "Message reactions — react to any message with emoji (❤️ 😂 😮 😢 👍 👎)",
+      "Reply to specific message — quote a message in your reply with visual indicator",
+      "Trending Hashtags page — see most popular hashtags ranked by post count",
+      "Search history — recent searches remembered and shown on focus, with clear option",
+      "Mutual followers on profiles — 'Followed by X and 3 others' with avatar stack"
+    ],
+    "changed": [
+      "Privacy Policy updated — message reactions and search history disclosed",
+      "Trending Hashtags button added to home right sidebar"
+    ],
+    "fixed": []
+  },
+  {
     "version": "0.3.5",
     "date": "2026-04-02",
     "added": [

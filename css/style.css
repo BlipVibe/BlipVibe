@@ -3537,3 +3537,40 @@ body.light-mode::before{background:#f8fafc;}
 
 /* ========== 2FA SETUP ========== */
 .totp-setup-code{font-family:monospace;font-size:14px;letter-spacing:2px;background:var(--card);border:1px solid var(--border);padding:8px 16px;border-radius:8px;text-align:center;word-break:break-all;}
+
+/* ========== MESSAGE REACTIONS ========== */
+.msg-reactions{display:flex;gap:2px;flex-wrap:wrap;margin-top:4px;}
+.msg-reaction-badge{font-size:14px;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);border-radius:12px;padding:1px 6px;cursor:pointer;transition:all .15s;}
+.msg-reaction-badge:hover{background:rgba(139,92,246,.25);}
+.msg-reaction-badge.mine{background:rgba(139,92,246,.25);border-color:var(--primary);}
+.msg-react-btn{background:none;font-size:12px;color:rgba(255,255,255,.3);padding:2px 4px;opacity:0;transition:opacity .15s;position:absolute;bottom:-2px;right:-8px;}
+.msg-bubble:hover .msg-react-btn{opacity:1;}
+.msg-bubble.received:hover .msg-react-btn{color:rgba(0,0,0,.3);}
+
+/* ========== MESSAGE REPLY/QUOTE ========== */
+.msg-reply-preview{background:rgba(139,92,246,.08);border-left:3px solid var(--primary);border-radius:0 8px 8px 0;padding:6px 10px;margin-bottom:6px;font-size:12px;display:flex;align-items:center;gap:8px;}
+.msg-reply-preview .reply-text{flex:1;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.msg-reply-preview .reply-close{background:none;color:var(--gray);font-size:14px;flex-shrink:0;}
+.msg-quoted{background:rgba(139,92,246,.06);border-left:2px solid var(--primary);border-radius:0 6px 6px 0;padding:4px 8px;margin-bottom:4px;font-size:11px;color:var(--gray);}
+.msg-reply-btn{background:none;font-size:12px;color:rgba(255,255,255,.3);padding:2px 4px;opacity:0;transition:opacity .15s;position:absolute;bottom:-2px;left:-8px;}
+.msg-bubble:hover .msg-reply-btn{opacity:1;}
+.msg-bubble.received:hover .msg-reply-btn{color:rgba(0,0,0,.3);}
+
+/* ========== TRENDING HASHTAGS ========== */
+.trending-tag{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+.trending-tag:hover{background:rgba(139,92,246,.05);}
+.trending-tag .tag-name{font-size:15px;font-weight:600;color:var(--primary);}
+.trending-tag .tag-count{font-size:12px;color:var(--gray);}
+.trending-tag .tag-rank{font-size:12px;color:var(--gray);font-weight:700;min-width:24px;}
+
+/* ========== SEARCH HISTORY ========== */
+.search-history-item{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+.search-history-item:hover{background:rgba(139,92,246,.05);}
+.search-history-item i{color:var(--gray);font-size:14px;}
+.search-history-item span{flex:1;font-size:14px;}
+.search-history-item .remove-history{background:none;color:var(--gray);font-size:12px;}
+
+/* ========== MUTUAL FOLLOWERS ========== */
+.mutual-followers{display:flex;align-items:center;gap:4px;margin-top:6px;font-size:12px;color:var(--gray);}
+.mutual-followers img{width:20px;height:20px;border-radius:50%;object-fit:cover;margin-left:-6px;border:2px solid var(--card);}
+.mutual-followers img:first-child{margin-left:0;}

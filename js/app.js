@@ -1368,6 +1368,7 @@ var currentSearchQuery='';
 var currentSearchTab='people';
 
 function performSearch(q){
+    addToSearchHistory(q);
     currentSearchQuery=q;
     currentSearchTab='people';
     navigateTo('search');
@@ -2873,6 +2874,8 @@ async function showProfileView(person){
     if(person.status) cardHtml+='<p class="profile-title">'+escapeHtml(person.status)+'</p>';
     if(person.bio) cardHtml+='<p class="profile-about">'+escapeHtml(person.bio)+'</p>';
     if(person.website_url) cardHtml+='<a href="'+escapeHtml(person.website_url)+'" target="_blank" rel="noopener" class="profile-website"><i class="fas fa-link"></i> '+escapeHtml(person.website_url.replace(/^https?:\/\/(www\.)?/,'').split('/')[0])+'</a>';
+    // Mutual followers placeholder (filled async below)
+    if(!isMe) cardHtml+='<div id="pvMutualFollowers"></div>';
     var pvPriv=isMe?state.privateFollowers:!!person.priv;
     cardHtml+='<div class="profile-stats">';
     cardHtml+='<div class="stat stat-clickable pv-stat-following" style="'+(pvPriv?'opacity:.5;pointer-events:none;cursor:default;':'')+'"><span class="stat-count">'+following+'</span><span class="stat-label">Following'+(pvPriv?' <i class="fas fa-lock" style="font-size:10px;"></i>':'')+'</span></div>';
@@ -2898,6 +2901,14 @@ async function showProfileView(person){
     cardHtml+='<div class="profile-links"><a href="#" class="pv-back-link" id="pvBack"><i class="fas fa-arrow-left"></i> Back to Home</a></div>';
     cardHtml+='</div>';
     $('#pvProfileCard').innerHTML=cardHtml;
+
+    // Load mutual followers (async, non-blocking)
+    if(!isMe&&currentUser){
+        getMutualFollowers(person.id).then(function(mutuals){
+            var mc=document.getElementById('pvMutualFollowers');
+            if(mc&&mutuals&&mutuals.length) renderMutualFollowers(mc,mutuals);
+        }).catch(function(){});
+    }
 
     // Photos card - tabbed: Photos | Albums (photos first)
     var pvUserId=isMe?currentUser.id:person.id;
@@ -4788,13 +4799,19 @@ $('#dropdownViewProfile').addEventListener('click',function(e){e.preventDefault(
 $('#dropdownMySkins').addEventListener('click',function(e){e.preventDefault();$('#userDropdownMenu').classList.remove('show');_skinPageView='mine';navigateTo('shop');});
 $('#dropdownSaved').addEventListener('click',function(e){e.preventDefault();$('#userDropdownMenu').classList.remove('show');navigateTo('saved');});
 $('#dropdownShareProfile').addEventListener('click',function(e){e.preventDefault();$('#userDropdownMenu').classList.remove('show');showShareProfileModal();});
+$('#trendingHashtagsBtn').addEventListener('click',function(){showTrendingHashtags();});
 $('#mobileNotifBtn').addEventListener('click',function(e){e.preventDefault();navigateTo('notifications');});
 $('#mobileSearchBtn').addEventListener('click',function(e){e.preventDefault();navigateTo('search');setTimeout(function(){var inp=document.getElementById('searchPageQuery');if(inp)inp.focus();},100);});
 $('#searchPageQuery').addEventListener('keydown',function(e){
     if(e.key==='Enter'){var q=this.value.trim();if(q.length>0){performSearch(q);}}
 });
 $('#searchPageQuery').addEventListener('input',function(){
-    var q=this.value.trim();if(q.length>=2){performSearch(q);}
+    var q=this.value.trim();
+    if(q.length>=2){performSearch(q);}
+    else if(q.length===0){var sr=$('#searchResults');if(sr) showSearchHistory(sr);}
+});
+$('#searchPageQuery').addEventListener('focus',function(){
+    if(!this.value.trim()){var sr=$('#searchResults');if(sr) showSearchHistory(sr);}
 });
 
 // Edit Profile
@@ -8144,6 +8161,8 @@ async function openChat(contact){
             });
             msgArea.scrollTop=msgArea.scrollHeight;
             autoFetchLinkPreviewsMini(msgArea,'.msg-bubble');
+            bindMsgReactions();
+            bindMsgReplyBtns();
             // Add read receipts to own messages
             var lastSent=msgArea.querySelector('.msg-bubble.sent:last-child');
             if(lastSent) renderReadReceipt(lastSent,true);
@@ -8278,7 +8297,15 @@ async function sendMessage(){
     var msgArea=$('#chatMessages');
     var placeholder=msgArea.querySelector('div[style*="text-align:center"]');
     if(placeholder&&placeholder.textContent.indexOf('No messages')!==-1) msgArea.innerHTML='';
-    msgArea.insertAdjacentHTML('beforeend','<div class="msg-bubble sent">'+text+'</div>');
+    // Include reply quote if replying to a message
+    var replyHtml='';
+    if(_replyingToMsg){
+        var rp=_replyingToMsg.text.length>50?_replyingToMsg.text.substring(0,50)+'...':_replyingToMsg.text;
+        replyHtml='<div class="msg-quoted"><i class="fas fa-reply" style="margin-right:4px;font-size:10px;"></i>'+escapeHtml(rp)+'</div>';
+        text='[reply:'+_replyingToMsg.mid+']'+text;
+        clearReplyTo();
+    }
+    msgArea.insertAdjacentHTML('beforeend','<div class="msg-bubble sent">'+replyHtml+escapeHtml(text.replace(/^\[reply:[^\]]+\]/,''))+'</div>');
     autoFetchLinkPreviewsMini(msgArea,'.msg-bubble:last-child');
     msgArea.scrollTop=msgArea.scrollHeight;
     try{
@@ -11542,6 +11569,216 @@ function showAdminReportQueue(){
         _ariaObserver.observe(document.body,{childList:true,subtree:true});
     }
 })();
+
+// ======================== MESSAGE REACTIONS ========================
+var _msgReactionEmojis=['❤️','😂','😮','😢','👍','👎'];
+var _msgReactions={};
+try{_msgReactions=JSON.parse(localStorage.getItem('blipvibe_msg_reactions')||'{}');}catch(e){}
+function persistMsgReactions(){try{localStorage.setItem('blipvibe_msg_reactions',JSON.stringify(_msgReactions));}catch(e){}}
+function showMsgReactionPicker(bubble){
+    var existing=document.querySelector('.msg-reaction-picker');
+    if(existing) existing.remove();
+    var picker=document.createElement('div');
+    picker.className='msg-reaction-picker';
+    picker.style.cssText='position:absolute;bottom:100%;right:0;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:4px 6px;display:flex;gap:2px;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,.3);';
+    _msgReactionEmojis.forEach(function(em){
+        var btn=document.createElement('button');
+        btn.textContent=em;
+        btn.style.cssText='background:none;font-size:18px;padding:4px;border-radius:8px;cursor:pointer;transition:transform .15s;';
+        btn.addEventListener('mouseenter',function(){btn.style.transform='scale(1.3)';});
+        btn.addEventListener('mouseleave',function(){btn.style.transform='scale(1)';});
+        btn.addEventListener('click',function(e){
+            e.stopPropagation();
+            var mid=bubble.dataset.mid;
+            if(!_msgReactions[mid]) _msgReactions[mid]={};
+            var uid=currentUser?currentUser.id:'me';
+            if(_msgReactions[mid][uid]===em) delete _msgReactions[mid][uid];
+            else _msgReactions[mid][uid]=em;
+            persistMsgReactions();
+            renderMsgReactions(bubble);
+            picker.remove();
+        });
+        picker.appendChild(btn);
+    });
+    bubble.style.position='relative';
+    bubble.appendChild(picker);
+    setTimeout(function(){document.addEventListener('click',function handler(e){if(!picker.contains(e.target)){picker.remove();document.removeEventListener('click',handler);}});},0);
+}
+function renderMsgReactions(bubble){
+    var mid=bubble.dataset.mid;
+    var existing=bubble.querySelector('.msg-reactions');
+    if(existing) existing.remove();
+    if(!_msgReactions[mid]||!Object.keys(_msgReactions[mid]).length) return;
+    var uid=currentUser?currentUser.id:'me';
+    var counts={};
+    Object.values(_msgReactions[mid]).forEach(function(em){counts[em]=(counts[em]||0)+1;});
+    var html='<div class="msg-reactions">';
+    Object.keys(counts).forEach(function(em){
+        var isMine=_msgReactions[mid][uid]===em;
+        html+='<span class="msg-reaction-badge'+(isMine?' mine':'')+'">'+em+(counts[em]>1?' '+counts[em]:'')+'</span>';
+    });
+    html+='</div>';
+    bubble.insertAdjacentHTML('beforeend',html);
+}
+function bindMsgReactions(){
+    var area=$('#chatMessages');
+    if(!area) return;
+    area.querySelectorAll('.msg-bubble').forEach(function(bubble){
+        if(bubble.querySelector('.msg-react-btn')) return;
+        bubble.style.position='relative';
+        var btn=document.createElement('button');
+        btn.className='msg-react-btn';
+        btn.innerHTML='<i class="far fa-face-smile"></i>';
+        btn.addEventListener('click',function(e){e.stopPropagation();showMsgReactionPicker(bubble);});
+        bubble.appendChild(btn);
+        renderMsgReactions(bubble);
+    });
+}
+
+// ======================== REPLY TO SPECIFIC MESSAGE ========================
+var _replyingToMsg=null;
+function setReplyToMessage(mid,text){
+    _replyingToMsg={mid:mid,text:text};
+    var bar=$('#msgReplyBar');
+    if(!bar){
+        bar=document.createElement('div');
+        bar.id='msgReplyBar';
+        bar.className='msg-reply-preview';
+        var inputBar=$('#msgInput');
+        if(inputBar&&inputBar.parentElement) inputBar.parentElement.insertBefore(bar,inputBar);
+    }
+    var preview=text.length>60?text.substring(0,60)+'...':text;
+    bar.innerHTML='<i class="fas fa-reply" style="color:var(--primary);"></i><span class="reply-text">'+escapeHtml(preview)+'</span><button class="reply-close"><i class="fas fa-times"></i></button>';
+    bar.querySelector('.reply-close').addEventListener('click',function(){clearReplyTo();});
+    var input=$('#msgInput');
+    if(input) input.focus();
+}
+function clearReplyTo(){
+    _replyingToMsg=null;
+    var bar=$('#msgReplyBar');
+    if(bar) bar.remove();
+}
+function bindMsgReplyBtns(){
+    var area=$('#chatMessages');
+    if(!area) return;
+    area.querySelectorAll('.msg-bubble').forEach(function(bubble){
+        if(bubble.querySelector('.msg-reply-btn')) return;
+        bubble.style.position='relative';
+        var btn=document.createElement('button');
+        btn.className='msg-reply-btn';
+        btn.innerHTML='<i class="fas fa-reply"></i>';
+        btn.addEventListener('click',function(e){
+            e.stopPropagation();
+            var raw=bubble.dataset.raw||bubble.textContent.trim();
+            setReplyToMessage(bubble.dataset.mid,raw);
+        });
+        bubble.appendChild(btn);
+    });
+}
+
+// ======================== TRENDING HASHTAGS PAGE ========================
+function showTrendingHashtags(){
+    // Collect hashtags from loaded feed posts
+    var tagCounts={};
+    feedPosts.forEach(function(p){
+        var matches=(p.text||'').match(/#(\w+)/g);
+        if(matches) matches.forEach(function(tag){
+            var t=tag.toLowerCase();
+            tagCounts[t]=(tagCounts[t]||0)+1;
+        });
+    });
+    var sorted=Object.keys(tagCounts).sort(function(a,b){return tagCounts[b]-tagCounts[a];});
+    var h='<div class="modal-header"><h3><i class="fas fa-fire" style="color:var(--primary);margin-right:8px;"></i>Trending Hashtags</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body" style="max-height:60vh;overflow-y:auto;padding:0;">';
+    if(!sorted.length){
+        h+='<p style="text-align:center;color:var(--gray);padding:30px;">No trending hashtags yet. Start posting with #hashtags!</p>';
+    } else {
+        sorted.slice(0,20).forEach(function(tag,i){
+            h+='<div class="trending-tag" data-tag="'+escapeHtml(tag.replace('#',''))+'">';
+            h+='<span class="tag-rank">'+(i+1)+'</span>';
+            h+='<span class="tag-name">'+escapeHtml(tag)+'</span>';
+            h+='<span class="tag-count">'+tagCounts[tag]+' post'+(tagCounts[tag]!==1?'s':'')+'</span>';
+            h+='</div>';
+        });
+    }
+    h+='</div>';
+    showModal(h);
+    $$('.trending-tag').forEach(function(el){
+        el.addEventListener('click',function(){
+            closeModal();
+            showHashtagFeed(el.dataset.tag);
+        });
+    });
+}
+
+// ======================== SEARCH HISTORY ========================
+var _searchHistory=[];
+try{_searchHistory=JSON.parse(localStorage.getItem('blipvibe_search_history')||'[]');}catch(e){}
+function persistSearchHistory(){try{localStorage.setItem('blipvibe_search_history',JSON.stringify(_searchHistory));}catch(e){}}
+function addToSearchHistory(query){
+    if(!query||!query.trim()) return;
+    query=query.trim();
+    _searchHistory=_searchHistory.filter(function(q){return q.toLowerCase()!==query.toLowerCase();});
+    _searchHistory.unshift(query);
+    if(_searchHistory.length>15) _searchHistory=_searchHistory.slice(0,15);
+    persistSearchHistory();
+}
+function removeFromSearchHistory(query){
+    _searchHistory=_searchHistory.filter(function(q){return q!==query;});
+    persistSearchHistory();
+}
+function showSearchHistory(container){
+    if(!_searchHistory.length) return;
+    var html='<div style="padding:8px 0;">';
+    html+='<div style="display:flex;align-items:center;justify-content:space-between;padding:4px 16px;"><span style="font-size:13px;font-weight:600;color:var(--gray);">Recent Searches</span><button id="clearAllHistory" style="background:none;color:var(--primary);font-size:12px;">Clear All</button></div>';
+    _searchHistory.forEach(function(q){
+        html+='<div class="search-history-item" data-query="'+escapeHtml(q)+'"><i class="fas fa-clock"></i><span>'+escapeHtml(q)+'</span><button class="remove-history" data-query="'+escapeHtml(q)+'"><i class="fas fa-times"></i></button></div>';
+    });
+    html+='</div>';
+    container.innerHTML=html;
+    container.querySelectorAll('.search-history-item').forEach(function(item){
+        item.addEventListener('click',function(e){
+            if(e.target.closest('.remove-history')) return;
+            performSearch(item.dataset.query);
+        });
+    });
+    container.querySelectorAll('.remove-history').forEach(function(btn){
+        btn.addEventListener('click',function(e){
+            e.stopPropagation();
+            removeFromSearchHistory(btn.dataset.query);
+            btn.closest('.search-history-item').remove();
+        });
+    });
+    var clearBtn=document.getElementById('clearAllHistory');
+    if(clearBtn) clearBtn.addEventListener('click',function(){_searchHistory=[];persistSearchHistory();container.innerHTML='';});
+}
+
+// ======================== MUTUAL FOLLOWERS ON PROFILES ========================
+async function getMutualFollowers(userId){
+    if(!currentUser||userId===currentUser.id) return [];
+    try{
+        var theirFollowers=await sbGetFollowers(userId);
+        var myFollowingIds={};
+        Object.keys(state.followedUsers).forEach(function(k){myFollowingIds[k]=true;});
+        // Mutual = people who follow them AND who you also follow
+        var mutuals=(theirFollowers||[]).filter(function(f){return myFollowingIds[f.id]&&f.id!==currentUser.id;});
+        return mutuals.slice(0,5);
+    }catch(e){return [];}
+}
+function renderMutualFollowers(container,mutuals){
+    if(!mutuals||!mutuals.length) return;
+    var html='<div class="mutual-followers">';
+    mutuals.slice(0,3).forEach(function(m){
+        html+='<img src="'+(m.avatar_url||DEFAULT_AVATAR)+'" alt="'+escapeHtml(m.display_name||m.username)+'" title="'+escapeHtml(m.display_name||m.username)+'">';
+    });
+    var names=mutuals.slice(0,2).map(function(m){return m.display_name||m.username;});
+    var extra=mutuals.length-2;
+    if(extra>0) html+='<span>Followed by '+escapeHtml(names[0])+' and '+(extra)+' other'+(extra>1?'s':'')+'</span>';
+    else if(names.length===2) html+='<span>Followed by '+escapeHtml(names[0])+' and '+escapeHtml(names[1])+'</span>';
+    else html+='<span>Followed by '+escapeHtml(names[0])+'</span>';
+    html+='</div>';
+    container.insertAdjacentHTML('beforeend',html);
+}
 
 // ======================== PUSH NOTIFICATIONS (Capacitor) ========================
 async function initPushNotifications(){

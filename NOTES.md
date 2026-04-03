@@ -1228,3 +1228,42 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - Lists all user/post reports with type badges (spam, harassment, inappropriate)
 - Dismiss button removes reports
 - Only visible to admin users
+
+## Social Features Update (v0.3.6 — 2026-04-02)
+
+### Message Reactions
+- React to any message with emoji (❤️ 😂 😮 😢 👍 👎)
+- Hover over message to see smiley button, click to open picker
+- Reactions shown as badges below message, highlighted if yours
+- Stored in localStorage per message ID (`blipvibe_msg_reactions`)
+- `showMsgReactionPicker()`, `renderMsgReactions()`, `bindMsgReactions()`
+
+### Reply to Specific Message
+- Hover over message to see reply arrow button
+- Click to set reply context — preview bar appears above input
+- Reply includes quoted text with left border indicator
+- Reply reference stored as `[reply:mid]` prefix in message content
+- `setReplyToMessage()`, `clearReplyTo()`, `bindMsgReplyBtns()`
+
+### Trending Hashtags Page
+- `showTrendingHashtags()` — modal showing top 20 hashtags ranked by post count
+- Collects hashtags from loaded feed posts
+- Click any hashtag to open its feed
+- "Trending Hashtags" button in home right sidebar
+
+### Search History
+- Recent searches remembered in localStorage (up to 15 entries)
+- Shown on search page when input is empty or on focus
+- Each entry clickable to re-search, removable with X
+- "Clear All" button
+- `addToSearchHistory()`, `removeFromSearchHistory()`, `showSearchHistory()`
+
+### Mutual Followers on Profiles
+- `getMutualFollowers(userId)` — finds people who follow them that you also follow
+- `renderMutualFollowers()` — avatar stack with "Followed by X and 3 others"
+- Loaded async after profile card renders (non-blocking)
+- Shows up to 3 avatars + count text
+
+### Privacy Policy Updates
+- Message reactions added to activity data disclosure
+- Search history disclosed as localStorage data (not sent to servers)

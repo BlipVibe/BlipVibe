@@ -420,6 +420,9 @@
                     <h4 class="card-heading">Trending Groups</h4>
                     <div class="group-list" id="trendingGroupsSidebar"></div>
                 </div>
+                <div class="card" style="padding:12px;">
+                    <button class="btn btn-outline btn-block" id="trendingHashtagsBtn" style="display:flex;align-items:center;justify-content:center;gap:8px;"><i class="fas fa-fire" style="color:var(--primary);"></i> Trending Hashtags</button>
+                </div>
             </aside>
         </div>
     </div>
@@ -650,7 +653,7 @@
                 </ul>
                 <p><strong>c. Activity Data (generated automatically):</strong></p>
                 <ul>
-                    <li>Likes, dislikes, emoji reactions on posts and photos, and follows</li>
+                    <li>Likes, dislikes, emoji reactions on posts, photos, and messages, and follows</li>
                     <li>Customization preferences (skins, themes, fonts, nav styles, settings)</li>
                     <li>In-app coin balance, cosmetic purchase history, and daily login reward streak data</li>
                     <li>Block lists, mute lists, hidden/dismissed posts, and content reports</li>
@@ -667,6 +670,7 @@
                     <li>Authentication session tokens (stored in your browser's localStorage)</li>
                     <li>Referring URL and pages visited within the Service</li>
                     <li><strong>Push notification tokens:</strong> If you use the BlipVibe mobile app and grant notification permissions, we collect and store your device's push notification token (FCM or APNs) to deliver notifications. This token is a device identifier and is stored in your user profile. You may revoke notification permissions at any time through your device settings.</li>
+                    <li><strong>Search history:</strong> Your recent search queries are stored locally in your browser's localStorage (up to 15 entries) to show recent searches. This data is not sent to our servers and can be cleared at any time via the search page.</li>
                     <li><strong>Service worker cache:</strong> BlipVibe uses a service worker to cache static assets (HTML, CSS, JavaScript, images) locally on your device for faster loading and limited offline access. This cached data is stored in your browser's Cache Storage and does not contain personal information. You may clear this cache at any time through your browser settings.</li>
                 </ul>
                 <p><strong>e. Location Data (opt-in only):</strong></p>
