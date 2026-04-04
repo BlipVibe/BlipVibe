@@ -3089,11 +3089,22 @@ async function showProfileView(person){
             var pid=btn.getAttribute('data-post-id');var countEl=btn.querySelector('.like-count');var count=parseInt(countEl.textContent);
             var isUUID=/^[0-9a-f]{8}-/.test(pid);
             var had=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);
-            if(state.likedPosts[pid]){delete state.likedPosts[pid];btn.classList.remove('liked');btn.querySelector('i').className='far fa-thumbs-up';countEl.textContent=Math.max(0,count-1);
-                if(isUUID&&currentUser){try{await sbToggleLike(currentUser.id,'post',pid);}catch(e2){}}
-            }
-            else{if(state.dislikedPosts[pid]){var db=btn.closest('.action-left').querySelector('.dislike-btn');var dc=db.querySelector('.dislike-count');dc.textContent=Math.max(0,parseInt(dc.textContent)-1);delete state.dislikedPosts[pid];db.classList.remove('disliked');db.querySelector('i').className='far fa-thumbs-down';}state.likedPosts[pid]=true;btn.classList.add('liked');btn.querySelector('i').className='fas fa-thumbs-up';countEl.textContent=count+1;
-                if(isUUID&&currentUser){try{await sbToggleLike(currentUser.id,'post',pid);}catch(e2){}}
+            if(isUUID&&currentUser){
+                try{
+                    // Let DB be the source of truth — toggle returns new state
+                    var nowLiked=await sbToggleLike(currentUser.id,'post',pid);
+                    if(nowLiked){
+                        state.likedPosts[pid]=true;btn.classList.add('liked');btn.querySelector('i').className='fas fa-thumbs-up';countEl.textContent=count+1;
+                        // Clear dislike if active
+                        if(state.dislikedPosts[pid]){var db=btn.closest('.action-left').querySelector('.dislike-btn');if(db){var dc=db.querySelector('.dislike-count');dc.textContent=Math.max(0,parseInt(dc.textContent)-1);db.classList.remove('disliked');db.querySelector('i').className='far fa-thumbs-down';}delete state.dislikedPosts[pid];}
+                    } else {
+                        delete state.likedPosts[pid];btn.classList.remove('liked');btn.querySelector('i').className='far fa-thumbs-up';countEl.textContent=Math.max(0,count-1);
+                    }
+                }catch(e2){console.warn('Like toggle error:',e2);}
+            } else {
+                // Non-UUID fallback (legacy)
+                if(state.likedPosts[pid]){delete state.likedPosts[pid];btn.classList.remove('liked');btn.querySelector('i').className='far fa-thumbs-up';countEl.textContent=Math.max(0,count-1);}
+                else{state.likedPosts[pid]=true;btn.classList.add('liked');btn.querySelector('i').className='fas fa-thumbs-up';countEl.textContent=count+1;}
             }
             var has=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);if(!isOwnPost(pid)){if(!had&&has){state.coins++;updateCoins();}else if(had&&!has){state.coins--;updateCoins();}}
             saveState();
