@@ -2965,6 +2965,17 @@ async function showProfileView(person){
     var userId=isMe?currentUser.id:person.id;
     try{
         var userPosts=await sbGetUserPosts(userId,10);
+        // Re-sync like state from DB for these posts to fix any stale local state
+        if(currentUser&&userPosts&&userPosts.length){
+            try{
+                var myLikes=await sbGetUserLikes(currentUser.id,'post');
+                var likedIds={};(myLikes||[]).forEach(function(l){likedIds[l.target_id]=true;});
+                userPosts.forEach(function(p){
+                    if(likedIds[p.id]) state.likedPosts[p.id]=true;
+                    else delete state.likedPosts[p.id];
+                });
+            }catch(e){}
+        }
         if(!userPosts||!userPosts.length){
             feedHtml+='<div class="card" style="padding:40px;text-align:center;color:var(--gray);"><i class="fas fa-pen" style="font-size:32px;margin-bottom:12px;display:block;"></i><p>No posts yet.</p></div>';
         } else {
