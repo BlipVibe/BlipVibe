@@ -337,6 +337,16 @@ async function sbGetUserPosts(userId, limit = 20) {
     .order('created_at', { ascending: false })
     .limit(limit);
   if (error) throw error;
+  // Fetch like counts in parallel
+  await Promise.all((data || []).map(async function(post) {
+    try {
+      const { count } = await sb.from('likes')
+        .select('*', { count: 'exact', head: true })
+        .eq('target_type', 'post')
+        .eq('target_id', post.id);
+      post.like_count = count || 0;
+    } catch(e) { post.like_count = 0; }
+  }));
   return _sanitizeData(data);
 }
 
