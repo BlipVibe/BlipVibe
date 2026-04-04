@@ -5671,6 +5671,8 @@ async function generatePosts(){
                 sharedPosts.forEach(function(sp){sharedMap[sp.id]=sp;});
             }catch(e){console.warn('Could not load shared posts:',e);}
         }
+        // Clear cached/stale data before adding fresh posts
+        feedPosts=[];
         posts.forEach(function(p,i){
             if(!p||!p.author) return;
             var fp=_buildFeedPost(p,sharedMap);
