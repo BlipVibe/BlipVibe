@@ -927,9 +927,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>document.write('<script src="js/supabase.js?t='+Date.now()+'"><\/script>');document.write('<script src="js/app.js?t='+Date.now()+'"><\/script>');</script>
     <script>
-    // Register service worker for offline caching
+    // Unregister any existing service worker and clear caches
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').catch(function(e) { console.warn('SW registration failed:', e); });
+        navigator.serviceWorker.getRegistrations().then(function(regs) {
+            regs.forEach(function(r) { r.unregister(); });
+        });
+        if (caches) { caches.keys().then(function(names) { names.forEach(function(n) { caches.delete(n); }); }); }
     }
     </script>
 </body>
