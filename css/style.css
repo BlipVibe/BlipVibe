@@ -2496,6 +2496,8 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
         grid-template-rows:auto!important;
         padding:0 12px!important;
         gap:14px!important;
+        margin-left:auto!important;margin-right:auto!important;
+        box-sizing:border-box!important;
     }
     .left-sidebar{
         display:flex!important;flex-direction:column!important;
@@ -2509,7 +2511,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     }
     .center-feed{
         grid-column:1!important;grid-row:auto!important;width:100%!important;min-width:0!important;
-        gap:14px!important;
+        gap:14px!important;margin:0 auto!important;max-width:100%!important;
     }
     .right-sidebar{
         grid-column:1!important;grid-row:auto!important;position:static!important;
