@@ -2506,8 +2506,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
         grid-column:1!important;grid-row:auto!important;width:100%!important;min-width:0!important;
         gap:14px!important;margin:0 auto!important;max-width:100%!important;
     }
-    .feed-post{border-left:none!important;padding:12px 14px!important;margin:0!important;width:100%!important;box-sizing:border-box!important;}
-    .card{width:100%!important;box-sizing:border-box!important;margin-left:0!important;margin-right:0!important;}
+    .feed-post{border-left:none!important;}
     .right-sidebar{
         grid-column:1!important;grid-row:auto!important;position:static!important;
         max-width:none!important;margin:0!important;width:auto!important;
@@ -3019,7 +3018,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .nav-coins{padding:3px 6px!important;font-size:11px!important;margin-left:auto!important;}
     .nav-avatar{width:28px!important;height:28px!important;}
     .main-container{padding:0 8px!important;width:100%!important;margin:0 auto!important;}
-    .feed-post{padding:12px 10px!important;border-left:none!important;width:100%!important;box-sizing:border-box!important;}
+    .feed-post{padding:12px 10px!important;border-left:none!important;}
     .post-avatar{width:34px!important;height:34px!important;}
     .post-header{gap:8px!important;}
     .pm-count-2{grid-template-columns:1fr!important;}
