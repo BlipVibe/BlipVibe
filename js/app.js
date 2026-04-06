@@ -5592,14 +5592,22 @@ async function _loadMorePosts(){
             posts.forEach(function(p){if(p.shared_post_id)sharedIds.push(p.shared_post_id);});
             var sharedMap={};
             if(sharedIds.length){try{var sp=await sbGetPostsByIds(sharedIds);sp.forEach(function(s){sharedMap[s.id]=s;});}catch(e){}}
+            var newFeedPosts=[];
             posts.forEach(function(p){
                 if(!p||!p.author) return;
                 if(feedPosts.some(function(fp){return fp.idx===p.id;})) return;
                 var fp=_buildFeedPost(p,sharedMap);
                 feedPosts.push(fp);
+                newFeedPosts.push(fp);
             });
             _feedOffset+=posts.length;
-            _appendFeedPosts(posts.map(function(p){return feedPosts.find(function(fp){return fp.idx===p.id;})}).filter(Boolean));
+            // Filter new posts by active tab before appending to DOM
+            var filtered=_filterPostsByTab(newFeedPosts,activeFeedTab);
+            if(activeFeedTab==='discover'){
+                // Sort discover posts by engagement
+                filtered.sort(function(a,b){return ((b.likes||0)+(b.commentCount||0))-((a.likes||0)+(a.commentCount||0));});
+            }
+            if(filtered.length) _appendFeedPosts(filtered);
         }
         if(!_feedHasMore){
             var endMsg=document.createElement('div');
@@ -5687,6 +5695,19 @@ async function generatePosts(){
     renderFeed(activeFeedTab);
     cacheFeedData();
 }
+// Filter posts by the active feed tab — used by both renderFeed and infinite scroll
+function _filterPostsByTab(posts,tab){
+    if(tab==='myposts'){
+        return posts.filter(function(p){return currentUser&&p.person.id===currentUser.id&&!hiddenPosts[p.idx];});
+    } else if(tab==='following'){
+        return posts.filter(function(p){return (state.followedUsers[p.person.id]||(currentUser&&p.person.id===currentUser.id))&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id]&&!mutedUsers[p.person.id];});
+    } else {
+        // Discover: non-followed, non-self, non-blocked/muted
+        return posts.filter(function(p){
+            return currentUser&&p.person.id!==currentUser.id&&!state.followedUsers[p.person.id]&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id]&&!mutedUsers[p.person.id];
+        });
+    }
+}
 var _discoverLoaded=false;
 async function _loadDiscoverPosts(){
     try{
@@ -5755,19 +5776,8 @@ function _buildPostHtml(p){
 }
 function renderFeed(tab){
     activeFeedTab=tab;
-    var posts;
-    if(tab==='myposts'){
-        // My Posts tab: only the current user's posts
-        posts=feedPosts.filter(function(p){return currentUser&&p.person.id===currentUser.id&&!hiddenPosts[p.idx];});
-    } else if(tab==='following'){
-        // Following tab: posts from people you follow + your own posts
-        posts=feedPosts.filter(function(p){return (state.followedUsers[p.person.id]||(currentUser&&p.person.id===currentUser.id))&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id]&&!mutedUsers[p.person.id];});
-    } else {
-        // Discover tab: all posts from people you DON'T follow (excluding yourself), ranked by engagement
-        // First filter from loaded feed
-        posts=feedPosts.filter(function(p){
-            return currentUser&&p.person.id!==currentUser.id&&!state.followedUsers[p.person.id]&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id]&&!mutedUsers[p.person.id];
-        });
+    var posts=_filterPostsByTab(feedPosts,tab);
+    if(tab==='discover'){
         // If not enough discover posts in loaded feed, trigger a background fetch
         if(posts.length<5&&!_discoverLoaded){
             _discoverLoaded=true;
