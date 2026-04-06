@@ -1,5 +1,5 @@
 // BlipVibe Service Worker — offline caching for static assets
-var CACHE_NAME = 'blipvibe-v1';
+var CACHE_NAME = 'blipvibe-v2';
 var ASSETS_TO_CACHE = [
     '/',
     '/index.html',

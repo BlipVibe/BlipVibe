@@ -2500,14 +2500,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
         box-sizing:border-box!important;
     }
     .left-sidebar{
-        display:flex!important;flex-direction:column!important;
-        gap:14px!important;position:static!important;width:auto!important;
-    }
-    .left-sidebar .profile-card,
-    .left-sidebar .photos-card,
-    .left-sidebar .suggestions-card{
-        max-width:none!important;margin:0!important;position:static!important;
-        width:auto!important;grid-column:1!important;grid-row:auto!important;display:block!important;
+        display:none!important;
     }
     .center-feed{
         grid-column:1!important;grid-row:auto!important;width:100%!important;min-width:0!important;
