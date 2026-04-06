@@ -5687,6 +5687,24 @@ async function generatePosts(){
     renderFeed(activeFeedTab);
     cacheFeedData();
 }
+var _discoverLoaded=false;
+async function _loadDiscoverPosts(){
+    try{
+        // Fetch more posts from DB to find non-followed content
+        var posts=await sbGetFeed(100,0);
+        if(!posts||!posts.length) return;
+        var sharedIds=[];
+        posts.forEach(function(p){if(p.shared_post_id)sharedIds.push(p.shared_post_id);});
+        var sharedMap={};
+        if(sharedIds.length){try{var sp=await sbGetPostsByIds(sharedIds);sp.forEach(function(s){sharedMap[s.id]=s;});}catch(e){}}
+        posts.forEach(function(p){
+            if(!p||!p.author) return;
+            if(feedPosts.some(function(fp){return fp.idx===p.id;})) return; // skip dupes
+            var fp=_buildFeedPost(p,sharedMap);
+            feedPosts.push(fp);
+        });
+    }catch(e){console.warn('Discover load error:',e);}
+}
 function getFollowingIds(){
     var ids={};
     if(currentUser) ids[currentUser.id]=true; // include own posts
@@ -5746,9 +5764,15 @@ function renderFeed(tab){
         posts=feedPosts.filter(function(p){return (state.followedUsers[p.person.id]||(currentUser&&p.person.id===currentUser.id))&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id]&&!mutedUsers[p.person.id];});
     } else {
         // Discover tab: all posts from people you DON'T follow (excluding yourself), ranked by engagement
+        // First filter from loaded feed
         posts=feedPosts.filter(function(p){
             return currentUser&&p.person.id!==currentUser.id&&!state.followedUsers[p.person.id]&&!hiddenPosts[p.idx]&&!blockedUsers[p.person.id]&&!mutedUsers[p.person.id];
         });
+        // If not enough discover posts in loaded feed, trigger a background fetch
+        if(posts.length<5&&!_discoverLoaded){
+            _discoverLoaded=true;
+            _loadDiscoverPosts().then(function(){renderFeed('discover');});
+        }
         // Sort by engagement (likes + comments) descending — trending posts first
         posts.sort(function(a,b){return ((b.likes||0)+(b.commentCount||0))-((a.likes||0)+(a.commentCount||0));});
     }
