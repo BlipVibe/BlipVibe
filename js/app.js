@@ -1466,10 +1466,12 @@ async function renderSearchResults(q,tab){
         bindHashtagClicks('#searchResults');
         // Bind view more buttons in search results
         $$('#searchResults .view-more-btn').forEach(function(btn){
-            btn.addEventListener('click',function(){
-                var span=btn.parentElement.querySelector('.view-more-text');
-                if(span.classList.contains('hidden')){span.classList.remove('hidden');btn.textContent='view less';}
-                else{span.classList.add('hidden');btn.textContent='view more';}
+            btn.addEventListener('click',function(e){
+                e.preventDefault();e.stopPropagation();
+                var span=btn.closest('p').querySelector('.view-more-text');
+                if(!span) return;
+                if(span.classList.contains('hidden')){span.classList.remove('hidden');btn.textContent='View Less';}
+                else{span.classList.add('hidden');btn.textContent='View More';}
             });
         });
         // Bind username clicks to profile view
@@ -5921,10 +5923,12 @@ function bindPostEvents(){
 
     // View more
     _$$('.view-more-btn').forEach(function(btn){
-        btn.addEventListener('click',function(){
-            var span=btn.parentElement.querySelector('.view-more-text');
-            if(span.classList.contains('hidden')){span.classList.remove('hidden');btn.textContent='view less';}
-            else{span.classList.add('hidden');btn.textContent='view more';}
+        btn.addEventListener('click',function(e){
+            e.preventDefault();e.stopPropagation();
+            var span=btn.closest('p').querySelector('.view-more-text');
+            if(!span) return;
+            if(span.classList.contains('hidden')){span.classList.remove('hidden');btn.textContent='View Less';}
+            else{span.classList.add('hidden');btn.textContent='View More';}
         });
     });
 
@@ -10467,10 +10471,12 @@ function _bindSavedPostEvents(){
     });
     // View more
     c.querySelectorAll('.view-more-btn').forEach(function(btn){
-        btn.addEventListener('click',function(){
-            var span=btn.parentElement.querySelector('.view-more-text');
-            if(span.classList.contains('hidden')){span.classList.remove('hidden');btn.textContent='view less';}
-            else{span.classList.add('hidden');btn.textContent='view more';}
+        btn.addEventListener('click',function(e){
+            e.preventDefault();e.stopPropagation();
+            var span=btn.closest('p').querySelector('.view-more-text');
+            if(!span) return;
+            if(span.classList.contains('hidden')){span.classList.remove('hidden');btn.textContent='View Less';}
+            else{span.classList.add('hidden');btn.textContent='View More';}
         });
     });
 }
@@ -11391,7 +11397,7 @@ function showChangePasswordModal(){
 
 // ======================== CHANGE EMAIL IN-APP ========================
 function showChangeEmailModal(){
-    var currentEmail=currentUser?currentUser.email||'':'';
+    var currentEmail=(currentUser&&currentUser.email)||(currentAuthUser&&currentAuthUser.email)||'';
     var h='<div class="modal-header"><h3><i class="fas fa-envelope" style="color:var(--primary);margin-right:8px;"></i>Change Email</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     h+='<div class="modal-body">';
     h+='<p style="font-size:13px;color:var(--gray);margin-bottom:12px;">Current email: <strong>'+escapeHtml(currentEmail)+'</strong></p>';
