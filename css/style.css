@@ -2393,7 +2393,9 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
 @media(max-width:768px){
     /* --- Prevent horizontal scroll & iOS elastic swipe --- */
     html{overflow-x:hidden;overscroll-behavior-x:none;}
-    body{overflow-x:hidden;max-width:100vw;overscroll-behavior-x:none;}
+    body{overflow-x:hidden;max-width:100vw;overscroll-behavior-x:none;padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))!important;}
+    /* Solid background behind bottom nav to prevent content showing through */
+    .nav-center{background:var(--nav-bg,#0f172a)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;}
 
     /* --- Prevent iOS auto-zoom on input focus (requires >=16px) --- */
     input,textarea,select{font-size:16px!important;}
@@ -2431,7 +2433,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .nav-center::after{
         content:'';position:absolute;left:0;right:0;top:100%;
         height:env(safe-area-inset-bottom,34px);min-height:34px;
-        background:inherit;pointer-events:none;
+        background:var(--nav-bg,#0f172a);pointer-events:none;
     }
     .nav-link{
         flex-direction:column!important;align-items:center!important;
