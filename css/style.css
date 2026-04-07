@@ -798,7 +798,8 @@ body.modal-open{overflow:hidden!important;position:fixed!important;width:100%!im
 .modal-profile-top p{font-size:14px;color:var(--gray);}
 .modal-profile-stats{display:flex;justify-content:center;gap:16px 30px;padding:16px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:16px;flex-wrap:wrap;}
 .modal-profile-stats .stat{max-width:45%;}
-.modal-actions{display:flex;gap:10px;justify-content:center;}
+.modal-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.modal-actions .btn{min-width:90px;overflow:visible;text-overflow:unset;}
 
 /* ========== SKIN SHOP CARDS ========== */
 #shopGrid,#mySkinsGrid{display:flex;flex-direction:column;}
