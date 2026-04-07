@@ -5633,7 +5633,7 @@ function _buildFeedPost(p,sharedMap){
         text:p.content||'',tags:[],badge:null,loc:p.location||null,
         likes:p.like_count||0,comments:[],
         commentCount:(p.comments&&p.comments[0])?p.comments[0].count:0,
-        shares:0,images:p.media_urls&&p.media_urls.length?p.media_urls:(p.image_url?[p.image_url]:null),
+        shares:p.share_count||0,images:p.media_urls&&p.media_urls.length?p.media_urls:(p.image_url?[p.image_url]:null),
         created_at:p.created_at
     };
     if(p.shared_post_id&&sharedMap&&sharedMap[p.shared_post_id]){
