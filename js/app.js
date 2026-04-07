@@ -2994,10 +2994,13 @@ async function showProfileView(person){
                 feedHtml+=buildMediaGrid(pvImgs);
                 var pvLikes=post.like_count||0;
                 var pvComments=(post.comments&&post.comments[0])?post.comments[0].count:0;
+                var pvReaction=_postReactions[post.id];
                 feedHtml+='<div class="post-actions"><div class="action-left">';
                 feedHtml+='<button class="action-btn like-btn'+(state.likedPosts[post.id]?' liked':'')+'" data-post-id="'+post.id+'"><i class="'+(state.likedPosts[post.id]?'fas':'far')+' fa-thumbs-up"></i><span class="like-count">'+pvLikes+'</span></button>';
                 feedHtml+='<button class="action-btn dislike-btn'+(state.dislikedPosts[post.id]?' disliked':'')+'" data-post-id="'+post.id+'"><i class="'+(state.dislikedPosts[post.id]?'fas':'far')+' fa-thumbs-down"></i><span class="dislike-count">0</span></button>';
+                feedHtml+='<button class="action-btn react-btn" data-post-id="'+post.id+'" title="React">'+(pvReaction?'<span style="font-size:16px;">'+pvReaction+'</span>':'<i class="far fa-face-smile"></i>')+'</button>';
                 feedHtml+='<button class="action-btn comment-btn"><i class="far fa-comment"></i><span>'+pvComments+'</span></button>';
+                feedHtml+='<button class="action-btn share-btn"><i class="fas fa-share-from-square"></i><span>0</span></button>';
                 feedHtml+='</div></div>';
                 feedHtml+='</div>';
             });
@@ -3148,6 +3151,8 @@ async function showProfileView(person){
     });
     // Event: Share
     $$('#pvPostsFeed .share-btn').forEach(function(btn){btn.addEventListener('click',function(){handleShare(btn);});});
+    // Event: Emoji reactions
+    $$('#pvPostsFeed .react-btn').forEach(function(btn){btn.addEventListener('click',function(){var postId=btn.getAttribute('data-post-id');showReactionPicker(postId,btn);});});
     bindLikeCountClicks('#pvPostsFeed');
 }
 
