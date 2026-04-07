@@ -54,7 +54,8 @@ async function sbSignUp(email, password, username, birthday = null, firstName = 
       email: email,
       bio: '',
       avatar_url: null,
-      cover_photo_url: null
+      cover_photo_url: null,
+      coin_balance: 100
     };
     if (birthday) row.birthday = birthday;
     const { error: profileErr } = await sb.from('profiles')

@@ -506,7 +506,7 @@ function populateUserUI() {
     if (postAvatar) postAvatar.src = avatar;
     // Coins
     var coinEl = document.getElementById('navCoinCount');
-    if (coinEl) coinEl.textContent = currentUser.coin_balance || 0;
+    if (coinEl) coinEl.textContent = _hasInfinity()?'\u221E':(currentUser.coin_balance || 0);
 }
 
 // Sync all avatar images on the page when avatar changes
@@ -1089,149 +1089,149 @@ function canManageGroupSkins(group){
 }
 
 var skins = [
-    {id:'classic',name:'Classic',desc:'Clean teal and white. The original BlipVibe look.',price:1,preview:'linear-gradient(135deg,#5cbdb9,#4aada9)',cardBg:'#fff',cardText:'#333',cardMuted:'#777'},
-    {id:'midnight',name:'Midnight Dark',desc:'Dark mode profile with neon accents. Sleek and mysterious vibes.',price:1,preview:'linear-gradient(135deg,#1a1a2e,#16213e)',cardBg:'#2a2a4a',cardText:'#eee',cardMuted:'#bbb'},
-    {id:'ocean',name:'Ocean Blue',desc:'Cool ocean vibes for your profile. Calm and refreshing.',price:1,preview:'linear-gradient(135deg,#1976d2,#0d47a1)',cardBg:'#e3f2fd',cardText:'#1565c0',cardMuted:'#1976d2'},
-    {id:'forest',name:'Forest Green',desc:'Nature-inspired earthy tones. Peaceful and grounded.',price:1,preview:'linear-gradient(135deg,#2e7d32,#1b5e20)',cardBg:'#e8f5e9',cardText:'#2e7d32',cardMuted:'#388e3c'},
-    {id:'royal',name:'Royal Purple',desc:'Elegant purple royalty vibes. Stand out from the crowd.',price:1,preview:'linear-gradient(135deg,#7b1fa2,#4a148c)',cardBg:'#f3e5f5',cardText:'#6a1b9a',cardMuted:'#7b1fa2'},
-    {id:'sunset',name:'Sunset Gold',desc:'Warm golden hour aesthetic. Radiate warmth and energy.',price:1,preview:'linear-gradient(135deg,#ef6c00,#e65100)',cardBg:'#fff8e1',cardText:'#e65100',cardMuted:'#ef6c00'},
-    {id:'cherry',name:'Cherry Blossom',desc:'Soft pink sakura vibes. Delicate and romantic.',price:1,preview:'linear-gradient(135deg,#d81b60,#c2185b)',cardBg:'#fce4ec',cardText:'#c2185b',cardMuted:'#d81b60'},
-    {id:'slate',name:'Slate Storm',desc:'Cool dark gray sophistication. Sleek and modern.',price:1,preview:'linear-gradient(135deg,#37474f,#263238)',cardBg:'#37474f',cardText:'#eceff1',cardMuted:'#90a4ae'},
-    {id:'ember',name:'Ember Glow',desc:'Warm smoldering red-orange. Bold and fiery.',price:1,preview:'linear-gradient(135deg,#e64a19,#bf360c)',cardBg:'#fbe9e7',cardText:'#bf360c',cardMuted:'#e64a19'},
-    {id:'arctic',name:'Arctic Frost',desc:'Icy cyan chill. Clean and refreshing.',price:1,preview:'linear-gradient(135deg,#00acc1,#00838f)',cardBg:'#e0f7fa',cardText:'#00838f',cardMuted:'#00acc1'},
-    {id:'moss',name:'Moss Garden',desc:'Olive earth tones. Calm and grounded.',price:1,preview:'linear-gradient(135deg,#689f38,#558b2f)',cardBg:'#f1f8e9',cardText:'#558b2f',cardMuted:'#689f38'},
-    {id:'pastel',name:'Pastel Dream',desc:'Soft candy pastels with flowing gradient movement. Sweet and dreamy.',price:1,preview:'linear-gradient(135deg,#fbc2eb,#a6c1ee,#fdcbf1,#e6dee9)',cardBg:'#fef5ff',cardText:'#7b4a8e',cardMuted:'#b07cc3'}
+    {id:'classic',name:'Classic',desc:'Clean teal and white. The original BlipVibe look.',price:35,preview:'linear-gradient(135deg,#5cbdb9,#4aada9)',cardBg:'#fff',cardText:'#333',cardMuted:'#777'},
+    {id:'midnight',name:'Midnight Dark',desc:'Dark mode profile with neon accents. Sleek and mysterious vibes.',price:35,preview:'linear-gradient(135deg,#1a1a2e,#16213e)',cardBg:'#2a2a4a',cardText:'#eee',cardMuted:'#bbb'},
+    {id:'ocean',name:'Ocean Blue',desc:'Cool ocean vibes for your profile. Calm and refreshing.',price:35,preview:'linear-gradient(135deg,#1976d2,#0d47a1)',cardBg:'#e3f2fd',cardText:'#1565c0',cardMuted:'#1976d2'},
+    {id:'forest',name:'Forest Green',desc:'Nature-inspired earthy tones. Peaceful and grounded.',price:35,preview:'linear-gradient(135deg,#2e7d32,#1b5e20)',cardBg:'#e8f5e9',cardText:'#2e7d32',cardMuted:'#388e3c'},
+    {id:'royal',name:'Royal Purple',desc:'Elegant purple royalty vibes. Stand out from the crowd.',price:35,preview:'linear-gradient(135deg,#7b1fa2,#4a148c)',cardBg:'#f3e5f5',cardText:'#6a1b9a',cardMuted:'#7b1fa2'},
+    {id:'sunset',name:'Sunset Gold',desc:'Warm golden hour aesthetic. Radiate warmth and energy.',price:35,preview:'linear-gradient(135deg,#ef6c00,#e65100)',cardBg:'#fff8e1',cardText:'#e65100',cardMuted:'#ef6c00'},
+    {id:'cherry',name:'Cherry Blossom',desc:'Soft pink sakura vibes. Delicate and romantic.',price:35,preview:'linear-gradient(135deg,#d81b60,#c2185b)',cardBg:'#fce4ec',cardText:'#c2185b',cardMuted:'#d81b60'},
+    {id:'slate',name:'Slate Storm',desc:'Cool dark gray sophistication. Sleek and modern.',price:35,preview:'linear-gradient(135deg,#37474f,#263238)',cardBg:'#37474f',cardText:'#eceff1',cardMuted:'#90a4ae'},
+    {id:'ember',name:'Ember Glow',desc:'Warm smoldering red-orange. Bold and fiery.',price:35,preview:'linear-gradient(135deg,#e64a19,#bf360c)',cardBg:'#fbe9e7',cardText:'#bf360c',cardMuted:'#e64a19'},
+    {id:'arctic',name:'Arctic Frost',desc:'Icy cyan chill. Clean and refreshing.',price:35,preview:'linear-gradient(135deg,#00acc1,#00838f)',cardBg:'#e0f7fa',cardText:'#00838f',cardMuted:'#00acc1'},
+    {id:'moss',name:'Moss Garden',desc:'Olive earth tones. Calm and grounded.',price:35,preview:'linear-gradient(135deg,#689f38,#558b2f)',cardBg:'#f1f8e9',cardText:'#558b2f',cardMuted:'#689f38'},
+    {id:'pastel',name:'Pastel Dream',desc:'Soft candy pastels with flowing gradient movement. Sweet and dreamy.',price:35,preview:'linear-gradient(135deg,#fbc2eb,#a6c1ee,#fdcbf1,#e6dee9)',cardBg:'#fef5ff',cardText:'#7b4a8e',cardMuted:'#b07cc3'}
 ];
 
 var fonts = [
-    {id:'orbitron',name:'Orbitron',desc:'Futuristic sci-fi vibes.',price:1,family:'Orbitron',scale:.92},
-    {id:'rajdhani',name:'Rajdhani',desc:'Clean tech aesthetic.',price:1,family:'Rajdhani'},
-    {id:'quicksand',name:'Quicksand',desc:'Soft and rounded.',price:1,family:'Quicksand'},
-    {id:'pacifico',name:'Pacifico',desc:'Fun handwritten script.',price:1,family:'Pacifico',scale:.85},
-    {id:'baloo',name:'Baloo 2',desc:'Bubbly and adorable.',price:1,family:'Baloo 2'},
-    {id:'playfair',name:'Playfair Display',desc:'Elegant serif style.',price:1,family:'Playfair Display'},
-    {id:'spacegrotesk',name:'Space Grotesk',desc:'Modern geometric sans.',price:1,family:'Space Grotesk'},
-    {id:'caveat',name:'Caveat',desc:'Casual handwriting feel.',price:1,family:'Caveat',scale:.9},
-    {id:'archivo',name:'Archivo',desc:'Sharp and editorial.',price:1,family:'Archivo'},
-    {id:'silkscreen',name:'Silkscreen',desc:'Retro pixel vibes.',price:1,family:'Silkscreen',scale:.78},
-    {id:'pressstart',name:'Press Start 2P',desc:'Arcade pixel font.',price:1,family:'Press Start 2P',scale:.55},
-    {id:'righteous',name:'Righteous',desc:'Bold retro display.',price:1,family:'Righteous',scale:.9},
-    {id:'satisfy',name:'Satisfy',desc:'Smooth cursive flow.',price:1,family:'Satisfy',scale:.88},
-    {id:'bungee',name:'Bungee',desc:'Chunky display type.',price:1,family:'Bungee',scale:.72},
-    {id:'monoton',name:'Monoton',desc:'Neon outline glow.',price:1,family:'Monoton',scale:.68}
+    {id:'orbitron',name:'Orbitron',desc:'Futuristic sci-fi vibes.',price:15,family:'Orbitron',scale:.92},
+    {id:'rajdhani',name:'Rajdhani',desc:'Clean tech aesthetic.',price:15,family:'Rajdhani'},
+    {id:'quicksand',name:'Quicksand',desc:'Soft and rounded.',price:15,family:'Quicksand'},
+    {id:'pacifico',name:'Pacifico',desc:'Fun handwritten script.',price:15,family:'Pacifico',scale:.85},
+    {id:'baloo',name:'Baloo 2',desc:'Bubbly and adorable.',price:15,family:'Baloo 2'},
+    {id:'playfair',name:'Playfair Display',desc:'Elegant serif style.',price:15,family:'Playfair Display'},
+    {id:'spacegrotesk',name:'Space Grotesk',desc:'Modern geometric sans.',price:15,family:'Space Grotesk'},
+    {id:'caveat',name:'Caveat',desc:'Casual handwriting feel.',price:15,family:'Caveat',scale:.9},
+    {id:'archivo',name:'Archivo',desc:'Sharp and editorial.',price:15,family:'Archivo'},
+    {id:'silkscreen',name:'Silkscreen',desc:'Retro pixel vibes.',price:15,family:'Silkscreen',scale:.78},
+    {id:'pressstart',name:'Press Start 2P',desc:'Arcade pixel font.',price:15,family:'Press Start 2P',scale:.55},
+    {id:'righteous',name:'Righteous',desc:'Bold retro display.',price:15,family:'Righteous',scale:.9},
+    {id:'satisfy',name:'Satisfy',desc:'Smooth cursive flow.',price:15,family:'Satisfy',scale:.88},
+    {id:'bungee',name:'Bungee',desc:'Chunky display type.',price:15,family:'Bungee',scale:.72},
+    {id:'monoton',name:'Monoton',desc:'Neon outline glow.',price:15,family:'Monoton',scale:.68}
 ];
 
 var logos = [
-    {id:'bv',name:'BV',desc:'Minimal and edgy.',price:1,text:'BV'},
-    {id:'electric',name:'Electric',desc:'High energy vibes.',price:1,text:'\u26A1BlipVibe'},
-    {id:'sparkle',name:'Sparkle',desc:'Fancy and elegant.',price:1,text:'\u2726BlipVibe\u2726'},
-    {id:'floral',name:'Floral',desc:'Soft flower energy.',price:1,text:'\uD83C\uDF38BlipVibe'},
-    {id:'ribbon',name:'Ribbon',desc:'Super cute and sweet.',price:1,text:'\uD83C\uDF80BlipVibe\uD83C\uDF80'},
-    {id:'crown',name:'Crown',desc:'Royal and majestic.',price:1,text:'\uD83D\uDC51BlipVibe'},
-    {id:'wave',name:'Wave',desc:'Chill ocean flow.',price:1,text:'\uD83C\uDF0ABlipVibe'},
-    {id:'rocket',name:'Rocket',desc:'Launch into orbit.',price:1,text:'\uD83D\uDE80BlipVibe'},
-    {id:'gem',name:'Diamond',desc:'Rare and precious.',price:1,text:'\uD83D\uDC8EBV\uD83D\uDC8E'},
-    {id:'minimal',name:'Minimal',desc:'Less is more.',price:1,text:'bv.'},
-    {id:'fire',name:'Fire',desc:'Blazing hot energy.',price:1,text:'\uD83D\uDD25BlipVibe'},
-    {id:'star',name:'Starlight',desc:'Shine bright always.',price:1,text:'\u2B50BlipVibe\u2B50'},
-    {id:'ghost',name:'Ghost',desc:'Spooky and playful.',price:1,text:'\uD83D\uDC7BBlipVibe'},
-    {id:'neon',name:'Neon',desc:'Glowing club vibes.',price:1,text:'\uD83D\uDCA0BV\uD83D\uDCA0'},
-    {id:'sword',name:'Sword',desc:'Battle-ready branding.',price:1,text:'\u2694\uFE0FBlipVibe\u2694\uFE0F'},
+    {id:'bv',name:'BV',desc:'Minimal and edgy.',price:20,text:'BV'},
+    {id:'electric',name:'Electric',desc:'High energy vibes.',price:20,text:'\u26A1BlipVibe'},
+    {id:'sparkle',name:'Sparkle',desc:'Fancy and elegant.',price:20,text:'\u2726BlipVibe\u2726'},
+    {id:'floral',name:'Floral',desc:'Soft flower energy.',price:20,text:'\uD83C\uDF38BlipVibe'},
+    {id:'ribbon',name:'Ribbon',desc:'Super cute and sweet.',price:20,text:'\uD83C\uDF80BlipVibe\uD83C\uDF80'},
+    {id:'crown',name:'Crown',desc:'Royal and majestic.',price:20,text:'\uD83D\uDC51BlipVibe'},
+    {id:'wave',name:'Wave',desc:'Chill ocean flow.',price:20,text:'\uD83C\uDF0ABlipVibe'},
+    {id:'rocket',name:'Rocket',desc:'Launch into orbit.',price:20,text:'\uD83D\uDE80BlipVibe'},
+    {id:'gem',name:'Diamond',desc:'Rare and precious.',price:20,text:'\uD83D\uDC8EBV\uD83D\uDC8E'},
+    {id:'minimal',name:'Minimal',desc:'Less is more.',price:20,text:'bv.'},
+    {id:'fire',name:'Fire',desc:'Blazing hot energy.',price:20,text:'\uD83D\uDD25BlipVibe'},
+    {id:'star',name:'Starlight',desc:'Shine bright always.',price:20,text:'\u2B50BlipVibe\u2B50'},
+    {id:'ghost',name:'Ghost',desc:'Spooky and playful.',price:20,text:'\uD83D\uDC7BBlipVibe'},
+    {id:'neon',name:'Neon',desc:'Glowing club vibes.',price:20,text:'\uD83D\uDCA0BV\uD83D\uDCA0'},
+    {id:'sword',name:'Sword',desc:'Battle-ready branding.',price:20,text:'\u2694\uFE0FBlipVibe\u2694\uFE0F'},
     {id:'mainlogo',name:'BlipVibe Logo',desc:'The official BlipVibe mascot logo.',price:0,img:'images/blipvibe-logo-hd.webp'}
 ];
 
 var defaultIcons={home:'fa-home',groups:'fa-users-rectangle',skins:'fa-palette',profiles:'fa-user-group',shop:'fa-store',messages:'fa-envelope',notifications:'fa-bell',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment',share:'fa-share-from-square',search:'fa-search',edit:'fa-pen',bookmark:'fa-bookmark',heart:'fa-heart'};
 var activeIcons=JSON.parse(JSON.stringify(defaultIcons));
 var iconSets = [
-    {id:'rounded',name:'Rounded',desc:'Soft rounded icons.',price:1,preview:'linear-gradient(135deg,#ff9a9e,#fad0c4)',icons:{home:'fa-house',groups:'fa-people-group',skins:'fa-brush',profiles:'fa-address-book',shop:'fa-bag-shopping',messages:'fa-comment-dots',notifications:'fa-bell-concierge',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-message',share:'fa-share-from-square',search:'fa-magnifying-glass',edit:'fa-pen-fancy',bookmark:'fa-flag',heart:'fa-heart'}},
-    {id:'techy',name:'Techy',desc:'Futuristic tech icons.',price:1,preview:'linear-gradient(135deg,#667eea,#764ba2)',icons:{home:'fa-microchip',groups:'fa-network-wired',skins:'fa-swatchbook',profiles:'fa-id-card',shop:'fa-cart-shopping',messages:'fa-satellite-dish',notifications:'fa-tower-broadcast',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-nodes',search:'fa-magnifying-glass',edit:'fa-wrench',bookmark:'fa-database',heart:'fa-bolt'}},
-    {id:'playful',name:'Playful',desc:'Fun and cute icons.',price:1,preview:'linear-gradient(135deg,#f093fb,#f5576c)',icons:{home:'fa-heart',groups:'fa-hands-holding',skins:'fa-wand-magic-sparkles',profiles:'fa-face-smile',shop:'fa-gift',messages:'fa-paper-plane',notifications:'fa-star',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comments',share:'fa-share',search:'fa-wand-magic-sparkles',edit:'fa-pen-nib',bookmark:'fa-star',heart:'fa-face-kiss-wink-heart'}},
-    {id:'nature',name:'Nature',desc:'Earth-inspired icons.',price:1,preview:'linear-gradient(135deg,#11998e,#38ef7d)',icons:{home:'fa-tree',groups:'fa-seedling',skins:'fa-leaf',profiles:'fa-sun',shop:'fa-mountain',messages:'fa-wind',notifications:'fa-cloud',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-binoculars',edit:'fa-seedling',bookmark:'fa-tree',heart:'fa-sun'}},
-    {id:'cosmic',name:'Cosmic',desc:'Space-themed icons.',price:1,preview:'linear-gradient(135deg,#0f0c29,#302b63)',icons:{home:'fa-rocket',groups:'fa-meteor',skins:'fa-moon',profiles:'fa-globe',shop:'fa-shuttle-space',messages:'fa-satellite',notifications:'fa-explosion',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-arrow-up-from-bracket',search:'fa-user-astronaut',edit:'fa-screwdriver-wrench',bookmark:'fa-moon',heart:'fa-sun'}},
-    {id:'medieval',name:'Medieval',desc:'Knights and castles era.',price:1,preview:'linear-gradient(135deg,#8B4513,#D2691E)',icons:{home:'fa-chess-rook',groups:'fa-shield-halved',skins:'fa-scroll',profiles:'fa-helmet-safety',shop:'fa-coins',messages:'fa-dove',notifications:'fa-bell',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-message',share:'fa-hand-holding',search:'fa-compass',edit:'fa-hammer',bookmark:'fa-bookmark',heart:'fa-shield-heart'}},
-    {id:'ocean',name:'Ocean',desc:'Deep sea aquatic icons.',price:1,preview:'linear-gradient(135deg,#006994,#00CED1)',icons:{home:'fa-anchor',groups:'fa-fish',skins:'fa-water',profiles:'fa-person-swimming',shop:'fa-ship',messages:'fa-bottle-water',notifications:'fa-otter',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-magnifying-glass',edit:'fa-pen',bookmark:'fa-life-ring',heart:'fa-shrimp'}},
-    {id:'retro',name:'Retro',desc:'80s throwback vibes.',price:1,preview:'linear-gradient(135deg,#ff6ec7,#7873f5)',icons:{home:'fa-tv',groups:'fa-compact-disc',skins:'fa-spray-can',profiles:'fa-user-secret',shop:'fa-record-vinyl',messages:'fa-phone',notifications:'fa-radio',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comments',share:'fa-share-nodes',search:'fa-magnifying-glass',edit:'fa-scissors',bookmark:'fa-floppy-disk',heart:'fa-gamepad'}},
-    {id:'food',name:'Foodie',desc:'Tasty food-themed icons.',price:1,preview:'linear-gradient(135deg,#ff9a44,#fc6076)',icons:{home:'fa-house-chimney',groups:'fa-utensils',skins:'fa-ice-cream',profiles:'fa-mug-hot',shop:'fa-cart-shopping',messages:'fa-cookie-bite',notifications:'fa-lemon',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-magnifying-glass',edit:'fa-pen',bookmark:'fa-pizza-slice',heart:'fa-candy-cane'}},
-    {id:'weather',name:'Weather',desc:'Atmospheric sky icons.',price:1,preview:'linear-gradient(135deg,#89CFF0,#FFD700)',icons:{home:'fa-cloud-sun',groups:'fa-tornado',skins:'fa-rainbow',profiles:'fa-snowman',shop:'fa-umbrella',messages:'fa-snowflake',notifications:'fa-bolt-lightning',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-wind',search:'fa-temperature-half',edit:'fa-droplet',bookmark:'fa-sun',heart:'fa-cloud-moon'}},
-    {id:'gamer',name:'Gamer',desc:'Controller-ready gaming icons.',price:1,preview:'linear-gradient(135deg,#7b2ff7,#00f5a0)',icons:{home:'fa-gamepad',groups:'fa-headset',skins:'fa-ghost',profiles:'fa-skull-crossbones',shop:'fa-trophy',messages:'fa-walkie-talkie',notifications:'fa-bell',like:'fa-hand-fist',dislike:'fa-hand-point-down',comment:'fa-comment-dots',share:'fa-share-nodes',search:'fa-crosshairs',edit:'fa-screwdriver-wrench',bookmark:'fa-flag-checkered',heart:'fa-heart-pulse'}},
-    {id:'music',name:'Music',desc:'Jam out with musical icons.',price:1,preview:'linear-gradient(135deg,#e91e63,#ff9800)',icons:{home:'fa-music',groups:'fa-guitar',skins:'fa-sliders',profiles:'fa-microphone',shop:'fa-record-vinyl',messages:'fa-headphones',notifications:'fa-volume-high',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-magnifying-glass',edit:'fa-pen',bookmark:'fa-compact-disc',heart:'fa-drum'}},
-    {id:'horror',name:'Horror',desc:'Creepy spooky icons.',price:1,preview:'linear-gradient(135deg,#1a1a2e,#6b0000)',icons:{home:'fa-house-chimney-crack',groups:'fa-ghost',skins:'fa-skull',profiles:'fa-mask',shop:'fa-spider',messages:'fa-crow',notifications:'fa-triangle-exclamation',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-nodes',search:'fa-eye',edit:'fa-wand-sparkles',bookmark:'fa-cross',heart:'fa-brain'}},
-    {id:'fitness',name:'Fitness',desc:'Pump iron with gym icons.',price:1,preview:'linear-gradient(135deg,#ff6b35,#f7dc6f)',icons:{home:'fa-dumbbell',groups:'fa-people-pulling',skins:'fa-shirt',profiles:'fa-person-running',shop:'fa-basket-shopping',messages:'fa-stopwatch',notifications:'fa-bell',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-magnifying-glass',edit:'fa-pen',bookmark:'fa-medal',heart:'fa-heart-pulse'}},
-    {id:'minimal',name:'Minimal',desc:'Clean simple outlines.',price:1,preview:'linear-gradient(135deg,#e0e0e0,#9e9e9e)',icons:{home:'fa-circle',groups:'fa-circle-nodes',skins:'fa-circle-half-stroke',profiles:'fa-circle-user',shop:'fa-circle-dot',messages:'fa-circle-question',notifications:'fa-circle-exclamation',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment',share:'fa-up-right-from-square',search:'fa-magnifying-glass',edit:'fa-pen',bookmark:'fa-bookmark',heart:'fa-heart'}}
+    {id:'rounded',name:'Rounded',desc:'Soft rounded icons.',price:20,preview:'linear-gradient(135deg,#ff9a9e,#fad0c4)',icons:{home:'fa-house',groups:'fa-people-group',skins:'fa-brush',profiles:'fa-address-book',shop:'fa-bag-shopping',messages:'fa-comment-dots',notifications:'fa-bell-concierge',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-message',share:'fa-share-from-square',search:'fa-magnifying-glass',edit:'fa-pen-fancy',bookmark:'fa-flag',heart:'fa-heart'}},
+    {id:'techy',name:'Techy',desc:'Futuristic tech icons.',price:20,preview:'linear-gradient(135deg,#667eea,#764ba2)',icons:{home:'fa-microchip',groups:'fa-network-wired',skins:'fa-swatchbook',profiles:'fa-id-card',shop:'fa-cart-shopping',messages:'fa-satellite-dish',notifications:'fa-tower-broadcast',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-nodes',search:'fa-magnifying-glass',edit:'fa-wrench',bookmark:'fa-database',heart:'fa-bolt'}},
+    {id:'playful',name:'Playful',desc:'Fun and cute icons.',price:20,preview:'linear-gradient(135deg,#f093fb,#f5576c)',icons:{home:'fa-heart',groups:'fa-hands-holding',skins:'fa-wand-magic-sparkles',profiles:'fa-face-smile',shop:'fa-gift',messages:'fa-paper-plane',notifications:'fa-star',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comments',share:'fa-share',search:'fa-wand-magic-sparkles',edit:'fa-pen-nib',bookmark:'fa-star',heart:'fa-face-kiss-wink-heart'}},
+    {id:'nature',name:'Nature',desc:'Earth-inspired icons.',price:20,preview:'linear-gradient(135deg,#11998e,#38ef7d)',icons:{home:'fa-tree',groups:'fa-seedling',skins:'fa-leaf',profiles:'fa-sun',shop:'fa-mountain',messages:'fa-wind',notifications:'fa-cloud',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-binoculars',edit:'fa-seedling',bookmark:'fa-tree',heart:'fa-sun'}},
+    {id:'cosmic',name:'Cosmic',desc:'Space-themed icons.',price:20,preview:'linear-gradient(135deg,#0f0c29,#302b63)',icons:{home:'fa-rocket',groups:'fa-meteor',skins:'fa-moon',profiles:'fa-globe',shop:'fa-shuttle-space',messages:'fa-satellite',notifications:'fa-explosion',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-arrow-up-from-bracket',search:'fa-user-astronaut',edit:'fa-screwdriver-wrench',bookmark:'fa-moon',heart:'fa-sun'}},
+    {id:'medieval',name:'Medieval',desc:'Knights and castles era.',price:20,preview:'linear-gradient(135deg,#8B4513,#D2691E)',icons:{home:'fa-chess-rook',groups:'fa-shield-halved',skins:'fa-scroll',profiles:'fa-helmet-safety',shop:'fa-coins',messages:'fa-dove',notifications:'fa-bell',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-message',share:'fa-hand-holding',search:'fa-compass',edit:'fa-hammer',bookmark:'fa-bookmark',heart:'fa-shield-heart'}},
+    {id:'ocean',name:'Ocean',desc:'Deep sea aquatic icons.',price:20,preview:'linear-gradient(135deg,#006994,#00CED1)',icons:{home:'fa-anchor',groups:'fa-fish',skins:'fa-water',profiles:'fa-person-swimming',shop:'fa-ship',messages:'fa-bottle-water',notifications:'fa-otter',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-magnifying-glass',edit:'fa-pen',bookmark:'fa-life-ring',heart:'fa-shrimp'}},
+    {id:'retro',name:'Retro',desc:'80s throwback vibes.',price:20,preview:'linear-gradient(135deg,#ff6ec7,#7873f5)',icons:{home:'fa-tv',groups:'fa-compact-disc',skins:'fa-spray-can',profiles:'fa-user-secret',shop:'fa-record-vinyl',messages:'fa-phone',notifications:'fa-radio',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comments',share:'fa-share-nodes',search:'fa-magnifying-glass',edit:'fa-scissors',bookmark:'fa-floppy-disk',heart:'fa-gamepad'}},
+    {id:'food',name:'Foodie',desc:'Tasty food-themed icons.',price:20,preview:'linear-gradient(135deg,#ff9a44,#fc6076)',icons:{home:'fa-house-chimney',groups:'fa-utensils',skins:'fa-ice-cream',profiles:'fa-mug-hot',shop:'fa-cart-shopping',messages:'fa-cookie-bite',notifications:'fa-lemon',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-magnifying-glass',edit:'fa-pen',bookmark:'fa-pizza-slice',heart:'fa-candy-cane'}},
+    {id:'weather',name:'Weather',desc:'Atmospheric sky icons.',price:20,preview:'linear-gradient(135deg,#89CFF0,#FFD700)',icons:{home:'fa-cloud-sun',groups:'fa-tornado',skins:'fa-rainbow',profiles:'fa-snowman',shop:'fa-umbrella',messages:'fa-snowflake',notifications:'fa-bolt-lightning',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-wind',search:'fa-temperature-half',edit:'fa-droplet',bookmark:'fa-sun',heart:'fa-cloud-moon'}},
+    {id:'gamer',name:'Gamer',desc:'Controller-ready gaming icons.',price:20,preview:'linear-gradient(135deg,#7b2ff7,#00f5a0)',icons:{home:'fa-gamepad',groups:'fa-headset',skins:'fa-ghost',profiles:'fa-skull-crossbones',shop:'fa-trophy',messages:'fa-walkie-talkie',notifications:'fa-bell',like:'fa-hand-fist',dislike:'fa-hand-point-down',comment:'fa-comment-dots',share:'fa-share-nodes',search:'fa-crosshairs',edit:'fa-screwdriver-wrench',bookmark:'fa-flag-checkered',heart:'fa-heart-pulse'}},
+    {id:'music',name:'Music',desc:'Jam out with musical icons.',price:20,preview:'linear-gradient(135deg,#e91e63,#ff9800)',icons:{home:'fa-music',groups:'fa-guitar',skins:'fa-sliders',profiles:'fa-microphone',shop:'fa-record-vinyl',messages:'fa-headphones',notifications:'fa-volume-high',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-magnifying-glass',edit:'fa-pen',bookmark:'fa-compact-disc',heart:'fa-drum'}},
+    {id:'horror',name:'Horror',desc:'Creepy spooky icons.',price:20,preview:'linear-gradient(135deg,#1a1a2e,#6b0000)',icons:{home:'fa-house-chimney-crack',groups:'fa-ghost',skins:'fa-skull',profiles:'fa-mask',shop:'fa-spider',messages:'fa-crow',notifications:'fa-triangle-exclamation',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-nodes',search:'fa-eye',edit:'fa-wand-sparkles',bookmark:'fa-cross',heart:'fa-brain'}},
+    {id:'fitness',name:'Fitness',desc:'Pump iron with gym icons.',price:20,preview:'linear-gradient(135deg,#ff6b35,#f7dc6f)',icons:{home:'fa-dumbbell',groups:'fa-people-pulling',skins:'fa-shirt',profiles:'fa-person-running',shop:'fa-basket-shopping',messages:'fa-stopwatch',notifications:'fa-bell',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-magnifying-glass',edit:'fa-pen',bookmark:'fa-medal',heart:'fa-heart-pulse'}},
+    {id:'minimal',name:'Minimal',desc:'Clean simple outlines.',price:20,preview:'linear-gradient(135deg,#e0e0e0,#9e9e9e)',icons:{home:'fa-circle',groups:'fa-circle-nodes',skins:'fa-circle-half-stroke',profiles:'fa-circle-user',shop:'fa-circle-dot',messages:'fa-circle-question',notifications:'fa-circle-exclamation',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment',share:'fa-up-right-from-square',search:'fa-magnifying-glass',edit:'fa-pen',bookmark:'fa-bookmark',heart:'fa-heart'}}
 ];
 
 var coinSkins = [
-    {id:'diamond',name:'Diamond',desc:'Sparkly diamond coins.',price:1,icon:'fa-gem',color:'#b9f2ff'},
-    {id:'star',name:'Star',desc:'Shining star coins.',price:1,icon:'fa-star',color:'#ffd700'},
-    {id:'crown',name:'Crown',desc:'Royal crown coins.',price:1,icon:'fa-crown',color:'#f5c518'},
-    {id:'fire',name:'Fire',desc:'Blazing fire coins.',price:1,icon:'fa-fire',color:'#ff6b35'},
-    {id:'bolt',name:'Bolt',desc:'Electric bolt coins.',price:1,icon:'fa-bolt',color:'#00d4ff'},
-    {id:'heart',name:'Heart',desc:'Love-filled coins.',price:1,icon:'fa-heart',color:'#ff69b4'},
-    {id:'shield',name:'Shield',desc:'Armored silver coins.',price:1,icon:'fa-shield-halved',color:'#a0aec0'},
-    {id:'moon',name:'Moon',desc:'Lunar glow coins.',price:1,icon:'fa-moon',color:'#9b59b6'},
-    {id:'leaf',name:'Leaf',desc:'Nature energy coins.',price:1,icon:'fa-leaf',color:'#27ae60'},
-    {id:'snowflake',name:'Snowflake',desc:'Frosty ice coins.',price:1,icon:'fa-snowflake',color:'#74b9ff'}
+    {id:'diamond',name:'Diamond',desc:'Sparkly diamond coins.',price:25,icon:'fa-gem',color:'#b9f2ff'},
+    {id:'star',name:'Star',desc:'Shining star coins.',price:25,icon:'fa-star',color:'#ffd700'},
+    {id:'crown',name:'Crown',desc:'Royal crown coins.',price:25,icon:'fa-crown',color:'#f5c518'},
+    {id:'fire',name:'Fire',desc:'Blazing fire coins.',price:25,icon:'fa-fire',color:'#ff6b35'},
+    {id:'bolt',name:'Bolt',desc:'Electric bolt coins.',price:25,icon:'fa-bolt',color:'#00d4ff'},
+    {id:'heart',name:'Heart',desc:'Love-filled coins.',price:25,icon:'fa-heart',color:'#ff69b4'},
+    {id:'shield',name:'Shield',desc:'Armored silver coins.',price:25,icon:'fa-shield-halved',color:'#a0aec0'},
+    {id:'moon',name:'Moon',desc:'Lunar glow coins.',price:25,icon:'fa-moon',color:'#9b59b6'},
+    {id:'leaf',name:'Leaf',desc:'Nature energy coins.',price:25,icon:'fa-leaf',color:'#27ae60'},
+    {id:'snowflake',name:'Snowflake',desc:'Frosty ice coins.',price:25,icon:'fa-snowflake',color:'#74b9ff'}
 ];
 
 var templates = [
-    {id:'panorama',name:'Panorama',desc:'Profile banner spans full width. Two-column feed layout below.',price:1,preview:'linear-gradient(135deg,#ff6b6b,#ee5a24)'},
-    {id:'compact',name:'Compact',desc:'Centered single-column layout. Everything stacked cleanly.',price:1,preview:'linear-gradient(135deg,#6c5ce7,#a29bfe)'},
-    {id:'reverse',name:'Reverse',desc:'Flipped mirror layout. Feed on the right, sidebars swapped.',price:1,preview:'linear-gradient(135deg,#00b894,#00cec9)'},
-    {id:'dashboard',name:'Dashboard',desc:'Both sidebars stacked on the left. Wide feed dominates the right.',price:1,preview:'linear-gradient(135deg,#fdcb6e,#e17055)'},
-    {id:'cinema',name:'Cinema',desc:'Feed takes center stage full width. Sidebars tucked below.',price:1,preview:'linear-gradient(135deg,#2d3436,#636e72)'},
-    {id:'magazine',name:'Magazine',desc:'Profile header up top. Three equal columns below like a news layout.',price:1,preview:'linear-gradient(135deg,#0984e3,#6c5ce7)'},
-    {id:'zen',name:'Zen',desc:'Ultra minimal. Just your feed, nothing else. Pure focus mode.',price:1,preview:'linear-gradient(135deg,#dfe6e9,#b2bec3)'},
-    {id:'spotlight',name:'Spotlight',desc:'Extra-wide feed, narrow sidebars. Content takes center stage.',price:1,preview:'linear-gradient(135deg,#f39c12,#e74c3c)'},
-    {id:'widescreen',name:'Widescreen',desc:'No left sidebar. Feed and right sidebar fill the page.',price:1,preview:'linear-gradient(135deg,#2ecc71,#1abc9c)'},
-    {id:'duo',name:'Duo',desc:'Clean two-column split. Profile left, feed right.',price:1,preview:'linear-gradient(135deg,#3498db,#2980b9)'},
-    {id:'headline',name:'Headline',desc:'Profile spans the top like a newspaper masthead.',price:1,preview:'linear-gradient(135deg,#9b59b6,#8e44ad)'},
-    {id:'stack',name:'Stack',desc:'Full-width stacked layout. Everything in one vertical flow.',price:1,preview:'linear-gradient(135deg,#e67e22,#d35400)'},
-    {id:'focus',name:'Focus',desc:'Extra-wide feed with no sidebars. Distraction-free browsing.',price:1,preview:'linear-gradient(135deg,#1abc9c,#16a085)'},
-    {id:'grid',name:'Grid',desc:'Two equal columns. Feed and sidebar side by side.',price:1,preview:'linear-gradient(135deg,#8e44ad,#2c3e50)'},
-    {id:'journal',name:'Journal',desc:'Narrow centered feed with wide margins. Blog-style reading.',price:1,preview:'linear-gradient(135deg,#f8b500,#e74c3c)'},
-    {id:'wing',name:'Wing',desc:'Wide left sidebar with compact feed. Profile-forward layout.',price:1,preview:'linear-gradient(135deg,#00b4db,#0083b0)'},
-    {id:'hub',name:'Hub',desc:'Profile and feed centered. Sidebars hidden until hovered.',price:1,preview:'linear-gradient(135deg,#c0392b,#8e44ad)'},
-    {id:'stream',name:'Stream',desc:'Everything stacked top-down. Cover, profile, album, suggestions + groups, then feed.',price:1,preview:'linear-gradient(135deg,#4a90d9,#357abd)'}
+    {id:'panorama',name:'Panorama',desc:'Profile banner spans full width. Two-column feed layout below.',price:40,preview:'linear-gradient(135deg,#ff6b6b,#ee5a24)'},
+    {id:'compact',name:'Compact',desc:'Centered single-column layout. Everything stacked cleanly.',price:40,preview:'linear-gradient(135deg,#6c5ce7,#a29bfe)'},
+    {id:'reverse',name:'Reverse',desc:'Flipped mirror layout. Feed on the right, sidebars swapped.',price:40,preview:'linear-gradient(135deg,#00b894,#00cec9)'},
+    {id:'dashboard',name:'Dashboard',desc:'Both sidebars stacked on the left. Wide feed dominates the right.',price:40,preview:'linear-gradient(135deg,#fdcb6e,#e17055)'},
+    {id:'cinema',name:'Cinema',desc:'Feed takes center stage full width. Sidebars tucked below.',price:40,preview:'linear-gradient(135deg,#2d3436,#636e72)'},
+    {id:'magazine',name:'Magazine',desc:'Profile header up top. Three equal columns below like a news layout.',price:40,preview:'linear-gradient(135deg,#0984e3,#6c5ce7)'},
+    {id:'zen',name:'Zen',desc:'Ultra minimal. Just your feed, nothing else. Pure focus mode.',price:40,preview:'linear-gradient(135deg,#dfe6e9,#b2bec3)'},
+    {id:'spotlight',name:'Spotlight',desc:'Extra-wide feed, narrow sidebars. Content takes center stage.',price:40,preview:'linear-gradient(135deg,#f39c12,#e74c3c)'},
+    {id:'widescreen',name:'Widescreen',desc:'No left sidebar. Feed and right sidebar fill the page.',price:40,preview:'linear-gradient(135deg,#2ecc71,#1abc9c)'},
+    {id:'duo',name:'Duo',desc:'Clean two-column split. Profile left, feed right.',price:40,preview:'linear-gradient(135deg,#3498db,#2980b9)'},
+    {id:'headline',name:'Headline',desc:'Profile spans the top like a newspaper masthead.',price:40,preview:'linear-gradient(135deg,#9b59b6,#8e44ad)'},
+    {id:'stack',name:'Stack',desc:'Full-width stacked layout. Everything in one vertical flow.',price:40,preview:'linear-gradient(135deg,#e67e22,#d35400)'},
+    {id:'focus',name:'Focus',desc:'Extra-wide feed with no sidebars. Distraction-free browsing.',price:40,preview:'linear-gradient(135deg,#1abc9c,#16a085)'},
+    {id:'grid',name:'Grid',desc:'Two equal columns. Feed and sidebar side by side.',price:40,preview:'linear-gradient(135deg,#8e44ad,#2c3e50)'},
+    {id:'journal',name:'Journal',desc:'Narrow centered feed with wide margins. Blog-style reading.',price:40,preview:'linear-gradient(135deg,#f8b500,#e74c3c)'},
+    {id:'wing',name:'Wing',desc:'Wide left sidebar with compact feed. Profile-forward layout.',price:40,preview:'linear-gradient(135deg,#00b4db,#0083b0)'},
+    {id:'hub',name:'Hub',desc:'Profile and feed centered. Sidebars hidden until hovered.',price:40,preview:'linear-gradient(135deg,#c0392b,#8e44ad)'},
+    {id:'stream',name:'Stream',desc:'Everything stacked top-down. Cover, profile, album, suggestions + groups, then feed.',price:40,preview:'linear-gradient(135deg,#4a90d9,#357abd)'}
 ];
 
 var navStyles = [
-    {id:'metro',name:'Metro',desc:'App-style vertical sidebar nav. Completely reimagined layout.',price:1,preview:'linear-gradient(135deg,#1e272e,#485460)'},
-    {id:'dock',name:'Dock',desc:'Mobile app-style bottom navigation dock with slim top header.',price:1,preview:'linear-gradient(135deg,#0f3460,#16213e)'},
-    {id:'float',name:'Float',desc:'Floating glass navbar with rounded corners. Minimal and premium.',price:1,preview:'linear-gradient(135deg,#667eea,#764ba2)'},
-    {id:'pill',name:'Pill',desc:'Floating pill at bottom center. Icons only. Ultra minimal.',price:1,preview:'linear-gradient(135deg,#e91e63,#9c27b0)'},
-    {id:'rail',name:'Rail',desc:'Thin icon-only sidebar. Compact and space-efficient.',price:1,preview:'linear-gradient(135deg,#455a64,#263238)'},
-    {id:'shelf',name:'Shelf',desc:'Double-row top bar with tabbed navigation row below.',price:1,preview:'linear-gradient(135deg,#00897b,#004d40)'},
-    {id:'slim',name:'Slim',desc:'Ultra-thin 36px bar. Maximum content space.',price:1,preview:'linear-gradient(135deg,#5c6bc0,#283593)'},
-    {id:'horizon',name:'Horizon',desc:'Full navbar moved to the bottom of the screen.',price:1,preview:'linear-gradient(135deg,#f4511e,#bf360c)'},
-    {id:'mirror',name:'Mirror',desc:'Right-side vertical sidebar. Flipped Metro layout.',price:1,preview:'linear-gradient(135deg,#26a69a,#00695c)'},
-    {id:'island',name:'Island',desc:'Three floating islands. Logo, nav, and user all separate.',price:1,preview:'linear-gradient(135deg,#42a5f5,#0d47a1)'},
-    {id:'ribbon',name:'Ribbon',desc:'Thin colored ribbon across the top with centered icons.',price:1,preview:'linear-gradient(135deg,#e91e63,#f06292)'},
-    {id:'glass',name:'Glass',desc:'Transparent frosted glass bar. Content shows through.',price:1,preview:'linear-gradient(135deg,#b2ebf2,#80deea)'},
-    {id:'split',name:'Split',desc:'Logo left, nav bottom. Two separate bars.',price:1,preview:'linear-gradient(135deg,#ff7043,#d84315)'},
-    {id:'minimal',name:'Minimal',desc:'Just icons. No background. Invisible until hover.',price:1,preview:'linear-gradient(135deg,#cfd8dc,#90a4ae)'},
-    {id:'arcade',name:'Arcade',desc:'Chunky pixel-style bar. Retro gaming feel.',price:1,preview:'linear-gradient(135deg,#7b2ff7,#00f5a0)'},
-    {id:'wheel',name:'Wheel',desc:'Swipeable mobile carousel. Center icon scales up like a wheel.',price:1,preview:'linear-gradient(135deg,#7c4dff,#448aff)'}
+    {id:'metro',name:'Metro',desc:'App-style vertical sidebar nav. Completely reimagined layout.',price:30,preview:'linear-gradient(135deg,#1e272e,#485460)'},
+    {id:'dock',name:'Dock',desc:'Mobile app-style bottom navigation dock with slim top header.',price:30,preview:'linear-gradient(135deg,#0f3460,#16213e)'},
+    {id:'float',name:'Float',desc:'Floating glass navbar with rounded corners. Minimal and premium.',price:30,preview:'linear-gradient(135deg,#667eea,#764ba2)'},
+    {id:'pill',name:'Pill',desc:'Floating pill at bottom center. Icons only. Ultra minimal.',price:30,preview:'linear-gradient(135deg,#e91e63,#9c27b0)'},
+    {id:'rail',name:'Rail',desc:'Thin icon-only sidebar. Compact and space-efficient.',price:30,preview:'linear-gradient(135deg,#455a64,#263238)'},
+    {id:'shelf',name:'Shelf',desc:'Double-row top bar with tabbed navigation row below.',price:30,preview:'linear-gradient(135deg,#00897b,#004d40)'},
+    {id:'slim',name:'Slim',desc:'Ultra-thin 36px bar. Maximum content space.',price:30,preview:'linear-gradient(135deg,#5c6bc0,#283593)'},
+    {id:'horizon',name:'Horizon',desc:'Full navbar moved to the bottom of the screen.',price:30,preview:'linear-gradient(135deg,#f4511e,#bf360c)'},
+    {id:'mirror',name:'Mirror',desc:'Right-side vertical sidebar. Flipped Metro layout.',price:30,preview:'linear-gradient(135deg,#26a69a,#00695c)'},
+    {id:'island',name:'Island',desc:'Three floating islands. Logo, nav, and user all separate.',price:30,preview:'linear-gradient(135deg,#42a5f5,#0d47a1)'},
+    {id:'ribbon',name:'Ribbon',desc:'Thin colored ribbon across the top with centered icons.',price:30,preview:'linear-gradient(135deg,#e91e63,#f06292)'},
+    {id:'glass',name:'Glass',desc:'Transparent frosted glass bar. Content shows through.',price:30,preview:'linear-gradient(135deg,#b2ebf2,#80deea)'},
+    {id:'split',name:'Split',desc:'Logo left, nav bottom. Two separate bars.',price:30,preview:'linear-gradient(135deg,#ff7043,#d84315)'},
+    {id:'minimal',name:'Minimal',desc:'Just icons. No background. Invisible until hover.',price:30,preview:'linear-gradient(135deg,#cfd8dc,#90a4ae)'},
+    {id:'arcade',name:'Arcade',desc:'Chunky pixel-style bar. Retro gaming feel.',price:30,preview:'linear-gradient(135deg,#7b2ff7,#00f5a0)'},
+    {id:'wheel',name:'Wheel',desc:'Swipeable mobile carousel. Center icon scales up like a wheel.',price:30,preview:'linear-gradient(135deg,#7c4dff,#448aff)'}
 ];
 
 var premiumSkins = [
-    {id:'witchcraft',name:'Witchcraft',desc:'Mystical witch symbols with moonlit purple aura. Enchanting and magical.',price:1,preview:'linear-gradient(135deg,#2d1b69,#11001c)',border:'conic-gradient(from 0deg,#8b5cf6,#c084fc,#a855f7,#7c3aed,#8b5cf6)',icon:'fa-hat-wizard',iconColor:'#c084fc',accent:'#c084fc',accentHover:'#a855f7',dark:true,cardBg:'#1e1045',cardText:'#d4b8ff',cardMuted:'#a07de0'},
-    {id:'anime-blaze',name:'Anime Blaze',desc:'Fiery anime-inspired theme with blazing red and orange energy.',price:1,preview:'linear-gradient(135deg,#ff0844,#ffb199)',border:'conic-gradient(from 45deg,#ff0844,#ff6b6b,#ffb199,#ff0844)',icon:'fa-fire',iconColor:'#ff6b6b',accent:'#ff4444',accentHover:'#cc0033',dark:true,cardBg:'#2a0a10',cardText:'#ffb199',cardMuted:'#ff6b6b'},
-    {id:'kawaii-cats',name:'Kawaii Cats',desc:'Adorable pink cat-themed design. Purrfectly cute for cat lovers.',price:1,preview:'linear-gradient(135deg,#fbc2eb,#a6c1ee)',border:'conic-gradient(from 0deg,#fbc2eb,#f8a4d2,#a6c1ee,#fbc2eb)',icon:'fa-cat',iconColor:'#f8a4d2',accent:'#e91e8c',accentHover:'#c2185b',dark:false,cardBg:'#fef0f7',cardText:'#c2185b',cardMuted:'#e91e8c'},
-    {id:'geo-prism',name:'Geo Prism',desc:'Sharp geometric shapes with prismatic rainbow refraction.',price:1,preview:'linear-gradient(135deg,#00c9ff,#92fe9d)',border:'conic-gradient(from 0deg,#ff0000,#ff8800,#ffff00,#00ff00,#0088ff,#8800ff,#ff0000)',icon:'fa-shapes',iconColor:'#00c9ff',accent:'#4f46e5',accentHover:'#4338ca',dark:false,cardBg:'#eef8ff',cardText:'#4f46e5',cardMuted:'#6366f1'},
-    {id:'dark-prism',name:'Dark Prism',desc:'Prismatic rainbow refraction on a midnight canvas. Bold and vivid.',price:1,preview:'linear-gradient(135deg,#0a0a18,#1a1040,#0a1a1a)',border:'conic-gradient(from 0deg,#ff0000,#ff8800,#ffff00,#00ff00,#0088ff,#8800ff,#ff0000)',icon:'fa-gem',iconColor:'#00c9ff',accent:'#6366f1',accentHover:'#4f46e5',dark:true,cardBg:'#12121f',cardText:'#d0d0f0',cardMuted:'#8080aa'},
-    {id:'autumn-leaves',name:'Autumn Leaves',desc:'Warm fall foliage tones. Golden amber and rustic reds.',price:1,preview:'linear-gradient(135deg,#f12711,#f5af19)',border:'conic-gradient(from 30deg,#f5af19,#f12711,#c0392b,#e67e22,#f5af19)',icon:'fa-leaf',iconColor:'#f5af19',accent:'#d35400',accentHover:'#b84500',dark:false,cardBg:'#fff5e6',cardText:'#b84500',cardMuted:'#d35400'},
-    {id:'neon-wave',name:'Neon Wave',desc:'Electric neon gradient that pulses with cyberpunk energy.',price:1,preview:'linear-gradient(135deg,#00f5a0,#7b2ff7)',border:'conic-gradient(from 0deg,#00f5a0,#00d9f5,#7b2ff7,#f500e5,#00f5a0)',icon:'fa-bolt',iconColor:'#00f5a0',accent:'#00f5a0',accentHover:'#00cc88',dark:true,cardBg:'#0d0a2a',cardText:'#00f5a0',cardMuted:'#7b2ff7'},
-    {id:'sakura',name:'Sakura Bloom',desc:'Delicate cherry blossom pink with soft floral elegance.',price:1,preview:'linear-gradient(135deg,#ffecd2,#fcb69f)',border:'conic-gradient(from 0deg,#fcb69f,#ff9a9e,#ffecd2,#f8b4b4,#fcb69f)',icon:'fa-spa',iconColor:'#ff9a9e',accent:'#e11d73',accentHover:'#be185d',dark:false,cardBg:'#fff5f0',cardText:'#be185d',cardMuted:'#e11d73'},
-    {id:'galaxy',name:'Galaxy Swirl',desc:'Deep space nebula with cosmic purples and stellar blues.',price:1,preview:'linear-gradient(135deg,#0c0032,#6e0dd0)',border:'conic-gradient(from 0deg,#6e0dd0,#240090,#0c0032,#3500d3,#6e0dd0)',icon:'fa-star',iconColor:'#b388ff',accent:'#a855f7',accentHover:'#9333ea',dark:true,cardBg:'#120040',cardText:'#b388ff',cardMuted:'#8855dd'},
-    {id:'ocean-tide',name:'Ocean Tide',desc:'Flowing ocean waves with deep aqua and seafoam gradients.',price:1,preview:'linear-gradient(135deg,#0077b6,#90e0ef)',border:'conic-gradient(from 0deg,#0077b6,#00b4d8,#90e0ef,#caf0f8,#0077b6)',icon:'fa-water',iconColor:'#90e0ef',accent:'#0891b2',accentHover:'#0e7490',dark:false,cardBg:'#e6f7fb',cardText:'#0e7490',cardMuted:'#0891b2'},
-    {id:'molten-gold',name:'Molten Gold',desc:'Liquid gold with luxurious metallic shimmer. Pure opulence.',price:1,preview:'linear-gradient(135deg,#bf953f,#fcf6ba)',border:'conic-gradient(from 0deg,#bf953f,#fcf6ba,#b38728,#fbf5b7,#bf953f)',icon:'fa-crown',iconColor:'#fcf6ba',accent:'#f59e0b',accentHover:'#d97706',dark:true,cardBg:'#2a1f0a',cardText:'#fcf6ba',cardMuted:'#bf953f'},
-    {id:'toxic-green',name:'Toxic Green',desc:'Radioactive neon green on pitch black. Dangerously cool.',price:1,preview:'linear-gradient(135deg,#0a0a0a,#39ff14)',border:'conic-gradient(from 0deg,#39ff14,#00ff41,#32cd32,#00ff00,#39ff14)',icon:'fa-biohazard',iconColor:'#39ff14',accent:'#39ff14',accentHover:'#32cd32',dark:true,cardBg:'#0a0f0a',cardText:'#39ff14',cardMuted:'#28cc10'},
-    {id:'vaporwave',name:'Vaporwave',desc:'Retro 80s pink and cyan. Nostalgic aesthetic vibes.',price:1,preview:'linear-gradient(135deg,#ff71ce,#01cdfe)',border:'conic-gradient(from 0deg,#ff71ce,#01cdfe,#b967ff,#05ffa1,#ff71ce)',icon:'fa-vr-cardboard',iconColor:'#ff71ce',accent:'#b967ff',accentHover:'#9b4dca',dark:true,cardBg:'#1a0a2e',cardText:'#ff71ce',cardMuted:'#b967ff'},
-    {id:'blood-moon',name:'Blood Moon',desc:'Deep crimson and obsidian. Dark and brooding intensity.',price:1,preview:'linear-gradient(135deg,#1a0000,#8b0000)',border:'conic-gradient(from 0deg,#8b0000,#cc0000,#660000,#990000,#8b0000)',icon:'fa-moon',iconColor:'#cc0000',accent:'#cc0000',accentHover:'#990000',dark:true,cardBg:'#1a0505',cardText:'#e05050',cardMuted:'#990000'},
-    {id:'cotton-candy',name:'Cotton Candy',desc:'Soft pastel pink and baby blue. Sweet and dreamy.',price:1,preview:'linear-gradient(135deg,#ffd1dc,#b5e8ff)',border:'conic-gradient(from 0deg,#ffd1dc,#b5e8ff,#e8d5f5,#ffd1dc)',icon:'fa-cloud',iconColor:'#ffa6c9',accent:'#e91e8c',accentHover:'#c2185b',dark:false,cardBg:'#fff0f5',cardText:'#c2185b',cardMuted:'#e91e8c'},
-    {id:'matrix',name:'Matrix',desc:'Digital rain green on black. Enter the simulation.',price:1,preview:'linear-gradient(135deg,#000000,#003300)',border:'conic-gradient(from 0deg,#00ff41,#008f11,#00ff41,#003300,#00ff41)',icon:'fa-terminal',iconColor:'#00ff41',accent:'#00ff41',accentHover:'#00cc33',dark:true,cardBg:'#001a00',cardText:'#00ff41',cardMuted:'#008f11'},
-    {id:'pastel-aurora',name:'Pastel Aurora',desc:'Flowing pastel northern lights. Lavender, mint, and peach shift endlessly.',price:1,preview:'linear-gradient(135deg,#c3aed6,#b8e6d0,#ffd8be,#c3aed6)',border:'conic-gradient(from 0deg,#c3aed6,#b8e6d0,#ffd8be,#f5c6e0,#c3aed6)',icon:'fa-rainbow',iconColor:'#c3aed6',accent:'#9b72b0',accentHover:'#7d5a96',dark:false,cardBg:'#faf5ff',cardText:'#6b4080',cardMuted:'#9b72b0'},
-    {id:'deep-wave',name:'Deep Wave',desc:'Neon Wave turned down. Same mint and purple, darker and moodier.',price:1,preview:'linear-gradient(135deg,#007a5e,#4a1a8a)',border:'conic-gradient(from 0deg,#00f5a0,#00d9f5,#7b2ff7,#f500e5,#00f5a0)',icon:'fa-water',iconColor:'#00c088',accent:'#00c088',accentHover:'#009968',dark:true,cardBg:'#0d0a2a',cardText:'#00f5a0',cardMuted:'#7b2ff7'}
+    {id:'witchcraft',name:'Witchcraft',desc:'Mystical witch symbols with moonlit purple aura. Enchanting and magical.',price:150,preview:'linear-gradient(135deg,#2d1b69,#11001c)',border:'conic-gradient(from 0deg,#8b5cf6,#c084fc,#a855f7,#7c3aed,#8b5cf6)',icon:'fa-hat-wizard',iconColor:'#c084fc',accent:'#c084fc',accentHover:'#a855f7',dark:true,cardBg:'#1e1045',cardText:'#d4b8ff',cardMuted:'#a07de0'},
+    {id:'anime-blaze',name:'Anime Blaze',desc:'Fiery anime-inspired theme with blazing red and orange energy.',price:150,preview:'linear-gradient(135deg,#ff0844,#ffb199)',border:'conic-gradient(from 45deg,#ff0844,#ff6b6b,#ffb199,#ff0844)',icon:'fa-fire',iconColor:'#ff6b6b',accent:'#ff4444',accentHover:'#cc0033',dark:true,cardBg:'#2a0a10',cardText:'#ffb199',cardMuted:'#ff6b6b'},
+    {id:'kawaii-cats',name:'Kawaii Cats',desc:'Adorable pink cat-themed design. Purrfectly cute for cat lovers.',price:150,preview:'linear-gradient(135deg,#fbc2eb,#a6c1ee)',border:'conic-gradient(from 0deg,#fbc2eb,#f8a4d2,#a6c1ee,#fbc2eb)',icon:'fa-cat',iconColor:'#f8a4d2',accent:'#e91e8c',accentHover:'#c2185b',dark:false,cardBg:'#fef0f7',cardText:'#c2185b',cardMuted:'#e91e8c'},
+    {id:'geo-prism',name:'Geo Prism',desc:'Sharp geometric shapes with prismatic rainbow refraction.',price:150,preview:'linear-gradient(135deg,#00c9ff,#92fe9d)',border:'conic-gradient(from 0deg,#ff0000,#ff8800,#ffff00,#00ff00,#0088ff,#8800ff,#ff0000)',icon:'fa-shapes',iconColor:'#00c9ff',accent:'#4f46e5',accentHover:'#4338ca',dark:false,cardBg:'#eef8ff',cardText:'#4f46e5',cardMuted:'#6366f1'},
+    {id:'dark-prism',name:'Dark Prism',desc:'Prismatic rainbow refraction on a midnight canvas. Bold and vivid.',price:150,preview:'linear-gradient(135deg,#0a0a18,#1a1040,#0a1a1a)',border:'conic-gradient(from 0deg,#ff0000,#ff8800,#ffff00,#00ff00,#0088ff,#8800ff,#ff0000)',icon:'fa-gem',iconColor:'#00c9ff',accent:'#6366f1',accentHover:'#4f46e5',dark:true,cardBg:'#12121f',cardText:'#d0d0f0',cardMuted:'#8080aa'},
+    {id:'autumn-leaves',name:'Autumn Leaves',desc:'Warm fall foliage tones. Golden amber and rustic reds.',price:150,preview:'linear-gradient(135deg,#f12711,#f5af19)',border:'conic-gradient(from 30deg,#f5af19,#f12711,#c0392b,#e67e22,#f5af19)',icon:'fa-leaf',iconColor:'#f5af19',accent:'#d35400',accentHover:'#b84500',dark:false,cardBg:'#fff5e6',cardText:'#b84500',cardMuted:'#d35400'},
+    {id:'neon-wave',name:'Neon Wave',desc:'Electric neon gradient that pulses with cyberpunk energy.',price:150,preview:'linear-gradient(135deg,#00f5a0,#7b2ff7)',border:'conic-gradient(from 0deg,#00f5a0,#00d9f5,#7b2ff7,#f500e5,#00f5a0)',icon:'fa-bolt',iconColor:'#00f5a0',accent:'#00f5a0',accentHover:'#00cc88',dark:true,cardBg:'#0d0a2a',cardText:'#00f5a0',cardMuted:'#7b2ff7'},
+    {id:'sakura',name:'Sakura Bloom',desc:'Delicate cherry blossom pink with soft floral elegance.',price:150,preview:'linear-gradient(135deg,#ffecd2,#fcb69f)',border:'conic-gradient(from 0deg,#fcb69f,#ff9a9e,#ffecd2,#f8b4b4,#fcb69f)',icon:'fa-spa',iconColor:'#ff9a9e',accent:'#e11d73',accentHover:'#be185d',dark:false,cardBg:'#fff5f0',cardText:'#be185d',cardMuted:'#e11d73'},
+    {id:'galaxy',name:'Galaxy Swirl',desc:'Deep space nebula with cosmic purples and stellar blues.',price:150,preview:'linear-gradient(135deg,#0c0032,#6e0dd0)',border:'conic-gradient(from 0deg,#6e0dd0,#240090,#0c0032,#3500d3,#6e0dd0)',icon:'fa-star',iconColor:'#b388ff',accent:'#a855f7',accentHover:'#9333ea',dark:true,cardBg:'#120040',cardText:'#b388ff',cardMuted:'#8855dd'},
+    {id:'ocean-tide',name:'Ocean Tide',desc:'Flowing ocean waves with deep aqua and seafoam gradients.',price:150,preview:'linear-gradient(135deg,#0077b6,#90e0ef)',border:'conic-gradient(from 0deg,#0077b6,#00b4d8,#90e0ef,#caf0f8,#0077b6)',icon:'fa-water',iconColor:'#90e0ef',accent:'#0891b2',accentHover:'#0e7490',dark:false,cardBg:'#e6f7fb',cardText:'#0e7490',cardMuted:'#0891b2'},
+    {id:'molten-gold',name:'Molten Gold',desc:'Liquid gold with luxurious metallic shimmer. Pure opulence.',price:150,preview:'linear-gradient(135deg,#bf953f,#fcf6ba)',border:'conic-gradient(from 0deg,#bf953f,#fcf6ba,#b38728,#fbf5b7,#bf953f)',icon:'fa-crown',iconColor:'#fcf6ba',accent:'#f59e0b',accentHover:'#d97706',dark:true,cardBg:'#2a1f0a',cardText:'#fcf6ba',cardMuted:'#bf953f'},
+    {id:'toxic-green',name:'Toxic Green',desc:'Radioactive neon green on pitch black. Dangerously cool.',price:150,preview:'linear-gradient(135deg,#0a0a0a,#39ff14)',border:'conic-gradient(from 0deg,#39ff14,#00ff41,#32cd32,#00ff00,#39ff14)',icon:'fa-biohazard',iconColor:'#39ff14',accent:'#39ff14',accentHover:'#32cd32',dark:true,cardBg:'#0a0f0a',cardText:'#39ff14',cardMuted:'#28cc10'},
+    {id:'vaporwave',name:'Vaporwave',desc:'Retro 80s pink and cyan. Nostalgic aesthetic vibes.',price:150,preview:'linear-gradient(135deg,#ff71ce,#01cdfe)',border:'conic-gradient(from 0deg,#ff71ce,#01cdfe,#b967ff,#05ffa1,#ff71ce)',icon:'fa-vr-cardboard',iconColor:'#ff71ce',accent:'#b967ff',accentHover:'#9b4dca',dark:true,cardBg:'#1a0a2e',cardText:'#ff71ce',cardMuted:'#b967ff'},
+    {id:'blood-moon',name:'Blood Moon',desc:'Deep crimson and obsidian. Dark and brooding intensity.',price:150,preview:'linear-gradient(135deg,#1a0000,#8b0000)',border:'conic-gradient(from 0deg,#8b0000,#cc0000,#660000,#990000,#8b0000)',icon:'fa-moon',iconColor:'#cc0000',accent:'#cc0000',accentHover:'#990000',dark:true,cardBg:'#1a0505',cardText:'#e05050',cardMuted:'#990000'},
+    {id:'cotton-candy',name:'Cotton Candy',desc:'Soft pastel pink and baby blue. Sweet and dreamy.',price:150,preview:'linear-gradient(135deg,#ffd1dc,#b5e8ff)',border:'conic-gradient(from 0deg,#ffd1dc,#b5e8ff,#e8d5f5,#ffd1dc)',icon:'fa-cloud',iconColor:'#ffa6c9',accent:'#e91e8c',accentHover:'#c2185b',dark:false,cardBg:'#fff0f5',cardText:'#c2185b',cardMuted:'#e91e8c'},
+    {id:'matrix',name:'Matrix',desc:'Digital rain green on black. Enter the simulation.',price:150,preview:'linear-gradient(135deg,#000000,#003300)',border:'conic-gradient(from 0deg,#00ff41,#008f11,#00ff41,#003300,#00ff41)',icon:'fa-terminal',iconColor:'#00ff41',accent:'#00ff41',accentHover:'#00cc33',dark:true,cardBg:'#001a00',cardText:'#00ff41',cardMuted:'#008f11'},
+    {id:'pastel-aurora',name:'Pastel Aurora',desc:'Flowing pastel northern lights. Lavender, mint, and peach shift endlessly.',price:150,preview:'linear-gradient(135deg,#c3aed6,#b8e6d0,#ffd8be,#c3aed6)',border:'conic-gradient(from 0deg,#c3aed6,#b8e6d0,#ffd8be,#f5c6e0,#c3aed6)',icon:'fa-rainbow',iconColor:'#c3aed6',accent:'#9b72b0',accentHover:'#7d5a96',dark:false,cardBg:'#faf5ff',cardText:'#6b4080',cardMuted:'#9b72b0'},
+    {id:'deep-wave',name:'Deep Wave',desc:'Neon Wave turned down. Same mint and purple, darker and moodier.',price:150,preview:'linear-gradient(135deg,#007a5e,#4a1a8a)',border:'conic-gradient(from 0deg,#00f5a0,#00d9f5,#7b2ff7,#f500e5,#00f5a0)',icon:'fa-water',iconColor:'#00c088',accent:'#00c088',accentHover:'#009968',dark:true,cardBg:'#0d0a2a',cardText:'#00f5a0',cardMuted:'#7b2ff7'}
 ];
 
 var guildSkins = [];
@@ -1490,12 +1490,39 @@ function updateCoins(){
         currentUser.coin_balance=state.coins;
         sbUpdateProfile(currentUser.id,{coin_balance:state.coins}).catch(function(e){console.error('coinSync:',e);});
     }
-    $('#navCoinCount').textContent=state.coins;
+    $('#navCoinCount').textContent=_hasInfinity()?'\u221E':state.coins;
     var el=$('#navCoins');
     el.classList.remove('coin-pop');
     void el.offsetWidth;
     el.classList.add('coin-pop');
 }
+// Daily coin earning caps — resets at midnight
+var _dailyCoinCaps={posts:5,comments:15,replies:15,postLikes:30,commentLikes:20};
+var _dailyCoinCounts={};
+function _getDailyCoinKey(){return new Date().toDateString();}
+function _getDailyCounts(){
+    var key=_getDailyCoinKey();
+    if(!_dailyCoinCounts._date||_dailyCoinCounts._date!==key){
+        _dailyCoinCounts={_date:key,posts:0,comments:0,replies:0,postLikes:0,commentLikes:0};
+        try{localStorage.setItem('blipvibe_daily_coins',JSON.stringify(_dailyCoinCounts));}catch(e){}
+    }
+    return _dailyCoinCounts;
+}
+function _incrementDailyCoin(type){
+    var counts=_getDailyCounts();
+    if(counts[type]>=_dailyCoinCaps[type]) return false; // cap reached
+    counts[type]++;
+    try{localStorage.setItem('blipvibe_daily_coins',JSON.stringify(counts));}catch(e){}
+    return true; // allowed
+}
+// Load saved daily counts on startup
+try{var _saved=JSON.parse(localStorage.getItem('blipvibe_daily_coins')||'{}');if(_saved._date===_getDailyCoinKey()) _dailyCoinCounts=_saved;}catch(e){}
+
+// Check if user has infinity status (early adopter)
+function _hasInfinity(){
+    return currentUser&&currentUser.skin_data&&currentUser.skin_data.infinityCoins===true;
+}
+
 function isOwnPost(postId){
     if(!currentUser) return false;
     var fp=feedPosts.find(function(x){return x.idx===postId;});
@@ -2208,7 +2235,7 @@ function handleShare(btn){
             try{
                 var shareLoc=settings.showLocation?userLocation:null;
                 await sbCreatePost(currentUser.id,shareContent,null,null,origPostId,shareLoc);
-                if(state.postCoinCount<10){state.coins+=5;state.postCoinCount++;updateCoins();}
+                if(_incrementDailyCoin('posts')){state.coins+=5;updateCoins();}
                 var countEl=btn.querySelector('span');if(countEl)countEl.textContent=parseInt(countEl.textContent)+1;
                 // Notify original post author
                 var origAuthorEl=post.querySelector('.post-avatar[data-person-id]');
@@ -2242,7 +2269,7 @@ function handleShare(btn){
             ph+='<button class="action-btn share-btn"><i class="fas '+activeIcons.share+'"></i><span>0</span></button></div></div>';
             ph+='<div class="post-comments" data-post-id="'+postId+'"></div></div>';
             container.insertAdjacentHTML('afterbegin',ph);
-            if(state.postCoinCount<10){state.coins+=5;state.postCoinCount++;updateCoins();}
+            if(_incrementDailyCoin('posts')){state.coins+=5;updateCoins();}
             closeModal();
             var countEl2=btn.querySelector('span');if(countEl2)countEl2.textContent=parseInt(countEl2.textContent)+1;
             bindPostEvents();
@@ -2453,14 +2480,14 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
 
         if(replyTarget){
             var isReplyToSelf=currentUser&&_replyTargetAuthorId&&_replyTargetAuthorId===currentUser.id;
-            if(!isOwnPost(postId)&&!isReplyToSelf&&!state.replyCoinPosts[postId]){state.replyCoinPosts[postId]=true;state.coins+=2;updateCoins();
+            if(!isOwnPost(postId)&&!isReplyToSelf&&!state.replyCoinPosts[postId]&&_incrementDailyCoin('replies')){state.replyCoinPosts[postId]=true;state.coins+=2;updateCoins();
                 if(_activeGroupId&&canEarnGroupReplyCoin(_activeGroupId,postId)){addGroupCoins(_activeGroupId,2);trackGroupReplyCoin(_activeGroupId,postId);}
             }
             replyTarget=null;_replyTargetAuthorId=null;
             document.getElementById('replyIndicator').style.display='none';
             input.placeholder='Write a comment...';
         }else{
-            if(!isOwnPost(postId)&&!state.commentCoinPosts[postId]){state.commentCoinPosts[postId]=true;state.coins+=2;updateCoins();
+            if(!isOwnPost(postId)&&!state.commentCoinPosts[postId]&&_incrementDailyCoin('comments')){state.commentCoinPosts[postId]=true;state.coins+=2;updateCoins();
                 if(_activeGroupId&&canEarnGroupCommentCoin(_activeGroupId,postId)){addGroupCoins(_activeGroupId,2);trackGroupCommentCoin(_activeGroupId,postId);}
             }
         }
@@ -2535,7 +2562,7 @@ function bindCommentLikes(){
                 if(dislikedComments[cid]&&disBtn){delete dislikedComments[cid];var ds=disBtn.querySelector('span');ds.textContent=Math.max(0,parseInt(ds.textContent)-1);disBtn.style.color='#999';disBtn.querySelector('i').className='far fa-thumbs-down';}
                 likedComments[cid]=true;ct++;btn.style.color='var(--primary)';btn.querySelector('i').className='fas fa-thumbs-up';
                 var isOwn=currentUser&&btn.dataset.aid&&btn.dataset.aid===currentUser.id;
-                if(!isOwn&&!commentCoinAwarded[cid]){commentCoinAwarded[cid]=true;state.coins+=1;updateCoins();}
+                if(!isOwn&&!commentCoinAwarded[cid]&&_incrementDailyCoin('commentLikes')){commentCoinAwarded[cid]=true;state.coins+=1;updateCoins();}
                 if(/^[0-9a-f]{8}-/.test(cid)&&currentUser) sbToggleLike(currentUser.id,'comment',cid).catch(function(){});
             }
             span.textContent=ct;
@@ -2550,7 +2577,7 @@ function bindCommentLikes(){
                 if(likedComments[cid]&&likeBtn){delete likedComments[cid];var ls=likeBtn.querySelector('span');ls.textContent=Math.max(0,parseInt(ls.textContent)-1);likeBtn.style.color='#999';likeBtn.querySelector('i').className='far fa-thumbs-up';}
                 dislikedComments[cid]=true;ct++;btn.style.color='var(--primary)';btn.querySelector('i').className='fas fa-thumbs-down';
                 var isOwn=currentUser&&btn.dataset.aid&&btn.dataset.aid===currentUser.id;
-                if(!isOwn&&!commentCoinAwarded[cid]){commentCoinAwarded[cid]=true;state.coins+=1;updateCoins();}
+                if(!isOwn&&!commentCoinAwarded[cid]&&_incrementDailyCoin('commentLikes')){commentCoinAwarded[cid]=true;state.coins+=1;updateCoins();}
             }
             span.textContent=ct;
         };
@@ -2675,7 +2702,7 @@ async function renderInlineComments(postId){
                 if(dislikedComments[cid]&&disBtn){delete dislikedComments[cid];disBtn.style.color='#999';disBtn.querySelector('i').className='far fa-thumbs-down';disBtn.lastChild.textContent=0;}
                 likedComments[cid]=true;btn.style.color='var(--primary)';btn.querySelector('i').className='fas fa-thumbs-up';btn.lastChild.textContent=base+1;
                 var isOwnC=currentUser&&btn.dataset.aid&&btn.dataset.aid===currentUser.id;
-                if(!isOwnC&&!commentCoinAwarded[cid]){commentCoinAwarded[cid]=true;state.coins+=1;updateCoins();}
+                if(!isOwnC&&!commentCoinAwarded[cid]&&_incrementDailyCoin('commentLikes')){commentCoinAwarded[cid]=true;state.coins+=1;updateCoins();}
                 // Like comment in Supabase
                 if(/^[0-9a-f]{8}-/.test(cid)&&currentUser){sbToggleLike(currentUser.id,'comment',cid).catch(function(){});}
             }
@@ -2690,7 +2717,7 @@ async function renderInlineComments(postId){
                 if(likedComments[cid]&&likeBtn){delete likedComments[cid];likeBtn.style.color='#999';likeBtn.querySelector('i').className='far fa-thumbs-up';var lv=parseInt(likeBtn.lastChild.textContent)||0;likeBtn.lastChild.textContent=Math.max(0,lv-1);}
                 dislikedComments[cid]=true;btn.style.color='var(--primary)';btn.querySelector('i').className='fas fa-thumbs-down';btn.lastChild.textContent=1;
                 var isOwnC=currentUser&&btn.dataset.aid&&btn.dataset.aid===currentUser.id;
-                if(!isOwnC&&!commentCoinAwarded[cid]){commentCoinAwarded[cid]=true;state.coins+=1;updateCoins();}
+                if(!isOwnC&&!commentCoinAwarded[cid]&&_incrementDailyCoin('commentLikes')){commentCoinAwarded[cid]=true;state.coins+=1;updateCoins();}
             }
         };
     });
@@ -3122,7 +3149,7 @@ async function showProfileView(person){
                 if(state.likedPosts[pid]){delete state.likedPosts[pid];btn.classList.remove('liked');btn.querySelector('i').className='far fa-thumbs-up';countEl.textContent=Math.max(0,count-1);}
                 else{state.likedPosts[pid]=true;btn.classList.add('liked');btn.querySelector('i').className='fas fa-thumbs-up';countEl.textContent=count+1;}
             }
-            var has=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);if(!isOwnPost(pid)){if(!had&&has){state.coins++;updateCoins();}else if(had&&!has){state.coins--;updateCoins();}}
+            var has=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);if(!isOwnPost(pid)){if(!had&&has&&_incrementDailyCoin('postLikes')){state.coins++;updateCoins();}else if(had&&!has){state.coins--;updateCoins();}}
             saveState();
         });
     });
@@ -3138,7 +3165,7 @@ async function showProfileView(person){
                 }
                 state.dislikedPosts[pid]=true;btn.classList.add('disliked');btn.querySelector('i').className='fas fa-thumbs-down';countEl.textContent=count+1;
             }
-            var has=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);if(!isOwnPost(pid)){if(!had&&has){state.coins++;updateCoins();}else if(had&&!has){state.coins--;updateCoins();}}
+            var has=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);if(!isOwnPost(pid)){if(!had&&has&&_incrementDailyCoin('postLikes')){state.coins++;updateCoins();}else if(had&&!has){state.coins--;updateCoins();}}
             saveState();
         });
     });
@@ -4712,7 +4739,7 @@ function openGroupPostModal(group){
             }
             var gPost=await sbCreatePost(currentUser.id,text||'',imageUrl,group.id,null,null,allMediaUrls.length>1?allMediaUrls:null);
             if(gPost) notifyMentionedUsers(text,gPost.id);
-            if(state.postCoinCount<10){state.coins+=5;state.postCoinCount++;updateCoins();}
+            if(_incrementDailyCoin('posts')){state.coins+=5;updateCoins();}
             if(canEarnGroupPostCoin(group.id)){addGroupCoins(group.id,5);trackGroupPostCoin(group.id);}
             saveState();
             closeModal();showGroupView(group);
@@ -5892,7 +5919,7 @@ function bindPostEvents(){
                 }
             }
             var has=!!(state.likedPosts[postId]||state.dislikedPosts[postId]||_postReactions[postId]);
-            if(!isOwnPost(postId)){if(!had&&has){state.coins++;updateCoins();}else if(had&&!has){state.coins--;updateCoins();}}
+            if(!isOwnPost(postId)){if(!had&&has&&_incrementDailyCoin('postLikes')){state.coins++;updateCoins();}else if(had&&!has){state.coins--;updateCoins();}}
         });
     });
 
@@ -5922,7 +5949,7 @@ function bindPostEvents(){
                 countEl.textContent=count+1;
             }
             var has=!!(state.likedPosts[postId]||state.dislikedPosts[postId]||_postReactions[postId]);
-            if(!isOwnPost(postId)){if(!had&&has){state.coins++;updateCoins();}else if(had&&!has){state.coins--;updateCoins();}}
+            if(!isOwnPost(postId)){if(!had&&has&&_incrementDailyCoin('postLikes')){state.coins++;updateCoins();}else if(had&&!has){state.coins--;updateCoins();}}
         });
     });
 
@@ -6550,7 +6577,7 @@ $('#openPostModal').addEventListener('click',function(){
         postHtml+='<button class="action-btn share-btn"><i class="fas fa-share-from-square"></i><span>0</span></button></div></div></div>';
         container.insertAdjacentHTML('afterbegin',postHtml);
         if(linkUrl) _reloadThirdPartyEmbeds(linkUrl);
-        if(state.postCoinCount<10){state.coins+=5;state.postCoinCount++;updateCoins();}
+        if(_incrementDailyCoin('posts')){state.coins+=5;updateCoins();}
         clearDraft(); // Clear draft on successful publish
         closeModal();
         var newPost=container.firstElementChild;
@@ -7077,7 +7104,8 @@ function shopCard(preview,body){return '<div class="skin-card"><div class="skin-
 function shopBuy(owned,price,cls,attr,tryType,tryId){
     if(owned) return '<button class="btn btn-disabled">Owned</button>';
     var trying=_tryOnActive&&_tryOnActive.type===tryType&&_tryOnActive.id===tryId;
-    return '<div class="skin-price"><i class="fas fa-coins"></i> '+price+' Coins</div><div class="shop-card-actions"><button class="btn btn-outline try-on-btn'+(trying?' trying':'')+'" data-try-type="'+tryType+'" data-try-id="'+tryId+'">'+(trying?'Trying':'Try On')+'</button><button class="btn '+(state.coins>=price?'btn-primary':'btn-disabled')+' '+cls+'" '+attr+(state.coins<price?' disabled':'')+'>Buy</button></div>';
+    var canBuy=_hasInfinity()||state.coins>=price;
+    return '<div class="skin-price"><i class="fas fa-coins"></i> '+(_hasInfinity()?'Free':price+' Coins')+'</div><div class="shop-card-actions"><button class="btn btn-outline try-on-btn'+(trying?' trying':'')+'" data-try-type="'+tryType+'" data-try-id="'+tryId+'">'+(trying?'Trying':'Try On')+'</button><button class="btn '+(canBuy?'btn-primary':'btn-disabled')+' '+cls+'" '+attr+(canBuy?'':' disabled')+'>Buy</button></div>';
 }
 var currentShopTab=null;
 var _skinPageView='shop'; // 'shop' or 'mine'
@@ -7200,14 +7228,14 @@ function renderShop(){
         if(_tryOnActive&&_tryOnActive.type===tryType&&_tryOnActive.id===tryId){_tryOnSnapshot=null;_tryOnActive=null;}
         renderMySkins();saveState();
     }
-    $$('.buy-skin-btn').forEach(function(btn){btn.addEventListener('click',function(){var sid=btn.getAttribute('data-sid');var skin=skins.find(function(s){return s.id===sid;});if(state.coins>=skin.price){state.coins-=skin.price;state.ownedSkins[sid]=true;updateCoins();shopPurchased(btn,'skin',sid);addNotification('skin','You purchased the "'+skin.name+'" skin!');}});});
-    $$('.buy-font-btn').forEach(function(btn){btn.addEventListener('click',function(){var fid=btn.getAttribute('data-fid');var font=fonts.find(function(f){return f.id===fid;});if(state.coins>=font.price){state.coins-=font.price;state.ownedFonts[fid]=true;updateCoins();shopPurchased(btn,'font',fid);addNotification('skin','You purchased the "'+font.name+'" font!');}});});
-    $$('.buy-logo-btn').forEach(function(btn){btn.addEventListener('click',function(){var lid=btn.getAttribute('data-lid');var logo=logos.find(function(l){return l.id===lid;});if(state.coins>=logo.price){state.coins-=logo.price;state.ownedLogos[lid]=true;updateCoins();shopPurchased(btn,'logo',lid);addNotification('skin','You purchased the "'+logo.name+'" logo!');}});});
-    $$('.buy-icon-btn').forEach(function(btn){btn.addEventListener('click',function(){var iid=btn.getAttribute('data-iid');var s=iconSets.find(function(x){return x.id===iid;});if(state.coins>=s.price){state.coins-=s.price;state.ownedIconSets[iid]=true;updateCoins();shopPurchased(btn,'icons',iid);addNotification('skin','You purchased the "'+s.name+'" icon set!');}});});
-    $$('.buy-coin-btn').forEach(function(btn){btn.addEventListener('click',function(){var cid=btn.getAttribute('data-cid');var s=coinSkins.find(function(x){return x.id===cid;});if(state.coins>=s.price){state.coins-=s.price;state.ownedCoinSkins[cid]=true;updateCoins();shopPurchased(btn,'coins',cid);addNotification('skin','You purchased the "'+s.name+'" coin skin!');}});});
-    $$('.buy-tpl-btn').forEach(function(btn){btn.addEventListener('click',function(){var tid=btn.getAttribute('data-tid');var t=templates.find(function(x){return x.id===tid;});if(state.coins>=t.price){state.coins-=t.price;state.ownedTemplates[tid]=true;updateCoins();shopPurchased(btn,'template',tid);addNotification('skin','You purchased the "'+t.name+'" template!');}});});
-    $$('.buy-premium-btn').forEach(function(btn){btn.addEventListener('click',function(){var pid=btn.getAttribute('data-pid');var skin=premiumSkins.find(function(s){return s.id===pid;});if(state.coins>=skin.price){state.coins-=skin.price;state.ownedPremiumSkins[pid]=true;updateCoins();shopPurchased(btn,'premium',pid);addNotification('skin','You purchased the "'+skin.name+'" premium skin!');}});});
-    $$('.buy-nav-btn').forEach(function(btn){btn.addEventListener('click',function(){var nid=btn.getAttribute('data-nid');var n=navStyles.find(function(x){return x.id===nid;});if(state.coins>=n.price){state.coins-=n.price;state.ownedNavStyles[nid]=true;updateCoins();shopPurchased(btn,'navstyle',nid);addNotification('skin','You purchased the "'+n.name+'" nav style!');}});});
+    $$('.buy-skin-btn').forEach(function(btn){btn.addEventListener('click',function(){var sid=btn.getAttribute('data-sid');var skin=skins.find(function(s){return s.id===sid;});if(_hasInfinity()||state.coins>=skin.price){if(!_hasInfinity())state.coins-=skin.price;state.ownedSkins[sid]=true;updateCoins();shopPurchased(btn,'skin',sid);addNotification('skin','You purchased the "'+skin.name+'" skin!');}});});
+    $$('.buy-font-btn').forEach(function(btn){btn.addEventListener('click',function(){var fid=btn.getAttribute('data-fid');var font=fonts.find(function(f){return f.id===fid;});if(_hasInfinity()||state.coins>=font.price){if(!_hasInfinity())state.coins-=font.price;state.ownedFonts[fid]=true;updateCoins();shopPurchased(btn,'font',fid);addNotification('skin','You purchased the "'+font.name+'" font!');}});});
+    $$('.buy-logo-btn').forEach(function(btn){btn.addEventListener('click',function(){var lid=btn.getAttribute('data-lid');var logo=logos.find(function(l){return l.id===lid;});if(_hasInfinity()||state.coins>=logo.price){if(!_hasInfinity())state.coins-=logo.price;state.ownedLogos[lid]=true;updateCoins();shopPurchased(btn,'logo',lid);addNotification('skin','You purchased the "'+logo.name+'" logo!');}});});
+    $$('.buy-icon-btn').forEach(function(btn){btn.addEventListener('click',function(){var iid=btn.getAttribute('data-iid');var s=iconSets.find(function(x){return x.id===iid;});if(_hasInfinity()||state.coins>=s.price){if(!_hasInfinity())state.coins-=s.price;state.ownedIconSets[iid]=true;updateCoins();shopPurchased(btn,'icons',iid);addNotification('skin','You purchased the "'+s.name+'" icon set!');}});});
+    $$('.buy-coin-btn').forEach(function(btn){btn.addEventListener('click',function(){var cid=btn.getAttribute('data-cid');var s=coinSkins.find(function(x){return x.id===cid;});if(_hasInfinity()||state.coins>=s.price){if(!_hasInfinity())state.coins-=s.price;state.ownedCoinSkins[cid]=true;updateCoins();shopPurchased(btn,'coins',cid);addNotification('skin','You purchased the "'+s.name+'" coin skin!');}});});
+    $$('.buy-tpl-btn').forEach(function(btn){btn.addEventListener('click',function(){var tid=btn.getAttribute('data-tid');var t=templates.find(function(x){return x.id===tid;});if(_hasInfinity()||state.coins>=t.price){if(!_hasInfinity())state.coins-=t.price;state.ownedTemplates[tid]=true;updateCoins();shopPurchased(btn,'template',tid);addNotification('skin','You purchased the "'+t.name+'" template!');}});});
+    $$('.buy-premium-btn').forEach(function(btn){btn.addEventListener('click',function(){var pid=btn.getAttribute('data-pid');var skin=premiumSkins.find(function(s){return s.id===pid;});if(_hasInfinity()||state.coins>=skin.price){if(!_hasInfinity())state.coins-=skin.price;state.ownedPremiumSkins[pid]=true;updateCoins();shopPurchased(btn,'premium',pid);addNotification('skin','You purchased the "'+skin.name+'" premium skin!');}});});
+    $$('.buy-nav-btn').forEach(function(btn){btn.addEventListener('click',function(){var nid=btn.getAttribute('data-nid');var n=navStyles.find(function(x){return x.id===nid;});if(_hasInfinity()||state.coins>=n.price){if(!_hasInfinity())state.coins-=n.price;state.ownedNavStyles[nid]=true;updateCoins();shopPurchased(btn,'navstyle',nid);addNotification('skin','You purchased the "'+n.name+'" nav style!');}});});
     // Try On button handlers
     $$('.try-on-btn').forEach(function(btn){btn.addEventListener('click',function(){doTryOn(btn.dataset.tryType,btn.dataset.tryId);});});
     initDragScroll('#shopGrid');
@@ -9704,7 +9732,7 @@ function toggleReaction(postId,emoji,btn){
     }
     // Coin logic: 1 coin for first interaction (like, dislike, or reaction), no extra for additional types
     var has=!!(state.likedPosts[postId]||state.dislikedPosts[postId]||_postReactions[postId]);
-    if(!isOwnPost(postId)){if(!had&&has){state.coins++;updateCoins();}else if(had&&!has){state.coins--;updateCoins();}}
+    if(!isOwnPost(postId)){if(!had&&has&&_incrementDailyCoin('postLikes')){state.coins++;updateCoins();}else if(had&&!has){state.coins--;updateCoins();}}
     saveState();
     // Save to DB if available
     if(currentUser&&/^[0-9a-f]{8}-/.test(postId)){
