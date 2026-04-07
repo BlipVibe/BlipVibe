@@ -1,5 +1,43 @@
 [
   {
+    "version": "0.4.0",
+    "date": "2026-04-06",
+    "added": [
+      "\ud83c\udf89 BlipVibe has officially moved to blipvibe.com! Update your bookmarks!",
+      "\ud83d\udcb0 Coin economy rebalanced \u2014 new users start with 100 coins, shop prices updated for better progression",
+      "\u267e\ufe0f Early adopter reward \u2014 all current beta users receive INFINITY coins as a thank you!",
+      "\ud83d\udcc8 Daily earning caps added \u2014 5 posts, 15 comments, 15 replies, 30 likes per day",
+      "\ud83d\udc8e Premium skins now cost 150 coins \u2014 something to work toward!",
+      "\ud83d\udd0d Discover tab redesigned \u2014 shows trending posts from people you don't follow, ranked by engagement",
+      "\ud83d\udc65 Mutual followers shown on profiles \u2014 'Followed by X and 3 others'",
+      "\ud83d\udcac Message reactions \u2014 react to any message with emoji",
+      "\u21a9\ufe0f Reply to specific messages \u2014 quote a message in your reply",
+      "\ud83d\udd25 Trending Hashtags page \u2014 see what's popular right now",
+      "\ud83d\udd0e Search history \u2014 recent searches saved and shown on focus",
+      "\ud83d\udd12 Account security \u2014 change password, change email, and 2FA setup in Settings",
+      "\u267f Alt text on images \u2014 add descriptions for accessibility",
+      "\ud83d\udcc6 Scheduled posts calendar view",
+      "\ud83d\udcca Post analytics dashboard in Settings",
+      "\u2764\ufe0f Double-tap to like posts",
+      "\ud83c\udf19 Light mode toggle in Settings",
+      "\ud83d\udd17 Share your profile link from dropdown menu",
+      "\ud83d\udcc4 Link in bio \u2014 add your website to your profile"
+    ],
+    "changed": [
+      "\ud83c\udfe0 BlipVibe is now live at blipvibe.com!",
+      "\ud83d\udcb0 Shop prices rebalanced for better progression (fonts 15, skins 35, premium 150)",
+      "\ud83d\udee1\ufe0f DMCA policy hardened to federal litigation grade (11 sections)",
+      "\ud83d\udcdd Privacy Policy updated with full data disclosure",
+      "\u26a1 Feed loads faster with infinite scroll and caching"
+    ],
+    "fixed": [
+      "\ud83d\udc4d Like counts now show correctly on profile view posts",
+      "\ud83d\udcf1 Mobile feed alignment fixed \u2014 posts match create bar width",
+      "\ud83d\udcfa YouTube, TikTok, Instagram embeds restored on all posts",
+      "\u270d\ufe0f View More no longer cuts words in half"
+    ]
+  },
+  {
     "version": "0.3.6",
     "date": "2026-04-02",
     "added": [
