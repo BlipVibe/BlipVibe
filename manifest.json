@@ -1,0 +1,18 @@
+{
+  "name": "BlipVibe",
+  "short_name": "BlipVibe",
+  "description": "Connect & Share — A social platform where you customize everything",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#8b5cf6",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "images/blipvibe-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

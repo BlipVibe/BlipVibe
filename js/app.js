@@ -12136,6 +12136,82 @@ function loadCachedFeed(){
     }catch(e){return null;}
 }
 
+// ======================== ADD TO HOME SCREEN (PWA INSTALL PROMPT) ========================
+var _deferredInstallPrompt=null;
+// Capture the native install prompt (Chrome/Android)
+window.addEventListener('beforeinstallprompt',function(e){
+    e.preventDefault();
+    _deferredInstallPrompt=e;
+});
+function showPwaInstallBanner(){
+    // Don't show if already installed (standalone mode) or already dismissed
+    if(window.matchMedia('(display-mode:standalone)').matches) return;
+    if(window.navigator.standalone===true) return; // iOS standalone
+    try{if(localStorage.getItem('blipvibe_pwa_dismissed')) return;}catch(e){}
+    // Only show on mobile
+    if(!/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) return;
+    var isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent);
+    var banner=document.createElement('div');
+    banner.className='pwa-install-banner';
+    banner.innerHTML='<div class="pwa-icon"><i class="fas fa-mobile-screen-button"></i></div>'
+        +'<div class="pwa-text"><h4>\ud83d\udcf1 Get the BlipVibe App!</h4><p>Add BlipVibe to your home screen for the best experience.</p></div>'
+        +'<div class="pwa-actions"><button class="pwa-install-dismiss" id="pwaDismiss">Not now</button><button class="btn btn-primary" id="pwaInstall">Add</button></div>';
+    document.body.appendChild(banner);
+    document.getElementById('pwaDismiss').addEventListener('click',function(){
+        banner.remove();
+        try{localStorage.setItem('blipvibe_pwa_dismissed','1');}catch(e){}
+    });
+    document.getElementById('pwaInstall').addEventListener('click',function(){
+        if(_deferredInstallPrompt){
+            // Android/Chrome native install prompt
+            _deferredInstallPrompt.prompt();
+            _deferredInstallPrompt.userChoice.then(function(result){
+                if(result.outcome==='accepted') showToast('BlipVibe added to home screen!');
+                _deferredInstallPrompt=null;
+            });
+            banner.remove();
+        } else if(isIOS){
+            // iOS — show manual instructions
+            banner.remove();
+            showIosInstallInstructions();
+        } else {
+            // Fallback — show generic instructions
+            banner.remove();
+            showGenericInstallInstructions();
+        }
+    });
+}
+function showIosInstallInstructions(){
+    var overlay=document.createElement('div');
+    overlay.className='pwa-install-instructions';
+    overlay.innerHTML='<div class="pwa-modal">'
+        +'<h3>\ud83d\udcf1 Add BlipVibe to Home Screen</h3>'
+        +'<div class="step"><div class="step-num">1</div><span>Tap the <strong>Share</strong> button <i class="fas fa-arrow-up-from-bracket" style="color:var(--primary);"></i> at the bottom of your browser</span></div>'
+        +'<div class="step"><div class="step-num">2</div><span>Scroll down and tap <strong>"Add to Home Screen"</strong></span></div>'
+        +'<div class="step"><div class="step-num">3</div><span>Tap <strong>"Add"</strong> in the top right corner</span></div>'
+        +'<div style="margin-top:16px;"><button class="btn btn-primary" id="pwaIosDone" style="width:100%;">Got it!</button></div>'
+        +'</div>';
+    document.body.appendChild(overlay);
+    document.getElementById('pwaIosDone').addEventListener('click',function(){overlay.remove();});
+    overlay.addEventListener('click',function(e){if(e.target===overlay) overlay.remove();});
+    try{localStorage.setItem('blipvibe_pwa_dismissed','1');}catch(e){}
+}
+function showGenericInstallInstructions(){
+    var overlay=document.createElement('div');
+    overlay.className='pwa-install-instructions';
+    overlay.innerHTML='<div class="pwa-modal">'
+        +'<h3>\ud83d\udcf1 Add BlipVibe to Home Screen</h3>'
+        +'<div class="step"><div class="step-num">1</div><span>Tap the <strong>menu</strong> button <i class="fas fa-ellipsis-vertical" style="color:var(--primary);"></i> in your browser</span></div>'
+        +'<div class="step"><div class="step-num">2</div><span>Tap <strong>"Add to Home Screen"</strong> or <strong>"Install App"</strong></span></div>'
+        +'<div class="step"><div class="step-num">3</div><span>Tap <strong>"Add"</strong> to confirm</span></div>'
+        +'<div style="margin-top:16px;"><button class="btn btn-primary" id="pwaGenDone" style="width:100%;">Got it!</button></div>'
+        +'</div>';
+    document.body.appendChild(overlay);
+    document.getElementById('pwaGenDone').addEventListener('click',function(){overlay.remove();});
+    overlay.addEventListener('click',function(e){if(e.target===overlay) overlay.remove();});
+    try{localStorage.setItem('blipvibe_pwa_dismissed','1');}catch(e){}
+}
+
 // ======================== WIRE UP NEW FEATURES ========================
 // Called from initApp() after all data is loaded
 function wireNewFeatures(){
@@ -12147,6 +12223,8 @@ function wireNewFeatures(){
     initPushNotifications();
     // Cache feed data after load
     cacheFeedData();
+    // Show PWA install banner on mobile (delayed so it doesn't compete with daily reward)
+    setTimeout(showPwaInstallBanner,4000);
 }
 
 });
