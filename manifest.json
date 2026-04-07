@@ -9,7 +9,7 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "images/blipvibe-logo.png",
+      "src": "images/app-icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
