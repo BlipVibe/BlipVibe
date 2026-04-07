@@ -551,6 +551,9 @@ async function initApp() {
     }catch(e){}
     // Load all state from Supabase (sole source of truth for cross-device sync)
     await loadSkinDataFromSupabase();
+    // Refresh coin display after skin_data loads (infinity status may not be available earlier)
+    var _coinEl=document.getElementById('navCoinCount');
+    if(_coinEl) _coinEl.textContent=_hasInfinity()?'\u221E':(currentUser.coin_balance||0);
     // Check TOS acceptance — existing users must accept updated terms before proceeding
     if(!checkTosAccepted()){
         populateUserUI();
