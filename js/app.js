@@ -3032,6 +3032,7 @@ async function showProfileView(person){
                 feedHtml+='<button class="action-btn comment-btn"><i class="far fa-comment"></i><span>'+pvComments+'</span></button>';
                 feedHtml+='<button class="action-btn share-btn"><i class="fas fa-share-from-square"></i><span>0</span></button>';
                 feedHtml+='</div></div>';
+                feedHtml+='<div class="post-comments" data-post-id="'+post.id+'"></div>';
                 feedHtml+='</div>';
             });
         }
@@ -3043,6 +3044,10 @@ async function showProfileView(person){
     bindMentionClicks('#pvPostsFeed');
     bindHashtagClicks('#pvPostsFeed');
     autoFetchLinkPreviews(document.getElementById('pvPostsFeed'));
+    // Load inline comments for profile view posts
+    if(userPosts&&userPosts.length){
+        userPosts.forEach(function(post){renderInlineComments(post.id);});
+    }
 
     // Event: Back
     document.getElementById('pvBack').addEventListener('click',function(e){e.preventDefault();navigateTo('home');});
