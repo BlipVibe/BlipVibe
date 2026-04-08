@@ -5396,7 +5396,15 @@ function getVideoEmbedHtml(url, mini){
     var socialCls='social-embed'+(mini?' social-embed-mini':'');
     // YouTube: watch, short, embed, youtu.be
     m=url.match(/(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
-    if(m){ id=m[1]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'YouTube',cls,mini); return '<div class="'+cls+'"><iframe src="https://www.youtube-nocookie.com/embed/'+id+'?enablejsapi=1" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>'; }
+    if(m){ id=m[1]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'YouTube',cls,mini);
+        var isMobile=/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        if(isMobile){
+            // Thumbnail + play button on mobile (avoids YouTube bot check)
+            var thumbUrl='https://img.youtube.com/vi/'+id+'/hqdefault.jpg';
+            return '<div class="'+cls+'" style="position:relative;cursor:pointer;" data-yt-id="'+id+'"><img src="'+thumbUrl+'" style="width:100%;border-radius:8px;display:block;" alt="YouTube video"><div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;background:rgba(255,0,0,.9);border-radius:16px;display:flex;align-items:center;justify-content:center;"><i class="fas fa-play" style="color:#fff;font-size:24px;margin-left:4px;"></i></div></div>';
+        }
+        return '<div class="'+cls+'"><iframe src="https://www.youtube-nocookie.com/embed/'+id+'?enablejsapi=1" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>';
+    }
     // Vimeo
     m=url.match(/vimeo\.com\/(\d+)/);
     if(m){ id=m[1]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'Vimeo',cls,mini); return '<div class="'+cls+'"><iframe src="https://player.vimeo.com/video/'+id+'?api=1" frameborder="0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen></iframe></div>'; }
@@ -12143,6 +12151,15 @@ function loadCachedFeed(){
         return JSON.parse(cached);
     }catch(e){return null;}
 }
+
+// ======================== YOUTUBE MOBILE THUMBNAIL CLICK HANDLER ========================
+document.addEventListener('click',function(e){
+    var thumb=e.target.closest('[data-yt-id]');
+    if(thumb){
+        var ytId=thumb.dataset.ytId;
+        if(ytId) window.open('https://www.youtube.com/watch?v='+ytId,'_blank');
+    }
+});
 
 // ======================== ADD TO HOME SCREEN (PWA INSTALL PROMPT) ========================
 var _deferredInstallPrompt=null;
