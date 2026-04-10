@@ -921,6 +921,7 @@ function _applySkinDataFromCache(sd){
     if(sd.mutedUsers&&typeof sd.mutedUsers==='object') mutedUsers=sd.mutedUsers;
     if(sd.notifPrefs&&typeof sd.notifPrefs==='object') _notifPrefs=sd.notifPrefs;
     if(sd.settings&&sd.settings.messagePrivacy) settings.messagePrivacy=sd.settings.messagePrivacy;
+    if(sd.infinityCoins) state._infinityCoins=true;
     // Group skin data now loaded from group's own skin_data column (see loadGroups)
 }
 async function loadSkinDataFromSupabase(){
@@ -1523,7 +1524,12 @@ try{var _saved=JSON.parse(localStorage.getItem('blipvibe_daily_coins')||'{}');if
 
 // Check if user has infinity status (early adopter)
 function _hasInfinity(){
-    return currentUser&&currentUser.skin_data&&currentUser.skin_data.infinityCoins===true;
+    if(!currentUser) return false;
+    var sd=currentUser.skin_data;
+    if(sd&&sd.infinityCoins) return true;
+    // Also check the in-memory state (loaded from skin_data cache)
+    if(state&&state._infinityCoins) return true;
+    return false;
 }
 
 function isOwnPost(postId){
@@ -1617,6 +1623,7 @@ async function toggleFollow(userId,btn){
             await sbFollow(currentUser.id, userId);
             state.followedUsers[userId]=true;
             state.following++;
+            trackQuestProgress('follow');
             if(btn){
                 btn.classList.add('followed');
                 btn.classList.remove('btn-primary');
@@ -5906,6 +5913,7 @@ function bindPostEvents(){
                         btn.querySelector('i').className='fas fa-thumbs-up';
                         countEl.textContent=count+1;
                         animateLikeBtn(btn);
+                        trackQuestProgress('like');
                         // Notify post author
                         var fp=feedPosts.find(function(x){return x.idx===postId;});
                         if(fp&&fp.person&&fp.person.id&&fp.person.id!==currentUser.id){
@@ -6594,6 +6602,7 @@ $('#openPostModal').addEventListener('click',function(){
         container.insertAdjacentHTML('afterbegin',postHtml);
         if(linkUrl) _reloadThirdPartyEmbeds(linkUrl);
         if(_incrementDailyCoin('posts')){state.coins+=5;updateCoins();}
+        trackQuestProgress('post');
         clearDraft(); // Clear draft on successful publish
         closeModal();
         var newPost=container.firstElementChild;
@@ -11275,10 +11284,12 @@ async function checkDailyLoginReward(){
         setTimeout(function(){
             var backdrop=document.createElement('div');backdrop.className='login-reward-backdrop';
             var popup=document.createElement('div');popup.className='login-reward-popup';
+            var nextTier=streak<3?'Day 3: +20':streak<7?'Day 7: +50':streak<14?'Day 14: +100':'Max tier!';
             popup.innerHTML='<div class="coin-icon"><i class="fas fa-coins"></i></div>'
                 +'<h3 style="margin:12px 0 4px;font-size:18px;color:var(--dark);">Daily Reward!</h3>'
                 +'<p style="font-size:24px;font-weight:700;color:#ffd700;">+'+reward+' coins</p>'
-                +'<p style="font-size:13px;color:var(--gray);margin-top:4px;"><i class="fas fa-fire" style="color:#f59e0b;"></i> '+streak+' day streak</p>'
+                +'<div class="streak-display" style="justify-content:center;margin-top:4px;"><i class="fas fa-fire"></i> '+streak+' day streak</div>'
+                +'<p style="font-size:11px;color:var(--gray);margin-top:4px;">Next: '+nextTier+'</p>'
                 +'<button class="btn btn-primary" style="margin-top:16px;" id="claimDailyReward">Claim</button>';
             document.body.appendChild(backdrop);document.body.appendChild(popup);
             document.getElementById('claimDailyReward').addEventListener('click',function(){backdrop.remove();popup.remove();});
@@ -12152,6 +12163,105 @@ function loadCachedFeed(){
     }catch(e){return null;}
 }
 
+// ======================== DAILY QUEST SYSTEM ========================
+var _questData=null;
+async function loadDailyQuests(){
+    try{
+        var data=await sb.rpc('get_daily_quests');
+        if(data&&!data.error) _questData=data;
+    }catch(e){
+        // RPC not deployed yet — use local fallback
+        var key='blipvibe_quests_'+new Date().toDateString();
+        try{_questData=JSON.parse(localStorage.getItem(key))||{likes_count:0,follows_count:0,posts_count:0,likes_reward_claimed:false,follows_reward_claimed:false,posts_reward_claimed:false};}catch(e2){_questData={likes_count:0,follows_count:0,posts_count:0,likes_reward_claimed:false,follows_reward_claimed:false,posts_reward_claimed:false};}
+    }
+    renderQuestPanel();
+}
+async function trackQuestProgress(type){
+    try{
+        var result=await sb.rpc('update_quest_progress',{p_type:type});
+        if(result&&result.reward_claimed){
+            showToast('Quest complete! +'+result.reward_amount+' coins!');
+            if(result.new_balance!=null){state.coins=result.new_balance;currentUser.coin_balance=result.new_balance;updateCoins();}
+        }
+        if(result) _questData=result;
+    }catch(e){
+        // Local fallback
+        if(!_questData) _questData={likes_count:0,follows_count:0,posts_count:0,likes_reward_claimed:false,follows_reward_claimed:false,posts_reward_claimed:false};
+        if(type==='like') _questData.likes_count++;
+        else if(type==='follow') _questData.follows_count++;
+        else if(type==='post') _questData.posts_count++;
+        var key='blipvibe_quests_'+new Date().toDateString();
+        try{localStorage.setItem(key,JSON.stringify(_questData));}catch(e2){}
+    }
+    renderQuestPanel();
+    renderCoinGoalBar();
+}
+function renderQuestPanel(){
+    var container=document.getElementById('questPanel');
+    if(!container||!_questData) return;
+    var q=_questData;
+    var html='<div class="quest-panel-header"><h4><i class="fas fa-scroll" style="color:var(--primary);"></i> Daily Quests</h4><span class="quest-reset">Resets daily</span></div>';
+    // Quest 1: Like 3 posts
+    var likePct=Math.min(100,Math.round((q.likes_count||0)/3*100));
+    var likeDone=q.likes_reward_claimed||(q.likes_count||0)>=3;
+    html+='<div class="quest-item"><div class="quest-icon quest-like"><i class="fas fa-heart"></i></div><div class="quest-info"><p>Like 3 posts</p><div class="quest-bar"><div class="quest-bar-fill" style="width:'+likePct+'%;background:#ef4444;"></div></div><span class="quest-progress">'+(q.likes_count||0)+' / 3</span></div>'+(likeDone?'<span class="quest-check"><i class="fas fa-check-circle"></i></span>':'<span class="quest-reward"><i class="fas fa-coins"></i> +20</span>')+'</div>';
+    // Quest 2: Follow 2 users
+    var followPct=Math.min(100,Math.round((q.follows_count||0)/2*100));
+    var followDone=q.follows_reward_claimed||(q.follows_count||0)>=2;
+    html+='<div class="quest-item"><div class="quest-icon quest-follow"><i class="fas fa-user-plus"></i></div><div class="quest-info"><p>Follow 2 users</p><div class="quest-bar"><div class="quest-bar-fill" style="width:'+followPct+'%;background:#3b82f6;"></div></div><span class="quest-progress">'+(q.follows_count||0)+' / 2</span></div>'+(followDone?'<span class="quest-check"><i class="fas fa-check-circle"></i></span>':'<span class="quest-reward"><i class="fas fa-coins"></i> +20</span>')+'</div>';
+    // Quest 3: Create 1 post
+    var postPct=Math.min(100,Math.round((q.posts_count||0)/1*100));
+    var postDone=q.posts_reward_claimed||(q.posts_count||0)>=1;
+    html+='<div class="quest-item"><div class="quest-icon quest-post"><i class="fas fa-pen"></i></div><div class="quest-info"><p>Create a post</p><div class="quest-bar"><div class="quest-bar-fill" style="width:'+postPct+'%;background:#22c55e;"></div></div><span class="quest-progress">'+(q.posts_count||0)+' / 1</span></div>'+(postDone?'<span class="quest-check"><i class="fas fa-check-circle"></i></span>':'<span class="quest-reward"><i class="fas fa-coins"></i> +35</span>')+'</div>';
+    container.innerHTML=html;
+}
+
+// ======================== COIN PROGRESS BAR ========================
+function renderCoinGoalBar(){
+    var container=document.getElementById('coinGoalBar');
+    if(!container) return;
+    if(_hasInfinity()){container.innerHTML='';return;}
+    var coins=state.coins||0;
+    var goal=150; // Premium skin price
+    var pct=Math.min(100,Math.round(coins/goal*100));
+    var nextSkin=premiumSkins?premiumSkins[Math.floor(Date.now()/86400000)%premiumSkins.length]:null;
+    var goalName=nextSkin?nextSkin.name:'Premium Skin';
+    container.innerHTML='<p><span>'+coins+' / '+goal+' coins</span><strong>'+goalName+'</strong></p><div class="coin-goal-track"><div class="coin-goal-fill" style="width:'+pct+'%;"></div></div>';
+}
+
+// ======================== FEATURED SKIN (DAILY ROTATION) ========================
+function renderFeaturedSkin(){
+    var container=document.getElementById('featuredSkinBanner');
+    if(!container||!premiumSkins||!premiumSkins.length) return;
+    // Rotate based on day of year
+    var dayOfYear=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0).getTime())/86400000);
+    var skin=premiumSkins[dayOfYear%premiumSkins.length];
+    if(!skin) return;
+    // Calculate hours until midnight
+    var now=new Date();
+    var midnight=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);
+    var hoursLeft=Math.floor((midnight-now)/3600000);
+    var minsLeft=Math.floor(((midnight-now)%3600000)/60000);
+    var owned=state.ownedPremiumSkins&&state.ownedPremiumSkins[skin.id];
+    var canBuy=_hasInfinity()||state.coins>=skin.price;
+    container.innerHTML='<div class="featured-header"><h4><i class="fas fa-fire"></i> Featured Skin</h4><span class="featured-timer"><i class="far fa-clock"></i> '+hoursLeft+'h '+minsLeft+'m left</span></div>'
+        +'<div class="featured-body"><div class="featured-preview" style="background:'+skin.preview+';"></div>'
+        +'<div class="featured-info"><h5>'+escapeHtml(skin.name)+'</h5><p>'+escapeHtml(skin.desc||'')+'</p></div>'
+        +(owned?'<button class="btn btn-disabled" style="padding:6px 14px;font-size:12px;">Owned</button>':'<button class="btn '+(canBuy?'btn-primary':'btn-disabled')+' featured-buy-btn" data-pid="'+skin.id+'" style="padding:6px 14px;font-size:12px;"'+(canBuy?'':' disabled')+'>'+(_hasInfinity()?'Free':''+skin.price+' <i class="fas fa-coins"></i>')+'</button>')
+        +'</div>';
+    var buyBtn=container.querySelector('.featured-buy-btn');
+    if(buyBtn) buyBtn.addEventListener('click',function(){
+        if(_hasInfinity()||state.coins>=skin.price){
+            if(!_hasInfinity()) state.coins-=skin.price;
+            state.ownedPremiumSkins[skin.id]=true;
+            updateCoins();saveState();
+            showToast('You purchased "'+skin.name+'"!');
+            renderFeaturedSkin();
+            renderCoinGoalBar();
+        }
+    });
+}
+
 // ======================== YOUTUBE MOBILE THUMBNAIL CLICK HANDLER ========================
 document.addEventListener('click',function(e){
     var thumb=e.target.closest('[data-yt-id]');
@@ -12248,6 +12358,14 @@ function wireNewFeatures(){
     initPushNotifications();
     // Cache feed data after load
     cacheFeedData();
+    // Load and render gamification features
+    loadDailyQuests();
+    // Show panels (unhide them after data loads)
+    var _qp=document.getElementById('questPanel');if(_qp) _qp.style.display='';
+    var _cgb=document.getElementById('coinGoalBar');if(_cgb) _cgb.style.display='';
+    var _fsb=document.getElementById('featuredSkinBanner');if(_fsb) _fsb.style.display='';
+    renderCoinGoalBar();
+    renderFeaturedSkin();
     // Show PWA install banner on mobile (delayed so it doesn't compete with daily reward)
     setTimeout(showPwaInstallBanner,4000);
 }

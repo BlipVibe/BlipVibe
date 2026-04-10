@@ -1,5 +1,24 @@
 [
   {
+    "version": "0.5.0",
+    "date": "2026-04-07",
+    "added": [
+      "\ud83d\udcdc Daily Quest System \u2014 Like 3 posts (+20), Follow 2 users (+20), Create 1 post (+35). Resets daily!",
+      "\ud83d\udcca Coin Progress Bar \u2014 see how close you are to your next premium skin",
+      "\ud83d\udd25 Featured Skin \u2014 daily rotating premium skin highlight with countdown timer",
+      "\ud83c\udfc6 Tiered Streak Rewards \u2014 Day 1: +10, Day 3: +20, Day 7: +50, Day 14: +100 coins",
+      "\ud83d\udcc1 Backup system \u2014 backups folder created before major changes"
+    ],
+    "changed": [
+      "Daily login reward upgraded from flat 5 coins to tiered based on streak",
+      "Infinity coin display fix \u2014 now works reliably on all devices"
+    ],
+    "fixed": [
+      "Infinity symbol not showing on mobile (skin_data loading timing)",
+      "YouTube embeds on mobile \u2014 switched to thumbnail + play button"
+    ]
+  },
+  {
     "version": "0.4.0",
     "date": "2026-04-06",
     "added": [
