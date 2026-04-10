@@ -7445,13 +7445,17 @@ function getGroupShopCategories(groupId,canManage){
     else if(gaf==='fonts') _applyFilteredItems=ownedFontsG;
     else if(gaf==='songs') _applyFilteredItems=ownedSongsG;
     // The render prepends filter pills
-    var _ai=activeIcons||defaultIcons;
+    function _gpill(key,icon,has){
+        if(!has) return '';
+        var a=gaf===key;
+        return '<button class="gapply-pill'+(a?' active':'')+'" data-gapply="'+key+'" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid '+(a?'var(--primary)':'var(--border)')+';background:'+(a?'rgba(139,92,246,.15)':'none')+';color:'+(a?'var(--primary)':'var(--gray)')+';cursor:pointer;"><i class="fas '+icon+'"></i></button>';
+    }
     var _applyPillsHtml='<div style="width:100%;display:flex;gap:4px;padding:4px 0 8px;justify-content:center;">'
-        +'<button class="gapply-pill'+(gaf==='all'?' active':'')+'" data-gapply="all" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid '+(gaf==='all'?'var(--primary)':'var(--border)')+';background:'+(gaf==='all'?'rgba(139,92,246,.15)':'none')+';color:'+(gaf==='all'?'var(--primary)':'var(--gray)')+';cursor:pointer;"><i class="fas fa-border-all"></i></button>'
-        +(ownedBasic.length?'<button class="gapply-pill'+(gaf==='basic'?' active':'')+'" data-gapply="basic" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid '+(gaf==='basic'?'var(--primary)':'var(--border)')+';background:'+(gaf==='basic'?'rgba(139,92,246,.15)':'none')+';color:'+(gaf==='basic'?'var(--primary)':'var(--gray)')+';cursor:pointer;"><i class="fas '+(_ai.skins||'fa-palette')+'"></i></button>':'')
-        +(ownedPrem.length?'<button class="gapply-pill'+(gaf==='premium'?' active':'')+'" data-gapply="premium" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid '+(gaf==='premium'?'var(--primary)':'var(--border)')+';background:'+(gaf==='premium'?'rgba(139,92,246,.15)':'none')+';color:'+(gaf==='premium'?'var(--primary)':'var(--gray)')+';cursor:pointer;"><i class="fas fa-gem"></i></button>':'')
-        +(ownedFontsG.length?'<button class="gapply-pill'+(gaf==='fonts'?' active':'')+'" data-gapply="fonts" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid '+(gaf==='fonts'?'var(--primary)':'var(--border)')+';background:'+(gaf==='fonts'?'rgba(139,92,246,.15)':'none')+';color:'+(gaf==='fonts'?'var(--primary)':'var(--gray)')+';cursor:pointer;"><i class="fas fa-font"></i></button>':'')
-        +(ownedSongsG.length?'<button class="gapply-pill'+(gaf==='songs'?' active':'')+'" data-gapply="songs" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid '+(gaf==='songs'?'var(--primary)':'var(--border)')+';background:'+(gaf==='songs'?'rgba(139,92,246,.15)':'none')+';color:'+(gaf==='songs'?'var(--primary)':'var(--gray)')+';cursor:pointer;"><i class="fas fa-music"></i></button>':'')
+        +_gpill('all','fa-border-all',true)
+        +_gpill('basic','fa-palette',ownedBasic.length)
+        +_gpill('premium','fa-gem',ownedPrem.length)
+        +_gpill('fonts','fa-font',ownedFontsG.length)
+        +_gpill('songs','fa-music',ownedSongsG.length)
         +'</div>';
     // Prepend pills as first "item"
     var _applyItemsWithPills=[{_pillsHtml:_applyPillsHtml}].concat(_applyFilteredItems.length?_applyFilteredItems:[null]);
