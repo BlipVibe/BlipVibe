@@ -7537,8 +7537,13 @@ function renderGroupShop(groupId){
     document.getElementById('gvShopTabs').innerHTML=tabsHtml;
 
     var active=cats.find(function(c){return c.key===currentGroupShopTab;});
-    var html='<div class="shop-scroll-row scroll-2row">';
-    active.items.forEach(function(item){html+=active.render(item);});
+    var html='';
+    // Render pills above the grid for Apply tab
+    if(active.key==='apply'){
+        active.items.forEach(function(item){if(item&&item._pillsHtml) html+=item._pillsHtml;});
+    }
+    html+='<div class="shop-scroll-row scroll-2row">';
+    active.items.forEach(function(item){if(!item||!item._pillsHtml) html+=active.render(item);});
     html+='</div>';
     // Reset font button on fonts tab (admin/mod only)
     if(_canManage&&currentGroupShopTab==='fonts'&&state.groupActiveFont[groupId]){
