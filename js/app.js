@@ -7272,6 +7272,60 @@ function renderSkinPage(){
 }
 var _shopSongs=[];var _shopOwnedSongs={};var _shopSongsLoaded=false;
 var _shopPreviewAudio=null;
+var _wasPlayingBeforePreview=false;
+function startSongPreview(url,btn){
+    // Stop any existing preview
+    stopSongPreview();
+    // Pause the global player if playing
+    var currentAudio=_getCurrentAudio();
+    if(currentAudio&&!currentAudio.paused){
+        _wasPlayingBeforePreview=true;
+        _fadeAudio(currentAudio,currentAudio.volume,0,300,function(){currentAudio.pause();});
+    }
+    // Start preview
+    _shopPreviewAudio=new Audio(url);
+    _shopPreviewAudio.volume=0;
+    _shopPreviewAudio.play().then(function(){
+        _fadeAudio(_shopPreviewAudio,0,0.5,300,null);
+    }).catch(function(){});
+    if(btn) btn.querySelector('i').className='fas fa-pause';
+    _shopPreviewAudio.addEventListener('ended',function(){
+        stopSongPreview();
+        $$('.song-preview-btn i').forEach(function(i){i.className='fas fa-play';});
+    });
+}
+function stopSongPreview(){
+    if(_shopPreviewAudio){
+        _shopPreviewAudio.pause();
+        _shopPreviewAudio=null;
+    }
+    $$('.song-preview-btn i').forEach(function(i){i.className='fas fa-play';});
+    // Resume global player if it was playing before
+    if(_wasPlayingBeforePreview){
+        _wasPlayingBeforePreview=false;
+        var currentAudio=_getCurrentAudio();
+        if(currentAudio&&currentAudio.paused){
+            currentAudio.volume=0;currentAudio.play();
+            _fadeAudio(currentAudio,0,_gmpBaseVol,800,function(){
+                var t=document.getElementById('gmpTitle');
+                var a=document.getElementById('gmpArtist');
+                _updateGlobalPlayer(t?t.textContent:null,a?a.textContent:null,true);
+            });
+        }
+    }
+}
+function handleSongPreviewClick(e,btn){
+    e.stopPropagation();
+    var url=btn.dataset.url;
+    // If this button is currently playing, stop it
+    if(btn.querySelector('i').classList.contains('fa-pause')){
+        stopSongPreview();
+        return;
+    }
+    // Stop any other preview first
+    stopSongPreview();
+    startSongPreview(url,btn);
+}
 async function _loadShopSongs(){
     if(_shopSongsLoaded) return;
     try{
@@ -7313,14 +7367,7 @@ function renderShop(){
     // Try On button handlers
     $$('.try-on-btn').forEach(function(btn){btn.addEventListener('click',function(){doTryOn(btn.dataset.tryType,btn.dataset.tryId);});});
     // Song preview buttons
-    $$('.song-preview-btn').forEach(function(btn){btn.addEventListener('click',function(e){
-        e.stopPropagation();
-        var url=btn.dataset.url;
-        if(_shopPreviewAudio){_shopPreviewAudio.pause();_shopPreviewAudio=null;$$('.song-preview-btn i').forEach(function(i){i.className='fas fa-play';});}
-        if(btn.querySelector('i').classList.contains('fa-pause')){btn.querySelector('i').className='fas fa-play';return;}
-        _shopPreviewAudio=new Audio(url);_shopPreviewAudio.volume=0.5;_shopPreviewAudio.play();
-        btn.querySelector('i').className='fas fa-pause';
-        _shopPreviewAudio.addEventListener('ended',function(){btn.querySelector('i').className='fas fa-play';_shopPreviewAudio=null;});
+    $$('.song-preview-btn').forEach(function(btn){btn.addEventListener('click',function(e){handleSongPreviewClick(e,btn);
     });});
     // Song buy buttons
     $$('.buy-song-btn').forEach(function(btn){btn.addEventListener('click',async function(){
@@ -7578,14 +7625,7 @@ function renderGroupShop(groupId){
         }
     });});
     // Group song preview handlers
-    $$('#gvShopContent .song-preview-btn').forEach(function(btn){btn.addEventListener('click',function(e){
-        e.stopPropagation();
-        var url=btn.dataset.url;
-        if(_shopPreviewAudio){_shopPreviewAudio.pause();_shopPreviewAudio=null;$$('.song-preview-btn i').forEach(function(i){i.className='fas fa-play';});}
-        if(btn.querySelector('i').classList.contains('fa-pause')){btn.querySelector('i').className='fas fa-play';return;}
-        _shopPreviewAudio=new Audio(url);_shopPreviewAudio.volume=0.5;_shopPreviewAudio.play();
-        btn.querySelector('i').className='fas fa-pause';
-        _shopPreviewAudio.addEventListener('ended',function(){btn.querySelector('i').className='fas fa-play';_shopPreviewAudio=null;});
+    $$('#gvShopContent .song-preview-btn').forEach(function(btn){btn.addEventListener('click',function(e){handleSongPreviewClick(e,btn);
     });});
 
     // Reset group font
@@ -8180,14 +8220,7 @@ function renderMySkins(){
         var sid=btn.dataset.songId;btn.disabled=true;btn.textContent='...';
         try{await sbSetProfileSong(currentUser.id,sid);currentUser.profile_song_id=sid;saveState();showToast('Profile song updated!');renderMySkins();}catch(e){showToast('Failed');btn.disabled=false;}
     });});
-    $$('#mySkinsGrid .song-preview-btn').forEach(function(btn){btn.addEventListener('click',function(e){
-        e.stopPropagation();
-        var url=btn.dataset.url;
-        if(_shopPreviewAudio){_shopPreviewAudio.pause();_shopPreviewAudio=null;$$('.song-preview-btn i').forEach(function(i){i.className='fas fa-play';});}
-        if(btn.querySelector('i').classList.contains('fa-pause')){btn.querySelector('i').className='fas fa-play';return;}
-        _shopPreviewAudio=new Audio(url);_shopPreviewAudio.volume=0.5;_shopPreviewAudio.play();
-        btn.querySelector('i').className='fas fa-pause';
-        _shopPreviewAudio.addEventListener('ended',function(){btn.querySelector('i').className='fas fa-play';_shopPreviewAudio=null;});
+    $$('#mySkinsGrid .song-preview-btn').forEach(function(btn){btn.addEventListener('click',function(e){handleSongPreviewClick(e,btn);
     });});
     initDragScroll('#mySkinsGrid');
     initDragScroll('#mySkinsTabs');
