@@ -7241,14 +7241,12 @@ function getShopCategories(){
     cats.push({key:'coins',label:'<i class="fas fa-coins"></i> Coin Skins',items:coinSkins,render:function(s){return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#1a1a2e,#16213e);"><i class="fas '+s.icon+'" style="font-size:36px;color:'+s.color+';"></i></div><div class="skin-card-body"><h4>'+s.name+'</h4><p>'+s.desc+'</p>'+shopBuy(state.ownedCoinSkins[s.id],s.price,'buy-coin-btn','data-cid="'+s.id+'"','coins',s.id)+'</div></div>';}});
     if(window.innerWidth>768) cats.push({key:'templates',label:'<i class="fas fa-table-columns"></i> Templates',items:templates,render:function(t){return '<div class="skin-card"><div class="skin-preview" style="background:'+t.preview+';">'+tplPreviewHtml(t.id)+'</div><div class="skin-card-body"><h4>'+t.name+'</h4><p>'+t.desc+'</p>'+shopBuy(state.ownedTemplates[t.id],t.price,'buy-tpl-btn','data-tid="'+t.id+'"','template',t.id)+'</div></div>';}});
     cats.push({key:'navstyles',label:'<i class="fas fa-bars-staggered"></i> Nav Styles',items:navStyles,render:function(n){return '<div class="skin-card"><div class="skin-preview" style="background:'+n.preview+';">'+navPreviewHtml(n.id)+'</div><div class="skin-card-body"><h4>'+n.name+'</h4><p>'+n.desc+'</p>'+shopBuy(state.ownedNavStyles[n.id],n.price,'buy-nav-btn','data-nid="'+n.id+'"','navstyle',n.id)+'</div></div>';}});
-    // Songs tab (loaded from DB)
+    // Songs tab (loaded from DB) — shop only shows buy, not set
     if(_shopSongs&&_shopSongs.length){
         cats.push({key:'songs',label:'<i class="fas fa-music"></i> Songs',items:_shopSongs,render:function(s){
             var owned=_hasInfinity()||(_shopOwnedSongs&&_shopOwnedSongs[s.id]);
-            var isActive=currentUser&&currentUser.profile_song_id===s.id;
             var buyHtml='';
-            if(isActive) buyHtml='<button class="btn btn-disabled">Active</button>';
-            else if(owned) buyHtml='<button class="btn btn-primary set-song-btn" data-song-id="'+s.id+'" style="font-size:12px;padding:6px 14px;">Set as Profile Song</button>';
+            if(owned) buyHtml='<button class="btn btn-disabled">Owned</button>';
             else buyHtml='<div class="skin-price"><i class="fas fa-coins"></i> '+(_hasInfinity()?'Free':s.price+' Coins')+'</div><button class="btn '+(_hasInfinity()||state.coins>=s.price?'btn-primary':'btn-disabled')+' buy-song-btn" data-song-id="'+s.id+'" data-price="'+s.price+'"'+(_hasInfinity()||state.coins>=s.price?'':' disabled')+'>Buy</button>';
             return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#1a1a2e,#2d1b69);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;"><i class="fas fa-music" style="font-size:32px;color:var(--primary);"></i><button class="song-preview-btn" data-url="'+escapeHtml(s.file_url)+'" style="background:rgba(255,255,255,.15);color:#fff;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;"><i class="fas fa-play"></i></button></div><div class="skin-card-body"><h4>'+escapeHtml(s.title)+'</h4><p>'+(s.genre||'BlipVibe Original')+'</p>'+buyHtml+'</div></div>';
         }});
@@ -7997,6 +7995,14 @@ function getMySkinCategories(){
     if(ownedT.length&&window.innerWidth>768) cats.push({key:'templates',label:'<i class="fas fa-table-columns"></i> Templates',items:ownedT,render:function(t){var a=state.activeTemplate===t.id;return '<div class="skin-card"><div class="skin-preview" style="background:'+t.preview+';">'+tplPreviewHtml(t.id)+'</div><div class="skin-card-body"><h4>'+t.name+'</h4><p>'+t.desc+'</p><button class="btn '+(a?'btn-disabled':'btn-primary')+' apply-tpl-btn" data-tid="'+t.id+'">'+(a?'Active':'Apply')+'</button></div></div>';},defaultCard:'<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);">'+tplPreviewHtml('spotlight')+'</div><div class="skin-card-body"><h4>Default Template</h4><p>Wide feed, narrow sidebars.</p><button class="btn '+(state.activeTemplate==='spotlight'?'btn-disabled':'btn-primary')+' apply-tpl-btn" data-tid="spotlight">'+(state.activeTemplate==='spotlight'?'Active':'Apply')+'</button></div></div>'});
     var ownedN=navStyles.filter(function(n){return state.ownedNavStyles[n.id];});
     if(ownedN.length) cats.push({key:'navstyles',label:'<i class="fas fa-bars-staggered"></i> Nav Styles',items:ownedN,render:function(n){var a=state.activeNavStyle===n.id;return '<div class="skin-card"><div class="skin-preview" style="background:'+n.preview+';">'+navPreviewHtml(n.id)+'</div><div class="skin-card-body"><h4>'+n.name+'</h4><p>'+n.desc+'</p><button class="btn '+(a?'btn-disabled':'btn-primary')+' apply-nav-btn" data-nid="'+n.id+'">'+(a?'Active':'Apply')+'</button></div></div>';},defaultCard:'<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);"><div style="width:100%;height:100%;display:flex;flex-direction:column;padding:4px;gap:3px;"><div style="height:10%;background:rgba(255,255,255,.6);border-radius:2px;flex:none;"></div><div style="flex:1;background:rgba(255,255,255,.2);border-radius:2px;"></div></div></div><div class="skin-card-body"><h4>Default</h4><p>The original top navigation bar.</p><button class="btn '+(!state.activeNavStyle?'btn-disabled':'btn-primary')+' apply-nav-btn" data-nid="default">'+(!state.activeNavStyle?'Active':'Apply')+'</button></div></div>'});
+    // Owned songs
+    if(_shopSongs&&_shopSongs.length){
+        var ownedSongs=_shopSongs.filter(function(s){return _hasInfinity()||(_shopOwnedSongs&&_shopOwnedSongs[s.id]);});
+        if(ownedSongs.length) cats.push({key:'songs',label:'<i class="fas fa-music"></i> Songs',items:ownedSongs,render:function(s){
+            var isActive=currentUser&&currentUser.profile_song_id===s.id;
+            return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#1a1a2e,#2d1b69);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;"><i class="fas fa-music" style="font-size:32px;color:var(--primary);"></i><button class="song-preview-btn" data-url="'+escapeHtml(s.file_url)+'" style="background:rgba(255,255,255,.15);color:#fff;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;"><i class="fas fa-play"></i></button></div><div class="skin-card-body"><h4>'+escapeHtml(s.title)+'</h4><p>'+(s.genre||'BlipVibe Original')+'</p><button class="btn '+(isActive?'btn-disabled':'btn-primary')+' set-song-btn" data-song-id="'+s.id+'">'+(isActive?'Active':'Set as Profile Song')+'</button></div></div>';
+        }});
+    }
     return cats;
 }
 function renderMySkins(){
@@ -8130,6 +8136,20 @@ function renderMySkins(){
     $$('#mySkinsGrid .apply-tpl-btn').forEach(function(btn){btn.addEventListener('click',function(){applyTemplate(btn.dataset.tid==='default'?null:btn.dataset.tid);mySkinsRerender();});});
     $$('#mySkinsGrid .apply-premium-btn').forEach(function(btn){btn.addEventListener('click',function(){applyPremiumSkin(btn.dataset.pid==='default'?null:btn.dataset.pid);mySkinsRerender();});});
     $$('#mySkinsGrid .apply-nav-btn').forEach(function(btn){btn.addEventListener('click',function(){applyNavStyle(btn.dataset.nid==='default'?null:btn.dataset.nid);mySkinsRerender();});});
+    // Song set + preview in My Skins
+    $$('#mySkinsGrid .set-song-btn').forEach(function(btn){btn.addEventListener('click',async function(){
+        var sid=btn.dataset.songId;btn.disabled=true;btn.textContent='...';
+        try{await sbSetProfileSong(currentUser.id,sid);currentUser.profile_song_id=sid;saveState();showToast('Profile song updated!');renderMySkins();}catch(e){showToast('Failed');btn.disabled=false;}
+    });});
+    $$('#mySkinsGrid .song-preview-btn').forEach(function(btn){btn.addEventListener('click',function(e){
+        e.stopPropagation();
+        var url=btn.dataset.url;
+        if(_shopPreviewAudio){_shopPreviewAudio.pause();_shopPreviewAudio=null;$$('.song-preview-btn i').forEach(function(i){i.className='fas fa-play';});}
+        if(btn.querySelector('i').classList.contains('fa-pause')){btn.querySelector('i').className='fas fa-play';return;}
+        _shopPreviewAudio=new Audio(url);_shopPreviewAudio.volume=0.5;_shopPreviewAudio.play();
+        btn.querySelector('i').className='fas fa-pause';
+        _shopPreviewAudio.addEventListener('ended',function(){btn.querySelector('i').className='fas fa-play';_shopPreviewAudio=null;});
+    });});
     initDragScroll('#mySkinsGrid');
     initDragScroll('#mySkinsTabs');
     $$('#mySkinsTabs .search-tab').forEach(function(tab){tab.addEventListener('click',function(){
