@@ -12662,13 +12662,25 @@ function switchToProfileSong(song){
     }
     // Fade out any existing profile audio
     if(_profileAudio){_fadeAudio(_profileAudio,_profileAudio.volume,0,300,function(){if(_profileAudio){_profileAudio.pause();_profileAudio=null;}});}
-    // Create their song with fade loop
+    // Create their song with fade loop and auto-play
     _viewingSong=song;
     _profileAudio=new Audio(song.file_url);
     _profileAudio.volume=0;
     _setupFadeLoop(_profileAudio);
     _updateGlobalPlayer(song.title,song.artist||'BlipVibe',false);
     showGlobalPlayer();
+    // Auto-play with fade-in after a short delay (let fade-out finish)
+    setTimeout(function(){
+        if(!_profileAudio) return;
+        _profileAudio.play().then(function(){
+            _fadeAudio(_profileAudio,0,_gmpBaseVol,800,function(){
+                _updateGlobalPlayer(song.title,song.artist||'BlipVibe',true);
+            });
+        }).catch(function(){
+            // Browser blocked autoplay — user needs to click play
+            _updateGlobalPlayer(song.title,song.artist||'BlipVibe',false);
+        });
+    },500);
 }
 // Resume your own song when leaving someone's profile (crossfade)
 function resumeMyMusic(){
@@ -12679,14 +12691,16 @@ function resumeMyMusic(){
     }
     if(_mySong&&_myAudio){
         _updateGlobalPlayer(_mySong.title,_mySong.artist||'BlipVibe',false);
-        // Fade your song back in if it was playing
-        if(_myAudio.paused){
-            _myAudio.currentTime=_myAudio.currentTime||0;
-            _myAudio.volume=0;_myAudio.play();
-            _fadeAudio(_myAudio,0,_gmpBaseVol,1000,function(){
-                _updateGlobalPlayer(_mySong.title,_mySong.artist||'BlipVibe',true);
-            });
-        }
+        // Fade your song back in after the other fades out
+        setTimeout(function(){
+            if(!_mySong||!_myAudio) return;
+            _myAudio.volume=0;
+            _myAudio.play().then(function(){
+                _fadeAudio(_myAudio,0,_gmpBaseVol,1000,function(){
+                    _updateGlobalPlayer(_mySong.title,_mySong.artist||'BlipVibe',true);
+                });
+            }).catch(function(){});
+        },500);
     }
 }
 function showSongPickerModal(){
