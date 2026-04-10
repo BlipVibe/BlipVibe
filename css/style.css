@@ -3667,6 +3667,24 @@ body.light-mode::before{background:#f8fafc;}
 .profile-music-player .pmp-volume{width:60px;height:4px;-webkit-appearance:none;appearance:none;background:var(--border);border-radius:2px;outline:none;cursor:pointer;}
 .profile-music-player .pmp-volume::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--primary);cursor:pointer;}
 @keyframes musicPulse{0%,100%{opacity:1;}50%{opacity:.5;}}
+
+/* ========== GLOBAL STICKY MINI PLAYER ========== */
+#globalMiniPlayer{position:fixed;bottom:0;left:0;right:0;z-index:998;background:var(--nav-bg,#0f172a);border-top:1px solid var(--border);padding:8px 16px;display:none;align-items:center;gap:10px;transition:transform .3s ease;}
+#globalMiniPlayer.visible{display:flex;}
+#globalMiniPlayer .gmp-art{width:36px;height:36px;border-radius:8px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;flex-shrink:0;}
+#globalMiniPlayer .gmp-info{flex:1;min-width:0;}
+#globalMiniPlayer .gmp-title{font-size:12px;font-weight:600;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#globalMiniPlayer .gmp-artist{font-size:10px;color:var(--gray);}
+#globalMiniPlayer .gmp-btn{background:none;color:var(--dark);font-size:16px;padding:4px;cursor:pointer;}
+#globalMiniPlayer .gmp-btn:hover{color:var(--primary);}
+#globalMiniPlayer .gmp-volume{width:50px;height:4px;-webkit-appearance:none;appearance:none;background:var(--border);border-radius:2px;outline:none;cursor:pointer;}
+#globalMiniPlayer .gmp-volume::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;border-radius:50%;background:var(--primary);cursor:pointer;}
+#globalMiniPlayer .gmp-close{background:none;color:var(--gray);font-size:14px;padding:4px;cursor:pointer;}
+#globalMiniPlayer .gmp-close:hover{color:#e74c3c;}
+#globalMiniPlayer.playing .gmp-art{animation:musicPulse 1.5s ease infinite;}
+@media(max-width:768px){
+    #globalMiniPlayer{bottom:calc(56px + env(safe-area-inset-bottom,0px));padding:6px 12px;}
+}
 .profile-music-player.playing .pmp-art{animation:musicPulse 1.5s ease infinite;}
 
 /* ========== SONG PICKER ========== */
