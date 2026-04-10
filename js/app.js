@@ -7435,16 +7435,28 @@ function getGroupShopCategories(groupId,canManage){
     if(!state.groupOwnedSongs[groupId]) state.groupOwnedSongs[groupId]={};
     var ownedSongsG=(_shopSongs||[]).filter(function(s){return state.groupOwnedSongs[groupId][s.id];});
     var allOwnedItems=[].concat(ownedBasic,ownedPrem,ownedFontsG,ownedSongsG);
-    // Build apply items with type markers for section rendering
-    var _applyItems=[];
-    if(ownedBasic.length){_applyItems.push({_sectionHeader:'basic',_label:'<i class="fas fa-palette"></i> Basic Skins'});ownedBasic.forEach(function(s){_applyItems.push(s);});}
-    if(ownedPrem.length){_applyItems.push({_sectionHeader:'premium',_label:'<i class="fas fa-gem"></i> Premium Skins'});ownedPrem.forEach(function(s){_applyItems.push(s);});}
-    if(ownedFontsG.length){_applyItems.push({_sectionHeader:'fonts',_label:'<i class="fas fa-font"></i> Fonts'});ownedFontsG.forEach(function(s){_applyItems.push(s);});}
-    if(ownedSongsG.length){_applyItems.push({_sectionHeader:'songs',_label:'<i class="fas fa-music"></i> Songs'});ownedSongsG.forEach(function(s){_applyItems.push(s);});}
-    cats.push({key:'apply',label:'<i class="fas fa-check-circle"></i> Apply',items:_applyItems.length?_applyItems:[null],render:function(item){
-        if(!item) return '<div style="padding:24px;text-align:center;color:var(--muted);width:100%;"><i class="fas fa-palette" style="font-size:2rem;margin-bottom:8px;display:block;opacity:.4;"></i>No items owned yet.<br>Purchase from the other tabs to apply them here.</div>';
-        // Section headers
-        if(item._sectionHeader) return '<div style="width:100%;padding:8px 0 4px;"><span style="font-size:13px;font-weight:600;color:var(--primary);display:flex;align-items:center;gap:6px;">'+item._label+'</span></div>';
+    // Apply tab uses a sub-filter stored in _groupApplyFilter
+    if(!window._groupApplyFilter) window._groupApplyFilter='all';
+    var _applyFilteredItems=[];
+    var gaf=window._groupApplyFilter;
+    if(gaf==='all') _applyFilteredItems=[].concat(ownedBasic,ownedPrem,ownedFontsG,ownedSongsG);
+    else if(gaf==='basic') _applyFilteredItems=ownedBasic;
+    else if(gaf==='premium') _applyFilteredItems=ownedPrem;
+    else if(gaf==='fonts') _applyFilteredItems=ownedFontsG;
+    else if(gaf==='songs') _applyFilteredItems=ownedSongsG;
+    // The render prepends filter pills
+    var _applyPillsHtml='<div style="width:100%;display:flex;gap:6px;padding:6px 0 10px;overflow-x:auto;flex-shrink:0;">'
+        +'<button class="search-tab gapply-pill'+(gaf==='all'?' active':'')+'" data-gapply="all" style="font-size:11px;padding:4px 12px;">All</button>'
+        +(ownedBasic.length?'<button class="search-tab gapply-pill'+(gaf==='basic'?' active':'')+'" data-gapply="basic" style="font-size:11px;padding:4px 12px;"><i class="fas fa-palette"></i> Skins</button>':'')
+        +(ownedPrem.length?'<button class="search-tab gapply-pill'+(gaf==='premium'?' active':'')+'" data-gapply="premium" style="font-size:11px;padding:4px 12px;"><i class="fas fa-gem"></i> Premium</button>':'')
+        +(ownedFontsG.length?'<button class="search-tab gapply-pill'+(gaf==='fonts'?' active':'')+'" data-gapply="fonts" style="font-size:11px;padding:4px 12px;"><i class="fas fa-font"></i> Fonts</button>':'')
+        +(ownedSongsG.length?'<button class="search-tab gapply-pill'+(gaf==='songs'?' active':'')+'" data-gapply="songs" style="font-size:11px;padding:4px 12px;"><i class="fas fa-music"></i> Songs</button>':'')
+        +'</div>';
+    // Prepend pills as first "item"
+    var _applyItemsWithPills=[{_pillsHtml:_applyPillsHtml}].concat(_applyFilteredItems.length?_applyFilteredItems:[null]);
+    cats.push({key:'apply',label:'<i class="fas fa-check-circle"></i> Apply',items:_applyItemsWithPills,render:function(item){
+        if(!item) return '<div style="padding:24px;text-align:center;color:var(--muted);width:100%;"><i class="fas fa-palette" style="font-size:2rem;margin-bottom:8px;display:block;opacity:.4;"></i>No items owned in this category yet.</div>';
+        if(item._pillsHtml) return item._pillsHtml;
         // Determine type
         var isSkin=skins.some(function(s){return s.id===item.id;});
         var isPremium=premiumSkins.some(function(s){return s.id===item.id;});
@@ -7590,6 +7602,12 @@ function renderGroupShop(groupId){
             gShopPurchased(btn);
             addNotification('skin','Group purchased the "'+skin.name+'" premium skin!');
         }
+    });});
+
+    // Apply tab sub-filter pills
+    $$('#gvShopContent .gapply-pill').forEach(function(pill){pill.addEventListener('click',function(){
+        window._groupApplyFilter=pill.dataset.gapply;
+        renderGroupShop(groupId);
     });});
 
     $$('#gvShopContent .apply-gskin-btn').forEach(function(btn){btn.addEventListener('click',function(){
