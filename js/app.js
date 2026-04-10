@@ -7281,7 +7281,7 @@ function renderSkinPage(){
         btn.onclick=function(){
             if(btn.dataset.skinView===_skinPageView) return;
             _skinPageView=btn.dataset.skinView;
-            renderSkinPage();
+            stopSongPreview();renderSkinPage();
         };
     });
 }
@@ -7419,7 +7419,7 @@ function renderShop(){
     initDragScroll('#shopTabs');
     $$('#shopTabs .search-tab').forEach(function(tab){tab.addEventListener('click',function(){
         $$('#shopTabs .search-tab').forEach(function(t){t.classList.remove('active');});
-        tab.classList.add('active');currentShopTab=tab.dataset.stab;renderShop();
+        tab.classList.add('active');currentShopTab=tab.dataset.stab;stopSongPreview();renderShop();
     });});
 }
 
@@ -7646,7 +7646,7 @@ function renderGroupShop(groupId){
     // Apply tab sub-filter pills
     $$('#gvShopContent .gapply-pill').forEach(function(pill){pill.addEventListener('click',function(){
         window._groupApplyFilter=pill.dataset.gapply;
-        renderGroupShop(groupId);
+        stopSongPreview();renderGroupShop(groupId);
     });});
     // Set group song handler
     $$('#gvShopContent .set-gsong-btn').forEach(function(btn){btn.addEventListener('click',function(){
@@ -7806,7 +7806,7 @@ function renderGroupShop(groupId){
 
     $$('#gvShopTabs .search-tab').forEach(function(tab){tab.addEventListener('click',function(){
         $$('#gvShopTabs .search-tab').forEach(function(t){t.classList.remove('active');});
-        tab.classList.add('active');currentGroupShopTab=tab.dataset.gstab;renderGroupShop(groupId);
+        tab.classList.add('active');currentGroupShopTab=tab.dataset.gstab;stopSongPreview();renderGroupShop(groupId);
     });});
 
 }
@@ -8311,7 +8311,7 @@ function renderMySkins(){
     initDragScroll('#mySkinsTabs');
     $$('#mySkinsTabs .search-tab').forEach(function(tab){tab.addEventListener('click',function(){
         $$('#mySkinsTabs .search-tab').forEach(function(t){t.classList.remove('active');});
-        tab.classList.add('active');currentMySkinsTab=tab.dataset.mtab;renderMySkins();
+        tab.classList.add('active');currentMySkinsTab=tab.dataset.mtab;stopSongPreview();renderMySkins();
     });});
 }
 
