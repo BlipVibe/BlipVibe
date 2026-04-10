@@ -10006,7 +10006,7 @@ function openStoryViewer(userId){
         // Story song playback
         if(overlay._storyAudio){overlay._storyAudio.pause();overlay._storyAudio=null;}
         if(s.song&&s.song.file_url){
-            var songBar='<div class="story-song-bar"><i class="fas fa-music ssb-icon"></i><span class="ssb-title">'+escapeHtml(s.song.title)+'</span><input type="range" class="ssb-vol" min="0" max="100" value="'+Math.round((s.song_volume||0.5)*100)+'" title="Volume"></div>';
+            var songBar='<div class="story-song-bar"><i class="fas fa-music ssb-icon"></i><span class="ssb-title">'+escapeHtml(s.song.title)+'</span></div>';
             overlay.querySelector('.story-content').insertAdjacentHTML('beforeend',songBar);
             var storyAudio=new Audio(s.song.file_url);
             storyAudio.currentTime=s.song_start||0;
@@ -10014,8 +10014,6 @@ function openStoryViewer(userId){
             storyAudio.loop=true;
             storyAudio.play().catch(function(){});
             overlay._storyAudio=storyAudio;
-            var volSlider=overlay.querySelector('.ssb-vol');
-            if(volSlider) volSlider.addEventListener('input',function(){storyAudio.volume=this.value/100;});
         }
         // Mark as viewed
         _storyViewed[s.id]=true;
@@ -10061,9 +10059,9 @@ function openStoryViewer(userId){
                 }).catch(function(){showToast('Reaction failed');});
             });
         });
-        // Auto-advance: 5s for images/text, video duration for videos
+        // Auto-advance: 10s for images/text, video duration for videos
         var fill=overlay.querySelector('.story-progress-fill');
-        var storyDuration=5000;
+        var storyDuration=10000;
         var vid=overlay.querySelector('video.story-media');
         if(vid){
             // Try to play with sound; if blocked, play muted then unmute on tap
