@@ -7450,12 +7450,13 @@ function getGroupShopCategories(groupId,canManage){
         var a=gaf===key;
         return '<button class="gapply-pill'+(a?' active':'')+'" data-gapply="'+key+'" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid '+(a?'var(--primary)':'var(--border)')+';background:'+(a?'rgba(139,92,246,.15)':'none')+';color:'+(a?'var(--primary)':'var(--gray)')+';cursor:pointer;"><i class="fas '+icon+'"></i></button>';
     }
+    // Default to basic if current filter is 'all'
+    if(gaf==='all') window._groupApplyFilter=gaf='basic';
     var _applyPillsHtml='<div style="width:100%;display:flex;gap:4px;padding:4px 0 8px;justify-content:center;">'
-        +_gpill('all','fa-border-all',true)
-        +_gpill('basic','fa-palette',ownedBasic.length)
-        +_gpill('premium','fa-gem',ownedPrem.length)
-        +_gpill('fonts','fa-font',ownedFontsG.length)
-        +_gpill('songs','fa-music',ownedSongsG.length)
+        +_gpill('basic','fa-palette',true)
+        +_gpill('premium','fa-gem',true)
+        +_gpill('fonts','fa-font',true)
+        +_gpill('songs','fa-music',true)
         +'</div>';
     // Prepend pills as first "item"
     var _applyItemsWithPills=[{_pillsHtml:_applyPillsHtml}].concat(_applyFilteredItems.length?_applyFilteredItems:[null]);
