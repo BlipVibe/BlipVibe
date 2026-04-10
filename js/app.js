@@ -12407,11 +12407,43 @@ function renderProfileMusicPlayer(container,song){
     html+='<button class="pmp-btn" id="pmpMuteBtn" title="Mute"><i class="fas fa-volume-high"></i></button>';
     html+='</div></div>';
     container.insertAdjacentHTML('beforeend',html);
-    // Audio
+    // Audio with fade-out loop
     if(_profileAudio){_profileAudio.pause();_profileAudio=null;}
     _profileAudio=new Audio(song.file_url);
-    _profileAudio.volume=0.5;
-    _profileAudio.loop=true;
+    var _pmpBaseVol=0.5;
+    _profileAudio.volume=_pmpBaseVol;
+    _profileAudio.loop=false; // we handle looping manually for fade effect
+    var _fadeInterval=null;
+    _profileAudio.addEventListener('timeupdate',function(){
+        if(!_profileAudio||_profileAudio.paused) return;
+        var timeLeft=_profileAudio.duration-_profileAudio.currentTime;
+        if(timeLeft<=3&&timeLeft>0&&!_fadeInterval){
+            // Fade out over last 3 seconds
+            _fadeInterval=setInterval(function(){
+                if(!_profileAudio) return clearInterval(_fadeInterval);
+                var remaining=_profileAudio.duration-_profileAudio.currentTime;
+                if(remaining<=0){clearInterval(_fadeInterval);_fadeInterval=null;return;}
+                _profileAudio.volume=Math.max(0,_pmpBaseVol*(remaining/3));
+            },100);
+        }
+    });
+    _profileAudio.addEventListener('ended',function(){
+        clearInterval(_fadeInterval);_fadeInterval=null;
+        if(!_profileAudio) return;
+        // Fade back in from the start
+        _profileAudio.currentTime=0;
+        _profileAudio.volume=0;
+        _profileAudio.play();
+        var _fadeInInterval=setInterval(function(){
+            if(!_profileAudio){clearInterval(_fadeInInterval);return;}
+            if(_profileAudio.volume<_pmpBaseVol-0.02){
+                _profileAudio.volume=Math.min(_pmpBaseVol,_profileAudio.volume+0.02);
+            } else {
+                _profileAudio.volume=_pmpBaseVol;
+                clearInterval(_fadeInInterval);
+            }
+        },50);
+    });
     var player=document.getElementById('profileMusicPlayer');
     var playBtn=document.getElementById('pmpPlayBtn');
     var volSlider=document.getElementById('pmpVolume');
@@ -12420,7 +12452,7 @@ function renderProfileMusicPlayer(container,song){
         if(_profileAudio.paused){_profileAudio.play();playBtn.innerHTML='<i class="fas fa-pause"></i>';player.classList.add('playing');}
         else{_profileAudio.pause();playBtn.innerHTML='<i class="fas fa-play"></i>';player.classList.remove('playing');}
     });
-    volSlider.addEventListener('input',function(){_profileAudio.volume=this.value/100;});
+    volSlider.addEventListener('input',function(){_pmpBaseVol=this.value/100;_profileAudio.volume=_pmpBaseVol;});
     muteBtn.addEventListener('click',function(){
         _profileAudio.muted=!_profileAudio.muted;
         muteBtn.innerHTML=_profileAudio.muted?'<i class="fas fa-volume-xmark"></i>':'<i class="fas fa-volume-high"></i>';
