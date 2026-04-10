@@ -7435,8 +7435,16 @@ function getGroupShopCategories(groupId,canManage){
     if(!state.groupOwnedSongs[groupId]) state.groupOwnedSongs[groupId]={};
     var ownedSongsG=(_shopSongs||[]).filter(function(s){return state.groupOwnedSongs[groupId][s.id];});
     var allOwnedItems=[].concat(ownedBasic,ownedPrem,ownedFontsG,ownedSongsG);
-    cats.push({key:'apply',label:'<i class="fas fa-check-circle"></i> Apply',items:allOwnedItems.length?allOwnedItems:[null],render:function(item){
+    // Build apply items with type markers for section rendering
+    var _applyItems=[];
+    if(ownedBasic.length){_applyItems.push({_sectionHeader:'basic',_label:'<i class="fas fa-palette"></i> Basic Skins'});ownedBasic.forEach(function(s){_applyItems.push(s);});}
+    if(ownedPrem.length){_applyItems.push({_sectionHeader:'premium',_label:'<i class="fas fa-gem"></i> Premium Skins'});ownedPrem.forEach(function(s){_applyItems.push(s);});}
+    if(ownedFontsG.length){_applyItems.push({_sectionHeader:'fonts',_label:'<i class="fas fa-font"></i> Fonts'});ownedFontsG.forEach(function(s){_applyItems.push(s);});}
+    if(ownedSongsG.length){_applyItems.push({_sectionHeader:'songs',_label:'<i class="fas fa-music"></i> Songs'});ownedSongsG.forEach(function(s){_applyItems.push(s);});}
+    cats.push({key:'apply',label:'<i class="fas fa-check-circle"></i> Apply',items:_applyItems.length?_applyItems:[null],render:function(item){
         if(!item) return '<div style="padding:24px;text-align:center;color:var(--muted);width:100%;"><i class="fas fa-palette" style="font-size:2rem;margin-bottom:8px;display:block;opacity:.4;"></i>No items owned yet.<br>Purchase from the other tabs to apply them here.</div>';
+        // Section headers
+        if(item._sectionHeader) return '<div style="width:100%;padding:8px 0 4px;"><span style="font-size:13px;font-weight:600;color:var(--primary);display:flex;align-items:center;gap:6px;">'+item._label+'</span></div>';
         // Determine type
         var isSkin=skins.some(function(s){return s.id===item.id;});
         var isPremium=premiumSkins.some(function(s){return s.id===item.id;});
