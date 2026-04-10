@@ -1060,6 +1060,7 @@ async function loadGroups() {
             if(gsd.ownedSkins) state.groupOwnedSkins[g.id]=gsd.ownedSkins;
             if(gsd.ownedPremiumSkins) state.groupOwnedPremiumSkins[g.id]=gsd.ownedPremiumSkins;
             if(gsd.ownedFonts) state.groupOwnedFonts[g.id]=gsd.ownedFonts;
+            if(gsd.ownedSongs){if(!state.groupOwnedSongs) state.groupOwnedSongs={};state.groupOwnedSongs[g.id]=gsd.ownedSongs;}
             return {
                 id: g.id,
                 name: g.name,
@@ -7410,6 +7411,7 @@ function syncGroupSkinData(groupId){
     if(state.groupOwnedSkins[groupId]) sd.ownedSkins=state.groupOwnedSkins[groupId];
     if(state.groupOwnedPremiumSkins[groupId]) sd.ownedPremiumSkins=state.groupOwnedPremiumSkins[groupId];
     if(state.groupOwnedFonts[groupId]) sd.ownedFonts=state.groupOwnedFonts[groupId];
+    if(state.groupOwnedSongs&&state.groupOwnedSongs[groupId]) sd.ownedSongs=state.groupOwnedSongs[groupId];
     sbUpdateGroup(groupId,{skin_data:sd}).catch(function(e){console.error('syncGroupSkinData:',e);});
 }
 var currentGroupShopTab=null;
