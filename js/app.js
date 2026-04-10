@@ -7448,7 +7448,7 @@ function getGroupShopCategories(groupId,canManage){
     function _gpill(key,icon,has){
         if(!has) return '';
         var a=gaf===key;
-        return '<button class="gapply-pill'+(a?' active':'')+'" data-gapply="'+key+'" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid '+(a?'var(--primary)':'var(--border)')+';background:'+(a?'rgba(139,92,246,.15)':'none')+';color:'+(a?'var(--primary)':'var(--gray)')+';cursor:pointer;"><i class="fas '+icon+'"></i></button>';
+        return '<button class="search-tab gapply-pill'+(a?' active':'')+'" data-gapply="'+key+'" style="min-width:36px;padding:6px 10px;font-size:14px;cursor:pointer;"><i class="fas '+icon+'"></i></button>';
     }
     // Default to basic if current filter is 'all'
     if(gaf==='all') window._groupApplyFilter=gaf='basic';
