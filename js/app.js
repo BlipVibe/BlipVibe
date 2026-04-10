@@ -5819,7 +5819,17 @@ function _buildPostHtml(p){
     if(pollHtml) html+=pollHtml;
     html+='<div class="post-tags">';tags.forEach(function(t){html+='<span class="skill-tag">'+t+'</span>';});html+='</div>';
     html+=buildMediaGrid(p.images);
-    if(p.sharedPost){var sp=p.sharedPost;var spAvatar=sp.avatar_url||DEFAULT_AVATAR;var spClickAttr=sp.authorId?' data-person-id="'+sp.authorId+'" style="cursor:pointer;"':'';html+='<div class="share-preview" style="margin:0 20px 14px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><img src="'+spAvatar+'" class="shared-post-author"'+spClickAttr+' style="width:28px;height:28px;border-radius:50%;object-fit:cover;cursor:pointer;"><strong class="share-preview-name shared-post-author"'+spClickAttr+' style="font-size:13px;">'+escapeHtml(sp.name)+'</strong><span class="share-preview-time" style="font-size:12px;">'+sp.time+'</span></div><div class="share-preview-text" style="font-size:13px;">'+escapeHtmlNl(sp.text)+'</div>';if(sp.images&&sp.images.length){html+='<div style="display:flex;gap:4px;margin-top:8px;overflow:hidden;">';sp.images.slice(0,3).forEach(function(src){html+='<img src="'+src+'" style="width:60px;height:60px;object-fit:cover;border-radius:6px;flex-shrink:0;">';});if(sp.images.length>3) html+='<span style="font-size:11px;color:var(--gray);align-self:center;">+'+( sp.images.length-3)+' more</span>';html+='</div>';}html+='</div>';}
+    if(p.sharedPost){var sp=p.sharedPost;var spAvatar=sp.avatar_url||DEFAULT_AVATAR;var spClickAttr=sp.authorId?' data-person-id="'+sp.authorId+'"':'';
+        var spText=sp.text?safeSlice(sp.text,0,100)+(sp.text.length>100?'...':''):'';
+        html+='<div class="share-preview" style="margin:0 20px 14px;border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;gap:10px;align-items:flex-start;">';
+        // Left: thumbnail if image exists
+        if(sp.images&&sp.images.length) html+='<img src="'+sp.images[0]+'" style="width:64px;height:64px;object-fit:cover;border-radius:8px;flex-shrink:0;">';
+        // Right: author + text
+        html+='<div style="flex:1;min-width:0;">';
+        html+='<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><img src="'+spAvatar+'" class="shared-post-author"'+spClickAttr+' style="width:22px;height:22px;border-radius:50%;object-fit:cover;cursor:pointer;"><strong class="share-preview-name shared-post-author"'+spClickAttr+' style="font-size:12px;cursor:pointer;">'+escapeHtml(sp.name)+'</strong><span style="font-size:11px;color:var(--gray);">'+sp.time+'</span></div>';
+        if(spText) html+='<p style="font-size:12px;color:var(--gray);line-height:1.4;overflow:hidden;">'+escapeHtmlNl(spText)+'</p>';
+        html+='</div></div>';
+    }
     html+='<div class="post-actions"><div class="action-left">';
     html+='<button class="action-btn like-btn'+(state.likedPosts[i]?' liked':'')+'" data-post-id="'+i+'"><i class="'+(state.likedPosts[i]?'fas':'far')+' fa-thumbs-up"></i><span class="like-count">'+likes+'</span></button>';
     html+='<button class="action-btn dislike-btn" data-post-id="'+i+'"><i class="'+(state.dislikedPosts[i]?'fas':'far')+' fa-thumbs-down"></i><span class="dislike-count">0</span></button>';
