@@ -12283,8 +12283,12 @@ function renderFeaturedSkin(){
 }
 
 // ======================== COIN EARN ANIMATION ========================
+var _lastCoinAnim=0;
 function showCoinEarnAnimation(anchorEl,amount){
     if(!anchorEl||amount===0) return;
+    var now=Date.now();
+    if(now-_lastCoinAnim<500) return; // debounce — one animation per 500ms
+    _lastCoinAnim=now;
     var isNegative=amount<0;
     // Get the active coin skin icon and color
     var coinIcon='fa-coins';
