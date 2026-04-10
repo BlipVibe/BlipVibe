@@ -1497,6 +1497,45 @@ function computeDisplayName(firstName, lastName, nickname, displayMode, username
   return username || 'User';
 }
 
+// ---- PROFILE MUSIC --------------------------------------------------------
+async function sbGetMusicLibrary() {
+  const { data, error } = await sb.from('music_library')
+    .select('*')
+    .order('title', { ascending: true });
+  if (error) throw error;
+  return data || [];
+}
+
+async function sbGetUserSongs(userId) {
+  const { data, error } = await sb.from('user_songs')
+    .select('song_id')
+    .eq('user_id', userId);
+  if (error) throw error;
+  return (data || []).map(d => d.song_id);
+}
+
+async function sbPurchaseSong(userId, songId) {
+  const { error } = await sb.from('user_songs')
+    .insert({ user_id: userId, song_id: songId });
+  if (error) throw error;
+}
+
+async function sbSetProfileSong(userId, songId) {
+  const { error } = await sb.from('profiles')
+    .update({ profile_song_id: songId })
+    .eq('id', userId);
+  if (error) throw error;
+}
+
+async function sbGetProfileSong(userId) {
+  const { data, error } = await sb.from('profiles')
+    .select('profile_song_id, profile_song:music_library!profiles_profile_song_id_fkey(id, title, artist, file_url, genre)')
+    .eq('id', userId)
+    .single();
+  if (error) throw error;
+  return data && data.profile_song ? data.profile_song : null;
+}
+
 // ---- DAILY LOGIN REWARD (server-side) ----------------------------------------
 // Returns { awarded, coins, streak, new_balance, next_available } or { awarded: false, hours_remaining }
 async function sbClaimDailyReward() {

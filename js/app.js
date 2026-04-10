@@ -1260,6 +1260,7 @@ var _navCurrent='home';var _navPrev='home';var _navFromPopstate=false;var _activ
 function navigateTo(page,skipPush){
     revertTryOn();
     _exitPhotoSelectMode();
+    stopProfileAudio();
     // Restore navbars if mobile chat hid them
     var _tn=document.querySelector('.navbar');var _bn=document.querySelector('.nav-center');
     if(_tn) _tn.style.display='';if(_bn) _bn.style.display='';
@@ -2950,6 +2951,12 @@ async function showProfileView(person){
             if(mc&&mutuals&&mutuals.length) renderMutualFollowers(mc,mutuals);
         }).catch(function(){});
     }
+    // Load profile song (async, non-blocking)
+    stopProfileAudio();
+    var pvUserId2=isMe?currentUser.id:person.id;
+    sbGetProfileSong(pvUserId2).then(function(song){
+        if(song) renderProfileMusicPlayer(document.getElementById('pvProfileCard'),song);
+    }).catch(function(){});
 
     // Photos card - tabbed: Photos | Albums (photos first)
     var pvUserId=isMe?currentUser.id:person.id;
@@ -5191,6 +5198,8 @@ document.addEventListener('click',function(e){
             h+='</div></div>';
             // Link in Bio
             h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Link in Bio</span><button class="btn btn-outline" id="settingsLinkInBio" style="padding:4px 14px;font-size:12px;"><i class="fas fa-link" style="margin-right:4px;"></i>'+(currentUser&&currentUser.website_url?'Edit':'Add')+'</button></div>';
+            // Profile Song
+            h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;"><i class="fas fa-music" style="margin-right:6px;color:var(--primary);"></i>Profile Song</span><button class="btn btn-outline" id="settingsProfileSong" style="padding:4px 14px;font-size:12px;"><i class="fas fa-headphones" style="margin-right:4px;"></i>'+(currentUser&&currentUser.profile_song_id?'Change':'Pick')+'</button></div>';
             // Post Analytics
             h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Post Analytics</span><button class="btn btn-outline" id="settingsAnalytics" style="padding:4px 14px;font-size:12px;"><i class="fas fa-chart-line" style="margin-right:4px;"></i>View</button></div>';
             // Scheduled Posts Calendar
@@ -5238,6 +5247,9 @@ document.addEventListener('click',function(e){
             var tfaBtn=document.getElementById('settings2FA');
             if(tfaBtn) tfaBtn.addEventListener('click',function(){closeModal();showSetup2FAModal();});
             // Link in Bio
+            // Profile Song
+            var psBtn=document.getElementById('settingsProfileSong');
+            if(psBtn) psBtn.addEventListener('click',function(){closeModal();showSongPickerModal();});
             var libBtn=document.getElementById('settingsLinkInBio');
             if(libBtn) libBtn.addEventListener('click',function(){closeModal();showEditLinkInBio();});
             // Scheduled Posts Calendar
@@ -12295,6 +12307,128 @@ function renderFeaturedSkin(){
             renderCoinGoalBar();
         }
     });
+}
+
+// ======================== PROFILE MUSIC SYSTEM ========================
+var _profileAudio=null;
+function showSongPickerModal(){
+    var h='<div class="modal-header"><h3><i class="fas fa-music" style="color:var(--primary);margin-right:8px;"></i>Profile Song</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body"><p style="font-size:13px;color:var(--gray);margin-bottom:12px;">Pick a song for your profile. Visitors will see a music player when they view your page.</p>';
+    h+='<div class="song-picker-grid" id="songPickerGrid"><div style="text-align:center;padding:20px;"><i class="fas fa-spinner fa-spin" style="color:var(--primary);font-size:20px;"></i></div></div>';
+    h+='<div class="modal-actions" style="margin-top:12px;"><button class="btn btn-outline" id="removeSongBtn"><i class="fas fa-times"></i> Remove Song</button><button class="btn btn-primary modal-close">Done</button></div></div>';
+    showModal(h);
+    (async function(){
+        try{
+            var songs=await sbGetMusicLibrary();
+            var owned=await sbGetUserSongs(currentUser.id);
+            var ownedMap={};owned.forEach(function(sid){ownedMap[sid]=true;});
+            var currentSongId=currentUser.profile_song_id||null;
+            var grid=document.getElementById('songPickerGrid');
+            if(!grid) return;
+            if(!songs.length){grid.innerHTML='<p style="text-align:center;color:var(--gray);">No songs available yet.</p>';return;}
+            var gh='';
+            songs.forEach(function(song){
+                var isOwned=_hasInfinity()||ownedMap[song.id];
+                var isActive=currentSongId===song.id;
+                gh+='<div class="song-picker-item'+(isActive?' active':'')+'" data-song-id="'+song.id+'" data-url="'+escapeHtml(song.file_url)+'">';
+                gh+='<div class="spi-art"><i class="fas fa-music"></i></div>';
+                gh+='<div class="spi-info"><div class="spi-title">'+escapeHtml(song.title)+'</div><div class="spi-genre">'+(song.genre?escapeHtml(song.genre):'BlipVibe Original')+'</div></div>';
+                gh+='<button class="spi-preview" title="Preview"><i class="fas fa-play"></i></button>';
+                if(isActive) gh+='<span style="color:var(--green);font-size:14px;"><i class="fas fa-check-circle"></i></span>';
+                else if(isOwned) gh+='<button class="btn btn-primary spi-set" data-sid="'+song.id+'" style="padding:4px 12px;font-size:11px;">Set</button>';
+                else gh+='<button class="btn btn-primary spi-buy" data-sid="'+song.id+'" data-price="'+song.price+'" style="padding:4px 12px;font-size:11px;">'+(_hasInfinity()?'Free':song.price+' <i class="fas fa-coins"></i>')+'</button>';
+                gh+='</div>';
+            });
+            grid.innerHTML=gh;
+            // Preview buttons
+            var _previewAudio=null;
+            grid.querySelectorAll('.spi-preview').forEach(function(btn){
+                btn.addEventListener('click',function(e){
+                    e.stopPropagation();
+                    var url=btn.closest('.song-picker-item').dataset.url;
+                    if(_previewAudio){_previewAudio.pause();_previewAudio=null;grid.querySelectorAll('.spi-preview i').forEach(function(i){i.className='fas fa-play';});}
+                    if(btn.querySelector('i').classList.contains('fa-pause')){btn.querySelector('i').className='fas fa-play';return;}
+                    _previewAudio=new Audio(url);_previewAudio.volume=0.5;_previewAudio.play();
+                    btn.querySelector('i').className='fas fa-pause';
+                    _previewAudio.addEventListener('ended',function(){btn.querySelector('i').className='fas fa-play';_previewAudio=null;});
+                });
+            });
+            // Buy buttons
+            grid.querySelectorAll('.spi-buy').forEach(function(btn){
+                btn.addEventListener('click',async function(){
+                    var sid=btn.dataset.sid;var price=parseInt(btn.dataset.price);
+                    if(!_hasInfinity()&&state.coins<price){showToast('Not enough coins');return;}
+                    btn.disabled=true;btn.textContent='...';
+                    try{
+                        if(!_hasInfinity()){state.coins-=price;updateCoins();}
+                        await sbPurchaseSong(currentUser.id,sid);
+                        await sbSetProfileSong(currentUser.id,sid);
+                        currentUser.profile_song_id=sid;
+                        saveState();closeModal();
+                        showToast('Song set on your profile!');
+                    }catch(e){showToast('Failed: '+(e.message||'Error'));btn.disabled=false;}
+                });
+            });
+            // Set buttons (already owned)
+            grid.querySelectorAll('.spi-set').forEach(function(btn){
+                btn.addEventListener('click',async function(){
+                    var sid=btn.dataset.sid;
+                    btn.disabled=true;btn.textContent='...';
+                    try{
+                        await sbSetProfileSong(currentUser.id,sid);
+                        currentUser.profile_song_id=sid;
+                        saveState();closeModal();
+                        showToast('Profile song updated!');
+                    }catch(e){showToast('Failed');btn.disabled=false;}
+                });
+            });
+        }catch(e){
+            var grid=document.getElementById('songPickerGrid');
+            if(grid) grid.innerHTML='<p style="color:var(--gray);text-align:center;">Could not load songs. Run the migration first.</p>';
+        }
+    })();
+    // Remove song button
+    document.getElementById('removeSongBtn').addEventListener('click',async function(){
+        try{
+            await sbSetProfileSong(currentUser.id,null);
+            currentUser.profile_song_id=null;
+            closeModal();showToast('Profile song removed');
+        }catch(e){showToast('Failed');}
+    });
+}
+function renderProfileMusicPlayer(container,song){
+    if(!container||!song) return;
+    var html='<div class="profile-music-player" id="profileMusicPlayer">';
+    html+='<div class="pmp-art"><i class="fas fa-music"></i></div>';
+    html+='<div class="pmp-info"><div class="pmp-title">'+escapeHtml(song.title)+'</div><div class="pmp-artist">'+escapeHtml(song.artist||'BlipVibe')+'</div></div>';
+    html+='<div class="pmp-controls">';
+    html+='<button class="pmp-btn" id="pmpPlayBtn" title="Play"><i class="fas fa-play"></i></button>';
+    html+='<input type="range" class="pmp-volume" id="pmpVolume" min="0" max="100" value="50" title="Volume">';
+    html+='<button class="pmp-btn" id="pmpMuteBtn" title="Mute"><i class="fas fa-volume-high"></i></button>';
+    html+='</div></div>';
+    container.insertAdjacentHTML('beforeend',html);
+    // Audio
+    if(_profileAudio){_profileAudio.pause();_profileAudio=null;}
+    _profileAudio=new Audio(song.file_url);
+    _profileAudio.volume=0.5;
+    _profileAudio.loop=true;
+    var player=document.getElementById('profileMusicPlayer');
+    var playBtn=document.getElementById('pmpPlayBtn');
+    var volSlider=document.getElementById('pmpVolume');
+    var muteBtn=document.getElementById('pmpMuteBtn');
+    playBtn.addEventListener('click',function(){
+        if(_profileAudio.paused){_profileAudio.play();playBtn.innerHTML='<i class="fas fa-pause"></i>';player.classList.add('playing');}
+        else{_profileAudio.pause();playBtn.innerHTML='<i class="fas fa-play"></i>';player.classList.remove('playing');}
+    });
+    volSlider.addEventListener('input',function(){_profileAudio.volume=this.value/100;});
+    muteBtn.addEventListener('click',function(){
+        _profileAudio.muted=!_profileAudio.muted;
+        muteBtn.innerHTML=_profileAudio.muted?'<i class="fas fa-volume-xmark"></i>':'<i class="fas fa-volume-high"></i>';
+    });
+}
+// Stop profile audio when leaving profile view
+function stopProfileAudio(){
+    if(_profileAudio){_profileAudio.pause();_profileAudio=null;}
 }
 
 // ======================== COIN EARN ANIMATION ========================
