@@ -3577,9 +3577,12 @@ async function showGroupView(group){
     var isOwner=currentUser&&group.owner_id===currentUser.id;
 
     // Play group song if one is set
-    if(state.groupActiveSong&&state.groupActiveSong[group.id]&&_shopSongs&&_shopSongs.length){
-        var gSong=_shopSongs.find(function(s){return s.id===state.groupActiveSong[group.id];});
-        if(gSong) switchToProfileSong(gSong);
+    if(state.groupActiveSong&&state.groupActiveSong[group.id]){
+        (async function(){
+            if(!_shopSongs||!_shopSongs.length) await _loadShopSongs();
+            var gSong=(_shopSongs||[]).find(function(s){return s.id===state.groupActiveSong[group.id];});
+            if(gSong) switchToProfileSong(gSong);
+        })();
     }
 
     // Sync group coin balance from DB if available
