@@ -9758,6 +9758,10 @@ function renderStoriesBar(){
 }
 
 function openCreateStory(){
+    // Hide global music player while creating story
+    var _gmp=document.getElementById('globalMiniPlayer');
+    var _gmpWasVisible=_gmp&&_gmp.classList.contains('visible');
+    if(_gmp) _gmp.classList.remove('visible');
     var html='<div class="modal-header"><h3><i class="fas fa-plus-circle" style="color:var(--primary);margin-right:8px;"></i>Create Story</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     html+='<div class="modal-body">';
     html+='<textarea id="storyText" class="post-input" placeholder="What\'s on your mind?" style="width:100%;min-height:60px;margin-bottom:12px;font-size:14px;"></textarea>';
@@ -9768,6 +9772,16 @@ function openCreateStory(){
     html+='<p style="font-size:11px;color:var(--gray);text-align:center;margin-top:8px;">Stories disappear after 24 hours</p>';
     html+='</div>';
     showModal(html);
+    // Restore music player when modal closes (X button or backdrop click)
+    var _modalCloseRestore=function(){
+        if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
+        if(_gmpWasVisible&&_gmp) _gmp.classList.add('visible');
+    };
+    var _mcBtn=document.querySelector('#modalOverlay .modal-close');
+    if(_mcBtn) _mcBtn.addEventListener('click',_modalCloseRestore);
+    document.getElementById('modalOverlay').addEventListener('click',function _bgClose(e){
+        if(e.target.id==='modalOverlay'){_modalCloseRestore();document.getElementById('modalOverlay').removeEventListener('click',_bgClose);}
+    });
     var _storyFile=null;
     var _storySongId=null,_storySongStart=0,_storySongVol=0.5;
     var _storySongPreview=null;
@@ -9865,6 +9879,8 @@ function openCreateStory(){
             if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
             await sbCreateStory(currentUser.id,mediaUrl,mediaType,text,_storySongId||null,_storySongStart||0,_storySongVol||0.5);
             closeModal();
+            // Restore global music player
+            if(_gmpWasVisible&&_gmp) _gmp.classList.add('visible');
             showToast('Story shared!');
             await loadStories();
         }catch(e){

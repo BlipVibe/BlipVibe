@@ -12,6 +12,7 @@
       "\ud83d\udcca Coin Progress Bar \u2014 track progress toward your next premium skin",
       "\ud83d\udd25 Featured Skin \u2014 daily rotating premium skin highlight with countdown",
       "\ud83c\udfc6 Tiered Streak Rewards \u2014 Day 1: +10, Day 3: +20, Day 7: +50, Day 14: +100",
+      "\ud83c\udfb5 Story Music \u2014 add songs to stories with start time picker and volume control",
       "\ud83c\udfb5 Songs in Group Shop \u2014 groups can buy songs with group coins",
       "\ud83c\udfa7 Global sticky mini player \u2014 stays visible on all pages with play/pause/volume/mute",
       "\ud83c\udfb6 Music auto-starts after first interaction on the page",
@@ -22,7 +23,9 @@
       "\u267e\ufe0f Infinity symbol now renders larger (28px) in nav"
     ],
     "changed": [
-      "\ud83d\udcb0 Shop prices rebalanced: Fonts 25, Logos 35, Icons 35, Coins 50, Nav 60, Skins 75, Templates 100, Premium 300",
+      "\ud83d\udcb0 Shop prices rebalanced: Fonts 25, Logos 35, Icons 35, Coins 50, Nav 60, Skins 75, Templates 100, Premium 300, Songs 40",
+      "\ud83d\udcdc TOS updated (v9) \u2014 AI-generated music (Suno) disclosure, music library terms added",
+      "\ud83d\udcdd Privacy Policy updated \u2014 music preferences and Suno AI disclosed",
       "\ud83d\udcc1 Backup system added before major changes",
       "\ud83c\udfae Group Shop Apply tab is now the first tab instead of Basic Skins"
     ],
