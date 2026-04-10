@@ -7390,7 +7390,7 @@ function renderShop(){
             await sbPurchaseSong(currentUser.id,sid);
             await sbSetProfileSong(currentUser.id,sid);
             currentUser.profile_song_id=sid;_shopOwnedSongs[sid]=true;
-            saveState();showToast('Song purchased and set as profile song!');renderShop();
+            saveState();showToast('Song purchased and set as profile song!');refreshMyProfileMusic();renderShop();
         }catch(e){showToast('Failed: '+(e.message||'Error'));btn.disabled=false;}
     });});
     // Song set buttons (already owned)
@@ -7400,7 +7400,7 @@ function renderShop(){
         try{
             await sbSetProfileSong(currentUser.id,sid);
             currentUser.profile_song_id=sid;saveState();
-            showToast('Profile song updated!');renderShop();
+            showToast('Profile song updated!');refreshMyProfileMusic();renderShop();
         }catch(e){showToast('Failed');btn.disabled=false;}
     });});
     initDragScroll('#shopGrid');
@@ -8280,7 +8280,7 @@ function renderMySkins(){
     // Song set + preview in My Skins
     $$('#mySkinsGrid .set-song-btn').forEach(function(btn){btn.addEventListener('click',async function(){
         var sid=btn.dataset.songId;btn.disabled=true;btn.textContent='...';
-        try{await sbSetProfileSong(currentUser.id,sid);currentUser.profile_song_id=sid;saveState();showToast('Profile song updated!');renderMySkins();}catch(e){showToast('Failed');btn.disabled=false;}
+        try{await sbSetProfileSong(currentUser.id,sid);currentUser.profile_song_id=sid;saveState();showToast('Profile song updated!');refreshMyProfileMusic();renderMySkins();}catch(e){showToast('Failed');btn.disabled=false;}
     });});
     $$('#mySkinsGrid .song-preview-btn').forEach(function(btn){btn.addEventListener('click',function(e){handleSongPreviewClick(e,btn);
     });});
@@ -12550,6 +12550,27 @@ function _setupFadeLoop(audio){
         _fadeAudio(audio,0,_gmpBaseVol,1000,null);
     });
 }
+// Refresh the global player with a new song (called after setting profile song)
+async function refreshMyProfileMusic(){
+    try{
+        var song=await sbGetProfileSong(currentUser.id);
+        if(!song){_mySong=null;if(_myAudio){_myAudio.pause();_myAudio=null;}hideGlobalPlayer();return;}
+        // Stop old audio
+        if(_myAudio){_myAudio.pause();_myAudio=null;}
+        _mySong=song;
+        _myAudio=new Audio(song.file_url);
+        _myAudio.volume=_gmpBaseVol;
+        _setupFadeLoop(_myAudio);
+        _updateGlobalPlayer(song.title,song.artist||'BlipVibe',false);
+        showGlobalPlayer();
+        // Auto-play the new song
+        _myAudio.volume=0;_myAudio.play().then(function(){
+            _fadeAudio(_myAudio,0,_gmpBaseVol,500,function(){
+                _updateGlobalPlayer(song.title,song.artist||'BlipVibe',true);
+            });
+        }).catch(function(){});
+    }catch(e){console.warn('refreshMyProfileMusic:',e);}
+}
 async function initMyProfileMusic(){
     if(!currentUser||!currentUser.profile_song_id) return;
     try{
@@ -12712,7 +12733,7 @@ function showSongPickerModal(){
                         await sbSetProfileSong(currentUser.id,sid);
                         currentUser.profile_song_id=sid;
                         saveState();closeModal();
-                        showToast('Profile song updated!');
+                        showToast('Profile song updated!');refreshMyProfileMusic();
                     }catch(e){showToast('Failed');btn.disabled=false;}
                 });
             });
