@@ -8558,7 +8558,23 @@ function renderPvPhotoTab(isMe){
         var pvPP=container.querySelector('.photos-preview');
         if(pvPP&&document.body.classList.contains('tpl-cinema')){pvPP.classList.add('shop-scroll-row');initDragScroll('#pvPhotoContent');}
         var pvPhotosLink=container.querySelector('.pv-photos-link');
-        if(pvPhotosLink)pvPhotosLink.addEventListener('click',function(e){e.preventDefault();renderPhotoAlbum();navigateTo('photos');});
+        if(pvPhotosLink)pvPhotosLink.addEventListener('click',function(e){
+            e.preventDefault();
+            if(isMe){renderPhotoAlbum();navigateTo('photos');}
+            else{
+                // Show all their photos in a modal instead of navigating to own photos
+                var allPhotos=photos||_pvPostPhotos||[];
+                if(!allPhotos.length){showToast('No photos to show');return;}
+                var mh='<div class="modal-header"><h3><i class="fas fa-images" style="color:var(--primary);margin-right:8px;"></i>All Photos</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+                mh+='<div class="modal-body" style="max-height:60vh;overflow-y:auto;"><div class="photos-preview" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">';
+                allPhotos.forEach(function(p){
+                    var src=p.src||p;
+                    mh+='<img src="'+escapeHtml(src)+'" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;cursor:pointer;" loading="lazy">';
+                });
+                mh+='</div></div>';
+                showModal(mh);
+            }
+        });
         // Drag start for photos
         if(isMe) container.querySelectorAll('.photo-wrap[draggable]').forEach(function(wrap){
             wrap.addEventListener('dragstart',function(e){e.dataTransfer.setData('text/plain',wrap.dataset.psrc);e.dataTransfer.effectAllowed='copy';});
