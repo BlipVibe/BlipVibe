@@ -506,7 +506,7 @@ function populateUserUI() {
     if (postAvatar) postAvatar.src = avatar;
     // Coins
     var coinEl = document.getElementById('navCoinCount');
-    if (coinEl) coinEl.textContent = _hasInfinity()?'\u221E':(currentUser.coin_balance || 0);
+    if (coinEl) if(_hasInfinity()){coinEl.innerHTML='<span class="infinity">\u221E</span>';}else{coinEl.textContent=currentUser.coin_balance||0;}
 }
 
 // Sync all avatar images on the page when avatar changes
@@ -553,7 +553,7 @@ async function initApp() {
     await loadSkinDataFromSupabase();
     // Refresh coin display after skin_data loads (infinity status may not be available earlier)
     var _coinEl=document.getElementById('navCoinCount');
-    if(_coinEl) _coinEl.textContent=_hasInfinity()?'\u221E':(currentUser.coin_balance||0);
+    if(_coinEl) if(_hasInfinity()){_coinEl.innerHTML='<span class="infinity">\u221E</span>';}else{_coinEl.textContent=currentUser.coin_balance||0;}
     // Check TOS acceptance — existing users must accept updated terms before proceeding
     if(!checkTosAccepted()){
         populateUserUI();
@@ -1495,7 +1495,7 @@ function updateCoins(){
         currentUser.coin_balance=state.coins;
         sbUpdateProfile(currentUser.id,{coin_balance:state.coins}).catch(function(e){console.error('coinSync:',e);});
     }
-    $('#navCoinCount').textContent=_hasInfinity()?'\u221E':state.coins;
+    if(_hasInfinity()){$('#navCoinCount').innerHTML='<span class="infinity">\u221E</span>';}else{$('#navCoinCount').textContent=state.coins;}
     var el=$('#navCoins');
     el.classList.remove('coin-pop');
     void el.offsetWidth;

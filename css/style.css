@@ -228,6 +228,7 @@ img{display:block;}
 .nav-right{flex-shrink:0;display:flex;align-items:center;gap:10px;}
 .nav-coins{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);padding:6px 14px;border-radius:20px;color:#ffd700;font-size:calc(14px * var(--font-scale));font-weight:600;cursor:pointer;transition:background .2s;}
 .nav-coins:hover{background:rgba(255,255,255,.3);}
+.nav-coins .infinity{font-size:28px;line-height:1;font-weight:700;}
 .nav-coins i{font-size:16px;}
 .coin-count{color:#fff;}
 .nav-user{display:flex;align-items:center;gap:8px;cursor:pointer;padding:6px 10px;border-radius:20px;transition:background .3s;position:relative;}
