@@ -7499,7 +7499,11 @@ function getGroupShopCategories(groupId,canManage){
             var applyBtn=!canManage?'<button class="btn btn-disabled">'+(isActive?'Active':'Locked')+'</button>':'<button class="btn '+(isActive?'btn-disabled':'btn-primary')+' apply-gfont-btn" data-fid="'+item.id+'" data-gid="'+groupId+'">'+(isActive?'Active':'Apply')+'</button>';
             return '<div class="skin-card"><div class="skin-preview" style="display:flex;align-items:center;justify-content:center;font-family:\''+item.family+'\',sans-serif;font-size:18px;background:#f0f2f5;color:#333;">Aa Bb 123</div><div class="skin-card-body"><h4>'+item.name+'</h4><p>Font</p>'+applyBtn+'</div></div>';
         } else if(isSong){
-            var songApplyBtn=!canManage?'<button class="btn btn-disabled">Owned</button>':'<button class="btn btn-primary set-gsong-btn" data-song-id="'+item.id+'" data-gid="'+groupId+'">Set as Group Song</button>';
+            var isSongActive=state.groupActiveSong&&state.groupActiveSong[groupId]===item.id;
+            var songApplyBtn;
+            if(isSongActive) songApplyBtn='<button class="btn btn-disabled">Applied</button>';
+            else if(!canManage) songApplyBtn='<button class="btn btn-disabled">Owned</button>';
+            else songApplyBtn='<button class="btn btn-primary set-gsong-btn" data-song-id="'+item.id+'" data-gid="'+groupId+'">Set as Group Song</button>';
             return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#1a1a2e,#2d1b69);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;"><i class="fas fa-music" style="font-size:32px;color:var(--primary);"></i><button class="song-preview-btn" data-url="'+escapeHtml(item.file_url)+'" style="background:rgba(255,255,255,.15);color:#fff;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;"><i class="fas fa-play"></i></button></div><div class="skin-card-body"><h4>'+escapeHtml(item.title)+'</h4><p>Song</p>'+songApplyBtn+'</div></div>';
         }
         return '';
