@@ -7426,6 +7426,40 @@ function getGroupShopCategories(groupId,canManage){
     if(!state.groupOwnedPremiumSkins[groupId]) state.groupOwnedPremiumSkins[groupId]={};
     var _lockHtml=canManage?'':'<div style="font-size:11px;color:var(--muted);margin-top:4px;"><i class="fas fa-lock" style="margin-right:4px;"></i>Only admins &amp; mods can manage</div>';
 
+    // Apply tab — FIRST tab, shows all owned items organized by type
+    var ownedBasic=skins.filter(function(s){return state.groupOwnedSkins[groupId][s.id];});
+    var ownedPrem=premiumSkins.filter(function(s){return state.groupOwnedPremiumSkins[groupId][s.id];});
+    if(!state.groupOwnedFonts[groupId]) state.groupOwnedFonts[groupId]={};
+    var ownedFontsG=fonts.filter(function(f){return state.groupOwnedFonts[groupId][f.id];});
+    if(!state.groupOwnedSongs) state.groupOwnedSongs={};
+    if(!state.groupOwnedSongs[groupId]) state.groupOwnedSongs[groupId]={};
+    var ownedSongsG=(_shopSongs||[]).filter(function(s){return state.groupOwnedSongs[groupId][s.id];});
+    var allOwnedItems=[].concat(ownedBasic,ownedPrem,ownedFontsG,ownedSongsG);
+    cats.push({key:'apply',label:'<i class="fas fa-check-circle"></i> Apply',items:allOwnedItems.length?allOwnedItems:[null],render:function(item){
+        if(!item) return '<div style="padding:24px;text-align:center;color:var(--muted);width:100%;"><i class="fas fa-palette" style="font-size:2rem;margin-bottom:8px;display:block;opacity:.4;"></i>No items owned yet.<br>Purchase from the other tabs to apply them here.</div>';
+        // Determine type
+        var isSkin=skins.some(function(s){return s.id===item.id;});
+        var isPremium=premiumSkins.some(function(s){return s.id===item.id;});
+        var isFont=fonts.some(function(f){return f.id===item.id;});
+        var isSong=(_shopSongs||[]).some(function(s){return s.id===item.id;});
+        if(isSkin){
+            var isActive=state.groupActiveSkin[groupId]===item.id;
+            var applyBtn=!canManage?'<button class="btn btn-disabled">'+(isActive?'Active':'Locked')+'</button>':'<button class="btn '+(isActive?'btn-disabled':'btn-primary')+' apply-gskin-btn" data-sid="'+item.id+'" data-gid="'+groupId+'" data-premium="0">'+(isActive?'Active':'Apply')+'</button>';
+            return '<div class="skin-card"><div class="skin-preview" style="background:'+item.preview+';"><div class="skin-preview-inner" style="color:#333;background:#fff;">Preview</div></div><div class="skin-card-body" style="background:'+(item.cardBg||'')+';"><h4 style="color:'+(item.cardText||'')+';">'+item.name+'</h4><p style="color:'+(item.cardMuted||'')+';">Basic Skin</p>'+applyBtn+'</div></div>';
+        } else if(isPremium){
+            var isActive=state.groupActivePremiumSkin[groupId]===item.id;
+            var applyBtn=!canManage?'<button class="btn btn-disabled">'+(isActive?'Active':'Locked')+'</button>':'<button class="btn '+(isActive?'btn-disabled':'btn-primary')+' apply-gskin-btn" data-sid="'+item.id+'" data-gid="'+groupId+'" data-premium="1">'+(isActive?'Active':'Apply')+'</button>';
+            return '<div class="skin-card"><div class="skin-preview" style="background:'+item.preview+';"><div class="premium-preview-frame" style="background:'+item.border+';"><img src="images/default-avatar.svg" class="premium-preview-avatar"></div></div><div class="skin-card-body" style="background:'+(item.cardBg||'')+';"><h4 style="color:'+(item.cardText||'')+';">'+(item.icon?'<i class="fas '+item.icon+'" style="color:'+item.iconColor+';margin-right:6px;"></i>':'')+item.name+'</h4><p style="color:'+(item.cardMuted||'')+';">Premium Skin</p>'+applyBtn+'</div></div>';
+        } else if(isFont){
+            var isActive=state.groupActiveFont[groupId]===item.id;
+            var applyBtn=!canManage?'<button class="btn btn-disabled">'+(isActive?'Active':'Locked')+'</button>':'<button class="btn '+(isActive?'btn-disabled':'btn-primary')+' apply-gfont-btn" data-fid="'+item.id+'" data-gid="'+groupId+'">'+(isActive?'Active':'Apply')+'</button>';
+            return '<div class="skin-card"><div class="skin-preview" style="display:flex;align-items:center;justify-content:center;font-family:\''+item.family+'\',sans-serif;font-size:18px;background:#f0f2f5;color:#333;">Aa Bb 123</div><div class="skin-card-body"><h4>'+item.name+'</h4><p>Font</p>'+applyBtn+'</div></div>';
+        } else if(isSong){
+            return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#1a1a2e,#2d1b69);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;"><i class="fas fa-music" style="font-size:32px;color:var(--primary);"></i><button class="song-preview-btn" data-url="'+escapeHtml(item.file_url)+'" style="background:rgba(255,255,255,.15);color:#fff;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;"><i class="fas fa-play"></i></button></div><div class="skin-card-body"><h4>'+escapeHtml(item.title)+'</h4><p>Song</p><button class="btn btn-disabled">Owned</button></div></div>';
+        }
+        return '';
+    }});
+
     cats.push({key:'basic',label:'<i class="fas fa-palette"></i> Basic Skins',items:skins,render:function(s){
         var buyHtml=canManage?groupShopBuy(groupId,state.groupOwnedSkins[groupId][s.id],s.price,'buy-gskin-btn','data-sid="'+s.id+'" data-gid="'+groupId+'"'):(state.groupOwnedSkins[groupId][s.id]?'<button class="btn btn-disabled">Owned</button>':_lockHtml);
         return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="skin-preview-inner" style="color:#333;background:#fff;">Preview</div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';">'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p>'+buyHtml+'</div></div>';
@@ -7450,33 +7484,7 @@ function getGroupShopCategories(groupId,canManage){
         return '<div class="skin-card"><div class="skin-preview" style="display:flex;align-items:center;justify-content:center;font-family:\''+f.family+'\',sans-serif;font-size:'+(f.scale?Math.round(18*f.scale):18)+'px;background:#f0f2f5;color:#333;">Aa Bb 123</div><div class="skin-card-body"><h4>'+f.name+'</h4><p>'+f.desc+'</p>'+btnHtml+'</div></div>';
     }});
 
-    // Apply Skins tab (always visible)
-    var ownedBasic=skins.filter(function(s){return state.groupOwnedSkins[groupId][s.id];});
-    var ownedPrem=premiumSkins.filter(function(s){return state.groupOwnedPremiumSkins[groupId][s.id];});
-    var allOwned=ownedBasic.concat(ownedPrem);
-    if(allOwned.length){
-        cats.push({key:'owned',label:'<i class="fas fa-check-circle"></i> Apply Skins',items:allOwned,render:function(s){
-            var isPremium=!!s.border;
-            var isActive=isPremium?(state.groupActivePremiumSkin[groupId]===s.id):(state.groupActiveSkin[groupId]===s.id);
-            var bodyStyle=s.cardBg?'background:'+s.cardBg+';':'';
-            var titleStyle=s.cardText?'color:'+s.cardText+';':'';
-            var descStyle=s.cardMuted?'color:'+s.cardMuted+';':'';
-            var inner=isPremium?'<div class="premium-preview-frame" style="background:'+s.border+';"><img src="images/default-avatar.svg" class="premium-preview-avatar"></div>':'<div class="skin-preview-inner" style="color:#333;background:#fff;">Preview</div>';
-            var applyBtn;
-            if(!canManage){
-                applyBtn='<button class="btn btn-disabled">'+(isActive?'Active':'<i class="fas fa-lock" style="margin-right:4px;"></i>Locked')+'</button>';
-            } else {
-                applyBtn='<button class="btn '+(isActive?'btn-disabled':'btn-primary')+' apply-gskin-btn" data-sid="'+s.id+'" data-gid="'+groupId+'" data-premium="'+(isPremium?'1':'0')+'">'+(isActive?'Active':'Apply')+'</button>';
-            }
-            return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';">'+inner+'</div><div class="skin-card-body" style="'+bodyStyle+'"><h4 style="'+titleStyle+'">'+(s.icon?'<i class="fas '+s.icon+'" style="color:'+s.iconColor+';margin-right:6px;"></i>':'')+s.name+'</h4><p style="'+descStyle+'">'+s.desc+'</p>'+applyBtn+'</div></div>';
-        }});
-    } else {
-        cats.push({key:'owned',label:'<i class="fas fa-check-circle"></i> Apply Skins',items:[null],render:function(){
-            return '<div style="padding:24px;text-align:center;color:var(--muted);width:100%;"><i class="fas fa-palette" style="font-size:2rem;margin-bottom:8px;display:block;opacity:.4;"></i>No skins owned yet.<br>Purchase skins from the other tabs to apply them here.</div>';
-        }});
-    }
-
-    // Songs tab for groups
+    // Songs tab for groups (purchase)
     if(_shopSongs&&_shopSongs.length){
         if(!state.groupOwnedSongs) state.groupOwnedSongs={};
         if(!state.groupOwnedSongs[groupId]) state.groupOwnedSongs[groupId]={};
