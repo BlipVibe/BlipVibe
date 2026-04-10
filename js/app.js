@@ -7241,6 +7241,18 @@ function getShopCategories(){
     cats.push({key:'coins',label:'<i class="fas fa-coins"></i> Coin Skins',items:coinSkins,render:function(s){return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#1a1a2e,#16213e);"><i class="fas '+s.icon+'" style="font-size:36px;color:'+s.color+';"></i></div><div class="skin-card-body"><h4>'+s.name+'</h4><p>'+s.desc+'</p>'+shopBuy(state.ownedCoinSkins[s.id],s.price,'buy-coin-btn','data-cid="'+s.id+'"','coins',s.id)+'</div></div>';}});
     if(window.innerWidth>768) cats.push({key:'templates',label:'<i class="fas fa-table-columns"></i> Templates',items:templates,render:function(t){return '<div class="skin-card"><div class="skin-preview" style="background:'+t.preview+';">'+tplPreviewHtml(t.id)+'</div><div class="skin-card-body"><h4>'+t.name+'</h4><p>'+t.desc+'</p>'+shopBuy(state.ownedTemplates[t.id],t.price,'buy-tpl-btn','data-tid="'+t.id+'"','template',t.id)+'</div></div>';}});
     cats.push({key:'navstyles',label:'<i class="fas fa-bars-staggered"></i> Nav Styles',items:navStyles,render:function(n){return '<div class="skin-card"><div class="skin-preview" style="background:'+n.preview+';">'+navPreviewHtml(n.id)+'</div><div class="skin-card-body"><h4>'+n.name+'</h4><p>'+n.desc+'</p>'+shopBuy(state.ownedNavStyles[n.id],n.price,'buy-nav-btn','data-nid="'+n.id+'"','navstyle',n.id)+'</div></div>';}});
+    // Songs tab (loaded from DB)
+    if(_shopSongs&&_shopSongs.length){
+        cats.push({key:'songs',label:'<i class="fas fa-music"></i> Songs',items:_shopSongs,render:function(s){
+            var owned=_hasInfinity()||(_shopOwnedSongs&&_shopOwnedSongs[s.id]);
+            var isActive=currentUser&&currentUser.profile_song_id===s.id;
+            var buyHtml='';
+            if(isActive) buyHtml='<button class="btn btn-disabled">Active</button>';
+            else if(owned) buyHtml='<button class="btn btn-primary set-song-btn" data-song-id="'+s.id+'" style="font-size:12px;padding:6px 14px;">Set as Profile Song</button>';
+            else buyHtml='<div class="skin-price"><i class="fas fa-coins"></i> '+(_hasInfinity()?'Free':s.price+' Coins')+'</div><button class="btn '+(_hasInfinity()||state.coins>=s.price?'btn-primary':'btn-disabled')+' buy-song-btn" data-song-id="'+s.id+'" data-price="'+s.price+'"'+(_hasInfinity()||state.coins>=s.price?'':' disabled')+'>Buy</button>';
+            return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#1a1a2e,#2d1b69);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;"><i class="fas fa-music" style="font-size:32px;color:var(--primary);"></i><button class="song-preview-btn" data-url="'+escapeHtml(s.file_url)+'" style="background:rgba(255,255,255,.15);color:#fff;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;"><i class="fas fa-play"></i></button></div><div class="skin-card-body"><h4>'+escapeHtml(s.title)+'</h4><p>'+(s.genre||'BlipVibe Original')+'</p>'+buyHtml+'</div></div>';
+        }});
+    }
     return cats;
 }
 function renderSkinPage(){
@@ -7252,7 +7264,8 @@ function renderSkinPage(){
         renderMySkins();
     } else {
         shopView.style.display='';mineView.style.display='none';
-        renderShop();
+        if(!_shopSongsLoaded){_loadShopSongs().then(function(){renderShop();});}
+        else renderShop();
     }
     $$('#skinPageToggle .search-tab').forEach(function(t){t.classList.toggle('active',t.dataset.skinView===_skinPageView);});
     $$('#skinPageToggle .search-tab').forEach(function(btn){
@@ -7262,6 +7275,17 @@ function renderSkinPage(){
             renderSkinPage();
         };
     });
+}
+var _shopSongs=[];var _shopOwnedSongs={};var _shopSongsLoaded=false;
+var _shopPreviewAudio=null;
+async function _loadShopSongs(){
+    if(_shopSongsLoaded) return;
+    try{
+        _shopSongs=await sbGetMusicLibrary();
+        var owned=await sbGetUserSongs(currentUser.id);
+        owned.forEach(function(sid){_shopOwnedSongs[sid]=true;});
+        _shopSongsLoaded=true;
+    }catch(e){}
 }
 function renderShop(){
     var cats=getShopCategories();
@@ -7294,6 +7318,39 @@ function renderShop(){
     $$('.buy-nav-btn').forEach(function(btn){btn.addEventListener('click',function(){var nid=btn.getAttribute('data-nid');var n=navStyles.find(function(x){return x.id===nid;});if(_hasInfinity()||state.coins>=n.price){if(!_hasInfinity())state.coins-=n.price;state.ownedNavStyles[nid]=true;updateCoins();shopPurchased(btn,'navstyle',nid);addNotification('skin','You purchased the "'+n.name+'" nav style!');}});});
     // Try On button handlers
     $$('.try-on-btn').forEach(function(btn){btn.addEventListener('click',function(){doTryOn(btn.dataset.tryType,btn.dataset.tryId);});});
+    // Song preview buttons
+    $$('.song-preview-btn').forEach(function(btn){btn.addEventListener('click',function(e){
+        e.stopPropagation();
+        var url=btn.dataset.url;
+        if(_shopPreviewAudio){_shopPreviewAudio.pause();_shopPreviewAudio=null;$$('.song-preview-btn i').forEach(function(i){i.className='fas fa-play';});}
+        if(btn.querySelector('i').classList.contains('fa-pause')){btn.querySelector('i').className='fas fa-play';return;}
+        _shopPreviewAudio=new Audio(url);_shopPreviewAudio.volume=0.5;_shopPreviewAudio.play();
+        btn.querySelector('i').className='fas fa-pause';
+        _shopPreviewAudio.addEventListener('ended',function(){btn.querySelector('i').className='fas fa-play';_shopPreviewAudio=null;});
+    });});
+    // Song buy buttons
+    $$('.buy-song-btn').forEach(function(btn){btn.addEventListener('click',async function(){
+        var sid=btn.dataset.songId;var price=parseInt(btn.dataset.price);
+        if(!_hasInfinity()&&state.coins<price){showToast('Not enough coins');return;}
+        btn.disabled=true;btn.textContent='...';
+        try{
+            if(!_hasInfinity()){state.coins-=price;updateCoins();}
+            await sbPurchaseSong(currentUser.id,sid);
+            await sbSetProfileSong(currentUser.id,sid);
+            currentUser.profile_song_id=sid;_shopOwnedSongs[sid]=true;
+            saveState();showToast('Song purchased and set as profile song!');renderShop();
+        }catch(e){showToast('Failed: '+(e.message||'Error'));btn.disabled=false;}
+    });});
+    // Song set buttons (already owned)
+    $$('.set-song-btn').forEach(function(btn){btn.addEventListener('click',async function(){
+        var sid=btn.dataset.songId;
+        btn.disabled=true;btn.textContent='...';
+        try{
+            await sbSetProfileSong(currentUser.id,sid);
+            currentUser.profile_song_id=sid;saveState();
+            showToast('Profile song updated!');renderShop();
+        }catch(e){showToast('Failed');btn.disabled=false;}
+    });});
     initDragScroll('#shopGrid');
     initDragScroll('#shopTabs');
     $$('#shopTabs .search-tab').forEach(function(tab){tab.addEventListener('click',function(){

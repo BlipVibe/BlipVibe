@@ -1,5 +1,29 @@
 [
   {
+    "version": "0.6.0",
+    "date": "2026-04-07",
+    "added": [
+      "\ud83c\udfb5 Profile Music! \u2014 Pick a song for your profile page from 22 BlipVibe originals",
+      "\ud83c\udfb6 Songs tab in Skin Shop \u2014 browse, preview, buy (40 coins), and set songs",
+      "\ud83c\udfa7 Profile music player on profile view \u2014 play/pause, volume, mute controls for visitors",
+      "\ud83d\udd01 Songs loop with smooth fade-out and fade-in between repeats",
+      "\ud83d\udcb0 Coin earn animation \u2014 your coin skin icon floats up when earning coins",
+      "\ud83d\udcdc Daily Quests \u2014 Like 3 posts, Follow 2 users, Create 1 post for bonus coins",
+      "\ud83d\udcca Coin Progress Bar \u2014 track progress toward your next premium skin",
+      "\ud83d\udd25 Featured Skin \u2014 daily rotating premium skin highlight with countdown",
+      "\ud83c\udfc6 Tiered Streak Rewards \u2014 Day 1: +10, Day 3: +20, Day 7: +50, Day 14: +100"
+    ],
+    "changed": [
+      "\ud83d\udcb0 Shop prices rebalanced for quest economy",
+      "\ud83d\udcc1 Backup system added before major changes"
+    ],
+    "fixed": [
+      "\u267e\ufe0f Infinity coins now persist properly",
+      "\ud83d\udcf1 Shared post preview redesigned \u2014 compact card layout",
+      "\ud83d\udcf7 View All photos on other profiles now works correctly"
+    ]
+  },
+  {
     "version": "0.5.1",
     "date": "2026-04-07",
     "added": [
