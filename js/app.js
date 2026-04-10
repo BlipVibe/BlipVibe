@@ -7429,6 +7429,22 @@ function getGroupShopCategories(groupId,canManage){
         }});
     }
 
+    // Songs tab for groups
+    if(_shopSongs&&_shopSongs.length){
+        if(!state.groupOwnedSongs) state.groupOwnedSongs={};
+        if(!state.groupOwnedSongs[groupId]) state.groupOwnedSongs[groupId]={};
+        cats.push({key:'songs',label:'<i class="fas fa-music"></i> Songs',items:_shopSongs,render:function(s){
+            var owned=state.groupOwnedSongs[groupId][s.id];
+            var buyHtml;
+            if(!canManage){
+                buyHtml=owned?'<button class="btn btn-disabled">Owned</button>':_lockHtml;
+            } else {
+                buyHtml=owned?'<button class="btn btn-disabled">Owned</button>':groupShopBuy(groupId,false,s.price,'buy-gsong-btn','data-song-id="'+s.id+'" data-gid="'+groupId+'"');
+            }
+            return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#1a1a2e,#2d1b69);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;"><i class="fas fa-music" style="font-size:32px;color:var(--primary);"></i><button class="song-preview-btn" data-url="'+escapeHtml(s.file_url)+'" style="background:rgba(255,255,255,.15);color:#fff;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;"><i class="fas fa-play"></i></button></div><div class="skin-card-body"><h4>'+escapeHtml(s.title)+'</h4><p>'+(s.genre||'BlipVibe Original')+'</p>'+buyHtml+'</div></div>';
+        }});
+    }
+
     return cats;
 }
 
@@ -7543,6 +7559,33 @@ function renderGroupShop(groupId){
         state.groupActiveFont[gid]=fid;
         applyFont(fid,true);
         renderGroupShop(gid);saveState();syncGroupSkinData(gid);
+    });});
+
+    // Group song buy handlers
+    $$('#gvShopContent .buy-gsong-btn').forEach(function(btn){btn.addEventListener('click',function(){
+        var sid=btn.getAttribute('data-song-id');var gid=btn.getAttribute('data-gid');
+        var song=_shopSongs.find(function(s){return s.id===sid;});
+        if(!song) return;
+        var gc=getGroupCoinCount(gid);
+        if(gc>=song.price){
+            addGroupCoins(gid,-song.price);
+            if(!state.groupOwnedSongs) state.groupOwnedSongs={};
+            if(!state.groupOwnedSongs[gid]) state.groupOwnedSongs[gid]={};
+            state.groupOwnedSongs[gid][sid]=true;
+            saveState();syncGroupSkinData(gid);
+            gShopPurchased(btn);
+            addNotification('skin','Group purchased the "'+song.title+'" song!');
+        }
+    });});
+    // Group song preview handlers
+    $$('#gvShopContent .song-preview-btn').forEach(function(btn){btn.addEventListener('click',function(e){
+        e.stopPropagation();
+        var url=btn.dataset.url;
+        if(_shopPreviewAudio){_shopPreviewAudio.pause();_shopPreviewAudio=null;$$('.song-preview-btn i').forEach(function(i){i.className='fas fa-play';});}
+        if(btn.querySelector('i').classList.contains('fa-pause')){btn.querySelector('i').className='fas fa-play';return;}
+        _shopPreviewAudio=new Audio(url);_shopPreviewAudio.volume=0.5;_shopPreviewAudio.play();
+        btn.querySelector('i').className='fas fa-pause';
+        _shopPreviewAudio.addEventListener('ended',function(){btn.querySelector('i').className='fas fa-play';_shopPreviewAudio=null;});
     });});
 
     // Reset group font
@@ -12634,6 +12677,23 @@ function stopProfileAudio(){
     var navMusicBtn=document.getElementById('navMusicBtn');
     if(navMusicBtn) navMusicBtn.addEventListener('click',function(){reopenGlobalPlayer();});
 })();
+// Auto-start music after first user interaction on the page
+var _musicAutoStarted=false;
+function _tryAutoStartMusic(){
+    if(_musicAutoStarted) return;
+    var audio=_getCurrentAudio();
+    if(!audio||!audio.paused) return;
+    _musicAutoStarted=true;
+    audio.volume=0;
+    audio.play().then(function(){
+        _fadeAudio(audio,0,_gmpBaseVol,800,null);
+        var t=document.getElementById('gmpTitle');
+        var a=document.getElementById('gmpArtist');
+        _updateGlobalPlayer(t?t.textContent:null,a?a.textContent:null,true);
+    }).catch(function(){_musicAutoStarted=false;});
+}
+document.addEventListener('click',_tryAutoStartMusic,{once:true});
+document.addEventListener('touchend',_tryAutoStartMusic,{once:true});
 
 // ======================== COIN EARN ANIMATION ========================
 var _lastCoinAnim=0;

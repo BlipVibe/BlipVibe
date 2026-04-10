@@ -1162,6 +1162,42 @@ Group coins are **shared** — they belong to the group, not individual users. A
 ### Changes to index.html TOS
 - Counter-notification jurisdiction updated to "Eastern District of Tennessee"
 
+## Profile Music System (v0.6.0 — 2026-04-07)
+
+### Music Library
+- 22 BlipVibe original songs from Suno stored in Supabase Music bucket
+- `music_library` table with title, artist, file_url, genre, price (40 coins)
+- `user_songs` table tracks ownership per user
+- `profile_song_id` column on profiles
+
+### Song Shop
+- Songs tab in Skin Shop — browse, preview with play/pause, buy for 40 coins
+- Songs tab in My Skins — set owned songs as profile song
+- Songs tab in Group Shop — groups can buy songs with group coins
+- Infinity users see "Free" button instead of price
+- Preview audio shared across shop tabs
+
+### Global Mini Player
+- Sticky bar at bottom of screen, visible on ALL pages
+- Play/pause, volume slider, mute, close controls
+- Shows song title and artist
+- Pulse animation when playing
+- Close pauses audio, music note icon in nav to reopen
+
+### Audio Behavior
+- Your profile song plays as background music while you browse
+- Visiting someone else's profile crossfades to their song (800ms)
+- Leaving their profile crossfades back to your song (1000ms)
+- If they have no song, your music keeps playing
+- Songs loop with 3-second fade-out and 1-second fade-in
+- Auto-starts after first user interaction (click/tap) on the page
+
+### Crossfade System
+- `_fadeAudio(audio, fromVol, toVol, duration, callback)` — smooth volume transitions
+- `switchToProfileSong(song)` — fades out yours, loads theirs
+- `resumeMyMusic()` — fades out theirs, fades yours back in from where it left off
+- `_setupFadeLoop(audio)` — auto fade-out/in at song boundaries
+
 ## Security, Accessibility & Admin Features (v0.3.5 — 2026-04-02)
 
 ### Change Password In-App
