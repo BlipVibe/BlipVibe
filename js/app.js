@@ -12390,6 +12390,28 @@ var _viewingSong=null; // the song playing from someone else's profile
 var _gmpBaseVol=0.5;
 
 // Initialize your own background music on app load
+function _setupFadeLoop(audio){
+    audio.loop=false;
+    var _fl=null;
+    audio.addEventListener('timeupdate',function(){
+        if(!audio||audio.paused) return;
+        var timeLeft=audio.duration-audio.currentTime;
+        if(timeLeft<=3&&timeLeft>0&&!_fl){
+            _fl=setInterval(function(){
+                if(!audio||audio.paused){clearInterval(_fl);_fl=null;return;}
+                var rem=audio.duration-audio.currentTime;
+                if(rem<=0){clearInterval(_fl);_fl=null;return;}
+                audio.volume=Math.max(0,_gmpBaseVol*(rem/3));
+            },100);
+        }
+    });
+    audio.addEventListener('ended',function(){
+        clearInterval(_fl);_fl=null;
+        if(!audio) return;
+        audio.currentTime=0;audio.volume=0;audio.play();
+        _fadeAudio(audio,0,_gmpBaseVol,1000,null);
+    });
+}
 async function initMyProfileMusic(){
     if(!currentUser||!currentUser.profile_song_id) return;
     try{
@@ -12398,20 +12420,33 @@ async function initMyProfileMusic(){
         _mySong=song;
         _myAudio=new Audio(song.file_url);
         _myAudio.volume=_gmpBaseVol;
-        _myAudio.loop=true;
+        _setupFadeLoop(_myAudio);
         _updateGlobalPlayer(song.title,song.artist||'BlipVibe',false);
         showGlobalPlayer();
-    }catch(e){}
+    }catch(e){console.warn('[Music] initMyProfileMusic error:',e);}
 }
 function showGlobalPlayer(){
     var el=document.getElementById('globalMiniPlayer');
     if(el) el.classList.add('visible');
 }
+var _playerHidden=false;
 function hideGlobalPlayer(){
     var el=document.getElementById('globalMiniPlayer');
     if(el) el.classList.remove('visible');
-    if(_profileAudio){_profileAudio.pause();_profileAudio=null;}
-    if(_myAudio){_myAudio.pause();_myAudio=null;}
+    // Pause but don't destroy — user can reopen
+    var audio=_getCurrentAudio();
+    if(audio&&!audio.paused) audio.pause();
+    _playerHidden=true;
+    // Show reopen button in nav
+    var reopenBtn=document.getElementById('navMusicBtn');
+    if(reopenBtn) reopenBtn.style.display='flex';
+}
+function reopenGlobalPlayer(){
+    _playerHidden=false;
+    var el=document.getElementById('globalMiniPlayer');
+    if(el) el.classList.add('visible');
+    var reopenBtn=document.getElementById('navMusicBtn');
+    if(reopenBtn) reopenBtn.style.display='none';
 }
 function _updateGlobalPlayer(title,artist,isPlaying){
     var t=document.getElementById('gmpTitle');if(t) t.textContent=title||'—';
@@ -12445,14 +12480,13 @@ function switchToProfileSong(song){
     }
     // Fade out any existing profile audio
     if(_profileAudio){_fadeAudio(_profileAudio,_profileAudio.volume,0,300,function(){if(_profileAudio){_profileAudio.pause();_profileAudio=null;}});}
-    // Create and fade in their song
+    // Create their song with fade loop
     _viewingSong=song;
     _profileAudio=new Audio(song.file_url);
     _profileAudio.volume=0;
-    _profileAudio.loop=true;
+    _setupFadeLoop(_profileAudio);
     _updateGlobalPlayer(song.title,song.artist||'BlipVibe',false);
     showGlobalPlayer();
-    // Auto-start with fade in when visitor clicks play (don't autoplay)
 }
 // Resume your own song when leaving someone's profile (crossfade)
 function resumeMyMusic(){
@@ -12558,69 +12592,7 @@ function showSongPickerModal(){
         }catch(e){showToast('Failed');}
     });
 }
-function renderProfileMusicPlayer(container,song){
-    if(!container||!song) return;
-    var html='<div class="profile-music-player" id="profileMusicPlayer">';
-    html+='<div class="pmp-art"><i class="fas fa-music"></i></div>';
-    html+='<div class="pmp-info"><div class="pmp-title">'+escapeHtml(song.title)+'</div><div class="pmp-artist">'+escapeHtml(song.artist||'BlipVibe')+'</div></div>';
-    html+='<div class="pmp-controls">';
-    html+='<button class="pmp-btn" id="pmpPlayBtn" title="Play"><i class="fas fa-play"></i></button>';
-    html+='<input type="range" class="pmp-volume" id="pmpVolume" min="0" max="100" value="50" title="Volume">';
-    html+='<button class="pmp-btn" id="pmpMuteBtn" title="Mute"><i class="fas fa-volume-high"></i></button>';
-    html+='</div></div>';
-    container.insertAdjacentHTML('beforeend',html);
-    // Audio with fade-out loop
-    if(_profileAudio){_profileAudio.pause();_profileAudio=null;}
-    _profileAudio=new Audio(song.file_url);
-    var _pmpBaseVol=0.5;
-    _profileAudio.volume=_pmpBaseVol;
-    _profileAudio.loop=false; // we handle looping manually for fade effect
-    var _fadeInterval=null;
-    _profileAudio.addEventListener('timeupdate',function(){
-        if(!_profileAudio||_profileAudio.paused) return;
-        var timeLeft=_profileAudio.duration-_profileAudio.currentTime;
-        if(timeLeft<=3&&timeLeft>0&&!_fadeInterval){
-            // Fade out over last 3 seconds
-            _fadeInterval=setInterval(function(){
-                if(!_profileAudio) return clearInterval(_fadeInterval);
-                var remaining=_profileAudio.duration-_profileAudio.currentTime;
-                if(remaining<=0){clearInterval(_fadeInterval);_fadeInterval=null;return;}
-                _profileAudio.volume=Math.max(0,_pmpBaseVol*(remaining/3));
-            },100);
-        }
-    });
-    _profileAudio.addEventListener('ended',function(){
-        clearInterval(_fadeInterval);_fadeInterval=null;
-        if(!_profileAudio) return;
-        // Fade back in from the start
-        _profileAudio.currentTime=0;
-        _profileAudio.volume=0;
-        _profileAudio.play();
-        var _fadeInInterval=setInterval(function(){
-            if(!_profileAudio){clearInterval(_fadeInInterval);return;}
-            if(_profileAudio.volume<_pmpBaseVol-0.02){
-                _profileAudio.volume=Math.min(_pmpBaseVol,_profileAudio.volume+0.02);
-            } else {
-                _profileAudio.volume=_pmpBaseVol;
-                clearInterval(_fadeInInterval);
-            }
-        },50);
-    });
-    var player=document.getElementById('profileMusicPlayer');
-    var playBtn=document.getElementById('pmpPlayBtn');
-    var volSlider=document.getElementById('pmpVolume');
-    var muteBtn=document.getElementById('pmpMuteBtn');
-    playBtn.addEventListener('click',function(){
-        if(_profileAudio.paused){_profileAudio.play();playBtn.innerHTML='<i class="fas fa-pause"></i>';player.classList.add('playing');}
-        else{_profileAudio.pause();playBtn.innerHTML='<i class="fas fa-play"></i>';player.classList.remove('playing');}
-    });
-    volSlider.addEventListener('input',function(){_pmpBaseVol=this.value/100;_profileAudio.volume=_pmpBaseVol;});
-    muteBtn.addEventListener('click',function(){
-        _profileAudio.muted=!_profileAudio.muted;
-        muteBtn.innerHTML=_profileAudio.muted?'<i class="fas fa-volume-xmark"></i>':'<i class="fas fa-volume-high"></i>';
-    });
-}
-// Stop profile audio when leaving profile view
+// Old renderProfileMusicPlayer removed — all audio goes through global mini player now
 function stopProfileAudio(){
     if(_profileAudio){_profileAudio.pause();_profileAudio=null;}
 }
@@ -12633,17 +12605,17 @@ function stopProfileAudio(){
     var closeBtn=document.getElementById('gmpClose');
     if(playBtn) playBtn.addEventListener('click',function(){
         var audio=_getCurrentAudio();
-        if(!audio) return;
+        if(!audio){console.warn('[Music] No audio object available');return;}
+        var t=document.getElementById('gmpTitle');
+        var a=document.getElementById('gmpArtist');
         if(audio.paused){
-            audio.volume=0;audio.play();
-            _fadeAudio(audio,0,_gmpBaseVol,500,null);
-            var t=document.getElementById('gmpTitle');
-            var a=document.getElementById('gmpArtist');
-            _updateGlobalPlayer(t?t.textContent:null,a?a.textContent:null,true);
+            audio.volume=0;
+            audio.play().then(function(){
+                _fadeAudio(audio,0,_gmpBaseVol,500,null);
+                _updateGlobalPlayer(t?t.textContent:null,a?a.textContent:null,true);
+            }).catch(function(e){console.warn('[Music] Play failed:',e);showToast('Tap again to play');});
         } else {
             _fadeAudio(audio,audio.volume,0,300,function(){audio.pause();audio.volume=_gmpBaseVol;});
-            var t=document.getElementById('gmpTitle');
-            var a=document.getElementById('gmpArtist');
             _updateGlobalPlayer(t?t.textContent:null,a?a.textContent:null,false);
         }
     });
@@ -12659,6 +12631,8 @@ function stopProfileAudio(){
         muteBtn.innerHTML=audio.muted?'<i class="fas fa-volume-xmark"></i>':'<i class="fas fa-volume-high"></i>';
     });
     if(closeBtn) closeBtn.addEventListener('click',function(){hideGlobalPlayer();});
+    var navMusicBtn=document.getElementById('navMusicBtn');
+    if(navMusicBtn) navMusicBtn.addEventListener('click',function(){reopenGlobalPlayer();});
 })();
 
 // ======================== COIN EARN ANIMATION ========================
