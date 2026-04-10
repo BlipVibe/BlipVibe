@@ -5690,7 +5690,7 @@ function _buildFeedPost(p,sharedMap){
     };
     if(p.shared_post_id&&sharedMap&&sharedMap[p.shared_post_id]){
         var sp=sharedMap[p.shared_post_id];
-        fp.sharedPost={name:sp.author?(sp.author.display_name||sp.author.username):'User',avatar_url:sp.author?sp.author.avatar_url:null,text:sp.content||'',time:timeAgoReal(sp.created_at),images:sp.media_urls&&sp.media_urls.length?sp.media_urls:(sp.image_url?[sp.image_url]:null)};
+        fp.sharedPost={authorId:sp.author?sp.author.id:null,name:sp.author?(sp.author.display_name||sp.author.username):'User',avatar_url:sp.author?sp.author.avatar_url:null,text:sp.content||'',time:timeAgoReal(sp.created_at),images:sp.media_urls&&sp.media_urls.length?sp.media_urls:(sp.image_url?[sp.image_url]:null)};
         fp.badge={cls:'badge-green',icon:'fa-share',text:'Shared'};
     }
     return fp;
@@ -5819,7 +5819,7 @@ function _buildPostHtml(p){
     if(pollHtml) html+=pollHtml;
     html+='<div class="post-tags">';tags.forEach(function(t){html+='<span class="skill-tag">'+t+'</span>';});html+='</div>';
     html+=buildMediaGrid(p.images);
-    if(p.sharedPost){var sp=p.sharedPost;var spAvatar=sp.avatar_url||DEFAULT_AVATAR;html+='<div class="share-preview" style="margin:0 20px 14px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><img src="'+spAvatar+'" style="width:28px;height:28px;border-radius:50%;object-fit:cover;"><strong class="share-preview-name" style="font-size:13px;">'+escapeHtml(sp.name)+'</strong><span class="share-preview-time" style="font-size:12px;">'+sp.time+'</span></div><div class="share-preview-text" style="font-size:13px;">'+escapeHtmlNl(sp.text)+'</div>';if(sp.images){sp.images.forEach(function(src){html+='<img src="'+src+'" style="max-width:100%;border-radius:8px;margin-top:8px;">';});}html+='</div>';}
+    if(p.sharedPost){var sp=p.sharedPost;var spAvatar=sp.avatar_url||DEFAULT_AVATAR;var spClickAttr=sp.authorId?' data-person-id="'+sp.authorId+'" style="cursor:pointer;"':'';html+='<div class="share-preview" style="margin:0 20px 14px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><img src="'+spAvatar+'" class="shared-post-author"'+spClickAttr+' style="width:28px;height:28px;border-radius:50%;object-fit:cover;cursor:pointer;"><strong class="share-preview-name shared-post-author"'+spClickAttr+' style="font-size:13px;">'+escapeHtml(sp.name)+'</strong><span class="share-preview-time" style="font-size:12px;">'+sp.time+'</span></div><div class="share-preview-text" style="font-size:13px;">'+escapeHtmlNl(sp.text)+'</div>';if(sp.images){sp.images.forEach(function(src){html+='<img src="'+src+'" style="max-width:100%;border-radius:8px;margin-top:8px;">';});}html+='</div>';}
     html+='<div class="post-actions"><div class="action-left">';
     html+='<button class="action-btn like-btn'+(state.likedPosts[i]?' liked':'')+'" data-post-id="'+i+'"><i class="'+(state.likedPosts[i]?'fas':'far')+' fa-thumbs-up"></i><span class="like-count">'+likes+'</span></button>';
     html+='<button class="action-btn dislike-btn" data-post-id="'+i+'"><i class="'+(state.dislikedPosts[i]?'fas':'far')+' fa-thumbs-down"></i><span class="dislike-count">0</span></button>';
@@ -5988,6 +5988,15 @@ function bindPostEvents(){
             if(!span) return;
             if(span.classList.contains('hidden')){span.classList.remove('hidden');btn.textContent='View Less';}
             else{span.classList.add('hidden');btn.textContent='View More';}
+        });
+    });
+
+    // Shared post author click — navigate to their profile
+    _$$('.shared-post-author').forEach(function(el){
+        el.addEventListener('click',async function(){
+            var uid=el.getAttribute('data-person-id');
+            if(!uid) return;
+            try{var p=await sbGetProfile(uid);if(p) showProfileView(profileToPerson(p));}catch(e){}
         });
     });
 
