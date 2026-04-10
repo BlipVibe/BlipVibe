@@ -1261,6 +1261,7 @@ var _navCurrent='home';var _navPrev='home';var _navFromPopstate=false;var _activ
 function navigateTo(page,skipPush){
     revertTryOn();
     _exitPhotoSelectMode();
+    stopSongPreview(); // Stop any playing song preview when navigating
     // Resume your own music when leaving someone else's profile
     if(_viewingSong) resumeMyMusic();
     // Restore navbars if mobile chat hid them
@@ -7275,6 +7276,7 @@ function renderSkinPage(){
 var _shopSongs=[];var _shopOwnedSongs={};var _shopSongsLoaded=false;
 var _shopPreviewAudio=null;
 var _wasPlayingBeforePreview=false;
+var _previewTimeout=null;
 function startSongPreview(url,btn){
     // Stop any existing preview
     stopSongPreview();
@@ -7284,19 +7286,26 @@ function startSongPreview(url,btn){
         _wasPlayingBeforePreview=true;
         _fadeAudio(currentAudio,currentAudio.volume,0,300,function(){currentAudio.pause();});
     }
-    // Start preview
+    // Start preview (15 second limit)
     _shopPreviewAudio=new Audio(url);
     _shopPreviewAudio.volume=0;
     _shopPreviewAudio.play().then(function(){
         _fadeAudio(_shopPreviewAudio,0,0.5,300,null);
     }).catch(function(){});
     if(btn) btn.querySelector('i').className='fas fa-pause';
+    // Auto-stop after 15 seconds with fade out
+    _previewTimeout=setTimeout(function(){
+        if(_shopPreviewAudio){
+            _fadeAudio(_shopPreviewAudio,_shopPreviewAudio.volume,0,500,function(){stopSongPreview();});
+        }
+    },15000);
     _shopPreviewAudio.addEventListener('ended',function(){
         stopSongPreview();
         $$('.song-preview-btn i').forEach(function(i){i.className='fas fa-play';});
     });
 }
 function stopSongPreview(){
+    clearTimeout(_previewTimeout);_previewTimeout=null;
     if(_shopPreviewAudio){
         _shopPreviewAudio.pause();
         _shopPreviewAudio=null;
@@ -7557,8 +7566,8 @@ function renderGroupShop(groupId){
     if(_canManage&&currentGroupShopTab==='fonts'&&state.groupActiveFont[groupId]){
         html+='<div style="margin-top:12px;text-align:center;"><button class="btn btn-outline" id="resetGroupFont" style="font-size:13px;"><i class="fas fa-undo" style="margin-right:6px;"></i>Reset to Default Font</button></div>';
     }
-    // Group premium background controls (on apply tab with premium filter and active premium skin — admin/mod only)
-    if(_canManage&&currentGroupShopTab==='apply'&&(window._groupApplyFilter==='premium'||state.groupActivePremiumSkin[groupId])){
+    // Group premium background controls (ONLY on apply tab with premium filter selected — admin/mod only)
+    if(_canManage&&currentGroupShopTab==='apply'&&window._groupApplyFilter==='premium'&&state.groupActivePremiumSkin[groupId]){
         if(!state.groupPremiumBg[groupId]) state.groupPremiumBg[groupId]={};
         var _gbg=state.groupPremiumBg[groupId];
         var bgHtml='<div class="premium-bg-controls card" style="margin-top:16px;padding:16px;border-radius:12px;">';
