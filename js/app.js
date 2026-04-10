@@ -350,7 +350,7 @@ function resetAllCustomizations(){
 
 // ======================== TERMS OF SERVICE ACCEPTANCE ========================
 // Bump this version whenever the TOS changes — all users must re-accept
-var TOS_VERSION = 8; // v8 = Apr 2 2026 — Privacy Policy updated for push tokens, service worker cache, daily rewards; DMCA fully hardened
+var TOS_VERSION = 9; // v9 = Apr 7 2026 — AI-generated music (Suno) disclosure, music library terms, privacy policy updated
 var _tosAccepted = false;
 
 function checkTosAccepted(){
@@ -380,15 +380,14 @@ function showTosModal(){
             +'<p style="margin:0 0 12px;font-size:13px;color:#64748b;">We\'ve updated our Terms of Use. Please review and accept to continue using BlipVibe.</p>'
             +'<div class="tos-splash-scroll">'
             +'<div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:14px 16px;margin-bottom:16px;">'
-            +'<h5 style="margin:0 0 8px;font-size:14px;color:#5b21b6;"><i class="fas fa-bell" style="margin-right:6px;"></i>What\u2019s Changed (v8 \u2014 April 2, 2026)</h5>'
+            +'<h5 style="margin:0 0 8px;font-size:14px;color:#5b21b6;"><i class="fas fa-bell" style="margin-right:6px;"></i>What\u2019s Changed (v9 \u2014 April 7, 2026)</h5>'
             +'<ul style="margin:0 0 0 16px;font-size:13px;color:#1e293b;line-height:1.7;">'
-            +'<li style="color:#1e293b;"><strong style="color:#1e293b;">DMCA Policy expanded</strong> \u2014 dedicated email (dmca@blipvibe.com), registered agent (DMCA-1070726), no prior screening, audio/music clause, fair use neutrality, standard technical measures (\u00a7 512(i))</li>'
-            +'<li style="color:#1e293b;"><strong style="color:#1e293b;">Privacy Policy updated</strong> \u2014 push notification tokens (FCM/APNs) and service worker caching now disclosed in data collection</li>'
-            +'<li style="color:#1e293b;"><strong style="color:#1e293b;">Counter-notification jurisdiction</strong> \u2014 corrected to United States District Court for the Eastern District of Tennessee</li>'
-            +'<li style="color:#1e293b;"><strong style="color:#1e293b;">Repeat Infringer Policy</strong> \u2014 strengthened to allow termination at sole discretion based on multiple factors</li>'
+            +'<li style="color:#1e293b;"><strong style="color:#1e293b;">BlipVibe Music Library</strong> \u2014 new Section 5a added: AI-generated music created via Suno AI under commercial license. Users can purchase songs with Coins for profile, group, and story use. No downloading or redistribution. AI-generated content copyright disclosure included.</li>'
+            +'<li style="color:#1e293b;"><strong style="color:#1e293b;">Privacy Policy updated</strong> \u2014 music preferences, song purchases, and playback settings now disclosed. Suno AI added to third-party services list.</li>'
+            +'<li style="color:#1e293b;"><strong style="color:#1e293b;">Profile &amp; Story Music</strong> \u2014 set songs on your profile and stories. Visitors control playback (play/pause/volume).</li>'
             +'</ul></div>'
             +'<h4>BlipVibe LLC \u2013 Terms of Use</h4>'
-            +'<p><strong>Effective Date:</strong> April 2, 2026</p>'
+            +'<p><strong>Effective Date:</strong> April 7, 2026</p>'
             +'<p>These Terms of Use ("Terms") constitute a <strong>legally binding agreement</strong> between you and <strong>BlipVibe LLC</strong>, a Tennessee limited liability company ("BlipVibe", "we", "us", "our"), with its principal place of business at 116 Agnes Rd Ste 200, Knoxville, TN 37919. By continuing to use BlipVibe, you agree to be bound by these Terms, our <strong>Privacy Policy</strong>, <strong>Acceptable Use Policy</strong>, <strong>DMCA Policy</strong>, and <strong>Arbitration &amp; Dispute Resolution Agreement</strong> (Section 19), each incorporated herein by reference.</p>'
             +'<h5>1. Eligibility &amp; Age Requirement</h5>'
             +'<p>You must be at least <strong>13 years old</strong> to use BlipVibe. If you are between 13 and 17, you represent that your parent or legal guardian has reviewed and consents to these Terms. BlipVibe does not knowingly collect personal information from children under 13 (COPPA). If we discover a user is under 13, their account will be terminated and data deleted.</p>'
@@ -401,6 +400,8 @@ function showTosModal(){
             +'<p>BlipVibe does not claim ownership of your content. By posting, you grant BlipVibe a non-exclusive, worldwide, royalty-free, sublicensable license to use, display, reproduce, and distribute your content within and in connection with the Service. This license ends when you delete your content or account, except where shared by others or where retention is required by law.</p>'
             +'<h5>5. Embedded &amp; Third-Party Media</h5>'
             +'<p>BlipVibe displays embedded media from YouTube, Spotify, TikTok, Instagram, Twitter/X, Vimeo, and SoundCloud using their official embed tools. BlipVibe does not host or redistribute third-party content. These embeds may set cookies and collect data per each platform\'s own privacy policy. The Service may contain links to third-party websites; BlipVibe does not control or assume responsibility for third-party content.</p>'
+            +'<h5>5a. BlipVibe Music Library (AI-Generated Music)</h5>'
+            +'<p>BlipVibe offers original music created using Suno AI under a paid commercial license. Users may purchase access to these tracks using Coins for use as profile songs, group songs, or story music within BlipVibe. Users do not acquire ownership or external rights \u2014 usage is limited to the BlipVibe platform. Tracks may not be downloaded, extracted, or redistributed. All tracks are AI-generated and may not be eligible for copyright protection under current U.S. law.</p>'
             +'<h5>6. Copyright &amp; DMCA Policy</h5>'
             +'<p>BlipVibe complies with the DMCA (17 U.S.C. \u00a7 512). BlipVibe has registered its designated agent with the U.S. Copyright Office (DMCA Registration: DMCA-1070726). Send takedown notices to <strong>dmca@blipvibe.com</strong> with: your name and contact info, identification of the copyrighted work, the URL of the infringing material, a good faith belief statement, a statement under penalty of perjury that the information is accurate, and your signature. Counter-notifications and full procedures are detailed in our DMCA Policy. Knowingly false claims may result in liability under \u00a7 512(f).</p>'
             +'<p>BlipVibe does not pre-screen user content but reserves the right to remove content that violates this policy or applicable law. BlipVibe accommodates and does not interfere with standard technical measures used by copyright owners to identify or protect copyrighted works.</p>'
