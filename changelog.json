@@ -11,16 +11,29 @@
       "\ud83d\udcdc Daily Quests \u2014 Like 3 posts, Follow 2 users, Create 1 post for bonus coins",
       "\ud83d\udcca Coin Progress Bar \u2014 track progress toward your next premium skin",
       "\ud83d\udd25 Featured Skin \u2014 daily rotating premium skin highlight with countdown",
-      "\ud83c\udfc6 Tiered Streak Rewards \u2014 Day 1: +10, Day 3: +20, Day 7: +50, Day 14: +100"
+      "\ud83c\udfc6 Tiered Streak Rewards \u2014 Day 1: +10, Day 3: +20, Day 7: +50, Day 14: +100",
+      "\ud83c\udfb5 Songs in Group Shop \u2014 groups can buy songs with group coins",
+      "\ud83c\udfa7 Global sticky mini player \u2014 stays visible on all pages with play/pause/volume/mute",
+      "\ud83c\udfb6 Music auto-starts after first interaction on the page",
+      "\ud83d\udd00 Crossfade between your song and profile songs when visiting others",
+      "\ud83c\udfa4 Song preview pauses your music, resumes when preview stops",
+      "\ud83c\udfae Group Shop Apply tab redesigned \u2014 first tab showing all owned items (skins, fonts, songs)",
+      "\ud83d\udd14 Music reopen button in nav bar after closing the player",
+      "\u267e\ufe0f Infinity symbol now renders larger (28px) in nav"
     ],
     "changed": [
-      "\ud83d\udcb0 Shop prices rebalanced for quest economy",
-      "\ud83d\udcc1 Backup system added before major changes"
+      "\ud83d\udcb0 Shop prices rebalanced: Fonts 25, Logos 35, Icons 35, Coins 50, Nav 60, Skins 75, Templates 100, Premium 300",
+      "\ud83d\udcc1 Backup system added before major changes",
+      "\ud83c\udfae Group Shop Apply tab is now the first tab instead of Basic Skins"
     ],
     "fixed": [
-      "\u267e\ufe0f Infinity coins now persist properly",
-      "\ud83d\udcf1 Shared post preview redesigned \u2014 compact card layout",
-      "\ud83d\udcf7 View All photos on other profiles now works correctly"
+      "\u267e\ufe0f Infinity coins now persist properly (was being wiped by sync)",
+      "\ud83d\udcf1 Shared post preview redesigned \u2014 proper layout with thumbnails",
+      "\ud83d\udcf7 View All photos on other profiles now works correctly",
+      "\ud83d\udc4d Like counts show correctly on profile view posts",
+      "\ud83c\udfb5 Song preview pause button now works",
+      "\ud83d\udcb0 Songs no longer show 'Owned' for infinity users \u2014 shows 'Free' to add to collection",
+      "\ud83d\udd17 Shared post author name/avatar now clickable to view their profile"
     ]
   },
   {
