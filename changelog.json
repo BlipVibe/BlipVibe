@@ -1,5 +1,22 @@
 [
   {
+    "version": "0.5.1",
+    "date": "2026-04-07",
+    "added": [
+      "\ud83d\udcb0 Coin earn animation \u2014 your equipped coin skin icon floats up when you earn coins (+1, +2, +5)",
+      "\ud83d\udd3b Coin lose animation \u2014 red icon drops down when you unlike/remove (-1)",
+      "\ud83d\udc8e Uses YOUR coin skin \u2014 diamond, fire, crown, heart, etc. matches what you have equipped"
+    ],
+    "changed": [
+      "\ud83d\udcb0 Shop prices rebalanced again \u2014 Fonts 25, Logos 35, Icons 35, Coin Skins 50, Nav 60, Skins 75, Templates 100, Premium 300",
+      "\ud83c\udfaf Coin progress bar target updated to 300"
+    ],
+    "fixed": [
+      "\u267e\ufe0f Infinity coins now persist \u2014 was being wiped by skin data sync every 10 seconds",
+      "\u267e\ufe0f Infinity symbol now renders larger (28px) in nav bar"
+    ]
+  },
+  {
     "version": "0.5.0",
     "date": "2026-04-07",
     "added": [
