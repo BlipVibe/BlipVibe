@@ -9764,9 +9764,16 @@ function openCreateStory(){
     if(_gmp) _gmp.classList.remove('visible');
     var html='<div class="modal-header"><h3><i class="fas fa-plus-circle" style="color:var(--primary);margin-right:8px;"></i>Create Story</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     html+='<div class="modal-body">';
-    html+='<textarea id="storyText" class="post-input" placeholder="What\'s on your mind?" style="width:100%;min-height:60px;margin-bottom:12px;font-size:14px;"></textarea>';
-    html+='<div style="display:flex;gap:8px;margin-bottom:12px;"><button class="btn btn-outline" id="storyAddPhoto"><i class="fas fa-image"></i> Photo/Video</button><button class="btn btn-outline" id="storyAddSong"><i class="fas fa-music"></i> Add Song</button><input type="file" id="storyFileInput" accept="image/*,video/*" style="display:none;"></div>';
-    html+='<div id="storyPreview" style="margin-bottom:12px;"></div>';
+    html+='<div class="story-canvas" id="storyCanvas"><div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--gray);font-size:14px;">Tap "Photo/Video" or "Add Text" to start</div></div>';
+    html+='<div class="story-text-toolbar" id="storyTextToolbar" style="display:none;">';
+    html+='<button class="btn btn-outline" id="storyAddTextBtn" style="font-size:11px;padding:4px 10px;"><i class="fas fa-font"></i> Add Text</button>';
+    html+='<select id="storyFontSelect"><option value="Roboto">Roboto</option><option value="Orbitron">Orbitron</option><option value="Pacifico">Pacifico</option><option value="Quicksand">Quicksand</option><option value="Space Grotesk">Space Grotesk</option><option value="Caveat">Caveat</option><option value="Press Start 2P">Press Start 2P</option><option value="Bungee">Bungee</option><option value="Satisfy">Satisfy</option></select>';
+    html+='<input type="color" id="storyTextColor" value="#ffffff" title="Text Color">';
+    html+='<input type="color" id="storyBgColor" value="#00000000" title="Background" style="opacity:.7;">';
+    html+='<button class="size-btn" id="storyTextSmaller" title="Smaller">-</button>';
+    html+='<button class="size-btn" id="storyTextBigger" title="Bigger">+</button>';
+    html+='</div>';
+    html+='<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;"><button class="btn btn-outline" id="storyAddPhoto"><i class="fas fa-image"></i> Photo/Video</button><button class="btn btn-outline" id="storyAddSong"><i class="fas fa-music"></i> Song</button><input type="file" id="storyFileInput" accept="image/*,video/*" style="display:none;"></div>';
     html+='<div id="storySongSection" style="display:none;"></div>';
     html+='<button class="btn btn-primary" id="storyPublish" style="width:100%;">Share Story</button>';
     html+='<p style="font-size:11px;color:var(--gray);text-align:center;margin-top:8px;">Stories disappear after 24 hours</p>';
@@ -9785,6 +9792,178 @@ function openCreateStory(){
     var _storyFile=null;
     var _storySongId=null,_storySongStart=0,_storySongVol=0.5;
     var _storySongPreview=null;
+    var _storyOverlays=[];
+    var _activeOverlay=null;
+    var _overlayIdCounter=0;
+    var canvas=document.getElementById('storyCanvas');
+    var toolbar=document.getElementById('storyTextToolbar');
+    toolbar.style.display='flex';
+
+    // Add text overlay
+    document.getElementById('storyAddTextBtn').addEventListener('click',function(){
+        var id='sto_'+(++_overlayIdCounter);
+        var overlay={id:id,text:'Tap to edit',x:50,y:50,rotation:0,scale:1,fontSize:20,fontFamily:'Roboto',color:'#ffffff',bgColor:'rgba(0,0,0,0.5)'};
+        _storyOverlays.push(overlay);
+        _renderOverlay(overlay);
+    });
+
+    function _renderOverlay(o){
+        var el=document.createElement('div');
+        el.className='story-text-overlay';
+        el.id=o.id;
+        el.contentEditable='true';
+        el.textContent=o.text;
+        el.style.left=o.x+'%';el.style.top=o.y+'%';
+        el.style.transform='rotate('+o.rotation+'deg) scale('+o.scale+')';
+        el.style.fontSize=o.fontSize+'px';
+        el.style.fontFamily="'"+o.fontFamily+"',sans-serif";
+        el.style.color=o.color;
+        el.style.backgroundColor=o.bgColor;
+        el.innerHTML+='<div class="sto-resize"></div><div class="sto-rotate"></div><div class="sto-delete"><i class="fas fa-times"></i></div>';
+        canvas.appendChild(el);
+        // Select on click
+        el.addEventListener('mousedown',function(e){if(!e.target.closest('.sto-resize,.sto-rotate,.sto-delete')) _selectOverlay(el,o);});
+        el.addEventListener('touchstart',function(e){if(!e.target.closest('.sto-resize,.sto-rotate,.sto-delete')) _selectOverlay(el,o);},{passive:true});
+        // Delete
+        el.querySelector('.sto-delete').addEventListener('click',function(e){
+            e.stopPropagation();
+            _storyOverlays=_storyOverlays.filter(function(x){return x.id!==o.id;});
+            el.remove();_activeOverlay=null;
+        });
+        // Drag
+        _makeDraggable(el,o);
+        // Resize handle
+        _makeResizable(el,o);
+        // Rotate handle
+        _makeRotatable(el,o);
+        _selectOverlay(el,o);
+    }
+
+    function _selectOverlay(el,o){
+        canvas.querySelectorAll('.story-text-overlay').forEach(function(e){e.classList.remove('active');});
+        el.classList.add('active');
+        _activeOverlay=o;
+        document.getElementById('storyFontSelect').value=o.fontFamily;
+        document.getElementById('storyTextColor').value=o.color;
+    }
+
+    function _makeDraggable(el,o){
+        var startX,startY,startLeft,startTop,dragging=false;
+        function onStart(ex,ey){
+            if(document.activeElement===el&&el.contentEditable==='true') return;
+            dragging=true;startX=ex;startY=ey;
+            var rect=el.getBoundingClientRect();var cRect=canvas.getBoundingClientRect();
+            startLeft=rect.left-cRect.left;startTop=rect.top-cRect.top;
+            el.style.cursor='grabbing';
+        }
+        function onMove(ex,ey){
+            if(!dragging) return;
+            var cRect=canvas.getBoundingClientRect();
+            var newLeft=startLeft+(ex-startX);var newTop=startTop+(ey-startY);
+            o.x=Math.max(0,Math.min(90,(newLeft/cRect.width)*100));
+            o.y=Math.max(0,Math.min(90,(newTop/cRect.height)*100));
+            el.style.left=o.x+'%';el.style.top=o.y+'%';
+        }
+        function onEnd(){dragging=false;el.style.cursor='grab';}
+        el.addEventListener('mousedown',function(e){if(!e.target.closest('.sto-resize,.sto-rotate,.sto-delete')&&document.activeElement!==el) onStart(e.clientX,e.clientY);});
+        document.addEventListener('mousemove',function(e){onMove(e.clientX,e.clientY);});
+        document.addEventListener('mouseup',onEnd);
+        el.addEventListener('touchstart',function(e){if(!e.target.closest('.sto-resize,.sto-rotate,.sto-delete')&&e.touches.length===1){var t=e.touches[0];onStart(t.clientX,t.clientY);}},{passive:true});
+        document.addEventListener('touchmove',function(e){if(dragging&&e.touches.length===1){var t=e.touches[0];onMove(t.clientX,t.clientY);}},{passive:false});
+        document.addEventListener('touchend',onEnd);
+    }
+
+    function _makeResizable(el,o){
+        var handle=el.querySelector('.sto-resize');
+        var startX,startY,startScale;
+        function onStart(ex,ey){startX=ex;startY=ey;startScale=o.scale;}
+        function onMove(ex,ey){
+            var delta=((ex-startX)+(ey-startY))*0.005;
+            o.scale=Math.max(0.3,Math.min(4,startScale+delta));
+            el.style.transform='rotate('+o.rotation+'deg) scale('+o.scale+')';
+        }
+        handle.addEventListener('mousedown',function(e){e.stopPropagation();onStart(e.clientX,e.clientY);
+            function mm(e2){onMove(e2.clientX,e2.clientY);}
+            function mu(){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);}
+            document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);
+        });
+        handle.addEventListener('touchstart',function(e){e.stopPropagation();var t=e.touches[0];onStart(t.clientX,t.clientY);
+            function tm(e2){var t2=e2.touches[0];onMove(t2.clientX,t2.clientY);}
+            function te(){document.removeEventListener('touchmove',tm);document.removeEventListener('touchend',te);}
+            document.addEventListener('touchmove',tm,{passive:false});document.addEventListener('touchend',te);
+        },{passive:false});
+    }
+
+    function _makeRotatable(el,o){
+        var handle=el.querySelector('.sto-rotate');
+        function getAngle(cx,cy,ex,ey){return Math.atan2(ey-cy,ex-cx)*(180/Math.PI);}
+        var startAngle,startRot,centerX,centerY;
+        function onStart(ex,ey){
+            var rect=el.getBoundingClientRect();
+            centerX=rect.left+rect.width/2;centerY=rect.top+rect.height/2;
+            startAngle=getAngle(centerX,centerY,ex,ey);startRot=o.rotation;
+        }
+        function onMove(ex,ey){
+            var angle=getAngle(centerX,centerY,ex,ey);
+            o.rotation=startRot+(angle-startAngle);
+            el.style.transform='rotate('+o.rotation+'deg) scale('+o.scale+')';
+        }
+        handle.addEventListener('mousedown',function(e){e.stopPropagation();onStart(e.clientX,e.clientY);
+            function mm(e2){onMove(e2.clientX,e2.clientY);}
+            function mu(){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);}
+            document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);
+        });
+        handle.addEventListener('touchstart',function(e){e.stopPropagation();var t=e.touches[0];onStart(t.clientX,t.clientY);
+            function tm(e2){var t2=e2.touches[0];onMove(t2.clientX,t2.clientY);}
+            function te(){document.removeEventListener('touchmove',tm);document.removeEventListener('touchend',te);}
+            document.addEventListener('touchmove',tm,{passive:false});document.addEventListener('touchend',te);
+        },{passive:false});
+    }
+
+    // Font select
+    document.getElementById('storyFontSelect').addEventListener('change',function(){
+        if(!_activeOverlay) return;
+        _activeOverlay.fontFamily=this.value;
+        var el=document.getElementById(_activeOverlay.id);
+        if(el) el.style.fontFamily="'"+this.value+"',sans-serif";
+    });
+    // Text color
+    document.getElementById('storyTextColor').addEventListener('input',function(){
+        if(!_activeOverlay) return;
+        _activeOverlay.color=this.value;
+        var el=document.getElementById(_activeOverlay.id);
+        if(el) el.style.color=this.value;
+    });
+    // Bg color
+    document.getElementById('storyBgColor').addEventListener('input',function(){
+        if(!_activeOverlay) return;
+        var hex=this.value;
+        var bg='rgba('+parseInt(hex.slice(1,3),16)+','+parseInt(hex.slice(3,5),16)+','+parseInt(hex.slice(5,7),16)+',0.5)';
+        _activeOverlay.bgColor=bg;
+        var el=document.getElementById(_activeOverlay.id);
+        if(el) el.style.backgroundColor=bg;
+    });
+    // Size buttons
+    document.getElementById('storyTextSmaller').addEventListener('click',function(){
+        if(!_activeOverlay) return;
+        _activeOverlay.fontSize=Math.max(10,_activeOverlay.fontSize-2);
+        var el=document.getElementById(_activeOverlay.id);
+        if(el) el.style.fontSize=_activeOverlay.fontSize+'px';
+    });
+    document.getElementById('storyTextBigger').addEventListener('click',function(){
+        if(!_activeOverlay) return;
+        _activeOverlay.fontSize=Math.min(60,_activeOverlay.fontSize+2);
+        var el=document.getElementById(_activeOverlay.id);
+        if(el) el.style.fontSize=_activeOverlay.fontSize+'px';
+    });
+    // Deselect on canvas click
+    canvas.addEventListener('click',function(e){
+        if(e.target===canvas||e.target===canvas.firstChild){
+            canvas.querySelectorAll('.story-text-overlay').forEach(function(el){el.classList.remove('active');});
+            _activeOverlay=null;
+        }
+    });
+
     document.getElementById('storyAddPhoto').addEventListener('click',function(){document.getElementById('storyFileInput').click();});
     // Song picker for stories
     document.getElementById('storyAddSong').addEventListener('click',async function(){
@@ -9859,16 +10038,30 @@ function openCreateStory(){
     document.getElementById('storyFileInput').addEventListener('change',function(){
         var file=this.files[0];if(!file) return;
         _storyFile=file;
-        var preview=document.getElementById('storyPreview');
+        // Show in canvas
+        var placeholder=canvas.querySelector('div:not(.story-text-overlay)');
+        if(placeholder&&!placeholder.classList.contains('story-text-overlay')) placeholder.remove();
+        // Remove existing media
+        var oldMedia=canvas.querySelector('img:not(.story-text-overlay img),video:not(.story-text-overlay video)');
+        if(oldMedia) oldMedia.remove();
         if(file.type.startsWith('video/')){
-            preview.innerHTML='<video src="'+URL.createObjectURL(file)+'" controls style="max-width:100%;max-height:200px;border-radius:8px;"></video>';
+            var vid=document.createElement('video');vid.src=URL.createObjectURL(file);vid.controls=true;vid.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;';
+            canvas.insertBefore(vid,canvas.firstChild);
         } else {
-            preview.innerHTML='<img src="'+URL.createObjectURL(file)+'" style="max-width:100%;max-height:200px;border-radius:8px;object-fit:contain;">';
+            var img=document.createElement('img');img.src=URL.createObjectURL(file);img.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;';
+            canvas.insertBefore(img,canvas.firstChild);
         }
     });
     document.getElementById('storyPublish').addEventListener('click',async function(){
-        var text=document.getElementById('storyText').value.trim();
-        if(!text&&!_storyFile){showToast('Add text or a photo');return;}
+        // Collect text overlay data from the canvas
+        var overlayData=[];
+        _storyOverlays.forEach(function(o){
+            var el=document.getElementById(o.id);
+            if(el){o.text=el.textContent.replace(/[\n\r]+$/,'').trim();} // get edited text
+            if(o.text) overlayData.push({text:o.text,x:o.x,y:o.y,rotation:o.rotation,scale:o.scale,fontSize:o.fontSize,fontFamily:o.fontFamily,color:o.color,bgColor:o.bgColor});
+        });
+        var text=''; // text field removed, overlays replace it
+        if(!overlayData.length&&!_storyFile){showToast('Add a photo or text');return;}
         this.disabled=true;this.textContent='Sharing...';
         try{
             var mediaUrl=null;var mediaType='text';
@@ -9877,7 +10070,7 @@ function openCreateStory(){
                 else{mediaUrl=await sbUploadPostImage(currentUser.id,_storyFile);mediaType='image';}
             }
             if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
-            await sbCreateStory(currentUser.id,mediaUrl,mediaType,text,_storySongId||null,_storySongStart||0,_storySongVol||0.5);
+            await sbCreateStory(currentUser.id,mediaUrl,mediaType,text,_storySongId||null,_storySongStart||0,_storySongVol||0.5,overlayData.length?overlayData:null);
             closeModal();
             // Restore global music player
             if(_gmpWasVisible&&_gmp) _gmp.classList.add('visible');
@@ -10003,6 +10196,22 @@ function openStoryViewer(userId){
             '<div class="story-nav"><div class="story-nav-left"></div><div class="story-nav-right"></div></div>'+
             (isOwn?'<div class="story-viewers"><button class="story-viewers-btn"><i class="fas fa-eye"></i> Views</button><button class="story-delete-btn" style="color:#e74c3c;"><i class="fas fa-trash"></i></button></div>':'')+
             (isOwn?'':'<div class="story-input-bar"><div class="story-reactions-row">'+_reactionEmojis.map(function(em){return '<button class="story-react-btn" data-emoji="'+em+'">'+em+'</button>';}).join('')+'</div><input type="text" class="story-comment-input" id="storyCommentInput" placeholder="Send message to '+escapeHtml(name)+'..."><button class="story-send-btn"><i class="fas fa-paper-plane"></i></button></div>');
+        // Render text overlays
+        if(s.text_overlays&&s.text_overlays.length){
+            var storyContent=overlay.querySelector('.story-content');
+            s.text_overlays.forEach(function(o){
+                var oEl=document.createElement('div');
+                oEl.className='story-viewer-text-overlay';
+                oEl.textContent=o.text;
+                oEl.style.left=o.x+'%';oEl.style.top=o.y+'%';
+                oEl.style.transform='rotate('+(o.rotation||0)+'deg) scale('+(o.scale||1)+')';
+                oEl.style.fontSize=(o.fontSize||20)+'px';
+                oEl.style.fontFamily="'"+(o.fontFamily||'Roboto')+"',sans-serif";
+                oEl.style.color=o.color||'#ffffff';
+                oEl.style.backgroundColor=o.bgColor||'rgba(0,0,0,0.5)';
+                storyContent.appendChild(oEl);
+            });
+        }
         // Story song playback
         if(overlay._storyAudio){overlay._storyAudio.pause();overlay._storyAudio=null;}
         if(s.song&&s.song.file_url){

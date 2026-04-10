@@ -1315,10 +1315,11 @@ async function sbGetUserPhotoReaction(photoUrl, userId) {
 
 // ---- 18. STORIES --------------------------------------------------------------
 
-async function sbCreateStory(userId, mediaUrl, mediaType, text, songId, songStart, songVolume) {
+async function sbCreateStory(userId, mediaUrl, mediaType, text, songId, songStart, songVolume, textOverlays) {
   const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(); // 24hrs
   var row = { user_id: userId, media_url: mediaUrl || null, media_type: mediaType || 'image', text: text || '', expires_at: expiresAt };
   if (songId) { row.song_id = songId; row.song_start = songStart || 0; row.song_volume = songVolume || 0.5; }
+  if (textOverlays && textOverlays.length) { row.text_overlays = textOverlays; }
   const { data, error } = await sb.from('stories')
     .insert(row)
     .select('*, author:profiles!stories_user_id_fkey(id, username, display_name, avatar_url)')
