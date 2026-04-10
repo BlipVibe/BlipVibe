@@ -7557,8 +7557,8 @@ function renderGroupShop(groupId){
     if(_canManage&&currentGroupShopTab==='fonts'&&state.groupActiveFont[groupId]){
         html+='<div style="margin-top:12px;text-align:center;"><button class="btn btn-outline" id="resetGroupFont" style="font-size:13px;"><i class="fas fa-undo" style="margin-right:6px;"></i>Reset to Default Font</button></div>';
     }
-    // Group premium background controls (on owned tab with active premium skin — admin/mod only)
-    if(_canManage&&currentGroupShopTab==='owned'&&state.groupActivePremiumSkin[groupId]){
+    // Group premium background controls (on apply tab with premium filter and active premium skin — admin/mod only)
+    if(_canManage&&currentGroupShopTab==='apply'&&(window._groupApplyFilter==='premium'||state.groupActivePremiumSkin[groupId])){
         if(!state.groupPremiumBg[groupId]) state.groupPremiumBg[groupId]={};
         var _gbg=state.groupPremiumBg[groupId];
         var bgHtml='<div class="premium-bg-controls card" style="margin-top:16px;padding:16px;border-radius:12px;">';
