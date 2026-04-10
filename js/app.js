@@ -1061,6 +1061,7 @@ async function loadGroups() {
             if(gsd.ownedPremiumSkins) state.groupOwnedPremiumSkins[g.id]=gsd.ownedPremiumSkins;
             if(gsd.ownedFonts) state.groupOwnedFonts[g.id]=gsd.ownedFonts;
             if(gsd.ownedSongs){if(!state.groupOwnedSongs) state.groupOwnedSongs={};state.groupOwnedSongs[g.id]=gsd.ownedSongs;}
+            if(gsd.activeSong){if(!state.groupActiveSong) state.groupActiveSong={};state.groupActiveSong[g.id]=gsd.activeSong;}
             return {
                 id: g.id,
                 name: g.name,
@@ -3574,6 +3575,12 @@ async function showGroupView(group){
 
     var joined=state.joinedGroups[group.id];
     var isOwner=currentUser&&group.owner_id===currentUser.id;
+
+    // Play group song if one is set
+    if(state.groupActiveSong&&state.groupActiveSong[group.id]&&_shopSongs&&_shopSongs.length){
+        var gSong=_shopSongs.find(function(s){return s.id===state.groupActiveSong[group.id];});
+        if(gSong) switchToProfileSong(gSong);
+    }
 
     // Sync group coin balance from DB if available
     if(group.coin_balance!==undefined&&group.coin_balance!==null){
@@ -7422,6 +7429,7 @@ function syncGroupSkinData(groupId){
     if(state.groupOwnedPremiumSkins[groupId]) sd.ownedPremiumSkins=state.groupOwnedPremiumSkins[groupId];
     if(state.groupOwnedFonts[groupId]) sd.ownedFonts=state.groupOwnedFonts[groupId];
     if(state.groupOwnedSongs&&state.groupOwnedSongs[groupId]) sd.ownedSongs=state.groupOwnedSongs[groupId];
+    if(state.groupActiveSong&&state.groupActiveSong[groupId]) sd.activeSong=state.groupActiveSong[groupId];
     sbUpdateGroup(groupId,{skin_data:sd}).catch(function(e){console.error('syncGroupSkinData:',e);});
 }
 var currentGroupShopTab=null;
@@ -7633,9 +7641,15 @@ function renderGroupShop(groupId){
     });});
     // Set group song handler
     $$('#gvShopContent .set-gsong-btn').forEach(function(btn){btn.addEventListener('click',function(){
-        var sid=btn.dataset.songId;
+        var sid=btn.dataset.songId;var gid=btn.dataset.gid||groupId;
+        if(!state.groupActiveSong) state.groupActiveSong={};
+        state.groupActiveSong[gid]=sid;
+        saveState();syncGroupSkinData(gid);
+        // Play the group song immediately
+        var song=(_shopSongs||[]).find(function(s){return s.id===sid;});
+        if(song) switchToProfileSong(song);
         showToast('Group song set!');
-        btn.className='btn btn-disabled';btn.textContent='Active';btn.disabled=true;
+        renderGroupShop(gid);
     });});
 
     $$('#gvShopContent .apply-gskin-btn').forEach(function(btn){btn.addEventListener('click',function(){
