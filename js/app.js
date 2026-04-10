@@ -5199,8 +5199,6 @@ document.addEventListener('click',function(e){
             h+='</div></div>';
             // Link in Bio
             h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Link in Bio</span><button class="btn btn-outline" id="settingsLinkInBio" style="padding:4px 14px;font-size:12px;"><i class="fas fa-link" style="margin-right:4px;"></i>'+(currentUser&&currentUser.website_url?'Edit':'Add')+'</button></div>';
-            // Profile Song
-            h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;"><i class="fas fa-music" style="margin-right:6px;color:var(--primary);"></i>Profile Song</span><button class="btn btn-outline" id="settingsProfileSong" style="padding:4px 14px;font-size:12px;"><i class="fas fa-headphones" style="margin-right:4px;"></i>'+(currentUser&&currentUser.profile_song_id?'Change':'Pick')+'</button></div>';
             // Post Analytics
             h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Post Analytics</span><button class="btn btn-outline" id="settingsAnalytics" style="padding:4px 14px;font-size:12px;"><i class="fas fa-chart-line" style="margin-right:4px;"></i>View</button></div>';
             // Scheduled Posts Calendar
@@ -5248,9 +5246,6 @@ document.addEventListener('click',function(e){
             var tfaBtn=document.getElementById('settings2FA');
             if(tfaBtn) tfaBtn.addEventListener('click',function(){closeModal();showSetup2FAModal();});
             // Link in Bio
-            // Profile Song
-            var psBtn=document.getElementById('settingsProfileSong');
-            if(psBtn) psBtn.addEventListener('click',function(){closeModal();showSongPickerModal();});
             var libBtn=document.getElementById('settingsLinkInBio');
             if(libBtn) libBtn.addEventListener('click',function(){closeModal();showEditLinkInBio();});
             // Scheduled Posts Calendar
@@ -7245,7 +7240,7 @@ function getShopCategories(){
     // Songs tab (loaded from DB) — shop only shows buy, not set
     if(_shopSongs&&_shopSongs.length){
         cats.push({key:'songs',label:'<i class="fas fa-music"></i> Songs',items:_shopSongs,render:function(s){
-            var owned=_hasInfinity()||(_shopOwnedSongs&&_shopOwnedSongs[s.id]);
+            var owned=_shopOwnedSongs&&_shopOwnedSongs[s.id];
             var buyHtml='';
             if(owned) buyHtml='<button class="btn btn-disabled">Owned</button>';
             else buyHtml='<div class="skin-price"><i class="fas fa-coins"></i> '+(_hasInfinity()?'Free':s.price+' Coins')+'</div><button class="btn '+(_hasInfinity()||state.coins>=s.price?'btn-primary':'btn-disabled')+' buy-song-btn" data-song-id="'+s.id+'" data-price="'+s.price+'"'+(_hasInfinity()||state.coins>=s.price?'':' disabled')+'>Buy</button>';
@@ -7998,7 +7993,7 @@ function getMySkinCategories(){
     if(ownedN.length) cats.push({key:'navstyles',label:'<i class="fas fa-bars-staggered"></i> Nav Styles',items:ownedN,render:function(n){var a=state.activeNavStyle===n.id;return '<div class="skin-card"><div class="skin-preview" style="background:'+n.preview+';">'+navPreviewHtml(n.id)+'</div><div class="skin-card-body"><h4>'+n.name+'</h4><p>'+n.desc+'</p><button class="btn '+(a?'btn-disabled':'btn-primary')+' apply-nav-btn" data-nid="'+n.id+'">'+(a?'Active':'Apply')+'</button></div></div>';},defaultCard:'<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);"><div style="width:100%;height:100%;display:flex;flex-direction:column;padding:4px;gap:3px;"><div style="height:10%;background:rgba(255,255,255,.6);border-radius:2px;flex:none;"></div><div style="flex:1;background:rgba(255,255,255,.2);border-radius:2px;"></div></div></div><div class="skin-card-body"><h4>Default</h4><p>The original top navigation bar.</p><button class="btn '+(!state.activeNavStyle?'btn-disabled':'btn-primary')+' apply-nav-btn" data-nid="default">'+(!state.activeNavStyle?'Active':'Apply')+'</button></div></div>'});
     // Owned songs
     if(_shopSongs&&_shopSongs.length){
-        var ownedSongs=_shopSongs.filter(function(s){return _hasInfinity()||(_shopOwnedSongs&&_shopOwnedSongs[s.id]);});
+        var ownedSongs=_shopSongs.filter(function(s){return _shopOwnedSongs&&_shopOwnedSongs[s.id];});
         if(ownedSongs.length) cats.push({key:'songs',label:'<i class="fas fa-music"></i> Songs',items:ownedSongs,render:function(s){
             var isActive=currentUser&&currentUser.profile_song_id===s.id;
             return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#1a1a2e,#2d1b69);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;"><i class="fas fa-music" style="font-size:32px;color:var(--primary);"></i><button class="song-preview-btn" data-url="'+escapeHtml(s.file_url)+'" style="background:rgba(255,255,255,.15);color:#fff;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;"><i class="fas fa-play"></i></button></div><div class="skin-card-body"><h4>'+escapeHtml(s.title)+'</h4><p>'+(s.genre||'BlipVibe Original')+'</p><button class="btn '+(isActive?'btn-disabled':'btn-primary')+' set-song-btn" data-song-id="'+s.id+'">'+(isActive?'Active':'Set as Profile Song')+'</button></div></div>';
