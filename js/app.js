@@ -7441,8 +7441,8 @@ function getGroupShopCategories(groupId,canManage){
     if(!window._groupApplyFilter) window._groupApplyFilter='all';
     var _applyFilteredItems=[];
     var gaf=window._groupApplyFilter;
-    if(gaf==='all') _applyFilteredItems=[].concat(ownedBasic,ownedPrem,ownedFontsG,ownedSongsG);
-    else if(gaf==='basic') _applyFilteredItems=ownedBasic;
+    if(gaf==='all'){window._groupApplyFilter=gaf='basic';}
+    if(gaf==='basic') _applyFilteredItems=ownedBasic;
     else if(gaf==='premium') _applyFilteredItems=ownedPrem;
     else if(gaf==='fonts') _applyFilteredItems=ownedFontsG;
     else if(gaf==='songs') _applyFilteredItems=ownedSongsG;
@@ -7452,8 +7452,6 @@ function getGroupShopCategories(groupId,canManage){
         var a=gaf===key;
         return '<button class="search-tab gapply-pill'+(a?' active':'')+'" data-gapply="'+key+'" style="min-width:36px;padding:6px 10px;font-size:14px;cursor:pointer;"><i class="fas '+icon+'"></i></button>';
     }
-    // Default to basic if current filter is 'all'
-    if(gaf==='all') window._groupApplyFilter=gaf='basic';
     var _applyPillsHtml='<div style="width:100%;display:flex;gap:4px;padding:4px 0 8px;justify-content:center;">'
         +_gpill('basic','fa-palette',true)
         +_gpill('premium','fa-gem',true)
