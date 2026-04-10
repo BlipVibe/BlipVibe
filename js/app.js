@@ -8546,7 +8546,7 @@ function renderPvPhotoTab(isMe){
         var html='';
         if(photos.length){
             html+='<div class="photos-preview">';
-            photos.slice(0,9).forEach(function(p){
+            photos.slice(0,6).forEach(function(p){
                 var isVid=p.isVideo||isVideoUrl(p.src);
                 html+='<div class="photo-wrap" draggable="true" data-psrc="'+p.src+'">';
                 if(isVid){
@@ -8562,7 +8562,7 @@ function renderPvPhotoTab(isMe){
         } else {
             html+='<div style="padding:20px;text-align:center;color:var(--gray);"><p style="font-size:13px;">No post photos yet.</p></div>';
         }
-        if(photos.length>9) html+='<a href="#" class="view-more-link pv-photos-link">View All</a>';
+        if(photos.length>6) html+='<a href="#" class="view-more-link pv-photos-link">View All</a>';
         container.innerHTML=html;
         var pvPP=container.querySelector('.photos-preview');
         if(pvPP&&document.body.classList.contains('tpl-cinema')){pvPP.classList.add('shop-scroll-row');initDragScroll('#pvPhotoContent');}
