@@ -9760,14 +9760,87 @@ function openCreateStory(){
     var html='<div class="modal-header"><h3><i class="fas fa-plus-circle" style="color:var(--primary);margin-right:8px;"></i>Create Story</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     html+='<div class="modal-body">';
     html+='<textarea id="storyText" class="post-input" placeholder="What\'s on your mind?" style="width:100%;min-height:60px;margin-bottom:12px;font-size:14px;"></textarea>';
-    html+='<div style="display:flex;gap:8px;margin-bottom:16px;"><button class="btn btn-outline" id="storyAddPhoto"><i class="fas fa-image"></i> Add Photo/Video</button><input type="file" id="storyFileInput" accept="image/*,video/*" style="display:none;"></div>';
+    html+='<div style="display:flex;gap:8px;margin-bottom:12px;"><button class="btn btn-outline" id="storyAddPhoto"><i class="fas fa-image"></i> Photo/Video</button><button class="btn btn-outline" id="storyAddSong"><i class="fas fa-music"></i> Add Song</button><input type="file" id="storyFileInput" accept="image/*,video/*" style="display:none;"></div>';
     html+='<div id="storyPreview" style="margin-bottom:12px;"></div>';
+    html+='<div id="storySongSection" style="display:none;"></div>';
     html+='<button class="btn btn-primary" id="storyPublish" style="width:100%;">Share Story</button>';
     html+='<p style="font-size:11px;color:var(--gray);text-align:center;margin-top:8px;">Stories disappear after 24 hours</p>';
     html+='</div>';
     showModal(html);
     var _storyFile=null;
+    var _storySongId=null,_storySongStart=0,_storySongVol=0.5;
+    var _storySongPreview=null;
     document.getElementById('storyAddPhoto').addEventListener('click',function(){document.getElementById('storyFileInput').click();});
+    // Song picker for stories
+    document.getElementById('storyAddSong').addEventListener('click',async function(){
+        var section=document.getElementById('storySongSection');
+        if(section.style.display!=='none'){section.style.display='none';_storySongId=null;if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}return;}
+        section.style.display='';
+        if(!_shopSongs||!_shopSongs.length) await _loadShopSongs();
+        var ownedSongs=(_shopSongs||[]).filter(function(s){return _hasInfinity()||(_shopOwnedSongs&&_shopOwnedSongs[s.id]);});
+        if(!ownedSongs.length){section.innerHTML='<p style="font-size:12px;color:var(--gray);text-align:center;padding:12px;">No songs owned. Buy songs from the Skin Shop first.</p>';return;}
+        var sh='<div class="story-song-picker">';
+        ownedSongs.forEach(function(s){
+            sh+='<div class="story-song-item" data-song-id="'+s.id+'" data-url="'+escapeHtml(s.file_url)+'"><i class="fas fa-music" style="color:var(--primary);"></i><span class="sspi-title">'+escapeHtml(s.title)+'</span></div>';
+        });
+        sh+='</div>';
+        sh+='<div class="story-song-controls" id="storySongControls" style="display:none;">';
+        sh+='<button id="storySongPlayBtn" style="background:none;color:var(--primary);font-size:16px;"><i class="fas fa-play"></i></button>';
+        sh+='<label>Start: <input type="range" id="storySongStartSlider" min="0" max="100" value="0"><span class="story-song-time" id="storySongStartLabel">0:00</span></label>';
+        sh+='<label>Vol: <input type="range" id="storySongVolSlider" min="0" max="100" value="50"></label>';
+        sh+='<button id="storySongRemove" style="background:none;color:#e74c3c;font-size:12px;"><i class="fas fa-times"></i> Remove</button>';
+        sh+='</div>';
+        section.innerHTML=sh;
+        // Song selection
+        section.querySelectorAll('.story-song-item').forEach(function(item){
+            item.addEventListener('click',function(){
+                section.querySelectorAll('.story-song-item').forEach(function(i){i.classList.remove('selected');});
+                item.classList.add('selected');
+                _storySongId=item.dataset.songId;
+                document.getElementById('storySongControls').style.display='flex';
+                // Load audio for preview/scrubbing
+                if(_storySongPreview){_storySongPreview.pause();}
+                _storySongPreview=new Audio(item.dataset.url);
+                _storySongPreview.volume=0.5;
+                _storySongPreview.addEventListener('loadedmetadata',function(){
+                    var dur=_storySongPreview.duration;
+                    document.getElementById('storySongStartSlider').max=Math.floor(dur);
+                });
+            });
+        });
+        // Play/pause preview
+        section.querySelector('#storySongPlayBtn').addEventListener('click',function(){
+            if(!_storySongPreview) return;
+            if(_storySongPreview.paused){
+                // Pause global player
+                var ca=_getCurrentAudio();if(ca&&!ca.paused){_fadeAudio(ca,ca.volume,0,300,function(){ca.pause();});}
+                _storySongPreview.currentTime=_storySongStart;
+                _storySongPreview.play();
+                this.innerHTML='<i class="fas fa-pause"></i>';
+            } else {
+                _storySongPreview.pause();
+                this.innerHTML='<i class="fas fa-play"></i>';
+            }
+        });
+        // Start time slider
+        section.querySelector('#storySongStartSlider').addEventListener('input',function(){
+            _storySongStart=parseInt(this.value);
+            var m=Math.floor(_storySongStart/60);var s=_storySongStart%60;
+            document.getElementById('storySongStartLabel').textContent=m+':'+(s<10?'0':'')+s;
+            if(_storySongPreview){_storySongPreview.currentTime=_storySongStart;}
+        });
+        // Volume slider
+        section.querySelector('#storySongVolSlider').addEventListener('input',function(){
+            _storySongVol=parseInt(this.value)/100;
+            if(_storySongPreview) _storySongPreview.volume=_storySongVol;
+        });
+        // Remove song
+        section.querySelector('#storySongRemove').addEventListener('click',function(){
+            _storySongId=null;_storySongStart=0;_storySongVol=0.5;
+            if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
+            section.style.display='none';
+        });
+    });
     document.getElementById('storyFileInput').addEventListener('change',function(){
         var file=this.files[0];if(!file) return;
         _storyFile=file;
@@ -9788,7 +9861,8 @@ function openCreateStory(){
                 if(_storyFile.type.startsWith('video/')){mediaUrl=await sbUploadPostVideo(currentUser.id,_storyFile);mediaType='video';}
                 else{mediaUrl=await sbUploadPostImage(currentUser.id,_storyFile);mediaType='image';}
             }
-            await sbCreateStory(currentUser.id,mediaUrl,mediaType,text);
+            if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
+            await sbCreateStory(currentUser.id,mediaUrl,mediaType,text,_storySongId||null,_storySongStart||0,_storySongVol||0.5);
             closeModal();
             showToast('Story shared!');
             await loadStories();
@@ -9874,8 +9948,26 @@ function openStoryViewer(userId){
     var idx=0;
     // Find first unviewed
     for(var si=0;si<stories.length;si++){if(!_storyViewed[stories[si].id]){idx=si;break;}}
+    // Fade out global player when viewing stories
+    var _wasGlobalPlaying=false;
+    var _globalAudio=_getCurrentAudio();
+    if(_globalAudio&&!_globalAudio.paused){
+        _wasGlobalPlaying=true;
+        _fadeAudio(_globalAudio,_globalAudio.volume,0,400,function(){_globalAudio.pause();});
+    }
     var overlay=document.createElement('div');
     overlay.className='story-viewer-overlay';
+    function closeStoryViewer(){
+        clearTimeout(overlay._timer);
+        if(overlay._storyAudio){overlay._storyAudio.pause();overlay._storyAudio=null;}
+        overlay.remove();
+        renderStoriesBar();
+        // Resume global player if it was playing
+        if(_wasGlobalPlaying){
+            var ga=_getCurrentAudio();
+            if(ga){ga.volume=0;ga.play().then(function(){_fadeAudio(ga,0,_gmpBaseVol,600,null);}).catch(function(){});}
+        }
+    }
     function render(){
         var s=stories[idx];
         var user=group.user;
@@ -9894,6 +9986,20 @@ function openStoryViewer(userId){
             '<div class="story-nav"><div class="story-nav-left"></div><div class="story-nav-right"></div></div>'+
             (isOwn?'<div class="story-viewers"><button class="story-viewers-btn"><i class="fas fa-eye"></i> Views</button><button class="story-delete-btn" style="color:#e74c3c;"><i class="fas fa-trash"></i></button></div>':'')+
             (isOwn?'':'<div class="story-input-bar"><div class="story-reactions-row">'+_reactionEmojis.map(function(em){return '<button class="story-react-btn" data-emoji="'+em+'">'+em+'</button>';}).join('')+'</div><input type="text" class="story-comment-input" id="storyCommentInput" placeholder="Send message to '+escapeHtml(name)+'..."><button class="story-send-btn"><i class="fas fa-paper-plane"></i></button></div>');
+        // Story song playback
+        if(overlay._storyAudio){overlay._storyAudio.pause();overlay._storyAudio=null;}
+        if(s.song&&s.song.file_url){
+            var songBar='<div class="story-song-bar"><i class="fas fa-music ssb-icon"></i><span class="ssb-title">'+escapeHtml(s.song.title)+'</span><input type="range" class="ssb-vol" min="0" max="100" value="'+Math.round((s.song_volume||0.5)*100)+'" title="Volume"></div>';
+            overlay.querySelector('.story-content').insertAdjacentHTML('beforeend',songBar);
+            var storyAudio=new Audio(s.song.file_url);
+            storyAudio.currentTime=s.song_start||0;
+            storyAudio.volume=s.song_volume||0.5;
+            storyAudio.loop=true;
+            storyAudio.play().catch(function(){});
+            overlay._storyAudio=storyAudio;
+            var volSlider=overlay.querySelector('.ssb-vol');
+            if(volSlider) volSlider.addEventListener('input',function(){storyAudio.volume=this.value/100;});
+        }
         // Mark as viewed
         _storyViewed[s.id]=true;
         try{localStorage.setItem('blipvibe_story_viewed',JSON.stringify(_storyViewed));}catch(e){}
@@ -9919,7 +10025,7 @@ function openStoryViewer(userId){
                 if(fill){fill.style.transition='width 3s linear';fill.style.width='100%';}
                 overlay._timer=setTimeout(function(){
                     if(idx<stories.length-1){idx++;render();}
-                    else{overlay.remove();renderStoriesBar();}
+                    else{closeStoryViewer();}
                 },3000);
             });
         }
@@ -9952,7 +10058,7 @@ function openStoryViewer(userId){
                 clearTimeout(overlay._timer);
                 overlay._timer=setTimeout(function(){
                     if(idx<stories.length-1){idx++;render();}
-                    else{overlay.remove();renderStoriesBar();}
+                    else{closeStoryViewer();}
                 },storyDuration);
             },{once:true});
             // Tap video to unmute if browser muted it
@@ -9963,14 +10069,14 @@ function openStoryViewer(userId){
         clearTimeout(overlay._timer);
         overlay._timer=setTimeout(function(){
             if(idx<stories.length-1){idx++;render();}
-            else{overlay.remove();renderStoriesBar();}
+            else{closeStoryViewer();}
         },storyDuration);
     }
     overlay.addEventListener('click',function(e){
-        if(e.target.closest('.story-close')){clearTimeout(overlay._timer);overlay.remove();renderStoriesBar();return;}
+        if(e.target.closest('.story-close')){clearTimeout(overlay._timer);closeStoryViewer();return;}
         if(e.target.closest('.story-delete-btn')){
             var sid=stories[idx].id;
-            sbDeleteStory(sid).then(function(){overlay.remove();loadStories();showToast('Story deleted');}).catch(function(){showToast('Delete failed');});
+            sbDeleteStory(sid).then(function(){closeStoryViewer();loadStories();showToast('Story deleted');}).catch(function(){showToast('Delete failed');});
             return;
         }
         if(e.target.closest('.story-viewers-btn')){
@@ -9983,7 +10089,7 @@ function openStoryViewer(userId){
             }).catch(function(){});
             return;
         }
-        if(e.target.closest('.story-nav-right')){clearTimeout(overlay._timer);if(idx<stories.length-1){idx++;render();}else{overlay.remove();renderStoriesBar();}return;}
+        if(e.target.closest('.story-nav-right')){clearTimeout(overlay._timer);if(idx<stories.length-1){idx++;render();}else{closeStoryViewer();}return;}
         if(e.target.closest('.story-nav-left')){clearTimeout(overlay._timer);if(idx>0){idx--;render();}return;}
     });
     document.body.appendChild(overlay);

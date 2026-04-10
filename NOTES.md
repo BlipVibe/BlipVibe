@@ -1303,3 +1303,115 @@ Group coins are **shared** — they belong to the group, not individual users. A
 ### Privacy Policy Updates
 - Message reactions added to activity data disclosure
 - Search history disclosed as localStorage data (not sent to servers)
+
+## Gamification System (v0.5.0 — 2026-04-07)
+
+### Daily Quest System
+- Like 3 posts (+20 coins), Follow 2 users (+20 coins), Create 1 post (+35 coins)
+- Server-side tracking via `get_daily_quests` and `update_quest_progress` RPCs
+- Local fallback if RPCs not deployed
+- Quest panel renders above feed with progress bars and check marks
+- Resets daily, prevents double rewards
+- Migration: `supabase/add-daily-quests.sql`
+
+### Coin Progress Bar
+- Shows progress toward next premium skin (300 coin goal)
+- Gradient fill bar with current/target display
+- Hidden for infinity users
+
+### Featured Skin (Daily Rotation)
+- Rotates premium skins based on day of year
+- Gold-accented banner with countdown timer until midnight
+- Buy button (or Free for infinity users)
+
+### Tiered Streak Rewards
+- Upgraded from flat 5 coins to: Day 1: +10, Day 3: +20, Day 7: +50, Day 14: +100
+- Shows next tier in reward popup
+- Updated `claim_daily_reward` RPC
+
+### Coin Earn Animation
+- `showCoinEarnAnimation(el, amount)` — floating coin icon on earn/lose
+- Uses user's equipped coin skin (diamond, fire, crown, etc.)
+- 5 random float directions for variety
+- Red drop animation for coin loss (-1 on unlike)
+- 500ms debounce prevents multiple animations
+
+## Economy Rebalance (v0.5.0 — 2026-04-07)
+
+### New Shop Prices
+- Fonts: 25, Logos: 35, Icon Sets: 35, Coin Skins: 50
+- Nav Styles: 60, Basic Skins: 75, Templates: 100, Premium Skins: 300, Songs: 40
+- New users start with 100 coins
+
+### Daily Earning Caps
+- Posts: 5/day (25 max), Comments: 15/day (30 max), Replies: 15/day (30 max)
+- Post likes: 30/day (30 max), Comment likes: 20/day (20 max)
+- Daily login: tiered (10-100), Quests: +75/day
+- Max daily: ~310 coins
+
+### Infinity Status (Early Adopters)
+- `infinityCoins` flag in `skin_data` — grants unlimited purchasing
+- Shows ∞ symbol (28px) in nav coin display
+- Shop shows "Free" button, no coin deduction
+- Preserved in `_buildSkinData()` sync
+- Migration: `supabase/grant-infinity-early-adopters.sql`
+
+## Profile Music System (v0.6.0 — 2026-04-07)
+
+### Music Library
+- 22 BlipVibe original songs from Suno in Supabase Music bucket
+- `music_library` table, `user_songs` ownership, `profile_song_id` on profiles
+- Songs cost 40 coins (free for infinity users)
+- Migration: `supabase/add-profile-music.sql`
+
+### Songs in Skin Shop
+- "Songs" tab in shop — browse, preview (15s limit), buy, set as profile song
+- "Songs" in My Skins — set owned songs as profile song
+- Preview pauses global player, resumes on stop
+- Preview stops on tab switch and page navigation
+
+### Songs in Group Shop
+- Groups can buy songs with group coins
+- Apply tab → Songs pill shows owned songs with "Set as Group Song" / "Applied"
+- Group active song saved in group `skin_data`
+- Song plays when entering group view
+
+### Global Sticky Mini Player
+- Fixed bar at bottom of screen, visible on all pages
+- Play/pause, volume slider, mute, close controls
+- Close pauses audio, music note icon in nav to reopen
+- Pulse animation when playing
+
+### Seamless Audio Transitions
+- Your profile song plays as background while browsing
+- Visiting someone's profile or group crossfades to their song (800ms fade out → 500ms pause → 800ms fade in)
+- Leaving crossfades back to your song from where it left off (1000ms fade in)
+- `switchToProfileSong()` / `resumeMyMusic()` / `refreshMyProfileMusic()`
+- `_setupFadeLoop()` — 3-second fade-out at song end, 1-second fade-in on restart
+- Auto-starts after first user interaction (click/tap)
+
+### Group Shop Redesign
+- Apply tab is first tab with sub-filter icon pills: 🎨 Skins, 💎 Premium, 🔤 Fonts, 🎵 Songs
+- Premium background controls show on Apply → Premium filter
+- Group cards show profile picture as circle thumbnail
+
+## Bug Fixes (v0.6.0 — 2026-04-07)
+
+- Infinity coins being wiped by `_buildSkinData` sync — now preserved
+- Unfollowed users still showing in Following feed — feed re-renders on follow/unfollow
+- Profile view likes desyncing with DB — uses server truth now
+- Like counts resetting to 0 on refresh — fixed cached feed overwriting fresh data
+- Shared post images showing full size — proper layout with thumbnails
+- Shared post author not clickable — now navigates to their profile
+- View All photos on other profiles going to own photos — opens modal instead
+- View More button not working — added preventDefault/stopPropagation
+- View More cutting words — `safeWordSplit()` breaks at word boundaries
+- Modal close button oval shape — fixed to 36x36px circle
+- Mobile feed not centered — removed left border, forced width on mobile
+- YouTube not playing on mobile — thumbnail + play button fallback
+- Own posts in Discover tab — explicit exclusion
+- Discover showing only friends-of-friends — now shows all non-followed by engagement
+- Multiple coin animations firing — 500ms debounce
+- Song preview pause button not working — unified handler
+- Group song purchases not persisting — added to syncGroupSkinData
+- Profile song reverting to old one — refreshMyProfileMusic() on all set actions

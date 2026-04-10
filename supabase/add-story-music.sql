@@ -1,0 +1,4 @@
+-- Story Music — add song to stories
+ALTER TABLE stories ADD COLUMN IF NOT EXISTS song_id UUID REFERENCES music_library(id) ON DELETE SET NULL;
+ALTER TABLE stories ADD COLUMN IF NOT EXISTS song_start REAL DEFAULT 0;
+ALTER TABLE stories ADD COLUMN IF NOT EXISTS song_volume REAL DEFAULT 0.5;

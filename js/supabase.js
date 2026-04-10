@@ -1315,10 +1315,12 @@ async function sbGetUserPhotoReaction(photoUrl, userId) {
 
 // ---- 18. STORIES --------------------------------------------------------------
 
-async function sbCreateStory(userId, mediaUrl, mediaType, text) {
+async function sbCreateStory(userId, mediaUrl, mediaType, text, songId, songStart, songVolume) {
   const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(); // 24hrs
+  var row = { user_id: userId, media_url: mediaUrl || null, media_type: mediaType || 'image', text: text || '', expires_at: expiresAt };
+  if (songId) { row.song_id = songId; row.song_start = songStart || 0; row.song_volume = songVolume || 0.5; }
   const { data, error } = await sb.from('stories')
-    .insert({ user_id: userId, media_url: mediaUrl || null, media_type: mediaType || 'image', text: text || '', expires_at: expiresAt })
+    .insert(row)
     .select('*, author:profiles!stories_user_id_fkey(id, username, display_name, avatar_url)')
     .single();
   if (error) throw error;
@@ -1327,7 +1329,7 @@ async function sbCreateStory(userId, mediaUrl, mediaType, text) {
 
 async function sbGetStories(limit = 100) {
   const { data, error } = await sb.from('stories')
-    .select('*, author:profiles!stories_user_id_fkey(id, username, display_name, avatar_url)')
+    .select('*, author:profiles!stories_user_id_fkey(id, username, display_name, avatar_url), song:music_library!stories_song_id_fkey(id, title, artist, file_url)')
     .gt('expires_at', new Date().toISOString())
     .order('created_at', { ascending: false })
     .limit(limit);
