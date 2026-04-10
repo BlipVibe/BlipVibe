@@ -9748,8 +9748,16 @@ function renderStoriesBar(){
             var uid=item.dataset.uid;
             if(item.classList.contains('story-add')){
                 var myStory=_storiesData.find(function(s){return s.user.id===uid;});
-                if(myStory) openStoryViewer(uid);
-                else openCreateStory();
+                if(myStory){
+                    // Has stories — show choice
+                    var ch='<div class="modal-header"><h3>Your Story</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+                    ch+='<div class="modal-body"><div class="modal-actions" style="flex-direction:column;gap:10px;"><button class="btn btn-primary" id="storyViewMine" style="width:100%;"><i class="fas fa-eye" style="margin-right:6px;"></i>View My Stories</button><button class="btn btn-outline" id="storyCreateNew" style="width:100%;"><i class="fas fa-plus" style="margin-right:6px;"></i>Create New Story</button></div></div>';
+                    showModal(ch);
+                    document.getElementById('storyViewMine').addEventListener('click',function(){closeModal();openStoryViewer(uid);});
+                    document.getElementById('storyCreateNew').addEventListener('click',function(){closeModal();openCreateStory();});
+                } else {
+                    openCreateStory();
+                }
             } else {
                 openStoryViewer(uid);
             }
