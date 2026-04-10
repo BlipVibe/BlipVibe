@@ -1643,6 +1643,8 @@ async function toggleFollow(userId,btn){
         }
         updateFollowCounts();
         renderSuggestions();
+        // Re-render feed so Following/Discover tabs reflect the change
+        renderFeed(activeFeedTab);
         // Refresh friends-of-friends for discover tab
         sbGetFriendsOfFriends(currentUser.id).then(function(fof){_fofIds=fof;}).catch(function(){});
         // Show suggested follows after following someone new
