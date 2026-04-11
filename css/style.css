@@ -3398,9 +3398,9 @@ body.premium-heavens-light.nav-split .nav-center{background:linear-gradient(135d
 body.premium-heavens-light .navbar,
 body.premium-heavens-light .nav-center{overflow:hidden!important;}
 body.premium-heavens-light .navbar::after,
-body.premium-heavens-light .nav-center::after{content:'';position:absolute;top:0;left:-100%;width:300%;height:100%;border-radius:inherit;background:radial-gradient(ellipse 120px 50px at 10% 50%,rgba(255,255,255,.3),transparent),radial-gradient(ellipse 80px 35px at 25% 30%,rgba(255,255,255,.2),transparent),radial-gradient(ellipse 140px 45px at 42% 65%,rgba(255,255,255,.25),transparent),radial-gradient(ellipse 60px 30px at 58% 35%,rgba(255,255,255,.15),transparent),radial-gradient(ellipse 100px 40px at 72% 55%,rgba(255,255,255,.3),transparent),radial-gradient(ellipse 70px 30px at 88% 40%,rgba(255,255,255,.2),transparent);animation:heavensClouds 20s linear infinite;pointer-events:none;z-index:0;}
+body.premium-heavens-light .nav-center::after{content:'';position:absolute;top:0;left:0;width:200%;height:100%;border-radius:inherit;background:url('../../images/skin-textures/clouds.png') repeat-x center/auto 100%;opacity:.6;animation:heavensClouds 25s linear infinite;pointer-events:none;z-index:0;}
 body.premium-heavens-light .navbar::before,
-body.premium-heavens-light .nav-center::before{content:'';position:absolute;top:0;left:-50%;width:200%;height:100%;border-radius:inherit;background:radial-gradient(ellipse 90px 40px at 15% 60%,rgba(255,255,255,.15),transparent),radial-gradient(ellipse 110px 35px at 45% 35%,rgba(255,255,255,.12),transparent),radial-gradient(ellipse 80px 30px at 75% 55%,rgba(255,255,255,.18),transparent);animation:heavensClouds2 30s linear infinite;pointer-events:none;z-index:0;}
+body.premium-heavens-light .nav-center::before{content:'';position:absolute;top:0;left:0;width:200%;height:100%;border-radius:inherit;background:url('../../images/skin-textures/clouds.png') repeat-x center/auto 120%;opacity:.3;animation:heavensClouds2 40s linear infinite;pointer-events:none;z-index:0;}
 body.premium-heavens-light .navbar>*,body.premium-heavens-light .nav-center>*{position:relative;z-index:1;}
 body.premium-heavens-light .profile-card .profile-cover{background:linear-gradient(135deg,#1a3a5c,#2c5f8a,#d4af37,#f5e6a3,#87ceeb)!important;background-size:400% 400%!important;animation:heavensFlow 10s linear infinite!important;}
 body.premium-heavens-light .profile-avatar-wrap::before{background:conic-gradient(from 0deg,#d4af37,#f5e6a3,#ffffff,#87ceeb,#d4af37);box-shadow:0 0 24px rgba(212,175,55,.5),0 0 60px rgba(135,206,235,.3);animation:premiumSpin 4s linear infinite,heavensGlow 4s ease infinite;}
@@ -3408,8 +3408,8 @@ body.premium-heavens-light .card,body.premium-heavens-light .feed-post{box-shado
 body.premium-heavens-light .feed-post{border-left-color:#d4af37!important;}
 @keyframes heavensFlow{0%{background-position:0% 0%;}50%{background-position:100% 100%;}100%{background-position:0% 0%;}}
 @keyframes heavensGlow{0%,100%{box-shadow:0 0 24px rgba(212,175,55,.5),0 0 60px rgba(135,206,235,.3);}50%{box-shadow:0 0 40px rgba(212,175,55,.8),0 0 80px rgba(255,255,255,.4);}}
-@keyframes heavensClouds{0%{transform:translateX(0);}100%{transform:translateX(33.33%);}}
-@keyframes heavensClouds2{0%{transform:translateX(0);}100%{transform:translateX(25%);}}
+@keyframes heavensClouds{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+@keyframes heavensClouds2{0%{transform:translateX(-50%);}100%{transform:translateX(0);}}
 
 /* ========== PREMIUM — UNIQUE EFFECTS ========== */
 @keyframes blazePulse{0%,100%{box-shadow:0 0 10px rgba(255,8,68,.2);}50%{box-shadow:0 0 25px rgba(255,8,68,.4);}}
