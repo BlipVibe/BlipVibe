@@ -2888,6 +2888,20 @@ async function showProfileView(person){
         applyTemplate(_pvSaved.tpl||null,true);
         _pvSaved=null;
     }
+    // Fetch public skin data for other users (skin_data column is revoked from SELECT)
+    if(!isMe&&person.id&&!person._skinLoaded){
+        try{
+            var pubSkin=await sbGetPublicSkinData(person.id);
+            if(pubSkin){
+                person.skin=pubSkin.activeSkin||person.skin||null;
+                person.premiumSkin=pubSkin.activePremiumSkin||person.premiumSkin||null;
+                person.font=pubSkin.activeFont||person.font||null;
+                person.template=pubSkin.activeTemplate||person.template||null;
+                if(pubSkin.premiumBgUrl) person.premiumBg={src:pubSkin.premiumBgUrl,overlay:pubSkin.premiumBgOverlay!=null?pubSkin.premiumBgOverlay:0,darkness:pubSkin.premiumBgDarkness!=null?pubSkin.premiumBgDarkness:0,cardTrans:pubSkin.premiumCardTransparency!=null?pubSkin.premiumCardTransparency:0.1};
+                person._skinLoaded=true;
+            }
+        }catch(e){console.warn('Failed to load public skin data:',e);}
+    }
     // Apply viewed person's skin/font/template (silent, don't change state)
     _pvSaved={skin:state.activeSkin,premiumSkin:state.activePremiumSkin,font:state.activeFont,tpl:state.activeTemplate,bgImage:premiumBgImage,bgOverlay:premiumBgOverlay,bgDarkness:premiumBgDarkness,cardTrans:premiumCardTransparency};
     if(!isMe){

@@ -1425,3 +1425,4 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - Story avatar/name click now opens profile — closes story viewer and navigates to user's profile page
 - Templates not applying on other profiles — `applyTemplate()` was never called when viewing others. Added to: profile view apply (line ~2903), navigateTo restore (line ~1279), and profile-to-profile restore (line ~2886)
 - Profile card cover gradient too large — reduced from 70px to 30px, avatar wrap shrunk from 200px max to 160px, negative margin adjusted so avatar overlaps cover banner properly
+- Other users' skins/fonts/templates not loading — `skin_data` column is revoked from SELECT for other users. Created `get_public_skin_data` RPC that returns only visual customization fields. `showProfileView()` now calls `sbGetPublicSkinData(userId)` to fetch skin/font/template/premium bg before applying. Migration: run `supabase/get-public-skin-data.sql`

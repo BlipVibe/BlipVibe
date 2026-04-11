@@ -148,6 +148,13 @@ async function sbGetOwnProfile() {
   return _sanitizeProfile(data);
 }
 
+// Get public visual customization data for any user (skin, font, template, premium bg)
+async function sbGetPublicSkinData(userId) {
+  const { data, error } = await sb.rpc('get_public_skin_data', { target_user_id: userId });
+  if (error) { console.warn('sbGetPublicSkinData error:', error); return {}; }
+  return data || {};
+}
+
 async function sbGetProfileByUsername(username) {
   const { data, error } = await sb.from('profiles')
     .select('*')
