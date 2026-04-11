@@ -960,6 +960,7 @@ async function loadSkinDataFromSupabase(){
         var profile=await sbGetOwnProfile();
         if(!profile||!profile.skin_data) return;
         var sd=profile.skin_data;
+        currentUser.skin_data=sd; // update server truth for _hasInfinity() etc.
         _applySkinDataFromCache(sd);
     }catch(e){console.warn('Load skin data from Supabase:',e);}
 }
