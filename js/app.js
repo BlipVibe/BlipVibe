@@ -1339,13 +1339,13 @@ function navigateTo(page,skipPush){
     if(_tn) _tn.style.display='';if(_bn) _bn.style.display='';
     // Restore user's skin/font/template when leaving profile view
     if(_pvSaved&&page!=='profile-view'){
-        _pvSaved=null;
-        // Pull actual settings from Supabase (source of truth) and reapply
+        // Keep _pvSaved set to block syncs until restore completes
         applyPremiumSkin(null,true);
         applySkin(null,true);
         loadSkinDataFromSupabase().then(function(){
+            _pvSaved=null; // only clear AFTER server data is loaded
             reapplyCustomizations();
-        });
+        }).catch(function(){_pvSaved=null;});
     }
     // Clear active group context when leaving group view
     _activeGroupId=null;
@@ -2941,11 +2941,11 @@ async function showProfileView(person){
 
     // Restore previous skin if we're coming from another profile view
     if(_pvSaved){
-        _pvSaved=null;
-        // Restore own settings from Supabase (source of truth)
+        // Keep _pvSaved set to block syncs until restore completes
         applyPremiumSkin(null,true);
         applySkin(null,true);
         await loadSkinDataFromSupabase();
+        _pvSaved=null; // only clear AFTER server data is loaded
         reapplyCustomizations();
     }
     // Fetch public skin data for other users (skin_data column is revoked from SELECT)
