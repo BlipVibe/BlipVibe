@@ -886,7 +886,18 @@ function syncSkinDataToSupabase(immediate){
     if(_pvSaved||_gvSaved) return;
     clearTimeout(_skinSyncTimer);
     function doSync(){
-        sbUpdateProfile(currentUser.id,{skin_data:_buildSkinData()}).catch(function(e){
+        var skinData=_buildSkinData();
+        // FAILSAFE: verify the data we're about to sync matches what the user actually owns
+        // If activePremiumSkin is set but not in ownedPremiumSkins, it's from another profile
+        if(skinData.activePremiumSkin&&!skinData.ownedPremiumSkins[skinData.activePremiumSkin]&&!skinData.infinityCoins){
+            console.warn('[Sync failsafe] Blocked: activePremiumSkin "'+skinData.activePremiumSkin+'" not owned — likely profile bleed');
+            return;
+        }
+        if(skinData.activeSkin&&skinData.activeSkin!=='classic'&&!skinData.ownedSkins[skinData.activeSkin]&&!skinData.infinityCoins){
+            console.warn('[Sync failsafe] Blocked: activeSkin "'+skinData.activeSkin+'" not owned — likely profile bleed');
+            return;
+        }
+        sbUpdateProfile(currentUser.id,{skin_data:skinData}).catch(function(e){
             console.warn('Skin data sync error:',e);
         });
     }
