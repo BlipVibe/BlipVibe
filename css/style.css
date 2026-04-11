@@ -3783,14 +3783,15 @@ body.light-mode::before{background:#f8fafc;}
 @media(max-width:768px){
     #globalMiniPlayer{bottom:calc(64px + env(safe-area-inset-bottom,0px));padding:6px 12px;max-width:100%;border-radius:0;left:0;right:0;}
 }
-body.nav-pill #globalMiniPlayer{bottom:0!important;border-radius:0!important;max-width:100%!important;left:0!important;right:0!important;transform:none!important;z-index:900!important;}
+body.nav-pill #globalMiniPlayer{bottom:72px!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important;max-width:500px!important;border-radius:12px!important;z-index:900!important;}
 body.nav-pill.music-player-visible .page{padding-bottom:130px!important;}
 body.nav-island.music-player-visible .page{padding-bottom:130px!important;}
 body.music-player-visible .page{padding-bottom:120px!important;}
 body.nav-dock #globalMiniPlayer,
 body.nav-horizon #globalMiniPlayer,
-body.nav-wheel #globalMiniPlayer{bottom:calc(72px + env(safe-area-inset-bottom,0px))!important;}
-body.nav-island #globalMiniPlayer{bottom:0!important;border-radius:0!important;max-width:100%!important;left:0!important;right:0!important;transform:none!important;z-index:900!important;}
+body.nav-wheel #globalMiniPlayer,
+body.nav-split #globalMiniPlayer{bottom:calc(60px + env(safe-area-inset-bottom,0px))!important;}
+body.nav-island #globalMiniPlayer{bottom:72px!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important;max-width:500px!important;border-radius:12px!important;z-index:900!important;}
 .profile-music-player.playing .pmp-art{animation:musicPulse 1.5s ease infinite;}
 
 /* ========== SONG PICKER ========== */
