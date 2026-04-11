@@ -436,6 +436,7 @@ img{display:block;}
 .post-menu-btn:hover{background:var(--border);}
 .post-dropdown{position:absolute;top:36px;right:0;background:var(--card);border-radius:8px;box-shadow:var(--shadow-hover);min-width:160px;overflow:hidden;opacity:0;visibility:hidden;transform:translateY(-8px);transition:all .2s;z-index:50;}
 .post-dropdown.show{opacity:1;visibility:visible;transform:translateY(0);}
+.feed-post:has(.post-dropdown.show){z-index:10;position:relative;}
 .post-dropdown a{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:13px;color:var(--dark);transition:background .2s;}
 .post-dropdown a:hover{background:var(--border);}
 .post-dropdown a i{width:14px;color:var(--gray);font-size:13px;}
