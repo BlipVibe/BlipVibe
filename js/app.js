@@ -6759,8 +6759,8 @@ $('#openPostModal').addEventListener('click',function(){
 });
 function showAllMedia(pgid,startIdx){
     var list=window['_media_'+pgid];if(!list)return;
-    var imgs=list.filter(function(m){return m.type==='image';}).map(function(m){return m.src;});
-    if(imgs.length) window._openLightbox(imgs,startIdx||0);
+    var srcs=list.map(function(m){return m.src;});
+    if(srcs.length) window._openLightbox(srcs,startIdx||0);
 }
 
 // ======================== SUGGESTIONS ========================
@@ -11836,8 +11836,9 @@ updateFollowCounts();
     commentsPanel.addEventListener('touchstart',function(e){e.stopPropagation();},{passive:true});
     commentsPanel.addEventListener('touchend',function(e){e.stopPropagation();});
 
-    // Collect image/video srcs from a container
-    function collect(container){return Array.from(container.querySelectorAll('img,video')).map(function(i){return i.src;}).filter(Boolean);}
+    // Collect image/video srcs from a container (strip #t=0.5 fragment from video thumbnails)
+    function cleanSrc(s){return s?s.replace(/#t=[\d.]+$/,''):s;}
+    function collect(container){return Array.from(container.querySelectorAll('img,video')).map(function(i){return cleanSrc(i.src);}).filter(Boolean);}
 
     // Delegate clicks on images/videos in posts, albums, previews
     document.addEventListener('click',function(e){
@@ -11854,7 +11855,7 @@ updateFollowCounts();
                 if(allMedia){
                     var list=allMedia.map(function(m){return m.src;});
                     var thumbEl=pmThumb.querySelector('img')||pmThumb.querySelector('video');
-                    var startIdx=thumbEl?list.indexOf(thumbEl.src):0;
+                    var startIdx=thumbEl?list.indexOf(cleanSrc(thumbEl.src)):0;
                     if(startIdx<0)startIdx=0;
                     var feedPost=grid.closest('.feed-post');
                     var pid=feedPost?(feedPost.querySelector('.like-btn[data-post-id]')||{}).getAttribute&&feedPost.querySelector('.like-btn[data-post-id]').getAttribute('data-post-id'):null;
@@ -11863,6 +11864,7 @@ updateFollowCounts();
             }
         }
         if(t.tagName!=='IMG'&&t.tagName!=='VIDEO')return;
+        var clickedSrc=cleanSrc(t.src);
         // Post media grid
         var grid=t.closest('.post-media-grid');
         if(grid){
@@ -11870,17 +11872,17 @@ updateFollowCounts();
             if(allMedia){list=allMedia.map(function(m){return m.src;});}else{list=collect(grid);}
             var feedPost=grid.closest('.feed-post');
             var pid=feedPost?(feedPost.querySelector('.like-btn[data-post-id]')||{}).getAttribute&&feedPost.querySelector('.like-btn[data-post-id]').getAttribute('data-post-id'):null;
-            if(list.length){open(list,list.indexOf(t.src),pid);e.stopPropagation();return;}
+            if(list.length){open(list,list.indexOf(clickedSrc),pid);e.stopPropagation();return;}
         }
         // Photo album grid
         var album=t.closest('.photo-album-grid');
-        if(album){var list=collect(album);if(list.length){open(list,list.indexOf(t.src));e.stopPropagation();return;}}
+        if(album){var list=collect(album);if(list.length){open(list,list.indexOf(clickedSrc));e.stopPropagation();return;}}
         // Photos preview sidebar
         var preview=t.closest('.photos-preview');
-        if(preview){var list=collect(preview);if(list.length){open(list,list.indexOf(t.src));e.stopPropagation();return;}}
+        if(preview){var list=collect(preview);if(list.length){open(list,list.indexOf(clickedSrc));e.stopPropagation();return;}}
         // All media modal grid
         var am=t.closest('.all-media-grid');
-        if(am){var list=collect(am);if(list.length){open(list,list.indexOf(t.src));e.stopPropagation();return;}}
+        if(am){var list=collect(am);if(list.length){open(list,list.indexOf(clickedSrc));e.stopPropagation();return;}}
     });
 })();
 

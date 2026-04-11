@@ -1415,5 +1415,8 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - Song preview pause button not working — unified handler
 - Group song purchases not persisting — added to syncGroupSkinData
 - Profile song reverting to old one — refreshMyProfileMusic() on all set actions
-- Lightbox video not displaying — added `.lightbox-media video` CSS rules + min-width on media container so video doesn't collapse to 0 width
+- Lightbox video not displaying — three root causes fixed:
+  1. CSS: added `.lightbox-media video` rules + `min-width:300px` on media container + `width:100%` on video
+  2. JS: `showAllMedia()` filtered to images only, dropping all videos — now includes both types
+  3. JS: video thumbnails have `#t=0.5` fragment in src, but `_media_` list stores clean URLs — `indexOf()` always returned -1 for videos. Added `cleanSrc()` helper to strip fragment before lookup
 - Playlist manager showing all songs for infinity users — removed `_hasInfinity()` bypass so only owned songs appear
