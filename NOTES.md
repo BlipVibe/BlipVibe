@@ -1423,3 +1423,4 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - YouTube/URLs with underscores broken in feed — `renderRichText()` italic regex `_text_` was matching underscores inside URLs (e.g. `v=2R_qDghqVxg` → `v=2RqDghqVxg`), stripping them. Fix: protect `<a>` tags from formatting by extracting them before applying markdown, restoring after
 - Feed URL not hidden after embed — `linkifyText()` wraps URLs in `<a>` tags but old regex only matched raw text. Added `_hideUrlFromText()` helper that strips the full `<a>` tag
 - Story avatar/name click now opens profile — closes story viewer and navigates to user's profile page
+- Templates not applying on other profiles — `applyTemplate()` was never called when viewing others. Added to: profile view apply (line ~2903), navigateTo restore (line ~1279), and profile-to-profile restore (line ~2886)

@@ -1277,6 +1277,7 @@ function navigateTo(page,skipPush){
         if(_pvSaved.premiumSkin)applyPremiumSkin(_pvSaved.premiumSkin,true);
         else updatePremiumBg();
         applyFont(_pvSaved.font||null,true);
+        applyTemplate(_pvSaved.tpl||null,true);
         _pvSaved=null;
     }
     // Clear active group context when leaving group view
@@ -2884,6 +2885,7 @@ async function showProfileView(person){
         applySkin(_pvSaved.skin||null,true);
         if(_pvSaved.premiumSkin)applyPremiumSkin(_pvSaved.premiumSkin,true);else updatePremiumBg();
         applyFont(_pvSaved.font||null,true);
+        applyTemplate(_pvSaved.tpl||null,true);
         _pvSaved=null;
     }
     // Apply viewed person's skin/font/template (silent, don't change state)
@@ -2901,6 +2903,7 @@ async function showProfileView(person){
             applySkin(person.skin||null,true);
         }
         applyFont(person.font||null,true);
+        applyTemplate(person.template||null,true);
     }
 
     // Cover banner
