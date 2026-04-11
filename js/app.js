@@ -5922,8 +5922,8 @@ async function _loadMorePosts(){
             // Filter new posts by active tab before appending to DOM
             var filtered=_filterPostsByTab(newFeedPosts,activeFeedTab);
             if(activeFeedTab==='discover'){
-                // Sort discover posts by engagement
-                filtered.sort(function(a,b){return ((b.likes||0)+(b.commentCount||0))-((a.likes||0)+(a.commentCount||0));});
+                if(_discoverSortMode==='popular') filtered.sort(function(a,b){return ((b.likes||0)+(b.commentCount||0))-((a.likes||0)+(a.commentCount||0));});
+                else filtered.sort(function(a,b){return (b.created_at||0)-(a.created_at||0);});
             }
             if(filtered.length) _appendFeedPosts(filtered);
         }
@@ -6091,17 +6091,26 @@ function _buildPostHtml(p){
     html+='<div class="post-comments" data-post-id="'+i+'"></div></div>';
     return html;
 }
+var _discoverSortMode='popular';
 function renderFeed(tab){
     activeFeedTab=tab;
     var posts=_filterPostsByTab(feedPosts,tab);
+    // Show/hide discover sort filter
+    var dsEl=document.getElementById('discoverSort');
+    if(dsEl){dsEl.style.display=tab==='discover'?'':'none';dsEl.querySelectorAll('[data-dsort]').forEach(function(b){b.classList.toggle('active',b.dataset.dsort===_discoverSortMode);});}
     if(tab==='discover'){
         // If not enough discover posts in loaded feed, trigger a background fetch
         if(posts.length<5&&!_discoverLoaded){
             _discoverLoaded=true;
             _loadDiscoverPosts().then(function(){renderFeed('discover');});
         }
-        // Sort by engagement (likes + comments) descending — trending posts first
-        posts.sort(function(a,b){return ((b.likes||0)+(b.commentCount||0))-((a.likes||0)+(a.commentCount||0));});
+        if(_discoverSortMode==='popular'){
+            // Sort by engagement (likes + comments) descending — trending posts first
+            posts.sort(function(a,b){return ((b.likes||0)+(b.commentCount||0))-((a.likes||0)+(a.commentCount||0));});
+        } else {
+            // Sort by newest first (created_at descending)
+            posts.sort(function(a,b){return (b.created_at||0)-(a.created_at||0);});
+        }
     }
     var container=$('#feedContainer');
     if(!posts.length){
@@ -6143,6 +6152,13 @@ document.getElementById('feedTabs').addEventListener('click',function(e){
     if(tab&&tab.dataset.feedtab!==activeFeedTab) {
         renderFeed(tab.dataset.feedtab);
     }
+});
+// Discover sort filter clicks
+document.getElementById('discoverSort').addEventListener('click',function(e){
+    var btn=e.target.closest('[data-dsort]');
+    if(!btn||btn.dataset.dsort===_discoverSortMode) return;
+    _discoverSortMode=btn.dataset.dsort;
+    renderFeed('discover');
 });
 
 function bindPostEvents(){
