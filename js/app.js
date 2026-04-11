@@ -10068,6 +10068,13 @@ function openCreateStory(){
         if(oldMedia) oldMedia.remove();
         if(file.type.startsWith('video/')){
             var vid=document.createElement('video');vid.src=URL.createObjectURL(file);vid.controls=true;vid.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;';
+            // Check duration — max 30 seconds for stories
+            vid.addEventListener('loadedmetadata',function(){
+                if(vid.duration>30){
+                    showToast('Story videos must be 30 seconds or less (yours is '+Math.round(vid.duration)+'s)');
+                    _storyFile=null;vid.remove();
+                }
+            });
             canvas.insertBefore(vid,canvas.firstChild);
         } else {
             var img=document.createElement('img');img.src=URL.createObjectURL(file);img.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;';
