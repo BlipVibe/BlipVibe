@@ -3231,7 +3231,7 @@ body[class*="premium-"].nav-dock .nav-center,
 body[class*="premium-"].nav-pill .nav-center,
 body[class*="premium-"].nav-split .nav-center{background:var(--ps-nav);background-size:200% 200%;animation:gradientShift 6s ease infinite;}
 body[class*="premium-"].nav-island .nav-left,body[class*="premium-"].nav-island .nav-center,body[class*="premium-"].nav-island .nav-right{background:var(--ps-nav);background-size:200% 200%;animation:gradientShift 6s ease infinite;}
-body[class*="premium-"] .card,body[class*="premium-"] .group-card,body[class*="premium-"] .profile-card-item,body[class*="premium-"] .notif-item{background:var(--ps-card);color:var(--ps-text);}
+body[class*="premium-"] .card,body[class*="premium-"] .group-card,body[class*="premium-"] .profile-card-item,body[class*="premium-"] .notif-item,body[class*="premium-"] .quest-panel,body[class*="premium-"] .featured-skin-banner{background:var(--ps-card);color:var(--ps-text);}
 body[class*="premium-"] .feed-post{border-left:3px solid var(--ps-post-border);animation:var(--ps-anim);}
 body[class*="premium-"] .post-username,body[class*="premium-"] .msg-chat-header h4{color:var(--primary);}
 body[class*="premium-"] .post-description p,body[class*="premium-"] .profile-about{color:var(--ps-muted);}
@@ -3240,8 +3240,8 @@ body[class*="premium-"] .post-actions{border-color:var(--ps-border);}
 body[class*="premium-"] .inline-comment-bubble{background:var(--ps-tag);color:var(--ps-text);}
 body[class*="premium-"] .inline-comment-bubble::before{border-color:transparent var(--ps-tag) transparent transparent;}
 body[class*="premium-"] .coin-rule{background:var(--ps-tag);color:var(--ps-muted);}
-body[class*="premium-"] .card-heading,body[class*="premium-"] .promo-title,body[class*="premium-"] .suggestion-name,body[class*="premium-"] .group-card-body h4,body[class*="premium-"] .group-name,body[class*="premium-"] .shop-section-title,body[class*="premium-"] .profile-card-item h4,body[class*="premium-"] .msg-sidebar-header h3,body[class*="premium-"] .msg-contact-name,body[class*="premium-"] .notif-text p,body[class*="premium-"] .pv-posts-heading,body[class*="premium-"] .page-header h2{color:var(--ps-text);}
-body[class*="premium-"] .promo-subtitle,body[class*="premium-"] .group-desc,body[class*="premium-"] .view-more-link,body[class*="premium-"] .group-card-body p,body[class*="premium-"] .profile-card-item p,body[class*="premium-"] .msg-contact-preview,body[class*="premium-"] .post-time,body[class*="premium-"] .notif-text span,body[class*="premium-"] .page-subtitle,body[class*="premium-"] .stat-label{color:var(--ps-muted);}
+body[class*="premium-"] .card-heading,body[class*="premium-"] .promo-title,body[class*="premium-"] .suggestion-name,body[class*="premium-"] .group-card-body h4,body[class*="premium-"] .group-name,body[class*="premium-"] .shop-section-title,body[class*="premium-"] .profile-card-item h4,body[class*="premium-"] .msg-sidebar-header h3,body[class*="premium-"] .msg-contact-name,body[class*="premium-"] .notif-text p,body[class*="premium-"] .pv-posts-heading,body[class*="premium-"] .page-header h2,body[class*="premium-"] .quest-panel-header h4,body[class*="premium-"] .quest-info p,body[class*="premium-"] .featured-info h5{color:var(--ps-text);}
+body[class*="premium-"] .promo-subtitle,body[class*="premium-"] .group-desc,body[class*="premium-"] .view-more-link,body[class*="premium-"] .group-card-body p,body[class*="premium-"] .profile-card-item p,body[class*="premium-"] .msg-contact-preview,body[class*="premium-"] .post-time,body[class*="premium-"] .notif-text span,body[class*="premium-"] .page-subtitle,body[class*="premium-"] .stat-label,body[class*="premium-"] .quest-progress,body[class*="premium-"] .quest-reset,body[class*="premium-"] .featured-info p,body[class*="premium-"] .featured-timer{color:var(--ps-muted);}
 body[class*="premium-"] .action-btn,body[class*="premium-"] .search-tab,body[class*="premium-"] .page-search i,body[class*="premium-"] .msg-search i,body[class*="premium-"] .msg-chat-placeholder,body[class*="premium-"] .post-menu-btn{color:var(--ps-muted);}
 body[class*="premium-"] .profile-stats,body[class*="premium-"] .pv-profile-card .profile-stats,body[class*="premium-"] .modal-profile-stats{border-color:var(--ps-border);}
 body[class*="premium-"] .view-more-link:hover,body[class*="premium-"] .suggestion-item:hover,body[class*="premium-"] .group-item:hover,body[class*="premium-"] .msg-contact:hover,body[class*="premium-"] .msg-contact.active,body[class*="premium-"] .notif-item:hover{background:var(--ps-hover);}
@@ -3340,7 +3340,9 @@ body.has-premium-bg .feed-post,
 body.has-premium-bg .profile-card-item,
 body.has-premium-bg .group-card,
 body.has-premium-bg .notif-item,
-body.has-premium-bg .saved-folder-card{background:color-mix(in srgb,var(--ps-card,rgba(0,0,0,.3)) var(--card-opacity,90%),transparent);border:1px solid var(--ps-border,transparent);}
+body.has-premium-bg .saved-folder-card,
+body.has-premium-bg .quest-panel,
+body.has-premium-bg .featured-skin-banner{background:color-mix(in srgb,var(--ps-card,rgba(0,0,0,.3)) var(--card-opacity,90%),transparent);border:1px solid var(--ps-border,transparent);}
 body.has-premium-bg .profile-card-item h4,
 body.has-premium-bg .profile-card-item p,
 body.has-premium-bg .notif-text p,
@@ -3624,7 +3626,7 @@ body.light-mode::before{background:#f8fafc;}
 .pwa-install-instructions .pwa-modal .step span{font-size:14px;color:var(--dark);}
 
 /* ========== DAILY QUESTS PANEL ========== */
-.quest-panel{background:var(--card);border-radius:12px;padding:14px 16px;margin-bottom:14px;border:1px solid var(--border);}
+.quest-panel{background:var(--card);border-radius:12px;padding:14px 16px;margin-bottom:14px;border:1px solid var(--border);box-shadow:var(--shadow);}
 .quest-panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .quest-panel-header h4{font-size:14px;color:var(--dark);display:flex;align-items:center;gap:6px;}
 .quest-panel-header .quest-reset{font-size:11px;color:var(--gray);}
