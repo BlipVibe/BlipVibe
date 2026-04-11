@@ -1415,3 +1415,4 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - Song preview pause button not working — unified handler
 - Group song purchases not persisting — added to syncGroupSkinData
 - Profile song reverting to old one — refreshMyProfileMusic() on all set actions
+- Lightbox video not displaying — added `.lightbox-media video` CSS rules (was only on `img`)

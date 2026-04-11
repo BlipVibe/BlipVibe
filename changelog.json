@@ -36,7 +36,8 @@
       "\ud83d\udc4d Like counts show correctly on profile view posts",
       "\ud83c\udfb5 Song preview pause button now works",
       "\ud83d\udcb0 Songs no longer show 'Owned' for infinity users \u2014 shows 'Free' to add to collection",
-      "\ud83d\udd17 Shared post author name/avatar now clickable to view their profile"
+      "\ud83d\udd17 Shared post author name/avatar now clickable to view their profile",
+      "\ud83c\udfac Lightbox video player now displays correctly on desktop and mobile"
     ]
   },
   {

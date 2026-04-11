@@ -11454,7 +11454,7 @@ updateFollowCounts();
             '<div class="lightbox-media">'+
                 '<button class="lightbox-arrow lightbox-prev"><i class="fas fa-chevron-left"></i></button>'+
                 '<img src="" alt="">'+
-                '<video src="" controls playsinline style="display:none;max-width:90vw;max-height:80vh;"></video>'+
+                '<video src="" controls playsinline style="display:none;"></video>'+
                 '<button class="lightbox-arrow lightbox-next"><i class="fas fa-chevron-right"></i></button>'+
                 '<div class="lightbox-bar">'+
                     '<div class="lightbox-counter"></div>'+
