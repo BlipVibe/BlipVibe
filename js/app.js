@@ -1275,10 +1275,13 @@ function navigateTo(page,skipPush){
     // Restore user's skin/font/template when leaving profile view
     if(_pvSaved&&page!=='profile-view'){
         premiumBgImage=_pvSaved.bgImage;premiumBgOverlay=_pvSaved.bgOverlay;premiumBgDarkness=_pvSaved.bgDarkness||0;premiumCardTransparency=_pvSaved.cardTrans!=null?_pvSaved.cardTrans:0.1;
+        state.activeSkin=_pvSaved.skin||null;
         state.activePremiumSkin=_pvSaved.premiumSkin||null;
+        // Clear any viewed person's premium skin classes first
+        applyPremiumSkin(null,true);
         applySkin(_pvSaved.skin||null,true);
-        if(_pvSaved.premiumSkin)applyPremiumSkin(_pvSaved.premiumSkin,true);
-        else updatePremiumBg();
+        if(_pvSaved.premiumSkin) applyPremiumSkin(_pvSaved.premiumSkin,true);
+        updatePremiumBg();
         applyFont(_pvSaved.font||null,true);
         applyTemplate(_pvSaved.tpl||null,true);
         _pvSaved=null;
@@ -2884,9 +2887,11 @@ async function showProfileView(person){
     // Restore previous skin if we're coming from another profile view
     if(_pvSaved){
         premiumBgImage=_pvSaved.bgImage;premiumBgOverlay=_pvSaved.bgOverlay;premiumBgDarkness=_pvSaved.bgDarkness||0;premiumCardTransparency=_pvSaved.cardTrans!=null?_pvSaved.cardTrans:0.1;
-        state.activePremiumSkin=_pvSaved.premiumSkin||null;state.activeSkin=_pvSaved.skin||null;state.activeFont=_pvSaved.font||null;state.activeTemplate=_pvSaved.tpl||null;
+        state.activeSkin=_pvSaved.skin||null;state.activePremiumSkin=_pvSaved.premiumSkin||null;state.activeFont=_pvSaved.font||null;state.activeTemplate=_pvSaved.tpl||null;
+        applyPremiumSkin(null,true);
         applySkin(_pvSaved.skin||null,true);
-        if(_pvSaved.premiumSkin)applyPremiumSkin(_pvSaved.premiumSkin,true);else updatePremiumBg();
+        if(_pvSaved.premiumSkin) applyPremiumSkin(_pvSaved.premiumSkin,true);
+        updatePremiumBg();
         applyFont(_pvSaved.font||null,true);
         applyTemplate(_pvSaved.tpl||null,true);
         _pvSaved=null;
