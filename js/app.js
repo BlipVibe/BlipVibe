@@ -10053,9 +10053,10 @@ function openCreateStory(){
     document.getElementById('storyFileInput').addEventListener('change',function(){
         var file=this.files[0];if(!file) return;
         _storyFile=file;
-        // Show in canvas
-        var placeholder=canvas.querySelector('div:not(.story-text-overlay)');
-        if(placeholder&&!placeholder.classList.contains('story-text-overlay')) placeholder.remove();
+        // Show in canvas — remove placeholder
+        canvas.querySelectorAll('div').forEach(function(d){
+            if(!d.classList.contains('story-text-overlay')&&!d.closest('.story-text-overlay')) d.remove();
+        });
         // Remove existing media
         var oldMedia=canvas.querySelector('img:not(.story-text-overlay img),video:not(.story-text-overlay video)');
         if(oldMedia) oldMedia.remove();
