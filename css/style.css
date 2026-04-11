@@ -3413,8 +3413,7 @@ body.premium-heavens-light .nav-center,
 body.premium-heavens-light.nav-dock .nav-center,
 body.premium-heavens-light.nav-pill .nav-center,
 body.premium-heavens-light.nav-split .nav-center{background:linear-gradient(135deg,#1a3a5c,#2c5f8a,#d4af37,#f5e6a3,#87ceeb,#1a3a5c)!important;background-size:400% 400%!important;animation:heavensFlow 10s linear infinite!important;box-shadow:0 0 30px rgba(212,175,55,.4),0 0 60px rgba(135,206,235,.2),0 4px 15px rgba(212,175,55,.3)!important;}
-body.premium-heavens-light .navbar,
-body.premium-heavens-light .nav-center{overflow:clip!important;}
+body.premium-heavens-light .navbar{overflow:clip!important;}
 body.premium-heavens-light .navbar::after,
 body.premium-heavens-light .nav-center::after{content:'';position:absolute;inset:0;width:200%;border-radius:inherit;background:url('../../images/skin-textures/clouds.png') repeat-x center/cover;opacity:.8;mix-blend-mode:screen;animation:heavensClouds 80s linear infinite;pointer-events:none;z-index:0;}
 body.premium-heavens-light .navbar::before,
