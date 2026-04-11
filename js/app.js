@@ -3248,6 +3248,8 @@ async function showProfileView(person){
     // Infinite scroll for profile posts
     var _pvScrollLoading=false;
     var _pvHasMore=userPosts&&userPosts.length>=_pvPostLimit;
+    var _pvLoadedIds={};
+    if(userPosts) userPosts.forEach(function(p){_pvLoadedIds[p.id]=true;});
     function _pvOnScroll(){
         if(_pvScrollLoading||!_pvHasMore||_navCurrent!=='profile-view') return;
         var scrollBottom=window.innerHeight+window.scrollY;
@@ -3257,9 +3259,21 @@ async function showProfileView(person){
             (async function(){
                 try{
                     var morePosts=await sbGetUserPosts(userId,_pvPostLimit,_pvPostOffset);
-                    if(!morePosts||!morePosts.length){_pvHasMore=false;window.removeEventListener('scroll',_pvOnScroll);return;}
+                    if(!morePosts||!morePosts.length){
+                        _pvHasMore=false;
+                        window.removeEventListener('scroll',_pvOnScroll);
+                        document.getElementById('pvPostsFeed').insertAdjacentHTML('beforeend','<div class="feed-end-msg" style="text-align:center;padding:20px;color:var(--gray);font-size:13px;">No more posts</div>');
+                        return;
+                    }
                     _pvPostOffset+=morePosts.length;
-                    if(morePosts.length<_pvPostLimit) _pvHasMore=false;
+                    // Deduplicate
+                    morePosts=morePosts.filter(function(p){return !_pvLoadedIds[p.id];});
+                    morePosts.forEach(function(p){_pvLoadedIds[p.id]=true;});
+                    if(!morePosts.length){_pvScrollLoading=false;return;}
+                    if(morePosts.length<_pvPostLimit){
+                        _pvHasMore=false;
+                        window.removeEventListener('scroll',_pvOnScroll);
+                    }
                     // Fetch shared posts
                     var moreSharedIds=[];morePosts.forEach(function(p){if(p.shared_post_id)moreSharedIds.push(p.shared_post_id);});
                     var moreSharedMap={};
