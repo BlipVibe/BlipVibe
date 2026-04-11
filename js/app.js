@@ -7524,14 +7524,31 @@ function renderShop(){
         if(_tryOnActive&&_tryOnActive.type===tryType&&_tryOnActive.id===tryId){_tryOnSnapshot=null;_tryOnActive=null;}
         renderMySkins();saveState();
     }
-    $$('.buy-skin-btn').forEach(function(btn){btn.addEventListener('click',function(){var sid=btn.getAttribute('data-sid');var skin=skins.find(function(s){return s.id===sid;});if(_hasInfinity()||state.coins>=skin.price){if(!_hasInfinity())state.coins-=skin.price;state.ownedSkins[sid]=true;updateCoins();shopPurchased(btn,'skin',sid);addNotification('skin','You purchased the "'+skin.name+'" skin!');}});});
-    $$('.buy-font-btn').forEach(function(btn){btn.addEventListener('click',function(){var fid=btn.getAttribute('data-fid');var font=fonts.find(function(f){return f.id===fid;});if(_hasInfinity()||state.coins>=font.price){if(!_hasInfinity())state.coins-=font.price;state.ownedFonts[fid]=true;updateCoins();shopPurchased(btn,'font',fid);addNotification('skin','You purchased the "'+font.name+'" font!');}});});
-    $$('.buy-logo-btn').forEach(function(btn){btn.addEventListener('click',function(){var lid=btn.getAttribute('data-lid');var logo=logos.find(function(l){return l.id===lid;});if(_hasInfinity()||state.coins>=logo.price){if(!_hasInfinity())state.coins-=logo.price;state.ownedLogos[lid]=true;updateCoins();shopPurchased(btn,'logo',lid);addNotification('skin','You purchased the "'+logo.name+'" logo!');}});});
-    $$('.buy-icon-btn').forEach(function(btn){btn.addEventListener('click',function(){var iid=btn.getAttribute('data-iid');var s=iconSets.find(function(x){return x.id===iid;});if(_hasInfinity()||state.coins>=s.price){if(!_hasInfinity())state.coins-=s.price;state.ownedIconSets[iid]=true;updateCoins();shopPurchased(btn,'icons',iid);addNotification('skin','You purchased the "'+s.name+'" icon set!');}});});
-    $$('.buy-coin-btn').forEach(function(btn){btn.addEventListener('click',function(){var cid=btn.getAttribute('data-cid');var s=coinSkins.find(function(x){return x.id===cid;});if(_hasInfinity()||state.coins>=s.price){if(!_hasInfinity())state.coins-=s.price;state.ownedCoinSkins[cid]=true;updateCoins();shopPurchased(btn,'coins',cid);addNotification('skin','You purchased the "'+s.name+'" coin skin!');}});});
-    $$('.buy-tpl-btn').forEach(function(btn){btn.addEventListener('click',function(){var tid=btn.getAttribute('data-tid');var t=templates.find(function(x){return x.id===tid;});if(_hasInfinity()||state.coins>=t.price){if(!_hasInfinity())state.coins-=t.price;state.ownedTemplates[tid]=true;updateCoins();shopPurchased(btn,'template',tid);addNotification('skin','You purchased the "'+t.name+'" template!');}});});
-    $$('.buy-premium-btn').forEach(function(btn){btn.addEventListener('click',function(){var pid=btn.getAttribute('data-pid');var skin=premiumSkins.find(function(s){return s.id===pid;});if(_hasInfinity()||state.coins>=skin.price){if(!_hasInfinity())state.coins-=skin.price;state.ownedPremiumSkins[pid]=true;updateCoins();shopPurchased(btn,'premium',pid);addNotification('skin','You purchased the "'+skin.name+'" premium skin!');}});});
-    $$('.buy-nav-btn').forEach(function(btn){btn.addEventListener('click',function(){var nid=btn.getAttribute('data-nid');var n=navStyles.find(function(x){return x.id===nid;});if(_hasInfinity()||state.coins>=n.price){if(!_hasInfinity())state.coins-=n.price;state.ownedNavStyles[nid]=true;updateCoins();shopPurchased(btn,'navstyle',nid);addNotification('skin','You purchased the "'+n.name+'" nav style!');}});});
+    // Server-side purchase handler — all purchases validated atomically on Supabase
+    function _bindBuyBtn(selector,attrName,itemType,ownedMap,itemList,nameKey){
+        $$(selector).forEach(function(btn){btn.addEventListener('click',async function(){
+            var id=btn.getAttribute(attrName);
+            var item=itemList.find(function(x){return x.id===id;});
+            if(!item) return;
+            btn.disabled=true;var origText=btn.textContent;btn.textContent='...';
+            try{
+                var result=await sbPurchaseItem(itemType,id,item.price);
+                if(!result.success){showToast(result.error||'Purchase failed');btn.disabled=false;btn.textContent=origText;return;}
+                ownedMap[id]=true;
+                state.coins=result.balance;currentUser.coin_balance=result.balance;
+                updateCoins();shopPurchased(btn,itemType,id);
+                addNotification('skin','You purchased the "'+(item[nameKey]||item.name)+'"!');
+            }catch(e){showToast('Purchase failed: '+(e.message||'Error'));btn.disabled=false;btn.textContent=origText;}
+        });});
+    }
+    _bindBuyBtn('.buy-skin-btn','data-sid','skin',state.ownedSkins,skins,'name');
+    _bindBuyBtn('.buy-font-btn','data-fid','font',state.ownedFonts,fonts,'name');
+    _bindBuyBtn('.buy-logo-btn','data-lid','logo',state.ownedLogos,logos,'name');
+    _bindBuyBtn('.buy-icon-btn','data-iid','icons',state.ownedIconSets,iconSets,'name');
+    _bindBuyBtn('.buy-coin-btn','data-cid','coins',state.ownedCoinSkins,coinSkins,'name');
+    _bindBuyBtn('.buy-tpl-btn','data-tid','template',state.ownedTemplates,templates,'name');
+    _bindBuyBtn('.buy-premium-btn','data-pid','premium',state.ownedPremiumSkins,premiumSkins,'name');
+    _bindBuyBtn('.buy-nav-btn','data-nid','navstyle',state.ownedNavStyles,navStyles,'name');
     // Try On button handlers
     $$('.try-on-btn').forEach(function(btn){btn.addEventListener('click',function(){doTryOn(btn.dataset.tryType,btn.dataset.tryId);});});
     // Song preview buttons
@@ -7540,14 +7557,15 @@ function renderShop(){
     // Song buy buttons
     $$('.buy-song-btn').forEach(function(btn){btn.addEventListener('click',async function(){
         var sid=btn.dataset.songId;var price=parseInt(btn.dataset.price);
-        if(!_hasInfinity()&&state.coins<price){showToast('Not enough coins');return;}
         btn.disabled=true;btn.textContent='...';
         try{
-            if(!_hasInfinity()){state.coins-=price;updateCoins();}
+            var result=await sbPurchaseItem('song',sid,price);
+            if(!result.success){showToast(result.error||'Purchase failed');btn.disabled=false;return;}
+            state.coins=result.balance;currentUser.coin_balance=result.balance;updateCoins();
             await sbPurchaseSong(currentUser.id,sid);
             await sbSetProfileSong(currentUser.id,sid);
             currentUser.profile_song_id=sid;_shopOwnedSongs[sid]=true;
-            saveState();showToast('Song purchased and set as profile song!');refreshMyProfileMusic();renderShop();
+            showToast('Song purchased and set as profile song!');refreshMyProfileMusic();renderShop();
         }catch(e){showToast('Failed: '+(e.message||'Error'));btn.disabled=false;}
     });});
     // Song set buttons (already owned)

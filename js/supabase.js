@@ -372,6 +372,13 @@ async function sbAdminDeletePost(postId) {
   if (error) throw error;
 }
 
+// Server-side purchase — validates balance and updates ownership atomically
+async function sbPurchaseItem(itemType, itemId, price) {
+  const { data, error } = await sb.rpc('purchase_item', { p_item_type: itemType, p_item_id: itemId, p_price: price });
+  if (error) throw error;
+  return data;
+}
+
 async function sbEditPost(postId, newContent) {
   const { error } = await sb.from('posts')
     .update({ content: newContent })
