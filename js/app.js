@@ -1091,9 +1091,9 @@ function roleRank(role){ return role==='Admin'?4:role==='Co-Admin'?3:role==='Mod
 function canManageGroupSkins(group){
     if(!currentUser) return false;
     if(group.owner&&group.owner.id===currentUser.id) return true;
-    if(!group.mods||!group.mods.length) return false;
-    var myName=currentUser.display_name||currentUser.username||'';
-    return group.mods.some(function(m){return m.name===myName;});
+    // Use permissions system if available
+    if(window._activeGroupPerms&&window._activeGroupPerms.canManageShop) return true;
+    return false;
 }
 
 var skins = [
@@ -3447,6 +3447,7 @@ async function showGroupProfileModal(person,group){
         }
         if(theirRole==='Co-Admin'||theirRole==='Moderator'){
             html+='<button class="btn btn-outline" id="grpTransferOwn" style="font-size:12px;padding:6px 12px;color:#f59e0b;border-color:#f59e0b;"><i class="fas fa-crown"></i> Transfer</button>';
+            html+='<button class="btn btn-outline" id="grpManagePerms" style="font-size:12px;padding:6px 12px;color:var(--primary);border-color:var(--primary);"><i class="fas fa-sliders"></i> Permissions</button>';
         }
     } else if(myRole==='Co-Admin'){
         if(theirRole==='Member') html+='<button class="btn btn-outline" id="grpSetMod" style="font-size:12px;padding:6px 12px;color:'+gc+';border-color:'+gc+';"><i class="fas fa-shield-halved"></i> Make Mod</button>';
@@ -3481,6 +3482,10 @@ async function showGroupProfileModal(person,group){
     var transferBtn=document.getElementById('grpTransferOwn');
     if(transferBtn){transferBtn.addEventListener('click',function(){
         showTransferOwnershipModal(person,group);
+    });}
+    var permsBtn=document.getElementById('grpManagePerms');
+    if(permsBtn){permsBtn.addEventListener('click',function(){
+        closeModal();showManagePermissionsModal(group,person);
     });}
 }
 
@@ -3548,6 +3553,64 @@ function showSelfRoleRemovalModal(group,callback){
     btn.addEventListener('click',function(){if(inp.value!==myName)return;callback();});
 }
 
+function showManagePermissionsModal(group,person){
+    var uid=person.id;
+    var name=person.name||person.display_name||'User';
+    var h='<div class="modal-header"><h3><i class="fas fa-shield-halved" style="color:var(--primary);margin-right:8px;"></i>Permissions: '+escapeHtml(name)+'</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body"><p style="font-size:13px;color:var(--gray);margin-bottom:12px;">Set what this user can do in <strong>'+escapeHtml(group.name)+'</strong>:</p>';
+    h+='<div style="margin-bottom:12px;"><label style="font-size:14px;font-weight:600;">Role</label><select id="permRoleSelect" style="display:block;width:100%;padding:8px;border:1px solid var(--border);border-radius:8px;margin-top:4px;background:var(--card);color:var(--dark);"><option value="member">Member</option><option value="moderator">Moderator</option><option value="co-admin">Co-Admin</option></select></div>';
+    h+='<div style="display:flex;flex-direction:column;gap:10px;">';
+    h+='<label style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;"><i class="fas fa-store" style="margin-right:8px;color:var(--primary);"></i>Manage Shop (buy/apply skins, fonts, songs)</span><input type="checkbox" id="permShop" style="width:20px;height:20px;"></label>';
+    h+='<label style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;"><i class="fas fa-user-slash" style="margin-right:8px;color:#e74c3c;"></i>Boot/Ban Members</span><input type="checkbox" id="permBoot" style="width:20px;height:20px;"></label>';
+    h+='<label style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;"><i class="fas fa-comments" style="margin-right:8px;color:#3b82f6;"></i>Manage Chat (channels, moderation)</span><input type="checkbox" id="permChat" style="width:20px;height:20px;"></label>';
+    h+='</div>';
+    h+='<div class="modal-actions" style="margin-top:16px;"><button class="btn btn-outline modal-close">Cancel</button><button class="btn btn-primary" id="savePermsBtn">Save Permissions</button></div></div>';
+    showModal(h);
+    // Load existing permissions
+    sbGetUserGroupPermission(group.id,uid).then(function(perm){
+        if(perm){
+            document.getElementById('permRoleSelect').value=perm.role||'member';
+            document.getElementById('permShop').checked=perm.can_manage_shop;
+            document.getElementById('permBoot').checked=perm.can_boot_members;
+            document.getElementById('permChat').checked=perm.can_manage_chat;
+        }
+    }).catch(function(){});
+    // Auto-set defaults when role changes
+    document.getElementById('permRoleSelect').addEventListener('change',function(){
+        var role=this.value;
+        if(role==='co-admin'){
+            document.getElementById('permBoot').checked=true;
+            document.getElementById('permChat').checked=true;
+        } else if(role==='moderator'){
+            document.getElementById('permBoot').checked=false;
+            document.getElementById('permChat').checked=true;
+            document.getElementById('permShop').checked=false;
+        } else {
+            document.getElementById('permShop').checked=false;
+            document.getElementById('permBoot').checked=false;
+            document.getElementById('permChat').checked=false;
+        }
+    });
+    // Save
+    document.getElementById('savePermsBtn').addEventListener('click',async function(){
+        var role=document.getElementById('permRoleSelect').value;
+        var perms={
+            canManageShop:document.getElementById('permShop').checked,
+            canBootMembers:document.getElementById('permBoot').checked,
+            canManageChat:document.getElementById('permChat').checked
+        };
+        this.disabled=true;this.textContent='Saving...';
+        try{
+            if(role==='member'&&!perms.canManageShop&&!perms.canBootMembers&&!perms.canManageChat){
+                await sbDeleteGroupPermission(group.id,uid);
+            } else {
+                await sbSetGroupPermission(group.id,uid,role,perms);
+            }
+            closeModal();showToast('Permissions updated for '+name);
+        }catch(e){showToast('Failed: '+(e.message||'Error'));this.disabled=false;this.textContent='Save Permissions';}
+    });
+}
+
 async function showGroupMembersModal(group){
     var members=[];
     try{members=await sbGetGroupMembers(group.id);}catch(e){console.error(e);}
@@ -3590,6 +3653,37 @@ async function showGroupView(group){
 
     var joined=state.joinedGroups[group.id];
     var isOwner=currentUser&&group.owner_id===currentUser.id;
+
+    // Load user's permissions for this group
+    var _myPerms={role:'member',canManageShop:false,canBootMembers:false,canManageChat:false};
+    if(isOwner){
+        _myPerms={role:'owner',canManageShop:true,canBootMembers:true,canManageChat:true};
+    } else if(currentUser){
+        try{
+            var perm=await sbGetUserGroupPermission(group.id,currentUser.id);
+            if(perm){
+                _myPerms.role=perm.role;
+                _myPerms.canManageShop=perm.can_manage_shop;
+                _myPerms.canBootMembers=perm.can_boot_members;
+                _myPerms.canManageChat=perm.can_manage_chat;
+            } else {
+                // Check if they're a co-admin or mod from the group data
+                var myRole=getMyGroupRole(group);
+                if(myRole==='Co-Admin'){
+                    _myPerms.role='co-admin';_myPerms.canBootMembers=true;_myPerms.canManageChat=true;
+                } else if(myRole==='Moderator'){
+                    _myPerms.role='moderator';_myPerms.canManageChat=true;
+                }
+            }
+        }catch(e){
+            // Permissions table might not exist yet — fallback to old behavior
+            var myRole=getMyGroupRole(group);
+            if(myRole==='Co-Admin'){_myPerms.role='co-admin';_myPerms.canBootMembers=true;_myPerms.canManageChat=true;_myPerms.canManageShop=true;}
+            else if(myRole==='Moderator'){_myPerms.role='moderator';_myPerms.canManageChat=true;}
+        }
+    }
+    // Store permissions for use in other functions
+    window._activeGroupPerms=_myPerms;
 
     // Play group song if one is set
     if(state.groupActiveSong&&state.groupActiveSong[group.id]){
@@ -3756,7 +3850,7 @@ async function showGroupView(group){
     var gvModeHtml='<div class="search-tabs" id="gvModeTabs">';
     gvModeHtml+='<button class="search-tab active" data-gvmode="feed"><i class="fas fa-stream"></i> Feed</button>';
     if(joined||isOwner) gvModeHtml+='<button class="search-tab" data-gvmode="chat"><i class="fas fa-comments"></i> Chat</button>';
-    if(joined||isOwner) gvModeHtml+='<button class="search-tab" data-gvmode="shop"><i class="fas fa-store"></i> Group Shop</button>';
+    if(isOwner||_myPerms.canManageShop) gvModeHtml+='<button class="search-tab" data-gvmode="shop"><i class="fas fa-store"></i> Group Shop</button>';
     gvModeHtml+='</div>';
     $('#gvPostBar').insertAdjacentHTML('beforebegin',gvModeHtml);
 
@@ -13264,15 +13358,16 @@ function stopProfileAudio(){
 var _musicAutoStarted=false;
 function _tryAutoStartMusic(){
     if(_musicAutoStarted) return;
-    var audio=_getCurrentAudio();
+    // Only auto-start the CORRECT audio: profile audio if viewing someone, otherwise your own
+    var audio=_viewingSong?_profileAudio:_myAudio;
     if(!audio||!audio.paused) return;
     _musicAutoStarted=true;
     audio.volume=0;
     audio.play().then(function(){
         _fadeAudio(audio,0,_gmpBaseVol,800,null);
-        var t=document.getElementById('gmpTitle');
-        var a=document.getElementById('gmpArtist');
-        _updateGlobalPlayer(t?t.textContent:null,a?a.textContent:null,true);
+        var songName=_viewingSong?_viewingSong.title:(_mySong?_mySong.title:'');
+        var songArtist=_viewingSong?(_viewingSong.artist||'BlipVibe'):(_mySong?(_mySong.artist||'BlipVibe'):'BlipVibe');
+        _updateGlobalPlayer(songName,songArtist,true);
     }).catch(function(){_musicAutoStarted=false;});
 }
 document.addEventListener('click',_tryAutoStartMusic,{once:true});

@@ -1500,6 +1500,48 @@ function computeDisplayName(firstName, lastName, nickname, displayMode, username
   return username || 'User';
 }
 
+// ---- GROUP PERMISSIONS ----------------------------------------------------
+async function sbGetGroupPermissions(groupId) {
+  const { data, error } = await sb.from('group_permissions')
+    .select('*')
+    .eq('group_id', groupId);
+  if (error) throw error;
+  return data || [];
+}
+
+async function sbGetUserGroupPermission(groupId, userId) {
+  const { data, error } = await sb.from('group_permissions')
+    .select('*')
+    .eq('group_id', groupId)
+    .eq('user_id', userId)
+    .maybeSingle();
+  if (error) throw error;
+  return data;
+}
+
+async function sbSetGroupPermission(groupId, userId, role, perms) {
+  const row = {
+    group_id: groupId,
+    user_id: userId,
+    role: role,
+    can_manage_shop: perms.canManageShop || false,
+    can_boot_members: perms.canBootMembers || false,
+    can_manage_chat: perms.canManageChat || false,
+    updated_at: new Date().toISOString()
+  };
+  const { error } = await sb.from('group_permissions')
+    .upsert(row, { onConflict: 'group_id,user_id' });
+  if (error) throw error;
+}
+
+async function sbDeleteGroupPermission(groupId, userId) {
+  const { error } = await sb.from('group_permissions')
+    .delete()
+    .eq('group_id', groupId)
+    .eq('user_id', userId);
+  if (error) throw error;
+}
+
 // ---- PROFILE MUSIC --------------------------------------------------------
 async function sbGetMusicLibrary() {
   const { data, error } = await sb.from('music_library')
