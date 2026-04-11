@@ -3398,9 +3398,9 @@ body.premium-heavens-light.nav-split .nav-center{background:linear-gradient(135d
 body.premium-heavens-light .navbar,
 body.premium-heavens-light .nav-center{overflow:hidden!important;}
 body.premium-heavens-light .navbar::after,
-body.premium-heavens-light .nav-center::after{content:'';position:absolute;top:0;left:0;width:200%;height:100%;border-radius:inherit;background:url('../../images/skin-textures/clouds.png') repeat-x center/auto 250%;opacity:.5;animation:heavensClouds 60s linear infinite;pointer-events:none;z-index:0;}
+body.premium-heavens-light .nav-center::after{content:'';position:absolute;inset:0;width:200%;border-radius:inherit;background:url('../../images/skin-textures/clouds.png') repeat-x center/cover;opacity:.5;animation:heavensClouds 80s linear infinite;pointer-events:none;z-index:0;}
 body.premium-heavens-light .navbar::before,
-body.premium-heavens-light .nav-center::before{content:'';position:absolute;top:0;left:0;width:200%;height:100%;border-radius:inherit;background:url('../../images/skin-textures/clouds.png') repeat-x center/auto 350%;opacity:.25;animation:heavensClouds2 90s linear infinite;pointer-events:none;z-index:0;}
+body.premium-heavens-light .nav-center::before{content:'';position:absolute;inset:0;width:200%;border-radius:inherit;background:url('../../images/skin-textures/clouds.png') repeat-x center/cover;opacity:.25;transform:scaleY(-1);animation:heavensClouds2 120s linear infinite;pointer-events:none;z-index:0;}
 body.premium-heavens-light .navbar>*,body.premium-heavens-light .nav-center>*{position:relative;z-index:1;}
 body.premium-heavens-light .profile-card .profile-cover{background:linear-gradient(135deg,#1a3a5c,#2c5f8a,#d4af37,#f5e6a3,#87ceeb)!important;background-size:400% 400%!important;animation:heavensFlow 10s linear infinite!important;}
 body.premium-heavens-light .profile-avatar-wrap::before{background:conic-gradient(from 0deg,#d4af37,#f5e6a3,#ffffff,#87ceeb,#d4af37);box-shadow:0 0 24px rgba(212,175,55,.5),0 0 60px rgba(135,206,235,.3);animation:premiumSpin 4s linear infinite,heavensGlow 4s ease infinite;}
