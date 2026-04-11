@@ -545,12 +545,7 @@ async function initApp() {
         }
     }
     state.coins = currentUser.coin_balance || 0;
-    // Instant UI from localStorage cache (read-only hint — Supabase overwrites below)
-    try{
-        var cached=JSON.parse(localStorage.getItem('blipvibe_cache_'+authUser.id));
-        if(cached){_applySkinDataFromCache(cached);reapplyCustomizations();}
-    }catch(e){}
-    // Load all state from Supabase (sole source of truth for cross-device sync)
+    // Load all state from Supabase (sole source of truth)
     await loadSkinDataFromSupabase();
     // Refresh coin display after skin_data loads (infinity status may not be available earlier)
     var _coinEl=document.getElementById('navCoinCount');
@@ -827,24 +822,21 @@ function saveState(){
 }
 var _skinSyncTimer=null;
 function _buildSkinData(){
-    // When viewing another profile or group, read own data from cache to avoid saving theirs
-    var _bk=null;
-    if((_pvSaved||_gvSaved)&&currentUser){
-        try{_bk=JSON.parse(localStorage.getItem('blipvibe_cache_'+currentUser.id));}catch(e){}
-    }
+    // syncSkinDataToSupabase is blocked when _pvSaved/_gvSaved is set,
+    // so this only runs when state reflects the user's own settings
     return {
-        activeSkin:(_bk?_bk.activeSkin:state.activeSkin)||null,
-        activePremiumSkin:(_bk?_bk.activePremiumSkin:state.activePremiumSkin)||null,
-        activeFont:(_bk?_bk.activeFont:state.activeFont)||null,
-        activeTemplate:(_bk?_bk.activeTemplate:state.activeTemplate)||null,
+        activeSkin:state.activeSkin||null,
+        activePremiumSkin:state.activePremiumSkin||null,
+        activeFont:state.activeFont||null,
+        activeTemplate:state.activeTemplate||null,
         activeNavStyle:state.activeNavStyle||null,
         activeIconSet:state.activeIconSet||null,
         activeLogo:state.activeLogo||null,
         activeCoinSkin:state.activeCoinSkin||null,
-        premiumBgUrl:(_bk?_bk.premiumBgUrl:premiumBgImage)||null,
-        premiumBgOverlay:(_bk&&_bk.premiumBgOverlay!=null?_bk.premiumBgOverlay:premiumBgOverlay)||0,
-        premiumBgDarkness:(_bk&&_bk.premiumBgDarkness!=null?_bk.premiumBgDarkness:premiumBgDarkness)||0,
-        premiumCardTransparency:(_bk&&_bk.premiumCardTransparency!=null?_bk.premiumCardTransparency:premiumCardTransparency!=null?premiumCardTransparency:0.1),
+        premiumBgUrl:premiumBgImage||null,
+        premiumBgOverlay:premiumBgOverlay||0,
+        premiumBgDarkness:premiumBgDarkness||0,
+        premiumCardTransparency:premiumCardTransparency!=null?premiumCardTransparency:0.1,
         ownedSkins:state.ownedSkins||{},
         ownedPremiumSkins:state.ownedPremiumSkins||{},
         ownedFonts:state.ownedFonts||{},
@@ -943,8 +935,6 @@ async function loadSkinDataFromSupabase(){
         if(!profile||!profile.skin_data) return;
         var sd=profile.skin_data;
         _applySkinDataFromCache(sd);
-        // Write to localStorage as read-only cache for instant load on next visit
-        try{localStorage.setItem('blipvibe_cache_'+currentUser.id,JSON.stringify(sd));}catch(e){}
     }catch(e){console.warn('Load skin data from Supabase:',e);}
 }
 function loadState(){}

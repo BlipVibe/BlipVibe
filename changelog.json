@@ -48,7 +48,8 @@
       "\ud83d\udcdd Post menu dropdown no longer cut off by card overflow",
       "\ud83d\udcdc Daily quests now properly track progress and show completion",
       "\ud83d\udee1\ufe0f Admins can now delete any post from feed or groups",
-      "\ud83c\udfb5 Profile music now pauses when playing videos and resumes when done"
+      "\ud83c\udfb5 Profile music now pauses when playing videos and resumes when done",
+      "\ud83d\udd04 Removed localStorage skin cache \u2014 Supabase is now the sole source of truth for all customization data"
     ]
   },
   {
