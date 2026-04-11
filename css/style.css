@@ -3413,11 +3413,10 @@ body.premium-heavens-light .nav-center,
 body.premium-heavens-light.nav-dock .nav-center,
 body.premium-heavens-light.nav-pill .nav-center,
 body.premium-heavens-light.nav-split .nav-center{background:linear-gradient(135deg,#1a3a5c,#2c5f8a,#d4af37,#f5e6a3,#87ceeb,#1a3a5c)!important;background-size:400% 400%!important;animation:heavensFlow 10s linear infinite!important;box-shadow:0 0 30px rgba(212,175,55,.4),0 0 60px rgba(135,206,235,.2),0 4px 15px rgba(212,175,55,.3)!important;}
-body.premium-heavens-light .navbar{overflow:clip!important;}
 body.premium-heavens-light .navbar::after,
-body.premium-heavens-light .nav-center::after{content:'';position:absolute;inset:0;width:200%;border-radius:inherit;background:url('../../images/skin-textures/clouds.png') repeat-x center/cover;opacity:.8;mix-blend-mode:screen;animation:heavensClouds 80s linear infinite;pointer-events:none;z-index:0;}
+body.premium-heavens-light .nav-center::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url('../../images/skin-textures/clouds.png') repeat-x center/cover;opacity:.8;mix-blend-mode:screen;animation:heavensCloudsScroll 80s linear infinite;pointer-events:none;z-index:0;}
 body.premium-heavens-light .navbar::before,
-body.premium-heavens-light .nav-center::before{content:'';position:absolute;inset:0;width:200%;border-radius:inherit;background:url('../../images/skin-textures/clouds.png') repeat-x center/cover;opacity:.5;mix-blend-mode:screen;transform:scaleY(-1);animation:heavensClouds2 120s linear infinite;pointer-events:none;z-index:0;}
+body.premium-heavens-light .nav-center::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url('../../images/skin-textures/clouds.png') repeat-x center/cover;opacity:.5;mix-blend-mode:screen;animation:heavensCloudsScroll2 120s linear infinite;pointer-events:none;z-index:0;}
 body.premium-heavens-light .navbar>*,body.premium-heavens-light .nav-center>*{position:relative;z-index:1;}
 body.premium-heavens-light .profile-card .profile-cover{background:linear-gradient(135deg,#1a3a5c,#2c5f8a,#d4af37,#f5e6a3,#87ceeb)!important;background-size:400% 400%!important;animation:heavensFlow 10s linear infinite!important;position:relative!important;overflow:hidden!important;}
 body.premium-heavens-light .profile-card .profile-cover::after{content:'';position:absolute;inset:0;width:200%;background:url('../../images/skin-textures/clouds.png') repeat-x center/cover;opacity:.8;mix-blend-mode:screen;animation:heavensClouds 80s linear infinite;pointer-events:none;}
@@ -3428,6 +3427,8 @@ body.premium-heavens-light .feed-post{border-left-color:#d4af37!important;}
 @keyframes heavensGlow{0%,100%{box-shadow:0 0 24px rgba(212,175,55,.5),0 0 60px rgba(135,206,235,.3);}50%{box-shadow:0 0 40px rgba(212,175,55,.8),0 0 80px rgba(255,255,255,.4);}}
 @keyframes heavensClouds{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 @keyframes heavensClouds2{0%{transform:translateX(-50%);}100%{transform:translateX(0);}}
+@keyframes heavensCloudsScroll{0%{background-position:0 center;}100%{background-position:1000px center;}}
+@keyframes heavensCloudsScroll2{0%{background-position:1000px center;}100%{background-position:0 center;}}
 
 /* ========== PREMIUM — UNIQUE EFFECTS ========== */
 @keyframes blazePulse{0%,100%{box-shadow:0 0 10px rgba(255,8,68,.2);}50%{box-shadow:0 0 25px rgba(255,8,68,.4);}}

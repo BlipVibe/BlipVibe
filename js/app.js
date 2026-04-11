@@ -1396,6 +1396,8 @@ function navigateTo(page,skipPush){
     // Restore navbars if mobile chat hid them
     var _tn=document.querySelector('.navbar');var _bn=document.querySelector('.nav-center');
     if(_tn) _tn.style.display='';if(_bn) _bn.style.display='';
+    // Clean up profile view scroll listener
+    if(window._pvCleanupScroll){window._pvCleanupScroll();window._pvCleanupScroll=null;}
     // Restore user's skin/font/template when leaving profile view
     if(_pvSaved&&page!=='profile-view'){
         // Keep _pvSaved set to block syncs until restore completes
@@ -3163,7 +3165,10 @@ async function showProfileView(person){
     var feedHtml='';
     var userId=isMe?currentUser.id:person.id;
     try{
-        var userPosts=await sbGetUserPosts(userId,10);
+        var _pvPostLimit=10;
+        var _pvPostOffset=0;
+        var userPosts=await sbGetUserPosts(userId,_pvPostLimit,0);
+        _pvPostOffset=userPosts?userPosts.length:0;
         // Re-sync like state from DB for these posts to fix any stale local state
         if(currentUser&&userPosts&&userPosts.length){
             try{
@@ -3227,6 +3232,57 @@ async function showProfileView(person){
         feedHtml+='<div class="card" style="padding:40px;text-align:center;color:var(--gray);"><i class="fas fa-pen" style="font-size:32px;margin-bottom:12px;display:block;"></i><p>No posts yet.</p></div>';
     }
     $('#pvPostsFeed').innerHTML=feedHtml;
+    // Infinite scroll for profile posts
+    var _pvScrollLoading=false;
+    var _pvHasMore=userPosts&&userPosts.length>=_pvPostLimit;
+    function _pvOnScroll(){
+        if(_pvScrollLoading||!_pvHasMore||_navCurrent!=='profile-view') return;
+        var scrollBottom=window.innerHeight+window.scrollY;
+        var docHeight=document.documentElement.scrollHeight;
+        if(scrollBottom>=docHeight-600){
+            _pvScrollLoading=true;
+            (async function(){
+                try{
+                    var morePosts=await sbGetUserPosts(userId,_pvPostLimit,_pvPostOffset);
+                    if(!morePosts||!morePosts.length){_pvHasMore=false;window.removeEventListener('scroll',_pvOnScroll);return;}
+                    _pvPostOffset+=morePosts.length;
+                    if(morePosts.length<_pvPostLimit) _pvHasMore=false;
+                    // Fetch shared posts
+                    var moreSharedIds=[];morePosts.forEach(function(p){if(p.shared_post_id)moreSharedIds.push(p.shared_post_id);});
+                    var moreSharedMap={};
+                    if(moreSharedIds.length){try{var msp=await sbGetPostsByIds(moreSharedIds);msp.forEach(function(s){moreSharedMap[s.id]=s;});}catch(e){}}
+                    var moreHtml='';
+                    morePosts.forEach(function(post){
+                        var authorName=person.name||(post.profiles?post.profiles.display_name||post.profiles.username:'User');
+                        var authorAvatar=(post.profiles?post.profiles.avatar_url:person.avatar_url)||DEFAULT_AVATAR;
+                        var postTime=post.created_at?timeAgoReal(post.created_at):'';
+                        moreHtml+='<div class="card feed-post">';
+                        moreHtml+='<div class="post-header"><img src="'+authorAvatar+'" alt="'+escapeHtml(authorName)+'" class="post-avatar clickable-avatar" data-person-id="'+post.author_id+'" style="cursor:pointer;"><div class="post-user-info"><div class="post-user-top"><h4 class="post-username clickable-avatar" data-person-id="'+post.author_id+'" style="cursor:pointer;">'+escapeHtml(authorName)+'</h4><span class="post-time">'+postTime+'</span></div></div></div>';
+                        moreHtml+='<div class="post-description"><p>'+renderPostText(post.content)+'</p></div>';
+                        var pvImgs=post.media_urls&&post.media_urls.length?post.media_urls:(post.image_url?[post.image_url]:[]);
+                        moreHtml+=buildMediaGrid(pvImgs);
+                        if(post.shared_post_id&&moreSharedMap[post.shared_post_id]){
+                            var sp=moreSharedMap[post.shared_post_id];var spName=sp.author?(sp.author.display_name||sp.author.username):'User';var spAvatar=sp.author?sp.author.avatar_url:DEFAULT_AVATAR;
+                            moreHtml+='<div class="share-preview" style="margin:0 20px 14px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><img src="'+(spAvatar||DEFAULT_AVATAR)+'" class="shared-post-author clickable-avatar" data-person-id="'+(sp.author?sp.author.id:'')+'" style="width:28px;height:28px;border-radius:50%;object-fit:cover;cursor:pointer;"><strong class="share-preview-name" style="font-size:13px;">'+escapeHtml(spName)+'</strong><span class="share-preview-time" style="font-size:12px;">'+(sp.created_at?timeAgoReal(sp.created_at):'')+'</span></div><div class="share-preview-text" style="font-size:13px;">'+escapeHtmlNl(sp.content||'')+'</div></div>';
+                        }
+                        var pvLikes=post.like_count||0;var pvComments=(post.comments&&post.comments[0])?post.comments[0].count:0;
+                        moreHtml+='<div class="post-actions"><div class="action-left"><button class="action-btn like-btn'+(state.likedPosts[post.id]?' liked':'')+'" data-post-id="'+post.id+'"><i class="'+(state.likedPosts[post.id]?'fas':'far')+' fa-thumbs-up"></i><span class="like-count">'+pvLikes+'</span></button><button class="action-btn dislike-btn'+(state.dislikedPosts[post.id]?' disliked':'')+'" data-post-id="'+post.id+'"><i class="'+(state.dislikedPosts[post.id]?'fas':'far')+' fa-thumbs-down"></i><span class="dislike-count">0</span></button><button class="action-btn react-btn" data-post-id="'+post.id+'" title="React"><i class="far fa-face-smile"></i></button><button class="action-btn comment-btn"><i class="far fa-comment"></i><span>'+pvComments+'</span></button><button class="action-btn share-btn"><i class="fas fa-share-from-square"></i><span>0</span></button></div></div>';
+                        moreHtml+='<div class="post-comments" data-post-id="'+post.id+'"></div></div>';
+                    });
+                    document.getElementById('pvPostsFeed').insertAdjacentHTML('beforeend',moreHtml);
+                    bindMentionClicks('#pvPostsFeed');bindHashtagClicks('#pvPostsFeed');
+                    autoFetchLinkPreviews(document.getElementById('pvPostsFeed'));
+                    // Rebind events for new posts
+                    _bindPvPostEvents();
+                    morePosts.forEach(function(p){renderInlineComments(p.id);});
+                }catch(e){console.error('pvLoadMore:',e);}
+                _pvScrollLoading=false;
+            })();
+        }
+    }
+    if(_pvHasMore) window.addEventListener('scroll',_pvOnScroll,{passive:true});
+    // Clean up scroll listener when leaving profile view
+    window._pvCleanupScroll=function(){window.removeEventListener('scroll',_pvOnScroll);};
     bindMentionClicks('#pvPostsFeed');
     bindHashtagClicks('#pvPostsFeed');
     autoFetchLinkPreviews(document.getElementById('pvPostsFeed'));

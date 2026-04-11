@@ -334,7 +334,7 @@ async function sbGetPostsByIds(ids) {
   return _sanitizeData(data || []);
 }
 
-async function sbGetUserPosts(userId, limit = 20) {
+async function sbGetUserPosts(userId, limit = 20, offset = 0) {
   const { data, error } = await sb.from('posts')
     .select(`
       *,
@@ -344,7 +344,7 @@ async function sbGetUserPosts(userId, limit = 20) {
     .eq('author_id', userId)
     .is('group_id', null)
     .order('created_at', { ascending: false })
-    .limit(limit);
+    .range(offset, offset + limit - 1);
   if (error) throw error;
   // Fetch like counts in parallel
   await Promise.all((data || []).map(async function(post) {
