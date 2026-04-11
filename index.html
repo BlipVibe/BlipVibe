@@ -951,7 +951,10 @@
         <button class="gmp-close" id="gmpClose"><i class="fas fa-times"></i></button>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>document.write('<script src="js/supabase.js?t='+Date.now()+'"><\/script>');document.write('<script src="js/app.js?t='+Date.now()+'"><\/script>');document.write('<script src="js/music.js?t='+Date.now()+'"><\/script>');</script>
+    <script>
+    var _t=Date.now();
+    ['js/supabase.js','js/app.js','js/notifications.js','js/profile.js','js/groups.js','js/feed.js','js/shop.js','js/stories.js','js/music.js'].forEach(function(f){document.write('<script src="'+f+'?t='+_t+'"><\/script>');});
+    </script>
     <script>
     // Unregister any existing service worker and clear caches
     if ('serviceWorker' in navigator) {
