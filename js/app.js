@@ -10165,7 +10165,7 @@ function openCreateStory(){
         var oldMedia=canvas.querySelector('img:not(.story-text-overlay img),video:not(.story-text-overlay video)');
         if(oldMedia) oldMedia.remove();
         if(file.type.startsWith('video/')){
-            var vid=document.createElement('video');vid.src=URL.createObjectURL(file);vid.controls=true;vid.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;';
+            var vid=document.createElement('video');vid.src=URL.createObjectURL(file);vid.muted=true;vid.autoplay=true;vid.loop=true;vid.playsInline=true;vid.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;';
             // Check duration — if over 30s, show trimmer
             vid.addEventListener('loadedmetadata',function(){
                 if(vid.duration>30){
