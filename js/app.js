@@ -1223,7 +1223,8 @@ var iconSets = [
     {id:'steampunk',name:'Steampunk',desc:'Victorian gears and brass.',price:35,preview:'linear-gradient(135deg,#8B6914,#CD853F)',icons:{home:'fa-gear',groups:'fa-gears',skins:'fa-wrench',profiles:'fa-user-gear',shop:'fa-toolbox',messages:'fa-envelope-open',notifications:'fa-bell',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-link',search:'fa-magnifying-glass',edit:'fa-screwdriver-wrench',bookmark:'fa-key',heart:'fa-cog'}},
     {id:'cute',name:'Cute Animals',desc:'Adorable kawaii critters.',price:35,preview:'linear-gradient(135deg,#fdcb6e,#e17055)',icons:{home:'fa-paw',groups:'fa-kiwi-bird',skins:'fa-feather',profiles:'fa-hippo',shop:'fa-bone',messages:'fa-dove',notifications:'fa-crow',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-magnifying-glass',edit:'fa-pen',bookmark:'fa-horse',heart:'fa-cat'}},
     {id:'travel',name:'Travel',desc:'Globetrotter adventure icons.',price:35,preview:'linear-gradient(135deg,#2980b9,#27ae60)',icons:{home:'fa-plane',groups:'fa-earth-americas',skins:'fa-map',profiles:'fa-passport',shop:'fa-suitcase',messages:'fa-envelope',notifications:'fa-bell',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-location-dot',edit:'fa-pen',bookmark:'fa-map-pin',heart:'fa-location-crosshairs'}},
-    {id:'royal',name:'Royal',desc:'Crown jewels and nobility.',price:35,preview:'linear-gradient(135deg,#d4af37,#800020)',icons:{home:'fa-crown',groups:'fa-chess-king',skins:'fa-gem',profiles:'fa-chess-queen',shop:'fa-ring',messages:'fa-scroll',notifications:'fa-bell',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-magnifying-glass',edit:'fa-pen-fancy',bookmark:'fa-chess-rook',heart:'fa-crown'}}
+    {id:'royal',name:'Royal',desc:'Crown jewels and nobility.',price:35,preview:'linear-gradient(135deg,#d4af37,#800020)',icons:{home:'fa-crown',groups:'fa-chess-king',skins:'fa-gem',profiles:'fa-chess-queen',shop:'fa-ring',messages:'fa-scroll',notifications:'fa-bell',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-magnifying-glass',edit:'fa-pen-fancy',bookmark:'fa-chess-rook',heart:'fa-crown'}},
+    {id:'heaven',name:'Heavenly',desc:'Divine celestial icons from above.',price:35,preview:'linear-gradient(135deg,#1a3a5c,#d4af37,#87ceeb)',icons:{home:'fa-cloud-sun',groups:'fa-hands-praying',skins:'fa-sun',profiles:'fa-user',shop:'fa-dove',messages:'fa-feather',notifications:'fa-bell',like:'fa-hand-holding-heart',dislike:'fa-hand',comment:'fa-cloud',share:'fa-wind',search:'fa-eye',edit:'fa-wand-sparkles',bookmark:'fa-star',heart:'fa-cross'}}
 ];
 
 var coinSkins = [
@@ -1241,7 +1242,8 @@ var coinSkins = [
     {id:'feather',name:'Feather',desc:'Light as air coins.',price:50,icon:'fa-feather',color:'#dfe6e9'},
     {id:'sun',name:'Sun',desc:'Radiant solar coins.',price:50,icon:'fa-sun',color:'#f9ca24'},
     {id:'music',name:'Music Note',desc:'Melodic rhythm coins.',price:50,icon:'fa-music',color:'#e91e63'},
-    {id:'clover',name:'Clover',desc:'Lucky four-leaf coins.',price:50,icon:'fa-clover',color:'#2ecc71'}
+    {id:'clover',name:'Clover',desc:'Lucky four-leaf coins.',price:50,icon:'fa-clover',color:'#2ecc71'},
+    {id:'halo',name:'Halo',desc:'Divine golden halo coins.',price:50,icon:'fa-circle-notch',color:'#f5e6a3'}
 ];
 
 var templates = [
