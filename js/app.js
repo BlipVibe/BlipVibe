@@ -10240,11 +10240,11 @@ function openStoryViewer(userId){
                 storyContent.appendChild(oEl);
             });
         }
-        // Story song playback — fade between songs
-        if(overlay._storyAudio){
-            var _oldAudio=overlay._storyAudio;
-            _fadeAudio(_oldAudio,_oldAudio.volume,0,400,function(){_oldAudio.pause();_oldAudio=null;});
-            overlay._storyAudio=null;
+        // Story song playback — crossfade between songs
+        var _oldStoryAudio=overlay._storyAudio;
+        overlay._storyAudio=null;
+        if(_oldStoryAudio){
+            _fadeAudio(_oldStoryAudio,_oldStoryAudio.volume,0,300,function(){_oldStoryAudio.pause();});
         }
         if(s.song&&s.song.file_url){
             var songBar='<div class="story-song-bar"><i class="fas fa-music ssb-icon"></i><span class="ssb-title">'+escapeHtml(s.song.title)+'</span></div>';
@@ -10253,8 +10253,14 @@ function openStoryViewer(userId){
             storyAudio.currentTime=s.song_start||0;
             storyAudio.volume=0;
             storyAudio.loop=true;
-            storyAudio.play().then(function(){_fadeAudio(storyAudio,0,s.song_volume||0.5,400,null);}).catch(function(){});
             overlay._storyAudio=storyAudio;
+            // Start new song immediately, don't wait for old to finish fading
+            setTimeout(function(){
+                if(overlay._storyAudio!==storyAudio) return; // another render happened
+                storyAudio.play().then(function(){
+                    _fadeAudio(storyAudio,0,s.song_volume||0.5,500,null);
+                }).catch(function(){});
+            },100);
         }
         // Mark as viewed
         _storyViewed[s.id]=true;
