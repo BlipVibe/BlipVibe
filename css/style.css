@@ -3231,7 +3231,7 @@ body[class*="premium-"].nav-dock .nav-center,
 body[class*="premium-"].nav-pill .nav-center,
 body[class*="premium-"].nav-split .nav-center{background:var(--ps-nav);background-size:200% 200%;animation:gradientShift 6s ease infinite;}
 body[class*="premium-"].nav-island .nav-left,body[class*="premium-"].nav-island .nav-center,body[class*="premium-"].nav-island .nav-right{background:var(--ps-nav);background-size:200% 200%;animation:gradientShift 6s ease infinite;}
-body[class*="premium-"] .card,body[class*="premium-"] .group-card,body[class*="premium-"] .profile-card-item,body[class*="premium-"] .notif-item,body[class*="premium-"] .quest-panel,body[class*="premium-"] .featured-skin-banner{background:var(--ps-card);color:var(--ps-text);}
+body[class*="premium-"] .card,body[class*="premium-"] .group-card,body[class*="premium-"] .profile-card-item,body[class*="premium-"] .notif-item,body[class*="premium-"] .quest-panel,body[class*="premium-"] .featured-skin-banner,body[class*="premium-"] .coin-goal-bar{background:var(--ps-card);color:var(--ps-text);}
 body[class*="premium-"] .feed-post{border-left:3px solid var(--ps-post-border);animation:var(--ps-anim);}
 body[class*="premium-"] .post-username,body[class*="premium-"] .msg-chat-header h4{color:var(--primary);}
 body[class*="premium-"] .post-description p,body[class*="premium-"] .profile-about{color:var(--ps-muted);}
@@ -3342,7 +3342,8 @@ body.has-premium-bg .group-card,
 body.has-premium-bg .notif-item,
 body.has-premium-bg .saved-folder-card,
 body.has-premium-bg .quest-panel,
-body.has-premium-bg .featured-skin-banner{background:color-mix(in srgb,var(--ps-card,rgba(0,0,0,.3)) var(--card-opacity,90%),transparent);border:1px solid var(--ps-border,transparent);}
+body.has-premium-bg .featured-skin-banner,
+body.has-premium-bg .coin-goal-bar{background:color-mix(in srgb,var(--ps-card,rgba(0,0,0,.3)) var(--card-opacity,90%),transparent);border:1px solid var(--ps-border,transparent);}
 body.has-premium-bg .profile-card-item h4,
 body.has-premium-bg .profile-card-item p,
 body.has-premium-bg .notif-text p,
