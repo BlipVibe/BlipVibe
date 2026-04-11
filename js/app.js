@@ -77,8 +77,8 @@ function convertTextEmojis(s){
 function linkifyText(s){return s.replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');}
 function isVideoUrl(u){return /\.(mp4|webm|mov)([?#]|$)/i.test(u);}
 // Unified text rendering: escape + mentions + hashtags + links + rich text
-function renderPostText(text){return renderRichText(linkifyText(renderPlainText(text)));}
-function renderPlainText(text){return renderPlainText(text);}
+function renderPostText(text){return renderRichText(linkifyText(renderMentionsInText(escapeHtmlNl(text))));}
+function renderPlainText(text){return renderMentionsInText(escapeHtmlNl(text));}
 function showErrorToast(e){showToast('Error: '+((e&&e.message)||'Something went wrong'));}
 
 // ======================== RATE-LIMIT COOLDOWN HELPER ========================
@@ -1736,6 +1736,7 @@ function updateStatClickable(){
 
 async function toggleFollow(userId,btn){
     if(blockedUsers[userId]) return;
+    if(btn){if(btn.disabled) return; btn.disabled=true;}
     if(!currentUser) return;
     try {
         if(state.followedUsers[userId]){
@@ -1766,6 +1767,7 @@ async function toggleFollow(userId,btn){
         // Show suggested follows after following someone new
         if(state.followedUsers[userId]) showSuggestedFollows(userId);
     } catch(err) { console.error('toggleFollow:', err); }
+    if(btn) btn.disabled=false;
 }
 
 // ======================== NOTIFICATIONS ========================
@@ -6157,23 +6159,14 @@ function bindPostEvents(){
             // If this is a UUID (Supabase post), call Supabase toggle
             var isUUID = /^[0-9a-f]{8}-/.test(postId);
             if(isUUID && currentUser) {
-                // Clear dislike if active
-                if(state.dislikedPosts[postId]){
-                    var db=btn.closest('.action-left').querySelector('.dislike-btn');
-                    if(db){var dc=db.querySelector('.dislike-count');dc.textContent=Math.max(0,parseInt(dc.textContent)-1);db.classList.remove('disliked');db.querySelector('i').className='far fa-thumbs-down';}
-                    delete state.dislikedPosts[postId];
-                }
+                clearOppositeReaction(btn,'like');
                 try {
                     var nowLiked = await sbToggleLike(currentUser.id, 'post', postId);
                     if(nowLiked) {
                         state.likedPosts[postId]=true;
-                        btn.classList.add('liked');
-                        btn.querySelector('i').className='fas fa-thumbs-up';
-                        countEl.textContent=count+1;
-                        animateLikeBtn(btn);
+                        updateLikeDisplay(btn,true,count);
                         showCoinEarnAnimation(btn,1);
                         trackQuestProgress('like');
-                        // Notify post author
                         var fp=feedPosts.find(function(x){return x.idx===postId;});
                         if(fp&&fp.person&&fp.person.id&&fp.person.id!==currentUser.id){
                             var myName=currentUser.display_name||currentUser.username||'Someone';
@@ -6181,24 +6174,18 @@ function bindPostEvents(){
                         }
                     } else {
                         delete state.likedPosts[postId];
-                        btn.classList.remove('liked');
-                        btn.querySelector('i').className='far fa-thumbs-up';
-                        countEl.textContent=Math.max(0,count-1);
+                        updateLikeDisplay(btn,false,count);
                     }
                 } catch(err) { console.error('Like error:', err); }
             } else {
                 // Legacy local like
                 if(state.likedPosts[postId]){
                     delete state.likedPosts[postId];
-                    btn.classList.remove('liked');
-                    btn.querySelector('i').className='far fa-thumbs-up';
-                    countEl.textContent=Math.max(0,count-1);
+                    updateLikeDisplay(btn,false,count);
                 } else {
-                    if(state.dislikedPosts[postId]){var db=btn.closest('.action-left').querySelector('.dislike-btn');var dc=db.querySelector('.dislike-count');dc.textContent=Math.max(0,parseInt(dc.textContent)-1);delete state.dislikedPosts[postId];db.classList.remove('disliked');db.querySelector('i').className='far fa-thumbs-down';}
+                    clearOppositeReaction(btn,'like');
                     state.likedPosts[postId]=true;
-                    btn.classList.add('liked');
-                    btn.querySelector('i').className='fas fa-thumbs-up';
-                    countEl.textContent=count+1;
+                    updateLikeDisplay(btn,true,count);
                 }
             }
             var has=!!(state.likedPosts[postId]||state.dislikedPosts[postId]||_postReactions[postId]);
