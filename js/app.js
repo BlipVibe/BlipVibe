@@ -9701,7 +9701,12 @@ async function loadStories(){
             byUser[uid].stories.push(s);
         });
         _storiesData=Object.values(byUser);
-        // Sort: own stories first, then unviewed, then viewed
+        // Sort each user's stories by newest first
+        _storiesData.forEach(function(g){
+            g.stories.sort(function(a,b){return new Date(b.created_at)-new Date(a.created_at);});
+            g._newest=g.stories[0]?new Date(g.stories[0].created_at).getTime():0;
+        });
+        // Sort groups: own first, then unviewed newest-first, then viewed newest-first
         _storiesData.sort(function(a,b){
             var aOwn=currentUser&&a.user.id===currentUser.id?-1:0;
             var bOwn=currentUser&&b.user.id===currentUser.id?-1:0;
@@ -9709,7 +9714,7 @@ async function loadStories(){
             var aViewed=a.stories.every(function(s){return _storyViewed[s.id];});
             var bViewed=b.stories.every(function(s){return _storyViewed[s.id];});
             if(aViewed!==bViewed) return aViewed?1:-1;
-            return 0;
+            return b._newest-a._newest; // newest first within same viewed status
         });
         renderStoriesBar();
     }catch(e){console.warn('Stories load error:',e);renderStoriesBar();}
@@ -10160,12 +10165,24 @@ async function submitStoryComment(storyId,storyUser){
 }
 
 function openStoryViewer(userId){
-    var group=_storiesData.find(function(g){return g.user.id===userId;});
-    if(!group||!group.stories.length){showToast('No stories to show');return;}
-    var stories=group.stories;
+    // Build flat list of all stories across all users in order
+    var startGroupIdx=_storiesData.findIndex(function(g){return g.user.id===userId;});
+    if(startGroupIdx<0){showToast('No stories to show');return;}
+    // Flatten: reorder so clicked user is first, then continue in order
+    var orderedGroups=[].concat(_storiesData.slice(startGroupIdx),_storiesData.slice(0,startGroupIdx));
+    var allStories=[];
+    orderedGroups.forEach(function(g){
+        g.stories.forEach(function(s){
+            allStories.push({story:s,user:g.user});
+        });
+    });
+    if(!allStories.length){showToast('No stories to show');return;}
+    var stories=allStories;
     var idx=0;
-    // Find first unviewed
-    for(var si=0;si<stories.length;si++){if(!_storyViewed[stories[si].id]){idx=si;break;}}
+    // Find first unviewed in the clicked user's stories
+    for(var si=0;si<stories.length;si++){
+        if(stories[si].user.id===userId&&!_storyViewed[stories[si].story.id]){idx=si;break;}
+    }
     // Fade out global player when viewing stories
     var _wasGlobalPlaying=false;
     var _globalAudio=_getCurrentAudio();
@@ -10187,8 +10204,9 @@ function openStoryViewer(userId){
         }
     }
     function render(){
-        var s=stories[idx];
-        var user=group.user;
+        var entry=stories[idx];
+        var s=entry.story;
+        var user=entry.user;
         var avatar=user.avatar_url||DEFAULT_AVATAR;
         var name=user.display_name||user.username||'User';
         var time=timeAgoReal(s.created_at);
@@ -10220,16 +10238,20 @@ function openStoryViewer(userId){
                 storyContent.appendChild(oEl);
             });
         }
-        // Story song playback
-        if(overlay._storyAudio){overlay._storyAudio.pause();overlay._storyAudio=null;}
+        // Story song playback — fade between songs
+        if(overlay._storyAudio){
+            var _oldAudio=overlay._storyAudio;
+            _fadeAudio(_oldAudio,_oldAudio.volume,0,400,function(){_oldAudio.pause();_oldAudio=null;});
+            overlay._storyAudio=null;
+        }
         if(s.song&&s.song.file_url){
             var songBar='<div class="story-song-bar"><i class="fas fa-music ssb-icon"></i><span class="ssb-title">'+escapeHtml(s.song.title)+'</span></div>';
             overlay.querySelector('.story-content').insertAdjacentHTML('beforeend',songBar);
             var storyAudio=new Audio(s.song.file_url);
             storyAudio.currentTime=s.song_start||0;
-            storyAudio.volume=s.song_volume||0.5;
+            storyAudio.volume=0;
             storyAudio.loop=true;
-            storyAudio.play().catch(function(){});
+            storyAudio.play().then(function(){_fadeAudio(storyAudio,0,s.song_volume||0.5,400,null);}).catch(function(){});
             overlay._storyAudio=storyAudio;
         }
         // Mark as viewed
