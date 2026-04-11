@@ -379,6 +379,13 @@ async function sbPurchaseItem(itemType, itemId, price) {
   return data;
 }
 
+// Server-side group purchase — validates group coin balance atomically
+async function sbPurchaseGroupItem(groupId, itemType, itemId, price) {
+  const { data, error } = await sb.rpc('purchase_group_item', { p_group_id: groupId, p_item_type: itemType, p_item_id: itemId, p_price: price });
+  if (error) throw error;
+  return data;
+}
+
 async function sbEditPost(postId, newContent) {
   const { error } = await sb.from('posts')
     .update({ content: newContent })

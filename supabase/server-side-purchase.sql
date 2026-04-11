@@ -83,3 +83,85 @@ BEGIN
   RETURN jsonb_build_object('success', true, 'balance', v_balance, 'item_type', p_item_type, 'item_id', p_item_id);
 END;
 $$;
+
+-- =============================================================================
+-- Group Purchase: Validates group coin balance and processes group shop purchases
+-- =============================================================================
+
+CREATE OR REPLACE FUNCTION public.purchase_group_item(
+  p_group_id UUID,
+  p_item_type TEXT,   -- 'skin','premium','font','song'
+  p_item_id TEXT,
+  p_price INT
+)
+RETURNS JSONB
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+DECLARE
+  v_uid UUID := auth.uid();
+  v_balance INT;
+  v_skin_data JSONB;
+  v_owned_key TEXT;
+  v_is_member BOOLEAN;
+BEGIN
+  IF v_uid IS NULL THEN
+    RAISE EXCEPTION 'Not authenticated';
+  END IF;
+
+  -- Verify caller is a member of the group
+  SELECT EXISTS(
+    SELECT 1 FROM public.group_members WHERE group_id = p_group_id AND user_id = v_uid
+  ) INTO v_is_member;
+
+  IF NOT v_is_member THEN
+    RETURN jsonb_build_object('success', false, 'error', 'Not a group member');
+  END IF;
+
+  -- Get group coin balance and skin_data (lock row for atomic update)
+  SELECT coin_balance, skin_data INTO v_balance, v_skin_data
+  FROM public.groups WHERE id = p_group_id FOR UPDATE;
+
+  IF v_skin_data IS NULL THEN v_skin_data := '{}'::JSONB; END IF;
+  IF v_balance IS NULL THEN v_balance := 0; END IF;
+
+  -- Validate balance
+  IF v_balance < p_price THEN
+    RETURN jsonb_build_object('success', false, 'error', 'Not enough group coins', 'balance', v_balance);
+  END IF;
+
+  -- Map item type to ownership key
+  v_owned_key := CASE p_item_type
+    WHEN 'skin' THEN 'ownedSkins'
+    WHEN 'premium' THEN 'ownedPremiumSkins'
+    WHEN 'font' THEN 'ownedFonts'
+    WHEN 'song' THEN 'ownedSongs'
+    ELSE NULL
+  END;
+
+  IF v_owned_key IS NULL THEN
+    RAISE EXCEPTION 'Invalid item type: %', p_item_type;
+  END IF;
+
+  -- Check if already owned
+  IF COALESCE(v_skin_data->v_owned_key->>p_item_id, '') = 'true' THEN
+    RETURN jsonb_build_object('success', false, 'error', 'Already owned');
+  END IF;
+
+  -- Add to owned items
+  IF v_skin_data->v_owned_key IS NULL THEN
+    v_skin_data := jsonb_set(v_skin_data, ARRAY[v_owned_key], '{}'::JSONB);
+  END IF;
+  v_skin_data := jsonb_set(v_skin_data, ARRAY[v_owned_key, p_item_id], 'true'::JSONB);
+
+  -- Deduct coins and update skin_data
+  UPDATE public.groups
+  SET coin_balance = coin_balance - p_price,
+      skin_data = v_skin_data
+  WHERE id = p_group_id;
+
+  v_balance := v_balance - p_price;
+
+  RETURN jsonb_build_object('success', true, 'balance', v_balance, 'item_type', p_item_type, 'item_id', p_item_id);
+END;
+$$;

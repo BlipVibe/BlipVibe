@@ -7776,35 +7776,26 @@ function renderGroupShop(groupId){
 
     function gShopPurchased(btn){var p=btn.parentElement;var priceEl=p.querySelector('.skin-price');if(priceEl)priceEl.remove();btn.className='btn btn-disabled';btn.textContent='Owned';btn.disabled=true;btn.replaceWith(btn.cloneNode(true));}
 
-    $$('#gvShopContent .buy-gskin-btn').forEach(function(btn){btn.addEventListener('click',function(){
-        var sid=btn.getAttribute('data-sid');var gid=btn.getAttribute('data-gid');
-        var skin=skins.find(function(s){return s.id===sid;});
-        if(!skin) return;
-        var gc=getGroupCoinCount(gid);
-        if(gc>=skin.price){
-            addGroupCoins(gid,-skin.price);
-            if(!state.groupOwnedSkins[gid]) state.groupOwnedSkins[gid]={};
-            state.groupOwnedSkins[gid][sid]=true;
-            saveState();syncGroupSkinData(gid);
-            gShopPurchased(btn);
-            addNotification('skin','Group purchased the "'+skin.name+'" skin!');
-        }
-    });});
-
-    $$('#gvShopContent .buy-gspremium-btn').forEach(function(btn){btn.addEventListener('click',function(){
-        var pid=btn.getAttribute('data-pid');var gid=btn.getAttribute('data-gid');
-        var skin=premiumSkins.find(function(s){return s.id===pid;});
-        if(!skin) return;
-        var gc=getGroupCoinCount(gid);
-        if(gc>=skin.price){
-            addGroupCoins(gid,-skin.price);
-            if(!state.groupOwnedPremiumSkins[gid]) state.groupOwnedPremiumSkins[gid]={};
-            state.groupOwnedPremiumSkins[gid][pid]=true;
-            saveState();syncGroupSkinData(gid);
-            gShopPurchased(btn);
-            addNotification('skin','Group purchased the "'+skin.name+'" premium skin!');
-        }
-    });});
+    // Server-side group purchase handler
+    function _bindGroupBuyBtn(selector,attrName,itemType,ownedMapKey,itemList,nameKey){
+        $$(selector).forEach(function(btn){btn.addEventListener('click',async function(){
+            var id=btn.getAttribute(attrName);var gid=btn.getAttribute('data-gid');
+            var item=itemList.find(function(x){return x.id===id;});
+            if(!item) return;
+            btn.disabled=true;var origText=btn.textContent;btn.textContent='...';
+            try{
+                var result=await sbPurchaseGroupItem(gid,itemType,id,item.price);
+                if(!result.success){showToast(result.error||'Purchase failed');btn.disabled=false;btn.textContent=origText;return;}
+                state.groupCoins[gid]=result.balance;updateGroupCoinDisplay(gid);
+                if(!state[ownedMapKey][gid]) state[ownedMapKey][gid]={};
+                state[ownedMapKey][gid][id]=true;
+                syncGroupSkinData(gid);gShopPurchased(btn);
+                addNotification('skin','Group purchased the "'+(item[nameKey]||item.name)+'"!');
+            }catch(e){showToast('Purchase failed: '+(e.message||'Error'));btn.disabled=false;btn.textContent=origText;}
+        });});
+    }
+    _bindGroupBuyBtn('#gvShopContent .buy-gskin-btn','data-sid','skin','groupOwnedSkins',skins,'name');
+    _bindGroupBuyBtn('#gvShopContent .buy-gspremium-btn','data-pid','premium','groupOwnedPremiumSkins',premiumSkins,'name');
 
     // Apply tab sub-filter pills
     $$('#gvShopContent .gapply-pill').forEach(function(pill){pill.addEventListener('click',function(){
@@ -7833,20 +7824,7 @@ function renderGroupShop(groupId){
     });});
 
     // Font buy handlers
-    $$('#gvShopContent .buy-gfont-btn').forEach(function(btn){btn.addEventListener('click',function(){
-        var fid=btn.getAttribute('data-fid');var gid=btn.getAttribute('data-gid');
-        var font=fonts.find(function(f){return f.id===fid;});
-        if(!font) return;
-        var gc=getGroupCoinCount(gid);
-        if(gc>=font.price){
-            addGroupCoins(gid,-font.price);
-            if(!state.groupOwnedFonts[gid]) state.groupOwnedFonts[gid]={};
-            state.groupOwnedFonts[gid][fid]=true;
-            saveState();syncGroupSkinData(gid);
-            gShopPurchased(btn);
-            addNotification('skin','Group purchased the "'+font.name+'" font!');
-        }
-    });});
+    _bindGroupBuyBtn('#gvShopContent .buy-gfont-btn','data-fid','font','groupOwnedFonts',fonts,'name');
 
     // Font apply handlers
     $$('#gvShopContent .apply-gfont-btn').forEach(function(btn){btn.addEventListener('click',function(){
@@ -7857,21 +7835,7 @@ function renderGroupShop(groupId){
     });});
 
     // Group song buy handlers
-    $$('#gvShopContent .buy-gsong-btn').forEach(function(btn){btn.addEventListener('click',function(){
-        var sid=btn.getAttribute('data-song-id');var gid=btn.getAttribute('data-gid');
-        var song=_shopSongs.find(function(s){return s.id===sid;});
-        if(!song) return;
-        var gc=getGroupCoinCount(gid);
-        if(gc>=song.price){
-            addGroupCoins(gid,-song.price);
-            if(!state.groupOwnedSongs) state.groupOwnedSongs={};
-            if(!state.groupOwnedSongs[gid]) state.groupOwnedSongs[gid]={};
-            state.groupOwnedSongs[gid][sid]=true;
-            saveState();syncGroupSkinData(gid);
-            gShopPurchased(btn);
-            addNotification('skin','Group purchased the "'+song.title+'" song!');
-        }
-    });});
+    _bindGroupBuyBtn('#gvShopContent .buy-gsong-btn','data-song-id','song','groupOwnedSongs',_shopSongs||[],'title');
     // Group song preview handlers
     $$('#gvShopContent .song-preview-btn').forEach(function(btn){btn.addEventListener('click',function(e){handleSongPreviewClick(e,btn);
     });});
