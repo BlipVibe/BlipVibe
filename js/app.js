@@ -10305,6 +10305,8 @@ function openStoryViewer(userId){
         },storyDuration);
     }
     overlay.addEventListener('click',function(e){
+        // Ignore clicks on interactive elements (reactions, input, buttons, song bar)
+        if(e.target.closest('.story-input-bar,.story-react-btn,.story-comment-input,.story-send-btn,.story-song-bar,.story-viewers,.story-delete-btn,.story-view-list')) return;
         if(e.target.closest('.story-close')){clearTimeout(overlay._timer);closeStoryViewer();return;}
         if(e.target.closest('.story-delete-btn')){
             var sid=stories[idx].id;
