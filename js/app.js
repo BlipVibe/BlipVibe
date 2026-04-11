@@ -1354,13 +1354,14 @@ function navigateTo(page,skipPush){
     _cleanupGroupChat(true);
     // Restore user's skin when leaving group view
     if(_gvSaved){
-        state.activeSkin=_gvSaved.skin||null;
-        state.activePremiumSkin=_gvSaved.premiumSkin||null;
-        premiumBgImage=_gvSaved.bgImage;premiumBgOverlay=_gvSaved.bgOverlay;premiumBgDarkness=_gvSaved.bgDarkness||0;premiumCardTransparency=_gvSaved.cardTrans!=null?_gvSaved.cardTrans:0.1;
-        if(_gvSaved.premiumSkin) applyPremiumSkin(_gvSaved.premiumSkin,true);
-        else{applySkin(_gvSaved.skin||null,true);updatePremiumBg();}
-        applyFont(_gvSaved.font||null,true);
-        _gvSaved=null;
+        // Restore from Supabase (source of truth) — don't trust local backup
+        applyPremiumSkin(null,true);
+        applySkin(null,true);
+        _pvRealSkin=null;
+        loadSkinDataFromSupabase().then(function(){
+            _gvSaved=null;
+            reapplyCustomizations();
+        }).catch(function(){_gvSaved=null;_pvRealSkin=null;});
     }
     $$('.page').forEach(function(p){p.classList.remove('active');});
     var target=document.getElementById('page-'+page);
@@ -2974,9 +2975,7 @@ async function showProfileView(person){
             applyPremiumSkin(person.premiumSkin,true);
             if(person.premiumBg){premiumBgImage=person.premiumBg.src;premiumBgOverlay=person.premiumBg.overlay!=null?person.premiumBg.overlay:0;premiumBgDarkness=person.premiumBg.darkness!=null?person.premiumBg.darkness:0;premiumCardTransparency=person.premiumBg.cardTrans!=null?person.premiumBg.cardTrans:0.1;}
             else{premiumBgImage=null;premiumBgOverlay=0;premiumBgDarkness=0;premiumCardTransparency=0.1;}
-            // Set activePremiumSkin for updatePremiumBg — but _pvRealSkin has our real value
-            state.activePremiumSkin=person.premiumSkin;
-            updatePremiumBg();
+            updatePremiumBg(true);
         } else {
             premiumBgImage=null;updatePremiumBg();
             applySkin(person.skin||null,true);
@@ -8002,7 +8001,10 @@ function applyGroupSkin(groupId){
     var grp=groups.find(function(g){return g.id===groupId;});
     var hasCover=grp&&grp.coverPhoto;
     // Save personal skin state once when entering group view
-    if(!_gvSaved) _gvSaved={skin:state.activeSkin,premiumSkin:state.activePremiumSkin,font:state.activeFont,bgImage:premiumBgImage,bgOverlay:premiumBgOverlay,bgDarkness:premiumBgDarkness,cardTrans:premiumCardTransparency};
+    if(!_gvSaved){
+        _gvSaved=true;
+        _pvRealSkin={premiumSkin:state.activePremiumSkin,skin:state.activeSkin,font:state.activeFont,tpl:state.activeTemplate,bgImage:premiumBgImage,bgOverlay:premiumBgOverlay,bgDarkness:premiumBgDarkness,cardTrans:premiumCardTransparency};
+    }
     // Reset premium bg — will re-apply group's own bg below if applicable
     premiumBgImage=null;premiumBgOverlay=0;premiumBgDarkness=0;premiumCardTransparency=0.1;
     updatePremiumBg();
@@ -8040,9 +8042,7 @@ function applyGroupSkin(groupId){
             premiumBgOverlay=gbg.overlay!=null?gbg.overlay:0;
             premiumBgDarkness=gbg.darkness!=null?gbg.darkness:0;
             premiumCardTransparency=gbg.cardTrans!=null?gbg.cardTrans:0.1;
-            // updatePremiumBg requires state.activePremiumSkin to be set
-            state.activePremiumSkin=activePremium;
-            updatePremiumBg();
+            updatePremiumBg(true);
             // Make page transparent so premiumBgLayer shows through
             gvPage.style.background='transparent';
         } else {
@@ -8256,10 +8256,10 @@ var premiumBgOverlay=0;
 var premiumBgDarkness=0;
 var premiumCardTransparency=0.1;
 
-function updatePremiumBg(){
+function updatePremiumBg(forceShow){
     var layer=document.getElementById('premiumBgLayer');
     if(!layer)return;
-    if(premiumBgImage&&state.activePremiumSkin){
+    if(premiumBgImage&&(forceShow||state.activePremiumSkin)){
         layer.style.backgroundImage='url('+premiumBgImage+')';
         layer.style.filter='';
         var overlay=document.getElementById('premiumBgOverlay');
@@ -8364,7 +8364,7 @@ function renderMySkins(){
     active.items.forEach(function(item){html+=active.render(item);});
     html+='</div>';
     // Premium background controls (only on premium tab with active premium skin)
-    if(currentMySkinsTab==='premium'&&state.activePremiumSkin){
+    if(currentMySkinsTab==='premium'&&_myActivePremiumSkin()){
         var bgHtml='<div class="premium-bg-controls card" style="margin-top:16px;padding:16px;border-radius:12px;">';
         bgHtml+='<h4 class="card-heading" style="margin-bottom:10px;font-size:14px;"><i class="fas fa-image" style="margin-right:6px;color:var(--primary);"></i>Background Image</h4>';
         bgHtml+='<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">';
