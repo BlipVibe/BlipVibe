@@ -979,6 +979,9 @@ document.addEventListener('visibilitychange',function(){
                 }
                 saveState();
             });
+        } else if(_pvSaved){
+            // On someone's profile — don't reapply own skin (would overwrite viewed person's)
+            loadSkinDataFromSupabase().then(function(){saveState();});
         } else {
             loadSkinDataFromSupabase().then(function(){
                 reapplyCustomizations();
