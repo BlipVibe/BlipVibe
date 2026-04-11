@@ -8428,7 +8428,7 @@ function renderMySkins(){
             try{
                 var optimized=await _optimizeImage(file,1920,1080,0.85);
                 var ext=optimized.name.split('.').pop()||'jpg';
-                var path='backgrounds/'+currentUser.id+'/bg-'+Date.now()+'.'+ext;
+                var path=currentUser.id+'/bg-'+Date.now()+'.'+ext;
                 showToast('Uploading...');
                 var url=await sbUploadFile('avatars',path,optimized);
                 window._stagedBgUrl=url;

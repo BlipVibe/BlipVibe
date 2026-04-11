@@ -750,12 +750,12 @@ async function sbListUserCovers(userId) {
 async function sbListUserBackgrounds(userId) {
   const { data, error } = await sb.storage
     .from('avatars')
-    .list('backgrounds/' + userId, { sortBy: { column: 'created_at', order: 'desc' } });
+    .list(userId, { sortBy: { column: 'created_at', order: 'desc' } });
   if (error) throw error;
   return (data || [])
     .filter(f => f.name.match(/^bg-/))
     .map(f => {
-      const { data: urlData } = sb.storage.from('avatars').getPublicUrl('backgrounds/' + userId + '/' + f.name);
+      const { data: urlData } = sb.storage.from('avatars').getPublicUrl(userId + '/' + f.name);
       return { src: urlData.publicUrl + '?t=' + Date.now(), date: new Date(f.created_at).getTime(), name: f.name };
     });
 }
