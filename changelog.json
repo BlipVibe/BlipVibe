@@ -39,7 +39,7 @@
       "\ud83d\udd17 Shared post author name/avatar now clickable to view their profile",
       "\ud83c\udfac Lightbox video player now displays correctly on desktop and mobile",
       "\ud83c\udfb5 Playlist manager now only shows songs you own (not all songs)",
-      "\ud83c\udfa5 YouTube embeds now work for all video ID lengths",
+      "\ud83c\udfa5 URLs with underscores no longer broken by text formatting (fixes YouTube, etc.)",
       "\ud83d\udd17 Feed URLs now properly hidden when embed or link preview is shown"
     ]
   },

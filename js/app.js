@@ -5533,7 +5533,7 @@ function getVideoEmbedHtml(url, mini){
     var cls='video-embed'+(mini?' video-embed-mini':'');
     var socialCls='social-embed'+(mini?' social-embed-mini':'');
     // YouTube: watch, short, embed, youtu.be
-    m=url.match(/(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{10,12})/);
+    m=url.match(/(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
     if(m){ id=m[1]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'YouTube',cls,mini);
         var isMobile=/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
         if(isMobile){
@@ -12104,6 +12104,9 @@ async function checkDailyLoginReward(){
 
 // ======================== RICH TEXT IN POSTS ========================
 function renderRichText(text){
+    // Protect <a> tags from formatting (URLs contain underscores, asterisks, etc.)
+    var links=[];
+    text=text.replace(/<a[^>]*>.*?<\/a>/g,function(m){links.push(m);return '\x00LINK'+links.length+'\x00';});
     // Bold: **text** or __text__
     text=text.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
     text=text.replace(/__(.+?)__/g,'<strong>$1</strong>');
@@ -12114,6 +12117,8 @@ function renderRichText(text){
     text=text.replace(/~~(.+?)~~/g,'<del>$1</del>');
     // Inline code: `code`
     text=text.replace(/`([^`]+)`/g,'<code style="background:rgba(139,92,246,.1);padding:1px 4px;border-radius:3px;font-size:12px;">$1</code>');
+    // Restore <a> tags
+    text=text.replace(/\x00LINK(\d+)\x00/g,function(_,i){return links[parseInt(i)-1];});
     return text;
 }
 
