@@ -1458,8 +1458,8 @@ async function renderSearchResults(q,tab){
                 var tags=fp.tags||[];
                 var badge=fp.badge||badgeTypes[0];
                 var _ws=safeWordSplit(text,200);
-                var short=renderMentionsInText(escapeHtmlNl(_ws[0]));
-                var rest=_ws[1]?renderMentionsInText(escapeHtmlNl(_ws[1])):'';
+                var short=linkifyText(renderMentionsInText(escapeHtmlNl(_ws[0])));
+                var rest=_ws[1]?linkifyText(renderMentionsInText(escapeHtmlNl(_ws[1]))):'';
                 var hasMore=rest.length>0;
                 html+='<div class="card feed-post search-post-card">';
                 var avatarSrc=person.avatar_url||DEFAULT_AVATAR;
@@ -3048,7 +3048,7 @@ async function showProfileView(person){
                 feedHtml+='<div class="post-header">';
                 feedHtml+='<img src="'+authorAvatar+'" alt="'+escapeHtml(authorName)+'" class="post-avatar">';
                 feedHtml+='<div class="post-user-info"><div class="post-user-top"><h4 class="post-username">'+escapeHtml(authorName)+'</h4><span class="post-time">'+postTime+'</span></div></div></div>';
-                feedHtml+='<div class="post-description"><p>'+renderMentionsInText(escapeHtmlNl(post.content))+'</p></div>';
+                feedHtml+='<div class="post-description"><p>'+linkifyText(renderMentionsInText(escapeHtmlNl(post.content)))+'</p></div>';
                 var pvImgs=post.media_urls&&post.media_urls.length?post.media_urls:(post.image_url?[post.image_url]:[]);
                 feedHtml+=buildMediaGrid(pvImgs);
                 var pvLikes=post.like_count||0;
@@ -3719,7 +3719,7 @@ async function showGroupView(group){
                 feedHtml+='</div>';
                 feedHtml+='</div>';
                 feedHtml+='<div class="post-description">';
-                if(p.content) feedHtml+='<p>'+renderMentionsInText(escapeHtmlNl(p.content))+'</p>';
+                if(p.content) feedHtml+='<p>'+linkifyText(renderMentionsInText(escapeHtmlNl(p.content)))+'</p>';
                 feedHtml+='</div>';
                 var gvImgs=p.media_urls&&p.media_urls.length?p.media_urls:(p.image_url?[p.image_url]:[]);
                 feedHtml+=buildMediaGrid(gvImgs);
@@ -5826,7 +5826,7 @@ function _buildPostHtml(p){
     var menuId='post-menu-'+i;
     var pollResult=renderPollInPost(text,i);
     text=pollResult.text;var pollHtml=pollResult.pollHtml;
-    var _ws=safeWordSplit(text,160);var short=renderRichText(renderMentionsInText(escapeHtmlNl(_ws[0])));var rest=_ws[1]?renderRichText(renderMentionsInText(escapeHtmlNl(_ws[1]))):'';var hasMore=rest.length>0;
+    var _ws=safeWordSplit(text,160);var short=renderRichText(linkifyText(renderMentionsInText(escapeHtmlNl(_ws[0]))));var rest=_ws[1]?renderRichText(linkifyText(renderMentionsInText(escapeHtmlNl(_ws[1])))):'';var hasMore=rest.length>0;
     var avatarSrc=person.avatar_url||'images/default-avatar.svg';
     var timeStr=p.created_at?timeAgoReal(p.created_at):timeAgo(typeof i==='number'?i:0);
     var html='<div class="card feed-post">';
@@ -11153,7 +11153,7 @@ function _renderSavedTabPosts(){
 }
 function renderSavedPostCard(p){
     var i=p.idx,person=p.person,text=p.text,badge=p.badge,likes=p.likes,genComments=p.comments,shares=p.shares;
-    var _ws=safeWordSplit(text,160);var short=renderMentionsInText(escapeHtmlNl(_ws[0]));var rest=_ws[1]?renderMentionsInText(escapeHtmlNl(_ws[1])):'';var hasMore=rest.length>0;
+    var _ws=safeWordSplit(text,160);var short=linkifyText(renderMentionsInText(escapeHtmlNl(_ws[0])));var rest=_ws[1]?linkifyText(renderMentionsInText(escapeHtmlNl(_ws[1]))):'';var hasMore=rest.length>0;
     var folder=findPostFolder(i);
     var html='<div class="card feed-post saved-post-item" data-spid="'+i+'">';
     html+='<div class="post-header">';
