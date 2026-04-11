@@ -6420,8 +6420,8 @@ $('#openPostModal').addEventListener('click',function(){
     showModal(html);
     document.getElementById('cpmEmojiBtn').addEventListener('click',function(){openEmojiPicker('cpmEmojiPanel',document.getElementById('cpmText'));});
     initMentionAutocomplete('cpmText',null);
-    // Draft auto-save
-    initDraftAutoSave('cpmText');
+    // Always start with a clean slate — no draft restoration
+    clearDraft();
     // Character counter
     initCharCounter('cpmText',document.getElementById('cpmCharCounter'));
     // Poll UI handlers
