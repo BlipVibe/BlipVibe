@@ -2511,11 +2511,12 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
         gap:14px!important;margin:0 auto!important;max-width:100%!important;
     }
     .feed-post{border-left:none!important;border-right:none!important;margin-left:0!important;margin-right:0!important;}
-    #feedContainer{width:100%!important;}
-    #feedContainer .card{width:100%!important;max-width:100%!important;margin-left:0!important;margin-right:0!important;}
-    [class*="tpl-"] #feedContainer{max-width:100%!important;margin:0!important;}
-    body[class*="premium-"] .feed-post{border-left:none!important;}
-    body[class*="skin-"] .feed-post{border-left:none!important;}
+    #feedContainer,#pvPostsFeed,#gvPostsFeed{width:100%!important;}
+    #feedContainer .card,#pvPostsFeed .card,#gvPostsFeed .card{width:100%!important;max-width:100%!important;margin-left:0!important;margin-right:0!important;}
+    [class*="tpl-"] #feedContainer,[class*="tpl-"] #pvPostsFeed,[class*="tpl-"] #gvPostsFeed{max-width:100%!important;margin:0!important;}
+    body[class*="premium-"] .feed-post{border-left:none!important;border-right:none!important;}
+    body[class*="skin-"] .feed-post{border-left:none!important;border-right:none!important;}
+    .pv-profile-card,.page-container{width:100%!important;max-width:100%!important;box-sizing:border-box!important;}
     .right-sidebar{
         grid-column:1!important;grid-row:auto!important;position:static!important;
         max-width:none!important;margin:0!important;width:auto!important;
@@ -3029,6 +3030,8 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .main-container{padding:0 8px!important;width:100%!important;margin:0 auto!important;}
     .feed-post{padding:12px 10px!important;border-left:none!important;border-right:none!important;}
     body[class*="premium-"] .feed-post,body[class*="skin-"] .feed-post{border-left:none!important;border-right:none!important;}
+    #pvPostsFeed .card,#gvPostsFeed .card{width:100%!important;margin-left:0!important;margin-right:0!important;}
+    .page-container,.pv-profile-card{padding-left:8px!important;padding-right:8px!important;width:100%!important;box-sizing:border-box!important;}
     .post-avatar{width:34px!important;height:34px!important;}
     .post-header{gap:8px!important;}
     .pm-count-2{grid-template-columns:1fr!important;}
