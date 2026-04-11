@@ -8364,7 +8364,7 @@ function renderMySkins(){
         bgHtml+='<h4 class="card-heading" style="margin-bottom:10px;font-size:14px;"><i class="fas fa-image" style="margin-right:6px;color:var(--primary);"></i>Background Image</h4>';
         bgHtml+='<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">';
         bgHtml+='<label class="btn btn-outline" style="cursor:pointer;font-size:13px;"><i class="fas fa-upload" style="margin-right:6px;"></i>Upload<input type="file" id="premiumBgUpload" accept="image/*" style="display:none;"></label>';
-        bgHtml+='<button class="btn btn-primary" id="premiumBgApply" style="font-size:13px;display:none;"><i class="fas fa-check" style="margin-right:6px;"></i>Apply Background</button>';
+        bgHtml+='<button class="btn btn-primary" id="premiumBgApply" style="font-size:13px;display:none;"><i class="fas fa-check" style="margin-right:6px;"></i>Apply</button>';
         if(premiumBgImage){
             bgHtml+='<button class="btn btn-outline" id="premiumBgRemove" style="font-size:13px;"><i class="fas fa-trash" style="margin-right:6px;"></i>Remove</button>';
             bgHtml+='<img src="'+premiumBgImage+'" style="width:48px;height:48px;object-fit:cover;border-radius:6px;border:2px solid currentColor;opacity:.7;">';
@@ -8440,10 +8440,15 @@ function renderMySkins(){
             var bgArr=bgs;
             $$('.prem-bg-hist-thumb').forEach(function(t){
                 t.addEventListener('mouseenter',function(){t.style.borderColor='var(--primary)';t.style.opacity='1';});
-                t.addEventListener('mouseleave',function(){t.style.borderColor='transparent';t.style.opacity='.8';});
+                t.addEventListener('mouseleave',function(){if(!t.classList.contains('selected'))t.style.borderColor='transparent';t.style.opacity=t.classList.contains('selected')?'1':'.8';});
                 t.addEventListener('click',function(){
-                    premiumBgImage=bgArr[parseInt(t.dataset.idx)].src;
-                    updatePremiumBg();renderMySkins();saveState();
+                    // Deselect others
+                    $$('.prem-bg-hist-thumb').forEach(function(x){x.classList.remove('selected');x.style.borderColor='transparent';x.style.opacity='.8';});
+                    // Select this one
+                    t.classList.add('selected');t.style.borderColor='var(--primary)';t.style.opacity='1';
+                    window._stagedBgUrl=bgArr[parseInt(t.dataset.idx)].src;
+                    var applyBtn=document.getElementById('premiumBgApply');
+                    if(applyBtn) applyBtn.style.display='';
                 });
             });
         }).catch(function(e){console.warn('BG history load:',e);});
