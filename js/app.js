@@ -911,6 +911,8 @@ function _applySkinDataFromCache(sd){
     if(sd.settings){
         if(sd.settings.darkMode!==undefined) settings.darkMode=!!sd.settings.darkMode;
         if(sd.settings.notifSound!==undefined) settings.notifSound=sd.settings.notifSound;
+        if(sd.settings.musicVolume!=null){settings.musicVolume=sd.settings.musicVolume;_gmpBaseVol=sd.settings.musicVolume;}
+        if(sd.settings.musicMuted!==undefined) settings.musicMuted=!!sd.settings.musicMuted;
         if(sd.settings.privateProfile!==undefined) settings.privateProfile=!!sd.settings.privateProfile;
         if(sd.settings.commentOrder) settings.commentOrder=sd.settings.commentOrder;
         if(sd.settings.showLocation!==undefined) settings.showLocation=sd.settings.showLocation;
@@ -13144,7 +13146,7 @@ var _profileAudio=null;
 var _myAudio=null; // your own profile song that plays as you browse
 var _mySong=null; // your song data
 var _viewingSong=null; // the song playing from someone else's profile
-var _gmpBaseVol=0.5;
+var _gmpBaseVol=(settings.musicVolume!=null?settings.musicVolume:0.5);
 
 // Initialize your own background music on app load
 function _setupFadeLoop(audio){
@@ -13613,16 +13615,23 @@ function stopProfileAudio(){
             _updateGlobalPlayer(t?t.textContent:null,a?a.textContent:null,false);
         }
     });
-    if(volSlider) volSlider.addEventListener('input',function(){
-        _gmpBaseVol=this.value/100;
-        var audio=_getCurrentAudio();
-        if(audio) audio.volume=_gmpBaseVol;
-    });
+    if(volSlider){
+        volSlider.value=Math.round(_gmpBaseVol*100);
+        volSlider.addEventListener('input',function(){
+            _gmpBaseVol=this.value/100;
+            settings.musicVolume=_gmpBaseVol;
+            var audio=_getCurrentAudio();
+            if(audio) audio.volume=_gmpBaseVol;
+            saveState();
+        });
+    }
     if(muteBtn) muteBtn.addEventListener('click',function(){
         var audio=_getCurrentAudio();
         if(!audio) return;
         audio.muted=!audio.muted;
+        settings.musicMuted=audio.muted;
         muteBtn.innerHTML=audio.muted?'<i class="fas fa-volume-xmark"></i>':'<i class="fas fa-volume-high"></i>';
+        saveState();
     });
     if(closeBtn) closeBtn.addEventListener('click',function(){hideGlobalPlayer();});
     var navMusicBtn=document.getElementById('navMusicBtn');
