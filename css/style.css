@@ -1687,6 +1687,7 @@ body.tpl-stream .center-feed{grid-column:1;grid-row:4;}
 /* Profile view */
 body.tpl-stream .pv-layout{grid-template-columns:1fr;max-width:700px;}
 body.tpl-stream .pv-col-left{grid-column:1;grid-row:1;position:static;}
+body.tpl-stream .pv-profile-card .profile-cover{height:10px;}
 body.tpl-stream .pv-col-photos{grid-column:1;grid-row:2;}
 body.tpl-stream .pv-col-feed{grid-column:1;grid-row:3;}
 body.tpl-stream .pv-col-skin{grid-column:1;grid-row:4;position:static;max-width:400px;margin:0 auto;}
