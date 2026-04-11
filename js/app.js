@@ -916,8 +916,8 @@ function _applySkinDataFromCache(sd){
     if(sd.settings){
         if(sd.settings.darkMode!==undefined) settings.darkMode=!!sd.settings.darkMode;
         if(sd.settings.notifSound!==undefined) settings.notifSound=sd.settings.notifSound;
-        if(sd.settings.musicVolume!=null){settings.musicVolume=sd.settings.musicVolume;_gmpBaseVol=sd.settings.musicVolume;}
-        if(sd.settings.musicMuted!==undefined) settings.musicMuted=!!sd.settings.musicMuted;
+        if(sd.settings.musicVolume!=null){settings.musicVolume=sd.settings.musicVolume;_gmpBaseVol=sd.settings.musicVolume;var _vs=document.getElementById('gmpVolume');if(_vs)_vs.value=Math.round(_gmpBaseVol*100);}
+        if(sd.settings.musicMuted!==undefined){settings.musicMuted=!!sd.settings.musicMuted;var _mb=document.getElementById('gmpMuteBtn');if(_mb)_mb.innerHTML=settings.musicMuted?'<i class="fas fa-volume-xmark"></i>':'<i class="fas fa-volume-high"></i>';}
         if(sd.settings.privateProfile!==undefined) settings.privateProfile=!!sd.settings.privateProfile;
         if(sd.settings.commentOrder) settings.commentOrder=sd.settings.commentOrder;
         if(sd.settings.showLocation!==undefined) settings.showLocation=sd.settings.showLocation;
