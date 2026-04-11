@@ -13587,11 +13587,13 @@ async function initMyProfileMusic(){
 function showGlobalPlayer(){
     var el=document.getElementById('globalMiniPlayer');
     if(el) el.classList.add('visible');
+    document.body.classList.add('music-player-visible');
 }
 var _playerHidden=false;
 function hideGlobalPlayer(){
     var el=document.getElementById('globalMiniPlayer');
     if(el) el.classList.remove('visible');
+    document.body.classList.remove('music-player-visible');
     // Pause but don't destroy — user can reopen
     var audio=_getCurrentAudio();
     if(audio&&!audio.paused) audio.pause();
