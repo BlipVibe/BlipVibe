@@ -1429,3 +1429,4 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - Post dropdown menu cut off — `.feed-post` and `.card` had `overflow:hidden` which clipped the absolutely-positioned dropdown. Changed `.feed-post` to `overflow:visible`
 - Daily quests not tracking progress — `sb.rpc()` returns `{data, error}` but code used raw return value and didn't throw on error, so the local fallback never ran. Fixed to properly destructure and throw on RPC errors
 - Admin delete posts — admins see "Admin Delete" option on all posts (feed + groups). Uses `admin_delete_post` SECURITY DEFINER RPC that verifies `is_admin` before deleting. Migration: run `supabase/admin-delete-post.sql`
+- Profile music pauses when videos play — direct `<video>` elements trigger pause on `play` event, resume on `pause`/`ended`. YouTube/Vimeo iframes pause music on click. Skips muted thumbnails. Checks no other videos still playing before resuming.

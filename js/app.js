@@ -13681,6 +13681,51 @@ document.addEventListener('click',function(e){
     }
 });
 
+// ======================== PAUSE PROFILE MUSIC WHEN VIDEOS PLAY ========================
+var _musicPausedForVideo=false;
+// Direct <video> elements: pause music on play, resume on pause/ended
+document.addEventListener('play',function(e){
+    if(e.target.tagName!=='VIDEO') return;
+    // Don't pause for muted thumbnail previews
+    if(e.target.muted&&!e.target.controls) return;
+    var audio=_getCurrentAudio();
+    if(audio&&!audio.paused){
+        _musicPausedForVideo=true;
+        _fadeAudio(audio,audio.volume,0,300,function(){audio.pause();});
+    }
+},true);
+document.addEventListener('pause',function(e){
+    if(e.target.tagName!=='VIDEO'||!_musicPausedForVideo) return;
+    _resumeMusicAfterVideo();
+},true);
+document.addEventListener('ended',function(e){
+    if(e.target.tagName!=='VIDEO'||!_musicPausedForVideo) return;
+    _resumeMusicAfterVideo();
+},true);
+function _resumeMusicAfterVideo(){
+    // Check no other videos are still playing
+    var anyPlaying=Array.from(document.querySelectorAll('video')).some(function(v){return !v.paused&&!v.muted;});
+    if(anyPlaying) return;
+    _musicPausedForVideo=false;
+    var audio=_getCurrentAudio();
+    if(audio&&audio.paused){
+        audio.volume=0;audio.play().then(function(){
+            _fadeAudio(audio,0,_gmpBaseVol,600,null);
+        }).catch(function(){});
+    }
+}
+// YouTube/Vimeo iframes: pause music when user clicks on embed
+document.addEventListener('click',function(e){
+    var embed=e.target.closest('.video-embed');
+    if(embed&&embed.querySelector('iframe')){
+        var audio=_getCurrentAudio();
+        if(audio&&!audio.paused){
+            _musicPausedForVideo=true;
+            _fadeAudio(audio,audio.volume,0,300,function(){audio.pause();});
+        }
+    }
+});
+
 // ======================== ADD TO HOME SCREEN (PWA INSTALL PROMPT) ========================
 var _deferredInstallPrompt=null;
 // Capture the native install prompt (Chrome/Android)
