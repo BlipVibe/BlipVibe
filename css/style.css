@@ -3414,29 +3414,12 @@ body.premium-heavens-light.nav-dock .nav-center,
 body.premium-heavens-light.nav-pill .nav-center,
 body.premium-heavens-light.nav-split .nav-center{background:linear-gradient(135deg,#1a3a5c,#2c5f8a,#d4af37,#f5e6a3,#87ceeb,#1a3a5c)!important;background-size:400% 400%!important;animation:heavensFlow 10s linear infinite!important;box-shadow:0 0 30px rgba(212,175,55,.4),0 0 60px rgba(135,206,235,.2),0 4px 15px rgba(212,175,55,.3)!important;}
 body.premium-heavens-light .navbar::after,
-body.premium-heavens-light .nav-center::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:
-  radial-gradient(ellipse 35% 80% at 8% 50%,rgba(255,255,255,.5),transparent 60%),
-  radial-gradient(ellipse 25% 60% at 22% 35%,rgba(220,235,255,.4),transparent 60%),
-  radial-gradient(ellipse 30% 90% at 40% 55%,rgba(255,255,255,.45),transparent 60%),
-  radial-gradient(ellipse 20% 70% at 55% 40%,rgba(210,230,255,.35),transparent 60%),
-  radial-gradient(ellipse 35% 80% at 70% 60%,rgba(255,255,255,.5),transparent 60%),
-  radial-gradient(ellipse 25% 65% at 88% 45%,rgba(220,240,255,.4),transparent 60%);
-  background-size:200% 100%;animation:heavensCloudsScroll 50s linear infinite;pointer-events:none;z-index:0;}
+body.premium-heavens-light .nav-center::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(10,20,40,.6),rgba(10,20,40,.4)),url('../../images/skin-textures/clouds.png') repeat-x center/cover;mix-blend-mode:screen;animation:heavensCloudsScroll 80s linear infinite;pointer-events:none;z-index:0;}
 body.premium-heavens-light .navbar::before,
-body.premium-heavens-light .nav-center::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:
-  radial-gradient(ellipse 40% 100% at 12% 55%,rgba(255,255,255,.3),transparent 60%),
-  radial-gradient(ellipse 30% 75% at 38% 40%,rgba(210,225,255,.25),transparent 60%),
-  radial-gradient(ellipse 35% 85% at 62% 60%,rgba(255,255,255,.28),transparent 60%),
-  radial-gradient(ellipse 28% 70% at 85% 45%,rgba(220,235,255,.22),transparent 60%);
-  background-size:200% 100%;animation:heavensCloudsScroll2 75s linear infinite;pointer-events:none;z-index:0;}
+body.premium-heavens-light .nav-center::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(10,20,40,.4),rgba(10,20,40,.3)),url('../../images/skin-textures/clouds.png') repeat-x center/cover;mix-blend-mode:screen;transform:scaleY(-1);animation:heavensCloudsScroll2 120s linear infinite;pointer-events:none;z-index:0;}
 body.premium-heavens-light .navbar>*,body.premium-heavens-light .nav-center>*{position:relative;z-index:1;}
 body.premium-heavens-light .profile-card .profile-cover{background:linear-gradient(135deg,#1a3a5c,#2c5f8a,#d4af37,#f5e6a3,#87ceeb)!important;background-size:400% 400%!important;animation:heavensFlow 10s linear infinite!important;position:relative!important;overflow:hidden!important;}
-body.premium-heavens-light .profile-card .profile-cover::after{content:'';position:absolute;inset:0;background:
-  radial-gradient(ellipse 35% 80% at 8% 50%,rgba(255,255,255,.5),transparent 60%),
-  radial-gradient(ellipse 25% 60% at 30% 35%,rgba(220,235,255,.4),transparent 60%),
-  radial-gradient(ellipse 30% 90% at 55% 55%,rgba(255,255,255,.45),transparent 60%),
-  radial-gradient(ellipse 25% 65% at 80% 45%,rgba(220,240,255,.4),transparent 60%);
-  background-size:200% 100%;animation:heavensCloudsScroll 50s linear infinite;pointer-events:none;}
+body.premium-heavens-light .profile-card .profile-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,20,40,.6),rgba(10,20,40,.4)),url('../../images/skin-textures/clouds.png') repeat-x center/cover;mix-blend-mode:screen;animation:heavensCloudsScroll 80s linear infinite;pointer-events:none;}
 body.premium-heavens-light .profile-avatar-wrap::before{background:conic-gradient(from 0deg,#d4af37,#f5e6a3,#ffffff,#87ceeb,#d4af37);box-shadow:0 0 24px rgba(212,175,55,.5),0 0 60px rgba(135,206,235,.3);animation:premiumSpin 4s linear infinite,heavensGlow 4s ease infinite;}
 body.premium-heavens-light .card,body.premium-heavens-light .feed-post{box-shadow:0 2px 12px rgba(212,175,55,.12),0 0 20px rgba(135,206,235,.08)!important;}
 body.premium-heavens-light .feed-post{border-left-color:#d4af37!important;}
