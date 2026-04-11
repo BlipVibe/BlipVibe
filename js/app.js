@@ -5533,7 +5533,7 @@ function getVideoEmbedHtml(url, mini){
     var cls='video-embed'+(mini?' video-embed-mini':'');
     var socialCls='social-embed'+(mini?' social-embed-mini':'');
     // YouTube: watch, short, embed, youtu.be
-    m=url.match(/(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    m=url.match(/(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{10,12})/);
     if(m){ id=m[1]; if(!_cookieConsent) return _embedConsentPlaceholder(url,'YouTube',cls,mini);
         var isMobile=/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
         if(isMobile){
@@ -6325,6 +6325,13 @@ function autoFetchLinkPreviewsMini(container,selector){
 }
 
 // Auto-fetch link previews for URLs found in rendered post descriptions
+function _hideUrlFromText(textEl,url){
+    var escaped=escapeHtml(url).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    // Remove the full <a> tag wrapping the URL if linkifyText was used
+    textEl.innerHTML=textEl.innerHTML.replace(new RegExp('<a[^>]*>\\s*'+escaped+'\\s*</a>','g'),'');
+    // Fallback: remove raw URL text if not wrapped in <a>
+    textEl.innerHTML=textEl.innerHTML.replace(new RegExp(escaped,'g'),'');
+}
 function autoFetchLinkPreviews(container){
     if(!container) container=document;
     container.querySelectorAll('.post-description').forEach(function(desc){
@@ -6346,8 +6353,7 @@ function autoFetchLinkPreviews(container){
         var videoHtml=getVideoEmbedHtml(url,false);
         if(videoHtml){
             desc.insertAdjacentHTML('beforeend',videoHtml);
-            var escaped=escapeHtml(url).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-            textEl.innerHTML=textEl.innerHTML.replace(new RegExp(escaped,'g'),'');
+            _hideUrlFromText(textEl,url);
             _reloadThirdPartyEmbeds(url);
             return;
         }
@@ -6365,9 +6371,7 @@ function autoFetchLinkPreviews(container){
                     if(d.title) h+='<div class="link-preview-title">'+escapeHtml(d.title)+'</div>';
                     h+='</div></a>';
                     desc.insertAdjacentHTML('beforeend',h);
-                    // Hide the raw URL in the post text (use HTML-escaped URL for innerHTML match)
-                    var escaped=escapeHtml(url).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-                    textEl.innerHTML=textEl.innerHTML.replace(new RegExp(escaped,'g'),'');
+                    _hideUrlFromText(textEl,url);
                 }
             })
             .catch(function(){});

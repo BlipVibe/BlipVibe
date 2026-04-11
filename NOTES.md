@@ -1420,3 +1420,5 @@ Group coins are **shared** — they belong to the group, not individual users. A
   2. JS: `showAllMedia()` filtered to images only, dropping all videos — now includes both types
   3. JS: video thumbnails have `#t=0.5` fragment in src, but `_media_` list stores clean URLs — `indexOf()` always returned -1 for videos. Added `cleanSrc()` helper to strip fragment before lookup
 - Playlist manager showing all songs for infinity users — removed `_hasInfinity()` bypass so only owned songs appear
+- YouTube embed regex too strict — required exactly 11-char video IDs, now accepts 10-12
+- Feed URL not hidden after embed — `linkifyText()` wraps URLs in `<a>` tags but old regex only matched raw text. Added `_hideUrlFromText()` helper that strips the full `<a>` tag
