@@ -3178,10 +3178,15 @@ async function showProfileView(person){
         if(!userPosts||!userPosts.length){
             feedHtml+='<div class="card" style="padding:40px;text-align:center;color:var(--gray);"><i class="fas fa-pen" style="font-size:32px;margin-bottom:12px;display:block;"></i><p>No posts yet.</p></div>';
         } else {
+            // Fetch shared post data for this user's posts
+            var _pvSharedIds=[];
+            userPosts.forEach(function(p){if(p.shared_post_id)_pvSharedIds.push(p.shared_post_id);});
+            var _pvSharedMap={};
+            if(_pvSharedIds.length){try{var _pvSp=await sbGetPostsByIds(_pvSharedIds);_pvSp.forEach(function(s){_pvSharedMap[s.id]=s;});}catch(e){}}
             userPosts.forEach(function(post){
                 var authorName=person.name||(post.profiles?post.profiles.display_name||post.profiles.username:'User');
                 var authorAvatar=(post.profiles?post.profiles.avatar_url:person.avatar_url)||DEFAULT_AVATAR;
-                var postTime=post.created_at?timeAgo(Math.floor((Date.now()-new Date(post.created_at).getTime())/60000)):'';
+                var postTime=post.created_at?timeAgoReal(post.created_at):'';
                 feedHtml+='<div class="card feed-post">';
                 feedHtml+='<div class="post-header">';
                 feedHtml+='<img src="'+authorAvatar+'" alt="'+escapeHtml(authorName)+'" class="post-avatar clickable-avatar" data-person-id="'+post.author_id+'" style="cursor:pointer;">';
@@ -3189,6 +3194,20 @@ async function showProfileView(person){
                 feedHtml+='<div class="post-description"><p>'+renderPostText(post.content)+'</p></div>';
                 var pvImgs=post.media_urls&&post.media_urls.length?post.media_urls:(post.image_url?[post.image_url]:[]);
                 feedHtml+=buildMediaGrid(pvImgs);
+                // Render shared post preview if this is a shared post
+                if(post.shared_post_id&&_pvSharedMap[post.shared_post_id]){
+                    var sp=_pvSharedMap[post.shared_post_id];
+                    var spName=sp.author?(sp.author.display_name||sp.author.username):'User';
+                    var spAvatar=sp.author?sp.author.avatar_url:DEFAULT_AVATAR;
+                    var spTime=sp.created_at?timeAgoReal(sp.created_at):'';
+                    var spClickAttr=sp.author?' data-person-id="'+sp.author.id+'"':'';
+                    feedHtml+='<div class="share-preview" style="margin:0 20px 14px;">';
+                    feedHtml+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><img src="'+(spAvatar||DEFAULT_AVATAR)+'" class="shared-post-author clickable-avatar"'+spClickAttr+' style="width:28px;height:28px;border-radius:50%;object-fit:cover;cursor:pointer;"><strong class="share-preview-name shared-post-author clickable-avatar"'+spClickAttr+' style="font-size:13px;cursor:pointer;">'+escapeHtml(spName)+'</strong><span class="share-preview-time" style="font-size:12px;">'+spTime+'</span></div>';
+                    feedHtml+='<div class="share-preview-text" style="font-size:13px;">'+escapeHtmlNl(sp.content||'')+'</div>';
+                    var spImgs=sp.media_urls&&sp.media_urls.length?sp.media_urls:(sp.image_url?[sp.image_url]:[]);
+                    if(spImgs.length) feedHtml+=buildMediaGrid(spImgs);
+                    feedHtml+='</div>';
+                }
                 var pvLikes=post.like_count||0;
                 var pvComments=(post.comments&&post.comments[0])?post.comments[0].count:0;
                 var pvReaction=_postReactions[post.id];
