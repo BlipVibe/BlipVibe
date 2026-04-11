@@ -1434,3 +1434,12 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - **Major localStorage audit** — migrated 15 data types from localStorage to Supabase `skin_data`: muted users, close friends, notif prefs, post reactions, post views, streaks, daily coin counts, pinned comments, scheduled posts, gc locked channels, gc chat mods, group DMs, message reactions, poll votes, poll vote counts. Only device-specific keys remain in localStorage (cookie consent, TOS, PWA dismiss, story viewed, search history, post drafts, quest fallback).
 - **Server-side purchases** — all shop purchases (personal + group) now validated atomically via Supabase RPCs. `purchase_item` handles personal shop (9 types), `purchase_group_item` handles group shop (skins, premium, fonts, songs). Server checks balance, deducts coins, verifies membership, and sets ownership in one transaction. Migration: run `supabase/server-side-purchase.sql`
 - **Heaven's Light premium skin** — celestial theme with golden-blue animated nav, cloud glow effects on navbar, divine avatar border glow
+- **Full security audit + fixes:**
+  - Featured skin purchase now uses server-side `sbPurchaseItem` (was client-only)
+  - Infinity coins: `_hasInfinity()` only checks `currentUser.skin_data` from server, not mutable `state._infinityCoins`
+  - All coin rewards (likes, comments, posts, replies) now go through `award_coins` Supabase RPC with server-side daily caps and double-award prevention
+  - No more client-side `state.coins++` / `state.coins+=X` — all coin changes come from server `balance` responses
+  - Badges read from original server `skin_data` on sync, preventing forged badges from persisting
+  - Daily coin caps enforced server-side (no more resetting `_dailyCoinCounts` in DevTools)
+  - Admin RPCs verified to check `is_admin` server-side
+  - Migration: run `supabase/server-side-coins.sql`

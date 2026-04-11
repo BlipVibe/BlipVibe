@@ -379,6 +379,13 @@ async function sbPurchaseItem(itemType, itemId, price) {
   return data;
 }
 
+// Server-side coin reward — validates daily caps and prevents double-awards
+async function sbAwardCoins(type, amount, refId) {
+  const { data, error } = await sb.rpc('award_coins', { p_type: type, p_amount: amount, p_ref_id: refId || null });
+  if (error) throw error;
+  return data;
+}
+
 // Server-side group purchase — validates group coin balance atomically
 async function sbPurchaseGroupItem(groupId, itemType, itemId, price) {
   const { data, error } = await sb.rpc('purchase_group_item', { p_group_id: groupId, p_item_type: itemType, p_item_id: itemId, p_price: price });
