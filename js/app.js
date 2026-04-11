@@ -872,6 +872,8 @@ function _buildSkinData(){
 }
 function syncSkinDataToSupabase(immediate){
     if(!currentUser) return;
+    // Never sync while viewing another profile or group — state contains their skin, not ours
+    if(_pvSaved||_gvSaved) return;
     clearTimeout(_skinSyncTimer);
     function doSync(){
         sbUpdateProfile(currentUser.id,{skin_data:_buildSkinData()}).catch(function(e){
@@ -2887,13 +2889,10 @@ async function showProfileView(person){
     // Restore previous skin if we're coming from another profile view
     if(_pvSaved){
         _pvSaved=null;
-        // Restore own settings from localStorage cache (instant, no network)
+        // Restore own settings from Supabase (source of truth)
         applyPremiumSkin(null,true);
         applySkin(null,true);
-        try{
-            var cached=JSON.parse(localStorage.getItem('blipvibe_cache_'+currentUser.id));
-            if(cached) _applySkinDataFromCache(cached);
-        }catch(e){}
+        await loadSkinDataFromSupabase();
         reapplyCustomizations();
     }
     // Fetch public skin data for other users (skin_data column is revoked from SELECT)
