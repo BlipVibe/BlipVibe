@@ -3140,7 +3140,7 @@ async function showProfileView(person){
             var theirPhotos=[];
             (theirPosts||[]).forEach(function(p){
                 var ts=new Date(p.created_at).getTime();
-                if(p.media_urls&&p.media_urls.length) p.media_urls.forEach(function(u){if(!isVideoUrl(u)) theirPhotos.push({src:u,date:ts}); else theirPhotos.push({src:u,date:ts,isVideo:true});});
+                if(p.media_urls&&p.media_urls.length) p.media_urls.forEach(function(u){if(u){if(!isVideoUrl(u)) theirPhotos.push({src:u,date:ts}); else theirPhotos.push({src:u,date:ts,isVideo:true});}});
                 else if(p.image_url){if(!isVideoUrl(p.image_url)) theirPhotos.push({src:p.image_url,date:ts}); else theirPhotos.push({src:p.image_url,date:ts,isVideo:true});}
             });
             _pvPostPhotos=theirPhotos;
@@ -9144,7 +9144,7 @@ function renderPvPhotoTab(isMe){
     if(!container)return;
     if(pvPhotoTab==='photos'){
         // Post Photos tab — show grid with "..." menu on each photo
-        var photos=_pvPostPhotos||[];
+        var photos=(_pvPostPhotos||[]).filter(function(p){return p&&p.src;});
         var html='';
         if(photos.length){
             html+='<div class="photos-preview">';
@@ -9152,10 +9152,10 @@ function renderPvPhotoTab(isMe){
                 var isVid=p.isVideo||isVideoUrl(p.src);
                 html+='<div class="photo-wrap" draggable="true" data-psrc="'+p.src+'">';
                 if(isVid){
-                    html+='<video src="'+p.src+'#t=0.5" preload="metadata" muted style="width:100%;height:100%;object-fit:cover;"></video>';
+                    html+='<video src="'+p.src+'#t=0.5" preload="metadata" muted style="width:100%;height:100%;object-fit:cover;" onerror="this.parentNode.style.display=\'none\'"></video>';
                     html+='<div class="photo-video-badge"><i class="fas fa-play"></i></div>';
                 } else {
-                    html+='<img src="'+p.src+'">';
+                    html+='<img src="'+p.src+'" onerror="this.parentNode.style.display=\'none\'">';
                 }
                 if(isMe) html+='<button class="photo-menu-btn" data-psrc="'+p.src+'"><i class="fas fa-ellipsis-h"></i></button>';
                 html+='</div>';
