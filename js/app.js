@@ -5752,14 +5752,7 @@ _initInfiniteScroll();
 async function generatePosts(){
     feedPosts=[];
     _feedOffset=0;_feedHasMore=true;
-    // Try cached feed for instant render while fresh data loads
-    var cached=loadCachedFeed();
-    if(cached&&cached.length){
-        feedPosts=cached;
-        renderFeed(activeFeedTab);
-    } else {
-        showFeedSkeleton();
-    }
+    showFeedSkeleton();
     try {
         // Always load all public posts; tab filtering happens in renderFeed
         var posts = await sbGetFeed(50);
@@ -5787,7 +5780,6 @@ async function generatePosts(){
         showToast('Feed error: ' + (e.message || 'Could not load posts'));
     }
     renderFeed(activeFeedTab);
-    cacheFeedData();
 }
 // Filter posts by the active feed tab — used by both renderFeed and infinite scroll
 function _filterPostsByTab(posts,tab){
@@ -13393,8 +13385,7 @@ function wireNewFeatures(){
     setTimeout(checkDailyLoginReward,2000);
     // Push notifications
     initPushNotifications();
-    // Cache feed data after load
-    cacheFeedData();
+    // Feed cache disabled — was causing stale avatars and like counts
     // Init your profile music (background song)
     initMyProfileMusic();
     // Load and render gamification features
