@@ -8392,17 +8392,16 @@ function renderMySkins(){
             try{ validateUploadFile(file, {maxSize: 5*1024*1024, label:'Background'}); }catch(ve){ showToast(ve.message); return; }
             // Upload to Supabase Storage for persistence and sharing
             try{
-                var ext=file.name.split('.').pop()||'jpg';
+                var optimized=await _optimizeImage(file,1920,1080,0.85);
+                var ext=optimized.name.split('.').pop()||'jpg';
                 var path='backgrounds/'+currentUser.id+'/bg-'+Date.now()+'.'+ext;
-                var url=await sbUploadFile('avatars',path,file);
+                var url=await sbUploadFile('avatars',path,optimized);
                 premiumBgImage=url;
                 updatePremiumBg();renderMySkins();saveState();
+                showToast('Background uploaded!');
             }catch(e){
-                console.warn('BG upload to storage failed, using local:',e);
-                // Fallback to base64 for local preview
-                var reader=new FileReader();
-                reader.onload=function(ev){premiumBgImage=ev.target.result;updatePremiumBg();renderMySkins();saveState();};
-                reader.readAsDataURL(file);
+                console.error('BG upload error:',e);
+                showToast('Background upload failed: '+(e.message||'Unknown error'));
             }
         });
     }
