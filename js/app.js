@@ -76,7 +76,10 @@ function convertTextEmojis(s){
 }
 function linkifyText(s){return s.replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');}
 function isVideoUrl(u){return /\.(mp4|webm|mov)([?#]|$)/i.test(u);}
-function looksLikeEmail(s){return /[^\s@]+@[^\s@]+\.[^\s@]+/.test(s);}
+// Unified text rendering: escape + mentions + hashtags + links + rich text
+function renderPostText(text){return renderRichText(linkifyText(renderPlainText(text)));}
+function renderPlainText(text){return renderPlainText(text);}
+function showErrorToast(e){showToast('Error: '+((e&&e.message)||'Something went wrong'));}
 
 // ======================== RATE-LIMIT COOLDOWN HELPER ========================
 var _cooldowns = {};
@@ -965,7 +968,7 @@ async function loadSkinDataFromSupabase(){
         _applySkinDataFromCache(sd);
     }catch(e){console.warn('Load skin data from Supabase:',e);}
 }
-function loadState(){}
+// loadState removed — all state loaded from Supabase
 function reapplyCustomizations(){
     if(state.activePremiumSkin) applyPremiumSkin(state.activePremiumSkin,true);
     else if(state.activeSkin) applySkin(state.activeSkin,true);
@@ -1115,7 +1118,7 @@ async function loadGroups() {
 }
 
 function getMyGroupRole(group){ return currentUser && group.owner && group.owner.id === currentUser.id ? 'Admin' : (state.joinedGroups[group.id] ? 'Member' : null); }
-function getPersonGroupRole(){ return 'Member'; }
+// getPersonGroupRole removed — always returned 'Member', inlined at call site
 function roleRank(role){ return role==='Admin'?4:role==='Co-Admin'?3:role==='Moderator'?2:1; }
 function canManageGroupSkins(group){
     if(!currentUser) return false;
@@ -1529,8 +1532,8 @@ async function renderSearchResults(q,tab){
                 var tags=fp.tags||[];
                 var badge=fp.badge||badgeTypes[0];
                 var _ws=safeWordSplit(text,200);
-                var short=linkifyText(renderMentionsInText(escapeHtmlNl(_ws[0])));
-                var rest=_ws[1]?linkifyText(renderMentionsInText(escapeHtmlNl(_ws[1]))):'';
+                var short=renderPostText(_ws[0]);
+                var rest=_ws[1]?renderPostText(_ws[1]):'';
                 var hasMore=rest.length>0;
                 html+='<div class="card feed-post search-post-card">';
                 var avatarSrc=person.avatar_url||DEFAULT_AVATAR;
@@ -2156,7 +2159,7 @@ function showHashtagFeed(tag){
             var timeStr=fp.created_at?timeAgoReal(fp.created_at):'';
             html+='<div class="card" style="padding:12px;margin-bottom:10px;">';
             html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><img src="'+avatarSrc+'" style="width:32px;height:32px;border-radius:50%;object-fit:cover;"><div><strong style="font-size:13px;">'+escapeHtml(person.name)+'</strong><span style="font-size:11px;color:var(--gray);margin-left:6px;">'+timeStr+'</span></div></div>';
-            html+='<p style="font-size:13px;">'+renderMentionsInText(escapeHtmlNl(fp.text))+'</p>';
+            html+='<p style="font-size:13px;">'+renderPlainText(fp.text)+'</p>';
             html+='</div>';
         });
     }
@@ -2382,7 +2385,7 @@ function buildCommentHtml(cid,name,img,text,likes,isReply,authorId,replyToName){
     if(gifMatch){
         h+='<div style="margin-top:4px;">'+replyTag+'<img src="'+escapeHtml(gifMatch[1])+'" class="comment-gif" alt="GIF" loading="lazy"></div>';
     }else{
-        h+='<p class="comment-text" style="font-size:13px;color:#555;margin-top:2px;">'+replyTag+renderMentionsInText(escapeHtmlNl(text))+'</p>';
+        h+='<p class="comment-text" style="font-size:13px;color:#555;margin-top:2px;">'+replyTag+renderPlainText(text)+'</p>';
     }
     h+='<div class="comment-actions-row" style="display:flex;gap:12px;margin-top:8px;">';
     h+='<button class="comment-like-btn" data-cid="'+cid+'" data-aid="'+(authorId||'')+'" style="background:none;font-size:12px;color:'+(liked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:4px;"><i class="'+(liked?'fas':'far')+' fa-thumbs-up"></i><span>'+lc+'</span></button>';
@@ -2458,7 +2461,7 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
         postEmbed+='<img src="'+avatarSrc+'" alt="'+escapeHtml(person.name)+'" class="post-avatar" style="width:40px;height:40px;">';
         postEmbed+='<div class="post-user-info"><div class="post-user-top"><h4 class="post-username">'+escapeHtml(person.name)+'</h4><span class="post-time">'+timeStr+'</span></div></div>';
         postEmbed+='</div>';
-        postEmbed+='<div class="post-description"><p>'+linkifyText(renderMentionsInText(escapeHtmlNl(fp.text)))+'</p></div>';
+        postEmbed+='<div class="post-description"><p>'+renderPostText(fp.text)+'</p></div>';
         if(fp.images) postEmbed+=buildMediaGrid(fp.images);
         if(fp.sharedPost){
             var sp=fp.sharedPost;var spAvatar=sp.avatar_url||DEFAULT_AVATAR;
@@ -2768,7 +2771,7 @@ async function renderInlineComments(postId){
         var editBtn=isOwnComment?'<button class="inline-comment-edit" data-cid="'+c.cid+'" data-postid="'+postId+'" data-text="'+escapeHtml(c.text)+'" style="background:none;font-size:11px;color:#999;cursor:pointer;"><i class="fas fa-pen"></i></button>':'';
         var deleteBtn=isOwnComment?'<button class="inline-comment-delete" data-cid="'+c.cid+'" data-postid="'+postId+'" style="background:none;font-size:11px;color:#e74c3c;cursor:pointer;"><i class="fas fa-trash"></i></button>':'';
         var cGifMatch=c.text.match(/^\[gif\](.*?)\[\/gif\]$/);
-        var cContent=cGifMatch?'<img src="'+escapeHtml(cGifMatch[1])+'" class="comment-gif" alt="GIF" loading="lazy">':'<p style="font-size:12px;color:#555;margin-top:2px;">'+renderMentionsInText(escapeHtmlNl(c.text))+'</p>';
+        var cContent=cGifMatch?'<img src="'+escapeHtml(cGifMatch[1])+'" class="comment-gif" alt="GIF" loading="lazy">':'<p style="font-size:12px;color:#555;margin-top:2px;">'+renderPlainText(c.text)+'</p>';
         html+='<div class="inline-comment" data-cid="'+c.cid+'"><img src="'+avatarSrc+'" class="inline-comment-avatar clickable-avatar" data-person-id="'+(c.authorId||'')+'" style="object-fit:cover;cursor:pointer;"><div><div class="inline-comment-bubble"><strong style="font-size:12px;display:block;cursor:pointer;" class="clickable-avatar" data-person-id="'+(c.authorId||'')+'">'+escapeHtml(c.name)+'</strong>'+cContent+'</div><div style="display:flex;gap:10px;margin-top:6px;margin-left:4px;"><button class="inline-comment-like" data-cid="'+c.cid+'" data-aid="'+(c.authorId||'')+'" style="background:none;font-size:11px;color:'+(liked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(liked?'fas':'far')+' fa-thumbs-up"></i>'+lc+'</button><button class="inline-comment-dislike" data-cid="'+c.cid+'" data-aid="'+(c.authorId||'')+'" style="background:none;font-size:11px;color:'+(disliked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(disliked?'fas':'far')+' fa-thumbs-down"></i>'+dc+'</button><button class="inline-comment-reply" data-cid="'+c.cid+'" style="background:none;font-size:11px;color:#999;cursor:pointer;"><i class="far fa-comment"></i> Reply</button>'+editBtn+deleteBtn+'</div></div></div>';
         // Show replies threaded under this comment
         var replies=repliesByParent[c.cid]||[];
@@ -2782,7 +2785,7 @@ async function renderInlineComments(postId){
             var rEdit=rIsOwn?'<button class="inline-comment-edit" data-cid="'+r.cid+'" data-postid="'+postId+'" data-text="'+escapeHtml(r.text)+'" style="background:none;font-size:11px;color:#999;cursor:pointer;"><i class="fas fa-pen"></i></button>':'';
             var rDel=rIsOwn?'<button class="inline-comment-delete" data-cid="'+r.cid+'" data-postid="'+postId+'" style="background:none;font-size:11px;color:#e74c3c;cursor:pointer;"><i class="fas fa-trash"></i></button>':'';
             var rGifMatch=r.text.match(/^\[gif\](.*?)\[\/gif\]$/);
-            var rContent=rGifMatch?'<img src="'+escapeHtml(rGifMatch[1])+'" class="comment-gif" alt="GIF" loading="lazy">':'<p style="font-size:12px;color:#555;margin-top:2px;"><i class="fas fa-reply" style="font-size:9px;color:var(--primary);margin-right:4px;transform:scaleX(-1);"></i><span style="color:var(--primary);font-size:11px;margin-right:3px;">@'+escapeHtml(c.name)+'</span>'+renderMentionsInText(escapeHtmlNl(r.text))+'</p>';
+            var rContent=rGifMatch?'<img src="'+escapeHtml(rGifMatch[1])+'" class="comment-gif" alt="GIF" loading="lazy">':'<p style="font-size:12px;color:#555;margin-top:2px;"><i class="fas fa-reply" style="font-size:9px;color:var(--primary);margin-right:4px;transform:scaleX(-1);"></i><span style="color:var(--primary);font-size:11px;margin-right:3px;">@'+escapeHtml(c.name)+'</span>'+renderPlainText(r.text)+'</p>';
             html+='<div class="inline-comment" style="margin-left:28px;" data-cid="'+r.cid+'"><img src="'+rAvatar+'" class="inline-comment-avatar" style="object-fit:cover;"><div><div class="inline-comment-bubble"><strong style="font-size:12px;display:block;">'+escapeHtml(r.name)+'</strong>'+rContent+'</div><div style="display:flex;gap:10px;margin-top:6px;margin-left:4px;"><button class="inline-comment-like" data-cid="'+r.cid+'" data-aid="'+(r.authorId||'')+'" style="background:none;font-size:11px;color:'+(rLiked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(rLiked?'fas':'far')+' fa-thumbs-up"></i>'+rlc+'</button><button class="inline-comment-dislike" data-cid="'+r.cid+'" data-aid="'+(r.authorId||'')+'" style="background:none;font-size:11px;color:'+(rDisliked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(rDisliked?'fas':'far')+' fa-thumbs-down"></i>'+rdc+'</button><button class="inline-comment-reply" data-cid="'+r.cid+'" style="background:none;font-size:11px;color:#999;cursor:pointer;"><i class="far fa-comment"></i> Reply</button>'+rEdit+rDel+'</div></div></div>';
         });
         if(replies.length>2) html+='<a href="#" class="show-more-comments" style="font-size:11px;color:var(--primary);display:block;margin-left:28px;margin-top:2px;margin-bottom:4px;">'+( replies.length-2)+' more repl'+(replies.length-2===1?'y':'ies')+'</a>';
@@ -3135,7 +3138,7 @@ async function showProfileView(person){
                 feedHtml+='<div class="post-header">';
                 feedHtml+='<img src="'+authorAvatar+'" alt="'+escapeHtml(authorName)+'" class="post-avatar clickable-avatar" data-person-id="'+post.author_id+'" style="cursor:pointer;">';
                 feedHtml+='<div class="post-user-info"><div class="post-user-top"><h4 class="post-username clickable-avatar" data-person-id="'+post.author_id+'" style="cursor:pointer;">'+escapeHtml(authorName)+'</h4><span class="post-time">'+postTime+'</span></div></div></div>';
-                feedHtml+='<div class="post-description"><p>'+linkifyText(renderMentionsInText(escapeHtmlNl(post.content)))+'</p></div>';
+                feedHtml+='<div class="post-description"><p>'+renderPostText(post.content)+'</p></div>';
                 var pvImgs=post.media_urls&&post.media_urls.length?post.media_urls:(post.image_url?[post.image_url]:[]);
                 feedHtml+=buildMediaGrid(pvImgs);
                 var pvLikes=post.like_count||0;
@@ -3498,7 +3501,7 @@ async function showGroupProfileModal(person,group){
     var isFollowed=state.followedUsers[person.id];
     var myRole=getMyGroupRole(group);
     var myRank=roleRank(myRole);
-    var theirRole=getPersonGroupRole(person,group);
+    var theirRole='Member';
     var theirRank=roleRank(theirRole);
     var gc=getGroupThemeColor(group);
     var following=0,followers=0;
@@ -3901,7 +3904,7 @@ async function showGroupView(group){
                 feedHtml+='</div>';
                 feedHtml+='</div>';
                 feedHtml+='<div class="post-description">';
-                if(p.content) feedHtml+='<p>'+linkifyText(renderMentionsInText(escapeHtmlNl(p.content)))+'</p>';
+                if(p.content) feedHtml+='<p>'+renderPostText(p.content)+'</p>';
                 feedHtml+='</div>';
                 var gvImgs=p.media_urls&&p.media_urls.length?p.media_urls:(p.image_url?[p.image_url]:[]);
                 feedHtml+=buildMediaGrid(gvImgs);
@@ -5997,7 +6000,7 @@ function _buildPostHtml(p){
     var menuId='post-menu-'+i;
     var pollResult=renderPollInPost(text,i);
     text=pollResult.text;var pollHtml=pollResult.pollHtml;
-    var _ws=safeWordSplit(text,160);var short=renderRichText(linkifyText(renderMentionsInText(escapeHtmlNl(_ws[0]))));var rest=_ws[1]?renderRichText(linkifyText(renderMentionsInText(escapeHtmlNl(_ws[1])))):'';var hasMore=rest.length>0;
+    var _ws=safeWordSplit(text,160);var short=renderPostText(_ws[0]);var rest=_ws[1]?renderPostText(_ws[1]):'';var hasMore=rest.length>0;
     var avatarSrc=person.avatar_url||'images/default-avatar.svg';
     var timeStr=p.created_at?timeAgoReal(p.created_at):timeAgo(typeof i==='number'?i:0);
     var html='<div class="card feed-post">';
@@ -8655,7 +8658,7 @@ function _renderMsgContent(content){
     if(gifMatch) return {html:'<img src="'+escapeHtml(gifMatch[1])+'" style="max-width:200px;border-radius:8px;">',isMedia:true};
     var voiceMatch=content.match(/^\[voice\](.*?)\[\/voice\]$/);
     if(voiceMatch) return {html:'<audio src="'+escapeHtml(voiceMatch[1])+'" controls style="max-width:220px;height:36px;"></audio>',isMedia:true};
-    return {html:renderMentionsInText(escapeHtmlNl(content)),isMedia:false};
+    return {html:renderPlainText(content),isMedia:false};
 }
 async function openChat(contact){
     if(blockedUsers[contact.partnerId]){showToast('This user is blocked');return;}
@@ -10343,7 +10346,7 @@ async function loadStoryComments(storyId){
             html+='<div class="story-comment" data-cid="'+c.id+'">';
             html+='<img src="'+cAvatar+'" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;">';
             html+='<div style="flex:1;min-width:0;"><strong style="font-size:12px;color:#fff;">'+escapeHtml(cName)+'</strong>';
-            html+='<p style="font-size:12px;color:rgba(255,255,255,.8);margin-top:1px;word-break:break-word;">'+renderMentionsInText(escapeHtmlNl(c.content))+'</p></div>';
+            html+='<p style="font-size:12px;color:rgba(255,255,255,.8);margin-top:1px;word-break:break-word;">'+renderPlainText(c.content)+'</p></div>';
             if(isOwn) html+='<button class="story-comment-del" data-cid="'+c.id+'" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:11px;cursor:pointer;flex-shrink:0;"><i class="fas fa-trash"></i></button>';
             html+='</div>';
         });
@@ -11369,7 +11372,7 @@ function _renderSavedTabPosts(){
 }
 function renderSavedPostCard(p){
     var i=p.idx,person=p.person,text=p.text,badge=p.badge,likes=p.likes,genComments=p.comments,shares=p.shares;
-    var _ws=safeWordSplit(text,160);var short=linkifyText(renderMentionsInText(escapeHtmlNl(_ws[0])));var rest=_ws[1]?linkifyText(renderMentionsInText(escapeHtmlNl(_ws[1]))):'';var hasMore=rest.length>0;
+    var _ws=safeWordSplit(text,160);var short=renderPostText(_ws[0]);var rest=_ws[1]?renderPostText(_ws[1]):'';var hasMore=rest.length>0;
     var folder=findPostFolder(i);
     var html='<div class="card feed-post saved-post-item" data-spid="'+i+'">';
     html+='<div class="post-header">';
@@ -11692,7 +11695,7 @@ updateFollowCounts();
         if(gifMatch){
             contentHtml='<div style="margin-top:4px;">'+tag+'<img src="'+escapeHtml(gifMatch[1])+'" class="comment-gif" alt="GIF" loading="lazy" style="max-width:200px;max-height:150px;border-radius:8px;"></div>';
         } else {
-            contentHtml='<p class="lb-comment-text" style="font-size:12px;color:var(--gray,#aaa);margin-top:2px;word-break:break-word;">'+tag+renderMentionsInText(escapeHtmlNl(text))+'</p>';
+            contentHtml='<p class="lb-comment-text" style="font-size:12px;color:var(--gray,#aaa);margin-top:2px;word-break:break-word;">'+tag+renderPlainText(text)+'</p>';
         }
         var liked=likedComments[cid];var disliked=dislikedComments[cid];
         var h='<div class="lb-comment'+(isReply?' lb-comment-reply':'')+'" data-cid="'+cid+'">';
