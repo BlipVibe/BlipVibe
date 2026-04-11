@@ -2392,8 +2392,14 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
         postEmbed+='<img src="'+avatarSrc+'" alt="'+escapeHtml(person.name)+'" class="post-avatar" style="width:40px;height:40px;">';
         postEmbed+='<div class="post-user-info"><div class="post-user-top"><h4 class="post-username">'+escapeHtml(person.name)+'</h4><span class="post-time">'+timeStr+'</span></div></div>';
         postEmbed+='</div>';
-        postEmbed+='<div class="post-description"><p>'+escapeHtmlNl(fp.text)+'</p></div>';
+        postEmbed+='<div class="post-description"><p>'+linkifyText(renderMentionsInText(escapeHtmlNl(fp.text)))+'</p></div>';
         if(fp.images) postEmbed+=buildMediaGrid(fp.images);
+        if(fp.sharedPost){
+            var sp=fp.sharedPost;var spAvatar=sp.avatar_url||DEFAULT_AVATAR;
+            postEmbed+='<div class="share-preview" style="margin:8px 0;border:1px solid var(--border);border-radius:10px;padding:12px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><img src="'+spAvatar+'" style="width:24px;height:24px;border-radius:50%;object-fit:cover;"><strong style="font-size:12px;">'+escapeHtml(sp.name)+'</strong><span style="font-size:11px;color:var(--gray);">'+sp.time+'</span></div><p style="font-size:12px;color:var(--gray);">'+escapeHtmlNl(sp.text)+'</p>';
+            if(sp.images&&sp.images.length) postEmbed+='<img src="'+sp.images[0]+'" style="width:60px;height:60px;object-fit:cover;border-radius:6px;margin-top:6px;">';
+            postEmbed+='</div>';
+        }
         if(fp.tags&&fp.tags.length){postEmbed+='<div class="post-tags" style="margin-bottom:8px;">';fp.tags.forEach(function(t){postEmbed+='<span class="skill-tag">'+t+'</span>';});postEmbed+='</div>';}
         postEmbed+='<div class="post-actions" style="padding-top:10px;"><div class="action-left">';
         postEmbed+='<span class="action-btn" style="cursor:default;"><i class="fas fa-thumbs-up"></i><span>'+fp.likes+'</span></span>';
