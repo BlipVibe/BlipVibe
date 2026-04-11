@@ -973,9 +973,9 @@ body.modal-open{overflow:hidden!important;position:fixed!important;width:100%!im
 .pv-main-container{max-width:900px;margin:-60px auto 0;padding:0 20px 40px;position:relative;z-index:1;}
 .pv-feed{display:flex;flex-direction:column;gap:16px;}
 .pv-profile-card{text-align:center;overflow:visible;}
-.pv-profile-card .profile-cover{height:70px;}
+.pv-profile-card .profile-cover{height:30px;border-radius:8px 8px 0 0;}
 .pv-profile-card .profile-info{padding:0 18px 18px;word-wrap:break-word;overflow-wrap:anywhere;}
-.pv-profile-card .profile-avatar-wrap{position:relative;width:clamp(100px,80%,200px);margin:clamp(-100px,-50%,-60px) auto 10px;}
+.pv-profile-card .profile-avatar-wrap{position:relative;width:clamp(100px,80%,160px);margin:-50px auto 10px;}
 .pv-profile-card .profile-avatar{width:100%;aspect-ratio:1;border-radius:16px;border:none;box-shadow:none;object-fit:cover;display:block;}
 .pv-profile-card .profile-name{font-size:calc(18px * var(--font-scale));font-weight:600;color:var(--dark);margin-bottom:2px;word-wrap:break-word;overflow-wrap:anywhere;white-space:normal;}
 .pv-profile-card .profile-title{font-size:13px;color:var(--gray);margin-bottom:10px;word-wrap:break-word;overflow-wrap:anywhere;white-space:normal;}

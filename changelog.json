@@ -42,7 +42,8 @@
       "\ud83c\udfa5 URLs with underscores no longer broken by text formatting (fixes YouTube, etc.)",
       "\ud83d\udd17 Feed URLs now properly hidden when embed or link preview is shown",
       "\ud83d\udc64 Clicking avatar/name in story viewer now opens their profile",
-      "\ud83c\udfa8 Templates now properly apply when viewing other users' profiles"
+      "\ud83c\udfa8 Templates now properly apply when viewing other users' profiles",
+      "\ud83d\udc64 Profile card cover gradient resized — smaller and overlaps cover photo properly"
     ]
   },
   {

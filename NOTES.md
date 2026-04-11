@@ -1424,3 +1424,4 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - Feed URL not hidden after embed — `linkifyText()` wraps URLs in `<a>` tags but old regex only matched raw text. Added `_hideUrlFromText()` helper that strips the full `<a>` tag
 - Story avatar/name click now opens profile — closes story viewer and navigates to user's profile page
 - Templates not applying on other profiles — `applyTemplate()` was never called when viewing others. Added to: profile view apply (line ~2903), navigateTo restore (line ~1279), and profile-to-profile restore (line ~2886)
+- Profile card cover gradient too large — reduced from 70px to 30px, avatar wrap shrunk from 200px max to 160px, negative margin adjusted so avatar overlaps cover banner properly
