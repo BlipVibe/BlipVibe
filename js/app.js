@@ -10068,11 +10068,27 @@ function openCreateStory(){
         if(oldMedia) oldMedia.remove();
         if(file.type.startsWith('video/')){
             var vid=document.createElement('video');vid.src=URL.createObjectURL(file);vid.controls=true;vid.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;';
-            // Check duration — max 30 seconds for stories
+            // Check duration — if over 30s, show trimmer
             vid.addEventListener('loadedmetadata',function(){
                 if(vid.duration>30){
-                    showToast('Story videos must be 30 seconds or less (yours is '+Math.round(vid.duration)+'s)');
-                    _storyFile=null;vid.remove();
+                    // Show trim controls below canvas
+                    var trimHtml='<div id="storyVideoTrim" style="background:rgba(139,92,246,.05);border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:8px;">';
+                    trimHtml+='<p style="font-size:12px;color:var(--gray);margin-bottom:6px;">Video is '+Math.round(vid.duration)+'s — pick a 30-second clip:</p>';
+                    trimHtml+='<div style="display:flex;align-items:center;gap:8px;">';
+                    trimHtml+='<span style="font-size:11px;color:var(--gray);">Start:</span>';
+                    trimHtml+='<input type="range" id="storyTrimSlider" min="0" max="'+Math.floor(vid.duration-30)+'" value="0" style="flex:1;">';
+                    trimHtml+='<span id="storyTrimLabel" style="font-size:11px;color:var(--gray);font-family:monospace;min-width:70px;">0:00-0:30</span>';
+                    trimHtml+='</div></div>';
+                    canvas.insertAdjacentHTML('afterend',trimHtml);
+                    vid._trimStart=0;
+                    document.getElementById('storyTrimSlider').addEventListener('input',function(){
+                        var start=parseInt(this.value);
+                        vid._trimStart=start;
+                        vid.currentTime=start;
+                        var endSec=Math.min(start+30,Math.floor(vid.duration));
+                        var sm=Math.floor(start/60),ss=start%60,em=Math.floor(endSec/60),es=endSec%60;
+                        document.getElementById('storyTrimLabel').textContent=sm+':'+(ss<10?'0':'')+ss+'-'+em+':'+(es<10?'0':'')+es;
+                    });
                 }
             });
             canvas.insertBefore(vid,canvas.firstChild);
@@ -10089,7 +10105,10 @@ function openCreateStory(){
             if(el){o.text=el.textContent.replace(/[\n\r]+$/,'').trim();} // get edited text
             if(o.text) overlayData.push({text:o.text,x:o.x,y:o.y,rotation:o.rotation,scale:o.scale,fontSize:o.fontSize,fontFamily:o.fontFamily,color:o.color,bgColor:o.bgColor});
         });
-        var text=''; // text field removed, overlays replace it
+        // Save video trim start if applicable
+        var storyVid=canvas.querySelector('video');
+        if(storyVid&&storyVid._trimStart) overlayData.push({_videoTrim:true,start:storyVid._trimStart});
+        var text='';
         if(!overlayData.length&&!_storyFile){showToast('Add a photo or text');return;}
         this.disabled=true;this.textContent='Sharing...';
         try{
@@ -10238,10 +10257,26 @@ function openStoryViewer(userId){
             '<div class="story-nav"><div class="story-nav-left"></div><div class="story-nav-right"></div></div>'+
             (isOwn?'<div class="story-viewers"><button class="story-viewers-btn"><i class="fas fa-eye"></i> Views</button><button class="story-delete-btn" style="color:#e74c3c;"><i class="fas fa-trash"></i></button></div>':'')+
             (isOwn?'':'<div class="story-input-bar"><div class="story-reactions-row">'+_reactionEmojis.map(function(em){return '<button class="story-react-btn" data-emoji="'+em+'">'+em+'</button>';}).join('')+'</div><input type="text" class="story-comment-input" id="storyCommentInput" placeholder="Send message to '+escapeHtml(name)+'..."><button class="story-send-btn"><i class="fas fa-paper-plane"></i></button></div>');
+        // Apply video trim if present
+        var _vidTrim=null;
+        if(s.text_overlays&&s.text_overlays.length){
+            s.text_overlays.forEach(function(o){if(o._videoTrim) _vidTrim=o;});
+        }
+        var storyVidEl=overlay.querySelector('video.story-media');
+        if(storyVidEl&&_vidTrim){
+            storyVidEl.currentTime=_vidTrim.start||0;
+            // Auto-stop at 30 seconds
+            storyVidEl.addEventListener('timeupdate',function(){
+                if(storyVidEl.currentTime>=(_vidTrim.start||0)+30){
+                    storyVidEl.pause();
+                }
+            });
+        }
         // Render text overlays
         if(s.text_overlays&&s.text_overlays.length){
             var storyContent=overlay.querySelector('.story-content');
             s.text_overlays.forEach(function(o){
+                if(o._videoTrim) return; // skip trim metadata
                 var oEl=document.createElement('div');
                 oEl.className='story-viewer-text-overlay';
                 oEl.textContent=o.text;
