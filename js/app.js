@@ -8424,7 +8424,7 @@ function renderMySkins(){
         if(!window._stagedBgUrl) return;
         premiumBgImage=window._stagedBgUrl;
         window._stagedBgUrl=null;
-        updatePremiumBg();renderMySkins();saveState();
+        updatePremiumBg();renderMySkins();syncSkinDataToSupabase(true);
         showToast('Background applied!');
     });
     // Load background history thumbnails
@@ -8455,7 +8455,7 @@ function renderMySkins(){
     }
     var bgRemoveBtn=document.getElementById('premiumBgRemove');
     if(bgRemoveBtn){
-        bgRemoveBtn.addEventListener('click',function(){premiumBgImage=null;premiumBgOverlay=0;premiumBgDarkness=0;premiumCardTransparency=0.1;updatePremiumBg();renderMySkins();saveState();});
+        bgRemoveBtn.addEventListener('click',function(){premiumBgImage=null;premiumBgOverlay=0;premiumBgDarkness=0;premiumCardTransparency=0.1;updatePremiumBg();renderMySkins();syncSkinDataToSupabase(true);});
     }
     var darknessSlider=document.getElementById('premiumBgDarknessSlider');
     if(darknessSlider){
