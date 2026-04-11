@@ -13013,8 +13013,10 @@ function loadCachedFeed(){
 var _questData=null;
 async function loadDailyQuests(){
     try{
-        var data=await sb.rpc('get_daily_quests');
-        if(data&&!data.error) _questData=data;
+        var resp=await sb.rpc('get_daily_quests');
+        if(resp.error) throw resp.error;
+        var d=resp.data!=null?resp.data:resp;
+        if(d) _questData=d;
     }catch(e){
         // RPC not deployed yet — use local fallback
         var key='blipvibe_quests_'+new Date().toDateString();
@@ -13024,7 +13026,9 @@ async function loadDailyQuests(){
 }
 async function trackQuestProgress(type){
     try{
-        var result=await sb.rpc('update_quest_progress',{p_type:type});
+        var resp=await sb.rpc('update_quest_progress',{p_type:type});
+        if(resp.error) throw resp.error;
+        var result=resp.data!=null?resp.data:resp;
         if(result&&result.reward_claimed){
             showToast('Quest complete! +'+result.reward_amount+' coins!');
             if(result.new_balance!=null){state.coins=result.new_balance;currentUser.coin_balance=result.new_balance;updateCoins();}
