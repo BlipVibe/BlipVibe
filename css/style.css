@@ -3398,24 +3398,9 @@ body.premium-heavens-light.nav-split .nav-center{background:linear-gradient(135d
 body.premium-heavens-light .navbar,
 body.premium-heavens-light .nav-center{overflow:hidden!important;}
 body.premium-heavens-light .navbar::after,
-body.premium-heavens-light .nav-center::after{content:'';position:absolute;top:0;left:0;width:300%;height:100%;border-radius:inherit;background:
-  radial-gradient(ellipse 200px 80px at 5% 40%,rgba(255,255,255,.55),transparent 70%),
-  radial-gradient(ellipse 160px 60px at 18% 70%,rgba(200,225,255,.45),transparent 70%),
-  radial-gradient(ellipse 240px 90px at 35% 35%,rgba(255,255,255,.5),transparent 70%),
-  radial-gradient(ellipse 120px 50px at 48% 65%,rgba(180,215,255,.4),transparent 70%),
-  radial-gradient(ellipse 280px 70px at 60% 45%,rgba(255,255,255,.48),transparent 70%),
-  radial-gradient(ellipse 180px 80px at 75% 55%,rgba(200,230,255,.5),transparent 70%),
-  radial-gradient(ellipse 150px 60px at 88% 35%,rgba(255,255,255,.42),transparent 70%),
-  radial-gradient(ellipse 220px 75px at 95% 60%,rgba(180,220,255,.46),transparent 70%);
-  animation:heavensClouds 60s linear infinite;pointer-events:none;z-index:0;}
+body.premium-heavens-light .nav-center::after{content:'';position:absolute;inset:0;width:200%;border-radius:inherit;background:url('../../images/skin-textures/clouds.png') repeat-x center/cover;opacity:.8;mix-blend-mode:screen;animation:heavensClouds 80s linear infinite;pointer-events:none;z-index:0;}
 body.premium-heavens-light .navbar::before,
-body.premium-heavens-light .nav-center::before{content:'';position:absolute;top:0;left:0;width:300%;height:100%;border-radius:inherit;background:
-  radial-gradient(ellipse 300px 100px at 8% 50%,rgba(200,225,255,.3),transparent 70%),
-  radial-gradient(ellipse 250px 90px at 30% 40%,rgba(180,215,255,.25),transparent 70%),
-  radial-gradient(ellipse 200px 70px at 55% 60%,rgba(255,255,255,.32),transparent 70%),
-  radial-gradient(ellipse 280px 80px at 78% 45%,rgba(190,220,255,.28),transparent 70%),
-  radial-gradient(ellipse 220px 85px at 95% 55%,rgba(200,230,255,.24),transparent 70%);
-  animation:heavensClouds2 90s linear infinite;pointer-events:none;z-index:0;}
+body.premium-heavens-light .nav-center::before{content:'';position:absolute;inset:0;width:200%;border-radius:inherit;background:url('../../images/skin-textures/clouds.png') repeat-x center/cover;opacity:.5;mix-blend-mode:screen;transform:scaleY(-1);animation:heavensClouds2 120s linear infinite;pointer-events:none;z-index:0;}
 body.premium-heavens-light .navbar>*,body.premium-heavens-light .nav-center>*{position:relative;z-index:1;}
 body.premium-heavens-light .profile-card .profile-cover{background:linear-gradient(135deg,#1a3a5c,#2c5f8a,#d4af37,#f5e6a3,#87ceeb)!important;background-size:400% 400%!important;animation:heavensFlow 10s linear infinite!important;}
 body.premium-heavens-light .profile-avatar-wrap::before{background:conic-gradient(from 0deg,#d4af37,#f5e6a3,#ffffff,#87ceeb,#d4af37);box-shadow:0 0 24px rgba(212,175,55,.5),0 0 60px rgba(135,206,235,.3);animation:premiumSpin 4s linear infinite,heavensGlow 4s ease infinite;}
