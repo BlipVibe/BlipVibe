@@ -3833,6 +3833,7 @@ async function showGroupView(group){
                 feedHtml+='<a href="#" data-action="report" data-pid="'+p.id+'"><i class="fas fa-flag"></i> Report</a>';
                 feedHtml+='<a href="#" data-action="hide" data-pid="'+p.id+'"><i class="fas fa-eye-slash"></i> Hide</a>';
                 if(isMe) feedHtml+='<a href="#" data-action="edit" data-pid="'+p.id+'"><i class="fas fa-pen"></i> Edit</a><a href="#" data-action="delete" data-pid="'+p.id+'" style="color:#e74c3c;"><i class="fas fa-trash"></i> Delete</a>';
+                else if(_isAdmin) feedHtml+='<a href="#" data-action="admin-delete" data-pid="'+p.id+'" style="color:#e74c3c;"><i class="fas fa-shield-halved"></i> Admin Delete</a>';
                 feedHtml+='</div>';
                 feedHtml+='</div>';
                 feedHtml+='<div class="post-description">';
@@ -4854,7 +4855,7 @@ function bindGvPostEvents(){
     // Post menu toggle
     $$('#gvPostsFeed .post-menu-btn').forEach(function(btn){btn.addEventListener('click',function(e){e.stopPropagation();var menuId=btn.dataset.menu;var menu=document.getElementById(menuId);if(!menu)return;$$('#gvPostsFeed .post-dropdown.show').forEach(function(m){if(m!==menu)m.classList.remove('show');});menu.classList.toggle('show');});});
     // Post dropdown actions
-    $$('#gvPostsFeed .post-dropdown a').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();a.closest('.post-dropdown').classList.remove('show');var pid=a.dataset.pid;var action=a.dataset.action;if(action==='save') showSaveModal(pid);else if(action==='report') showReportModal(pid);else if(action==='hide'){var postEl=document.querySelector('#gvPostsFeed .feed-post[data-post-id="'+pid+'"]');if(postEl){postEl.style.display='none';showToast('Post hidden');}}else if(action==='edit') showEditGroupPostModal(pid);else if(action==='delete') confirmDeleteGroupPost(pid);});});
+    $$('#gvPostsFeed .post-dropdown a').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();a.closest('.post-dropdown').classList.remove('show');var pid=a.dataset.pid;var action=a.dataset.action;if(action==='save') showSaveModal(pid);else if(action==='report') showReportModal(pid);else if(action==='hide'){var postEl=document.querySelector('#gvPostsFeed .feed-post[data-post-id="'+pid+'"]');if(postEl){postEl.style.display='none';showToast('Post hidden');}}else if(action==='edit') showEditGroupPostModal(pid);else if(action==='delete') confirmDeleteGroupPost(pid);else if(action==='admin-delete') confirmAdminDeletePost(pid);});});
     bindLikeCountClicks('#gvPostsFeed');
 }
 
@@ -5952,6 +5953,7 @@ function _buildPostHtml(p){
     var isOwnPost=currentUser&&person.id===currentUser.id;
     html+='<div class="post-dropdown" id="'+menuId+'"><a href="#" data-action="save" data-pid="'+i+'"><i class="fas fa-bookmark"></i> Save Post</a><a href="#" data-action="copylink" data-pid="'+i+'"><i class="fas fa-link"></i> Copy Link</a><a href="#" data-action="quote" data-pid="'+i+'"><i class="fas fa-quote-left"></i> Quote Post</a><a href="#" data-action="report" data-pid="'+i+'"><i class="fas fa-flag"></i> Report</a><a href="#" data-action="hide" data-pid="'+i+'"><i class="fas fa-eye-slash"></i> Hide</a>';
     if(isOwnPost) html+='<a href="#" data-action="pin" data-pid="'+i+'"><i class="fas fa-thumbtack"></i> '+(state.pinnedPosts&&state.pinnedPosts[i]?'Unpin':'Pin to Profile')+'</a><a href="#" data-action="edit" data-pid="'+i+'"><i class="fas fa-pen"></i> Edit</a><a href="#" data-action="delete" data-pid="'+i+'" style="color:#e74c3c;"><i class="fas fa-trash"></i> Delete</a>';
+    else if(_isAdmin) html+='<a href="#" data-action="admin-delete" data-pid="'+i+'" style="color:#e74c3c;"><i class="fas fa-shield-halved"></i> Admin Delete</a>';
     html+='</div></div>';
     html+='<div class="post-description"><p>'+short+(hasMore?'<span class="view-more-text hidden">'+rest+'</span>':'')+(hasMore?' . . . <button class="view-more-btn">View More</button>':'')+'</p></div>';
     if(pollHtml) html+=pollHtml;
@@ -6170,6 +6172,7 @@ function bindPostEvents(){
             else if(action==='pin') togglePinPost(pid);
             else if(action==='edit') showEditPostModal(pid);
             else if(action==='delete') confirmDeletePost(pid);
+            else if(action==='admin-delete') confirmAdminDeletePost(pid);
         });
     });
 
@@ -10966,6 +10969,23 @@ function confirmDeletePost(pid){
         }catch(e){
             console.error('Delete post error:',e);
             showToast('Failed to delete post: '+(e.message||'Unknown error'));
+        }
+    });
+}
+function confirmAdminDeletePost(pid){
+    showModal('<div class="modal-header"><h3><i class="fas fa-shield-halved" style="color:#e74c3c;margin-right:8px;"></i>Admin Delete Post</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body"><p style="color:var(--gray);text-align:center;margin-bottom:16px;">Delete this post as admin? This cannot be undone.</p><div class="modal-actions"><button class="btn btn-outline modal-close">Cancel</button><button class="btn" id="confirmAdminDeleteBtn" style="background:#e74c3c;color:#fff;">Delete</button></div></div>');
+    document.getElementById('confirmAdminDeleteBtn').addEventListener('click',async function(){
+        closeModal();
+        try{
+            await sbAdminDeletePost(pid);
+            feedPosts=feedPosts.filter(function(p){return p.idx!==pid;});
+            var postEl=document.querySelector('.feed-post[data-post-id="'+pid+'"]')||document.querySelector('.feed-post .like-btn[data-post-id="'+pid+'"]');
+            if(postEl){var card=postEl.closest('.feed-post')||postEl.closest('.card');if(card) card.remove();}
+            renderFeed(activeFeedTab);
+            showToast('Post deleted (admin)');
+        }catch(e){
+            console.error('Admin delete error:',e);
+            showToast('Failed: '+(e.message||'Unknown error'));
         }
     });
 }

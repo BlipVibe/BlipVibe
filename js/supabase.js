@@ -367,6 +367,11 @@ async function sbDeletePost(postId) {
   if (error) throw error;
 }
 
+async function sbAdminDeletePost(postId) {
+  const { error } = await sb.rpc('admin_delete_post', { p_post_id: postId });
+  if (error) throw error;
+}
+
 async function sbEditPost(postId, newContent) {
   const { error } = await sb.from('posts')
     .update({ content: newContent })
