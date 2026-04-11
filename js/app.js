@@ -7675,7 +7675,9 @@ function renderShop(){
         else{btn.className='btn btn-disabled';btn.textContent='Owned';btn.disabled=true;btn.replaceWith(btn.cloneNode(true));}
         // If buying the item currently being tried on, keep it applied — clear try-on state without reverting
         if(_tryOnActive&&_tryOnActive.type===tryType&&_tryOnActive.id===tryId){_tryOnSnapshot=null;_tryOnActive=null;}
-        renderMySkins();saveState();
+        renderMySkins();
+        // Reload from server to sync ownership (purchase RPC already wrote it)
+        loadSkinDataFromSupabase();
     }
     // Server-side purchase handler — all purchases validated atomically on Supabase
     function _bindBuyBtn(selector,attrName,itemType,ownedMap,itemList,nameKey){
