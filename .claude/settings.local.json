@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git init:*)",
+      "Bash(git remote:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git -C /c/Users/Jason/Desktop/Website config user.name)",
+      "Bash(git -C /c/Users/Jason/Desktop/Website config user.email)",
+      "Bash(git config:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(gh api:*)",
+      "Bash(claude remote-control:*)",
+      "Bash(claude --version)",
+      "Bash(sed -i '1095,1109s/price:35/price:75/g' js/app.js)",
+      "Bash(sed -i '1110,1127s/price:15/price:25/g' js/app.js)",
+      "Bash(sed -i '1128,1148s/price:20/price:35/g' js/app.js)",
+      "Bash(sed -i '1149,1166s/price:20/price:35/g' js/app.js)",
+      "Bash(sed -i '1167,1179s/price:25/price:50/g' js/app.js)",
+      "Bash(curl -s -X POST \"https://jrybcihteqlqkdbrmagx.supabase.co/storage/v1/object/Music/test.mp3\" -H \"Authorization: Bearer sb_publishable_PPMPXSazIqUTmkgAx6f3Tg_VVyn1VbB\" -H \"Content-Type: audio/mpeg\" --data-binary \"@Hushglass.mp3\")",
+      "WebSearch",
+      "WebFetch(domain:help.suno.com)"
+    ]
+  }
+}

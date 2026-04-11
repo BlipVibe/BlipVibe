@@ -77,8 +77,8 @@ function convertTextEmojis(s){
 function linkifyText(s){return s.replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');}
 function isVideoUrl(u){return /\.(mp4|webm|mov)([?#]|$)/i.test(u);}
 // Unified text rendering: escape + mentions + hashtags + links + rich text
-function renderPostText(text){return renderRichText(linkifyText(renderMentionsInText(escapeHtmlNl(text))));}
-function renderPlainText(text){return renderMentionsInText(escapeHtmlNl(text));}
+function renderPostText(text){return renderRichText(linkifyText(renderPlainText(text)));}
+function renderPlainText(text){return renderPlainText(text);}
 function showErrorToast(e){showToast('Error: '+((e&&e.message)||'Something went wrong'));}
 
 // ======================== RATE-LIMIT COOLDOWN HELPER ========================
@@ -1319,61 +1319,6 @@ var guildSkins = [];
 var gfLink=document.createElement('link');gfLink.rel='stylesheet';gfLink.href='https://fonts.googleapis.com/css2?family=Orbitron&family=Rajdhani&family=Quicksand&family=Pacifico&family=Baloo+2&family=Playfair+Display&family=Space+Grotesk&family=Caveat&family=Archivo&family=Silkscreen&family=Press+Start+2P&family=Righteous&family=Satisfy&family=Bungee&family=Monoton&family=Comfortaa&family=Lobster&family=Cinzel&family=Chakra+Petch&family=Fredoka&family=Oxanium&family=Gloria+Hallelujah&family=Doto&family=Jersey+10&family=Creepster&display=swap';document.head.appendChild(gfLink);
 
 
-// ======================== SHARED UI HELPERS ========================
-// Like/dislike display update — used by all 4 like handler locations
-function updateLikeDisplay(btn,liked,count){
-    if(liked){
-        btn.classList.add('liked');
-        btn.querySelector('i').className='fas fa-thumbs-up';
-        btn.querySelector('.like-count').textContent=count+1;
-        animateLikeBtn(btn);
-    } else {
-        btn.classList.remove('liked');
-        btn.querySelector('i').className='far fa-thumbs-up';
-        btn.querySelector('.like-count').textContent=Math.max(0,count-1);
-    }
-}
-function updateDislikeDisplay(btn,disliked,count){
-    if(disliked){
-        btn.classList.add('disliked');
-        btn.querySelector('i').className='fas fa-thumbs-down';
-        btn.querySelector('.dislike-count').textContent=count+1;
-    } else {
-        btn.classList.remove('disliked');
-        btn.querySelector('i').className='far fa-thumbs-down';
-        btn.querySelector('.dislike-count').textContent=Math.max(0,count-1);
-    }
-}
-// Clear the opposite reaction (like clears dislike, dislike clears like)
-function clearOppositeReaction(btn,type){
-    var container=btn.closest('.action-left')||btn.closest('.post-actions');
-    if(!container) return;
-    var opposite=type==='like'?container.querySelector('.dislike-btn'):container.querySelector('.like-btn');
-    if(!opposite) return;
-    var pid=btn.getAttribute('data-post-id');
-    if(type==='like'&&state.dislikedPosts[pid]){
-        delete state.dislikedPosts[pid];
-        updateDislikeDisplay(opposite,false,parseInt(opposite.querySelector('.dislike-count').textContent));
-    } else if(type==='dislike'&&state.likedPosts[pid]){
-        delete state.likedPosts[pid];
-        updateLikeDisplay(opposite,false,parseInt(opposite.querySelector('.like-count').textContent));
-    }
-}
-// Follow button display update — used by all follow handler locations
-function updateFollowBtn(btn,isFollowing){
-    if(!btn) return;
-    var isSmall=btn.classList.contains('follow-btn-small');
-    if(isFollowing){
-        btn.classList.add('followed','btn-disabled');
-        btn.classList.remove('btn-primary');
-        btn.innerHTML=isSmall?'<i class="fas fa-check"></i>':'<i class="fas fa-check"></i> Following';
-    } else {
-        btn.classList.remove('followed','btn-disabled');
-        btn.classList.add('btn-primary');
-        btn.innerHTML=isSmall?'<i class="fas fa-plus"></i>':'<i class="fas fa-plus"></i> Follow';
-    }
-}
-
 // ======================== UTILITIES ========================
 function $(sel){return document.querySelector(sel);}
 function $$(sel){return document.querySelectorAll(sel);}
@@ -1736,14 +1681,17 @@ function updateStatClickable(){
 
 async function toggleFollow(userId,btn){
     if(blockedUsers[userId]) return;
-    if(btn){if(btn.disabled) return; btn.disabled=true;}
     if(!currentUser) return;
     try {
         if(state.followedUsers[userId]){
             await sbUnfollow(currentUser.id, userId);
             delete state.followedUsers[userId];
             state.following--;
-            updateFollowBtn(btn,false);
+            if(btn){
+                btn.classList.remove('followed','btn-disabled');
+                btn.classList.add('btn-primary');
+                btn.innerHTML=btn.classList.contains('follow-btn-small')?'<i class="fas fa-plus"></i>':'<i class="fas fa-plus"></i> Follow';
+            }
             // Notify the person being unfollowed
             var myName=currentUser.display_name||currentUser.username||'Someone';
             sbCreateNotification(userId,'follow',myName+' unfollowed you','',{originalType:'follow',follower_id:currentUser.id}).catch(function(e){console.error('Unfollow notif error:',e);});
@@ -1752,7 +1700,12 @@ async function toggleFollow(userId,btn){
             state.followedUsers[userId]=true;
             state.following++;
             trackQuestProgress('follow');
-            updateFollowBtn(btn,true);
+            if(btn){
+                btn.classList.add('followed');
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-disabled');
+                btn.innerHTML=btn.classList.contains('follow-btn-small')?'<i class="fas fa-check"></i>':'<i class="fas fa-check"></i> Following';
+            }
             sbGetProfile(userId).then(function(p){if(p)addNotification('follow','You are now following '+(p.display_name||p.username));}).catch(function(){});
             // Notify the person being followed
             var myName=currentUser.display_name||currentUser.username||'Someone';
@@ -1767,7 +1720,6 @@ async function toggleFollow(userId,btn){
         // Show suggested follows after following someone new
         if(state.followedUsers[userId]) showSuggestedFollows(userId);
     } catch(err) { console.error('toggleFollow:', err); }
-    if(btn) btn.disabled=false;
 }
 
 // ======================== NOTIFICATIONS ========================
@@ -6159,14 +6111,23 @@ function bindPostEvents(){
             // If this is a UUID (Supabase post), call Supabase toggle
             var isUUID = /^[0-9a-f]{8}-/.test(postId);
             if(isUUID && currentUser) {
-                clearOppositeReaction(btn,'like');
+                // Clear dislike if active
+                if(state.dislikedPosts[postId]){
+                    var db=btn.closest('.action-left').querySelector('.dislike-btn');
+                    if(db){var dc=db.querySelector('.dislike-count');dc.textContent=Math.max(0,parseInt(dc.textContent)-1);db.classList.remove('disliked');db.querySelector('i').className='far fa-thumbs-down';}
+                    delete state.dislikedPosts[postId];
+                }
                 try {
                     var nowLiked = await sbToggleLike(currentUser.id, 'post', postId);
                     if(nowLiked) {
                         state.likedPosts[postId]=true;
-                        updateLikeDisplay(btn,true,count);
+                        btn.classList.add('liked');
+                        btn.querySelector('i').className='fas fa-thumbs-up';
+                        countEl.textContent=count+1;
+                        animateLikeBtn(btn);
                         showCoinEarnAnimation(btn,1);
                         trackQuestProgress('like');
+                        // Notify post author
                         var fp=feedPosts.find(function(x){return x.idx===postId;});
                         if(fp&&fp.person&&fp.person.id&&fp.person.id!==currentUser.id){
                             var myName=currentUser.display_name||currentUser.username||'Someone';
@@ -6174,18 +6135,24 @@ function bindPostEvents(){
                         }
                     } else {
                         delete state.likedPosts[postId];
-                        updateLikeDisplay(btn,false,count);
+                        btn.classList.remove('liked');
+                        btn.querySelector('i').className='far fa-thumbs-up';
+                        countEl.textContent=Math.max(0,count-1);
                     }
                 } catch(err) { console.error('Like error:', err); }
             } else {
                 // Legacy local like
                 if(state.likedPosts[postId]){
                     delete state.likedPosts[postId];
-                    updateLikeDisplay(btn,false,count);
+                    btn.classList.remove('liked');
+                    btn.querySelector('i').className='far fa-thumbs-up';
+                    countEl.textContent=Math.max(0,count-1);
                 } else {
-                    clearOppositeReaction(btn,'like');
+                    if(state.dislikedPosts[postId]){var db=btn.closest('.action-left').querySelector('.dislike-btn');var dc=db.querySelector('.dislike-count');dc.textContent=Math.max(0,parseInt(dc.textContent)-1);delete state.dislikedPosts[postId];db.classList.remove('disliked');db.querySelector('i').className='far fa-thumbs-down';}
                     state.likedPosts[postId]=true;
-                    updateLikeDisplay(btn,true,count);
+                    btn.classList.add('liked');
+                    btn.querySelector('i').className='fas fa-thumbs-up';
+                    countEl.textContent=count+1;
                 }
             }
             var has=!!(state.likedPosts[postId]||state.dislikedPosts[postId]||_postReactions[postId]);
@@ -6903,7 +6870,13 @@ async function renderSuggestions(){
         });
         list.innerHTML=html;
         list.querySelectorAll('.suggestion-follow-btn').forEach(function(btn){
-            btn.addEventListener('click',function(){toggleFollow(btn.dataset.uid,btn);});
+            btn.addEventListener('click',async function(){
+                var uid=btn.dataset.uid;
+                if(state.followedUsers[uid]){await sbUnfollow(currentUser.id,uid);delete state.followedUsers[uid];}
+                else{await sbFollow(currentUser.id,uid);state.followedUsers[uid]=true;}
+                await loadFollowCounts();
+                renderSuggestions();
+            });
         });
         list.querySelectorAll('.suggestion-avatar,.suggestion-info').forEach(function(el){
             el.style.cursor='pointer';
@@ -6979,7 +6952,14 @@ function showPeopleYouKnowModal(){
         });
     });
     $$('.pill-modal-follow').forEach(function(btn){
-        btn.addEventListener('click',function(e){e.stopPropagation();toggleFollow(btn.dataset.uid,btn);});
+        btn.addEventListener('click',async function(e){
+            e.stopPropagation();
+            var uid=btn.dataset.uid;
+            if(state.followedUsers[uid]){await sbUnfollow(currentUser.id,uid);delete state.followedUsers[uid];btn.innerHTML='<i class="fas fa-plus"></i>';}
+            else{await sbFollow(currentUser.id,uid);state.followedUsers[uid]=true;btn.innerHTML='<i class="fas fa-check"></i>';}
+            await loadFollowCounts();
+            renderSuggestions();
+        });
     });
 }
 

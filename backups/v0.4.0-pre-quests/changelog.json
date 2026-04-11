@@ -1,0 +1,695 @@
+[
+  {
+    "version": "0.4.0",
+    "date": "2026-04-06",
+    "added": [
+      "\ud83c\udf89 BlipVibe has officially moved to blipvibe.com! Update your bookmarks!",
+      "\ud83d\udcb0 Coin economy rebalanced \u2014 new users start with 100 coins, shop prices updated for better progression",
+      "\u267e\ufe0f Early adopter reward \u2014 all current beta users receive INFINITY coins as a thank you!",
+      "\ud83d\udcc8 Daily earning caps added \u2014 5 posts, 15 comments, 15 replies, 30 likes per day",
+      "\ud83d\udc8e Premium skins now cost 150 coins \u2014 something to work toward!",
+      "\ud83d\udd0d Discover tab redesigned \u2014 shows trending posts from people you don't follow, ranked by engagement",
+      "\ud83d\udc65 Mutual followers shown on profiles \u2014 'Followed by X and 3 others'",
+      "\ud83d\udcac Message reactions \u2014 react to any message with emoji",
+      "\u21a9\ufe0f Reply to specific messages \u2014 quote a message in your reply",
+      "\ud83d\udd25 Trending Hashtags page \u2014 see what's popular right now",
+      "\ud83d\udd0e Search history \u2014 recent searches saved and shown on focus",
+      "\ud83d\udd12 Account security \u2014 change password, change email, and 2FA setup in Settings",
+      "\u267f Alt text on images \u2014 add descriptions for accessibility",
+      "\ud83d\udcc6 Scheduled posts calendar view",
+      "\ud83d\udcca Post analytics dashboard in Settings",
+      "\u2764\ufe0f Double-tap to like posts",
+      "\ud83c\udf19 Light mode toggle in Settings",
+      "\ud83d\udd17 Share your profile link from dropdown menu",
+      "\ud83d\udcc4 Link in bio \u2014 add your website to your profile"
+    ],
+    "changed": [
+      "\ud83c\udfe0 BlipVibe is now live at blipvibe.com!",
+      "\ud83d\udcb0 Shop prices rebalanced for better progression (fonts 15, skins 35, premium 150)",
+      "\ud83d\udee1\ufe0f DMCA policy hardened to federal litigation grade (11 sections)",
+      "\ud83d\udcdd Privacy Policy updated with full data disclosure",
+      "\u26a1 Feed loads faster with infinite scroll and caching"
+    ],
+    "fixed": [
+      "\ud83d\udc4d Like counts now show correctly on profile view posts",
+      "\ud83d\udcf1 Mobile feed alignment fixed \u2014 posts match create bar width",
+      "\ud83d\udcfa YouTube, TikTok, Instagram embeds restored on all posts",
+      "\u270d\ufe0f View More no longer cuts words in half"
+    ]
+  },
+  {
+    "version": "0.3.6",
+    "date": "2026-04-02",
+    "added": [
+      "Message reactions — react to any message with emoji (❤️ 😂 😮 😢 👍 👎)",
+      "Reply to specific message — quote a message in your reply with visual indicator",
+      "Trending Hashtags page — see most popular hashtags ranked by post count",
+      "Search history — recent searches remembered and shown on focus, with clear option",
+      "Mutual followers on profiles — 'Followed by X and 3 others' with avatar stack"
+    ],
+    "changed": [
+      "Privacy Policy updated — message reactions and search history disclosed",
+      "Trending Hashtags button added to home right sidebar"
+    ],
+    "fixed": []
+  },
+  {
+    "version": "0.3.5",
+    "date": "2026-04-02",
+    "added": [
+      "Change Password in Settings — update password without email reset",
+      "Change Email in Settings — update email with confirmation",
+      "Two-Factor Authentication (2FA) — TOTP setup with QR code via Supabase MFA",
+      "Alt text on post images — ALT button on thumbnails for image descriptions (accessibility)",
+      "Skip-to-content link — keyboard-accessible skip link for screen readers",
+      "ARIA labels — auto-applied to all icon-only buttons via MutationObserver",
+      "Link in Bio — website URL field on profiles, shown in profile view",
+      "Post edit history — auto-logged when posts are edited (view previous versions)",
+      "Seen by on group posts — track and view who saw group announcements",
+      "Scheduled posts calendar — visual month grid view replaces flat list",
+      "DMCA notice log — admin table for documenting takedown receipt timestamps",
+      "Admin report queue — review and dismiss user/post reports from Settings"
+    ],
+    "changed": [
+      "Settings reorganized with Account Security section (password, email, 2FA)"
+    ],
+    "fixed": []
+  },
+  {
+    "version": "0.3.4",
+    "date": "2026-04-02",
+    "added": [
+      "DMCA substantial compliance shield — can reject sloppy/abusive takedown notices",
+      "DMCA no-liability clause for good faith content removal",
+      "DMCA fair use neutrality section — BlipVibe doesn't judge fair use, follows DMCA framework"
+    ],
+    "changed": [
+      "Counter-notification jurisdiction corrected to 'United States District Court for the Eastern District of Tennessee' (matches § 512(g) statute)",
+      "Restoration timing matches statutory language exactly: 'not less than 10 nor more than 14 business days'",
+      "Repeat infringer policy strengthened with 'multiple valid notices and other relevant factors' language"
+    ],
+    "fixed": []
+  },
+  {
+    "version": "0.3.3",
+    "date": "2026-04-02",
+    "added": [
+      "DMCA 'No Prior Screening' clause — legal protection for user-generated content",
+      "DMCA 'Audio & Music Content' section — users responsible for music rights",
+      "DMCA 'Standard Technical Measures' section — safe harbor compliance (§ 512(i))",
+      "Designated agent registration confirmation language"
+    ],
+    "changed": [
+      "DMCA contact email changed to dmca@blipvibe.com (separate from general hello@)",
+      "Repeat infringer policy strengthened — 'at sole discretion' instead of fixed strike count",
+      "DMCA policy expanded from 7 to 10 sections"
+    ],
+    "fixed": []
+  },
+  {
+    "version": "0.3.2",
+    "date": "2026-04-02",
+    "added": [
+      "DMCA registration number (DMCA-1070726) added to all policy pages"
+    ],
+    "changed": [
+      "@mentions now search all name fields (first name, last name, nickname, username, display name) — type any name to find someone",
+      "@mention dropdown shows the user's preferred display name (nickname or real name based on their setting)",
+      "Emoji picker restyled as compact 320px floating popout instead of full-width scrollable box",
+      "Consolidated all email references to hello@blipvibe.com (removed non-existent copyright@ address)"
+    ],
+    "fixed": [
+      "View More text no longer merges words together when expanded (missing space between visible and hidden text)",
+      "Modal close (X) button hover is now a perfect circle instead of elongated oval",
+      "Embeds (YouTube, TikTok, Instagram) now load on infinite scroll posts (missing autoFetchLinkPreviews call)"
+    ]
+  },
+  {
+    "version": "0.3.1",
+    "date": "2026-04-02",
+    "added": [
+      "Scroll-to-top button — floating arrow appears after scrolling down",
+      "Character counter on post creation (5000 char limit with color warnings)",
+      "Double-tap to like — tap twice on a post to like it (mobile + desktop)",
+      "Animated like feedback — burst animation on like button + floating thumbs-up",
+      "Unsend message — 5-second undo window after sending a DM",
+      "Share Your Profile — dropdown menu option with copyable profile link",
+      "Suggested follows — after following someone, see 3 people they follow",
+      "Confirm before leaving draft — modal warns if you have unsaved post text"
+    ],
+    "changed": [
+      "Images now lazy-loaded automatically via MutationObserver",
+      "Infinite scroll handler debounced with requestAnimationFrame for smoother scrolling",
+      "Feed cached in sessionStorage for instant render on tab switches"
+    ],
+    "fixed": []
+  },
+  {
+    "version": "0.3.0",
+    "date": "2026-04-02",
+    "added": [
+      "Infinite scroll — feed loads posts in batches as you scroll, no more loading all at once",
+      "Skeleton loading states — shimmer placeholders while feed and content loads",
+      "Post draft auto-save — drafts saved to localStorage, restored when reopening post creation",
+      "Notification grouping — 'X and 4 others liked your post' instead of 5 separate notifications",
+      "Full-text post search — search post content via Postgres tsvector (requires migration)",
+      "Group invite links — shareable join link for any group, button in group view sidebar",
+      "Quote posts — quote a post with your own commentary via post dropdown menu",
+      "Multi-person DMs — create group chat conversations from messages page",
+      "Image optimization — automatic resize and WebP conversion before upload (avatars, covers, posts)",
+      "Comment pinning — post owners can pin a comment to the top of the thread",
+      "Post analytics dashboard — total posts, likes, views, comments, followers, top posts (Settings)",
+      "Daily login rewards — 5-25 coins based on consecutive login streak",
+      "Rich text in posts — **bold**, *italic*, ~~strikethrough~~, `inline code` support",
+      "Video trimming UI — preview and set start/end times before uploading video",
+      "Light mode toggle — full light theme in Settings, persists across sessions",
+      "Shareable bookmark collections — share saved post folders via copyable link",
+      "Push notifications — Capacitor FCM integration for native mobile push (requires setup)",
+      "Service worker — offline caching for static assets, faster repeat loads"
+    ],
+    "changed": [
+      "Feed pagination changed from 50 to 20 posts per batch for better performance",
+      "Search results now query database for posts instead of only searching loaded feed"
+    ],
+    "fixed": [
+      "Comment reply button on nested comments now targets correct reply (was using parent ID)",
+      "Feed like counts now fetched in parallel instead of sequentially (faster load)",
+      "Conversation data now properly sanitized for email masking",
+      "Notifications now sanitized through _sanitizeData"
+    ]
+  },
+  {
+    "version": "0.2.27",
+    "date": "2026-03-18",
+    "added": [
+      "Stories — create photo/video/text stories that disappear after 24 hours, view stories in full-screen viewer with progress bar, tap to advance, view counts for own stories, delete own stories",
+      "Stories bar above feed — circular avatar rings (gradient border for unviewed, gray for viewed), 'Your Story' add button",
+      "Emoji reactions on posts — long-press/hold the like button to pick from 6 emoji reactions (❤️ 😂 😮 😢 🔥 👏)",
+      "Voice notes in DMs — tap microphone button to record, tap again to stop and send, plays inline with audio controls",
+      "Close Friends list — star button on profiles to add/remove, manage list in Settings",
+      "Download My Data (GDPR) — export all your data (profile, posts, followers, following, notifications, settings) as JSON file",
+      "Close Friends manager in Settings",
+      "Download Data button in Settings"
+    ],
+    "changed": [
+      "DM messages now render @mentions as clickable links",
+      "DM message content supports voice note [voice]url[/voice] format with audio player"
+    ],
+    "fixed": []
+  },
+  {
+    "version": "0.2.26",
+    "date": "2026-03-18",
+    "added": [
+      "Post view counts — eye icon shows how many times each post has been viewed (IntersectionObserver tracking)",
+      "Online / last seen status — green dot on DM contacts who are online, 'Active Xm ago' text on profiles",
+      "Read receipts in DMs — double-check 'Seen' indicator on your last sent message",
+      "Typing indicator in DMs — animated bouncing dots (CSS animation)",
+      "Streaks — consecutive days of interaction tracked between you and other users, fire icon + day count on profiles",
+      "User badges / achievements — 10 earnable badges (Early Adopter, First Post, Social Butterfly, Popular, Group Leader, Skin Collector, Streak Master, Photographer, Generous, Commenter) displayed on profile",
+      "Notification preferences — toggle individual notification types on/off (likes, comments, replies, follows, mentions, messages, group invites) in Settings",
+      "Message privacy setting — control who can message you (Everyone / Followers Only / Nobody) in Settings",
+      "Scheduled posts — schedule a post for future publication with date/time picker, manage pending posts in Settings",
+      "Muted users list in Settings — view and unmute muted users",
+      "Scheduled posts manager in Settings — view and cancel pending scheduled posts"
+    ],
+    "fixed": [
+      "Last seen interval and view observer properly cleaned up on logout",
+      "Pinned posts, badges, muted users, and notification preferences now sync to Supabase via skin_data"
+    ]
+  },
+  {
+    "version": "0.2.25",
+    "date": "2026-03-18",
+    "added": [
+      "Polls in posts — add a poll with up to 6 options when creating a post, vote on polls in the feed with animated bar results",
+      "Hashtags — #tags in posts are now clickable, showing all posts with that hashtag",
+      "Copy Link — copy a direct link to any post from the post dropdown menu",
+      "Pin to Profile — pin up to 3 posts to your profile from the post dropdown menu",
+      "Mute Users — hide someone's posts without blocking them (separate from block, they won't be notified)",
+      "Report Users — report a user's profile (not just individual posts) with reasons: Spam, Harassment, Impersonation, Inappropriate Content, Other",
+      "Edit Profile button on own profile view — one click to open Edit Profile instead of navigating to Settings",
+      "Escape key closes modals across the entire app"
+    ],
+    "fixed": [
+      "Muted users filtered from Following and Discover feeds"
+    ]
+  },
+  {
+    "version": "0.2.24",
+    "date": "2026-03-18",
+    "added": [],
+    "changed": [
+      "Page load now ~50-70% faster — 7 API calls run in parallel instead of sequentially",
+      "Group membership check reduced from N+1 queries (one per group) to a single query"
+    ],
+    "fixed": [
+      "Memory leak: realtime subscriptions (posts, follows, likes, notifications, messages) now cleaned up on logout",
+      "Memory leak: saveState interval now cleared on logout instead of running forever",
+      "Security: error messages escaped before HTML rendering to prevent XSS"
+    ]
+  },
+  {
+    "version": "0.2.23",
+    "date": "2026-03-18",
+    "added": [
+      "Lightbox photo comments now have full feature parity with post comments — emoji button, GIF search, @mention autocomplete, comment likes/dislikes, edit and delete buttons",
+      "GIF comments in lightbox photo viewer — search and post GIFs via Klipy",
+      "@mention autocomplete in lightbox photo comment input",
+      "Comment like/dislike buttons in lightbox photo comments",
+      "Edit button for own comments in lightbox photo viewer",
+      "Clickable @mentions in lightbox photo comments open user profile"
+    ],
+    "fixed": [
+      "Comment modal post image now auto-fits instead of being scrollable — constrained to max 25vh with object-fit:contain",
+      "@mention dropdown now appears below the input field in post/comment modals, and above when input is at the bottom of the screen (lightbox)",
+      "sbEditPhotoComment() function added for editing photo comments"
+    ]
+  },
+  {
+    "version": "0.2.22",
+    "date": "2026-03-17",
+    "added": [
+      "Invite to Group — new button on profile view lets you invite any user to any group you're in",
+      "Group invite notifications — invited users receive a clickable notification to join the group",
+      "Clicking a group invite notification opens a join confirmation modal and navigates to the group",
+      "@mention autocomplete now works in comment input fields and group chat messages",
+      "Clicking @mention tags in posts, comments, and group chat now opens that user's profile"
+    ],
+    "fixed": [
+      "@mention search now has a fallback when the search_profiles RPC is unavailable — uses direct table query",
+      "@mention autocomplete is more resilient — if global search fails, still shows results from your connections",
+      "Missing viewProfile() function added — fixes clicking usernames in group chat messages",
+      "Mention click handlers now bound in comment modals and group chat messages (were previously missing)"
+    ]
+  },
+  {
+    "version": "0.2.21",
+    "date": "2026-03-17",
+    "added": [
+      "'mention' is now a proper notification type in the database — no longer stored as 'system'",
+      "New Mentions tab in notifications — filter to see only @mention notifications with @ icon",
+      "@mention notifications now work in comments, photo comments, and group chat messages (previously only posts and group posts)",
+      "Mention notifications show context — 'mentioned you in a comment', 'a photo comment', 'a group chat message' instead of generic 'a post'",
+      "@mention autocomplete now prioritizes your followers and following — connections show first, remaining slots filled by global search, max 5 results",
+      "Camera icon button in post and group post footers — quick shortcut to add photos/videos without scrolling to the drop zone"
+    ],
+    "fixed": []
+  },
+  {
+    "version": "0.2.20",
+    "date": "2026-03-07",
+    "added": [
+      "@mention tagging system — type @ in posts to tag any user (autocomplete with avatar, name, username)",
+      "Group posts restrict @mentions to group members only",
+      "Mentioned usernames render as clickable links (purple, opens profile) in feed, group, search, saved, and profile posts",
+      "@mentions also work in comments",
+      "Tagged users receive a notification when mentioned in a post",
+      "New 'Stream' template — single-column stacked layout: cover photo, horizontal profile + about me, album, suggestions + groups side-by-side, then feed (desktop only)",
+      "Mobile now uses Cinema template by default — edge-to-edge bold layout optimized for small screens",
+      "Templates are now desktop-only — hidden from shop and My Skins on mobile",
+      "New 'Pastel Dream' basic skin — soft candy pastels with flowing animated gradient on navbar and cover",
+      "New 'Pastel Aurora' premium skin — shifting lavender, mint, and peach northern lights with animated gradient movement",
+      "Group Chat system — Discord-style channels inside groups with sections, sub-channels, realtime messaging, image/video/GIF support, and admin/mod channel management (fullscreen view with back button)",
+      "Neon Wave premium skin now shows vibrant turquoise-to-purple animated gradient on top navbar, bottom mobile nav, and profile cover",
+      "New 'Deep Wave' premium skin — dark moody mints and teals with flowing gradient animation and glowing pulsing avatar border"
+    ],
+    "fixed": [
+      "Profile cover gradient now has rounded top corners (10px) — no more sharp square edges behind avatar on profile cards and profile views",
+      "Mobile bottom nav bar no longer floats with a gap when the browser address bar hides on scroll — background extends to fill the space",
+      "Comment modal GIF and Post buttons no longer get cut off on mobile — reduced sizing and gap for small screens",
+      "Panorama template mobile layout no longer has a gap on the right side of posts",
+      "Fixed group chat SQL migration — mod permission policies now correctly reference group_members table instead of non-existent mods column"
+    ]
+  },
+  {
+    "version": "0.2.19",
+    "date": "2026-03-07",
+    "added": [
+      "First-time tutorial popup on Home feed — explains coin earning (Post +5, Comment +2, Reply +2, Like +1), community rules, and Skin Shop",
+      "First-time tutorial popup on Skin Shop — explains skins, fonts, templates, premium skins, and custom backgrounds",
+      "Tutorial state synced to Supabase (cross-device) — shows once per account, not per browser"
+    ],
+    "changed": [
+      "Notification tab counts now show only unread (new) notifications — resets to 0 once viewed",
+      "Unread notifications highlighted with accent border and 'New' badge"
+    ],
+    "fixed": [
+      "Profile avatar background corners now properly rounded (16px) on profile pages, profile views, and modals — no more sharp square edges behind the photo",
+      "Email addresses used as usernames/display names are now masked (e.g. 'jo***') across all public views — posts, comments, profiles, messages, groups, search results",
+      "Existing users with email-as-username are protected without requiring account changes"
+    ]
+  },
+  {
+    "version": "0.2.18",
+    "date": "2026-03-03",
+    "added": [
+      "Section 230 safe harbor clause in Terms of Use (47 U.S.C. § 230)",
+      "Account Registration & Security section in Terms of Use",
+      "Export Compliance (OFAC) representation in Terms of Use",
+      "Waiver and Entire Agreement clauses in Terms of Use",
+      "Tennessee Information Protection Act (TIPA) section in Privacy Policy",
+      "Data Processing Agreement (DPA) disclosure in Privacy Policy",
+      "General data breach notification policy for all users"
+    ],
+    "changed": [
+      "Terms of Use expanded from 21 to 26 sections with full legal compliance audit",
+      "Privacy Policy expanded from 20 to 21 sections (Version 3.0)",
+      "Arbitration clause completely rewritten — Federal Arbitration Act, 30-day informal resolution, Fayette County venue, fee allocation, opt-out window, small claims exception",
+      "Warranty disclaimer strengthened to conspicuous ALL CAPS format (Tennessee UCC § 2-316)",
+      "Limitation of liability strengthened — all damage types disclaimed regardless of theory of liability",
+      "Virtual Currency section expanded — license-not-ownership, Apple compliance, forfeiture on deletion",
+      "DMCA section expanded — penalty of perjury, counter-notification procedure, § 512(f) warning",
+      "Governing law corrected from Texas to Tennessee, venue Fayette County",
+      "TOS_VERSION bumped to 4 (forces re-acceptance by all users)",
+      "Added FxTwitter API, TikTok oEmbed, and Klipy to third-party services disclosure"
+    ],
+    "fixed": [
+      "Governing law incorrectly referenced Texas instead of Tennessee",
+      "Privacy Policy contained Limitation of Liability and Dispute Resolution sections (removed — belong in TOS)",
+      "Privacy Policy Section 230 reference removed (belongs in TOS)",
+      "Missing parental consent requirement for minors 13-17",
+      "Account data collection did not list first_name, last_name, nickname fields"
+    ]
+  },
+  {
+    "version": "0.2.17",
+    "date": "2026-03-01",
+    "added": [
+      "Video posts — upload MP4, WebM, or MOV videos (up to 50MB) in feed and group posts, displayed with play overlay in media grids and full controls in lightbox",
+      "Pull-to-refresh on mobile — swipe down from the top of any page to refresh content (feed, groups, notifications, messages, profiles)"
+    ],
+    "changed": [
+      "Group posts now support multiple images and videos (previously only uploaded the first image)"
+    ],
+    "fixed": [
+      "Videos selected in post creation modal silently failed to upload — entire pipeline (validation, upload, rendering, lightbox) now handles video types",
+      "Lightbox skipped videos when navigating media — now plays videos inline with controls and pauses on close"
+    ]
+  },
+  {
+    "version": "0.2.16",
+    "date": "2026-02-27",
+    "added": [
+      "Read-only localStorage cache — app loads instantly from cached skin data while Supabase fetches fresh state in the background",
+      "Single photo delete — trash button on hover for profile pictures, cover photos, and post photos",
+      "Bulk photo delete — 'Select' button enables multi-select mode with floating action bar for batch deletion",
+      "Delete Photo option in photo context menu (three-dot menu)",
+      "Group fonts — buy, apply, and reset fonts per group via the group shop Fonts tab",
+      "Dark Prism premium skin — dark variant of Geo Prism with rainbow borders, spinning gradient nav, and pulsing prismatic glow",
+      "Wheel nav style — mobile-only swipeable bottom nav where the center icon scales up like a rolling wheel",
+      "Privacy Policy v2.0 — full legal rewrite with GDPR, CCPA/CPRA, COPPA, DMCA, Section 230, international transfers, advertising disclosure, Apple App Store terms, and liability/dispute provisions",
+      "Remove Cover Photo button — red trash button in the cover photo picker modal for both user profiles and groups, clears cover from UI and Supabase",
+      "Email-as-name validation — signup and edit profile block names/usernames that look like email addresses"
+    ],
+    "changed": [
+      "Photo state now tracks storage file names and post IDs for proper deletion across storage, albums, and posts",
+      "Group font saved/restored when entering/leaving group view (personal font preserved)",
+      "Group Shop skin management restricted to Admin, Co-Admin, and Moderator — regular members can browse the shop and see applied skins but cannot buy, apply, or change them",
+      "Group skins now stored on the group itself (shared skin_data column) — all members see the same skin, font, and background set by admins/mods instead of each user having their own local copy"
+    ],
+    "fixed": [
+      "Comment modal scrolling the feed behind it on mobile — body now position-locks when modal is open and touch events are blocked on the backdrop",
+      "Posting a comment jumping to top of page — showModal was overwriting saved scroll position when re-rendering comments inside an already-open modal",
+      "New users seeing no posts on Following tab — own posts were excluded from the default feed, now included alongside followed users' posts",
+      "App auto-navigating to a group page on restart — group-view hash no longer persists across fresh loads",
+      "Mobile home pills — 'People You May Know' and 'Trending Groups' are now single pills that open scrollable popup modals instead of inline items",
+      "Mobile group cards — Joined/Join/View text buttons replaced with themed icon-only circle buttons (check, plus, magnifying glass)",
+      "Emoji picker for desktop — smiley button on post create, group post, comment, and edit comment modals opens a categorized emoji panel with search (hidden on mobile where keyboards have native emoji)",
+      "Blurry text on premium skin backgrounds — removed heavy glow text-shadow (was 8px blur) and replaced with crisp 2px drop shadow",
+      "Premium backgrounds and group skins not persisting — loadSkinDataFromSupabase used sbGetProfile (which has skin_data column revoked) instead of sbGetOwnProfile (SECURITY DEFINER RPC that can read it)",
+      "Card transparency slider not working in groups — gpremium-dark CSS used hardcoded background overriding the color-mix opacity variable",
+      "Profile picture background color jutting out as square — added background:var(--card) to avatar wraps, removed border from modal avatars, added overflow:hidden clipping to profile view and group profile modal",
+      "Viewing someone else's profile then navigating to your own copied their skin/font — previous profile skin now properly restored before applying own",
+      "GIF picker clipped in comment modal on mobile — moved from absolute-positioned overlay to flow-based flex child so it's no longer cut off by overflow:hidden",
+      "Crop modal closing when dragging slightly off the crop area — overlay click-to-close now suppressed during active crop drag",
+      "Home feed photos preview changed from 3-column grid (2 rows) to a single scrollable row",
+      "People You May Know pill not showing on mobile — pill now always renders regardless of async suggestion load timing"
+    ]
+  },
+  {
+    "version": "0.2.15",
+    "date": "2026-02-27",
+    "added": [],
+    "changed": [
+      "Supabase is now the sole source of truth for all state — localStorage no longer read or written on init/save",
+      "loadSkinDataFromSupabase() now fully replaces owned and group data instead of merging, preventing stale local values from surviving"
+    ],
+    "fixed": [
+      "Cross-device skin sync — changing group skins on phone then opening PC no longer overwrites phone changes with stale localStorage data",
+      "Periodic saveState() no longer pushes stale localStorage data back to Supabase every 10 seconds"
+    ]
+  },
+  {
+    "version": "0.2.14",
+    "date": "2026-02-27",
+    "added": [
+      "Personal cover photo picker — 'Change Cover Photo' now opens a modal with previous uploads and re-crop option",
+      "Premium background history — previous background uploads shown as scrollable thumbnail row, click to re-apply",
+      "Group premium background history — same scrollable previous uploads picker for group background images",
+      "Mobile pills bar — People You May Know and Trending Groups shown as clickable pills above the post bar on mobile"
+    ],
+    "changed": [
+      "Selecting a previous photo (avatar, group profile, group cover) now opens re-crop modal instead of applying directly",
+      "Premium background uploads use unique filenames so previous uploads are preserved instead of overwritten",
+      "People You May Know and Trending Groups cards hidden from bottom of mobile feed (replaced by top pills)"
+    ],
+    "fixed": [
+      "PNG profile pictures showing white border/box — removed border and box-shadow from all avatar elements",
+      "Avatar background color jutting out as square — containers now clip to rounded shape with overflow:hidden",
+      "Group icon wrap showing white border and box shadow around group images"
+    ]
+  },
+  {
+    "version": "0.2.13",
+    "date": "2026-02-27",
+    "added": [],
+    "changed": [
+      "Mobile nav bar redesigned — search icon replaces full search bar, notifications bell moved next to profile avatar, coins and dropdown pushed to far right",
+      "Mobile chat opens full-screen — top and bottom nav bars hidden while chatting, restored on back",
+      "Saved Posts moved from mobile bottom nav to settings dropdown menu",
+      "Profile view defaults to Photos tab instead of Albums",
+      "Following feed tab no longer shows your own posts",
+      "App always opens to home feed on new visits (removed session-based last page restore)"
+    ],
+    "fixed": [
+      "Group skins bleeding into personal profile — leaving a group now properly restores your personal skin state",
+      "Group skin purchases not registering — buy handlers now save to localStorage and sync to Supabase immediately",
+      "Group skins/templates resetting randomly — now synced to Supabase so they persist across devices and tab switches",
+      "Group cover photo not visible after cropping — view now refreshes after save",
+      "Group icon selection not saving — now persisted to database (requires running add-group-icon-color.sql migration)",
+      "Pill tabs and outline buttons unreadable on premium background skins — now use skin-themed solid backgrounds with backdrop blur instead of thin transparent overlays",
+      "Developer Updates modal text unreadable on themed skins — now inherits skin colors instead of using hardcoded values",
+      "Negative like/dislike counts could appear across all feed handlers",
+      "Message notification dot clipping behind nav highlight box on mobile (now uses separate absolute-positioned layer)"
+    ]
+  },
+  {
+    "version": "0.2.12",
+    "date": "2026-02-26",
+    "added": [
+      "Structured display name system — first name, last name, and optional nickname fields",
+      "Display mode toggle in Edit Profile — choose to show 'First & Last Name' or 'Nickname'",
+      "Live name preview in Edit Profile modal shows how your name will appear across the app",
+      "First and last name collected during signup",
+      "GIF picker in messages — search and send GIFs via Klipy API",
+      "GIF messages render inline in chat bubbles"
+    ],
+    "changed": [
+      "Edit Profile modal now has separate First Name, Last Name, and Nickname fields instead of a single Name input",
+      "Search now matches against first name, last name, and nickname in addition to username and display name",
+      "Existing users' display names automatically parsed into first/last name fields via migration",
+      "Mobile message badge now shows a small themed-color dot instead of a number count",
+      "Message search now shows a full scrollable people list — following first, then others"
+    ],
+    "fixed": [
+      "Mobile message chat — header and input bar now stay fixed while messages scroll between them",
+      "Message input bar visible on all mobile devices (fixed layout applied at ≤768px, not just ≤640px)"
+    ]
+  },
+  {
+    "version": "0.2.11",
+    "date": "2026-02-26",
+    "added": [],
+    "changed": [],
+    "fixed": [
+      "Twitter/X links now show rich preview cards with images, video thumbnails, and tweet text (via FxTwitter API — Microlink couldn't scrape X)",
+      "TikTok links now show rich preview cards with thumbnails and captions (via official oEmbed API — blockquote embed was unreliable)",
+      "App now opens to home feed by default instead of remembering last page from a previous session"
+    ]
+  },
+  {
+    "version": "0.2.10",
+    "date": "2026-02-23",
+    "added": [
+      "Try On preview button in Skin Shop — live-preview any skin, font, logo, icon set, coin skin, template, or nav style before buying",
+      "Group premium skin background image — upload, darkness, frosted glass, and card transparency controls (same as profile skins)"
+    ],
+    "changed": [
+      "Shop cards for unowned items now show 'Try On' button alongside Buy button",
+      "Try-on auto-reverts when switching to My Skins tab, navigating away, or toggling off",
+      "Purchasing an item while trying it on keeps it applied without reverting"
+    ],
+    "fixed": [
+      "Group premium skin background image now shows through instead of being covered by grey page background",
+      "Group premium skins without a background image now use the skin's actual theme color instead of hardcoded grey",
+      "Cross-tab skin bleeding — switching between tabs no longer overwrites group skin with personal skin",
+      "Saved posts page images stretched too wide — post cards now capped at 680px width",
+      "Group icon picker buttons now use the group's active skin color instead of default theme",
+      "Picking a group icon no longer deletes the group's profile picture"
+    ]
+  },
+  {
+    "version": "0.2.9",
+    "date": "2026-02-23",
+    "added": [
+      "Combined Skins page with pill toggle between 'Skin Shop' and 'My Skins' views"
+    ],
+    "changed": [
+      "Skin Shop and My Skins merged into single 'Skins' nav page, freeing up a nav slot",
+      "Nav bar shows one 'Skins' link instead of separate 'Skins' and 'Skin Shop' links",
+      "Dropdown 'My Skins' opens the Skins page with My Skins toggle active",
+      "Old #skins URLs redirect to #shop with My Skins view"
+    ],
+    "fixed": []
+  },
+  {
+    "version": "0.2.8",
+    "date": "2026-02-23",
+    "added": [
+      "GIF search in comments — Klipy-powered GIF picker with search and trending",
+      "GIF button in comment input bar opens a 2-column searchable GIF grid",
+      "Clicking a GIF auto-posts it as a comment with inline image rendering"
+    ],
+    "changed": [
+      "Comment input bar now has GIF button between text input and Post button",
+      "GIF comments stored as [gif]URL[/gif] in content field (no schema changes)"
+    ],
+    "fixed": []
+  },
+  {
+    "version": "0.2.7",
+    "date": "2026-02-23",
+    "added": [
+      "Server-side group coin RPC (add_group_coins) — all members see same balance",
+      "Group coins earned for comments and replies in groups (+2 each)",
+      "Group post dropdown menu: Save, Report, Hide, Edit (own), Delete (own)"
+    ],
+    "changed": [
+      "Group coins now persist to database (shared across all users, not localStorage)",
+      "Group shop purchases sync coin spending to database",
+      "Group like/dislike properly awards both personal (+1) and group (+1) coins",
+      "Group posts now have same options as main feed posts (except Share)"
+    ],
+    "fixed": [
+      "Group coins from likes/dislikes never awarded (regex didn't match UUID post IDs)",
+      "No group coins awarded for commenting or replying in groups",
+      "Could earn coins for liking own posts in groups (isOwnPost now checks group feed)",
+      "Group likes/dislikes not synced to Supabase (sbToggleLike calls were missing)",
+      "Group posts missing three-dot menu (no way to edit, delete, save, report, or hide)"
+    ]
+  },
+  {
+    "version": "0.2.6",
+    "date": "2026-02-23",
+    "added": [
+      "Group photos now persist to Supabase Storage (profile + cover)",
+      "Screenshot attachment in feedback modal (optional, uploads to Storage)"
+    ],
+    "changed": [
+      "Personal profile feed excludes group posts",
+      "Group coin balance synced from database instead of local state"
+    ],
+    "fixed": [
+      "Group profile/cover photos disappearing on reload (now uploaded to Storage + saved to DB)",
+      "Group posts appearing on personal profile feed",
+      "Group view layout — posts off to the side on tablet (CSS grid fix)",
+      "Group coins showing 0 (coin_balance not mapped from DB)"
+    ]
+  },
+  {
+    "version": "0.2.5",
+    "date": "2026-02-23",
+    "added": [
+      "Video auto-pause on scroll — videos stop when scrolled off-screen",
+      "Autoplay setting toggle in Settings controls scroll behavior",
+      "Security hardening Phase 2: rate limiting, upload validation, admin logs"
+    ],
+    "changed": [
+      "DM sending now server-side rate limited (30 msgs/60s)",
+      "Search uses server-side parameterized query (no more string interpolation)",
+      "File uploads restricted to JPEG, PNG, WebP, GIF only"
+    ],
+    "fixed": [
+      "Instagram/TikTok/Spotify embeds now pause when scrolled away",
+      "RLS gaps patched for notifications, messages, user_skins, group_skins",
+      "Multiple videos could play simultaneously without being able to find them"
+    ]
+  },
+  {
+    "version": "0.2.4",
+    "date": "2026-02-23",
+    "added": [
+      "XSS sanitization on 45+ user-content injection points",
+      "Cookie consent banner gating all third-party embeds",
+      "Delete My Account button in Settings with double confirmation",
+      "Super Admin Panel with user management, suspend, and delete",
+      "Profile RLS — sensitive columns hidden from other users"
+    ],
+    "changed": [
+      "Own profile data now fetched via secure RPC instead of direct query",
+      "Admin actions enforced server-side via SECURITY DEFINER functions",
+      "Geolocation changed to opt-in (was firing unconditionally)"
+    ],
+    "fixed": [
+      "Search injection via PostgREST filter characters",
+      "Admin privilege escalation blocked (is_admin column revoked from client)"
+    ]
+  },
+  {
+    "version": "0.2.3",
+    "date": "2026-02-23",
+    "added": [
+      "Inline media embeds for YouTube, Vimeo, TikTok, Twitter/X, Instagram, Spotify, SoundCloud",
+      "Version-based TOS acceptance system — forces re-accept on TOS update",
+      "Newline preservation in posts, comments, and messages",
+      "Updated Terms of Service (v3) with 21 sections",
+      "My Posts tab in main feed"
+    ],
+    "changed": [
+      "YouTube embeds switched to privacy-enhanced youtube-nocookie.com",
+      "Instagram embeds switched to iframe for reliable mobile playback",
+      "Video embeds use proper 16:9 aspect ratio container"
+    ],
+    "fixed": [
+      "Suggestion name overflow cutting into neighboring cards",
+      "People You May Know moved from hidden left sidebar to right sidebar"
+    ]
+  },
+  {
+    "version": "0.2.2",
+    "date": "2026-02-19",
+    "added": [
+      "Per-photo comments in lightbox viewer (desktop panel + mobile sheet)",
+      "Per-photo likes and dislikes with optimistic UI",
+      "Album system with pill tabs, upload, and drag-scroll",
+      "Saved posts page with folder pill tabs",
+      "Report / Feedback modal in Settings",
+      "Mobile bottom nav bar extended to tablets (≤768px)"
+    ],
+    "changed": [
+      "Coins no longer awarded for interacting with your own content",
+      "Albums tab shown for all users (own + others), not just self"
+    ],
+    "fixed": [
+      "Tablet swipe jumping to wrong category in skin shops",
+      "Groups page defaults to My Groups tab",
+      "Mobile refresh going to home screen (localStorage fallback)",
+      "Photos disappearing on reload (race condition)",
+      "Cross-device sync not working on mobile (visibilitychange listener)",
+      "Saved posts not showing up (was only checking current feed)",
+      "Premium transparency bleeding into group view",
+      "Group skins bleeding between groups"
+    ]
+  }
+]
