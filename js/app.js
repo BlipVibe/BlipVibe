@@ -827,20 +827,24 @@ function saveState(){
 }
 var _skinSyncTimer=null;
 function _buildSkinData(){
-    var _bk=_pvSaved||_gvSaved||null;
+    // When viewing another profile or group, read own data from cache to avoid saving theirs
+    var _bk=null;
+    if((_pvSaved||_gvSaved)&&currentUser){
+        try{_bk=JSON.parse(localStorage.getItem('blipvibe_cache_'+currentUser.id));}catch(e){}
+    }
     return {
-        activeSkin:(_bk?_bk.skin:state.activeSkin)||null,
-        activePremiumSkin:(_bk?_bk.premiumSkin:state.activePremiumSkin)||null,
-        activeFont:(_bk&&_bk.font!==undefined?_bk.font:state.activeFont)||null,
-        activeTemplate:(_bk&&_bk.tpl!==undefined?_bk.tpl:state.activeTemplate)||null,
+        activeSkin:(_bk?_bk.activeSkin:state.activeSkin)||null,
+        activePremiumSkin:(_bk?_bk.activePremiumSkin:state.activePremiumSkin)||null,
+        activeFont:(_bk?_bk.activeFont:state.activeFont)||null,
+        activeTemplate:(_bk?_bk.activeTemplate:state.activeTemplate)||null,
         activeNavStyle:state.activeNavStyle||null,
         activeIconSet:state.activeIconSet||null,
         activeLogo:state.activeLogo||null,
         activeCoinSkin:state.activeCoinSkin||null,
-        premiumBgUrl:(_bk?_bk.bgImage:premiumBgImage)||null,
-        premiumBgOverlay:(_bk?_bk.bgOverlay:premiumBgOverlay)!=null?(_bk?_bk.bgOverlay:premiumBgOverlay):0,
-        premiumBgDarkness:(_bk?_bk.bgDarkness:premiumBgDarkness)!=null?(_bk?_bk.bgDarkness:premiumBgDarkness):0,
-        premiumCardTransparency:(_bk?_bk.cardTrans:premiumCardTransparency)!=null?(_bk?_bk.cardTrans:premiumCardTransparency):0.1,
+        premiumBgUrl:(_bk?_bk.premiumBgUrl:premiumBgImage)||null,
+        premiumBgOverlay:(_bk&&_bk.premiumBgOverlay!=null?_bk.premiumBgOverlay:premiumBgOverlay)||0,
+        premiumBgDarkness:(_bk&&_bk.premiumBgDarkness!=null?_bk.premiumBgDarkness:premiumBgDarkness)||0,
+        premiumCardTransparency:(_bk&&_bk.premiumCardTransparency!=null?_bk.premiumCardTransparency:premiumCardTransparency!=null?premiumCardTransparency:0.1),
         ownedSkins:state.ownedSkins||{},
         ownedPremiumSkins:state.ownedPremiumSkins||{},
         ownedFonts:state.ownedFonts||{},
@@ -1274,17 +1278,13 @@ function navigateTo(page,skipPush){
     if(_tn) _tn.style.display='';if(_bn) _bn.style.display='';
     // Restore user's skin/font/template when leaving profile view
     if(_pvSaved&&page!=='profile-view'){
-        premiumBgImage=_pvSaved.bgImage;premiumBgOverlay=_pvSaved.bgOverlay;premiumBgDarkness=_pvSaved.bgDarkness||0;premiumCardTransparency=_pvSaved.cardTrans!=null?_pvSaved.cardTrans:0.1;
-        state.activeSkin=_pvSaved.skin||null;
-        state.activePremiumSkin=_pvSaved.premiumSkin||null;
-        // Clear any viewed person's premium skin classes first
-        applyPremiumSkin(null,true);
-        applySkin(_pvSaved.skin||null,true);
-        if(_pvSaved.premiumSkin) applyPremiumSkin(_pvSaved.premiumSkin,true);
-        updatePremiumBg();
-        applyFont(_pvSaved.font||null,true);
-        applyTemplate(_pvSaved.tpl||null,true);
         _pvSaved=null;
+        // Pull actual settings from Supabase (source of truth) and reapply
+        applyPremiumSkin(null,true);
+        applySkin(null,true);
+        loadSkinDataFromSupabase().then(function(){
+            reapplyCustomizations();
+        });
     }
     // Clear active group context when leaving group view
     _activeGroupId=null;
@@ -2886,15 +2886,15 @@ async function showProfileView(person){
 
     // Restore previous skin if we're coming from another profile view
     if(_pvSaved){
-        premiumBgImage=_pvSaved.bgImage;premiumBgOverlay=_pvSaved.bgOverlay;premiumBgDarkness=_pvSaved.bgDarkness||0;premiumCardTransparency=_pvSaved.cardTrans!=null?_pvSaved.cardTrans:0.1;
-        state.activeSkin=_pvSaved.skin||null;state.activePremiumSkin=_pvSaved.premiumSkin||null;state.activeFont=_pvSaved.font||null;state.activeTemplate=_pvSaved.tpl||null;
-        applyPremiumSkin(null,true);
-        applySkin(_pvSaved.skin||null,true);
-        if(_pvSaved.premiumSkin) applyPremiumSkin(_pvSaved.premiumSkin,true);
-        updatePremiumBg();
-        applyFont(_pvSaved.font||null,true);
-        applyTemplate(_pvSaved.tpl||null,true);
         _pvSaved=null;
+        // Restore own settings from localStorage cache (instant, no network)
+        applyPremiumSkin(null,true);
+        applySkin(null,true);
+        try{
+            var cached=JSON.parse(localStorage.getItem('blipvibe_cache_'+currentUser.id));
+            if(cached) _applySkinDataFromCache(cached);
+        }catch(e){}
+        reapplyCustomizations();
     }
     // Fetch public skin data for other users (skin_data column is revoked from SELECT)
     if(!isMe&&person.id&&!person._skinLoaded){
@@ -2911,7 +2911,7 @@ async function showProfileView(person){
         }catch(e){console.warn('Failed to load public skin data:',e);}
     }
     // Apply viewed person's skin/font/template (silent, don't change state)
-    _pvSaved={skin:state.activeSkin,premiumSkin:state.activePremiumSkin,font:state.activeFont,tpl:state.activeTemplate,bgImage:premiumBgImage,bgOverlay:premiumBgOverlay,bgDarkness:premiumBgDarkness,cardTrans:premiumCardTransparency};
+    _pvSaved=true; // flag: we're on a profile view, restore from Supabase/cache on exit
     if(!isMe){
         if(person.premiumSkin){
             applyPremiumSkin(person.premiumSkin,true);
