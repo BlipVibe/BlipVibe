@@ -821,22 +821,23 @@ function saveState(){
     syncSkinDataToSupabase();
 }
 var _skinSyncTimer=null;
+var _pvRealSkin=null; // stores our real skin values while viewing another profile
 function _buildSkinData(){
-    // syncSkinDataToSupabase is blocked when _pvSaved/_gvSaved is set,
-    // so this only runs when state reflects the user's own settings
+    // Use real values if viewing another profile (state is mutated with their skin)
+    var r=_pvRealSkin||{};
     return {
-        activeSkin:state.activeSkin||null,
-        activePremiumSkin:state.activePremiumSkin||null,
-        activeFont:state.activeFont||null,
-        activeTemplate:state.activeTemplate||null,
+        activeSkin:(_pvRealSkin?r.skin:state.activeSkin)||null,
+        activePremiumSkin:(_pvRealSkin?r.premiumSkin:state.activePremiumSkin)||null,
+        activeFont:(_pvRealSkin?r.font:state.activeFont)||null,
+        activeTemplate:(_pvRealSkin?r.tpl:state.activeTemplate)||null,
         activeNavStyle:state.activeNavStyle||null,
         activeIconSet:state.activeIconSet||null,
         activeLogo:state.activeLogo||null,
         activeCoinSkin:state.activeCoinSkin||null,
-        premiumBgUrl:premiumBgImage||null,
-        premiumBgOverlay:premiumBgOverlay||0,
-        premiumBgDarkness:premiumBgDarkness||0,
-        premiumCardTransparency:premiumCardTransparency!=null?premiumCardTransparency:0.1,
+        premiumBgUrl:(_pvRealSkin?_pvRealSkin.bgImage:premiumBgImage)||null,
+        premiumBgOverlay:(_pvRealSkin?_pvRealSkin.bgOverlay:premiumBgOverlay)||0,
+        premiumBgDarkness:(_pvRealSkin?_pvRealSkin.bgDarkness:premiumBgDarkness)||0,
+        premiumCardTransparency:(_pvRealSkin?_pvRealSkin.cardTrans:premiumCardTransparency)!=null?(_pvRealSkin?_pvRealSkin.cardTrans:premiumCardTransparency):0.1,
         ownedSkins:state.ownedSkins||{},
         ownedPremiumSkins:state.ownedPremiumSkins||{},
         ownedFonts:state.ownedFonts||{},
@@ -1342,10 +1343,11 @@ function navigateTo(page,skipPush){
         // Keep _pvSaved set to block syncs until restore completes
         applyPremiumSkin(null,true);
         applySkin(null,true);
+        _pvRealSkin=null;
         loadSkinDataFromSupabase().then(function(){
             _pvSaved=null; // only clear AFTER server data is loaded
             reapplyCustomizations();
-        }).catch(function(){_pvSaved=null;});
+        }).catch(function(){_pvSaved=null;_pvRealSkin=null;});
     }
     // Clear active group context when leaving group view
     _activeGroupId=null;
@@ -2944,6 +2946,7 @@ async function showProfileView(person){
         // Keep _pvSaved set to block syncs until restore completes
         applyPremiumSkin(null,true);
         applySkin(null,true);
+        _pvRealSkin=null;
         await loadSkinDataFromSupabase();
         _pvSaved=null; // only clear AFTER server data is loaded
         reapplyCustomizations();
@@ -2962,14 +2965,16 @@ async function showProfileView(person){
             }
         }catch(e){console.warn('Failed to load public skin data:',e);}
     }
-    // Apply viewed person's skin/font/template (silent, don't change state)
+    // Apply viewed person's skin/font/template visually WITHOUT mutating state
     _pvSaved=true; // flag: we're on a profile view, restore from Supabase/cache on exit
     if(!isMe){
+        // Save our real values before any visual changes
+        _pvRealSkin={premiumSkin:state.activePremiumSkin,skin:state.activeSkin,font:state.activeFont,tpl:state.activeTemplate,bgImage:premiumBgImage,bgOverlay:premiumBgOverlay,bgDarkness:premiumBgDarkness,cardTrans:premiumCardTransparency};
         if(person.premiumSkin){
             applyPremiumSkin(person.premiumSkin,true);
             if(person.premiumBg){premiumBgImage=person.premiumBg.src;premiumBgOverlay=person.premiumBg.overlay!=null?person.premiumBg.overlay:0;premiumBgDarkness=person.premiumBg.darkness!=null?person.premiumBg.darkness:0;premiumCardTransparency=person.premiumBg.cardTrans!=null?person.premiumBg.cardTrans:0.1;}
             else{premiumBgImage=null;premiumBgOverlay=0;premiumBgDarkness=0;premiumCardTransparency=0.1;}
-            // Temporarily set activePremiumSkin so updatePremiumBg shows the bg
+            // Set activePremiumSkin for updatePremiumBg — but _pvRealSkin has our real value
             state.activePremiumSkin=person.premiumSkin;
             updatePremiumBg();
         } else {
