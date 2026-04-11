@@ -854,6 +854,7 @@ function _buildSkinData(){
         dislikedPosts:state.dislikedPosts||{},
         dislikedComments:dislikedComments||{},
         commentCoinAwarded:commentCoinAwarded||{},
+        commentReactions:_commentReactions||{},
         savedFolders:savedFolders||[],
         hiddenPosts:hiddenPosts||{},
         reportedPosts:reportedPosts||[],
@@ -931,6 +932,7 @@ function _applySkinDataFromCache(sd){
     if(sd.dislikedPosts&&typeof sd.dislikedPosts==='object') state.dislikedPosts=sd.dislikedPosts;
     if(sd.dislikedComments&&typeof sd.dislikedComments==='object') dislikedComments=sd.dislikedComments;
     if(sd.commentCoinAwarded&&typeof sd.commentCoinAwarded==='object') commentCoinAwarded=sd.commentCoinAwarded;
+    if(sd.commentReactions&&typeof sd.commentReactions==='object') _commentReactions=sd.commentReactions;
     if(Array.isArray(sd.savedFolders)&&sd.savedFolders.length) savedFolders=sd.savedFolders;
     if(sd.hiddenPosts&&typeof sd.hiddenPosts==='object') hiddenPosts=sd.hiddenPosts;
     if(Array.isArray(sd.reportedPosts)) reportedPosts=sd.reportedPosts;
@@ -1050,6 +1052,7 @@ function persistReports(){saveState();syncSkinDataToSupabase(true);}
 var blockedUsers={};
 var likedComments={};
 var dislikedComments={};
+var _commentReactions={};
 var commentCoinAwarded={};
 var _tutorialsSeen={};
 function persistBlocked(){saveState();syncSkinDataToSupabase(true);}
@@ -2440,6 +2443,8 @@ function buildCommentHtml(cid,name,img,text,likes,isReply,authorId,replyToName){
     h+='<div class="comment-actions-row" style="display:flex;gap:12px;margin-top:8px;">';
     h+='<button class="comment-like-btn" data-cid="'+cid+'" data-aid="'+(authorId||'')+'" style="background:none;font-size:12px;color:'+(liked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:4px;"><i class="'+(liked?'fas':'far')+' fa-thumbs-up"></i><span>'+lc+'</span></button>';
     h+='<button class="comment-dislike-btn" data-cid="'+cid+'" data-aid="'+(authorId||'')+'" style="background:none;font-size:12px;color:'+(disliked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:4px;"><i class="'+(disliked?'fas':'far')+' fa-thumbs-down"></i><span>'+dc+'</span></button>';
+    var cReact=_commentReactions[cid];
+    h+='<button class="comment-react-btn" data-cid="'+cid+'" style="background:none;font-size:12px;color:#999;cursor:pointer;">'+(cReact?'<span style="font-size:14px;">'+cReact+'</span>':'<i class="far fa-face-smile"></i>')+'</button>';
     h+='<button class="comment-reply-btn" data-cid="'+cid+'" style="background:none;font-size:12px;color:#999;cursor:pointer;"><i class="far fa-comment"></i> Reply</button>';
     if(isOwn) h+='<button class="comment-edit-btn" data-cid="'+cid+'" data-text="'+escapeHtml(text)+'" style="background:none;font-size:12px;color:#999;cursor:pointer;"><i class="fas fa-pen"></i> Edit</button>';
     if(isOwn) h+='<button class="comment-delete-btn" data-cid="'+cid+'" style="background:none;font-size:12px;color:#e74c3c;cursor:pointer;"><i class="fas fa-trash"></i> Delete</button>';
@@ -2731,6 +2736,14 @@ function bindCommentLikes(){
             }
             span.textContent=ct;
         };
+    });
+    // Comment emoji reactions
+    $$('.comment-react-btn').forEach(function(btn){
+        if(btn._reactBound) return; btn._reactBound=true;
+        btn.addEventListener('click',function(e){
+            e.stopPropagation();
+            showCommentReactionPicker(btn.dataset.cid,btn);
+        });
     });
 }
 function bindCommentDeletes(postId,countEl){
@@ -10783,6 +10796,47 @@ function toggleReaction(postId,emoji,btn){
             sbRemoveReaction(currentUser.id,'post',postId).catch(function(){});
         }
     }
+}
+
+// ======================== EMOJI REACTIONS ON COMMENTS ========================
+function showCommentReactionPicker(cid,btn){
+    var existing=document.querySelector('.reaction-picker');
+    if(existing) existing.remove();
+    var picker=document.createElement('div');
+    picker.className='reaction-picker';
+    _reactionEmojis.forEach(function(em){
+        var b=document.createElement('button');
+        b.className='reaction-emoji-btn';
+        b.textContent=em;
+        b.addEventListener('click',function(e){
+            e.stopPropagation();
+            toggleCommentReaction(cid,em,btn);
+            picker.remove();
+        });
+        picker.appendChild(b);
+    });
+    var rect=btn.getBoundingClientRect();
+    picker.style.position='fixed';
+    picker.style.left=rect.left+'px';
+    picker.style.top=(rect.top-44)+'px';
+    picker.style.bottom='auto';
+    picker.style.zIndex='999999';
+    document.body.appendChild(picker);
+    var _closeTimer=setTimeout(function(){picker.remove();},4000);
+    document.addEventListener('click',function _closeReact(){picker.remove();clearTimeout(_closeTimer);document.removeEventListener('click',_closeReact);},{once:true});
+}
+function toggleCommentReaction(cid,emoji,btn){
+    if(_commentReactions[cid]===emoji){
+        delete _commentReactions[cid];
+    } else {
+        _commentReactions[cid]=emoji;
+    }
+    if(_commentReactions[cid]){
+        btn.innerHTML='<span style="font-size:14px;">'+_commentReactions[cid]+'</span>';
+    } else {
+        btn.innerHTML='<i class="far fa-face-smile"></i>';
+    }
+    saveState();
 }
 
 // ======================== VOICE NOTES IN DMs ========================

@@ -3767,7 +3767,7 @@ body.light-mode::before{background:#f8fafc;}
 @keyframes musicPulse{0%,100%{opacity:1;}50%{opacity:.5;}}
 
 /* ========== GLOBAL STICKY MINI PLAYER ========== */
-#globalMiniPlayer{position:fixed;bottom:0;left:0;right:0;z-index:900;background:var(--nav-bg,#0f172a);border-top:1px solid var(--border);padding:8px 16px;display:none;align-items:center;gap:10px;transition:transform .3s ease;max-width:600px;margin:0 auto;border-radius:12px 12px 0 0;}
+#globalMiniPlayer{position:fixed;bottom:0;left:0;right:0;z-index:99;background:var(--nav-bg,#0f172a);border-top:1px solid var(--border);padding:8px 16px;display:none;align-items:center;gap:10px;transition:transform .3s ease;max-width:600px;margin:0 auto;border-radius:12px 12px 0 0;}
 #globalMiniPlayer.visible{display:flex;}
 #globalMiniPlayer .gmp-art{width:36px;height:36px;border-radius:8px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;flex-shrink:0;}
 #globalMiniPlayer .gmp-info{flex:1;min-width:0;}
@@ -3783,7 +3783,7 @@ body.light-mode::before{background:#f8fafc;}
 @media(max-width:768px){
     #globalMiniPlayer{bottom:calc(64px + env(safe-area-inset-bottom,0px));padding:6px 12px;max-width:100%;border-radius:0;left:0;right:0;}
 }
-body.nav-pill #globalMiniPlayer{bottom:72px!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important;max-width:500px!important;border-radius:12px!important;z-index:900!important;}
+body.nav-pill #globalMiniPlayer{bottom:72px!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important;max-width:500px!important;border-radius:12px!important;z-index:99!important;}
 body.nav-pill.music-player-visible .page{padding-bottom:130px!important;}
 body.nav-island.music-player-visible .page{padding-bottom:130px!important;}
 body.music-player-visible .page{padding-bottom:120px!important;}
@@ -3791,7 +3791,7 @@ body.nav-dock #globalMiniPlayer,
 body.nav-horizon #globalMiniPlayer,
 body.nav-wheel #globalMiniPlayer,
 body.nav-split #globalMiniPlayer{bottom:calc(60px + env(safe-area-inset-bottom,0px))!important;}
-body.nav-island #globalMiniPlayer{bottom:72px!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important;max-width:500px!important;border-radius:12px!important;z-index:900!important;}
+body.nav-island #globalMiniPlayer{bottom:72px!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important;max-width:500px!important;border-radius:12px!important;z-index:99!important;}
 .profile-music-player.playing .pmp-art{animation:musicPulse 1.5s ease infinite;}
 
 /* ========== SONG PICKER ========== */
