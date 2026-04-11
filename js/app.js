@@ -815,7 +815,7 @@ var state = {
 var settings={darkMode:false,notifSound:true,privateProfile:false,autoplay:true,commentOrder:'top',showLocation:false};
 var userLocation=null; // Detected state/region from geolocation
 
-// Persist state to localStorage (keyed per user)
+// Persist state to Supabase (sole source of truth)
 function saveState(){
     if(!currentUser) return;
     syncSkinDataToSupabase();
@@ -857,6 +857,19 @@ function _buildSkinData(){
         earnedBadges:state.earnedBadges||{},
         mutedUsers:mutedUsers||{},
         notifPrefs:_notifPrefs||{},
+        closeFriends:_closeFriends||{},
+        postReactions:_postReactions||{},
+        postViews:_postViews||{},
+        streaks:_streaks||{},
+        dailyCoinCounts:_dailyCoinCounts||{},
+        pinnedComments:_pinnedComments||{},
+        scheduledPosts:_scheduledPosts||[],
+        gcLockedChannels:_gcLockedChannels||{},
+        gcChatMods:_gcChatMods||{},
+        groupDms:_groupDms||[],
+        msgReactions:_msgReactions||{},
+        pollMyVotes:_pollMyVotes||{},
+        pollVoteCounts:_pollVoteCounts||{},
         tosAcceptedVersion:_tosAccepted?TOS_VERSION:((currentUser&&currentUser.skin_data&&currentUser.skin_data.tosAcceptedVersion)||0),
         tutorialsSeen:_tutorialsSeen||{},
         infinityCoins:state._infinityCoins||(currentUser&&currentUser.skin_data&&currentUser.skin_data.infinityCoins)||false
@@ -922,6 +935,19 @@ function _applySkinDataFromCache(sd){
     if(sd.earnedBadges&&typeof sd.earnedBadges==='object') state.earnedBadges=sd.earnedBadges;
     if(sd.mutedUsers&&typeof sd.mutedUsers==='object') mutedUsers=sd.mutedUsers;
     if(sd.notifPrefs&&typeof sd.notifPrefs==='object') _notifPrefs=sd.notifPrefs;
+    if(sd.closeFriends&&typeof sd.closeFriends==='object') _closeFriends=sd.closeFriends;
+    if(sd.postReactions&&typeof sd.postReactions==='object') _postReactions=sd.postReactions;
+    if(sd.postViews&&typeof sd.postViews==='object') _postViews=sd.postViews;
+    if(sd.streaks&&typeof sd.streaks==='object') _streaks=sd.streaks;
+    if(sd.dailyCoinCounts&&typeof sd.dailyCoinCounts==='object') _dailyCoinCounts=sd.dailyCoinCounts;
+    if(sd.pinnedComments&&typeof sd.pinnedComments==='object') _pinnedComments=sd.pinnedComments;
+    if(Array.isArray(sd.scheduledPosts)) _scheduledPosts=sd.scheduledPosts;
+    if(sd.gcLockedChannels&&typeof sd.gcLockedChannels==='object') _gcLockedChannels=sd.gcLockedChannels;
+    if(sd.gcChatMods&&typeof sd.gcChatMods==='object') _gcChatMods=sd.gcChatMods;
+    if(Array.isArray(sd.groupDms)) _groupDms=sd.groupDms;
+    if(sd.msgReactions&&typeof sd.msgReactions==='object') _msgReactions=sd.msgReactions;
+    if(sd.pollMyVotes&&typeof sd.pollMyVotes==='object') _pollMyVotes=sd.pollMyVotes;
+    if(sd.pollVoteCounts&&typeof sd.pollVoteCounts==='object') _pollVoteCounts=sd.pollVoteCounts;
     if(sd.settings&&sd.settings.messagePrivacy) settings.messagePrivacy=sd.settings.messagePrivacy;
     if(sd.infinityCoins) state._infinityCoins=true;
     // Group skin data now loaded from group's own skin_data column (see loadGroups)
@@ -1516,7 +1542,7 @@ function _getDailyCounts(){
     var key=_getDailyCoinKey();
     if(!_dailyCoinCounts._date||_dailyCoinCounts._date!==key){
         _dailyCoinCounts={_date:key,posts:0,comments:0,replies:0,postLikes:0,commentLikes:0};
-        try{localStorage.setItem('blipvibe_daily_coins',JSON.stringify(_dailyCoinCounts));}catch(e){}
+        saveState();
     }
     return _dailyCoinCounts;
 }
@@ -1524,11 +1550,10 @@ function _incrementDailyCoin(type){
     var counts=_getDailyCounts();
     if(counts[type]>=_dailyCoinCaps[type]) return false; // cap reached
     counts[type]++;
-    try{localStorage.setItem('blipvibe_daily_coins',JSON.stringify(counts));}catch(e){}
+    saveState();
     return true; // allowed
 }
-// Load saved daily counts on startup
-try{var _saved=JSON.parse(localStorage.getItem('blipvibe_daily_coins')||'{}');if(_saved._date===_getDailyCoinKey()) _dailyCoinCounts=_saved;}catch(e){}
+// _dailyCoinCounts loaded from skin_data via _applySkinDataFromCache
 
 // Check if user has infinity status (early adopter)
 function _hasInfinity(){
@@ -4195,12 +4220,12 @@ function _cleanupGroupChat(exitFullscreen){
 
 // ======================== GROUP CHAT SETTINGS ========================
 var _gcLockedChannels={};
-try{_gcLockedChannels=JSON.parse(localStorage.getItem('blipvibe_gc_locked')||'{}');}catch(e){}
-function persistGcLocked(){try{localStorage.setItem('blipvibe_gc_locked',JSON.stringify(_gcLockedChannels));}catch(e){}}
+// _gcLockedChannels loaded from skin_data via _applySkinDataFromCache
+function persistGcLocked(){saveState();}
 
 var _gcChatMods={};
-try{_gcChatMods=JSON.parse(localStorage.getItem('blipvibe_gc_mods')||'{}');}catch(e){}
-function persistGcMods(){try{localStorage.setItem('blipvibe_gc_mods',JSON.stringify(_gcChatMods));}catch(e){}}
+// _gcChatMods loaded from skin_data via _applySkinDataFromCache
+function persistGcMods(){saveState();}
 
 function isGcAdmin(group){
     return canManageGroupSkins(group);
@@ -5666,6 +5691,9 @@ function pauseAllVideos(){
 })();
 
 // ======================== POLL RENDERING ========================
+var _pollMyVotes={};
+var _pollVoteCounts={};
+// _pollMyVotes and _pollVoteCounts loaded from skin_data via _applySkinDataFromCache
 function renderPollInPost(text,postId){
     var match=text.match(/\[poll\](.*?)\[\/poll\]/);
     if(!match) return {text:text,pollHtml:''};
@@ -5673,15 +5701,13 @@ function renderPollInPost(text,postId){
     var poll;
     try{poll=JSON.parse(match[1]);}catch(e){return {text:cleanText,pollHtml:''};}
     if(!poll||!poll.options) return {text:cleanText,pollHtml:''};
-    // Check if user already voted (stored in localStorage)
-    var voteKey='blipvibe_poll_'+postId;
-    var myVote=null;
-    try{myVote=localStorage.getItem(voteKey);}catch(e){}
+    // Check if user already voted (stored in skin_data)
+    var myVote=_pollMyVotes[postId]!=null?String(_pollMyVotes[postId]):null;
     var voted=myVote!==null;
-    // Get vote counts from localStorage (shared across users on same device for now)
-    var votesKey='blipvibe_pollvotes_'+postId;
+    // Get vote counts from skin_data
     var votes={};var totalVotes=0;
-    try{var stored=JSON.parse(localStorage.getItem(votesKey)||'{}');votes=stored.votes||{};totalVotes=stored.total||0;}catch(e){}
+    var stored=_pollVoteCounts[postId]||{};
+    votes=stored.votes||{};totalVotes=stored.total||0;
     var h='<div class="poll-container" data-postid="'+postId+'">';
     poll.options.forEach(function(opt,i){
         var count=votes[i]||0;
@@ -5710,16 +5736,12 @@ function bindPollVotes(containerSel){
         btn.addEventListener('click',function(){
             var postId=btn.dataset.postid;
             var optIdx=btn.dataset.optidx;
-            // Save vote
-            try{localStorage.setItem('blipvibe_poll_'+postId,optIdx);}catch(e){}
-            // Update counts
-            var votesKey='blipvibe_pollvotes_'+postId;
-            var stored={};
-            try{stored=JSON.parse(localStorage.getItem(votesKey)||'{}');}catch(e){}
-            if(!stored.votes) stored.votes={};
-            stored.votes[optIdx]=(stored.votes[optIdx]||0)+1;
-            stored.total=(stored.total||0)+1;
-            try{localStorage.setItem(votesKey,JSON.stringify(stored));}catch(e){}
+            // Save vote to skin_data
+            _pollMyVotes[postId]=optIdx;
+            if(!_pollVoteCounts[postId]) _pollVoteCounts[postId]={votes:{},total:0};
+            _pollVoteCounts[postId].votes[optIdx]=(_pollVoteCounts[postId].votes[optIdx]||0)+1;
+            _pollVoteCounts[postId].total=(_pollVoteCounts[postId].total||0)+1;
+            saveState();
             // Re-render the poll
             var container=btn.closest('.poll-container');
             if(container){
@@ -9770,8 +9792,8 @@ function togglePinPost(pid){
 
 // ======================== MUTE USERS ========================
 var mutedUsers={};
-try{var _mu=JSON.parse(localStorage.getItem('blipvibe_muted')||'{}');mutedUsers=_mu;}catch(e){}
-function persistMuted(){try{localStorage.setItem('blipvibe_muted',JSON.stringify(mutedUsers));}catch(e){}}
+// mutedUsers loaded from skin_data via _applySkinDataFromCache
+function persistMuted(){saveState();}
 function muteUser(userId){
     mutedUsers[userId]=true;
     persistMuted();
@@ -10568,7 +10590,7 @@ function showReactionPicker(postId,btn){
     document.addEventListener('click',function _closeReact(){picker.remove();clearTimeout(_closeTimer);document.removeEventListener('click',_closeReact);},{once:true});
 }
 var _postReactions={};
-try{_postReactions=JSON.parse(localStorage.getItem('blipvibe_reactions')||'{}');}catch(e){}
+// _postReactions loaded from skin_data via _applySkinDataFromCache
 function toggleReaction(postId,emoji,btn){
     var had=!!(state.likedPosts[postId]||state.dislikedPosts[postId]||_postReactions[postId]);
     if(_postReactions[postId]===emoji){
@@ -10576,7 +10598,7 @@ function toggleReaction(postId,emoji,btn){
     } else {
         _postReactions[postId]=emoji;
     }
-    try{localStorage.setItem('blipvibe_reactions',JSON.stringify(_postReactions));}catch(e){}
+    saveState();
     // Update the react button to show selected emoji or reset to default icon
     if(_postReactions[postId]){
         btn.innerHTML='<span style="font-size:16px;">'+_postReactions[postId]+'</span>';
@@ -10625,8 +10647,8 @@ function stopVoiceRecording(){
 
 // ======================== CLOSE FRIENDS ========================
 var _closeFriends={};
-try{_closeFriends=JSON.parse(localStorage.getItem('blipvibe_closefriends')||'{}');}catch(e){}
-function persistCloseFriends(){try{localStorage.setItem('blipvibe_closefriends',JSON.stringify(_closeFriends));}catch(e){}}
+// _closeFriends loaded from skin_data via _applySkinDataFromCache
+function persistCloseFriends(){saveState();}
 function toggleCloseFriend(userId){
     if(_closeFriends[userId]){delete _closeFriends[userId];showToast('Removed from Close Friends');}
     else{_closeFriends[userId]=true;showToast('Added to Close Friends');}
@@ -10682,12 +10704,12 @@ async function downloadMyData(){
 
 // ======================== POST VIEW COUNTS ========================
 var _postViews={};
-try{_postViews=JSON.parse(localStorage.getItem('blipvibe_views')||'{}');}catch(e){}
+// _postViews loaded from skin_data via _applySkinDataFromCache
 function trackPostView(postId){
     if(!postId) return;
     if(!_postViews[postId]) _postViews[postId]=0;
     _postViews[postId]++;
-    try{localStorage.setItem('blipvibe_views',JSON.stringify(_postViews));}catch(e){}
+    saveState();
 }
 // Track views when posts enter viewport
 var _viewObserver=null;
@@ -10764,8 +10786,8 @@ function hideTypingIndicator(){
 
 // ======================== STREAKS ========================
 var _streaks={};
-try{_streaks=JSON.parse(localStorage.getItem('blipvibe_streaks')||'{}');}catch(e){}
-function persistStreaks(){try{localStorage.setItem('blipvibe_streaks',JSON.stringify(_streaks));}catch(e){}}
+// _streaks loaded from skin_data via _applySkinDataFromCache
+function persistStreaks(){saveState();}
 function recordInteraction(userId){
     if(!currentUser||userId===currentUser.id) return;
     var key=userId;
@@ -10843,8 +10865,8 @@ function renderBadgesForProfile(container){
 
 // ======================== NOTIFICATION PREFERENCES ========================
 var _notifPrefs={};
-try{_notifPrefs=JSON.parse(localStorage.getItem('blipvibe_notifprefs')||'{}');}catch(e){}
-function persistNotifPrefs(){try{localStorage.setItem('blipvibe_notifprefs',JSON.stringify(_notifPrefs));}catch(e){}}
+// _notifPrefs loaded from skin_data via _applySkinDataFromCache
+function persistNotifPrefs(){saveState();}
 function isNotifEnabled(type){
     if(_notifPrefs[type]===false) return false;
     return true; // default: all enabled
@@ -10856,8 +10878,8 @@ function isNotifEnabled(type){
 
 // ======================== SCHEDULED POSTS ========================
 var _scheduledPosts=[];
-try{_scheduledPosts=JSON.parse(localStorage.getItem('blipvibe_scheduled')||'[]');}catch(e){}
-function persistScheduled(){try{localStorage.setItem('blipvibe_scheduled',JSON.stringify(_scheduledPosts));}catch(e){}}
+// _scheduledPosts loaded from skin_data via _applySkinDataFromCache
+function persistScheduled(){saveState();}
 function checkScheduledPosts(){
     if(!currentUser||!_scheduledPosts.length) return;
     var now=Date.now();
@@ -12062,8 +12084,8 @@ function showQuotePostModal(postId){
 
 // ======================== COMMENT PINNING ========================
 var _pinnedComments={};
-try{_pinnedComments=JSON.parse(localStorage.getItem('blipvibe_pinned_comments')||'{}');}catch(e){}
-function persistPinnedComments(){try{localStorage.setItem('blipvibe_pinned_comments',JSON.stringify(_pinnedComments));}catch(e){}}
+// _pinnedComments loaded from skin_data via _applySkinDataFromCache
+function persistPinnedComments(){saveState();}
 function togglePinComment(postId,commentId){
     if(_pinnedComments[postId]===commentId){
         delete _pinnedComments[postId];
@@ -12223,6 +12245,8 @@ function showShareCollectionModal(folderId){
 }
 
 // ======================== MULTI-PERSON DMS ========================
+var _groupDms=[];
+// _groupDms loaded from skin_data via _applySkinDataFromCache
 function showCreateGroupDmModal(){
     var h='<div class="modal-header"><h3><i class="fas fa-users" style="color:var(--primary);margin-right:8px;"></i>New Group Chat</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     h+='<div class="modal-body">';
@@ -12277,9 +12301,8 @@ function showCreateGroupDmModal(){
         var gdmId='gdm_'+Date.now();
         var gdm={id:gdmId,name:name,members:selected.map(function(p){return p.id;}),created:Date.now()};
         try{
-            var gdms=JSON.parse(localStorage.getItem('blipvibe_group_dms')||'[]');
-            gdms.push(gdm);
-            localStorage.setItem('blipvibe_group_dms',JSON.stringify(gdms));
+            _groupDms.push(gdm);
+            saveState();
         }catch(e){}
         closeModal();
         showToast('Group chat "'+name+'" created!');
@@ -12565,8 +12588,8 @@ document.addEventListener('click',function(e){
 // ======================== MESSAGE REACTIONS ========================
 var _msgReactionEmojis=['❤️','😂','😮','😢','👍','👎'];
 var _msgReactions={};
-try{_msgReactions=JSON.parse(localStorage.getItem('blipvibe_msg_reactions')||'{}');}catch(e){}
-function persistMsgReactions(){try{localStorage.setItem('blipvibe_msg_reactions',JSON.stringify(_msgReactions));}catch(e){}}
+// _msgReactions loaded from skin_data via _applySkinDataFromCache
+function persistMsgReactions(){saveState();}
 function showMsgReactionPicker(bubble){
     var existing=document.querySelector('.msg-reaction-picker');
     if(existing) existing.remove();
