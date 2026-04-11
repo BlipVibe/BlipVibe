@@ -1777,6 +1777,7 @@ function renderNotifications(){
 
 // ======================== MODAL ========================
 var _modalScrollY=0;
+var _gmpVisibleBeforeModal=false;
 function showModal(html){
     $('#modalContent').innerHTML=html;
     var alreadyOpen=document.body.classList.contains('modal-open');
@@ -1786,12 +1787,17 @@ function showModal(html){
         document.body.classList.add('modal-open');
         document.body.style.top=(-_modalScrollY)+'px';
     }
+    // Hide music player when any modal opens
+    var gmp=document.getElementById('globalMiniPlayer');
+    if(gmp&&gmp.classList.contains('visible')){_gmpVisibleBeforeModal=true;gmp.classList.remove('visible');}
 }
 function closeModal(){
     $('#modalOverlay').classList.remove('show');
     document.body.classList.remove('modal-open');
     document.body.style.top='';
     window.scrollTo(0,_modalScrollY);
+    // Restore music player when modal closes
+    if(_gmpVisibleBeforeModal){var gmp=document.getElementById('globalMiniPlayer');if(gmp) gmp.classList.add('visible');_gmpVisibleBeforeModal=false;}
 }
 var _cropDragging=false;
 $('#modalOverlay').addEventListener('click',function(e){
