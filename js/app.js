@@ -10349,13 +10349,13 @@ function openStoryViewer(userId){
     }
     var overlay=document.createElement('div');
     overlay.className='story-viewer-overlay';
-    function closeStoryViewer(){
+    function closeStoryViewer(skipMusicResume){
         clearTimeout(overlay._timer);
         if(overlay._storyAudio){overlay._storyAudio.pause();overlay._storyAudio=null;}
         overlay.remove();
         renderStoriesBar();
-        // Resume global player if it was playing
-        if(_wasGlobalPlaying){
+        // Resume global player if it was playing (skip if navigating to profile)
+        if(_wasGlobalPlaying&&!skipMusicResume){
             var ga=_getCurrentAudio();
             if(ga){ga.volume=0;ga.play().then(function(){_fadeAudio(ga,0,_gmpBaseVol,600,null);}).catch(function(){});}
         }
@@ -10511,7 +10511,7 @@ function openStoryViewer(userId){
         var avatarEl=e.target.closest('.clickable-avatar');
         if(avatarEl&&avatarEl.dataset.personId){
             var uid=avatarEl.dataset.personId;
-            closeStoryViewer();
+            closeStoryViewer(true);
             sbGetProfile(uid).then(function(p){if(p)showProfileView(profileToPerson(p));}).catch(function(){});
             return;
         }
