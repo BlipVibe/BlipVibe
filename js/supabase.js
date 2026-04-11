@@ -1565,6 +1565,22 @@ async function sbPurchaseSong(userId, songId) {
   if (error) throw error;
 }
 
+async function sbSetProfilePlaylist(userId, songIds, mode) {
+  const { error } = await sb.from('profiles')
+    .update({ profile_playlist: songIds || [], playlist_mode: mode || 'repeat' })
+    .eq('id', userId);
+  if (error) throw error;
+}
+
+async function sbGetProfilePlaylist(userId) {
+  const { data, error } = await sb.from('profiles')
+    .select('profile_playlist, playlist_mode')
+    .eq('id', userId)
+    .single();
+  if (error) throw error;
+  return data;
+}
+
 async function sbSetProfileSong(userId, songId) {
   const { error } = await sb.from('profiles')
     .update({ profile_song_id: songId })

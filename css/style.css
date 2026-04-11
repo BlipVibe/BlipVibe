@@ -3674,6 +3674,18 @@ body.light-mode::before{background:#f8fafc;}
 .story-song-bar{position:absolute;bottom:60px;left:16px;right:16px;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:20px;padding:6px 12px;z-index:5;}
 .story-song-bar .ssb-icon{font-size:14px;color:var(--primary);animation:musicPulse 1.5s ease infinite;}
 .story-song-bar .ssb-title{font-size:11px;color:#fff;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+/* ========== PLAYLIST UI ========== */
+.playlist-manager{max-height:300px;overflow-y:auto;}
+.playlist-item{display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;border:1px solid var(--border);margin-bottom:6px;}
+.playlist-item .pi-num{width:20px;font-size:12px;color:var(--gray);text-align:center;flex-shrink:0;}
+.playlist-item .pi-title{flex:1;font-size:13px;font-weight:500;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.playlist-item .pi-remove{background:none;color:#e74c3c;font-size:12px;flex-shrink:0;padding:4px;}
+.playlist-add-btn{width:100%;padding:8px;border:2px dashed var(--border);border-radius:8px;background:none;color:var(--gray);font-size:13px;cursor:pointer;margin-top:6px;}
+.playlist-add-btn:hover{border-color:var(--primary);color:var(--primary);}
+.playlist-mode-toggle{display:flex;gap:6px;margin-top:8px;}
+.playlist-mode-toggle button{flex:1;padding:6px;border-radius:8px;font-size:12px;border:1px solid var(--border);background:none;color:var(--gray);cursor:pointer;}
+.playlist-mode-toggle button.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+
 /* Volume slider removed from story viewer — viewers can't adjust volume */
 
 /* ========== STORY TEXT OVERLAY EDITOR ========== */

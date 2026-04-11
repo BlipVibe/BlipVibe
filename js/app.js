@@ -8261,10 +8261,15 @@ function getMySkinCategories(){
     // Owned songs
     if(_shopSongs&&_shopSongs.length){
         var ownedSongs=_shopSongs.filter(function(s){return _shopOwnedSongs&&_shopOwnedSongs[s.id];});
-        if(ownedSongs.length) cats.push({key:'songs',label:'<i class="fas fa-music"></i> Songs',items:ownedSongs,render:function(s){
-            var isActive=currentUser&&currentUser.profile_song_id===s.id;
-            return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#1a1a2e,#2d1b69);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;"><i class="fas fa-music" style="font-size:32px;color:var(--primary);"></i><button class="song-preview-btn" data-url="'+escapeHtml(s.file_url)+'" style="background:rgba(255,255,255,.15);color:#fff;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;"><i class="fas fa-play"></i></button></div><div class="skin-card-body"><h4>'+escapeHtml(s.title)+'</h4><p>'+(s.genre||'BlipVibe Original')+'</p><button class="btn '+(isActive?'btn-disabled':'btn-primary')+' set-song-btn" data-song-id="'+s.id+'">'+(isActive?'Active':'Set as Profile Song')+'</button></div></div>';
-        }});
+        if(ownedSongs.length){
+            // Add playlist manager card as first item
+            var songsWithPlaylist=[{_isPlaylistBtn:true}].concat(ownedSongs);
+            cats.push({key:'songs',label:'<i class="fas fa-music"></i> Songs',items:songsWithPlaylist,render:function(s){
+                if(s._isPlaylistBtn) return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,var(--primary),#ffd700);display:flex;align-items:center;justify-content:center;"><i class="fas fa-list" style="font-size:32px;color:#fff;"></i></div><div class="skin-card-body"><h4>Manage Playlist</h4><p>'+_myPlaylist.length+'/5 songs</p><button class="btn btn-primary open-playlist-btn">Edit Playlist</button></div></div>';
+                var isInPlaylist=_myPlaylist.some(function(ps){return ps.id===s.id;});
+                return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#1a1a2e,#2d1b69);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;"><i class="fas fa-music" style="font-size:32px;color:var(--primary);"></i><button class="song-preview-btn" data-url="'+escapeHtml(s.file_url)+'" style="background:rgba(255,255,255,.15);color:#fff;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;"><i class="fas fa-play"></i></button></div><div class="skin-card-body"><h4>'+escapeHtml(s.title)+'</h4><p>'+(s.genre||'BlipVibe Original')+'</p><button class="btn '+(isInPlaylist?'btn-disabled':'btn-primary')+' set-song-btn" data-song-id="'+s.id+'">'+(isInPlaylist?'In Playlist':'Set as Profile Song')+'</button></div></div>';
+            }});
+        }
     }
     return cats;
 }
@@ -8400,6 +8405,7 @@ function renderMySkins(){
     $$('#mySkinsGrid .apply-premium-btn').forEach(function(btn){btn.addEventListener('click',function(){applyPremiumSkin(btn.dataset.pid==='default'?null:btn.dataset.pid);mySkinsRerender();});});
     $$('#mySkinsGrid .apply-nav-btn').forEach(function(btn){btn.addEventListener('click',function(){applyNavStyle(btn.dataset.nid==='default'?null:btn.dataset.nid);mySkinsRerender();});});
     // Song set + preview in My Skins
+    $$('#mySkinsGrid .open-playlist-btn').forEach(function(btn){btn.addEventListener('click',function(){closeModal();showPlaylistManager();});});
     $$('#mySkinsGrid .set-song-btn').forEach(function(btn){btn.addEventListener('click',async function(){
         var sid=btn.dataset.songId;btn.disabled=true;btn.textContent='...';
         try{await sbSetProfileSong(currentUser.id,sid);currentUser.profile_song_id=sid;saveState();showToast('Profile song updated!');refreshMyProfileMusic();renderMySkins();}catch(e){showToast('Failed');btn.disabled=false;}
@@ -13097,6 +13103,185 @@ function _setupFadeLoop(audio){
         _fadeAudio(audio,0,_gmpBaseVol,1000,null);
     });
 }
+// ======================== PLAYLIST SYSTEM ========================
+var _myPlaylist=[]; // array of song objects
+var _myPlaylistMode='repeat'; // 'repeat' or 'shuffle'
+var _playlistIndex=0;
+var _shuffleOrder=[];
+
+async function loadMyPlaylist(){
+    if(!currentUser) return;
+    try{
+        var data=await sbGetProfilePlaylist(currentUser.id);
+        if(!data) return;
+        var ids=data.profile_playlist||[];
+        _myPlaylistMode=data.playlist_mode||'repeat';
+        if(!ids.length){_myPlaylist=[];return;}
+        // Load song data
+        if(!_shopSongs||!_shopSongs.length) await _loadShopSongs();
+        _myPlaylist=ids.map(function(id){return (_shopSongs||[]).find(function(s){return s.id===id;});}).filter(Boolean);
+        if(_myPlaylist.length) _buildShuffleOrder();
+    }catch(e){console.warn('loadMyPlaylist:',e);}
+}
+
+function _buildShuffleOrder(){
+    _shuffleOrder=_myPlaylist.map(function(_,i){return i;});
+    if(_myPlaylistMode==='shuffle'){
+        for(var i=_shuffleOrder.length-1;i>0;i--){
+            var j=Math.floor(Math.random()*(i+1));
+            var tmp=_shuffleOrder[i];_shuffleOrder[i]=_shuffleOrder[j];_shuffleOrder[j]=tmp;
+        }
+    }
+}
+
+function _getPlaylistSong(index){
+    if(!_myPlaylist.length) return null;
+    var actualIdx=_shuffleOrder[index%_shuffleOrder.length];
+    return _myPlaylist[actualIdx]||null;
+}
+
+function playPlaylistSong(index){
+    if(!_myPlaylist.length) return;
+    _playlistIndex=index%_myPlaylist.length;
+    var song=_getPlaylistSong(_playlistIndex);
+    if(!song) return;
+    if(_myAudio){_myAudio.pause();_myAudio=null;}
+    _mySong=song;
+    _myAudio=new Audio(song.file_url);
+    _myAudio.volume=_gmpBaseVol;
+    _setupFadeLoop(_myAudio);
+    // Override the fade loop's ended handler for playlist advance
+    _myAudio.removeEventListener('ended',_myAudio._onEnded);
+    _myAudio._onEnded=function(){
+        // Advance to next song in playlist
+        _playlistIndex++;
+        if(_playlistIndex>=_myPlaylist.length){
+            _playlistIndex=0;
+            if(_myPlaylistMode==='shuffle') _buildShuffleOrder();
+        }
+        playPlaylistSong(_playlistIndex);
+    };
+    _myAudio.addEventListener('ended',_myAudio._onEnded);
+    _myAudio.loop=false; // we handle looping via playlist
+    _updateGlobalPlayer(song.title,song.artist||'BlipVibe',false);
+    showGlobalPlayer();
+    _myAudio.volume=0;
+    _myAudio.play().then(function(){
+        _fadeAudio(_myAudio,0,_gmpBaseVol,500,function(){
+            _updateGlobalPlayer(song.title,song.artist||'BlipVibe',true);
+        });
+    }).catch(function(){});
+    // Update shuffle/repeat button
+    var shBtn=document.getElementById('gmpShuffleBtn');
+    if(shBtn) shBtn.innerHTML=_myPlaylistMode==='shuffle'?'<i class="fas fa-shuffle"></i>':'<i class="fas fa-repeat"></i>';
+}
+
+function playNextInPlaylist(){
+    if(_myPlaylist.length<=1) return;
+    _playlistIndex++;
+    if(_playlistIndex>=_myPlaylist.length){_playlistIndex=0;if(_myPlaylistMode==='shuffle') _buildShuffleOrder();}
+    playPlaylistSong(_playlistIndex);
+}
+
+function playPrevInPlaylist(){
+    if(_myPlaylist.length<=1) return;
+    _playlistIndex--;
+    if(_playlistIndex<0) _playlistIndex=_myPlaylist.length-1;
+    playPlaylistSong(_playlistIndex);
+}
+
+function togglePlaylistMode(){
+    _myPlaylistMode=_myPlaylistMode==='repeat'?'shuffle':'repeat';
+    _buildShuffleOrder();
+    var shBtn=document.getElementById('gmpShuffleBtn');
+    if(shBtn) shBtn.innerHTML=_myPlaylistMode==='shuffle'?'<i class="fas fa-shuffle"></i>':'<i class="fas fa-repeat"></i>';
+    showToast(_myPlaylistMode==='shuffle'?'Shuffle on':'Repeat all');
+    // Save to DB
+    if(currentUser){
+        var ids=_myPlaylist.map(function(s){return s.id;});
+        sbSetProfilePlaylist(currentUser.id,ids,_myPlaylistMode).catch(function(){});
+    }
+}
+
+function showPlaylistManager(){
+    var h='<div class="modal-header"><h3><i class="fas fa-list" style="color:var(--primary);margin-right:8px;"></i>Profile Playlist</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body">';
+    h+='<p style="font-size:13px;color:var(--gray);margin-bottom:10px;">Add up to 5 songs. They\'ll play on your profile page.</p>';
+    h+='<div class="playlist-manager" id="playlistList"></div>';
+    h+='<button class="playlist-add-btn" id="playlistAddBtn"><i class="fas fa-plus" style="margin-right:6px;"></i>Add Song</button>';
+    h+='<div class="playlist-mode-toggle"><button class="btn" id="plModeRepeat"><i class="fas fa-repeat"></i> Repeat</button><button class="btn" id="plModeShuffle"><i class="fas fa-shuffle"></i> Shuffle</button></div>';
+    h+='<div class="modal-actions" style="margin-top:12px;"><button class="btn btn-outline modal-close">Cancel</button><button class="btn btn-primary" id="savePlaylistBtn">Save Playlist</button></div></div>';
+    showModal(h);
+    var _plSongs=[].concat(_myPlaylist);
+    var _plMode=_myPlaylistMode;
+    function renderList(){
+        var list=document.getElementById('playlistList');
+        if(!list) return;
+        if(!_plSongs.length){list.innerHTML='<p style="text-align:center;color:var(--gray);padding:12px;">No songs in playlist.</p>';return;}
+        var lh='';
+        _plSongs.forEach(function(s,i){
+            lh+='<div class="playlist-item"><span class="pi-num">'+(i+1)+'</span><span class="pi-title">'+escapeHtml(s.title)+'</span><button class="pi-remove" data-idx="'+i+'"><i class="fas fa-times"></i></button></div>';
+        });
+        list.innerHTML=lh;
+        list.querySelectorAll('.pi-remove').forEach(function(btn){
+            btn.addEventListener('click',function(){_plSongs.splice(parseInt(btn.dataset.idx),1);renderList();});
+        });
+        // Update add button state
+        var addBtn=document.getElementById('playlistAddBtn');
+        if(addBtn){addBtn.disabled=_plSongs.length>=5;addBtn.textContent=_plSongs.length>=5?'Maximum 5 songs':'+ Add Song';}
+    }
+    renderList();
+    // Mode toggle
+    function updateModeUI(){
+        var rBtn=document.getElementById('plModeRepeat');
+        var sBtn=document.getElementById('plModeShuffle');
+        if(rBtn) rBtn.className='btn '+(_plMode==='repeat'?'btn-primary':'btn-outline');
+        if(sBtn) sBtn.className='btn '+(_plMode==='shuffle'?'btn-primary':'btn-outline');
+    }
+    updateModeUI();
+    document.getElementById('plModeRepeat').addEventListener('click',function(){_plMode='repeat';updateModeUI();});
+    document.getElementById('plModeShuffle').addEventListener('click',function(){_plMode='shuffle';updateModeUI();});
+    // Add song
+    document.getElementById('playlistAddBtn').addEventListener('click',async function(){
+        if(_plSongs.length>=5){showToast('Maximum 5 songs');return;}
+        if(!_shopSongs||!_shopSongs.length) await _loadShopSongs();
+        var owned=(_shopSongs||[]).filter(function(s){return _hasInfinity()||(_shopOwnedSongs&&_shopOwnedSongs[s.id]);});
+        // Filter out songs already in playlist
+        var inPl={};_plSongs.forEach(function(s){inPl[s.id]=true;});
+        var available=owned.filter(function(s){return !inPl[s.id];});
+        if(!available.length){showToast('No more songs available');return;}
+        var sh='<div style="max-height:200px;overflow-y:auto;">';
+        available.forEach(function(s){
+            sh+='<div class="song-picker-item pl-add-song" data-sid="'+s.id+'" style="cursor:pointer;padding:8px;"><i class="fas fa-music" style="color:var(--primary);margin-right:8px;"></i>'+escapeHtml(s.title)+'</div>';
+        });
+        sh+='</div>';
+        var list=document.getElementById('playlistList');
+        list.innerHTML=sh;
+        list.querySelectorAll('.pl-add-song').forEach(function(el){
+            el.addEventListener('click',function(){
+                var sid=el.dataset.sid;
+                var song=(_shopSongs||[]).find(function(s){return s.id===sid;});
+                if(song) _plSongs.push(song);
+                renderList();
+            });
+        });
+    });
+    // Save
+    document.getElementById('savePlaylistBtn').addEventListener('click',async function(){
+        this.disabled=true;this.textContent='Saving...';
+        try{
+            var ids=_plSongs.map(function(s){return s.id;});
+            await sbSetProfilePlaylist(currentUser.id,ids,_plMode);
+            _myPlaylist=_plSongs;
+            _myPlaylistMode=_plMode;
+            _playlistIndex=0;
+            _buildShuffleOrder();
+            if(_myPlaylist.length) playPlaylistSong(0);
+            closeModal();showToast('Playlist saved!');
+        }catch(e){showToast('Failed: '+(e.message||'Error'));this.disabled=false;this.textContent='Save Playlist';}
+    });
+}
+
 // Refresh the global player with a new song (called after setting profile song)
 async function refreshMyProfileMusic(){
     try{
@@ -13119,7 +13304,30 @@ async function refreshMyProfileMusic(){
     }catch(e){console.warn('refreshMyProfileMusic:',e);}
 }
 async function initMyProfileMusic(){
-    if(!currentUser||!currentUser.profile_song_id) return;
+    if(!currentUser) return;
+    // Try playlist first, fall back to single song
+    try{
+        await loadMyPlaylist();
+        if(_myPlaylist.length){
+            _playlistIndex=0;
+            var song=_getPlaylistSong(0);
+            if(song){
+                _mySong=song;
+                _myAudio=new Audio(song.file_url);
+                _myAudio.volume=_gmpBaseVol;
+                _myAudio.loop=false;
+                _myAudio._onEnded=function(){_playlistIndex++;if(_playlistIndex>=_myPlaylist.length){_playlistIndex=0;if(_myPlaylistMode==='shuffle')_buildShuffleOrder();}playPlaylistSong(_playlistIndex);};
+                _myAudio.addEventListener('ended',_myAudio._onEnded);
+                _updateGlobalPlayer(song.title,song.artist||'BlipVibe',false);
+                showGlobalPlayer();
+                var shBtn=document.getElementById('gmpShuffleBtn');
+                if(shBtn) shBtn.innerHTML=_myPlaylistMode==='shuffle'?'<i class="fas fa-shuffle"></i>':'<i class="fas fa-repeat"></i>';
+                return;
+            }
+        }
+    }catch(e){console.warn('[Music] playlist load error:',e);}
+    // Fallback to single song
+    if(!currentUser.profile_song_id) return;
     try{
         var song=await sbGetProfileSong(currentUser.id);
         if(!song) return;
@@ -13353,6 +13561,12 @@ function stopProfileAudio(){
     if(closeBtn) closeBtn.addEventListener('click',function(){hideGlobalPlayer();});
     var navMusicBtn=document.getElementById('navMusicBtn');
     if(navMusicBtn) navMusicBtn.addEventListener('click',function(){reopenGlobalPlayer();});
+    var prevBtn=document.getElementById('gmpPrevBtn');
+    if(prevBtn) prevBtn.addEventListener('click',function(){playPrevInPlaylist();});
+    var nextBtn=document.getElementById('gmpNextBtn');
+    if(nextBtn) nextBtn.addEventListener('click',function(){playNextInPlaylist();});
+    var shuffleBtn=document.getElementById('gmpShuffleBtn');
+    if(shuffleBtn) shuffleBtn.addEventListener('click',function(){togglePlaylistMode();});
 })();
 // Auto-start music after first user interaction on the page
 var _musicAutoStarted=false;
