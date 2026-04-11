@@ -1136,7 +1136,17 @@ var skins = [
     {id:'ember',name:'Ember Glow',desc:'Warm smoldering red-orange. Bold and fiery.',price:75,preview:'linear-gradient(135deg,#e64a19,#bf360c)',cardBg:'#fbe9e7',cardText:'#bf360c',cardMuted:'#e64a19'},
     {id:'arctic',name:'Arctic Frost',desc:'Icy cyan chill. Clean and refreshing.',price:75,preview:'linear-gradient(135deg,#00acc1,#00838f)',cardBg:'#e0f7fa',cardText:'#00838f',cardMuted:'#00acc1'},
     {id:'moss',name:'Moss Garden',desc:'Olive earth tones. Calm and grounded.',price:75,preview:'linear-gradient(135deg,#689f38,#558b2f)',cardBg:'#f1f8e9',cardText:'#558b2f',cardMuted:'#689f38'},
-    {id:'pastel',name:'Pastel Dream',desc:'Soft candy pastels with flowing gradient movement. Sweet and dreamy.',price:75,preview:'linear-gradient(135deg,#fbc2eb,#a6c1ee,#fdcbf1,#e6dee9)',cardBg:'#fef5ff',cardText:'#7b4a8e',cardMuted:'#b07cc3'}
+    {id:'pastel',name:'Pastel Dream',desc:'Soft candy pastels with flowing gradient movement. Sweet and dreamy.',price:75,preview:'linear-gradient(135deg,#fbc2eb,#a6c1ee,#fdcbf1,#e6dee9)',cardBg:'#fef5ff',cardText:'#7b4a8e',cardMuted:'#b07cc3'},
+    {id:'volcanic',name:'Volcanic Ash',desc:'Deep charcoal with molten lava cracks. Raw and powerful.',price:75,preview:'linear-gradient(135deg,#2c2c2c,#4a1a00)',cardBg:'#1e1e1e',cardText:'#f0c040',cardMuted:'#b08030'},
+    {id:'lavender',name:'Lavender Fields',desc:'Soothing lavender purple. Calm and serene.',price:75,preview:'linear-gradient(135deg,#9b72cf,#c4a7e7)',cardBg:'#f5f0ff',cardText:'#5b3a8a',cardMuted:'#9b72cf'},
+    {id:'coral',name:'Coral Reef',desc:'Vibrant coral and warm sand tones. Tropical and lively.',price:75,preview:'linear-gradient(135deg,#ff6f61,#ff9a76)',cardBg:'#fff5f2',cardText:'#cc4a3a',cardMuted:'#ff6f61'},
+    {id:'graphite',name:'Graphite',desc:'Matte dark gray with cool blue undertones. Stealth mode.',price:75,preview:'linear-gradient(135deg,#2d3436,#636e72)',cardBg:'#2d3436',cardText:'#dfe6e9',cardMuted:'#b2bec3'},
+    {id:'honeycomb',name:'Honeycomb',desc:'Rich amber and warm honey gold. Sweet sophistication.',price:75,preview:'linear-gradient(135deg,#f0a500,#cf7500)',cardBg:'#fff8e7',cardText:'#8a5a00',cardMuted:'#c08a20'},
+    {id:'bubblegum',name:'Bubblegum Pop',desc:'Hot pink and magenta. Bold, loud, and unapologetic.',price:75,preview:'linear-gradient(135deg,#ff1493,#ff69b4)',cardBg:'#fff0f6',cardText:'#c71585',cardMuted:'#e0559a'},
+    {id:'dusk',name:'Dusk',desc:'Twilight sky gradient. Deep navy fading into warm rose.',price:75,preview:'linear-gradient(135deg,#141e30,#6b2fa0,#c94b4b)',cardBg:'#1a1a2e',cardText:'#e8c4f0',cardMuted:'#a07bc0'},
+    {id:'mint',name:'Mint Chip',desc:'Cool mint green with dark chocolate accents. Fresh and clean.',price:75,preview:'linear-gradient(135deg,#00b894,#55efc4)',cardBg:'#f0fff4',cardText:'#00805a',cardMuted:'#00b894'},
+    {id:'sandstone',name:'Sandstone',desc:'Warm desert sand and terracotta. Earthy and grounded.',price:75,preview:'linear-gradient(135deg,#c2956a,#8b6914)',cardBg:'#fdf5e6',cardText:'#7a5230',cardMuted:'#b8860b'},
+    {id:'steel',name:'Steel Blue',desc:'Industrial blue-gray. Sturdy and dependable.',price:75,preview:'linear-gradient(135deg,#4682b4,#2c5f8a)',cardBg:'#eef3f8',cardText:'#2c5f8a',cardMuted:'#4682b4'}
 ];
 
 var fonts = [
@@ -1154,7 +1164,17 @@ var fonts = [
     {id:'righteous',name:'Righteous',desc:'Bold retro display.',price:25,family:'Righteous',scale:.9},
     {id:'satisfy',name:'Satisfy',desc:'Smooth cursive flow.',price:25,family:'Satisfy',scale:.88},
     {id:'bungee',name:'Bungee',desc:'Chunky display type.',price:25,family:'Bungee',scale:.72},
-    {id:'monoton',name:'Monoton',desc:'Neon outline glow.',price:25,family:'Monoton',scale:.68}
+    {id:'monoton',name:'Monoton',desc:'Neon outline glow.',price:25,family:'Monoton',scale:.68},
+    {id:'comfortaa',name:'Comfortaa',desc:'Rounded geometric modern.',price:25,family:'Comfortaa'},
+    {id:'lobster',name:'Lobster',desc:'Bold flowing script.',price:25,family:'Lobster',scale:.88},
+    {id:'cinzel',name:'Cinzel',desc:'Ancient Roman elegance.',price:25,family:'Cinzel',scale:.9},
+    {id:'chakrapetch',name:'Chakra Petch',desc:'Angular Thai-tech fusion.',price:25,family:'Chakra Petch'},
+    {id:'fredoka',name:'Fredoka',desc:'Chunky bubbly rounded.',price:25,family:'Fredoka'},
+    {id:'oxanium',name:'Oxanium',desc:'Hexagonal sci-fi geometry.',price:25,family:'Oxanium',scale:.92},
+    {id:'gloriahallelujah',name:'Gloria Hallelujah',desc:'Messy notebook scrawl.',price:25,family:'Gloria Hallelujah',scale:.78},
+    {id:'doto',name:'Doto',desc:'Dot-matrix printer style.',price:25,family:'Doto',scale:.82},
+    {id:'jersey10',name:'Jersey 10',desc:'Sports jersey numbers.',price:25,family:'Jersey 10',scale:.85},
+    {id:'creepster',name:'Creepster',desc:'Horror movie dripping text.',price:25,family:'Creepster',scale:.82}
 ];
 
 var logos = [
@@ -1173,6 +1193,11 @@ var logos = [
     {id:'ghost',name:'Ghost',desc:'Spooky and playful.',price:35,text:'\uD83D\uDC7BBlipVibe'},
     {id:'neon',name:'Neon',desc:'Glowing club vibes.',price:35,text:'\uD83D\uDCA0BV\uD83D\uDCA0'},
     {id:'sword',name:'Sword',desc:'Battle-ready branding.',price:35,text:'\u2694\uFE0FBlipVibe\u2694\uFE0F'},
+    {id:'galaxy',name:'Galaxy',desc:'Cosmic stardust energy.',price:35,text:'\uD83C\uDF0CBlipVibe'},
+    {id:'dragon',name:'Dragon',desc:'Fierce mythical power.',price:35,text:'\uD83D\uDC09BlipVibe'},
+    {id:'wings',name:'Wings',desc:'Angelic and free.',price:35,text:'\uD83E\uDEB6BV\uD83E\uDEB6'},
+    {id:'dice',name:'Dice',desc:'Roll the vibes.',price:35,text:'\uD83C\uDFB2BlipVibe'},
+    {id:'lotus',name:'Lotus',desc:'Zen peace and balance.',price:35,text:'\uD83E\uDEB7BlipVibe\uD83E\uDEB7'},
     {id:'mainlogo',name:'BlipVibe Logo',desc:'The official BlipVibe mascot logo.',price:0,img:'images/blipvibe-logo-hd.webp'}
 ];
 
@@ -1193,7 +1218,12 @@ var iconSets = [
     {id:'music',name:'Music',desc:'Jam out with musical icons.',price:35,preview:'linear-gradient(135deg,#e91e63,#ff9800)',icons:{home:'fa-music',groups:'fa-guitar',skins:'fa-sliders',profiles:'fa-microphone',shop:'fa-record-vinyl',messages:'fa-headphones',notifications:'fa-volume-high',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-magnifying-glass',edit:'fa-pen',bookmark:'fa-compact-disc',heart:'fa-drum'}},
     {id:'horror',name:'Horror',desc:'Creepy spooky icons.',price:35,preview:'linear-gradient(135deg,#1a1a2e,#6b0000)',icons:{home:'fa-house-chimney-crack',groups:'fa-ghost',skins:'fa-skull',profiles:'fa-mask',shop:'fa-spider',messages:'fa-crow',notifications:'fa-triangle-exclamation',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-nodes',search:'fa-eye',edit:'fa-wand-sparkles',bookmark:'fa-cross',heart:'fa-brain'}},
     {id:'fitness',name:'Fitness',desc:'Pump iron with gym icons.',price:35,preview:'linear-gradient(135deg,#ff6b35,#f7dc6f)',icons:{home:'fa-dumbbell',groups:'fa-people-pulling',skins:'fa-shirt',profiles:'fa-person-running',shop:'fa-basket-shopping',messages:'fa-stopwatch',notifications:'fa-bell',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-magnifying-glass',edit:'fa-pen',bookmark:'fa-medal',heart:'fa-heart-pulse'}},
-    {id:'minimal',name:'Minimal',desc:'Clean simple outlines.',price:35,preview:'linear-gradient(135deg,#e0e0e0,#9e9e9e)',icons:{home:'fa-circle',groups:'fa-circle-nodes',skins:'fa-circle-half-stroke',profiles:'fa-circle-user',shop:'fa-circle-dot',messages:'fa-circle-question',notifications:'fa-circle-exclamation',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment',share:'fa-up-right-from-square',search:'fa-magnifying-glass',edit:'fa-pen',bookmark:'fa-bookmark',heart:'fa-heart'}}
+    {id:'minimal',name:'Minimal',desc:'Clean simple outlines.',price:35,preview:'linear-gradient(135deg,#e0e0e0,#9e9e9e)',icons:{home:'fa-circle',groups:'fa-circle-nodes',skins:'fa-circle-half-stroke',profiles:'fa-circle-user',shop:'fa-circle-dot',messages:'fa-circle-question',notifications:'fa-circle-exclamation',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment',share:'fa-up-right-from-square',search:'fa-magnifying-glass',edit:'fa-pen',bookmark:'fa-bookmark',heart:'fa-heart'}},
+    {id:'magic',name:'Magic',desc:'Wizards and spellcasting.',price:35,preview:'linear-gradient(135deg,#6c3483,#1a5276)',icons:{home:'fa-hat-wizard',groups:'fa-wand-sparkles',skins:'fa-book-open',profiles:'fa-hand-sparkles',shop:'fa-cauldron',messages:'fa-scroll',notifications:'fa-burst',like:'fa-hand-sparkles',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-nodes',search:'fa-eye',edit:'fa-wand-magic',bookmark:'fa-book',heart:'fa-fire'}},
+    {id:'steampunk',name:'Steampunk',desc:'Victorian gears and brass.',price:35,preview:'linear-gradient(135deg,#8B6914,#CD853F)',icons:{home:'fa-gear',groups:'fa-gears',skins:'fa-wrench',profiles:'fa-user-gear',shop:'fa-toolbox',messages:'fa-envelope-open',notifications:'fa-bell',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-link',search:'fa-magnifying-glass',edit:'fa-screwdriver-wrench',bookmark:'fa-key',heart:'fa-cog'}},
+    {id:'cute',name:'Cute Animals',desc:'Adorable kawaii critters.',price:35,preview:'linear-gradient(135deg,#fdcb6e,#e17055)',icons:{home:'fa-paw',groups:'fa-kiwi-bird',skins:'fa-feather',profiles:'fa-hippo',shop:'fa-bone',messages:'fa-dove',notifications:'fa-crow',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-magnifying-glass',edit:'fa-pen',bookmark:'fa-horse',heart:'fa-cat'}},
+    {id:'travel',name:'Travel',desc:'Globetrotter adventure icons.',price:35,preview:'linear-gradient(135deg,#2980b9,#27ae60)',icons:{home:'fa-plane',groups:'fa-earth-americas',skins:'fa-map',profiles:'fa-passport',shop:'fa-suitcase',messages:'fa-envelope',notifications:'fa-bell',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-location-dot',edit:'fa-pen',bookmark:'fa-map-pin',heart:'fa-location-crosshairs'}},
+    {id:'royal',name:'Royal',desc:'Crown jewels and nobility.',price:35,preview:'linear-gradient(135deg,#d4af37,#800020)',icons:{home:'fa-crown',groups:'fa-chess-king',skins:'fa-gem',profiles:'fa-chess-queen',shop:'fa-ring',messages:'fa-scroll',notifications:'fa-bell',like:'fa-thumbs-up',dislike:'fa-thumbs-down',comment:'fa-comment-dots',share:'fa-share-from-square',search:'fa-magnifying-glass',edit:'fa-pen-fancy',bookmark:'fa-chess-rook',heart:'fa-crown'}}
 ];
 
 var coinSkins = [
@@ -1206,7 +1236,12 @@ var coinSkins = [
     {id:'shield',name:'Shield',desc:'Armored silver coins.',price:50,icon:'fa-shield-halved',color:'#a0aec0'},
     {id:'moon',name:'Moon',desc:'Lunar glow coins.',price:50,icon:'fa-moon',color:'#9b59b6'},
     {id:'leaf',name:'Leaf',desc:'Nature energy coins.',price:50,icon:'fa-leaf',color:'#27ae60'},
-    {id:'snowflake',name:'Snowflake',desc:'Frosty ice coins.',price:50,icon:'fa-snowflake',color:'#74b9ff'}
+    {id:'snowflake',name:'Snowflake',desc:'Frosty ice coins.',price:50,icon:'fa-snowflake',color:'#74b9ff'},
+    {id:'skull',name:'Skull',desc:'Dark and deadly coins.',price:50,icon:'fa-skull',color:'#a0a0a0'},
+    {id:'feather',name:'Feather',desc:'Light as air coins.',price:50,icon:'fa-feather',color:'#dfe6e9'},
+    {id:'sun',name:'Sun',desc:'Radiant solar coins.',price:50,icon:'fa-sun',color:'#f9ca24'},
+    {id:'music',name:'Music Note',desc:'Melodic rhythm coins.',price:50,icon:'fa-music',color:'#e91e63'},
+    {id:'clover',name:'Clover',desc:'Lucky four-leaf coins.',price:50,icon:'fa-clover',color:'#2ecc71'}
 ];
 
 var templates = [
@@ -1246,7 +1281,9 @@ var navStyles = [
     {id:'split',name:'Split',desc:'Logo left, nav bottom. Two separate bars.',price:60,preview:'linear-gradient(135deg,#ff7043,#d84315)'},
     {id:'minimal',name:'Minimal',desc:'Just icons. No background. Invisible until hover.',price:60,preview:'linear-gradient(135deg,#cfd8dc,#90a4ae)'},
     {id:'arcade',name:'Arcade',desc:'Chunky pixel-style bar. Retro gaming feel.',price:60,preview:'linear-gradient(135deg,#7b2ff7,#00f5a0)'},
-    {id:'wheel',name:'Wheel',desc:'Swipeable mobile carousel. Center icon scales up like a wheel.',price:60,preview:'linear-gradient(135deg,#7c4dff,#448aff)'}
+    {id:'wheel',name:'Wheel',desc:'Swipeable mobile carousel. Center icon scales up like a wheel.',price:60,preview:'linear-gradient(135deg,#7c4dff,#448aff)'},
+    {id:'tabs',name:'Tabs',desc:'Browser-style tabs. Each page is its own tab with close buttons.',price:60,preview:'linear-gradient(135deg,#546e7a,#37474f)'},
+    {id:'wave',name:'Wave',desc:'Curved wavy navbar with flowing shape. Organic and unique.',price:60,preview:'linear-gradient(135deg,#00b4d8,#0077b6)'}
 ];
 
 var premiumSkins = [
@@ -1273,7 +1310,7 @@ var premiumSkins = [
 
 var guildSkins = [];
 
-var gfLink=document.createElement('link');gfLink.rel='stylesheet';gfLink.href='https://fonts.googleapis.com/css2?family=Orbitron&family=Rajdhani&family=Quicksand&family=Pacifico&family=Baloo+2&display=swap';document.head.appendChild(gfLink);
+var gfLink=document.createElement('link');gfLink.rel='stylesheet';gfLink.href='https://fonts.googleapis.com/css2?family=Orbitron&family=Rajdhani&family=Quicksand&family=Pacifico&family=Baloo+2&family=Playfair+Display&family=Space+Grotesk&family=Caveat&family=Archivo&family=Silkscreen&family=Press+Start+2P&family=Righteous&family=Satisfy&family=Bungee&family=Monoton&family=Comfortaa&family=Lobster&family=Cinzel&family=Chakra+Petch&family=Fredoka&family=Oxanium&family=Gloria+Hallelujah&family=Doto&family=Jersey+10&family=Creepster&display=swap';document.head.appendChild(gfLink);
 
 
 // ======================== UTILITIES ========================
