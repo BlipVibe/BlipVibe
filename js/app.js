@@ -2704,7 +2704,7 @@ async function renderInlineComments(postId){
         var deleteBtn=isOwnComment?'<button class="inline-comment-delete" data-cid="'+c.cid+'" data-postid="'+postId+'" style="background:none;font-size:11px;color:#e74c3c;cursor:pointer;"><i class="fas fa-trash"></i></button>':'';
         var cGifMatch=c.text.match(/^\[gif\](.*?)\[\/gif\]$/);
         var cContent=cGifMatch?'<img src="'+escapeHtml(cGifMatch[1])+'" class="comment-gif" alt="GIF" loading="lazy">':'<p style="font-size:12px;color:#555;margin-top:2px;">'+renderMentionsInText(escapeHtmlNl(c.text))+'</p>';
-        html+='<div class="inline-comment" data-cid="'+c.cid+'"><img src="'+avatarSrc+'" class="inline-comment-avatar" style="object-fit:cover;"><div><div class="inline-comment-bubble"><strong style="font-size:12px;display:block;">'+escapeHtml(c.name)+'</strong>'+cContent+'</div><div style="display:flex;gap:10px;margin-top:6px;margin-left:4px;"><button class="inline-comment-like" data-cid="'+c.cid+'" data-aid="'+(c.authorId||'')+'" style="background:none;font-size:11px;color:'+(liked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(liked?'fas':'far')+' fa-thumbs-up"></i>'+lc+'</button><button class="inline-comment-dislike" data-cid="'+c.cid+'" data-aid="'+(c.authorId||'')+'" style="background:none;font-size:11px;color:'+(disliked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(disliked?'fas':'far')+' fa-thumbs-down"></i>'+dc+'</button><button class="inline-comment-reply" data-cid="'+c.cid+'" style="background:none;font-size:11px;color:#999;cursor:pointer;"><i class="far fa-comment"></i> Reply</button>'+editBtn+deleteBtn+'</div></div></div>';
+        html+='<div class="inline-comment" data-cid="'+c.cid+'"><img src="'+avatarSrc+'" class="inline-comment-avatar clickable-avatar" data-person-id="'+(c.authorId||'')+'" style="object-fit:cover;cursor:pointer;"><div><div class="inline-comment-bubble"><strong style="font-size:12px;display:block;cursor:pointer;" class="clickable-avatar" data-person-id="'+(c.authorId||'')+'">'+escapeHtml(c.name)+'</strong>'+cContent+'</div><div style="display:flex;gap:10px;margin-top:6px;margin-left:4px;"><button class="inline-comment-like" data-cid="'+c.cid+'" data-aid="'+(c.authorId||'')+'" style="background:none;font-size:11px;color:'+(liked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(liked?'fas':'far')+' fa-thumbs-up"></i>'+lc+'</button><button class="inline-comment-dislike" data-cid="'+c.cid+'" data-aid="'+(c.authorId||'')+'" style="background:none;font-size:11px;color:'+(disliked?'var(--primary)':'#999')+';display:flex;align-items:center;gap:3px;"><i class="'+(disliked?'fas':'far')+' fa-thumbs-down"></i>'+dc+'</button><button class="inline-comment-reply" data-cid="'+c.cid+'" style="background:none;font-size:11px;color:#999;cursor:pointer;"><i class="far fa-comment"></i> Reply</button>'+editBtn+deleteBtn+'</div></div></div>';
         // Show replies threaded under this comment
         var replies=repliesByParent[c.cid]||[];
         var shownReplies=replies.slice(0,2);
@@ -3052,8 +3052,8 @@ async function showProfileView(person){
                 var postTime=post.created_at?timeAgo(Math.floor((Date.now()-new Date(post.created_at).getTime())/60000)):'';
                 feedHtml+='<div class="card feed-post">';
                 feedHtml+='<div class="post-header">';
-                feedHtml+='<img src="'+authorAvatar+'" alt="'+escapeHtml(authorName)+'" class="post-avatar">';
-                feedHtml+='<div class="post-user-info"><div class="post-user-top"><h4 class="post-username">'+escapeHtml(authorName)+'</h4><span class="post-time">'+postTime+'</span></div></div></div>';
+                feedHtml+='<img src="'+authorAvatar+'" alt="'+escapeHtml(authorName)+'" class="post-avatar clickable-avatar" data-person-id="'+post.author_id+'" style="cursor:pointer;">';
+                feedHtml+='<div class="post-user-info"><div class="post-user-top"><h4 class="post-username clickable-avatar" data-person-id="'+post.author_id+'" style="cursor:pointer;">'+escapeHtml(authorName)+'</h4><span class="post-time">'+postTime+'</span></div></div></div>';
                 feedHtml+='<div class="post-description"><p>'+linkifyText(renderMentionsInText(escapeHtmlNl(post.content)))+'</p></div>';
                 var pvImgs=post.media_urls&&post.media_urls.length?post.media_urls:(post.image_url?[post.image_url]:[]);
                 feedHtml+=buildMediaGrid(pvImgs);
@@ -10250,7 +10250,7 @@ function openStoryViewer(userId){
             else mediaHtml='<img src="'+s.media_url+'" class="story-media">';
         }
         overlay.innerHTML='<div class="story-progress"><div class="story-progress-fill" style="width:0%;"></div></div>'+
-            '<div class="story-header"><img src="'+avatar+'" class="story-header-avatar"><div><strong>'+escapeHtml(name)+'</strong><span style="font-size:11px;color:rgba(255,255,255,.6);margin-left:6px;">'+time+'</span></div><button class="story-close"><i class="fas fa-times"></i></button></div>'+
+            '<div class="story-header"><img src="'+avatar+'" class="story-header-avatar clickable-avatar" data-person-id="'+user.id+'" style="cursor:pointer;"><div><strong class="clickable-avatar" data-person-id="'+user.id+'" style="cursor:pointer;">'+escapeHtml(name)+'</strong><span style="font-size:11px;color:rgba(255,255,255,.6);margin-left:6px;">'+time+'</span></div><button class="story-close"><i class="fas fa-times"></i></button></div>'+
             '<div class="story-content">'+mediaHtml+(s.text?'<div class="story-text">'+escapeHtml(s.text)+'</div>':'')+'</div>'+
             '<div class="story-nav"><div class="story-nav-left"></div><div class="story-nav-right"></div></div>'+
             (isOwn?'<div class="story-viewers"><button class="story-viewers-btn"><i class="fas fa-eye"></i> Views</button><button class="story-delete-btn" style="color:#e74c3c;"><i class="fas fa-trash"></i></button></div>':'')+
@@ -12366,6 +12366,19 @@ function showAdminReportQueue(){
         b.textContent='Dismissed';b.disabled=true;
     });});
 }
+
+// ======================== GLOBAL CLICKABLE AVATARS ========================
+// Delegated handler — any element with .clickable-avatar and data-person-id
+document.addEventListener('click',function(e){
+    var el=e.target.closest('.clickable-avatar[data-person-id]');
+    if(!el) return;
+    var uid=el.getAttribute('data-person-id');
+    if(!uid||uid==='undefined') return;
+    e.stopPropagation();
+    sbGetProfile(uid).then(function(p){
+        if(p) showProfileView(profileToPerson(p));
+    }).catch(function(){});
+});
 
 // ======================== ARIA LABELS FOR ICON BUTTONS ========================
 (function addAriaLabels(){
