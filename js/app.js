@@ -8619,7 +8619,7 @@ function renderMySkins(){
             document.getElementById('darknessValLabel').textContent=Math.round(premiumBgDarkness*100)+'%';
             updatePremiumBg();
         });
-        darknessSlider.addEventListener('change',function(){saveState();});
+        darknessSlider.addEventListener('change',function(){syncSkinDataToSupabase(true);});
     }
     var overlaySlider=document.getElementById('premiumBgOverlaySlider');
     if(overlaySlider){
@@ -8628,7 +8628,7 @@ function renderMySkins(){
             document.getElementById('overlayValLabel').textContent=Math.round(premiumBgOverlay*100)+'%';
             updatePremiumBg();
         });
-        overlaySlider.addEventListener('change',function(){saveState();});
+        overlaySlider.addEventListener('change',function(){syncSkinDataToSupabase(true);});
     }
     var cardTransSlider=document.getElementById('premiumCardTransSlider');
     if(cardTransSlider){
@@ -8637,10 +8637,25 @@ function renderMySkins(){
             document.getElementById('cardTransValLabel').textContent=Math.round(premiumCardTransparency*100)+'%';
             updatePremiumBg();
         });
-        cardTransSlider.addEventListener('change',function(){saveState();});
+        cardTransSlider.addEventListener('change',function(){syncSkinDataToSupabase(true);});
     }
     function mySkinsRerender(){var row=$('#mySkinsGrid .shop-scroll-row');var sl=row?row.scrollLeft:0;renderMySkins();var row2=$('#mySkinsGrid .shop-scroll-row');if(row2)row2.scrollLeft=sl;saveState();}
-    function _applyAndSync(fn){fn();mySkinsRerender();_pvSaved=null;_pvRealSkin=null;_gvSaved=null;syncSkinDataToSupabase(true);}
+    function _applyAndSync(fn){
+        // If coming from profile/group view, restore our own state first
+        if(_pvSaved||_pvRealSkin||_gvSaved){
+            _pvSaved=null;_pvRealSkin=null;_gvSaved=null;
+            loadSkinDataFromSupabase().then(function(){
+                reapplyCustomizations();
+                fn(); // Apply the user's chosen item on top of clean state
+                mySkinsRerender();
+                syncSkinDataToSupabase(true);
+            });
+        } else {
+            fn();
+            mySkinsRerender();
+            syncSkinDataToSupabase(true);
+        }
+    }
     $$('#mySkinsGrid .apply-skin-btn').forEach(function(btn){btn.addEventListener('click',function(){_applyAndSync(function(){applySkin(btn.dataset.sid==='default'?null:btn.dataset.sid);});});});
     $$('#mySkinsGrid .apply-font-btn').forEach(function(btn){btn.addEventListener('click',function(){_applyAndSync(function(){applyFont(btn.dataset.fid==='default'?null:btn.dataset.fid);});});});
     $$('#mySkinsGrid .apply-logo-btn').forEach(function(btn){btn.addEventListener('click',function(){_applyAndSync(function(){applyLogo(btn.dataset.lid==='default'?null:btn.dataset.lid);});});});
