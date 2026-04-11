@@ -13245,11 +13245,11 @@ function showPlaylistManager(){
     document.getElementById('playlistAddBtn').addEventListener('click',async function(){
         if(_plSongs.length>=5){showToast('Maximum 5 songs');return;}
         if(!_shopSongs||!_shopSongs.length) await _loadShopSongs();
-        var owned=(_shopSongs||[]).filter(function(s){return _hasInfinity()||(_shopOwnedSongs&&_shopOwnedSongs[s.id]);});
+        var owned=(_shopSongs||[]).filter(function(s){return _shopOwnedSongs&&_shopOwnedSongs[s.id];});
         // Filter out songs already in playlist
         var inPl={};_plSongs.forEach(function(s){inPl[s.id]=true;});
         var available=owned.filter(function(s){return !inPl[s.id];});
-        if(!available.length){showToast('No more songs available');return;}
+        if(!available.length){showToast(owned.length?'All owned songs already in playlist':'No songs owned yet — buy songs from the Shop!');return;}
         var sh='<div style="max-height:200px;overflow-y:auto;">';
         available.forEach(function(s){
             sh+='<div class="song-picker-item pl-add-song" data-sid="'+s.id+'" style="cursor:pointer;padding:8px;"><i class="fas fa-music" style="color:var(--primary);margin-right:8px;"></i>'+escapeHtml(s.title)+'</div>';
