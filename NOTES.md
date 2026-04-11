@@ -1422,3 +1422,4 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - Playlist manager showing all songs for infinity users — removed `_hasInfinity()` bypass so only owned songs appear
 - YouTube/URLs with underscores broken in feed — `renderRichText()` italic regex `_text_` was matching underscores inside URLs (e.g. `v=2R_qDghqVxg` → `v=2RqDghqVxg`), stripping them. Fix: protect `<a>` tags from formatting by extracting them before applying markdown, restoring after
 - Feed URL not hidden after embed — `linkifyText()` wraps URLs in `<a>` tags but old regex only matched raw text. Added `_hideUrlFromText()` helper that strips the full `<a>` tag
+- Story avatar/name click now opens profile — closes story viewer and navigates to user's profile page
