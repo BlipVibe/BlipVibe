@@ -9697,6 +9697,8 @@ async function loadStories(){
         var byUser={};
         (raw||[]).forEach(function(s){
             var uid=s.user_id;
+            // Only show stories from people you follow + yourself
+            if(currentUser&&uid!==currentUser.id&&!state.followedUsers[uid]) return;
             if(!byUser[uid]) byUser[uid]={user:s.author||{id:uid},stories:[]};
             byUser[uid].stories.push(s);
         });
