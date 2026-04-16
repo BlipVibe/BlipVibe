@@ -2584,6 +2584,9 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .gv-left,.gv-right{position:static!important;}
     .gv-right{display:none!important;}
     .gv-mobile-right{display:flex!important;}
+    .gv-center .card:first-child{text-align:center;}
+    .gv-center .card:first-child .profile-stats{justify-content:center;}
+    .gv-center .card:first-child .pv-actions,.gv-center .card:first-child .gv-actions{justify-content:center;flex-wrap:wrap;}
     .gv-cover-banner,.pv-cover-banner-group{height:200px!important;}
 
     /* --- ALL templates → single column --- */
