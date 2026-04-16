@@ -7288,7 +7288,8 @@ function profileCardHtml(p,opts){
     var noBio=opts&&opts.noBio;
     var btnLabel=isFollowed?(nfb?'Not Following Back':'Following'):'Follow';
     var btnClass=isFollowed?(nfb?'btn-outline nfb-label':'btn-outline'):'btn-primary';
-    return '<div class="profile-card-item"><img src="'+avatar+'" class="profile-card-avatar" data-uid="'+p.id+'"><h4 class="profile-card-name" data-uid="'+p.id+'">'+escapeHtml(name)+'</h4>'+(noBio?'':'<p class="profile-card-bio">'+escapeHtml(safeTruncate(bio,60))+'</p>')+(isSelf?'':'<button class="btn '+btnClass+' profile-follow-btn" data-uid="'+p.id+'">'+btnLabel+'</button>')+'</div>';
+    var extra=opts&&opts.extraHtml?opts.extraHtml:'';
+    return '<div class="profile-card-item"><img src="'+avatar+'" class="profile-card-avatar" data-uid="'+p.id+'"><h4 class="profile-card-name" data-uid="'+p.id+'">'+escapeHtml(name)+'</h4>'+(noBio?'':'<p class="profile-card-bio">'+escapeHtml(safeTruncate(bio,60))+'</p>')+extra+(isSelf?'':'<button class="btn '+btnClass+' profile-follow-btn" data-uid="'+p.id+'">'+btnLabel+'</button>')+'</div>';
 }
 var _networkRenderVersion=0;
 async function renderMyNetwork(container,query){
@@ -7374,32 +7375,37 @@ async function renderDiscover(container,query){
     try{
         var profiles;
         if(query){
-            // Search: search ALL profiles on BlipVibe
             profiles=await sbSearchProfiles(query,30);
             if(currentUser) profiles=profiles.filter(function(p){return p.id!==currentUser.id;});
         } else {
-            // No search: show friends-of-friends first, then fill with other users
-            profiles=[];
             var all=await sbGetAllProfiles(50);
+            var networkIds={};
             if(currentUser){
-                var fofKeys=Object.keys(_fofIds);
-                profiles=all.filter(function(p){return _fofIds[p.id];});
+                networkIds[currentUser.id]=true;
+                Object.keys(state.followedUsers).forEach(function(k){networkIds[k]=true;});
             }
-            // If not enough friends-of-friends, add other profiles
-            if(profiles.length<10){
-                var networkIds={};
-                if(currentUser){
-                    networkIds[currentUser.id]=true;
-                    Object.keys(state.followedUsers).forEach(function(k){networkIds[k]=true;});
-                }
-                var existing={}; profiles.forEach(function(p){existing[p.id]=true;});
-                var extras=all.filter(function(p){return !networkIds[p.id]&&!existing[p.id];});
-                profiles=profiles.concat(extras);
-            }
+            profiles=all.filter(function(p){return !networkIds[p.id];});
         }
         profiles=profiles.filter(function(p){return !blockedUsers[p.id];});
-        if(!profiles.length) html='<div class="empty-state"><i class="fas fa-users"></i><p>'+(query?'No results for "'+query+'"':'No suggestions yet')+'</p></div>';
-        else{html='<div class="search-results-grid">';profiles.forEach(function(p){html+=profileCardHtml({id:p.id,name:p.display_name||p.username,bio:p.bio||'',avatar_url:p.avatar_url},{noBio:true});});html+='</div>';}
+        // Get mutual follower counts and sort by most mutuals first
+        var mutualCounts={};
+        if(currentUser&&profiles.length){
+            try{
+                var candidateIds=profiles.map(function(p){return p.id;});
+                mutualCounts=await sbGetMutualCounts(currentUser.id,candidateIds);
+            }catch(e){console.warn('Mutual counts failed:',e);}
+            profiles.sort(function(a,b){return (mutualCounts[b.id]||0)-(mutualCounts[a.id]||0);});
+        }
+        if(!profiles.length) html='<div class="empty-state"><i class="fas fa-users"></i><p>'+(query?'No results for "'+escapeHtml(query)+'"':'No suggestions yet')+'</p></div>';
+        else{
+            html='<div class="search-results-grid">';
+            profiles.forEach(function(p){
+                var mc=mutualCounts[p.id]||0;
+                var mutualText=mc>0?'<span class="mutual-badge"><i class="fas fa-user-group"></i> '+mc+' mutual'+(mc>1?'s':'')+'</span>':'';
+                html+=profileCardHtml({id:p.id,name:p.display_name||p.username,bio:p.bio||'',avatar_url:p.avatar_url},{noBio:true,extraHtml:mutualText});
+            });
+            html+='</div>';
+        }
     }catch(e){console.error('renderDiscover:',e);html='<div class="empty-state"><i class="fas fa-users"></i><p>Could not load profiles.</p></div>';}
     if(myVersion!==_discoverRenderVersion) return;
     container.innerHTML=html;

@@ -589,6 +589,26 @@ async function sbGetFriendsOfFriends(userId) {
   return fofSet;
 }
 
+// Get mutual follower counts for candidate users (how many of MY follows also follow each candidate)
+async function sbGetMutualCounts(userId, candidateIds) {
+  if (!candidateIds.length) return {};
+  const { data: myFollows } = await sb.from('follows')
+    .select('followed_id')
+    .eq('follower_id', userId);
+  const myFollowedIds = (myFollows || []).map(f => f.followed_id);
+  if (!myFollowedIds.length) return {};
+  // Find which of my-follows follow each candidate
+  const { data: mutualRows } = await sb.from('follows')
+    .select('follower_id, followed_id')
+    .in('follower_id', myFollowedIds)
+    .in('followed_id', candidateIds);
+  const counts = {};
+  (mutualRows || []).forEach(r => {
+    counts[r.followed_id] = (counts[r.followed_id] || 0) + 1;
+  });
+  return counts;
+}
+
 async function sbGetFollowCounts(userId) {
   const [{ count: following }, { count: followers }] = await Promise.all([
     sb.from('follows').select('*', { count: 'exact', head: true }).eq('follower_id', userId),

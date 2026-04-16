@@ -1,5 +1,17 @@
 [
   {
+    "version": "0.6.4",
+    "date": "2026-04-15",
+    "added": [
+      "\ud83d\udc65 Mutual followers shown on People You May Know \u2014 see how many connections you share"
+    ],
+    "changed": [
+      "\ud83e\udead Discover tab renamed to 'People You May Know'",
+      "\ud83d\udcc8 People with the most mutual followers now appear first in suggestions"
+    ],
+    "fixed": []
+  },
+  {
     "version": "0.6.3",
     "date": "2026-04-15",
     "added": [],

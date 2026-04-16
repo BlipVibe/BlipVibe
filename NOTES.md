@@ -1481,3 +1481,12 @@ Group coins are **shared** — they belong to the group, not individual users. A
 ## Music Autoplay Fix (v0.6.3 — 2026-04-15)
 - **Cause:** After moving player to navbar dropdown, `_tryAutoStartMusic()` played audio but didn't call `showGlobalPlayer()` to make the nav music icon visible
 - **Fix:** Added `showGlobalPlayer()` call after successful audio play in `_tryAutoStartMusic`
+
+## People You May Know (v0.6.4 — 2026-04-15)
+- **Renamed:** "Discover" tab in network page → "People You May Know" (matches social media conventions)
+- **Mutual follower ranking:** Users with the most mutual followers now appear first in the list
+- **`sbGetMutualCounts(userId, candidateIds)`** added to `supabase.js` — efficiently queries mutual follower counts for a batch of candidates in 2 queries (get my follows, then find which of my follows also follow each candidate)
+- **Mutual badge:** Each card shows "X mutual" / "X mutuals" count with user-group icon, styled in primary color
+- **Sort order:** Most mutuals first → friends-of-friends → everyone else
+- **`profileCardHtml()`** updated to accept `extraHtml` option for injecting mutual badge between name and follow button
+- **Files changed:** `index.html` (tab label), `js/app.js` (renderDiscover, profileCardHtml), `js/supabase.js` (sbGetMutualCounts), `css/style.css` (.mutual-badge)
