@@ -2410,6 +2410,7 @@ function handleShare(btn){
                 }
                 closeModal();
                 showToast('Post shared!');
+                trackQuestProgress('share');
                 // Refresh feed to show the new shared post
                 await generatePosts();
             }catch(e){
@@ -12359,7 +12360,7 @@ function showQuotePostModal(postId){
         this.disabled=true;this.textContent='Posting...';
         try{
             await sbCreatePost(currentUser.id,commentary,null,null,null,null,postId);
-            closeModal();showToast('Quote posted!');
+            closeModal();showToast('Quote posted!');trackQuestProgress('share');
             await generatePosts();
         }catch(e){showToast('Failed to post');this.disabled=false;this.textContent='Post Quote';}
     });
