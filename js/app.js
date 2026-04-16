@@ -3301,6 +3301,15 @@ async function showProfileView(person){
                         _pvHasMore=false;
                         window.removeEventListener('scroll',_pvOnScroll);
                     }
+                    // Sync like state for new posts from DB
+                    if(currentUser){
+                        try{
+                            var newPostIds=morePosts.map(function(p){return p.id;});
+                            var myLikes=await sbGetUserLikes(currentUser.id,'post');
+                            var likedIds={};(myLikes||[]).forEach(function(l){likedIds[l.target_id]=true;});
+                            morePosts.forEach(function(p){if(likedIds[p.id]) state.likedPosts[p.id]=true;});
+                        }catch(e){}
+                    }
                     // Fetch shared posts
                     var moreSharedIds=[];morePosts.forEach(function(p){if(p.shared_post_id)moreSharedIds.push(p.shared_post_id);});
                     var moreSharedMap={};
@@ -3430,26 +3439,27 @@ async function showProfileView(person){
             document.getElementById('confirmPvAdminDel').addEventListener('click',async function(){closeModal();try{await sbAdminDeleteUser(person.id);showToast(person.name+'\'s account deleted');navigateTo('home');}catch(e){showToast('Error: '+(e.message||'Failed'));}});
         });
     }
-    // Event: Likes
+    _bindPvPostEvents();
+}
+function _bindPvPostEvents(){
+    // Bind like/dislike/comment/share/react on profile view posts (skips already-bound)
     $$('#pvPostsFeed .like-btn').forEach(function(btn){
+        if(btn.dataset.pvBound) return; btn.dataset.pvBound='1';
         btn.addEventListener('click',async function(e){
             var pid=btn.getAttribute('data-post-id');var countEl=btn.querySelector('.like-count');var count=parseInt(countEl.textContent);
             var isUUID=/^[0-9a-f]{8}-/.test(pid);
             var had=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);
             if(isUUID&&currentUser){
                 try{
-                    // Let DB be the source of truth — toggle returns new state
                     var nowLiked=await sbToggleLike(currentUser.id,'post',pid);
                     if(nowLiked){
                         state.likedPosts[pid]=true;btn.classList.add('liked');btn.querySelector('i').className='fas fa-thumbs-up';countEl.textContent=count+1;
-                        // Clear dislike if active
                         if(state.dislikedPosts[pid]){var db=btn.closest('.action-left').querySelector('.dislike-btn');if(db){var dc=db.querySelector('.dislike-count');dc.textContent=Math.max(0,parseInt(dc.textContent)-1);db.classList.remove('disliked');db.querySelector('i').className='far fa-thumbs-down';}delete state.dislikedPosts[pid];}
                     } else {
                         delete state.likedPosts[pid];btn.classList.remove('liked');btn.querySelector('i').className='far fa-thumbs-up';countEl.textContent=Math.max(0,count-1);
                     }
                 }catch(e2){console.warn('Like toggle error:',e2);}
             } else {
-                // Non-UUID fallback (legacy)
                 if(state.likedPosts[pid]){delete state.likedPosts[pid];btn.classList.remove('liked');btn.querySelector('i').className='far fa-thumbs-up';countEl.textContent=Math.max(0,count-1);}
                 else{state.likedPosts[pid]=true;btn.classList.add('liked');btn.querySelector('i').className='fas fa-thumbs-up';countEl.textContent=count+1;}
             }
@@ -3458,6 +3468,7 @@ async function showProfileView(person){
         });
     });
     $$('#pvPostsFeed .dislike-btn').forEach(function(btn){
+        if(btn.dataset.pvBound) return; btn.dataset.pvBound='1';
         btn.addEventListener('click',async function(){
             var pid=btn.getAttribute('data-post-id');var countEl=btn.querySelector('.dislike-count');var count=parseInt(countEl.textContent);
             var had=!!(state.likedPosts[pid]||state.dislikedPosts[pid]);
@@ -3473,17 +3484,15 @@ async function showProfileView(person){
             saveState();
         });
     });
-    // Event: Comments
     $$('#pvPostsFeed .comment-btn').forEach(function(btn){
+        if(btn.dataset.pvBound) return; btn.dataset.pvBound='1';
         btn.addEventListener('click',function(){
             var postId=btn.closest('.action-left').querySelector('.like-btn').getAttribute('data-post-id');
             showComments(postId,btn.querySelector('span'));
         });
     });
-    // Event: Share
-    $$('#pvPostsFeed .share-btn').forEach(function(btn){btn.addEventListener('click',function(){handleShare(btn);});});
-    // Event: Emoji reactions
-    $$('#pvPostsFeed .react-btn').forEach(function(btn){btn.addEventListener('click',function(){var postId=btn.getAttribute('data-post-id');showReactionPicker(postId,btn);});});
+    $$('#pvPostsFeed .share-btn').forEach(function(btn){if(btn.dataset.pvBound) return;btn.dataset.pvBound='1';btn.addEventListener('click',function(){handleShare(btn);});});
+    $$('#pvPostsFeed .react-btn').forEach(function(btn){if(btn.dataset.pvBound) return;btn.dataset.pvBound='1';btn.addEventListener('click',function(){var postId=btn.getAttribute('data-post-id');showReactionPicker(postId,btn);});});
     bindLikeCountClicks('#pvPostsFeed');
 }
 
