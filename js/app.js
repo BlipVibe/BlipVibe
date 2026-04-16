@@ -1774,7 +1774,6 @@ async function toggleFollow(userId,btn){
             await sbFollow(currentUser.id, userId);
             state.followedUsers[userId]=true;
             state.following++;
-            trackQuestProgress('follow');
             updateFollowBtn(btn,true);
             sbGetProfile(userId).then(function(p){if(p)addNotification('follow','You are now following '+(p.display_name||p.username));}).catch(function(){});
             // Notify the person being followed
@@ -2645,6 +2644,7 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
                     sbCreateNotification(fp.person.id,'comment',myName+' commented on your post',text,{originalType:'comment',post_id:postId}).catch(function(e){console.error('Comment notif error:',e);});
                 }
                 notifyMentionedUsers(text,postId,'a comment');
+                trackQuestProgress('comment');
             } catch(e) { console.error('Comment error:', e); showToast('Comment failed: '+(e.message||'Unknown error')); return; }
         } else {
             if(!state.comments[postId])state.comments[postId]=[];
@@ -3019,6 +3019,7 @@ function viewProfile(userId){
 async function showProfileView(person){
     // Allow viewing own profile even if somehow in blockedUsers; block viewing others
     if(person.id&&!person.isMe&&blockedUsers[person.id]){showToast('This user is blocked');return;}
+    if(person.id&&!person.isMe) trackQuestProgress('view_profile');
     pvPhotoTab='photos';
     $$('.page').forEach(function(p){p.classList.remove('active');});
     document.getElementById('page-profile-view').classList.add('active');
@@ -6309,7 +6310,7 @@ function bindPostEvents(){
                         state.likedPosts[postId]=true;
                         updateLikeDisplay(btn,true,count);
                         showCoinEarnAnimation(btn,1);
-                        trackQuestProgress('like');
+                        trackQuestProgress('like');trackQuestProgress('react');
                         var fp=feedPosts.find(function(x){return x.idx===postId;});
                         if(fp&&fp.person&&fp.person.id&&fp.person.id!==currentUser.id){
                             var myName=currentUser.display_name||currentUser.username||'Someone';
@@ -9082,6 +9083,7 @@ async function sendMessage(){
     try{
         await sbSendMessage(currentUser.id,activeChat.partnerId,text);
         recordInteraction(activeChat.partnerId);
+        trackQuestProgress('message');
         // Update conversation list
         await loadConversations();
     }catch(e){
@@ -9991,14 +9993,15 @@ function savePostToFolder(pid,fid){
     var target=savedFolders.find(function(f){return f.id===fid;});
     if(target) target.posts.push(s);
     persistSaved();
+    trackQuestProgress('save');
 }
 
 // ======================== COPY POST LINK ========================
 function copyPostLink(pid){
     var url=window.location.origin+window.location.pathname+'#post/'+pid;
     if(navigator.clipboard&&navigator.clipboard.writeText){
-        navigator.clipboard.writeText(url).then(function(){showToast('Link copied!');}).catch(function(){_fallbackCopy(url);});
-    } else { _fallbackCopy(url); }
+        navigator.clipboard.writeText(url).then(function(){showToast('Link copied!');trackQuestProgress('share');}).catch(function(){_fallbackCopy(url);trackQuestProgress('share');});
+    } else { _fallbackCopy(url);trackQuestProgress('share'); }
 }
 function _fallbackCopy(text){
     var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
@@ -13324,36 +13327,86 @@ function loadCachedFeed(){
 }
 
 // ======================== DAILY QUEST SYSTEM ========================
+// ======================== DAILY QUEST SYSTEM (randomized) ========================
 var _questData=null;
+var _questPool=[
+    {id:'like5',label:'Like 5 posts',target:5,reward:5,icon:'fa-heart',color:'#ef4444',type:'like'},
+    {id:'comment2',label:'Comment on 2 posts',target:2,reward:15,icon:'fa-comment',color:'#3b82f6',type:'comment'},
+    {id:'post1',label:'Create a post',target:1,reward:25,icon:'fa-pen',color:'#22c55e',type:'post'},
+    {id:'react5',label:'React to 5 posts',target:5,reward:5,icon:'fa-thumbs-up',color:'#f59e0b',type:'react'},
+    {id:'save3',label:'Save 3 posts',target:3,reward:10,icon:'fa-bookmark',color:'#8b5cf6',type:'save'},
+    {id:'view3',label:'View 3 profiles',target:3,reward:10,icon:'fa-eye',color:'#06b6d4',type:'view_profile'},
+    {id:'msg3',label:'Send 3 messages',target:3,reward:10,icon:'fa-paper-plane',color:'#ec4899',type:'message'},
+    {id:'share1',label:'Share a post',target:1,reward:10,icon:'fa-share-nodes',color:'#14b8a6',type:'share'}
+];
+var _todayQuests=null;
+function _getDailyQuests(){
+    if(_todayQuests) return _todayQuests;
+    var day=Math.floor(Date.now()/86400000);
+    var seed=day;
+    var pool=_questPool.slice();
+    for(var i=pool.length-1;i>0;i--){
+        seed=(seed*16807)%2147483647;
+        var j=seed%(i+1);
+        var t=pool[i];pool[i]=pool[j];pool[j]=t;
+    }
+    _todayQuests=[pool[0],pool[1],pool[2]];
+    return _todayQuests;
+}
+function _questSlotKey(slotIndex){return ['q1','q2','q3'][slotIndex];}
+function _emptyQuestData(){return {q1_count:0,q2_count:0,q3_count:0,q1_claimed:false,q2_claimed:false,q3_claimed:false};}
 async function loadDailyQuests(){
+    _getDailyQuests();
     try{
         var resp=await sb.rpc('get_daily_quests');
         if(resp.error) throw resp.error;
         var d=resp.data!=null?resp.data:resp;
-        if(d) _questData=d;
+        if(d){
+            // Map server fields to generic slots
+            _questData={q1_count:d.likes_count||0,q2_count:d.follows_count||0,q3_count:d.posts_count||0,
+                q1_claimed:!!d.likes_reward_claimed,q2_claimed:!!d.follows_reward_claimed,q3_claimed:!!d.posts_reward_claimed};
+        }
     }catch(e){
-        // RPC not deployed yet — use local fallback
         var key='blipvibe_quests_'+new Date().toDateString();
-        try{_questData=JSON.parse(localStorage.getItem(key))||{likes_count:0,follows_count:0,posts_count:0,likes_reward_claimed:false,follows_reward_claimed:false,posts_reward_claimed:false};}catch(e2){_questData={likes_count:0,follows_count:0,posts_count:0,likes_reward_claimed:false,follows_reward_claimed:false,posts_reward_claimed:false};}
+        try{_questData=JSON.parse(localStorage.getItem(key))||_emptyQuestData();}catch(e2){_questData=_emptyQuestData();}
     }
+    if(!_questData) _questData=_emptyQuestData();
     renderQuestPanel();
 }
-async function trackQuestProgress(type){
+function _questTypeToSlot(actionType){
+    var quests=_getDailyQuests();
+    for(var i=0;i<3;i++){if(quests[i].type===actionType) return i;}
+    return -1;
+}
+async function trackQuestProgress(actionType){
+    var slot=_questTypeToSlot(actionType);
+    if(slot<0) return; // not one of today's quests
+    var sk=_questSlotKey(slot);
+    var quests=_getDailyQuests();
+    var quest=quests[slot];
+    if(!_questData) _questData=_emptyQuestData();
+    if(_questData[sk+'_claimed']) return; // already completed
+    // Map slot to server type: slot0→like, slot1→follow, slot2→post
+    var serverType=['like','follow','post'][slot];
     try{
-        var resp=await sb.rpc('update_quest_progress',{p_type:type});
+        var resp=await sb.rpc('update_quest_progress',{p_type:serverType});
         if(resp.error) throw resp.error;
         var result=resp.data!=null?resp.data:resp;
-        if(result&&result.reward_claimed){
-            showToast('Quest complete! +'+result.reward_amount+' coins!');
-            if(result.new_balance!=null){state.coins=result.new_balance;currentUser.coin_balance=result.new_balance;updateCoins();}
+        if(result){
+            _questData={q1_count:result.likes_count||0,q2_count:result.follows_count||0,q3_count:result.posts_count||0,
+                q1_claimed:!!result.likes_reward_claimed,q2_claimed:!!result.follows_reward_claimed,q3_claimed:!!result.posts_reward_claimed};
+            if(result.reward_claimed){
+                showToast('Quest complete! +'+quest.reward+' coins!');
+                if(result.new_balance!=null){state.coins=result.new_balance;currentUser.coin_balance=result.new_balance;updateCoins();}
+            }
         }
-        if(result) _questData=result;
     }catch(e){
-        // Local fallback
-        if(!_questData) _questData={likes_count:0,follows_count:0,posts_count:0,likes_reward_claimed:false,follows_reward_claimed:false,posts_reward_claimed:false};
-        if(type==='like') _questData.likes_count++;
-        else if(type==='follow') _questData.follows_count++;
-        else if(type==='post') _questData.posts_count++;
+        _questData[sk+'_count']++;
+        if(_questData[sk+'_count']>=quest.target&&!_questData[sk+'_claimed']){
+            _questData[sk+'_claimed']=true;
+            state.coins+=quest.reward;updateCoins();
+            showToast('Quest complete! +'+quest.reward+' coins!');
+        }
         var key='blipvibe_quests_'+new Date().toDateString();
         try{localStorage.setItem(key,JSON.stringify(_questData));}catch(e2){}
     }
@@ -13363,20 +13416,17 @@ async function trackQuestProgress(type){
 function renderQuestPanel(){
     var container=document.getElementById('questPanel');
     if(!container||!_questData) return;
-    var q=_questData;
+    var quests=_getDailyQuests();
     var html='<div class="quest-panel-header"><h4><i class="fas fa-scroll" style="color:var(--primary);"></i> Daily Quests</h4><span class="quest-reset">Resets daily</span></div>';
-    // Quest 1: Like 3 posts
-    var likePct=Math.min(100,Math.round((q.likes_count||0)/3*100));
-    var likeDone=q.likes_reward_claimed||(q.likes_count||0)>=3;
-    html+='<div class="quest-item"><div class="quest-icon quest-like"><i class="fas fa-heart"></i></div><div class="quest-info"><p>Like 3 posts</p><div class="quest-bar"><div class="quest-bar-fill" style="width:'+likePct+'%;background:#ef4444;"></div></div><span class="quest-progress">'+(q.likes_count||0)+' / 3</span></div>'+(likeDone?'<span class="quest-check"><i class="fas fa-check-circle"></i></span>':'<span class="quest-reward"><i class="fas fa-coins"></i> +20</span>')+'</div>';
-    // Quest 2: Follow 2 users
-    var followPct=Math.min(100,Math.round((q.follows_count||0)/2*100));
-    var followDone=q.follows_reward_claimed||(q.follows_count||0)>=2;
-    html+='<div class="quest-item"><div class="quest-icon quest-follow"><i class="fas fa-user-plus"></i></div><div class="quest-info"><p>Follow 2 users</p><div class="quest-bar"><div class="quest-bar-fill" style="width:'+followPct+'%;background:#3b82f6;"></div></div><span class="quest-progress">'+(q.follows_count||0)+' / 2</span></div>'+(followDone?'<span class="quest-check"><i class="fas fa-check-circle"></i></span>':'<span class="quest-reward"><i class="fas fa-coins"></i> +20</span>')+'</div>';
-    // Quest 3: Create 1 post
-    var postPct=Math.min(100,Math.round((q.posts_count||0)/1*100));
-    var postDone=q.posts_reward_claimed||(q.posts_count||0)>=1;
-    html+='<div class="quest-item"><div class="quest-icon quest-post"><i class="fas fa-pen"></i></div><div class="quest-info"><p>Create a post</p><div class="quest-bar"><div class="quest-bar-fill" style="width:'+postPct+'%;background:#22c55e;"></div></div><span class="quest-progress">'+(q.posts_count||0)+' / 1</span></div>'+(postDone?'<span class="quest-check"><i class="fas fa-check-circle"></i></span>':'<span class="quest-reward"><i class="fas fa-coins"></i> +35</span>')+'</div>';
+    for(var i=0;i<3;i++){
+        var q=quests[i];
+        var sk=_questSlotKey(i);
+        var count=_questData[sk+'_count']||0;
+        var claimed=_questData[sk+'_claimed'];
+        var pct=Math.min(100,Math.round(count/q.target*100));
+        var done=claimed||count>=q.target;
+        html+='<div class="quest-item"><div class="quest-icon" style="background:'+q.color+'20;color:'+q.color+';"><i class="fas '+q.icon+'"></i></div><div class="quest-info"><p>'+q.label+'</p><div class="quest-bar"><div class="quest-bar-fill" style="width:'+pct+'%;background:'+q.color+';"></div></div><span class="quest-progress">'+Math.min(count,q.target)+' / '+q.target+'</span></div>'+(done?'<span class="quest-check"><i class="fas fa-check-circle"></i></span>':'<span class="quest-reward"><i class="fas fa-coins"></i> +'+q.reward+'</span>')+'</div>';
+    }
     container.innerHTML=html;
 }
 
@@ -13971,6 +14021,7 @@ function _tryAutoStartMusic(){
         var songName=_viewingSong?_viewingSong.title:(_mySong?_mySong.title:'');
         var songArtist=_viewingSong?(_viewingSong.artist||'BlipVibe'):(_mySong?(_mySong.artist||'BlipVibe'):'BlipVibe');
         _updateGlobalPlayer(songName,songArtist,true);
+        showGlobalPlayer();
     }).catch(function(){_musicAutoStarted=false;});
 }
 document.addEventListener('click',_tryAutoStartMusic,{once:true});

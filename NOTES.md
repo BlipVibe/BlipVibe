@@ -1465,3 +1465,19 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - **CSS fallback:** `#landscapeOverlay` div with full-screen message "Please Rotate Your Device" shown via `@media(max-width:768px) and (orientation:landscape)`
 - **Tablets excluded:** Only targets ≤768px viewport width
 - **Files changed:** `index.html` (overlay div), `css/style.css` (overlay styles), `js/app.js` (orientation lock call)
+
+## Daily Quests Rework (v0.6.3 — 2026-04-15)
+- **Before:** 3 fixed quests every day: Like 3 posts (+20), Follow 2 users (+20), Create a post (+35)
+- **After:** 3 random quests picked daily from a pool of 8, with scaled rewards based on difficulty
+- **Removed:** "Follow 2 users" quest — can create spam/unwanted follows
+- **Quest pool:** Like 5 posts (5 coins), Comment on 2 posts (15), Create a post (25), React to 5 posts (5), Save 3 posts (10), View 3 profiles (10), Send 3 messages (10), Share a post (10)
+- **Daily selection:** Deterministic shuffle using day number as seed — same 3 quests for all users each day, different every day
+- **New tracking calls added:** `trackQuestProgress('comment')` after successful comment, `trackQuestProgress('save')` in `savePostToFolder`, `trackQuestProgress('view_profile')` in `showProfileView` (non-self only), `trackQuestProgress('message')` in `sendMessage`, `trackQuestProgress('share')` in `copyPostLink`, `trackQuestProgress('react')` alongside like tracking
+- **Removed:** `trackQuestProgress('follow')` from follow handler
+- **Rendering:** `renderQuestPanel()` now dynamically renders from `_getDailyQuests()` array with per-quest colors and icons
+- **DB compatibility:** Reuses existing `user_quests` table columns (likes_count→slot1, follows_count→slot2, posts_count→slot3) — no migration needed
+- **Files changed:** `js/app.js` only
+
+## Music Autoplay Fix (v0.6.3 — 2026-04-15)
+- **Cause:** After moving player to navbar dropdown, `_tryAutoStartMusic()` played audio but didn't call `showGlobalPlayer()` to make the nav music icon visible
+- **Fix:** Added `showGlobalPlayer()` call after successful audio play in `_tryAutoStartMusic`

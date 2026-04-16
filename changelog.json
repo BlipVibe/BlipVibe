@@ -1,5 +1,18 @@
 [
   {
+    "version": "0.6.3",
+    "date": "2026-04-15",
+    "added": [],
+    "changed": [
+      "\ud83c\udfaf Daily Quests reworked \u2014 3 random quests from a pool of 8 each day, scaled rewards based on difficulty",
+      "\ud83d\udcb0 Quest rewards rebalanced: Like 5 posts (+5), Comment on 2 posts (+15), Create a post (+25), React to 5 posts (+5), Save 3 posts (+10), View 3 profiles (+10), Send 3 messages (+10), Share a post (+10)",
+      "\u274c Removed 'Follow 2 users' quest \u2014 replaced with more achievable alternatives"
+    ],
+    "fixed": [
+      "\ud83c\udfb5 Music autoplay now properly shows the navbar music icon when starting"
+    ]
+  },
+  {
     "version": "0.6.2",
     "date": "2026-04-15",
     "added": [
