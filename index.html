@@ -335,7 +335,23 @@
             <div class="nav-right">
                 <a href="#" class="mobile-search-btn" id="mobileSearchBtn"><i class="fas fa-search"></i></a>
                 <a href="#" class="mobile-notif-btn" id="mobileNotifBtn" data-page="notifications"><i class="fas fa-bell"></i><span class="notif-badge" id="mobileNotifBadge" style="display:none;">0</span></a>
-                <button id="navMusicBtn" style="display:none;background:none;color:#ffd700;font-size:16px;padding:4px 8px;align-items:center;" title="Open Music Player"><i class="fas fa-music"></i></button>
+                <div class="nav-music-wrap" id="navMusicWrap" style="display:none;position:relative;">
+                    <button id="navMusicBtn" class="nav-music-btn" title="Music Player"><i class="fas fa-music"></i></button>
+                    <div id="globalMiniPlayer" class="gmp-dropdown">
+                        <div class="gmp-art"><i class="fas fa-music"></i></div>
+                        <div class="gmp-info"><div class="gmp-title" id="gmpTitle">—</div><div class="gmp-artist" id="gmpArtist">BlipVibe</div></div>
+                        <div class="gmp-controls">
+                            <button class="gmp-btn" id="gmpPrevBtn"><i class="fas fa-backward-step"></i></button>
+                            <button class="gmp-btn gmp-play" id="gmpPlayBtn"><i class="fas fa-play"></i></button>
+                            <button class="gmp-btn" id="gmpNextBtn"><i class="fas fa-forward-step"></i></button>
+                            <button class="gmp-btn" id="gmpShuffleBtn" title="Shuffle/Repeat"><i class="fas fa-repeat"></i></button>
+                        </div>
+                        <div class="gmp-vol-row">
+                            <button class="gmp-btn" id="gmpMuteBtn"><i class="fas fa-volume-high"></i></button>
+                            <input type="range" class="gmp-volume" id="gmpVolume" min="0" max="100" value="50">
+                        </div>
+                    </div>
+                </div>
                 <div class="nav-coins" id="navCoins"><i class="fas fa-coins"></i><span class="coin-count" id="navCoinCount">0</span></div>
                 <div class="nav-user" id="navUserDropdown">
                     <img src="images/default-avatar.svg" alt="User" class="nav-avatar">
@@ -940,17 +956,7 @@
 
     </div><!-- /app-shell -->
     <button id="scrollToTopBtn" title="Back to top"><i class="fas fa-arrow-up"></i></button>
-    <div id="globalMiniPlayer">
-        <div class="gmp-art"><i class="fas fa-music"></i></div>
-        <div class="gmp-info"><div class="gmp-title" id="gmpTitle">—</div><div class="gmp-artist" id="gmpArtist">BlipVibe</div></div>
-        <button class="gmp-btn" id="gmpPrevBtn" style="font-size:12px;"><i class="fas fa-backward-step"></i></button>
-        <button class="gmp-btn" id="gmpPlayBtn"><i class="fas fa-play"></i></button>
-        <button class="gmp-btn" id="gmpNextBtn" style="font-size:12px;"><i class="fas fa-forward-step"></i></button>
-        <input type="range" class="gmp-volume" id="gmpVolume" min="0" max="100" value="50">
-        <button class="gmp-btn" id="gmpMuteBtn"><i class="fas fa-volume-high"></i></button>
-        <button class="gmp-btn" id="gmpShuffleBtn" style="font-size:12px;" title="Shuffle/Repeat"><i class="fas fa-repeat"></i></button>
-        <button class="gmp-close" id="gmpClose"><i class="fas fa-times"></i></button>
-    </div>
+    <div id="landscapeOverlay"><i class="fas fa-mobile-screen-button"></i><h3>Please Rotate Your Device</h3><p>BlipVibe works best in portrait mode.</p></div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>document.write('<script src="js/supabase.js?t='+Date.now()+'"><\/script>');document.write('<script src="js/app.js?t='+Date.now()+'"><\/script>');</script>
     <script>

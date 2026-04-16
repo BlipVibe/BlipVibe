@@ -1,11 +1,17 @@
 [
   {
-    "version": "0.6.1",
+    "version": "0.6.2",
     "date": "2026-04-15",
-    "added": [],
-    "changed": [],
+    "added": [
+      "\ud83c\udfb5 Music player moved to navbar \u2014 tap the music note icon to open a compact dropdown player",
+      "\ud83d\udcf1 Portrait lock on mobile phones \u2014 landscape shows a rotate prompt"
+    ],
+    "changed": [
+      "\ud83c\udfa7 Music player no longer takes up space at the bottom of the screen",
+      "\ud83d\udd14 Music note icon pulses gold in the navbar when music is playing"
+    ],
     "fixed": [
-      "\ud83d\udcf1 Mobile navbar no longer cut off by status bar on iPhones \u2014 all nav style overrides now properly account for safe-area-inset-top"
+      "\ud83d\udcf1 Mobile navbar no longer cut off by status bar on iPhones"
     ]
   },
   {

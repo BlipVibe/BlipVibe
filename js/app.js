@@ -529,6 +529,13 @@ var _initAppRunning = false;
 var _initAppDone = false;
 var _realtimeSubs = []; // track all realtime subscriptions for cleanup
 var _saveStateInterval = null; // track the saveState interval
+// Lock to portrait on phones (not tablets)
+(function(){
+    if(window.innerWidth<=768 && screen.orientation && screen.orientation.lock){
+        screen.orientation.lock('portrait').catch(function(){});
+    }
+})();
+
 async function initApp() {
     if (_initAppRunning || _initAppDone) return;
     _initAppRunning = true;
@@ -1920,7 +1927,7 @@ function showModal(html){
         document.body.classList.add('modal-open');
         document.body.style.top=(-_modalScrollY)+'px';
     }
-    // Hide music player when any modal opens
+    // Hide music dropdown when any modal opens
     var gmp=document.getElementById('globalMiniPlayer');
     if(gmp&&gmp.classList.contains('visible')){_gmpVisibleBeforeModal=true;gmp.classList.remove('visible');}
 }
@@ -13689,29 +13696,39 @@ async function initMyProfileMusic(){
     }catch(e){console.warn('[Music] initMyProfileMusic error:',e);}
 }
 function showGlobalPlayer(){
-    var el=document.getElementById('globalMiniPlayer');
-    if(el) el.classList.add('visible');
-    document.body.classList.add('music-player-visible');
+    // Show the nav music icon wrapper (makes music note visible in navbar)
+    var wrap=document.getElementById('navMusicWrap');
+    if(wrap) wrap.style.display='flex';
 }
 var _playerHidden=false;
 function hideGlobalPlayer(){
+    // Hide dropdown but keep nav icon visible
     var el=document.getElementById('globalMiniPlayer');
     if(el) el.classList.remove('visible');
-    document.body.classList.remove('music-player-visible');
     // Pause but don't destroy — user can reopen
     var audio=_getCurrentAudio();
     if(audio&&!audio.paused) audio.pause();
     _playerHidden=true;
-    // Show reopen button in nav
-    var reopenBtn=document.getElementById('navMusicBtn');
-    if(reopenBtn) reopenBtn.style.display='flex';
 }
 function reopenGlobalPlayer(){
     _playerHidden=false;
+    var audio=_getCurrentAudio();
+    if(audio&&audio.paused&&audio.src){
+        audio.volume=0;
+        audio.play().then(function(){_fadeAudio(audio,0,_gmpBaseVol,500,null);}).catch(function(){});
+        var t=document.getElementById('gmpTitle');
+        var a=document.getElementById('gmpArtist');
+        _updateGlobalPlayer(t?t.textContent:null,a?a.textContent:null,true);
+    }
+}
+function _toggleMusicDropdown(){
     var el=document.getElementById('globalMiniPlayer');
-    if(el) el.classList.add('visible');
-    var reopenBtn=document.getElementById('navMusicBtn');
-    if(reopenBtn) reopenBtn.style.display='none';
+    if(!el) return;
+    if(el.classList.contains('visible')){
+        el.classList.remove('visible');
+    } else {
+        el.classList.add('visible');
+    }
 }
 function _updateGlobalPlayer(title,artist,isPlaying){
     var t=document.getElementById('gmpTitle');if(t) t.textContent=title||'—';
@@ -13720,6 +13737,8 @@ function _updateGlobalPlayer(title,artist,isPlaying){
     if(pb) pb.innerHTML=isPlaying?'<i class="fas fa-pause"></i>':'<i class="fas fa-play"></i>';
     var el=document.getElementById('globalMiniPlayer');
     if(el) el.classList.toggle('playing',!!isPlaying);
+    var navBtn=document.getElementById('navMusicBtn');
+    if(navBtn) navBtn.classList.toggle('playing',!!isPlaying);
 }
 function _getCurrentAudio(){return _profileAudio||_myAudio;}
 // Fade out an audio element over duration ms
@@ -13881,7 +13900,6 @@ function stopProfileAudio(){
     var playBtn=document.getElementById('gmpPlayBtn');
     var volSlider=document.getElementById('gmpVolume');
     var muteBtn=document.getElementById('gmpMuteBtn');
-    var closeBtn=document.getElementById('gmpClose');
     if(playBtn) playBtn.addEventListener('click',function(){
         var audio=_getCurrentAudio();
         if(!audio){console.warn('[Music] No audio object available');return;}
@@ -13916,15 +13934,28 @@ function stopProfileAudio(){
         muteBtn.innerHTML=audio.muted?'<i class="fas fa-volume-xmark"></i>':'<i class="fas fa-volume-high"></i>';
         saveState();
     });
-    if(closeBtn) closeBtn.addEventListener('click',function(){hideGlobalPlayer();});
+    // Nav music button toggles dropdown
     var navMusicBtn=document.getElementById('navMusicBtn');
-    if(navMusicBtn) navMusicBtn.addEventListener('click',function(){reopenGlobalPlayer();});
+    if(navMusicBtn) navMusicBtn.addEventListener('click',function(e){e.stopPropagation();_toggleMusicDropdown();});
     var prevBtn=document.getElementById('gmpPrevBtn');
     if(prevBtn) prevBtn.addEventListener('click',function(){playPrevInPlaylist();});
     var nextBtn=document.getElementById('gmpNextBtn');
     if(nextBtn) nextBtn.addEventListener('click',function(){playNextInPlaylist();});
     var shuffleBtn=document.getElementById('gmpShuffleBtn');
     if(shuffleBtn) shuffleBtn.addEventListener('click',function(){togglePlaylistMode();});
+    // Click outside closes dropdown
+    document.addEventListener('click',function(e){
+        var panel=document.getElementById('globalMiniPlayer');
+        var wrap=document.getElementById('navMusicWrap');
+        if(panel&&panel.classList.contains('visible')&&wrap&&!wrap.contains(e.target)){
+            panel.classList.remove('visible');
+        }
+    });
+    // Scroll closes dropdown
+    window.addEventListener('scroll',function(){
+        var panel=document.getElementById('globalMiniPlayer');
+        if(panel&&panel.classList.contains('visible')) panel.classList.remove('visible');
+    },{passive:true});
 })();
 // Auto-start music after first user interaction on the page
 var _musicAutoStarted=false;

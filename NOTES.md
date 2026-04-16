@@ -1449,3 +1449,19 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - **Cause:** 8 nav style mobile overrides (metro, rail, mirror, dock, pill, horizon, shelf, float, island) set hard-coded `height:48px!important` on `.navbar` without `env(safe-area-inset-top)`, overriding the general mobile rule that correctly included it. On iPhones with notch/Dynamic Island, the navbar rendered behind the status bar.
 - **Fix:** All nav style mobile overrides in the `@media(max-width:768px)` block now use `calc(48px + env(safe-area-inset-top,0px))` for navbar height, include `padding-top:env(safe-area-inset-top,0px)`, and use matching safe-area-aware values for `.page`, `#page-home` padding-top, and `.main-container` negative margins.
 - **Files changed:** `css/style.css` only — no JS or DB changes
+
+## Music Player → Navbar Dropdown (v0.6.2 — 2026-04-15)
+- **Before:** Global sticky mini player was a fixed bar at the bottom of the screen, taking up vertical space on mobile (especially alongside the bottom nav)
+- **After:** Music player lives as a music note icon in the top navbar (`.nav-right`, between notification bell and coins). Tapping the icon opens a compact dropdown panel with song info, play/pause/prev/next/shuffle controls, and volume slider
+- **Dropdown behavior:** Click outside or scroll to auto-close. Opens/closes on music note tap. No longer uses `body.music-player-visible` class or bottom padding hacks
+- **Nav icon:** Shows gold music note when a song is loaded. Pulses when music is playing. Green dot indicator when playing
+- **HTML:** `#navMusicWrap` wraps `#navMusicBtn` + `#globalMiniPlayer` dropdown in `.nav-right`. Old standalone `#globalMiniPlayer` div removed from bottom of page
+- **CSS:** Player restyled from `position:fixed;bottom:0` to `position:absolute;top:100%` dropdown. Removed all nav-style-specific bottom positioning and `music-player-visible` padding overrides
+- **JS:** `showGlobalPlayer()` now shows the nav wrapper. `_toggleMusicDropdown()` handles open/close. Click-outside and scroll listeners auto-close. `_updateGlobalPlayer()` toggles `.playing` on nav button too
+- **Files changed:** `index.html`, `css/style.css`, `js/app.js`
+
+## Portrait Lock on Mobile Phones (v0.6.2 — 2026-04-15)
+- **Capacitor/PWA:** `screen.orientation.lock('portrait')` called on app load for screens ≤768px
+- **CSS fallback:** `#landscapeOverlay` div with full-screen message "Please Rotate Your Device" shown via `@media(max-width:768px) and (orientation:landscape)`
+- **Tablets excluded:** Only targets ≤768px viewport width
+- **Files changed:** `index.html` (overlay div), `css/style.css` (overlay styles), `js/app.js` (orientation lock call)
