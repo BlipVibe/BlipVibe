@@ -1444,3 +1444,8 @@ Group coins are **shared** — they belong to the group, not individual users. A
   - Daily coin caps enforced server-side (no more resetting `_dailyCoinCounts` in DevTools)
   - Admin RPCs verified to check `is_admin` server-side
   - Migration: run `supabase/server-side-coins.sql`
+
+## Mobile Navbar Safe Area Fix (v0.6.1 — 2026-04-15)
+- **Cause:** 8 nav style mobile overrides (metro, rail, mirror, dock, pill, horizon, shelf, float, island) set hard-coded `height:48px!important` on `.navbar` without `env(safe-area-inset-top)`, overriding the general mobile rule that correctly included it. On iPhones with notch/Dynamic Island, the navbar rendered behind the status bar.
+- **Fix:** All nav style mobile overrides in the `@media(max-width:768px)` block now use `calc(48px + env(safe-area-inset-top,0px))` for navbar height, include `padding-top:env(safe-area-inset-top,0px)`, and use matching safe-area-aware values for `.page`, `#page-home` padding-top, and `.main-container` negative margins.
+- **Files changed:** `css/style.css` only — no JS or DB changes

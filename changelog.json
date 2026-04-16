@@ -1,5 +1,14 @@
 [
   {
+    "version": "0.6.1",
+    "date": "2026-04-15",
+    "added": [],
+    "changed": [],
+    "fixed": [
+      "\ud83d\udcf1 Mobile navbar no longer cut off by status bar on iPhones \u2014 all nav style overrides now properly account for safe-area-inset-top"
+    ]
+  },
+  {
     "version": "0.6.0",
     "date": "2026-04-07",
     "added": [
