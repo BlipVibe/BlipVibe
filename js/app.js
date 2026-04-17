@@ -6047,7 +6047,7 @@ async function _loadMorePosts(){
             var sharedIds=[];
             posts.forEach(function(p){if(p.shared_post_id)sharedIds.push(p.shared_post_id);});
             var sharedMap={};
-            if(sharedIds.length){try{var sp=await sbGetPostsByIds(sharedIds);sp.forEach(function(s){sharedMap[s.id]=s;});}catch(e){}}
+            if(sharedIds.length){try{var sp=await sbGetPostsByIds(sharedIds);sp.forEach(function(s){sharedMap[s.id]=s;});}catch(e){console.warn('Shared posts fetch error:',e);}}
             var newFeedPosts=[];
             posts.forEach(function(p){
                 if(!p||!p.author) return;
@@ -6085,10 +6085,14 @@ function _buildFeedPost(p,sharedMap){
         shares:p.share_count||0,images:p.media_urls&&p.media_urls.length?p.media_urls:(p.image_url?[p.image_url]:null),
         created_at:p.created_at
     };
-    if(p.shared_post_id&&sharedMap&&sharedMap[p.shared_post_id]){
-        var sp=sharedMap[p.shared_post_id];
-        fp.sharedPost={authorId:sp.author?sp.author.id:null,name:sp.author?(sp.author.display_name||sp.author.username):'User',avatar_url:sp.author?sp.author.avatar_url:null,text:sp.content||'',time:timeAgoReal(sp.created_at),images:sp.media_urls&&sp.media_urls.length?sp.media_urls:(sp.image_url?[sp.image_url]:null)};
+    if(p.shared_post_id){
         fp.badge={cls:'badge-green',icon:'fa-share',text:'Shared'};
+        if(sharedMap&&sharedMap[p.shared_post_id]){
+            var sp=sharedMap[p.shared_post_id];
+            fp.sharedPost={authorId:sp.author?sp.author.id:null,name:sp.author?(sp.author.display_name||sp.author.username):'User',avatar_url:sp.author?sp.author.avatar_url:null,text:sp.content||'',time:timeAgoReal(sp.created_at),images:sp.media_urls&&sp.media_urls.length?sp.media_urls:(sp.image_url?[sp.image_url]:null)};
+        } else {
+            fp.sharedPost={authorId:null,name:'',avatar_url:null,text:'This post is no longer available.',time:'',images:null};
+        }
     }
     return fp;
 }
@@ -6165,7 +6169,7 @@ async function _loadDiscoverPosts(){
         var sharedIds=[];
         posts.forEach(function(p){if(p.shared_post_id)sharedIds.push(p.shared_post_id);});
         var sharedMap={};
-        if(sharedIds.length){try{var sp=await sbGetPostsByIds(sharedIds);sp.forEach(function(s){sharedMap[s.id]=s;});}catch(e){}}
+        if(sharedIds.length){try{var sp=await sbGetPostsByIds(sharedIds);sp.forEach(function(s){sharedMap[s.id]=s;});}catch(e){console.warn('Shared posts fetch error:',e);}}
         posts.forEach(function(p){
             if(!p||!p.author) return;
             if(feedPosts.some(function(fp){return fp.idx===p.id;})) return; // skip dupes
