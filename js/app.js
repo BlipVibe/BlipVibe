@@ -10328,27 +10328,30 @@ function openCreateStory(){
     }
 
     function _makeDraggable(o,el){
-        var sx,sy,ox,oy,dragging=false;
+        var sx,sy,ox,oy,pending=false,dragging=false;
         function start(e){
             if(e.target.classList.contains('sto-delete')||e.target.classList.contains('sto-resize')) return;
-            dragging=true;
+            pending=true;dragging=false;
             var t=e.touches?e.touches[0]:e;
-            var rect=canvas.getBoundingClientRect();
             sx=t.clientX;sy=t.clientY;ox=o.x;oy=o.y;
-            e.preventDefault();
         }
         function move(e){
-            if(!dragging) return;
+            if(!pending&&!dragging) return;
             var t=e.touches?e.touches[0]:e;
+            var dx=Math.abs(t.clientX-sx),dy=Math.abs(t.clientY-sy);
+            // Only start dragging after 5px threshold — allows taps for text editing
+            if(pending&&(dx>5||dy>5)){pending=false;dragging=true;}
+            if(!dragging) return;
+            e.preventDefault();
             var rect=canvas.getBoundingClientRect();
-            var dx=(t.clientX-sx)/rect.width*100;
-            var dy=(t.clientY-sy)/rect.height*100;
-            o.x=Math.max(0,Math.min(90,ox+dx));
-            o.y=Math.max(0,Math.min(90,oy+dy));
+            var dxP=(t.clientX-sx)/rect.width*100;
+            var dyP=(t.clientY-sy)/rect.height*100;
+            o.x=Math.max(0,Math.min(90,ox+dxP));
+            o.y=Math.max(0,Math.min(90,oy+dyP));
             el.style.left=o.x+'%';el.style.top=o.y+'%';
         }
-        function end(){dragging=false;}
-        el.addEventListener('mousedown',start);el.addEventListener('touchstart',start,{passive:false});
+        function end(){dragging=false;pending=false;}
+        el.addEventListener('mousedown',start);el.addEventListener('touchstart',start,{passive:true});
         document.addEventListener('mousemove',move);document.addEventListener('touchmove',move,{passive:false});
         document.addEventListener('mouseup',end);document.addEventListener('touchend',end);
     }
@@ -10368,6 +10371,29 @@ function openCreateStory(){
         handle.addEventListener('mousedown',start);handle.addEventListener('touchstart',start,{passive:false});
         document.addEventListener('mousemove',move);document.addEventListener('touchmove',move,{passive:false});
         document.addEventListener('mouseup',end);document.addEventListener('touchend',end);
+        // Pinch-to-resize + two-finger-rotate on touch
+        var _initDist=0,_initScale=1,_initAngle=0,_initRot=0;
+        el.addEventListener('touchstart',function(e){
+            if(e.touches.length===2){
+                e.preventDefault();
+                var t1=e.touches[0],t2=e.touches[1];
+                _initDist=Math.hypot(t2.clientX-t1.clientX,t2.clientY-t1.clientY);
+                _initScale=o.scale;
+                _initAngle=Math.atan2(t2.clientY-t1.clientY,t2.clientX-t1.clientX)*180/Math.PI;
+                _initRot=o.rotation;
+            }
+        },{passive:false});
+        el.addEventListener('touchmove',function(e){
+            if(e.touches.length===2){
+                e.preventDefault();
+                var t1=e.touches[0],t2=e.touches[1];
+                var dist=Math.hypot(t2.clientX-t1.clientX,t2.clientY-t1.clientY);
+                var angle=Math.atan2(t2.clientY-t1.clientY,t2.clientX-t1.clientX)*180/Math.PI;
+                o.scale=Math.max(0.3,Math.min(4,_initScale*(dist/_initDist)));
+                o.rotation=_initRot+(angle-_initAngle);
+                el.style.transform='rotate('+o.rotation+'deg) scale('+o.scale+')';
+            }
+        },{passive:false});
     }
 
     // Deselect overlay when clicking canvas background

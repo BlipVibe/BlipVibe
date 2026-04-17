@@ -3785,6 +3785,9 @@ body.light-mode::before{background:#f8fafc;}
 .story-song-label{position:absolute;z-index:10;padding:6px 12px;border-radius:20px;background:rgba(0,0,0,.6);color:#fff;font-size:12px;font-weight:600;cursor:grab;touch-action:none;backdrop-filter:blur(4px);white-space:nowrap;transform:translateX(-50%);}
 .story-post-btn{position:absolute;bottom:12px;right:12px;z-index:15;padding:10px 24px;border-radius:24px;font-size:14px;}
 .story-canvas-full .story-text-overlay{z-index:10;}
+@media(hover:none) and (pointer:coarse){
+    .story-text-overlay .sto-resize,.story-text-overlay .sto-rotate{display:none!important;}
+}
 
 /* ========== PROFILE MUSIC PLAYER ========== */
 .profile-music-player{background:rgba(0,0,0,.2);border-radius:10px;padding:10px 14px;margin-top:8px;display:flex;align-items:center;gap:10px;}
