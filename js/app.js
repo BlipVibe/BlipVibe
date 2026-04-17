@@ -10182,55 +10182,114 @@ function renderStoriesBar(){
 }
 
 function openCreateStory(){
-    // Hide global music player while creating story
-    var _gmp=document.getElementById('globalMiniPlayer');
-    var _gmpWasVisible=_gmp&&_gmp.classList.contains('visible');
-    if(_gmp) _gmp.classList.remove('visible');
-    var html='<div class="modal-header"><h3><i class="fas fa-plus-circle" style="color:var(--primary);margin-right:8px;"></i>Create Story</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
-    html+='<div class="modal-body">';
-    html+='<div class="story-canvas" id="storyCanvas"><div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--gray);font-size:14px;">Tap "Photo/Video" or "Add Text" to start</div></div>';
-    html+='<div class="story-text-toolbar" id="storyTextToolbar" style="display:none;">';
-    html+='<button class="btn btn-outline" id="storyAddTextBtn" style="font-size:11px;padding:4px 10px;"><i class="fas fa-font"></i> Add Text</button>';
-    html+='<select id="storyFontSelect"><option value="Roboto">Roboto</option><option value="Orbitron">Orbitron</option><option value="Pacifico">Pacifico</option><option value="Quicksand">Quicksand</option><option value="Space Grotesk">Space Grotesk</option><option value="Caveat">Caveat</option><option value="Press Start 2P">Press Start 2P</option><option value="Bungee">Bungee</option><option value="Satisfy">Satisfy</option></select>';
-    html+='<input type="color" id="storyTextColor" value="#ffffff" title="Text Color">';
-    html+='<input type="color" id="storyBgColor" value="#00000000" title="Background" style="opacity:.7;">';
-    html+='<button class="size-btn" id="storyTextSmaller" title="Smaller">-</button>';
-    html+='<button class="size-btn" id="storyTextBigger" title="Bigger">+</button>';
-    html+='</div>';
-    html+='<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;"><button class="btn btn-outline" id="storyAddPhoto"><i class="fas fa-image"></i> Photo/Video</button><button class="btn btn-outline" id="storyAddSong"><i class="fas fa-music"></i> Song</button><input type="file" id="storyFileInput" accept="image/*,video/*" style="display:none;"></div>';
-    html+='<div id="storySongSection" style="display:none;"></div>';
-    html+='<button class="btn btn-primary" id="storyPublish" style="width:100%;">Share Story</button>';
-    html+='<p style="font-size:11px;color:var(--gray);text-align:center;margin-top:8px;">Stories disappear after 24 hours</p>';
-    html+='</div>';
-    showModal(html);
-    // Restore music player when modal closes (X button or backdrop click)
-    var _modalCloseRestore=function(){
-        if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
-        if(_gmpWasVisible&&_gmp) _gmp.classList.add('visible');
-    };
-    var _mcBtn=document.querySelector('#modalOverlay .modal-close');
-    if(_mcBtn) _mcBtn.addEventListener('click',_modalCloseRestore);
-    document.getElementById('modalOverlay').addEventListener('click',function _bgClose(e){
-        if(e.target.id==='modalOverlay'){_modalCloseRestore();document.getElementById('modalOverlay').removeEventListener('click',_bgClose);}
-    });
     var _storyFile=null;
     var _storySongId=null,_storySongStart=0,_storySongVol=0.5;
     var _storySongPreview=null;
     var _storyOverlays=[];
     var _activeOverlay=null;
     var _overlayIdCounter=0;
-    var canvas=document.getElementById('storyCanvas');
-    var toolbar=document.getElementById('storyTextToolbar');
-    toolbar.style.display='flex';
+    var _selectedSong=null;
 
-    // Add text overlay
-    document.getElementById('storyAddTextBtn').addEventListener('click',function(){
-        var id='sto_'+(++_overlayIdCounter);
-        var overlay={id:id,text:'Tap to edit',x:50,y:50,rotation:0,scale:1,fontSize:20,fontFamily:'Roboto',color:'#ffffff',bgColor:'rgba(0,0,0,0.5)'};
-        _storyOverlays.push(overlay);
-        _renderOverlay(overlay);
+    // ======== STEP 1: Pick Media ========
+    var h='<div class="story-create-wrap">';
+    h+='<div class="story-step1" id="storyStep1">';
+    h+='<button class="story-close-btn" id="storyCloseBtn"><i class="fas fa-times"></i></button>';
+    h+='<h3 style="color:#fff;font-size:18px;margin-bottom:24px;text-align:center;">Create Story</h3>';
+    h+='<div style="display:flex;gap:20px;justify-content:center;align-items:center;">';
+    h+='<button class="story-pick-btn" id="storyPickGallery"><i class="fas fa-images"></i><span>Gallery</span></button>';
+    h+='<button class="story-pick-btn" id="storyPickCamera"><i class="fas fa-camera"></i><span>Camera</span></button>';
+    h+='</div>';
+    h+='<input type="file" id="storyFileInput" accept="image/*,video/*" style="display:none;">';
+    h+='<input type="file" id="storyCameraInput" accept="image/*,video/*" capture="environment" style="display:none;">';
+    h+='<p style="font-size:11px;color:rgba(255,255,255,.5);text-align:center;margin-top:20px;">Stories disappear after 24 hours</p>';
+    h+='</div>';
+
+    // ======== STEP 2: Preview + Decorate ========
+    h+='<div class="story-step2" id="storyStep2" style="display:none;">';
+    h+='<button class="story-back-btn" id="storyBackBtn"><i class="fas fa-arrow-left"></i></button>';
+    h+='<button class="story-close-btn" id="storyCloseBtn2"><i class="fas fa-times"></i></button>';
+    h+='<div class="story-canvas-full" id="storyCanvasFull"></div>';
+    h+='<div class="story-tools" id="storyTools">';
+    h+='<button class="story-tool-pill" id="storyAddTextPill" title="Add Text"><i class="fas fa-font"></i></button>';
+    h+='<button class="story-tool-pill" id="storyAddMusicPill" title="Add Music"><i class="fas fa-music"></i></button>';
+    h+='</div>';
+    // Font picker (hidden until text overlay selected)
+    h+='<div class="story-font-picker" id="storyFontPicker" style="display:none;">';
+    h+='<select id="storyFontSelect2"><option value="Roboto">Roboto</option><option value="Orbitron">Orbitron</option><option value="Pacifico">Pacifico</option><option value="Quicksand">Quicksand</option><option value="Space Grotesk">Space Grotesk</option><option value="Caveat">Caveat</option><option value="Press Start 2P">Pixel</option><option value="Bungee">Bungee</option><option value="Satisfy">Satisfy</option><option value="Lobster">Lobster</option><option value="Cinzel">Cinzel</option><option value="Creepster">Creepster</option></select>';
+    h+='<input type="color" id="storyTextColor2" value="#ffffff" title="Text Color">';
+    h+='<input type="color" id="storyBgColor2" value="#000000" title="Background">';
+    h+='</div>';
+    // Music bottom sheet
+    h+='<div class="story-music-sheet" id="storyMusicSheet" style="display:none;">';
+    h+='<div class="story-music-header"><strong>Pick a Song</strong><button id="storyMusicClose"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="story-music-list" id="storyMusicList"></div>';
+    h+='</div>';
+    h+='<button class="btn btn-primary story-post-btn" id="storyPostBtn">Post Story</button>';
+    h+='</div>';
+    h+='</div>';
+    showModal(h);
+
+    // Make modal full-screen for story creation
+    var modalContent=document.querySelector('#modalOverlay .modal-content');
+    if(modalContent){modalContent.style.maxWidth='100%';modalContent.style.maxHeight='100%';modalContent.style.borderRadius='0';modalContent.style.padding='0';modalContent.style.background='#000';}
+
+    var step1=document.getElementById('storyStep1');
+    var step2=document.getElementById('storyStep2');
+    var canvas=document.getElementById('storyCanvasFull');
+
+    // Close buttons
+    document.getElementById('storyCloseBtn').addEventListener('click',function(){
+        if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
+        closeModal();
     });
 
+    // Gallery button
+    document.getElementById('storyPickGallery').addEventListener('click',function(){
+        document.getElementById('storyFileInput').click();
+    });
+
+    // Camera button
+    document.getElementById('storyPickCamera').addEventListener('click',function(){
+        document.getElementById('storyCameraInput').click();
+    });
+
+    // File selected → go to step 2
+    function handleFileSelect(e){
+        var file=e.target.files[0];
+        if(!file) return;
+        _storyFile=file;
+        var isVid=file.type.startsWith('video/');
+        var url=URL.createObjectURL(file);
+        if(isVid){
+            canvas.innerHTML='<video src="'+url+'" class="story-preview-media" autoplay loop muted playsinline></video>';
+        } else {
+            canvas.innerHTML='<img src="'+url+'" class="story-preview-media">';
+        }
+        step1.style.display='none';
+        step2.style.display='flex';
+        // Bind step 2 close
+        var cb2=document.getElementById('storyCloseBtn2');
+        if(cb2) cb2.addEventListener('click',function(){
+            if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
+            closeModal();
+        });
+    }
+    document.getElementById('storyFileInput').addEventListener('change',handleFileSelect);
+    document.getElementById('storyCameraInput').addEventListener('change',handleFileSelect);
+
+    // Back button → go to step 1
+    document.getElementById('storyBackBtn').addEventListener('click',function(){
+        step2.style.display='none';
+        step1.style.display='flex';
+        canvas.innerHTML='';
+        _storyFile=null;
+        _storyOverlays=[];
+        _activeOverlay=null;
+        if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
+        _storySongId=null;_selectedSong=null;
+    });
+
+    // ======== TEXT OVERLAY SYSTEM ========
     function _renderOverlay(o){
         var el=document.createElement('div');
         el.className='story-text-overlay';
@@ -10243,294 +10302,202 @@ function openCreateStory(){
         el.style.fontFamily="'"+o.fontFamily+"',sans-serif";
         el.style.color=o.color;
         el.style.backgroundColor=o.bgColor;
-        el.innerHTML+='<div class="sto-resize"></div><div class="sto-rotate"></div><div class="sto-delete"><i class="fas fa-times"></i></div>';
-        canvas.appendChild(el);
-        // Select on click
-        el.addEventListener('mousedown',function(e){if(!e.target.closest('.sto-resize,.sto-rotate,.sto-delete')) _selectOverlay(el,o);});
-        el.addEventListener('touchstart',function(e){if(!e.target.closest('.sto-resize,.sto-rotate,.sto-delete')) _selectOverlay(el,o);},{passive:true});
-        // Delete
-        el.querySelector('.sto-delete').addEventListener('click',function(e){
-            e.stopPropagation();
-            _storyOverlays=_storyOverlays.filter(function(x){return x.id!==o.id;});
-            el.remove();_activeOverlay=null;
-        });
-        // Drag
-        _makeDraggable(el,o);
+        // Delete button
+        var del=document.createElement('div');del.className='sto-delete';del.innerHTML='<i class="fas fa-times"></i>';
+        del.addEventListener('click',function(e){e.stopPropagation();el.remove();_storyOverlays=_storyOverlays.filter(function(x){return x.id!==o.id;});if(_activeOverlay===o)_activeOverlay=null;});
+        el.appendChild(del);
         // Resize handle
-        _makeResizable(el,o);
-        // Rotate handle
-        _makeRotatable(el,o);
-        _selectOverlay(el,o);
+        var res=document.createElement('div');res.className='sto-resize';el.appendChild(res);
+        canvas.appendChild(el);
+        _selectOverlay(o,el);
+        _makeDraggable(o,el);
+        _makeResizable(o,el,res);
+        el.addEventListener('click',function(e){e.stopPropagation();_selectOverlay(o,el);});
+        el.addEventListener('input',function(){o.text=el.textContent||el.innerText;});
     }
 
-    function _selectOverlay(el,o){
-        canvas.querySelectorAll('.story-text-overlay').forEach(function(e){e.classList.remove('active');});
+    function _selectOverlay(o,el){
+        canvas.querySelectorAll('.story-text-overlay').forEach(function(x){x.classList.remove('active');});
         el.classList.add('active');
         _activeOverlay=o;
-        document.getElementById('storyFontSelect').value=o.fontFamily;
-        document.getElementById('storyTextColor').value=o.color;
+        // Show font picker
+        var fp=document.getElementById('storyFontPicker');
+        if(fp) fp.style.display='flex';
+        var fs=document.getElementById('storyFontSelect2');if(fs) fs.value=o.fontFamily;
+        var tc=document.getElementById('storyTextColor2');if(tc) tc.value=o.color;
     }
 
-    function _makeDraggable(el,o){
-        var startX,startY,startLeft,startTop,dragging=false;
-        function onStart(ex,ey){
-            if(document.activeElement===el&&el.contentEditable==='true') return;
-            dragging=true;startX=ex;startY=ey;
-            var rect=el.getBoundingClientRect();var cRect=canvas.getBoundingClientRect();
-            startLeft=rect.left-cRect.left;startTop=rect.top-cRect.top;
-            el.style.cursor='grabbing';
+    function _makeDraggable(o,el){
+        var sx,sy,ox,oy,dragging=false;
+        function start(e){
+            if(e.target.classList.contains('sto-delete')||e.target.classList.contains('sto-resize')) return;
+            dragging=true;
+            var t=e.touches?e.touches[0]:e;
+            var rect=canvas.getBoundingClientRect();
+            sx=t.clientX;sy=t.clientY;ox=o.x;oy=o.y;
+            e.preventDefault();
         }
-        function onMove(ex,ey){
+        function move(e){
             if(!dragging) return;
-            var cRect=canvas.getBoundingClientRect();
-            var newLeft=startLeft+(ex-startX);var newTop=startTop+(ey-startY);
-            o.x=Math.max(0,Math.min(90,(newLeft/cRect.width)*100));
-            o.y=Math.max(0,Math.min(90,(newTop/cRect.height)*100));
+            var t=e.touches?e.touches[0]:e;
+            var rect=canvas.getBoundingClientRect();
+            var dx=(t.clientX-sx)/rect.width*100;
+            var dy=(t.clientY-sy)/rect.height*100;
+            o.x=Math.max(0,Math.min(90,ox+dx));
+            o.y=Math.max(0,Math.min(90,oy+dy));
             el.style.left=o.x+'%';el.style.top=o.y+'%';
         }
-        function onEnd(){dragging=false;el.style.cursor='grab';}
-        el.addEventListener('mousedown',function(e){if(!e.target.closest('.sto-resize,.sto-rotate,.sto-delete')&&document.activeElement!==el) onStart(e.clientX,e.clientY);});
-        document.addEventListener('mousemove',function(e){onMove(e.clientX,e.clientY);});
-        document.addEventListener('mouseup',onEnd);
-        el.addEventListener('touchstart',function(e){if(!e.target.closest('.sto-resize,.sto-rotate,.sto-delete')&&e.touches.length===1){var t=e.touches[0];onStart(t.clientX,t.clientY);}},{passive:true});
-        document.addEventListener('touchmove',function(e){if(dragging&&e.touches.length===1){var t=e.touches[0];onMove(t.clientX,t.clientY);}},{passive:false});
-        document.addEventListener('touchend',onEnd);
+        function end(){dragging=false;}
+        el.addEventListener('mousedown',start);el.addEventListener('touchstart',start,{passive:false});
+        document.addEventListener('mousemove',move);document.addEventListener('touchmove',move,{passive:false});
+        document.addEventListener('mouseup',end);document.addEventListener('touchend',end);
     }
 
-    function _makeResizable(el,o){
-        var handle=el.querySelector('.sto-resize');
-        var startX,startY,startScale;
-        function onStart(ex,ey){startX=ex;startY=ey;startScale=o.scale;}
-        function onMove(ex,ey){
-            var delta=((ex-startX)+(ey-startY))*0.005;
-            o.scale=Math.max(0.3,Math.min(4,startScale+delta));
+    function _makeResizable(o,el,handle){
+        var ss,dragging=false;
+        function start(e){dragging=true;var t=e.touches?e.touches[0]:e;ss=t.clientY;e.preventDefault();e.stopPropagation();}
+        function move(e){
+            if(!dragging) return;
+            var t=e.touches?e.touches[0]:e;
+            var dy=ss-t.clientY;
+            o.scale=Math.max(0.3,Math.min(4,o.scale+dy*0.01));
             el.style.transform='rotate('+o.rotation+'deg) scale('+o.scale+')';
+            ss=t.clientY;
         }
-        handle.addEventListener('mousedown',function(e){e.stopPropagation();onStart(e.clientX,e.clientY);
-            function mm(e2){onMove(e2.clientX,e2.clientY);}
-            function mu(){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);}
-            document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);
-        });
-        handle.addEventListener('touchstart',function(e){e.stopPropagation();var t=e.touches[0];onStart(t.clientX,t.clientY);
-            function tm(e2){var t2=e2.touches[0];onMove(t2.clientX,t2.clientY);}
-            function te(){document.removeEventListener('touchmove',tm);document.removeEventListener('touchend',te);}
-            document.addEventListener('touchmove',tm,{passive:false});document.addEventListener('touchend',te);
-        },{passive:false});
+        function end(){dragging=false;}
+        handle.addEventListener('mousedown',start);handle.addEventListener('touchstart',start,{passive:false});
+        document.addEventListener('mousemove',move);document.addEventListener('touchmove',move,{passive:false});
+        document.addEventListener('mouseup',end);document.addEventListener('touchend',end);
     }
 
-    function _makeRotatable(el,o){
-        var handle=el.querySelector('.sto-rotate');
-        function getAngle(cx,cy,ex,ey){return Math.atan2(ey-cy,ex-cx)*(180/Math.PI);}
-        var startAngle,startRot,centerX,centerY;
-        function onStart(ex,ey){
-            var rect=el.getBoundingClientRect();
-            centerX=rect.left+rect.width/2;centerY=rect.top+rect.height/2;
-            startAngle=getAngle(centerX,centerY,ex,ey);startRot=o.rotation;
-        }
-        function onMove(ex,ey){
-            var angle=getAngle(centerX,centerY,ex,ey);
-            o.rotation=startRot+(angle-startAngle);
-            el.style.transform='rotate('+o.rotation+'deg) scale('+o.scale+')';
-        }
-        handle.addEventListener('mousedown',function(e){e.stopPropagation();onStart(e.clientX,e.clientY);
-            function mm(e2){onMove(e2.clientX,e2.clientY);}
-            function mu(){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);}
-            document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);
-        });
-        handle.addEventListener('touchstart',function(e){e.stopPropagation();var t=e.touches[0];onStart(t.clientX,t.clientY);
-            function tm(e2){var t2=e2.touches[0];onMove(t2.clientX,t2.clientY);}
-            function te(){document.removeEventListener('touchmove',tm);document.removeEventListener('touchend',te);}
-            document.addEventListener('touchmove',tm,{passive:false});document.addEventListener('touchend',te);
-        },{passive:false});
-    }
-
-    // Font select
-    document.getElementById('storyFontSelect').addEventListener('change',function(){
-        if(!_activeOverlay) return;
-        _activeOverlay.fontFamily=this.value;
-        var el=document.getElementById(_activeOverlay.id);
-        if(el) el.style.fontFamily="'"+this.value+"',sans-serif";
-    });
-    // Text color
-    document.getElementById('storyTextColor').addEventListener('input',function(){
-        if(!_activeOverlay) return;
-        _activeOverlay.color=this.value;
-        var el=document.getElementById(_activeOverlay.id);
-        if(el) el.style.color=this.value;
-    });
-    // Bg color
-    document.getElementById('storyBgColor').addEventListener('input',function(){
-        if(!_activeOverlay) return;
-        var hex=this.value;
-        var bg='rgba('+parseInt(hex.slice(1,3),16)+','+parseInt(hex.slice(3,5),16)+','+parseInt(hex.slice(5,7),16)+',0.5)';
-        _activeOverlay.bgColor=bg;
-        var el=document.getElementById(_activeOverlay.id);
-        if(el) el.style.backgroundColor=bg;
-    });
-    // Size buttons
-    document.getElementById('storyTextSmaller').addEventListener('click',function(){
-        if(!_activeOverlay) return;
-        _activeOverlay.fontSize=Math.max(10,_activeOverlay.fontSize-2);
-        var el=document.getElementById(_activeOverlay.id);
-        if(el) el.style.fontSize=_activeOverlay.fontSize+'px';
-    });
-    document.getElementById('storyTextBigger').addEventListener('click',function(){
-        if(!_activeOverlay) return;
-        _activeOverlay.fontSize=Math.min(60,_activeOverlay.fontSize+2);
-        var el=document.getElementById(_activeOverlay.id);
-        if(el) el.style.fontSize=_activeOverlay.fontSize+'px';
-    });
-    // Deselect on canvas click
+    // Deselect overlay when clicking canvas background
     canvas.addEventListener('click',function(e){
-        if(e.target===canvas||e.target===canvas.firstChild){
-            canvas.querySelectorAll('.story-text-overlay').forEach(function(el){el.classList.remove('active');});
+        if(e.target===canvas||e.target.classList.contains('story-preview-media')){
+            canvas.querySelectorAll('.story-text-overlay').forEach(function(x){x.classList.remove('active');});
             _activeOverlay=null;
+            var fp=document.getElementById('storyFontPicker');if(fp) fp.style.display='none';
         }
     });
 
-    document.getElementById('storyAddPhoto').addEventListener('click',function(){document.getElementById('storyFileInput').click();});
-    // Song picker for stories
-    document.getElementById('storyAddSong').addEventListener('click',async function(){
-        var section=document.getElementById('storySongSection');
-        if(section.style.display!=='none'){section.style.display='none';_storySongId=null;if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}return;}
-        section.style.display='';
-        if(!_shopSongs||!_shopSongs.length) await _loadShopSongs();
-        var ownedSongs=(_shopSongs||[]).filter(function(s){return _hasInfinity()||(_shopOwnedSongs&&_shopOwnedSongs[s.id]);});
-        if(!ownedSongs.length){section.innerHTML='<p style="font-size:12px;color:var(--gray);text-align:center;padding:12px;">No songs owned. Buy songs from the Skin Shop first.</p>';return;}
-        var sh='<div class="story-song-picker">';
-        ownedSongs.forEach(function(s){
-            sh+='<div class="story-song-item" data-song-id="'+s.id+'" data-url="'+escapeHtml(s.file_url)+'"><i class="fas fa-music" style="color:var(--primary);"></i><span class="sspi-title">'+escapeHtml(s.title)+'</span></div>';
-        });
-        sh+='</div>';
-        sh+='<div class="story-song-controls" id="storySongControls" style="display:none;">';
-        sh+='<button id="storySongPlayBtn" style="background:none;color:var(--primary);font-size:16px;"><i class="fas fa-play"></i></button>';
-        sh+='<label>Start: <input type="range" id="storySongStartSlider" min="0" max="100" value="0"><span class="story-song-time" id="storySongStartLabel">0:00</span></label>';
-        sh+='<label>Vol: <input type="range" id="storySongVolSlider" min="0" max="100" value="50"></label>';
-        sh+='<button id="storySongRemove" style="background:none;color:#e74c3c;font-size:12px;"><i class="fas fa-times"></i> Remove</button>';
-        sh+='</div>';
-        section.innerHTML=sh;
-        // Song selection
-        section.querySelectorAll('.story-song-item').forEach(function(item){
-            item.addEventListener('click',function(){
-                section.querySelectorAll('.story-song-item').forEach(function(i){i.classList.remove('selected');});
-                item.classList.add('selected');
-                _storySongId=item.dataset.songId;
-                document.getElementById('storySongControls').style.display='flex';
-                // Load audio for preview/scrubbing
-                if(_storySongPreview){_storySongPreview.pause();}
-                _storySongPreview=new Audio(item.dataset.url);
-                _storySongPreview.volume=0.5;
-                _storySongPreview.addEventListener('loadedmetadata',function(){
-                    var dur=_storySongPreview.duration;
-                    document.getElementById('storySongStartSlider').max=Math.floor(dur);
-                });
-            });
-        });
-        // Play/pause preview
-        section.querySelector('#storySongPlayBtn').addEventListener('click',function(){
-            if(!_storySongPreview) return;
-            if(_storySongPreview.paused){
-                // Pause global player
-                var ca=_getCurrentAudio();if(ca&&!ca.paused){_fadeAudio(ca,ca.volume,0,300,function(){ca.pause();});}
-                _storySongPreview.currentTime=_storySongStart;
-                _storySongPreview.play();
-                this.innerHTML='<i class="fas fa-pause"></i>';
-            } else {
-                _storySongPreview.pause();
-                this.innerHTML='<i class="fas fa-play"></i>';
-            }
-        });
-        // Start time slider
-        section.querySelector('#storySongStartSlider').addEventListener('input',function(){
-            _storySongStart=parseInt(this.value);
-            var m=Math.floor(_storySongStart/60);var s=_storySongStart%60;
-            document.getElementById('storySongStartLabel').textContent=m+':'+(s<10?'0':'')+s;
-            if(_storySongPreview){_storySongPreview.currentTime=_storySongStart;}
-        });
-        // Volume slider
-        section.querySelector('#storySongVolSlider').addEventListener('input',function(){
-            _storySongVol=parseInt(this.value)/100;
-            if(_storySongPreview) _storySongPreview.volume=_storySongVol;
-        });
-        // Remove song
-        section.querySelector('#storySongRemove').addEventListener('click',function(){
-            _storySongId=null;_storySongStart=0;_storySongVol=0.5;
-            if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
-            section.style.display='none';
-        });
+    // Add Text pill
+    document.getElementById('storyAddTextPill').addEventListener('click',function(){
+        var id='sto_'+(++_overlayIdCounter);
+        var overlay={id:id,text:'Enter text',x:50,y:40,rotation:0,scale:1,fontSize:20,fontFamily:'Roboto',color:'#ffffff',bgColor:'rgba(0,0,0,0.5)'};
+        _storyOverlays.push(overlay);
+        _renderOverlay(overlay);
     });
-    document.getElementById('storyFileInput').addEventListener('change',function(){
-        var file=this.files[0];if(!file) return;
-        _storyFile=file;
-        // Show in canvas — remove placeholder
-        canvas.querySelectorAll('div').forEach(function(d){
-            if(!d.classList.contains('story-text-overlay')&&!d.closest('.story-text-overlay')) d.remove();
-        });
-        // Remove existing media
-        var oldMedia=canvas.querySelector('img:not(.story-text-overlay img),video:not(.story-text-overlay video)');
-        if(oldMedia) oldMedia.remove();
-        if(file.type.startsWith('video/')){
-            var vid=document.createElement('video');vid.src=URL.createObjectURL(file);vid.muted=true;vid.autoplay=true;vid.loop=true;vid.playsInline=true;vid.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;';
-            // Check duration — if over 30s, show trimmer
-            vid.addEventListener('loadedmetadata',function(){
-                if(vid.duration>30){
-                    // Show trim controls below canvas
-                    var trimHtml='<div id="storyVideoTrim" style="background:rgba(139,92,246,.05);border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:8px;">';
-                    trimHtml+='<p style="font-size:12px;color:var(--gray);margin-bottom:6px;">Video is '+Math.round(vid.duration)+'s — pick a 30-second clip:</p>';
-                    trimHtml+='<div style="display:flex;align-items:center;gap:8px;">';
-                    trimHtml+='<span style="font-size:11px;color:var(--gray);">Start:</span>';
-                    trimHtml+='<input type="range" id="storyTrimSlider" min="0" max="'+Math.floor(vid.duration-30)+'" value="0" style="flex:1;">';
-                    trimHtml+='<span id="storyTrimLabel" style="font-size:11px;color:var(--gray);font-family:monospace;min-width:70px;">0:00-0:30</span>';
-                    trimHtml+='</div></div>';
-                    canvas.insertAdjacentHTML('afterend',trimHtml);
-                    vid._trimStart=0;
-                    document.getElementById('storyTrimSlider').addEventListener('input',function(){
-                        var start=parseInt(this.value);
-                        vid._trimStart=start;
-                        vid.currentTime=start;
-                        var endSec=Math.min(start+30,Math.floor(vid.duration));
-                        var sm=Math.floor(start/60),ss=start%60,em=Math.floor(endSec/60),es=endSec%60;
-                        document.getElementById('storyTrimLabel').textContent=sm+':'+(ss<10?'0':'')+ss+'-'+em+':'+(es<10?'0':'')+es;
-                    });
-                }
-            });
-            canvas.insertBefore(vid,canvas.firstChild);
-        } else {
-            var img=document.createElement('img');img.src=URL.createObjectURL(file);img.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;';
-            canvas.insertBefore(img,canvas.firstChild);
+
+    // Font picker controls
+    document.getElementById('storyFontSelect2').addEventListener('change',function(){
+        if(_activeOverlay){
+            _activeOverlay.fontFamily=this.value;
+            var el=document.getElementById(_activeOverlay.id);
+            if(el) el.style.fontFamily="'"+this.value+"',sans-serif";
         }
     });
-    document.getElementById('storyPublish').addEventListener('click',async function(){
-        // Collect text overlay data from the canvas
-        var overlayData=[];
-        _storyOverlays.forEach(function(o){
-            var el=document.getElementById(o.id);
-            if(el){o.text=el.textContent.replace(/[\n\r]+$/,'').trim();} // get edited text
-            if(o.text) overlayData.push({text:o.text,x:o.x,y:o.y,rotation:o.rotation,scale:o.scale,fontSize:o.fontSize,fontFamily:o.fontFamily,color:o.color,bgColor:o.bgColor});
+    document.getElementById('storyTextColor2').addEventListener('input',function(){
+        if(_activeOverlay){
+            _activeOverlay.color=this.value;
+            var el=document.getElementById(_activeOverlay.id);
+            if(el) el.style.color=this.value;
+        }
+    });
+    document.getElementById('storyBgColor2').addEventListener('input',function(){
+        if(_activeOverlay){
+            var hex=this.value;
+            var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+            var rgba='rgba('+r+','+g+','+b+',0.5)';
+            _activeOverlay.bgColor=rgba;
+            var el=document.getElementById(_activeOverlay.id);
+            if(el) el.style.backgroundColor=rgba;
+        }
+    });
+
+    // ======== MUSIC SYSTEM ========
+    document.getElementById('storyAddMusicPill').addEventListener('click',async function(){
+        var sheet=document.getElementById('storyMusicSheet');
+        if(sheet.style.display==='flex'){sheet.style.display='none';return;}
+        sheet.style.display='flex';
+        var list=document.getElementById('storyMusicList');
+        list.innerHTML='<div style="text-align:center;padding:20px;color:var(--gray);"><i class="fas fa-spinner fa-spin"></i></div>';
+        if(!_shopSongs||!_shopSongs.length) await _loadShopSongs();
+        var owned=(_shopSongs||[]).filter(function(s){return _hasInfinity()||(_shopOwnedSongs&&_shopOwnedSongs[s.id]);});
+        if(!owned.length){list.innerHTML='<p style="color:var(--gray);text-align:center;padding:20px;">No songs owned yet. Buy songs from the Shop!</p>';return;}
+        var lh='';
+        owned.forEach(function(s){
+            var isActive=_storySongId===s.id;
+            lh+='<div class="story-song-row'+(isActive?' active':'')+'" data-sid="'+s.id+'" data-url="'+escapeHtml(s.file_url)+'" data-title="'+escapeHtml(s.title)+'">';
+            lh+='<i class="fas fa-music" style="color:var(--primary);flex-shrink:0;"></i>';
+            lh+='<span style="flex:1;font-size:13px;">'+escapeHtml(s.title)+'</span>';
+            if(isActive) lh+='<i class="fas fa-check-circle" style="color:var(--green);"></i>';
+            lh+='</div>';
         });
-        // Save video trim start if applicable
-        var storyVid=canvas.querySelector('video');
-        if(storyVid&&storyVid._trimStart) overlayData.push({_videoTrim:true,start:storyVid._trimStart});
-        var text='';
-        if(!overlayData.length&&!_storyFile){showToast('Add a photo or text');return;}
-        this.disabled=true;this.textContent='Sharing...';
+        list.innerHTML=lh;
+        list.querySelectorAll('.story-song-row').forEach(function(row){
+            row.addEventListener('click',function(){
+                var sid=row.dataset.sid;
+                if(_storySongId===sid){
+                    // Deselect
+                    _storySongId=null;_selectedSong=null;
+                    if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
+                    // Remove song label from canvas
+                    var lbl=canvas.querySelector('.story-song-label');if(lbl) lbl.remove();
+                    sheet.style.display='none';
+                    return;
+                }
+                _storySongId=sid;
+                _selectedSong={id:sid,title:row.dataset.title,url:row.dataset.url};
+                // Preview
+                if(_storySongPreview){_storySongPreview.pause();}
+                _storySongPreview=new Audio(row.dataset.url);
+                _storySongPreview.volume=0.5;
+                _storySongPreview.play().catch(function(){});
+                // Add song title label to canvas (draggable)
+                var existing=canvas.querySelector('.story-song-label');if(existing) existing.remove();
+                var lbl=document.createElement('div');
+                lbl.className='story-song-label';
+                lbl.innerHTML='<i class="fas fa-music" style="margin-right:6px;"></i>'+escapeHtml(row.dataset.title);
+                lbl.style.left='50%';lbl.style.top='85%';
+                canvas.appendChild(lbl);
+                // Make song label draggable
+                var slData={x:50,y:85};
+                _makeDraggable(slData,lbl);
+                lbl._posData=slData;
+                sheet.style.display='none';
+            });
+        });
+    });
+    document.getElementById('storyMusicClose').addEventListener('click',function(){
+        document.getElementById('storyMusicSheet').style.display='none';
+    });
+
+    // ======== PUBLISH ========
+    document.getElementById('storyPostBtn').addEventListener('click',async function(){
+        if(!_storyFile){showToast('Select a photo or video first');return;}
+        if(!currentUser){showToast('Please log in');return;}
+        this.disabled=true;this.textContent='Posting...';
         try{
-            var mediaUrl=null;var mediaType='text';
-            if(_storyFile){
-                if(_storyFile.type.startsWith('video/')){mediaUrl=await sbUploadPostVideo(currentUser.id,_storyFile);mediaType='video';}
-                else{mediaUrl=await sbUploadPostImage(currentUser.id,_storyFile);mediaType='image';}
+            var isVid=_storyFile.type.startsWith('video/');
+            var mediaUrl;
+            if(isVid) mediaUrl=await sbUploadPostVideo(currentUser.id,_storyFile);
+            else mediaUrl=await sbUploadPostImage(currentUser.id,_storyFile);
+            // Collect overlay data
+            var overlayData=null;
+            if(_storyOverlays.length){
+                overlayData=_storyOverlays.map(function(o){
+                    var el=document.getElementById(o.id);
+                    return {text:el?(el.textContent||el.innerText||o.text):o.text,x:o.x,y:o.y,rotation:o.rotation,scale:o.scale,fontSize:o.fontSize,fontFamily:o.fontFamily,color:o.color,bgColor:o.bgColor};
+                });
             }
+            await sbCreateStory(currentUser.id,mediaUrl,isVid?'video':'image','',_storySongId||null,_storySongStart,_storySongVol,overlayData);
             if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
-            await sbCreateStory(currentUser.id,mediaUrl,mediaType,text,_storySongId||null,_storySongStart||0,_storySongVol||0.5,overlayData.length?overlayData:null);
             closeModal();
-            // Restore global music player
-            if(_gmpWasVisible&&_gmp) _gmp.classList.add('visible');
             showToast('Story shared!');
-            await loadStories();
+            loadStories();
         }catch(e){
             console.error('Create story:',e);
             showToast('Failed to share story: '+escapeHtml(e.message||''));
-            this.disabled=false;this.textContent='Share Story';
+            this.disabled=false;this.textContent='Post Story';
         }
     });
 }
