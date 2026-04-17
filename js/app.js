@@ -4082,6 +4082,7 @@ async function showGroupView(group){
                 feedHtml+='<a href="#" data-action="hide" data-pid="'+p.id+'"><i class="fas fa-eye-slash"></i> Hide</a>';
                 if(isMe) feedHtml+='<a href="#" data-action="edit" data-pid="'+p.id+'"><i class="fas fa-pen"></i> Edit</a><a href="#" data-action="delete" data-pid="'+p.id+'" style="color:#e74c3c;"><i class="fas fa-trash"></i> Delete</a>';
                 else if(_isAdmin) feedHtml+='<a href="#" data-action="admin-delete" data-pid="'+p.id+'" style="color:#e74c3c;"><i class="fas fa-shield-halved"></i> Admin Delete</a>';
+                feedHtml+='<a href="#" data-action="share-story" data-pid="'+p.id+'"><i class="fas fa-book-open"></i> Share to Story</a>';
                 feedHtml+='</div>';
                 feedHtml+='</div>';
                 feedHtml+='<div class="post-description">';
@@ -5103,7 +5104,7 @@ function bindGvPostEvents(){
     // Post menu toggle
     $$('#gvPostsFeed .post-menu-btn').forEach(function(btn){btn.addEventListener('click',function(e){e.stopPropagation();var menuId=btn.dataset.menu;var menu=document.getElementById(menuId);if(!menu)return;$$('#gvPostsFeed .post-dropdown.show').forEach(function(m){if(m!==menu)m.classList.remove('show');});menu.classList.toggle('show');});});
     // Post dropdown actions
-    $$('#gvPostsFeed .post-dropdown a').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();a.closest('.post-dropdown').classList.remove('show');var pid=a.dataset.pid;var action=a.dataset.action;if(action==='save') showSaveModal(pid);else if(action==='report') showReportModal(pid);else if(action==='hide'){var postEl=document.querySelector('#gvPostsFeed .feed-post[data-post-id="'+pid+'"]');if(postEl){postEl.style.display='none';showToast('Post hidden');}}else if(action==='edit') showEditGroupPostModal(pid);else if(action==='delete') confirmDeleteGroupPost(pid);else if(action==='admin-delete') confirmAdminDeletePost(pid);});});
+    $$('#gvPostsFeed .post-dropdown a').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();a.closest('.post-dropdown').classList.remove('show');var pid=a.dataset.pid;var action=a.dataset.action;if(action==='save') showSaveModal(pid);else if(action==='report') showReportModal(pid);else if(action==='hide'){var postEl=document.querySelector('#gvPostsFeed .feed-post[data-post-id="'+pid+'"]');if(postEl){postEl.style.display='none';showToast('Post hidden');}}else if(action==='edit') showEditGroupPostModal(pid);else if(action==='delete') confirmDeleteGroupPost(pid);else if(action==='admin-delete') confirmAdminDeletePost(pid);else if(action==='share-story') sharePostToStory(pid);});});
     bindLikeCountClicks('#gvPostsFeed');
 }
 
@@ -6212,6 +6213,7 @@ function _buildPostHtml(p){
     html+='<div class="post-dropdown" id="'+menuId+'"><a href="#" data-action="save" data-pid="'+i+'"><i class="fas fa-bookmark"></i> Save Post</a><a href="#" data-action="copylink" data-pid="'+i+'"><i class="fas fa-link"></i> Copy Link</a><a href="#" data-action="quote" data-pid="'+i+'"><i class="fas fa-quote-left"></i> Quote Post</a><a href="#" data-action="report" data-pid="'+i+'"><i class="fas fa-flag"></i> Report</a><a href="#" data-action="hide" data-pid="'+i+'"><i class="fas fa-eye-slash"></i> Hide</a>';
     if(isOwnPost) html+='<a href="#" data-action="pin" data-pid="'+i+'"><i class="fas fa-thumbtack"></i> '+(state.pinnedPosts&&state.pinnedPosts[i]?'Unpin':'Pin to Profile')+'</a><a href="#" data-action="edit" data-pid="'+i+'"><i class="fas fa-pen"></i> Edit</a><a href="#" data-action="delete" data-pid="'+i+'" style="color:#e74c3c;"><i class="fas fa-trash"></i> Delete</a>';
     else if(_isAdmin) html+='<a href="#" data-action="admin-delete" data-pid="'+i+'" style="color:#e74c3c;"><i class="fas fa-shield-halved"></i> Admin Delete</a>';
+    html+='<a href="#" data-action="share-story" data-pid="'+i+'"><i class="fas fa-book-open"></i> Share to Story</a>';
     html+='</div></div>';
     html+='<div class="post-description"><p>'+short+(hasMore?'<span class="view-more-text hidden">'+rest+'</span>':'')+(hasMore?' . . . <button class="view-more-btn">View More</button>':'')+'</p></div>';
     if(pollHtml) html+=pollHtml;
@@ -6432,6 +6434,7 @@ function bindPostEvents(){
             else if(action==='edit') showEditPostModal(pid);
             else if(action==='delete') confirmDeletePost(pid);
             else if(action==='admin-delete') confirmAdminDeletePost(pid);
+            else if(action==='share-story') sharePostToStory(pid);
         });
     });
 
@@ -10181,8 +10184,46 @@ function renderStoriesBar(){
     });
 }
 
-function openCreateStory(){
-    var _storyFile=null;
+function sharePostToStory(postId){
+    // Find the post data
+    var fp=feedPosts.find(function(x){return x.idx===postId;});
+    if(!fp){showToast('Post not found');return;}
+    var imgUrl=fp.images&&fp.images.length?fp.images[0]:null;
+    var authorName=fp.person.name||'Unknown';
+    if(imgUrl){
+        // Fetch image as blob so we can pass it as a file to the story creator
+        fetch(imgUrl).then(function(r){return r.blob();}).then(function(blob){
+            var file=new File([blob],'shared.jpg',{type:blob.type||'image/jpeg'});
+            openCreateStory({file:file,imageUrl:imgUrl,watermark:'@'+authorName});
+        }).catch(function(){
+            // If fetch fails (CORS), use URL directly
+            openCreateStory({imageUrl:imgUrl,watermark:'@'+authorName});
+        });
+    } else {
+        // Text-only post — create an image from the text
+        var c=document.createElement('canvas');c.width=720;c.height=1280;
+        var ctx=c.getContext('2d');
+        // Gradient background
+        var grad=ctx.createLinearGradient(0,0,720,1280);
+        grad.addColorStop(0,'#1a1a2e');grad.addColorStop(0.5,'#16213e');grad.addColorStop(1,'#0f3460');
+        ctx.fillStyle=grad;ctx.fillRect(0,0,720,1280);
+        // Draw text
+        ctx.fillStyle='#ffffff';ctx.font='600 28px Roboto,sans-serif';ctx.textAlign='center';
+        var words=fp.text.split(' ');var lines=[];var line='';
+        words.forEach(function(w){var test=line+(line?' ':'')+w;if(ctx.measureText(test).width>600){lines.push(line);line=w;}else line=test;});
+        if(line) lines.push(line);
+        var y=640-(lines.length*36/2);
+        lines.forEach(function(l){ctx.fillText(l,360,y);y+=36;});
+        c.toBlob(function(blob){
+            var file=new File([blob],'shared.jpg',{type:'image/jpeg'});
+            openCreateStory({file:file,imageUrl:URL.createObjectURL(blob),watermark:'@'+authorName});
+        },'image/jpeg',0.9);
+    }
+}
+
+function openCreateStory(preloadData){
+    preloadData=preloadData||null;
+    var _storyFile=preloadData?preloadData.file||null:null;
     var _storySongId=null,_storySongStart=0,_storySongVol=0.5;
     var _storySongPreview=null;
     var _storyOverlays=[];
@@ -10236,6 +10277,22 @@ function openCreateStory(){
     var step1=document.getElementById('storyStep1');
     var step2=document.getElementById('storyStep2');
     var canvas=document.getElementById('storyCanvasFull');
+
+    // If preloaded (share to story), skip step 1
+    if(preloadData){
+        var preUrl=preloadData.imageUrl;
+        if(preloadData.file) _storyFile=preloadData.file;
+        canvas.innerHTML='<img src="'+preUrl+'" class="story-preview-media">';
+        step1.style.display='none';
+        step2.style.display='flex';
+        // Add watermark overlay
+        if(preloadData.watermark){
+            var wm=document.createElement('div');
+            wm.className='story-watermark';
+            wm.textContent=preloadData.watermark;
+            canvas.appendChild(wm);
+        }
+    }
 
     // Close buttons
     document.getElementById('storyCloseBtn').addEventListener('click',function(){
