@@ -13795,6 +13795,9 @@ function _toggleMusicDropdown(){
         el.classList.remove('visible');
     } else {
         el.classList.add('visible');
+        // Sync slider to current volume (may have been loaded from Supabase after init)
+        var vs=document.getElementById('gmpVolume');
+        if(vs) vs.value=Math.round(_gmpBaseVol*100);
     }
 }
 function _updateGlobalPlayer(title,artist,isPlaying){
@@ -13990,7 +13993,9 @@ function stopProfileAudio(){
             settings.musicVolume=_gmpBaseVol;
             var audio=_getCurrentAudio();
             if(audio) audio.volume=_gmpBaseVol;
-            saveState();
+        });
+        volSlider.addEventListener('change',function(){
+            syncSkinDataToSupabase(true);
         });
     }
     if(muteBtn) muteBtn.addEventListener('click',function(){
