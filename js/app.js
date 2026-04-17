@@ -882,6 +882,7 @@ function _buildSkinData(){
         msgReactions:_msgReactions||{},
         pollMyVotes:_pollMyVotes||{},
         pollVoteCounts:_pollVoteCounts||{},
+        questData:_questData||null,
         tosAcceptedVersion:_tosAccepted?TOS_VERSION:((currentUser&&currentUser.skin_data&&currentUser.skin_data.tosAcceptedVersion)||0),
         tutorialsSeen:_tutorialsSeen||{},
         infinityCoins:(currentUser&&currentUser.skin_data&&currentUser.skin_data.infinityCoins)||false
@@ -972,6 +973,7 @@ function _applySkinDataFromCache(sd){
     if(sd.msgReactions&&typeof sd.msgReactions==='object') _msgReactions=sd.msgReactions;
     if(sd.pollMyVotes&&typeof sd.pollMyVotes==='object') _pollMyVotes=sd.pollMyVotes;
     if(sd.pollVoteCounts&&typeof sd.pollVoteCounts==='object') _pollVoteCounts=sd.pollVoteCounts;
+    if(sd.questData&&typeof sd.questData==='object') _questData=sd.questData;
     if(sd.settings&&sd.settings.messagePrivacy) settings.messagePrivacy=sd.settings.messagePrivacy;
     // infinityCoins only checked via currentUser.skin_data (server truth)
     // Group skin data now loaded from group's own skin_data column (see loadGroups)
@@ -13428,22 +13430,12 @@ function _getDailyQuests(){
     return _todayQuests;
 }
 function _questSlotKey(slotIndex){return ['q1','q2','q3'][slotIndex];}
-function _emptyQuestData(){return {q1_count:0,q2_count:0,q3_count:0,q1_claimed:false,q2_claimed:false,q3_claimed:false};}
+function _emptyQuestData(){return {date:new Date().toDateString(),q1_count:0,q2_count:0,q3_count:0,q1_claimed:false,q2_claimed:false,q3_claimed:false};}
+function _checkQuestDate(){if(!_questData||_questData.date!==new Date().toDateString()) _questData=_emptyQuestData();}
 async function loadDailyQuests(){
     _getDailyQuests();
-    try{
-        var resp=await sb.rpc('get_daily_quests');
-        if(resp.error) throw resp.error;
-        var d=resp.data!=null?resp.data:resp;
-        if(d){
-            // Map server fields to generic slots
-            _questData={q1_count:d.likes_count||0,q2_count:d.follows_count||0,q3_count:d.posts_count||0,
-                q1_claimed:!!d.likes_reward_claimed,q2_claimed:!!d.follows_reward_claimed,q3_claimed:!!d.posts_reward_claimed};
-        }
-    }catch(e){
-        var key='blipvibe_quests_'+new Date().toDateString();
-        try{_questData=JSON.parse(localStorage.getItem(key))||_emptyQuestData();}catch(e2){_questData=_emptyQuestData();}
-    }
+    // Quest data is now stored in skin_data via saveState() — loaded by _applySkinDataFromCache
+    _checkQuestDate();
     if(!_questData) _questData=_emptyQuestData();
     renderQuestPanel();
 }
@@ -13458,38 +13450,26 @@ async function trackQuestProgress(actionType){
     var sk=_questSlotKey(slot);
     var quests=_getDailyQuests();
     var quest=quests[slot];
-    if(!_questData) _questData=_emptyQuestData();
+    _checkQuestDate();
     if(_questData[sk+'_claimed']) return; // already completed
-    // Map slot to server type: slot0→like, slot1→follow, slot2→post
-    var serverType=['like','follow','post'][slot];
-    try{
-        var resp=await sb.rpc('update_quest_progress',{p_type:serverType});
-        if(resp.error) throw resp.error;
-        var result=resp.data!=null?resp.data:resp;
-        if(result){
-            _questData={q1_count:result.likes_count||0,q2_count:result.follows_count||0,q3_count:result.posts_count||0,
-                q1_claimed:!!result.likes_reward_claimed,q2_claimed:!!result.follows_reward_claimed,q3_claimed:!!result.posts_reward_claimed};
-            if(result.reward_claimed){
-                showToast('Quest complete! +'+quest.reward+' coins!');
-                if(result.new_balance!=null){state.coins=result.new_balance;currentUser.coin_balance=result.new_balance;updateCoins();}
-            }
-        }
-    }catch(e){
-        _questData[sk+'_count']++;
-        if(_questData[sk+'_count']>=quest.target&&!_questData[sk+'_claimed']){
-            _questData[sk+'_claimed']=true;
-            state.coins+=quest.reward;updateCoins();
-            showToast('Quest complete! +'+quest.reward+' coins!');
-        }
-        var key='blipvibe_quests_'+new Date().toDateString();
-        try{localStorage.setItem(key,JSON.stringify(_questData));}catch(e2){}
+    // Track locally by slot (server RPC may not support all 8 quest types)
+    _questData[sk+'_count']++;
+    if(_questData[sk+'_count']>=quest.target&&!_questData[sk+'_claimed']){
+        _questData[sk+'_claimed']=true;
+        // Award coins via server
+        _earnCoins('quest',quest.reward).then(function(ok){
+            if(ok) showToast('Quest complete! +'+quest.reward+' coins!');
+        });
     }
+    saveState();
     renderQuestPanel();
     renderCoinGoalBar();
 }
 function renderQuestPanel(){
     var container=document.getElementById('questPanel');
-    if(!container||!_questData) return;
+    if(!container) return;
+    _checkQuestDate();
+    if(!_questData) _questData=_emptyQuestData();
     var quests=_getDailyQuests();
     var html='<div class="quest-panel-header"><h4><i class="fas fa-scroll" style="color:var(--primary);"></i> Daily Quests</h4><span class="quest-reset">Resets daily</span></div>';
     for(var i=0;i<3;i++){
