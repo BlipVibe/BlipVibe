@@ -2381,15 +2381,24 @@ function handleShare(btn){
     var origAvatar=avatar?avatar.src:'';
     var origName=username?username.textContent:'Unknown';
     var origTime=time?time.textContent:'';
-    var origText=desc?desc.innerHTML:'';
+    var origText=desc?desc.textContent:'';
+    // Get images from the post
+    var postGrid=post.querySelector('.post-media-grid');
+    var firstImg=postGrid?postGrid.querySelector('img'):null;
+    var firstImgSrc=firstImg?firstImg.src:null;
+    // Get shared post preview if this is a reshare
+    var sharedPreview=post.querySelector('.share-preview');
     // Get the original post UUID from the like button's data-post-id
     var likeBtn=post.querySelector('.like-btn');
     var origPostId=likeBtn?likeBtn.getAttribute('data-post-id'):null;
     var html='<div class="modal-header"><h3>Share Post</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     html+='<div class="modal-body"><textarea id="shareComment" class="share-textarea" placeholder="Add your thoughts..."></textarea>';
     html+='<div class="share-preview">';
-    html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><img src="'+origAvatar+'" style="width:28px;height:28px;border-radius:50%;object-fit:cover;"><strong class="share-preview-name" style="font-size:13px;">'+origName+'</strong><span class="share-preview-time" style="font-size:12px;">'+origTime+'</span></div>';
-    html+='<div class="share-preview-text" style="font-size:13px;">'+origText+'</div></div>';
+    html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><img src="'+origAvatar+'" style="width:28px;height:28px;border-radius:50%;object-fit:cover;"><strong class="share-preview-name" style="font-size:13px;">'+escapeHtml(origName)+'</strong><span class="share-preview-time" style="font-size:12px;">'+origTime+'</span></div>';
+    html+='<div class="share-preview-text" style="font-size:13px;">'+escapeHtml(origText)+'</div>';
+    if(firstImgSrc) html+='<img src="'+firstImgSrc+'" style="width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin-top:8px;">';
+    if(sharedPreview) html+='<div style="margin-top:8px;padding:10px;border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--gray);">'+sharedPreview.innerHTML+'</div>';
+    html+='</div>';
     html+='<button id="sharePublishBtn" class="btn btn-primary" style="width:100%;margin-top:12px;">Share</button></div>';
     showModal(html);
     document.getElementById('sharePublishBtn').addEventListener('click',async function(){
