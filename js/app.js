@@ -2397,14 +2397,8 @@ function handleShare(btn){
         // Save to Supabase
         if(isUUID&&currentUser){
             try{
-                // If sharing a reshare, point to the original post instead
-                var shareTarget=origPostId;
-                try{
-                    var checkPost=await sbGetPostsByIds([origPostId]);
-                    if(checkPost&&checkPost[0]&&checkPost[0].shared_post_id) shareTarget=checkPost[0].shared_post_id;
-                }catch(e){}
                 var shareLoc=settings.showLocation?userLocation:null;
-                await sbCreatePost(currentUser.id,shareContent,null,null,shareTarget,shareLoc);
+                await sbCreatePost(currentUser.id,shareContent,null,null,origPostId,shareLoc);
                 _earnCoins('post',5);
                 var countEl=btn.querySelector('span');if(countEl)countEl.textContent=parseInt(countEl.textContent)+1;
                 // Notify original post author
