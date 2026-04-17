@@ -2397,8 +2397,14 @@ function handleShare(btn){
         // Save to Supabase
         if(isUUID&&currentUser){
             try{
+                // If sharing a reshare, point to the original post instead
+                var shareTarget=origPostId;
+                try{
+                    var checkPost=await sbGetPostsByIds([origPostId]);
+                    if(checkPost&&checkPost[0]&&checkPost[0].shared_post_id) shareTarget=checkPost[0].shared_post_id;
+                }catch(e){}
                 var shareLoc=settings.showLocation?userLocation:null;
-                await sbCreatePost(currentUser.id,shareContent,null,null,origPostId,shareLoc);
+                await sbCreatePost(currentUser.id,shareContent,null,null,shareTarget,shareLoc);
                 _earnCoins('post',5);
                 var countEl=btn.querySelector('span');if(countEl)countEl.textContent=parseInt(countEl.textContent)+1;
                 // Notify original post author
@@ -3223,11 +3229,8 @@ async function showProfileView(person){
         if(!userPosts||!userPosts.length){
             feedHtml+='<div class="card" style="padding:40px;text-align:center;color:var(--gray);"><i class="fas fa-pen" style="font-size:32px;margin-bottom:12px;display:block;"></i><p>No posts yet.</p></div>';
         } else {
-            // Fetch shared post data for this user's posts
-            var _pvSharedIds=[];
-            userPosts.forEach(function(p){if(p.shared_post_id)_pvSharedIds.push(p.shared_post_id);});
-            var _pvSharedMap={};
-            if(_pvSharedIds.length){try{var _pvSp=await sbGetPostsByIds(_pvSharedIds);_pvSp.forEach(function(s){_pvSharedMap[s.id]=s;});}catch(e){}}
+            // Fetch shared post data (+ follow chains for re-shares)
+            var _pvSharedMap=await _fetchSharedPosts(userPosts);
             userPosts.forEach(function(post){
                 var authorName=person.name||(post.profiles?post.profiles.display_name||post.profiles.username:'User');
                 var authorAvatar=(post.profiles?post.profiles.avatar_url:person.avatar_url)||DEFAULT_AVATAR;
@@ -3310,10 +3313,8 @@ async function showProfileView(person){
                             morePosts.forEach(function(p){if(likedIds[p.id]) state.likedPosts[p.id]=true;});
                         }catch(e){}
                     }
-                    // Fetch shared posts
-                    var moreSharedIds=[];morePosts.forEach(function(p){if(p.shared_post_id)moreSharedIds.push(p.shared_post_id);});
-                    var moreSharedMap={};
-                    if(moreSharedIds.length){try{var msp=await sbGetPostsByIds(moreSharedIds);msp.forEach(function(s){moreSharedMap[s.id]=s;});}catch(e){}}
+                    // Fetch shared posts (+ follow chains for re-shares)
+                    var moreSharedMap=await _fetchSharedPosts(morePosts);
                     var moreHtml='';
                     morePosts.forEach(function(post){
                         var authorName=person.name||(post.profiles?post.profiles.display_name||post.profiles.username:'User');
@@ -6043,11 +6044,8 @@ async function _loadMorePosts(){
         var posts=await sbGetFeed(_feedLimit,_feedOffset);
         if(!posts||posts.length<_feedLimit) _feedHasMore=false;
         if(posts&&posts.length){
-            // Fetch shared post data
-            var sharedIds=[];
-            posts.forEach(function(p){if(p.shared_post_id)sharedIds.push(p.shared_post_id);});
-            var sharedMap={};
-            if(sharedIds.length){try{var sp=await sbGetPostsByIds(sharedIds);sp.forEach(function(s){sharedMap[s.id]=s;});}catch(e){console.warn('Shared posts fetch error:',e);}}
+            // Fetch shared post data (+ follow chains for re-shares)
+            var sharedMap=await _fetchSharedPosts(posts);
             var newFeedPosts=[];
             posts.forEach(function(p){
                 if(!p||!p.author) return;
@@ -6075,6 +6073,25 @@ async function _loadMorePosts(){
     _feedLoading=false;
     if(loader.parentNode) loader.remove();
 }
+// Fetch shared posts + follow chains for re-shares
+async function _fetchSharedPosts(posts){
+    var sharedIds=[];
+    posts.forEach(function(p){if(p.shared_post_id)sharedIds.push(p.shared_post_id);});
+    var sharedMap={};
+    if(!sharedIds.length) return sharedMap;
+    try{
+        var sharedPosts=await sbGetPostsByIds(sharedIds);
+        sharedPosts.forEach(function(sp){sharedMap[sp.id]=sp;});
+        // Follow one more level for re-shared posts
+        var deepIds=[];
+        sharedPosts.forEach(function(sp){if(sp.shared_post_id&&!sharedMap[sp.shared_post_id])deepIds.push(sp.shared_post_id);});
+        if(deepIds.length){
+            var deepPosts=await sbGetPostsByIds(deepIds);
+            deepPosts.forEach(function(dp){sharedMap[dp.id]=dp;});
+        }
+    }catch(e){console.warn('Shared posts fetch error:',e);}
+    return sharedMap;
+}
 function _buildFeedPost(p,sharedMap){
     var fp={
         idx:p.id,
@@ -6089,6 +6106,10 @@ function _buildFeedPost(p,sharedMap){
         fp.badge={cls:'badge-green',icon:'fa-share',text:'Shared'};
         if(sharedMap&&sharedMap[p.shared_post_id]){
             var sp=sharedMap[p.shared_post_id];
+            // If the shared post is itself a share, follow the chain to the original
+            if(sp.shared_post_id&&sharedMap[sp.shared_post_id]){
+                sp=sharedMap[sp.shared_post_id];
+            }
             fp.sharedPost={authorId:sp.author?sp.author.id:null,name:sp.author?(sp.author.display_name||sp.author.username):'User',avatar_url:sp.author?sp.author.avatar_url:null,text:sp.content||'',time:timeAgoReal(sp.created_at),images:sp.media_urls&&sp.media_urls.length?sp.media_urls:(sp.image_url?[sp.image_url]:null)};
         } else {
             fp.sharedPost={authorId:null,name:'',avatar_url:null,text:'This post is no longer available.',time:'',images:null};
@@ -6122,16 +6143,8 @@ async function generatePosts(){
     try {
         // Always load all public posts; tab filtering happens in renderFeed
         var posts = await sbGetFeed(50);
-        // Fetch shared post data in batch
-        var sharedIds=[];
-        posts.forEach(function(p){if(p.shared_post_id)sharedIds.push(p.shared_post_id);});
-        var sharedMap={};
-        if(sharedIds.length){
-            try{
-                var sharedPosts=await sbGetPostsByIds(sharedIds);
-                sharedPosts.forEach(function(sp){sharedMap[sp.id]=sp;});
-            }catch(e){console.warn('Could not load shared posts:',e);}
-        }
+        // Fetch shared post data in batch (+ follow chains for re-shares)
+        var sharedMap=await _fetchSharedPosts(posts);
         // Clear cached/stale data before adding fresh posts
         feedPosts=[];
         posts.forEach(function(p,i){
@@ -6166,10 +6179,7 @@ async function _loadDiscoverPosts(){
         // Fetch more posts from DB to find non-followed content
         var posts=await sbGetFeed(100,0);
         if(!posts||!posts.length) return;
-        var sharedIds=[];
-        posts.forEach(function(p){if(p.shared_post_id)sharedIds.push(p.shared_post_id);});
-        var sharedMap={};
-        if(sharedIds.length){try{var sp=await sbGetPostsByIds(sharedIds);sp.forEach(function(s){sharedMap[s.id]=s;});}catch(e){console.warn('Shared posts fetch error:',e);}}
+        var sharedMap=await _fetchSharedPosts(posts);
         posts.forEach(function(p){
             if(!p||!p.author) return;
             if(feedPosts.some(function(fp){return fp.idx===p.id;})) return; // skip dupes
