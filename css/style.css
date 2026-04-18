@@ -2809,7 +2809,11 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .post-image,.post-video{max-width:100%;height:auto;object-fit:contain;}
     .profile-avatar{object-fit:cover;}
     .photos-preview img{object-fit:cover;}
-    .timeline-cover{height:200px!important;}
+    .timeline-cover{height:260px!important;}
+    .main-container{margin-top:-40px!important;}
+    .profile-avatar-wrap{margin-top:-60px!important;width:clamp(90px,30%,120px)!important;}
+    body.tpl-stream .profile-card .profile-avatar-wrap{top:-40px!important;width:90px!important;left:12px!important;}
+    body.tpl-stream .profile-card .profile-info{padding-left:110px!important;padding-top:12px!important;min-height:70px;}
 
     /* --- Typography --- */
     .page-header h2{font-size:clamp(18px,5vw,24px)!important;}
@@ -3081,8 +3085,8 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .album-photo-scroll{grid-template-rows:120px 120px!important;grid-auto-columns:120px!important;}
     .album-photo-scroll .photo-wrap{width:120px!important;height:120px!important;}
     .album-photo-scroll img{width:120px!important;height:120px!important;}
-    .timeline-cover,.pv-cover-banner{height:160px!important;}
-    .gv-cover-banner,.pv-cover-banner-group{height:160px!important;}
+    .timeline-cover,.pv-cover-banner{height:220px!important;}
+    .gv-cover-banner,.pv-cover-banner-group{height:220px!important;}
     .photo-album-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))!important;}
     .login-btn{padding:12px!important;font-size:14px!important;}
     .pv-layout,.gv-layout{padding:0 8px 30px!important;}
