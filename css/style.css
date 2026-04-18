@@ -2810,7 +2810,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .profile-avatar{object-fit:cover;}
     .photos-preview img{object-fit:cover;}
     .timeline-cover{height:260px!important;}
-    .main-container{margin-top:-20px!important;}
+    .main-container{margin-top:-40px!important;}
     .profile-avatar-wrap{margin-top:-50px!important;width:clamp(90px,30%,120px)!important;}
     body.tpl-stream .profile-card .profile-avatar-wrap{top:-40px!important;width:90px!important;left:12px!important;}
     body.tpl-stream .profile-card .profile-info{padding-left:110px!important;padding-top:12px!important;min-height:70px;}
