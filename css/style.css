@@ -2573,8 +2573,8 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     #pvFollowBtn i{font-size:16px!important;}
 
     /* --- Cover edit button — camera icon only on mobile, on the cover --- */
-    .timeline-cover-btn{top:auto!important;bottom:10px!important;right:10px!important;padding:0!important;width:36px;height:36px;border-radius:50%!important;font-size:0!important;justify-content:center;align-items:center;}
-    .timeline-cover-btn i{font-size:14px!important;}
+    .timeline-cover-btn{top:10px!important;bottom:auto!important;right:10px!important;padding:0!important;width:36px!important;height:36px!important;border-radius:50%!important;font-size:0!important;display:flex!important;justify-content:center!important;align-items:center!important;gap:0!important;line-height:1!important;}
+    .timeline-cover-btn i{font-size:14px!important;margin:0!important;}
 
     /* --- Group view — single column --- */
     .gv-layout{
