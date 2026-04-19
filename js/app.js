@@ -318,7 +318,7 @@ function resetAllCustomizations(){
     state.coins=0;state.following=0;state.followers=0;state.followedUsers={};
     state.ownedSkins={};state.activeSkin=null;state.ownedFonts={};state.activeFont=null;
     state.ownedLogos={};state.activeLogo=null;state.notifications=[];state.joinedGroups={};
-    state.messages={};state.likedPosts={};state.coverPhoto=null;state.comments={};
+    state.messages={};state.likedPosts={};state.coverPhoto=null;state.coverPhotoMobile=null;state.comments={};
     state.ownedIconSets={};state.activeIconSet=null;state.ownedCoinSkins={};state.activeCoinSkin=null;
     state.ownedTemplates={};state.activeTemplate=null;state.ownedNavStyles={};state.activeNavStyle=null;
     state.ownedPremiumSkins={};state.activePremiumSkin=null;state.groupPosts={};
@@ -592,7 +592,9 @@ async function initApp() {
     reapplyCustomizations(); // Re-apply skins, fonts, nav styles, dark mode
     showCookieConsent(); // Show cookie banner if not yet accepted
     if(settings.showLocation) detectUserLocation(); // Only request location when user opted in
-    if(currentUser.cover_photo_url) { state.coverPhoto = currentUser.cover_photo_url; applyCoverPhoto(); }
+    if(currentUser.cover_photo_url) { state.coverPhoto = currentUser.cover_photo_url; }
+    if(currentUser.cover_photo_url_mobile) { state.coverPhotoMobile = currentUser.cover_photo_url_mobile; }
+    if(state.coverPhoto||state.coverPhotoMobile) applyCoverPhoto();
     // Parallel batch 1: Load likes, photos, follow counts, friends-of-friends concurrently
     var _parallelResults = await Promise.allSettled([
         sbGetUserLikes(currentUser.id, 'post'),
@@ -3004,7 +3006,7 @@ function showMyProfileModal(){
     showModal(html);
     document.getElementById('modalViewMyProfileBtn').addEventListener('click',function(){
         closeModal();
-        showProfileView({id:currentUser?currentUser.id:0,name:currentUser?(currentUser.display_name||currentUser.username):'You',status:currentUser?currentUser.status||'':'',bio:currentUser?currentUser.bio||'':'',img:12,avatar_url:currentUser?currentUser.avatar_url:null,cover_photo_url:state.coverPhoto||null,isMe:true});
+        showProfileView({id:currentUser?currentUser.id:0,name:currentUser?(currentUser.display_name||currentUser.username):'You',status:currentUser?currentUser.status||'':'',bio:currentUser?currentUser.bio||'':'',img:12,avatar_url:currentUser?currentUser.avatar_url:null,cover_photo_url:state.coverPhoto||null,cover_photo_url_mobile:state.coverPhotoMobile||null,isMe:true});
     });
 }
 
@@ -3018,6 +3020,7 @@ function profileToPerson(p){
         bio:p.bio||'',
         avatar_url:p.avatar_url,
         cover_photo_url:p.cover_photo_url||null,
+        cover_photo_url_mobile:p.cover_photo_url_mobile||null,
         website_url:p.website_url||null,
         last_seen:p.last_seen||null,
         premiumSkin:sd.activePremiumSkin||null,
@@ -3093,8 +3096,11 @@ async function showProfileView(person){
         applyTemplate(person.template||null,true);
     }
 
-    // Cover banner
-    var coverUrl=person.cover_photo_url||(isMe?state.coverPhoto:null);
+    // Cover banner (viewport-aware: use mobile crop on mobile if available)
+    var _pvIsMobile=window.matchMedia('(max-width:768px)').matches;
+    var _pvDesktop=person.cover_photo_url||(isMe?state.coverPhoto:null);
+    var _pvMobile=person.cover_photo_url_mobile||(isMe?state.coverPhotoMobile:null);
+    var coverUrl=_pvIsMobile?(_pvMobile||_pvDesktop):(_pvDesktop||_pvMobile);
     $('#pvCoverBanner').style.backgroundImage=coverUrl?'url('+coverUrl+')':'';
     // Show cover edit button on own profile
     var pvCoverBtn=$('#pvCoverEditBtn');
@@ -3547,7 +3553,7 @@ function showUnifiedCropModal(opts){
     html+='<img src="'+opts.src+'" crossorigin="anonymous" id="cropImg" style="max-width:100%;display:block;">';
     html+='<div id="cropBox" style="position:absolute;border:2px solid #fff;box-shadow:0 0 0 9999px rgba(0,0,0,.5);cursor:move;">';
     html+='<div id="cropResize" style="position:absolute;bottom:-4px;right:-4px;width:12px;height:12px;background:#fff;border:1px solid #333;cursor:nwse-resize;"></div></div></div>';
-    html+='<div style="margin-top:16px;"><button class="btn btn-primary" id="cropConfirmBtn">Apply</button></div></div>';
+    html+='<div style="margin-top:16px;display:flex;gap:8px;justify-content:center;">'+(opts.skipLabel?'<button class="btn btn-secondary" id="cropSkipBtn">'+opts.skipLabel+'</button>':'')+'<button class="btn btn-primary" id="cropConfirmBtn">Apply</button></div></div>';
     showModal(html);
     var img=document.getElementById('cropImg');var box=document.getElementById('cropBox');var resizeHandle=document.getElementById('cropResize');
     function _initBox(){
@@ -3584,6 +3590,10 @@ function showUnifiedCropModal(opts){
         await opts.onConfirm(blob,canvas);
         closeModal();
     });
+    if(opts.skipLabel){
+        var skipBtn=document.getElementById('cropSkipBtn');
+        if(skipBtn) skipBtn.addEventListener('click',async function(){closeModal();if(opts.onSkip) await opts.onSkip();});
+    }
 }
 function showGroupProfileCropModal(src,group,isRecrop){
     showUnifiedCropModal({
@@ -5201,13 +5211,15 @@ function showCoverPickerModal(){
     var removeBtn=document.getElementById('coverRemoveBtn');
     if(removeBtn) removeBtn.addEventListener('click',function(){
         state.coverPhoto=null;
+        state.coverPhotoMobile=null;
         $('#timelineCover').style.backgroundImage='';
         var btn=$('#coverEditBtn');if(btn) btn.innerHTML='<i class="fas fa-camera"></i> Add Cover Photo';
         var pvBtn=$('#pvCoverEditBtn');if(pvBtn) pvBtn.innerHTML='<i class="fas fa-camera"></i> Add Cover Photo';
         var pvBanner=$('#pvCoverBanner');if(pvBanner) pvBanner.style.backgroundImage='';
         if(currentUser){
             currentUser.cover_photo_url=null;
-            sbUpdateProfile(currentUser.id,{cover_photo_url:null}).catch(function(e){console.error('Remove cover error:',e);});
+            currentUser.cover_photo_url_mobile=null;
+            sbUpdateProfile(currentUser.id,{cover_photo_url:null,cover_photo_url_mobile:null}).catch(function(e){console.error('Remove cover error:',e);});
         }
         saveState();
         closeModal();
@@ -5232,11 +5244,11 @@ $('#coverFileInput').addEventListener('change',function(){
 });
 function showCoverCropModal(src,isRecrop){
     showUnifiedCropModal({
-        title:'Crop Cover Photo', src:src,
+        title:'Crop Cover Photo (Desktop)', src:src,
         aspectRatio:1280/350, outputWidth:1280, outputHeight:350,
         format:'image/jpeg', quality:0.9,
         onConfirm:async function(blob,canvas){
-            if(!currentUser){state.coverPhoto=canvas.toDataURL('image/jpeg',0.9);if(!isRecrop) state.photos.cover.unshift({src:state.coverPhoto,date:Date.now()});renderPhotosCard();applyCoverPhoto();return;}
+            if(!currentUser){state.coverPhoto=canvas.toDataURL('image/jpeg',0.9);if(!isRecrop) state.photos.cover.unshift({src:state.coverPhoto,date:Date.now()});renderPhotosCard();applyCoverPhoto();setTimeout(function(){showMobileCoverCropModal(src,isRecrop);},100);return;}
             var file=new File([blob],'cover.jpg',{type:'image/jpeg'});
             try{
                 var publicUrl=await (isRecrop?sbUploadCoverCrop(currentUser.id,file):sbUploadCover(currentUser.id,file));
@@ -5249,20 +5261,55 @@ function showCoverCropModal(src,isRecrop){
                 if(!isRecrop) state.photos.cover.unshift({src:state.coverPhoto,date:Date.now()});
             }
             renderPhotosCard();applyCoverPhoto();
+            // Chain mobile crop prompt from the same source image
+            setTimeout(function(){showMobileCoverCropModal(src,isRecrop);},100);
+        }
+    });
+}
+function showMobileCoverCropModal(src,isRecrop){
+    showUnifiedCropModal({
+        title:'Crop Cover Photo (Mobile)', src:src,
+        aspectRatio:3/4, outputWidth:900, outputHeight:1200,
+        format:'image/jpeg', quality:0.9,
+        skipLabel:'Skip (use desktop crop)',
+        onSkip:async function(){
+            if(!currentUser){state.coverPhotoMobile=null;applyCoverPhoto();return;}
+            try{
+                await sbUpdateProfile(currentUser.id,{cover_photo_url_mobile:null});
+                state.coverPhotoMobile=null;
+                applyCoverPhoto();
+            }catch(e){console.error('Clear mobile cover error:',e);}
+        },
+        onConfirm:async function(blob,canvas){
+            if(!currentUser){state.coverPhotoMobile=canvas.toDataURL('image/jpeg',0.9);applyCoverPhoto();return;}
+            var file=new File([blob],'cover-mobile.jpg',{type:'image/jpeg'});
+            try{
+                var publicUrl=await sbUploadCoverMobile(currentUser.id,file);
+                await sbUpdateProfile(currentUser.id,{cover_photo_url_mobile:publicUrl});
+                state.coverPhotoMobile=publicUrl;
+            }catch(e){
+                console.error('Mobile cover upload error:',e);
+                state.coverPhotoMobile=canvas.toDataURL('image/jpeg',0.9);
+            }
+            applyCoverPhoto();
         }
     });
 }
 function applyCoverPhoto(){
-    if(state.coverPhoto){
-        $('#timelineCover').style.backgroundImage='url('+state.coverPhoto+')';
+    if(state.coverPhoto||state.coverPhotoMobile){
+        var isMobile=window.matchMedia('(max-width:768px)').matches;
+        var url=isMobile?(state.coverPhotoMobile||state.coverPhoto):(state.coverPhoto||state.coverPhotoMobile);
+        if(!url) return;
+        var tc=$('#timelineCover'); if(tc) tc.style.backgroundImage='url('+url+')';
         var btn=$('#coverEditBtn');
         if(btn) btn.innerHTML='<i class="fas fa-camera"></i> Change Cover Photo';
         var pvBtn=$('#pvCoverEditBtn');
         if(pvBtn) pvBtn.innerHTML='<i class="fas fa-camera"></i> Change Cover Photo';
         var pvBanner=$('#pvCoverBanner');
-        if(pvBanner) pvBanner.style.backgroundImage='url('+state.coverPhoto+')';
+        if(pvBanner) pvBanner.style.backgroundImage='url('+url+')';
     }
 }
+if(!window._coverResizeHook){window._coverResizeHook=true;window.addEventListener('resize',function(){if(window._coverResizeTimer) clearTimeout(window._coverResizeTimer);window._coverResizeTimer=setTimeout(applyCoverPhoto,150);});}
 
 // Profile view cover photo upload
 $('#pvCoverEditBtn').addEventListener('click',function(e){e.stopPropagation();showCoverPickerModal();});

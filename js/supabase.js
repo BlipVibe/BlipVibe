@@ -749,6 +749,14 @@ async function sbUploadCoverCrop(userId, file) {
   return sbUploadFile('avatars', path, file);
 }
 
+async function sbUploadCoverMobile(userId, file) {
+  validateUploadFile(file, { maxSize: 5 * 1024 * 1024, label: 'Cover photo' });
+  file = await _optimizeImage(file, 900, 1200, 0.85);
+  const ext = file.name.split('.').pop();
+  const path = `${userId}/covermobx-${Date.now()}.${ext}`;
+  return sbUploadFile('avatars', path, file);
+}
+
 async function sbListUserAvatars(userId) {
   const { data, error } = await sb.storage
     .from('avatars')
