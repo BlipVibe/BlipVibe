@@ -5269,7 +5269,7 @@ function showCoverCropModal(src,isRecrop){
 function showMobileCoverCropModal(src,isRecrop){
     showUnifiedCropModal({
         title:'Crop Cover Photo (Mobile)', src:src,
-        aspectRatio:3/4, outputWidth:900, outputHeight:1200,
+        aspectRatio:4/3, outputWidth:800, outputHeight:600,
         format:'image/jpeg', quality:0.9,
         skipLabel:'Skip (use desktop crop)',
         onSkip:async function(){
