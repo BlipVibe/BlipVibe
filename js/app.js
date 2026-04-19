@@ -3611,7 +3611,7 @@ function showGroupProfileCropModal(src,group,isRecrop){
 function showGroupCoverCropModal(src,group,banner,isRecrop){
     showUnifiedCropModal({
         title:'Crop Cover Photo', src:src,
-        aspectRatio:3/2, outputWidth:1200, outputHeight:800,
+        aspectRatio:1280/350, outputWidth:1280, outputHeight:350,
         format:'image/jpeg', quality:0.9,
         onConfirm:async function(blob,canvas){
             var file=new File([blob],'group-cover-'+Date.now()+'.jpg',{type:'image/jpeg'});
@@ -5233,7 +5233,7 @@ $('#coverFileInput').addEventListener('change',function(){
 function showCoverCropModal(src,isRecrop){
     showUnifiedCropModal({
         title:'Crop Cover Photo', src:src,
-        aspectRatio:3/2, outputWidth:1200, outputHeight:800,
+        aspectRatio:1280/350, outputWidth:1280, outputHeight:350,
         format:'image/jpeg', quality:0.9,
         onConfirm:async function(blob,canvas){
             if(!currentUser){state.coverPhoto=canvas.toDataURL('image/jpeg',0.9);if(!isRecrop) state.photos.cover.unshift({src:state.coverPhoto,date:Date.now()});renderPhotosCard();applyCoverPhoto();return;}

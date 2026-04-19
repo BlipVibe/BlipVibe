@@ -735,7 +735,7 @@ async function sbUploadAvatar(userId, file) {
 
 async function sbUploadCover(userId, file) {
   validateUploadFile(file, { maxSize: 5 * 1024 * 1024, label: 'Cover photo' });
-  file = await _optimizeImage(file, 1200, 800, 0.85);
+  file = await _optimizeImage(file, 1400, 600, 0.85);
   const ext = file.name.split('.').pop();
   const path = `${userId}/cover-${Date.now()}.${ext}`;
   return sbUploadFile('avatars', path, file);
