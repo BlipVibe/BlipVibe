@@ -2809,7 +2809,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .post-image,.post-video{max-width:100%;height:auto;object-fit:contain;}
     .profile-avatar{object-fit:cover;}
     .photos-preview img{object-fit:cover;}
-    .timeline-cover,.pv-cover-banner{height:auto!important;aspect-ratio:3/4!important;max-height:60vh!important;margin-top:60px!important;background-size:cover!important;border-radius:12px!important;}
+    .timeline-cover,.pv-cover-banner{height:auto!important;aspect-ratio:3/4!important;max-height:38vh!important;max-width:260px!important;margin-left:auto!important;margin-right:auto!important;margin-top:60px!important;background-size:cover!important;background-position:center!important;border-radius:12px!important;}
     .main-container{margin-top:-60px!important;}
     .profile-card,.pv-profile-card{border-radius:12px!important;}
     .profile-avatar-wrap{margin-top:-50px!important;width:clamp(90px,30%,120px)!important;}
@@ -3086,7 +3086,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .album-photo-scroll{grid-template-rows:120px 120px!important;grid-auto-columns:120px!important;}
     .album-photo-scroll .photo-wrap{width:120px!important;height:120px!important;}
     .album-photo-scroll img{width:120px!important;height:120px!important;}
-    .timeline-cover,.pv-cover-banner{height:auto!important;aspect-ratio:3/4!important;max-height:55vh!important;margin-top:60px!important;background-size:cover!important;border-radius:12px!important;}
+    .timeline-cover,.pv-cover-banner{height:auto!important;aspect-ratio:3/4!important;max-height:34vh!important;max-width:220px!important;margin-left:auto!important;margin-right:auto!important;margin-top:60px!important;background-size:cover!important;background-position:center!important;border-radius:12px!important;}
     .gv-cover-banner,.pv-cover-banner-group{height:220px!important;}
     .photo-album-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))!important;}
     .login-btn{padding:12px!important;font-size:14px!important;}
