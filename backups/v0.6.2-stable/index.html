@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>BlipVibe - Connect & Share</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Orbitron:wght@400;700&family=Rajdhani:wght@400;500;700&family=Quicksand:wght@400;500;700&family=Pacifico&family=Baloo+2:wght@400;500;700&family=Playfair+Display:wght@400;700&family=Space+Grotesk:wght@400;500;700&family=Caveat:wght@400;700&family=Archivo:wght@400;500;700&family=Silkscreen&family=Press+Start+2P&family=Righteous&family=Satisfy&family=Bungee&family=Monoton&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/app-icon-512.png">
+    <link id="mainCSS" rel="stylesheet" href="css/style.css">
+    <script>document.getElementById('mainCSS').href='css/style.css?t='+Date.now();</script>
+    <style id="auth-cloak">.login-page{opacity:0!important;transition:opacity .3s;}</style>
+    <script>
+    // Prevent home page flash on reload — hide home before paint if hash says otherwise
+    (function(){
+        var h=(location.hash||'').replace('#','');
+        // Fallback to localStorage if hash lost (mobile Safari refresh)
+        if(!h||h==='home'){try{var lp=sessionStorage.getItem('blipvibe_lastPage');if(lp&&lp!=='home')h=lp;}catch(e){}}
+        if(h==='skins') h='shop';
+        if(h.indexOf('group-view:')===0) h='group-view';
+        if(h&&h!=='home'&&h!=='profile-view'){
+            var s=document.createElement('style');
+            s.id='hash-nav-fix';
+            s.textContent='#page-home{display:none!important;}#page-'+h+'{display:block!important;}';
+            document.head.appendChild(s);
+        }
+    })();
+    </script>
+</head>
+<body>
+    <a href="#main-content" class="skip-to-content">Skip to content</a>
+    <div id="premiumBgLayer"><div id="premiumBgDarkness"></div><div id="premiumBgOverlay"></div></div>
+
+    <!-- ========== PAGE: LOGIN ========== -->
+    <div class="login-page" id="loginPage" style="background:url('images/login-bg.webp') center center/cover no-repeat;">
+        <div class="login-center">
+            <div class="login-logo-area" style="margin-bottom:-100px;">
+                <picture>
+                    <source srcset="images/blipvibe-logo.webp" type="image/webp">
+                    <img src="images/blipvibe-logo.png" alt="BlipVibe" class="login-logo-img" style="width:400px;">
+                </picture>
+            </div>
+            <div class="login-card">
+                <h2 class="login-title">Log In</h2>
+                <!-- LOGIN FORM -->
+                <form id="loginForm" autocomplete="off">
+                    <div class="login-error" id="loginError"></div>
+                    <div class="login-field">
+                        <div class="login-input-wrap">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="loginEmail" placeholder="Username or Email" autocomplete="email">
+                        </div>
+                    </div>
+                    <div class="login-field">
+                        <div class="login-input-wrap">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password">
+                            <button type="button" class="login-toggle-pw" id="togglePassword"><i class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                    <div class="login-options">
+                        <label class="login-remember"><input type="checkbox" id="rememberMe"> Remember me</label>
+                        <a href="#" class="login-forgot">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="login-btn">Log In</button>
+                </form>
+                <div class="login-footer">Don't have an account? <a href="#" class="login-create">Sign up</a> &middot; <a href="#" id="loginPrivacyLink" style="color:var(--primary);font-size:12px;">Privacy Policy</a></div>
+            </div>
+            <div class="login-stats">
+                <div class="login-stat"><strong id="statUsers" style="background:linear-gradient(180deg,#1a3a6e,#6ab0f3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">0</strong><span style="color:#1a3a6e;">Active Users</span></div>
+                <div class="login-stat"><strong id="statPosts" style="background:linear-gradient(180deg,#1a3a6e,#6ab0f3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">0</strong><span style="color:#1a3a6e;">Posts</span></div>
+                <div class="login-stat"><strong id="statGroups" style="background:linear-gradient(180deg,#1a3a6e,#6ab0f3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">0</strong><span style="color:#1a3a6e;">Communities</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== SIGNUP MODAL ========== -->
+    <div class="signup-overlay" id="signupOverlay">
+        <div class="signup-modal">
+            <button class="signup-close" id="signupClose"><i class="fas fa-times"></i></button>
+            <h2 class="login-title">Create Account</h2>
+            <form id="signupForm" autocomplete="off">
+                <div class="login-error" id="signupError"></div>
+                <div class="login-field" style="display:flex;gap:8px;">
+                    <div class="login-input-wrap" style="flex:1;">
+                        <i class="fas fa-id-card"></i>
+                        <input type="text" id="signupFirstName" placeholder="First Name" autocomplete="given-name">
+                    </div>
+                    <div class="login-input-wrap" style="flex:1;">
+                        <input type="text" id="signupLastName" placeholder="Last Name" autocomplete="family-name">
+                    </div>
+                </div>
+                <div class="login-field">
+                    <div class="login-input-wrap">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="signupUsername" placeholder="Username" autocomplete="username">
+                    </div>
+                </div>
+                <div class="login-field">
+                    <div class="login-input-wrap">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="signupEmail" placeholder="Email" autocomplete="email">
+                    </div>
+                </div>
+                <div class="login-field">
+                    <div class="login-input-wrap">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="signupPassword" placeholder="Password" autocomplete="new-password">
+                    </div>
+                </div>
+                <div class="login-field">
+                    <div class="login-input-wrap">
+                        <i class="fas fa-cake-candles"></i>
+                        <input type="date" id="signupBirthday" placeholder="Date of Birth" autocomplete="bday">
+                    </div>
+                </div>
+                <div class="login-terms">
+                    <div class="login-terms-text">
+                        <h4>BlipVibe LLC &mdash; Terms of Use (Beta)</h4>
+                        <p><strong>Effective Date:</strong> April 7, 2026</p>
+                        <p>These Terms of Use ("Terms") constitute a <strong>legally binding agreement</strong> between you ("you," "your," "User") and <strong>BlipVibe LLC</strong> ("we," "us," "our," "BlipVibe"), a Tennessee limited liability company with its principal place of business at 116 Agnes Rd Ste 200, Knoxville, TN 37919. By creating an account, accessing, or using the BlipVibe platform (the "Service"), you acknowledge that you have read, understood, and agree to be bound by these Terms, our <strong>Privacy Policy</strong>, <strong>Acceptable Use Policy</strong>, <strong>DMCA Policy</strong>, and <strong>Arbitration &amp; Dispute Resolution Agreement</strong> (Section 19), each of which is incorporated herein by reference.</p>
+                        <p>If you do not agree to these Terms, do not create an account or use the Service.</p>
+
+                        <h5>1. Eligibility &amp; Age Requirement</h5>
+                        <p>You must be at least <strong>13 years old</strong> to create an account on BlipVibe. By creating an account, you represent and warrant that you meet this age requirement. If you are between the ages of 13 and 17, you represent that your parent or legal guardian has reviewed and consents to these Terms and permits your use of the Service.</p>
+                        <p>BlipVibe is not directed at children under 13 and does not knowingly collect personal information from children under 13 in compliance with the Children's Online Privacy Protection Act (COPPA). If we become aware that a user is under 13, their account will be terminated and their data deleted.</p>
+
+                        <h5>2. Account Registration &amp; Security</h5>
+                        <p>When you create an account, you agree to:</p>
+                        <ul>
+                            <li>Provide accurate, current, and complete information during registration</li>
+                            <li>Maintain and promptly update your account information</li>
+                            <li>Keep your login credentials confidential and not share them with any third party</li>
+                            <li>Not transfer or assign your account to another person</li>
+                            <li>Notify us immediately at <strong>hello@blipvibe.com</strong> if you suspect unauthorized access to your account</li>
+                        </ul>
+                        <p>You are solely responsible for all activity that occurs under your account, whether or not you authorized such activity.</p>
+
+                        <h5>3. Free Expression Policy</h5>
+                        <p>BlipVibe supports open conversation and the free exchange of ideas. Users are allowed to express opinions, debate topics, and share perspectives, even if others may disagree.</p>
+                        <p>However, free expression does not include harassment, threats, or targeted abuse. The following content is strictly prohibited:</p>
+                        <ul>
+                            <li>Racial slurs</li>
+                            <li>Sexual orientation slurs</li>
+                            <li>Credible threats of violence</li>
+                            <li>Doxing (sharing private personal information without consent)</li>
+                            <li>Direct harassment or intimidation</li>
+                        </ul>
+                        <p>BlipVibe reserves the right to remove content that violates these rules. For a complete list of prohibited conduct, see our Acceptable Use Policy.</p>
+
+                        <h5>4. User Content &amp; Responsibility</h5>
+                        <p>You are solely responsible for all content you post, including text, images, links, comments, and messages.</p>
+                        <p>By posting content, you represent and warrant that:</p>
+                        <ul>
+                            <li>You own the content, or</li>
+                            <li>You have the necessary rights or permission to share it.</li>
+                        </ul>
+                        <p>You agree not to post:</p>
+                        <ul>
+                            <li>Illegal content</li>
+                            <li>Spam</li>
+                            <li>Malicious code</li>
+                            <li>Copyrighted material without authorization</li>
+                        </ul>
+                        <p>BlipVibe does not claim ownership of your content. However, by posting, you grant BlipVibe a non-exclusive, worldwide, royalty-free, sublicensable license to use, display, reproduce, and distribute your content within and in connection with the Service (including through third-party infrastructure providers and content delivery networks). This license ends when you delete your content or account, except where your content has been shared by other users or where retention is required by law.</p>
+
+                        <h5>5. Embedded &amp; Third-Party Media</h5>
+                        <p>BlipVibe may display embedded media from third-party platforms (such as YouTube, Spotify, TikTok, Instagram, Twitter/X, Vimeo, or SoundCloud) using their official embed tools.</p>
+                        <p>BlipVibe does not host, store, or redistribute third-party copyrighted audio or video files. These embeds are served directly by the originating platform.</p>
+                        <p>Users are responsible for ensuring they have the right to share linked or embedded content.</p>
+                        <p><strong>Third-party tracking:</strong> Embedded content may set cookies or collect data according to the third party's own privacy policy. By using BlipVibe, you acknowledge that embedded content from YouTube (Google), TikTok, Instagram (Meta), Twitter/X, Spotify, Vimeo, and SoundCloud is subject to those platforms' terms and privacy policies.</p>
+                        <p><strong>Third-party links:</strong> The Service may contain links to third-party websites or services. BlipVibe does not control, endorse, or assume responsibility for the content, privacy policies, or practices of any third-party websites or services. You access third-party links at your own risk.</p>
+
+                        <h5>5a. BlipVibe Music Library (AI-Generated Music)</h5>
+                        <p>BlipVibe offers a curated library of original music tracks created using <strong>Suno AI</strong>, a third-party AI music generation service. BlipVibe LLC holds a paid commercial license with Suno, granting commercial use rights to all music in the BlipVibe Music Library.</p>
+                        <p><strong>Ownership &amp; Rights:</strong> Music tracks in the BlipVibe Music Library are created by and licensed to BlipVibe LLC. Users may purchase access to these tracks using in-app virtual currency (Coins) to use as profile songs, group songs, or story background music within the BlipVibe platform. Users do <strong>not</strong> acquire ownership or external licensing rights to these tracks — usage rights are limited to within the BlipVibe Service.</p>
+                        <p><strong>No Downloading or Redistribution:</strong> Users may not download, extract, record, redistribute, sublicense, or use BlipVibe Music Library tracks outside of the BlipVibe platform. The music is streamed directly from BlipVibe's servers and is intended solely for in-app use (profile pages, group pages, and stories).</p>
+                        <p><strong>AI-Generated Content Disclosure:</strong> All tracks in the BlipVibe Music Library are generated using artificial intelligence (Suno AI). These tracks may not be eligible for copyright protection under current U.S. law, as AI-generated works without human authorship may not meet the threshold for copyright registration. BlipVibe makes no representation regarding the copyright status of AI-generated music.</p>
+                        <p><strong>Third-Party Service:</strong> Suno AI is an independent third-party service. BlipVibe is not affiliated with, endorsed by, or a partner of Suno. BlipVibe's use of Suno-generated music is governed by Suno's Terms of Service and commercial licensing terms.</p>
+
+                        <h5>6. Copyright &amp; DMCA Policy</h5>
+                        <p>BlipVibe complies with the Digital Millennium Copyright Act (17 U.S.C. &sect; 512).</p>
+                        <p>If you believe content on BlipVibe infringes your copyright, you may submit a DMCA takedown notice that includes:</p>
+                        <ul>
+                            <li>Your full legal name and contact information</li>
+                            <li>Identification of the copyrighted work</li>
+                            <li>The exact URL of the allegedly infringing material</li>
+                            <li>A statement of good faith belief that the use is not authorized by the copyright owner, its agent, or the law</li>
+                            <li>A statement, under penalty of perjury, that the information in the notice is accurate and that you are the copyright owner or authorized to act on the owner's behalf</li>
+                            <li>Your physical or electronic signature</li>
+                        </ul>
+                        <p>Send DMCA notices to: <strong>dmca@blipvibe.com</strong> (DMCA Registration: DMCA-1070726). BlipVibe has registered its designated agent with the U.S. Copyright Office. For the full DMCA Policy, see <a href="dmca.html" target="_blank" style="color:var(--primary);">blipvibe.com/dmca</a>.</p>
+                        <p>Upon receipt of a valid notice, BlipVibe will:</p>
+                        <ul>
+                            <li>Remove or disable access to the content</li>
+                            <li>Notify the user who posted it</li>
+                            <li>Allow counter-notification where applicable</li>
+                        </ul>
+                        <p><strong>Counter-Notification:</strong> If you believe your content was removed in error, you may submit a counter-notification including: your name, address, and phone number; identification of the removed material and its prior location; a statement under penalty of perjury that you have a good faith belief the material was removed by mistake or misidentification; your consent to the jurisdiction of the United States District Court for the Eastern District of Tennessee; and your physical or electronic signature. Send counter-notifications to <strong>dmca@blipvibe.com</strong>.</p>
+                        <p><strong>Misrepresentation Warning:</strong> Under 17 U.S.C. &sect; 512(f), any person who knowingly materially misrepresents that material is infringing, or that material was removed by mistake, may be subject to liability for damages, including costs and attorneys' fees.</p>
+
+                        <h5>7. Repeat Infringer Policy</h5>
+                        <p>BlipVibe maintains a policy to terminate accounts of users determined to be repeat copyright infringers. Users who receive multiple valid DMCA takedown notices may have their accounts suspended or permanently terminated at BlipVibe's discretion.</p>
+
+                        <h5>8. Virtual Currency (Coins)</h5>
+                        <p>BlipVibe features a virtual currency system ("Coins") earned through platform activity or, when available, purchased through in-app transactions. Coins constitute a <strong>limited, non-exclusive, revocable, non-transferable, non-sublicensable license</strong> to access certain cosmetic features within the Service. By using Coins, you acknowledge and agree that:</p>
+                        <ul>
+                            <li>Coins have <strong>no real-world monetary value</strong>, no cash value, and cannot be exchanged for cash, gift cards, cryptocurrency, or any form of payment or consideration.</li>
+                            <li>Coins are non-transferable between users and cannot be sold, traded, or bartered outside BlipVibe.</li>
+                            <li>Coins represent a license, not ownership of any asset, property, or right of any kind.</li>
+                            <li>Coins carry no investment, speculative, or financial value.</li>
+                            <li>Coins may only be used to access cosmetic items within the BlipVibe Skin Shop.</li>
+                            <li>BlipVibe reserves the right to modify, reset, or remove Coin balances and pricing at any time without prior notice.</li>
+                            <li>Coins are non-refundable, except where required by applicable law.</li>
+                            <li>All Coins associated with your account will be forfeited upon account termination or deletion.</li>
+                        </ul>
+                        <p><strong>Apple App Store Purchases:</strong> If Coins or cosmetic items are purchased through the Apple App Store, such transactions are processed by Apple and are subject to Apple's terms and conditions, including Apple's refund policies. BlipVibe does not process payments directly for App Store transactions.</p>
+
+                        <h5>9. Direct Messages</h5>
+                        <p>BlipVibe provides a direct messaging feature between users. Messages are stored on our servers to deliver the service. Messages are <strong>not end-to-end encrypted</strong>. BlipVibe may access message content if required by law, to enforce these Terms, or to protect the safety of users. Do not share sensitive personal information (passwords, financial data, etc.) through messages.</p>
+
+                        <h5>10. Location Features</h5>
+                        <p>BlipVibe may request access to your device's location to display your general area on posts. Location sharing is <strong>off by default</strong> and must be manually enabled in Settings. If enabled, your approximate location (city/region level) may be visible on your posts. You can disable location sharing at any time. Your precise GPS coordinates are not stored; they are used only to determine your general area and are not retained.</p>
+
+                        <h5>11. Report Feature</h5>
+                        <p>Users may report content believed to violate these Terms. BlipVibe reviews reports and may remove content or take action as necessary.</p>
+
+                        <h5>12. Privacy &amp; Data</h5>
+                        <p>Your use of the Service is also governed by our Privacy Policy, which describes how we collect, use, and protect your personal information. By using the Service, you consent to our data practices as described in the Privacy Policy.</p>
+                        <p>BlipVibe collects and stores the following data for platform functionality:</p>
+                        <ul>
+                            <li><strong>Account data:</strong> email address, username, display name, date of birth, profile bio</li>
+                            <li><strong>Content data:</strong> posts, comments, messages, uploaded images</li>
+                            <li><strong>Usage data:</strong> likes, follows, saved posts, customization preferences</li>
+                            <li><strong>Technical data:</strong> browser session tokens for authentication</li>
+                        </ul>
+                        <p>BlipVibe does <strong>not</strong> sell your personal data. Data is stored using Supabase (cloud infrastructure). BlipVibe uses the following third-party services that may collect data according to their own policies: Google Fonts, Font Awesome (Cloudflare), Microlink (link previews), OpenStreetMap/Nominatim (location), Suno AI (music generation — BlipVibe Music Library), and embedded media platforms (YouTube, TikTok, Instagram, Twitter/X, Spotify, Vimeo, SoundCloud).</p>
+                        <p>You may request deletion of your account and associated data by using the "Delete My Account" option in Settings or by contacting <strong>hello@blipvibe.com</strong>.</p>
+
+                        <h5>13. Platform Status &amp; Availability</h5>
+                        <p>BlipVibe is currently in beta. Features may change, break, or be removed without notice. Data may be reset or deleted during development updates. Use of the platform is at your own discretion.</p>
+                        <p><strong>We do not guarantee</strong> that the Service will be available at all times, will be uninterrupted, error-free, or free of harmful components. We may suspend, withdraw, discontinue, or change all or any part of the Service without notice.</p>
+
+                        <h5>14. Section 230 Safe Harbor</h5>
+                        <p>BlipVibe is an interactive computer service as defined under Section 230 of the Communications Decency Act (47 U.S.C. &sect; 230). BlipVibe is not the publisher or speaker of any user-generated content posted on the platform. BlipVibe provides tools for users to create, share, and interact with content, but does not endorse, verify, or assume responsibility for the accuracy, legality, or appropriateness of any user content. Good-faith content moderation actions taken by BlipVibe shall not be construed as editorial control or adoption of any user content.</p>
+
+                        <h5>15. No Warranty</h5>
+                        <p><strong>THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS, WITHOUT WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE. TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, BLIPVIBE EXPRESSLY DISCLAIMS ALL WARRANTIES, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. BLIPVIBE DOES NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, SECURE, OR ERROR-FREE, OR THAT ANY DEFECTS WILL BE CORRECTED.</strong></p>
+
+                        <h5>16. Limitation of Liability</h5>
+                        <p><strong>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL BLIPVIBE, ITS OPERATORS, OFFICERS, DIRECTORS, EMPLOYEES, AFFILIATES, OR AGENTS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO DAMAGES FOR LOSS OF PROFITS, DATA, GOODWILL, USE, OR OTHER INTANGIBLE LOSSES, ARISING OUT OF OR IN CONNECTION WITH YOUR USE OF OR INABILITY TO USE THE SERVICE, REGARDLESS OF THE THEORY OF LIABILITY (CONTRACT, TORT, NEGLIGENCE, STRICT LIABILITY, OR OTHERWISE) AND EVEN IF BLIPVIBE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</strong></p>
+                        <p><strong>BLIPVIBE'S TOTAL CUMULATIVE LIABILITY FOR ALL CLAIMS ARISING OUT OF OR RELATING TO THESE TERMS OR THE SERVICE SHALL NOT EXCEED THE GREATER OF (A) THE AMOUNTS YOU HAVE PAID TO BLIPVIBE IN THE TWELVE (12) MONTHS PRECEDING THE EVENT GIVING RISE TO THE CLAIM, OR (B) ONE HUNDRED DOLLARS ($100 USD).</strong></p>
+                        <p>Some jurisdictions do not allow the exclusion or limitation of certain damages, so some of the above limitations may not apply to you.</p>
+
+                        <h5>17. Indemnification</h5>
+                        <p>You agree to indemnify, defend, and hold harmless BlipVibe, its operators, affiliates, and agents from any claims, damages, losses, liabilities, and expenses (including reasonable attorneys' fees) arising from your use of BlipVibe, your content, or your violation of these Terms.</p>
+
+                        <h5>18. Account Termination</h5>
+                        <p>BlipVibe reserves the right, at its sole discretion, to suspend, restrict, or terminate your account and access to the Service at any time, for any reason or no reason, with or without notice, including but not limited to violations of these Terms or the Acceptable Use Policy. Users may request account deletion at any time by using the "Delete My Account" option in Settings or by contacting <strong>hello@blipvibe.com</strong>.</p>
+
+                        <h5>19. Dispute Resolution &amp; Arbitration</h5>
+                        <p><strong>PLEASE READ THIS SECTION CAREFULLY. IT AFFECTS YOUR LEGAL RIGHTS, INCLUDING YOUR RIGHT TO FILE A LAWSUIT IN COURT AND TO HAVE A JURY TRIAL.</strong></p>
+                        <p><strong>Informal Resolution:</strong> Before initiating any formal dispute proceeding, you agree to first contact us at <strong>hello@blipvibe.com</strong> and attempt to resolve the dispute informally for at least <strong>30 days</strong>.</p>
+                        <p><strong>Binding Individual Arbitration:</strong> Any dispute, claim, or controversy arising out of or relating to these Terms or the Service that cannot be resolved informally shall be resolved by <strong>binding individual arbitration</strong> administered by the American Arbitration Association ("AAA") under its Consumer Arbitration Rules. The Federal Arbitration Act (9 U.S.C. &sect; 1 et seq.) governs the interpretation and enforcement of this arbitration provision.</p>
+                        <p><strong>Arbitration Venue:</strong> Arbitration shall take place in <strong>Knox County, Tennessee</strong>, or at another mutually agreed location. Where permitted by the AAA rules, arbitration may be conducted by phone, video conference, or based on written submissions.</p>
+                        <p><strong>Arbitration Fees:</strong> If you initiate arbitration, BlipVibe will reimburse your filing fee unless the arbitrator determines your claim is frivolous. Each party shall bear its own attorneys' fees unless the arbitrator awards fees to the prevailing party under applicable law.</p>
+                        <p><strong>CLASS ACTION AND JURY TRIAL WAIVER: YOU AND BLIPVIBE AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN YOUR OR ITS INDIVIDUAL CAPACITY AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS, CONSOLIDATED, OR REPRESENTATIVE ACTION. YOU WAIVE THE RIGHT TO PARTICIPATE IN A CLASS ACTION LAWSUIT OR CLASS-WIDE ARBITRATION. YOU ALSO WAIVE THE RIGHT TO A TRIAL BY JURY.</strong></p>
+                        <p><strong>Small Claims Exception:</strong> Either party may bring an individual action in small claims court in Knox County, Tennessee, for disputes within that court's jurisdictional limits.</p>
+                        <p><strong>Opt-Out:</strong> You may opt out of this arbitration provision by sending written notice to <strong>hello@blipvibe.com</strong> within <strong>30 days of creating your account</strong>, stating your name, email address associated with your account, and a clear statement that you wish to opt out of arbitration. If you opt out, disputes shall be resolved in the state or federal courts in Knox County, Tennessee.</p>
+                        <p><strong>Arbitration Severability:</strong> If any part of this arbitration provision is found unenforceable, the remaining parts shall continue to apply. If the class action waiver is found unenforceable, the entire arbitration provision shall be void and disputes shall proceed in court in Knox County, Tennessee.</p>
+
+                        <h5>20. Governing Law</h5>
+                        <p>These Terms are governed by and construed in accordance with the laws of the State of Tennessee and applicable federal law, without regard to conflict of law principles. Any legal action not subject to arbitration shall be brought exclusively in the state or federal courts located in Knox County, Tennessee.</p>
+
+                        <h5>21. Export Compliance</h5>
+                        <p>You represent and warrant that you are not located in a country subject to a U.S. government embargo or designated as a "terrorist supporting" country, and that you are not listed on any U.S. government list of prohibited or restricted parties, including the U.S. Treasury Department's Specially Designated Nationals List or the U.S. Commerce Department's Denied Persons List. You agree not to use the Service in violation of any U.S. export laws or regulations.</p>
+
+                        <h5>22. Severability</h5>
+                        <p>If any provision of these Terms is found to be unenforceable or invalid by a court of competent jurisdiction, that provision shall be limited or eliminated to the minimum extent necessary, and the remaining provisions shall remain in full force and effect.</p>
+
+                        <h5>23. Waiver</h5>
+                        <p>The failure of BlipVibe to exercise or enforce any right or provision of these Terms shall not constitute a waiver of such right or provision. Any waiver of any provision of these Terms will be effective only if in writing and signed by BlipVibe.</p>
+
+                        <h5>24. Entire Agreement</h5>
+                        <p>These Terms, together with the Privacy Policy, Acceptable Use Policy, DMCA Policy, and Arbitration &amp; Dispute Resolution Agreement, constitute the entire agreement between you and BlipVibe regarding the Service and supersede all prior or contemporaneous agreements, communications, and proposals, whether oral or written.</p>
+
+                        <h5>25. Changes to Terms</h5>
+                        <p>BlipVibe may update these Terms at any time. When updated, all users will be required to review and accept the new Terms before continuing to use the platform. Continued use after acceptance constitutes agreement to the updated Terms.</p>
+
+                        <h5>26. Acceptance</h5>
+                        <p>By creating an account, you confirm that you are at least 13 years old (and if you are between 13 and 17, that your parent or legal guardian consents to these Terms), have read and agree to these Terms and all incorporated policies, and understand that BlipVibe is currently in beta.</p>
+                    </div>
+                    <label class="login-checkbox">
+                        <input type="checkbox" id="signupTerms">
+                        <span>I agree to the BlipVibe Terms of Use</span>
+                    </label>
+                </div>
+                <button type="submit" class="login-btn">Create Account</button>
+            </form>
+            <div class="login-footer">Already have an account? <a href="#" class="login-back">Sign in</a></div>
+        </div>
+    </div>
+
+    <div class="app-shell" id="appShell">
+    <!-- ========== NAVIGATION BAR ========== -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="#" class="nav-logo" data-page="home">BlipVibe</a>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search..." id="globalSearch">
+                </div>
+            </div>
+            <div class="nav-center">
+                <a href="#" class="nav-link active" data-page="home"><i class="fas fa-home"></i><span>Home</span></a>
+                <a href="#" class="nav-link" data-page="groups"><i class="fas fa-users-rectangle"></i><span>Groups</span></a>
+                <a href="#" class="nav-link" data-page="shop"><i class="fas fa-palette"></i><span>Skins</span></a>
+                <a href="#" class="nav-link" data-page="profiles"><i class="fas fa-user-group"></i><span>Network</span></a>
+                <a href="#" class="nav-link nav-saved-link" data-page="saved"><i class="fas fa-bookmark"></i><span>Saved</span></a>
+                <a href="#" class="nav-link" data-page="messages"><i class="fas fa-envelope"></i><span>Messages</span><span class="notif-badge" id="msgBadge">0</span></a>
+                <a href="#" class="nav-link nav-notif-link" data-page="notifications">
+                    <i class="fas fa-bell"></i><span>Notification</span>
+                    <span class="notif-badge" id="notifBadge" style="display:none;">0</span>
+                </a>
+            </div>
+            <div class="nav-right">
+                <a href="#" class="mobile-search-btn" id="mobileSearchBtn"><i class="fas fa-search"></i></a>
+                <a href="#" class="mobile-notif-btn" id="mobileNotifBtn" data-page="notifications"><i class="fas fa-bell"></i><span class="notif-badge" id="mobileNotifBadge" style="display:none;">0</span></a>
+                <button id="navMusicBtn" style="display:none;background:none;color:#ffd700;font-size:16px;padding:4px 8px;align-items:center;" title="Open Music Player"><i class="fas fa-music"></i></button>
+                <div class="nav-coins" id="navCoins"><i class="fas fa-coins"></i><span class="coin-count" id="navCoinCount">0</span></div>
+                <div class="nav-user" id="navUserDropdown">
+                    <img src="images/default-avatar.svg" alt="User" class="nav-avatar">
+                    <span class="nav-username">User</span>
+                    <i class="fas fa-chevron-down"></i>
+                    <div class="user-dropdown" id="userDropdownMenu">
+                        <a href="#" id="dropdownViewProfile"><i class="fas fa-user"></i> My Profile</a>
+                        <a href="#" id="dropdownMySkins" data-page="shop"><i class="fas fa-palette"></i> My Skins</a>
+                        <a href="#" id="dropdownSaved" class="dropdown-saved-link"><i class="fas fa-bookmark"></i> Saved Posts</a>
+                        <a href="#" id="dropdownShareProfile"><i class="fas fa-share-nodes"></i> Share Profile</a>
+                        <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="#" id="dropdownAdmin" style="display:none;color:#e74c3c;"><i class="fas fa-shield-halved"></i> Admin Panel</a>
+                        <a href="#" id="dropdownFeedback"><i class="fas fa-comment-dots"></i> Submit Feedback</a>
+                        <a href="#" data-page="privacy"><i class="fas fa-shield-halved"></i> Privacy Policy</a>
+                        <a href="dmca.html" target="_blank"><i class="fas fa-gavel"></i> DMCA Policy</a>
+                        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== MODAL OVERLAY ========== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content" id="modalContent"></div>
+    </div>
+
+    <!-- ========== PAGE: HOME ========== -->
+    <div class="page active" id="page-home" role="main" aria-label="Home feed">
+        <div class="timeline-cover" id="timelineCover">
+            <button class="timeline-cover-btn" id="coverEditBtn" title="Add Cover Photo"><i class="fas fa-camera"></i> Add Cover Photo</button>
+            <input type="file" id="coverFileInput" accept="image/*" style="display:none;">
+        </div>
+        <div class="main-container">
+            <aside class="left-sidebar">
+                <div class="card profile-card" id="profileCard">
+                    <div class="profile-cover" id="profileCover"></div>
+                    <div class="profile-info">
+                        <div class="profile-avatar-wrap">
+                            <img src="images/default-avatar.svg" alt="User" class="profile-avatar" id="profileAvatarImg">
+                            <button class="avatar-edit-btn" id="avatarEditBtn" title="Change Photo"><i class="fas fa-camera"></i></button>
+                            <input type="file" id="avatarFileInput" accept="image/*,image/gif" style="display:none;">
+                        </div>
+                        <h3 class="profile-name">User</h3>
+                        <p class="profile-title">Living my best life</p>
+                        <p class="profile-about">Coffee addict, sunset chaser, and part-time adventurer. Always looking for the next great story.</p>
+                        <div class="profile-stats">
+                            <div class="stat stat-clickable" id="followingStat"><span class="stat-count" id="followingCount">0</span><span class="stat-label">Following</span></div>
+                            <div class="stat stat-clickable" id="followersStat"><span class="stat-count" id="followersCount">5</span><span class="stat-label">Followers</span></div>
+                        </div>
+                        <div class="profile-links"><a href="#" class="view-profile-link" id="viewMyProfile">View Profile</a><a href="#" class="edit-profile-btn" id="editProfileBtn" title="Edit Profile"><i class="fas fa-pen"></i></a></div>
+                    </div>
+                </div>
+                <div class="card photos-card">
+                    <h4 class="card-heading"><i class="fas fa-images" style="margin-right:8px;color:var(--primary);"></i>Photos</h4>
+                    <div class="photos-preview" id="photosPreview"><p class="photos-empty">No photos yet</p></div>
+                    <a href="#" class="view-more-link" id="viewAllPhotos">View All</a>
+                </div>
+            </aside>
+            <main class="center-feed">
+                <div class="mobile-pills-bar" id="mobilePills"></div>
+                <div class="stories-bar" id="storiesBar"></div>
+                <div class="card post-create-bar" id="openPostModal">
+                    <img src="images/default-avatar.svg" alt="User" class="post-create-avatar">
+                    <div class="post-input-fake">What are we posting today?</div>
+                </div>
+                <div id="featuredSkinBanner" class="featured-skin-banner" style="display:none;"></div>
+                <div id="questPanel" class="quest-panel" style="display:none;"></div>
+                <div id="coinGoalBar" class="coin-goal-bar" style="display:none;"></div>
+                <div class="search-tabs" id="feedTabs">
+                    <button class="search-tab active" data-feedtab="following"><i class="fas fa-user-group"></i> Following</button>
+                    <button class="search-tab" data-feedtab="discover"><i class="fas fa-compass"></i> Discover</button>
+                    <button class="search-tab" data-feedtab="myposts"><i class="fas fa-user"></i> My Posts</button>
+                </div>
+                <span id="main-content"></span>
+                <div id="feedContainer"></div>
+            </main>
+            <aside class="right-sidebar">
+                <div class="card promo-card">
+                    <div class="promo-logo">BV</div>
+                    <h3 class="promo-title">Earn Coins on BlipVibe</h3>
+                    <p class="promo-subtitle">Earn coins by interacting and spend them in the Skin Shop to customize your profile!</p>
+                    <div class="coin-rules">
+                        <div class="coin-rule"><i class="fas fa-calendar-check"></i><span>Daily Login <strong>+5</strong></span></div>
+                        <div class="coin-rule"><i class="fas fa-pen-to-square"></i><span>Post <strong>+5</strong> <small>(5/day)</small></span></div>
+                        <div class="coin-rule"><i class="fas fa-comment"></i><span>Comment <strong>+2</strong> <small>(15/day)</small></span></div>
+                        <div class="coin-rule"><i class="fas fa-heart"></i><span>Like <strong>+1</strong> <small>(30/day)</small></span></div>
+                    </div>
+                </div>
+                <div class="card suggestions-card">
+                    <h4 class="card-heading">People You May Know</h4>
+                    <div class="suggestion-list" id="suggestionList"></div>
+                    <a href="#" class="view-more-link" data-page="profiles">View More</a>
+                </div>
+                <div class="card groups-card">
+                    <h4 class="card-heading">Trending Groups</h4>
+                    <div class="group-list" id="trendingGroupsSidebar"></div>
+                </div>
+                <div class="card" style="padding:12px;">
+                    <button class="btn btn-outline btn-block" id="trendingHashtagsBtn" style="display:flex;align-items:center;justify-content:center;gap:8px;"><i class="fas fa-fire" style="color:var(--primary);"></i> Trending Hashtags</button>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- ========== PAGE: GROUPS ========== -->
+    <div class="page" id="page-groups">
+        <div class="page-container">
+            <div class="page-header">
+                <h2><i class="fas fa-users-rectangle"></i> Groups</h2>
+                <div class="page-actions">
+                    <div class="page-search"><i class="fas fa-search"></i><input type="text" placeholder="Search groups..." id="groupSearch"></div>
+                    <button class="btn btn-primary" id="createGroupBtn"><i class="fas fa-plus"></i> Create Group</button>
+                </div>
+            </div>
+            <div class="search-tabs" id="groupsTabs"></div>
+            <div id="groupsSections"></div>
+        </div>
+    </div>
+
+    <!-- ========== PAGE: PROFILES ========== -->
+    <div class="page" id="page-profiles">
+        <div class="page-container">
+            <div class="page-header">
+                <h2><i class="fas fa-user-group"></i> Network</h2>
+                <div class="page-actions">
+                    <div class="page-search"><i class="fas fa-search"></i><input type="text" placeholder="Search people..." id="profileSearch"></div>
+                </div>
+            </div>
+            <div class="search-tabs" id="profilesTabs">
+                <button class="search-tab active" data-ptab="network"><i class="fas fa-circle-nodes"></i> Connections</button>
+                <button class="search-tab" data-ptab="notfollowing"><i class="fas fa-user-xmark"></i> Not Following Back</button>
+                <button class="search-tab" data-ptab="discover"><i class="fas fa-compass"></i> Discover</button>
+            </div>
+            <div id="profilesSections"></div>
+        </div>
+    </div>
+
+    <!-- ========== PAGE: SAVED ========== -->
+    <div class="page" id="page-saved">
+        <div class="page-container">
+            <div class="page-header">
+                <h2><i class="fas fa-bookmark"></i> Saved Posts</h2>
+                <div class="page-actions">
+                    <button class="btn btn-primary" id="createFolderBtn"><i class="fas fa-folder-plus"></i> New Folder</button>
+                </div>
+            </div>
+            <div id="savedContent"></div>
+        </div>
+    </div>
+
+    <!-- ========== PAGE: SKINS ========== -->
+    <div class="page" id="page-shop">
+        <div class="page-container">
+            <div class="page-header">
+                <h2><i class="fas fa-palette"></i> Skins</h2>
+                <p class="page-subtitle">Browse the shop or manage your collection</p>
+            </div>
+            <div class="search-tabs" id="skinPageToggle">
+                <button class="search-tab active" data-skin-view="shop">Skin Shop</button>
+                <button class="search-tab" data-skin-view="mine">My Skins</button>
+            </div>
+            <div id="skinShopView">
+                <div class="search-tabs" id="shopTabs"></div>
+                <div class="page-grid" id="shopGrid"></div>
+            </div>
+            <div id="mySkinView" style="display:none;">
+                <div class="search-tabs" id="mySkinsTabs"></div>
+                <div class="page-grid" id="mySkinsGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== PAGE: MESSAGES ========== -->
+    <div class="page" id="page-messages">
+        <div class="page-container messages-layout">
+            <div class="msg-sidebar">
+                <div class="msg-sidebar-header"><h3>Messages</h3></div>
+                <div class="msg-search"><i class="fas fa-search"></i><input type="text" placeholder="Search conversations or people..." id="msgSearch"></div>
+                <div class="msg-contact-list" id="msgContactList"></div>
+            </div>
+            <div class="msg-chat" id="msgChat">
+                <div class="msg-chat-placeholder"><i class="fas fa-envelope-open-text"></i><p>Select a conversation to start messaging</p></div>
+            </div>
+            <div class="msg-following-bar" id="msgFollowingBar">
+                <div class="msg-following-header"><h4>Following</h4></div>
+                <div class="msg-following-list" id="msgFollowingList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== PAGE: NOTIFICATIONS ========== -->
+    <div class="page" id="page-notifications">
+        <div class="page-container">
+            <div class="page-header">
+                <h2><i class="fas fa-bell"></i> Notifications</h2>
+            </div>
+            <div class="search-tabs" id="notifTabs"></div>
+            <div id="notifList">
+                <div class="empty-state" id="noNotifMsg"><i class="fas fa-bell-slash"></i><p>No notifications yet.</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== PAGE: SEARCH RESULTS ========== -->
+    <div class="page" id="page-search">
+        <div class="page-container">
+            <div class="page-header">
+                <h2><i class="fas fa-search"></i> Search</h2>
+                <div class="page-search" id="searchPageInput" style="margin-top:8px;"><i class="fas fa-search"></i><input type="text" placeholder="Search people, groups, posts..." id="searchPageQuery"></div>
+                <p class="page-subtitle" id="searchQuery"></p>
+            </div>
+            <div class="search-tabs">
+                <button class="search-tab active" data-tab="people"><i class="fas fa-user"></i> People</button>
+                <button class="search-tab" data-tab="groups"><i class="fas fa-users-rectangle"></i> Groups</button>
+                <button class="search-tab" data-tab="posts"><i class="fas fa-newspaper"></i> Posts</button>
+            </div>
+            <div id="searchResults"></div>
+        </div>
+    </div>
+
+    <!-- ========== PAGE: GROUP VIEW ========== -->
+    <div class="page" id="page-group-view">
+        <div class="pv-cover-banner" id="gvCoverBanner">
+            <button class="timeline-cover-btn" id="gvCoverEditBtn" style="display:none;" title="Change Cover"><i class="fas fa-camera"></i> Change Cover</button>
+            <input type="file" id="gvCoverFileInput" accept="image/*" style="display:none;">
+        </div>
+        <div class="gv-layout">
+            <aside class="gv-left" id="gvLeftSidebar"></aside>
+            <main class="gv-center">
+                <div class="card pv-profile-card" id="gvProfileCard"></div>
+                <div class="gv-mobile-right" id="gvMobileRight"></div>
+                <div id="gvPostBar"></div>
+                <div id="gvPostsFeed"></div>
+            </main>
+            <aside class="gv-right" id="gvRightSidebar"></aside>
+        </div>
+    </div>
+
+    <!-- ========== PAGE: PHOTOS ========== -->
+    <div class="page" id="page-photos">
+        <div class="page-container">
+            <div class="page-header">
+                <h2><i class="fas fa-images"></i> My Photos <button class="btn btn-outline photo-select-toggle" id="photoSelectBtn" style="display:none;padding:4px 14px;font-size:12px;margin-left:auto;"><i class="fas fa-check-circle"></i> Select</button></h2>
+                <p class="page-subtitle"><a href="#" class="photos-back-link" style="color:var(--primary);font-weight:500;"><i class="fas fa-arrow-left"></i> Back</a></p>
+            </div>
+            <div id="photoAlbumContent"></div>
+        </div>
+    </div>
+
+    <!-- ========== PAGE: PROFILE VIEW ========== -->
+    <div class="page" id="page-profile-view">
+        <div class="pv-cover-banner" id="pvCoverBanner">
+            <button class="timeline-cover-btn" id="pvCoverEditBtn" style="display:none;" title="Change Cover Photo"><i class="fas fa-camera"></i> Change Cover Photo</button>
+            <input type="file" id="pvCoverFileInput" accept="image/*" style="display:none;">
+        </div>
+        <div class="pv-layout">
+            <div class="pv-col-left">
+                <div class="card profile-card pv-profile-card" id="pvProfileCard"></div>
+            </div>
+            <div id="pvPhotosCard" class="pv-col-photos"></div>
+            <main class="pv-col-feed">
+                <div id="pvPostsFeed"></div>
+            </main>
+            <aside class="pv-col-skin">
+                <div id="pvSkinCard" class="pv-skin-box"></div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- ========== PAGE: ADMIN PANEL ========== -->
+    <div class="page" id="page-admin">
+        <div class="page-container">
+            <div class="page-header">
+                <h2><i class="fas fa-shield-halved" style="color:#e74c3c;"></i> Admin Panel</h2>
+                <p class="page-subtitle"><a href="#" class="admin-back-link" style="color:var(--primary);font-weight:500;"><i class="fas fa-arrow-left"></i> Back</a></p>
+            </div>
+            <div class="card" style="padding:20px;">
+                <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
+                    <div style="flex:1;min-width:200px;position:relative;">
+                        <i class="fas fa-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gray);"></i>
+                        <input type="text" id="adminSearchInput" placeholder="Search users by name, username, or email..." style="width:100%;padding:10px 12px 10px 36px;border:2px solid var(--border);border-radius:8px;font-size:14px;">
+                    </div>
+                    <button class="btn btn-primary" id="adminSearchBtn" style="padding:10px 20px;"><i class="fas fa-search"></i> Search</button>
+                </div>
+                <div id="adminUserCount" style="font-size:13px;color:var(--gray);margin-bottom:12px;"></div>
+                <div id="adminUserList"></div>
+                <div id="adminPagination" style="text-align:center;margin-top:16px;"></div>
+            </div>
+            <div class="card" style="padding:20px;margin-top:20px;">
+                <h3 style="margin:0 0 12px;font-size:16px;"><i class="fas fa-clipboard-list" style="color:var(--primary);margin-right:8px;"></i>Admin Action Log</h3>
+                <div id="adminLogList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== PAGE: PRIVACY POLICY ========== -->
+    <div class="page" id="page-privacy">
+        <div class="page-container">
+            <div class="page-header">
+                <h2><i class="fas fa-shield-halved"></i> Privacy Policy</h2>
+                <p class="page-subtitle"><a href="#" class="privacy-back-link" style="color:var(--primary);font-weight:500;"><i class="fas fa-arrow-left"></i> Back</a></p>
+            </div>
+            <div class="card" style="padding:24px 28px;line-height:1.7;font-size:14px;">
+                <h3 style="margin:0 0 6px;">BlipVibe Privacy Policy</h3>
+                <p style="color:var(--gray);margin-bottom:16px;"><strong>Effective Date:</strong> March 3, 2026 &nbsp;|&nbsp; <strong>Version:</strong> 3.0</p>
+
+                <p>BlipVibe ("we," "us," "our") operates the BlipVibe social media platform, accessible via web browser and the BlipVibe mobile application (collectively, the "Service"). This Privacy Policy describes the categories of personal information we collect, how we use and protect it, and your rights. By creating an account or using the Service, you acknowledge that you have read and understood this Privacy Policy.</p>
+                <p>BlipVibe is currently in <strong>beta</strong>. Certain features, data structures, and retention practices may change before general availability. We will notify users of material changes as described in Section 18.</p>
+
+                <h4 style="margin:20px 0 8px;">1. Information We Collect</h4>
+                <p><strong>a. Account Information (provided by you):</strong></p>
+                <ul>
+                    <li>Email address</li>
+                    <li>Username, first name, last name, nickname, and display name</li>
+                    <li>Date of birth (used solely for age-gate verification; see Section 9)</li>
+                    <li>Password (cryptographically hashed via Supabase Auth; we never store or have access to plaintext passwords)</li>
+                    <li>Profile biography, avatar photo, and cover photo</li>
+                </ul>
+                <p><strong>b. User-Generated Content:</strong></p>
+                <ul>
+                    <li>Posts, comments, replies, and photo comments</li>
+                    <li>Direct messages (not end-to-end encrypted; see Section 6 for important details)</li>
+                    <li>Uploaded images, videos, and media</li>
+                    <li>Stories (content, timestamps), story comments, and story view history</li>
+                    <li>Saved posts and folder organization</li>
+                    <li>Photo albums, album organization, and album photo metadata</li>
+                    <li>Group memberships, group posts, group chat channels, group chat sections, and group chat messages</li>
+                </ul>
+                <p><strong>c. Activity Data (generated automatically):</strong></p>
+                <ul>
+                    <li>Likes, dislikes, emoji reactions on posts, photos, and messages, and follows</li>
+                    <li>Customization preferences (skins, themes, fonts, nav styles, settings)</li>
+                    <li>In-app coin balance, cosmetic purchase history, and daily login reward streak data</li>
+                    <li>Block lists, mute lists, hidden/dismissed posts, and content reports</li>
+                    <li>In-app notifications and notification preferences</li>
+                    <li>Earned badges and achievement data</li>
+                    <li>Group coin balances and group skin purchases</li>
+                    <li>Timestamps of account activity (login, post creation, last seen)</li>
+                    <li>Post edit history (previous versions of edited posts)</li>
+                    <li>Music preferences: profile song selection, song purchase history, story song selections and playback settings (start time, volume)</li>
+                </ul>
+                <p><strong>d. Technical Data:</strong></p>
+                <ul>
+                    <li>IP address (collected by our infrastructure provider in connection with server requests)</li>
+                    <li>Browser type and version, device type, and operating system</li>
+                    <li>Authentication session tokens (stored in your browser's localStorage)</li>
+                    <li>Referring URL and pages visited within the Service</li>
+                    <li><strong>Push notification tokens:</strong> If you use the BlipVibe mobile app and grant notification permissions, we collect and store your device's push notification token (FCM or APNs) to deliver notifications. This token is a device identifier and is stored in your user profile. You may revoke notification permissions at any time through your device settings.</li>
+                    <li><strong>Search history:</strong> Your recent search queries are stored locally in your browser's localStorage (up to 15 entries) to show recent searches. This data is not sent to our servers and can be cleared at any time via the search page.</li>
+                    <li><strong>Service worker cache:</strong> BlipVibe uses a service worker to cache static assets (HTML, CSS, JavaScript, images) locally on your device for faster loading and limited offline access. This cached data is stored in your browser's Cache Storage and does not contain personal information. You may clear this cache at any time through your browser settings.</li>
+                </ul>
+                <p><strong>e. Location Data (opt-in only):</strong></p>
+                <ul>
+                    <li>Location sharing is <strong>off by default</strong>. If you enable it in Settings, your device's GPS coordinates are transmitted <strong>once per post</strong> to a third-party geocoding service (OpenStreetMap Nominatim) to determine an approximate area name (city/region). We store <strong>only the general area name</strong>; precise GPS coordinates are not stored in our database. You may disable location sharing at any time in Settings.</li>
+                </ul>
+                <p><strong>f. Information We Do Not Collect:</strong></p>
+                <ul>
+                    <li>We do not deploy first-party analytics, tracking pixels, or fingerprinting scripts.</li>
+                    <li>We do not collect contacts, call logs, or SMS data from your device.</li>
+                    <li>We do not use automated decision-making or profiling that produces legal effects on users.</li>
+                </ul>
+
+                <h4 style="margin:20px 0 8px;">2. How We Use Your Information</h4>
+                <p>We process personal information for the following purposes:</p>
+                <ul>
+                    <li>To provide, operate, and maintain the Service</li>
+                    <li>To authenticate your identity and secure your account</li>
+                    <li>To display your content to other users as you direct</li>
+                    <li>To deliver direct messages between users</li>
+                    <li>To send in-app notifications about activity related to your content or account</li>
+                    <li>To enforce our Terms of Use, investigate violations, and protect user safety</li>
+                    <li>To respond to legal process, including DMCA takedown notices, subpoenas, and court orders</li>
+                    <li>To detect, prevent, and address fraud, abuse, security incidents, and technical issues</li>
+                    <li>To display advertising from third-party ad networks (when implemented; see Section 5)</li>
+                    <li>To communicate service announcements, beta updates, and policy changes</li>
+                </ul>
+
+                <h4 style="margin:20px 0 8px;">3. Sharing of Information</h4>
+                <p>We do <strong>not</strong> sell your personal information. We may share information in the following limited circumstances:</p>
+                <ul>
+                    <li><strong>Service Providers:</strong> We share data with third-party infrastructure and service providers (listed in Section 7) that process data on our behalf to operate the Service. These providers are contractually required to use your data only for the purposes we specify.</li>
+                    <li><strong>Advertising Partners:</strong> When we introduce advertising, ad network partners may collect device identifiers, IP addresses, and general interaction data to serve relevant ads. We will update this section with specific partner names before advertising launches. You will be able to opt out of personalized advertising where required by law (see Sections 12, 13, and 14).</li>
+                    <li><strong>Legal Requirements:</strong> We may disclose information when we believe in good faith that disclosure is necessary to comply with applicable law, regulation, legal process, or governmental request; to enforce our Terms of Use; to protect our rights, property, or safety or that of our users or the public; or to detect, prevent, or address fraud, security, or technical issues.</li>
+                    <li><strong>Business Transfers:</strong> If BlipVibe is involved in a merger, acquisition, or sale of assets, your personal information may be transferred as part of that transaction. We will notify you via in-app notice or email before your information becomes subject to a different privacy policy.</li>
+                    <li><strong>With Your Consent:</strong> We may share information for purposes not listed here with your prior consent.</li>
+                </ul>
+
+                <h4 style="margin:20px 0 8px;">4. Data Storage &amp; Security</h4>
+                <p>Your data is stored using <strong>Supabase</strong>, a cloud infrastructure platform hosted in the United States. Supabase provides:</p>
+                <ul>
+                    <li>Encryption of data in transit (TLS/SSL) and at rest</li>
+                    <li>Row-level security policies on database tables</li>
+                    <li>Cryptographic password hashing via Supabase Auth</li>
+                    <li>Regular automated backups</li>
+                </ul>
+                <p>Uploaded images (avatars, post photos) are stored in Supabase Storage buckets. <strong>These images are accessible by URL</strong> to enable display within the platform. You should not upload images that contain sensitive information you do not wish to be publicly viewable.</p>
+                <p><strong>No security measure is absolute.</strong> While we implement commercially reasonable administrative, technical, and organizational safeguards appropriate to the size and stage of our company, we cannot and do not guarantee that unauthorized access, data loss, or a security breach will never occur. You use the Service at your own risk, and you are responsible for maintaining the confidentiality of your account credentials.</p>
+                <p><strong>Data Processing Agreement:</strong> Supabase acts as a data processor on our behalf under a Data Processing Agreement ("DPA") that governs its processing of your personal data, including obligations related to data security, confidentiality, sub-processor management, and data subject rights assistance.</p>
+                <p><strong>Data Breach Notification:</strong> In the event of a security breach involving your personal information, we will notify affected users without undue delay and no later than required by applicable law. Where required, we will also notify the relevant regulatory authorities. Notifications will describe the nature of the breach, the categories of data affected, and the measures taken or proposed to address the breach.</p>
+
+                <h4 style="margin:20px 0 8px;">5. Advertising (Planned)</h4>
+                <p>BlipVibe is not currently monetized. We plan to introduce third-party advertising in a future update. When advertising is implemented:</p>
+                <ul>
+                    <li>Third-party ad networks may collect device identifiers, IP addresses, and general browsing data to serve and measure ads.</li>
+                    <li>We will update this Privacy Policy with the names of ad network partners and the categories of data shared before ads go live.</li>
+                    <li>We will provide an opt-out mechanism for personalized advertising where required by law.</li>
+                    <li>We will <strong>not</strong> share your direct messages, private profile data, or date of birth with advertisers.</li>
+                </ul>
+
+                <h4 style="margin:20px 0 8px;">6. Direct Messages</h4>
+                <p>Direct messages are stored in our database. They are <strong>not end-to-end encrypted</strong>. Access controls restrict visibility to the sender and recipient under normal operation. However:</p>
+                <ul>
+                    <li>BlipVibe administrators may access message content when necessary to investigate reported Terms of Use violations, respond to legal process, or address safety concerns.</li>
+                    <li>Messages may be disclosed to law enforcement in response to valid legal process (e.g., subpoena, court order, or search warrant).</li>
+                    <li>Messages are included in account deletion requests and will be removed in accordance with Section 10.</li>
+                </ul>
+                <p>Do not use BlipVibe direct messages for communications where confidentiality is critical.</p>
+
+                <h4 style="margin:20px 0 8px;">7. Third-Party Services &amp; Embeds</h4>
+                <p>The Service integrates with the following third-party services. Each operates under its own privacy policy, which we encourage you to review:</p>
+                <table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:13px;">
+                    <tr style="border-bottom:1px solid var(--border);"><th style="text-align:left;padding:6px 8px;">Service</th><th style="text-align:left;padding:6px 8px;">Purpose</th><th style="text-align:left;padding:6px 8px;">Data Shared</th></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">Supabase</td><td style="padding:6px 8px;">Database, authentication, file storage</td><td style="padding:6px 8px;">All account &amp; content data</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">Google Fonts</td><td style="padding:6px 8px;">Font loading</td><td style="padding:6px 8px;">IP address, browser info</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">Cloudflare (Font Awesome)</td><td style="padding:6px 8px;">Icon library CDN</td><td style="padding:6px 8px;">IP address, browser info</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">Microlink</td><td style="padding:6px 8px;">Link preview generation</td><td style="padding:6px 8px;">URLs shared in posts</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">OpenStreetMap (Nominatim)</td><td style="padding:6px 8px;">Reverse geocoding</td><td style="padding:6px 8px;">GPS coordinates (if location enabled)</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">YouTube (Google)</td><td style="padding:6px 8px;">Video embeds</td><td style="padding:6px 8px;">IP, cookies (privacy-enhanced mode)</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">TikTok (ByteDance)</td><td style="padding:6px 8px;">Video embeds</td><td style="padding:6px 8px;">IP, cookies, device info</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">Instagram (Meta)</td><td style="padding:6px 8px;">Post/reel embeds</td><td style="padding:6px 8px;">IP, cookies</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">Twitter/X</td><td style="padding:6px 8px;">Tweet embeds</td><td style="padding:6px 8px;">IP, cookies</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">Spotify</td><td style="padding:6px 8px;">Music/podcast embeds</td><td style="padding:6px 8px;">IP, cookies</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">Vimeo</td><td style="padding:6px 8px;">Video embeds</td><td style="padding:6px 8px;">IP, cookies</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">SoundCloud</td><td style="padding:6px 8px;">Audio embeds</td><td style="padding:6px 8px;">IP, cookies</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">FxTwitter API</td><td style="padding:6px 8px;">Tweet/X post preview data</td><td style="padding:6px 8px;">URLs shared in posts</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">TikTok oEmbed API</td><td style="padding:6px 8px;">Video preview data</td><td style="padding:6px 8px;">URLs shared in posts</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;">Klipy</td><td style="padding:6px 8px;">GIF search and delivery</td><td style="padding:6px 8px;">Search queries, IP address</td></tr>
+                    <tr><td style="padding:6px 8px;">Apple (App Store)</td><td style="padding:6px 8px;">App distribution, in-app purchases</td><td style="padding:6px 8px;">Per Apple's privacy policy</td></tr>
+                </table>
+                <p><strong>Important:</strong> When embedded media loads (e.g., a YouTube video in a post), the third-party platform's scripts execute in your browser and may set cookies, collect IP addresses, and track activity according to that platform's own privacy policy. BlipVibe has no control over the data practices of these third parties. We use YouTube's privacy-enhanced mode (<code>youtube-nocookie.com</code>) where available to reduce tracking. You may block third-party cookies in your browser settings.</p>
+
+                <h4 style="margin:20px 0 8px;">8. Cookies &amp; Local Storage</h4>
+                <p>BlipVibe does <strong>not</strong> set its own tracking cookies or use first-party cookies for advertising purposes. We use your browser's <strong>localStorage</strong> (a client-side storage mechanism, not a cookie) for the following strictly necessary purposes:</p>
+                <ul>
+                    <li>Authentication session tokens (managed by Supabase Auth)</li>
+                    <li>Customization preferences (skins, themes, nav styles, font choices)</li>
+                    <li>Terms of Service acceptance status</li>
+                    <li>Cached skin/state data for faster page loads</li>
+                    <li>Last visited page (navigation restoration)</li>
+                </ul>
+                <p>These localStorage entries are <strong>strictly necessary</strong> for the Service to function and do not constitute tracking. Under the ePrivacy Directive, strictly necessary storage does not require separate consent.</p>
+                <p><strong>Third-party cookies:</strong> Embed scripts from YouTube, TikTok, Instagram, Twitter/X, Spotify, Vimeo, and SoundCloud may set cookies when embedded content is displayed. These cookies are governed entirely by each platform's cookie policy. If you do not wish to receive third-party cookies, you can configure your browser to block them or disable them.</p>
+                <p><strong>Do Not Track:</strong> Some browsers transmit a "Do Not Track" (DNT) signal. Because there is no industry-standard interpretation of DNT, we do not currently alter our data practices in response to DNT signals. We will update this disclosure if a uniform standard is adopted.</p>
+
+                <h4 style="margin:20px 0 8px;">9. Children's Privacy (COPPA Compliance)</h4>
+                <p>BlipVibe is not directed at children under the age of 13 (or the applicable minimum age in your jurisdiction). We do not knowingly collect personal information from children under 13.</p>
+                <p>During account registration, users are required to provide a date of birth. If the date of birth indicates the user is under 13, account creation is denied. <strong>This is a self-reported age gate and does not constitute verified parental consent.</strong> We do not employ age-verification technology beyond date-of-birth screening.</p>
+                <p>If we become aware that we have inadvertently collected personal information from a child under 13 without verifiable parental consent, we will take prompt steps to delete the account and all associated data. If you believe a child under 13 has created a BlipVibe account, please contact us immediately at <strong>hello@blipvibe.com</strong>.</p>
+
+                <h4 style="margin:20px 0 8px;">10. Data Retention</h4>
+                <ul>
+                    <li><strong>Active accounts:</strong> We retain your personal information for as long as your account remains active and as necessary to provide the Service.</li>
+                    <li><strong>Deleted content:</strong> When you delete a post, comment, or message, we remove it from our active database. Residual copies may persist in automated backups for up to <strong>30 days</strong> before being overwritten.</li>
+                    <li><strong>Account deletion:</strong> Upon receiving a verified account deletion request (see Section 11), we will delete or de-identify all associated data — including profile information, posts, comments, direct messages, uploaded images, and activity data — within <strong>30 days</strong>. Certain information may be retained beyond 30 days where required by law (e.g., to comply with legal obligations, resolve disputes, or enforce our agreements).</li>
+                    <li><strong>Legal holds:</strong> If data is subject to a legal hold, preservation request, or active investigation, we may retain relevant data beyond the standard deletion timeline until the hold is released.</li>
+                    <li><strong>Anonymized/aggregated data:</strong> We may retain anonymized, aggregated data that cannot reasonably be used to identify you for analytical purposes indefinitely.</li>
+                    <li><strong>Beta resets:</strong> Because BlipVibe is in beta, we may perform partial or complete data resets during development. We will provide at least <strong>7 days' advance notice</strong> via in-app announcement before any reset that would delete user content. Beta resets do not affect your ability to request deletion of your data at any time.</li>
+                </ul>
+
+                <h4 style="margin:20px 0 8px;">11. Your Rights</h4>
+                <p>Regardless of your location, you have the following rights with respect to your personal information:</p>
+                <ul>
+                    <li><strong>Access:</strong> You can view your profile data, posts, and messages at any time within the Service.</li>
+                    <li><strong>Correction:</strong> You can edit your profile information, posts, and settings directly through the Service.</li>
+                    <li><strong>Deletion:</strong> You may delete your account using the "Delete My Account" option in Settings, or by emailing <strong>hello@blipvibe.com</strong>. We will process verified deletion requests within 30 days, subject to the exceptions noted in Section 10.</li>
+                    <li><strong>Data Portability:</strong> You may request a machine-readable copy of your personal data by emailing <strong>hello@blipvibe.com</strong>. We will provide the export in JSON format within 30 days.</li>
+                    <li><strong>Location opt-out:</strong> Location sharing is off by default and can be toggled at any time in Settings.</li>
+                    <li><strong>Withdraw consent:</strong> Where processing is based on your consent, you may withdraw consent at any time. Withdrawal does not affect the lawfulness of processing performed before withdrawal.</li>
+                </ul>
+                <p>We will not discriminate against you for exercising any of these rights.</p>
+                <p>To verify your identity when making a request, we may ask you to confirm information associated with your account (e.g., your email address). We do not charge a fee for processing reasonable requests.</p>
+
+                <h4 style="margin:20px 0 8px;">12. California Residents (CCPA/CPRA)</h4>
+                <p>If you are a California resident, the California Consumer Privacy Act (as amended by the CPRA) provides you with additional rights:</p>
+                <p><strong>Categories of Personal Information Collected:</strong></p>
+                <ul>
+                    <li><strong>Identifiers:</strong> Email address, username, display name, IP address</li>
+                    <li><strong>Personal information under Cal. Civ. Code &sect; 1798.80:</strong> Name (display name), date of birth</li>
+                    <li><strong>Internet or network activity:</strong> Browsing history within the Service, interactions with content, device/browser information</li>
+                    <li><strong>Geolocation data:</strong> Approximate location (city/region), only if opted in</li>
+                    <li><strong>Audio, visual, or similar information:</strong> Photos you upload</li>
+                    <li><strong>Inferences:</strong> None; we do not create consumer profiles or inferences</li>
+                </ul>
+                <p><strong>Your CCPA/CPRA Rights:</strong></p>
+                <ul>
+                    <li><strong>Right to Know:</strong> Request the categories and specific pieces of personal information we have collected about you.</li>
+                    <li><strong>Right to Delete:</strong> Request deletion of your personal information, subject to certain legal exceptions.</li>
+                    <li><strong>Right to Correct:</strong> Request correction of inaccurate personal information.</li>
+                    <li><strong>Right to Opt Out of Sale/Sharing:</strong> BlipVibe does <strong>not sell</strong> your personal information and does <strong>not share</strong> your personal information for cross-context behavioral advertising. If this changes in the future, we will provide a "Do Not Sell or Share My Personal Information" link.</li>
+                    <li><strong>Right to Limit Use of Sensitive Personal Information:</strong> We collect date of birth and (optionally) geolocation, which may be considered sensitive. These are used only for the specific purposes disclosed (age verification and post location tagging). We do not use sensitive personal information for purposes beyond what is necessary to provide the Service.</li>
+                    <li><strong>Non-Discrimination:</strong> We will not deny you services, charge different prices, or provide a different quality of service for exercising your rights.</li>
+                </ul>
+                <p><strong>Authorized Agents:</strong> You may designate an authorized agent to make a request on your behalf by providing written authorization to <strong>hello@blipvibe.com</strong>. We may require you to verify your identity directly.</p>
+                <p><strong>Retention:</strong> We retain personal information as described in Section 10.</p>
+                <p>To exercise any CCPA/CPRA right, contact <strong>hello@blipvibe.com</strong>. We will respond within <strong>45 days</strong> (extendable by an additional 45 days with notice).</p>
+
+                <h4 style="margin:20px 0 8px;">13. European Users (GDPR)</h4>
+                <p>If you are located in the European Economic Area (EEA), United Kingdom, or Switzerland, the General Data Protection Regulation (GDPR) and equivalent UK legislation provide you with additional rights. For purposes of the GDPR, BlipVibe is the <strong>data controller</strong>.</p>
+                <p><strong>Legal Bases for Processing:</strong></p>
+                <ul>
+                    <li><strong>Performance of a Contract (Art. 6(1)(b)):</strong> Processing necessary to provide the Service you requested — account management, content display, messaging, and in-app features.</li>
+                    <li><strong>Consent (Art. 6(1)(a)):</strong> Processing based on your freely given, specific, and informed consent — location sharing, loading of third-party embed content that sets cookies. You may withdraw consent at any time via Settings without affecting the lawfulness of prior processing.</li>
+                    <li><strong>Legitimate Interest (Art. 6(1)(f)):</strong> Processing for platform security, fraud prevention, abuse detection, and service improvement, where those interests are not overridden by your data protection rights. You may object to processing based on legitimate interest at any time.</li>
+                    <li><strong>Legal Obligation (Art. 6(1)(c)):</strong> Processing necessary to comply with applicable laws, including responding to valid legal process.</li>
+                </ul>
+                <p><strong>Your GDPR Rights:</strong></p>
+                <ul>
+                    <li><strong>Right of Access (Art. 15):</strong> Request a copy of all personal data we hold about you.</li>
+                    <li><strong>Right to Rectification (Art. 16):</strong> Request correction of inaccurate or incomplete data.</li>
+                    <li><strong>Right to Erasure (Art. 17):</strong> Request deletion of your personal data ("right to be forgotten"). Use the in-app deletion option or email us.</li>
+                    <li><strong>Right to Restrict Processing (Art. 18):</strong> Request that we limit processing of your data in certain circumstances.</li>
+                    <li><strong>Right to Data Portability (Art. 20):</strong> Receive your data in a structured, commonly used, machine-readable format (JSON).</li>
+                    <li><strong>Right to Object (Art. 21):</strong> Object to processing based on legitimate interests, including any future profiling.</li>
+                    <li><strong>Right to Withdraw Consent (Art. 7(3)):</strong> Withdraw consent at any time. Withdrawal does not affect lawfulness of prior processing.</li>
+                    <li><strong>Right to Lodge a Complaint:</strong> You have the right to lodge a complaint with your local supervisory authority (data protection authority) if you believe your rights have been violated.</li>
+                </ul>
+                <p>To exercise any right, contact <strong>hello@blipvibe.com</strong>. We will respond within <strong>30 days</strong> (extendable by up to 60 additional days for complex requests, with notice).</p>
+                <p><strong>Data Breach Notification:</strong> In the event of a personal data breach that is likely to result in a high risk to your rights and freedoms, we will notify the relevant supervisory authority within 72 hours of becoming aware of the breach and will notify affected users without undue delay, as required by Articles 33 and 34 of the GDPR.</p>
+
+                <h4 style="margin:20px 0 8px;">14. Tennessee Residents (TIPA)</h4>
+                <p>BlipVibe LLC is organized and operates in the State of Tennessee. The Tennessee Information Protection Act ("TIPA"), effective July 1, 2025, provides Tennessee residents with certain rights regarding their personal information when applicable thresholds are met. While BlipVibe may not currently meet TIPA's applicability thresholds, we are committed to honoring the following rights for Tennessee residents as a matter of good practice:</p>
+                <ul>
+                    <li><strong>Right to Know:</strong> Request confirmation of whether we are processing your personal information and access such data.</li>
+                    <li><strong>Right to Delete:</strong> Request deletion of your personal information.</li>
+                    <li><strong>Right to Correct:</strong> Request correction of inaccurate personal information.</li>
+                    <li><strong>Right to Data Portability:</strong> Obtain a copy of your personal information in a portable, readily usable format.</li>
+                    <li><strong>Right to Opt Out:</strong> Opt out of the processing of personal information for purposes of targeted advertising, sale of personal information, or profiling. BlipVibe does <strong>not</strong> currently sell personal information or engage in profiling that produces legal or similarly significant effects.</li>
+                </ul>
+                <p>To exercise any right, contact <strong>hello@blipvibe.com</strong>. We will respond within <strong>45 days</strong> (extendable by an additional 45 days with notice). You may appeal a denied request by contacting us at the same address.</p>
+
+                <h4 style="margin:20px 0 8px;">15. International Data Transfers</h4>
+                <p>BlipVibe is operated from and data is stored in the <strong>United States</strong>. If you access the Service from outside the United States, your personal data will be transferred to, processed, and stored in the United States, which may not provide the same level of data protection as your home jurisdiction.</p>
+                <p><strong>For EEA/UK/Swiss users:</strong> We rely on the following legal mechanisms for international data transfers:</p>
+                <ul>
+                    <li><strong>Standard Contractual Clauses (SCCs):</strong> Our infrastructure provider (Supabase) incorporates Standard Contractual Clauses approved by the European Commission into its data processing agreements.</li>
+                    <li><strong>Explicit Consent (Art. 49(1)(a)):</strong> As a supplementary measure, you provide explicit consent to the transfer of your data to the United States at the time of account registration, after being informed that the U.S. may not offer equivalent data protection.</li>
+                </ul>
+                <p>We will adopt additional transfer mechanisms (such as adequacy decisions or binding corporate rules) as they become available and applicable to our operations.</p>
+                <p><strong>For all international users:</strong> By creating an account and using the Service, you acknowledge and consent to the transfer, processing, and storage of your data in the United States.</p>
+
+                <h4 style="margin:20px 0 8px;">16. User-Generated Content</h4>
+                <p>BlipVibe is a platform for user-generated content. You are solely responsible for the content you post, upload, or transmit through the Service. Content you post publicly (posts, comments, profile information) may be viewed, copied, or shared by other users, and we cannot control how others use content you make publicly available.</p>
+                <p>We do not endorse, verify, or assume liability for any user-generated content. For information about our content moderation practices, prohibited content, and your responsibilities as a user, please refer to our Terms of Use and Acceptable Use Policy.</p>
+
+                <h4 style="margin:20px 0 8px;">17. DMCA &amp; Copyright</h4>
+                <p>BlipVibe respects intellectual property rights and complies with the Digital Millennium Copyright Act (17 U.S.C. &sect; 512). We respond to valid takedown notices and maintain a repeat-infringer termination policy. Our designated DMCA agent can be reached at:</p>
+                <ul>
+                    <li><strong>Email:</strong> hello@blipvibe.com</li>
+                    <li><strong>Subject line:</strong> DMCA Takedown Notice</li>
+                </ul>
+                <p>For full DMCA procedures, including counter-notification instructions, see our Terms of Use.</p>
+
+                <h4 style="margin:20px 0 8px;">18. Changes to This Policy</h4>
+                <p>We may update this Privacy Policy from time to time. When we make changes:</p>
+                <ul>
+                    <li>The effective date and version number at the top will be updated.</li>
+                    <li>For <strong>material changes</strong> (e.g., new categories of data collection, new data sharing partners, changes to your rights), we will provide notice via in-app announcement or email at least <strong>14 days</strong> before the changes take effect.</li>
+                    <li>For non-material changes (e.g., clarifications, formatting), updated language will take effect upon posting.</li>
+                </ul>
+                <p>Your continued use of the Service after the effective date of any updated Privacy Policy constitutes your acceptance of the changes. If you do not agree with an updated policy, you must stop using the Service and may request account deletion.</p>
+
+                <h4 style="margin:20px 0 8px;">19. Apple App Store</h4>
+                <p>If you access BlipVibe through the Apple App Store, the following additional terms apply:</p>
+                <ul>
+                    <li>Apple is not responsible for the Service or its content.</li>
+                    <li>Apple has no obligation to furnish maintenance or support services for the Service.</li>
+                    <li>In-app purchases and virtual currency (coins) processed through the App Store are subject to Apple's terms and refund policies.</li>
+                    <li>This Privacy Policy, not Apple's, governs our collection and use of your personal information within the Service.</li>
+                    <li>Apple and its subsidiaries are third-party beneficiaries of our Terms of Use and may enforce them against you.</li>
+                </ul>
+
+                <h4 style="margin:20px 0 8px;">20. Third-Party Credits</h4>
+                <ul>
+                    <li><strong>Icons:</strong> <a href="https://fontawesome.com" target="_blank" rel="noopener">Font Awesome</a> (CC BY 4.0 / SIL OFL 1.1)</li>
+                    <li><strong>Fonts:</strong> <a href="https://fonts.google.com" target="_blank" rel="noopener">Google Fonts</a> (SIL Open Font License)</li>
+                </ul>
+
+                <h4 style="margin:20px 0 8px;">21. Contact Us</h4>
+                <p>If you have questions about this Privacy Policy, wish to exercise your data rights, or need to report a privacy concern:</p>
+                <ul>
+                    <li><strong>BlipVibe LLC</strong></li>
+                    <li>116 Agnes Rd Ste 200, Knoxville, TN 37919</li>
+                    <li><strong>General &amp; Privacy Requests:</strong> hello@blipvibe.com</li>
+                    <li><strong>DMCA / Copyright:</strong> dmca@blipvibe.com | <a href="dmca.html" target="_blank" style="color:var(--primary);">Full DMCA Policy</a></li>
+                </ul>
+                <p>We aim to respond to all privacy-related inquiries within <strong>30 days</strong>.</p>
+            </div>
+        </div>
+    </div>
+
+    </div><!-- /app-shell -->
+    <button id="scrollToTopBtn" title="Back to top"><i class="fas fa-arrow-up"></i></button>
+    <div id="globalMiniPlayer">
+        <div class="gmp-art"><i class="fas fa-music"></i></div>
+        <div class="gmp-info"><div class="gmp-title" id="gmpTitle">—</div><div class="gmp-artist" id="gmpArtist">BlipVibe</div></div>
+        <button class="gmp-btn" id="gmpPrevBtn" style="font-size:12px;"><i class="fas fa-backward-step"></i></button>
+        <button class="gmp-btn" id="gmpPlayBtn"><i class="fas fa-play"></i></button>
+        <button class="gmp-btn" id="gmpNextBtn" style="font-size:12px;"><i class="fas fa-forward-step"></i></button>
+        <input type="range" class="gmp-volume" id="gmpVolume" min="0" max="100" value="50">
+        <button class="gmp-btn" id="gmpMuteBtn"><i class="fas fa-volume-high"></i></button>
+        <button class="gmp-btn" id="gmpShuffleBtn" style="font-size:12px;" title="Shuffle/Repeat"><i class="fas fa-repeat"></i></button>
+        <button class="gmp-close" id="gmpClose"><i class="fas fa-times"></i></button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>document.write('<script src="js/supabase.js?t='+Date.now()+'"><\/script>');document.write('<script src="js/app.js?t='+Date.now()+'"><\/script>');</script>
+    <script>
+    // Unregister any existing service worker and clear caches
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(regs) {
+            regs.forEach(function(r) { r.unregister(); });
+        });
+        if (caches) { caches.keys().then(function(names) { names.forEach(function(n) { caches.delete(n); }); }); }
+    }
+    </script>
+</body>
+</html>
