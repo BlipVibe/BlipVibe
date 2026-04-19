@@ -2813,8 +2813,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .main-container{margin-top:-60px!important;}
     .profile-card,.pv-profile-card,body[class*="premium-"] .profile-card,body[class*="premium-"] .pv-profile-card{border-radius:12px!important;}
     .profile-card .profile-cover{border-radius:12px 12px 0 0!important;}
-    .profile-card{overflow:hidden!important;}
-    .profile-card .profile-avatar-wrap{position:relative;z-index:2;}
+    .profile-card .profile-info{border-radius:0 0 12px 12px;}
     .profile-avatar-wrap{margin-top:-50px!important;width:clamp(90px,30%,120px)!important;}
     body.tpl-stream .profile-card .profile-avatar-wrap{top:-40px!important;width:90px!important;left:12px!important;}
     body.tpl-stream .profile-card .profile-info{padding-left:110px!important;padding-top:12px!important;min-height:70px;}
