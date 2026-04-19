@@ -2772,6 +2772,11 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .comment-modal-input .btn-primary{padding:6px 12px!important;font-size:12px!important;white-space:nowrap!important;}
     .comment-modal-input .post-input{min-width:0!important;font-size:16px!important;}
     .cpm-emoji-btn,.comment-emoji-btn,.emoji-picker-panel{display:none!important;}
+    #cpmCameraBtn,#gvCpmCameraBtn{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:42px!important;height:42px!important;padding:0!important;font-size:16px!important;flex-shrink:0!important;}
+    #cpmDropZone,#gvCpmDropZone{display:none!important;}
+    .cpm-media-zone{min-height:0!important;padding:0!important;border:none!important;}
+    .cpm-media-zone:not(:has(.cpm-media-grid > *)){display:none!important;}
+    #cpmPublish,#gvCpmPublish{flex:0 1 auto!important;min-width:110px!important;max-width:60%!important;padding:10px 20px!important;}
     .gif-picker-panel{max-height:min(320px,45vh)!important;}
     .gif-picker-header{padding:8px 12px!important;}
     .gif-picker-grid{padding:0 10px 6px!important;gap:3px!important;}
