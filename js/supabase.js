@@ -741,6 +741,14 @@ async function sbUploadCover(userId, file) {
   return sbUploadFile('avatars', path, file);
 }
 
+async function sbUploadCoverCrop(userId, file) {
+  validateUploadFile(file, { maxSize: 5 * 1024 * 1024, label: 'Cover photo' });
+  file = await _optimizeImage(file, 1400, 600, 0.85);
+  const ext = file.name.split('.').pop();
+  const path = `${userId}/coverx-${Date.now()}.${ext}`;
+  return sbUploadFile('avatars', path, file);
+}
+
 async function sbListUserAvatars(userId) {
   const { data, error } = await sb.storage
     .from('avatars')
@@ -760,7 +768,7 @@ async function sbListUserCovers(userId) {
     .list(userId, { sortBy: { column: 'created_at', order: 'desc' } });
   if (error) throw error;
   return (data || [])
-    .filter(f => f.name.startsWith('cover'))
+    .filter(f => f.name.startsWith('cover-'))
     .map(f => {
       const { data: urlData } = sb.storage.from('avatars').getPublicUrl(userId + '/' + f.name);
       return { src: urlData.publicUrl + '?t=' + Date.now(), date: new Date(f.created_at).getTime(), name: f.name };
