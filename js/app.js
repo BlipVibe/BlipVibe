@@ -8845,7 +8845,10 @@ function renderMsgContacts(search){
         html+='</div>';
     });
     if(!convos.length){
-        list.innerHTML='<div class="empty-state" style="padding:40px 20px;"><i class="fas fa-envelope-open-text"></i><p>No messages yet.</p></div>';
+        var emptyHtml='<div class="msg-contact" style="border-bottom:1px solid var(--border);cursor:pointer;" id="newGroupDmBtn"><div style="width:44px;height:44px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-users" style="color:#fff;font-size:16px;"></i></div><div class="msg-contact-info"><div class="msg-contact-name" style="color:var(--primary);">New Group Chat</div><div class="msg-contact-preview">Create a multi-person conversation</div></div></div>';
+        emptyHtml+='<div class="empty-state" style="padding:32px 20px;text-align:center;"><i class="fas fa-envelope-open-text" style="font-size:36px;color:var(--gray);margin-bottom:10px;"></i><p style="font-weight:600;margin-bottom:6px;">No messages yet</p><p style="font-size:13px;color:var(--gray);line-height:1.5;">Type a name in the search above to find someone and start a new chat.</p></div>';
+        list.innerHTML=emptyHtml;
+        _bindMsgContactClicks(list);
         return;
     }
     list.innerHTML=html;
