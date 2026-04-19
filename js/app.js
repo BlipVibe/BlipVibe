@@ -3550,7 +3550,7 @@ function showUnifiedCropModal(opts){
     html+='<div class="modal-body" style="text-align:center;">';
     if(!isSquare) html+='<p style="font-size:13px;color:var(--gray);margin-bottom:12px;">Drag to position. Resize the selection area.</p>';
     html+='<div class="crop-container" id="cropContainer" style="position:relative;display:inline-block;max-width:100%;overflow:hidden;">';
-    html+='<img src="'+opts.src+'" crossorigin="anonymous" id="cropImg" style="max-width:100%;display:block;">';
+    html+='<img src="'+opts.src+'" crossorigin="anonymous" id="cropImg" style="max-width:100%;max-height:60vh;display:block;">';
     html+='<div id="cropBox" style="position:absolute;border:2px solid #fff;box-shadow:0 0 0 9999px rgba(0,0,0,.5);cursor:move;">';
     html+='<div id="cropResize" style="position:absolute;bottom:-4px;right:-4px;width:12px;height:12px;background:#fff;border:1px solid #333;cursor:nwse-resize;"></div></div></div>';
     html+='<div style="margin-top:16px;display:flex;gap:8px;justify-content:center;">'+(opts.skipLabel?'<button class="btn btn-secondary" id="cropSkipBtn">'+opts.skipLabel+'</button>':'')+'<button class="btn btn-primary" id="cropConfirmBtn">Apply</button></div></div>';
