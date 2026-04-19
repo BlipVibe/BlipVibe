@@ -5236,20 +5236,17 @@ function showCoverCropModal(src,isRecrop){
         aspectRatio:1280/350, outputWidth:1280, outputHeight:350,
         format:'image/jpeg', quality:0.9,
         onConfirm:async function(blob,canvas){
-            if(!currentUser){state.coverPhoto=canvas.toDataURL('image/jpeg',0.9);if(!isRecrop) state.photos.cover.unshift({src:state.coverPhoto,date:Date.now()});renderPhotosCard();applyCoverPhoto();return;}
+            if(!currentUser){state.coverPhoto=canvas.toDataURL('image/jpeg',0.9);state.photos.cover.unshift({src:state.coverPhoto,date:Date.now()});renderPhotosCard();applyCoverPhoto();return;}
             var file=new File([blob],'cover.jpg',{type:'image/jpeg'});
             try{
-                var uploadPromise;
-                if(isRecrop){var oldPath=sbExtractStoragePath(src,'avatars');uploadPromise=oldPath?sbUploadFile('avatars',oldPath,file):sbUploadCover(currentUser.id,file);}
-                else uploadPromise=sbUploadCover(currentUser.id,file);
-                var publicUrl=await uploadPromise;
+                var publicUrl=await sbUploadCover(currentUser.id,file);
                 await sbUpdateProfile(currentUser.id,{cover_photo_url:publicUrl});
                 state.coverPhoto=publicUrl;
-                if(!isRecrop) state.photos.cover.unshift({src:publicUrl,date:Date.now()});
+                state.photos.cover.unshift({src:publicUrl,date:Date.now()});
             }catch(e){
                 console.error('Cover upload error:',e);
                 state.coverPhoto=canvas.toDataURL('image/jpeg',0.9);
-                if(!isRecrop) state.photos.cover.unshift({src:state.coverPhoto,date:Date.now()});
+                state.photos.cover.unshift({src:state.coverPhoto,date:Date.now()});
             }
             renderPhotosCard();applyCoverPhoto();
         }
