@@ -2657,7 +2657,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     body.nav-metro .user-dropdown{top:100%!important;bottom:auto!important;left:auto!important;right:0!important;margin:4px 0 0!important;}
     body.nav-metro .nav-username{display:none!important;}
     body.nav-metro .search-bar{width:90px!important;}
-    body.nav-metro .timeline-cover{margin-top:20px!important;}
+    body.nav-metro .timeline-cover{margin-top:60px!important;}
     body.nav-metro .pv-cover-banner{margin:0 auto!important;}
 
     /* --- Nav Rail → top bar on mobile --- */
@@ -2697,7 +2697,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     body.nav-mirror .user-dropdown{top:100%!important;bottom:auto!important;right:0!important;left:auto!important;margin:4px 0 0!important;}
     body.nav-mirror .nav-username{display:none!important;}
     body.nav-mirror .search-bar{width:90px!important;}
-    body.nav-mirror .timeline-cover{margin-top:20px!important;}
+    body.nav-mirror .timeline-cover{margin-top:60px!important;}
     body.nav-mirror .pv-cover-banner{margin:0 auto!important;}
 
     /* --- Nav Dock — compact --- */
@@ -2711,7 +2711,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     body.nav-horizon .user-dropdown{top:100%!important;bottom:auto!important;margin-top:4px!important;margin-bottom:0!important;}
     body.nav-horizon .page{padding-top:calc(58px + env(safe-area-inset-top,0px))!important;}
     body.nav-horizon #page-home{padding-top:calc(48px + env(safe-area-inset-top,0px))!important;}
-    body.nav-horizon .timeline-cover{margin-top:20px!important;}
+    body.nav-horizon .timeline-cover{margin-top:60px!important;}
     body.nav-horizon .main-container{margin-top:calc(-48px - env(safe-area-inset-top,0px))!important;}
 
     /* --- Nav Split — compact --- */
@@ -2722,7 +2722,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     body.nav-shelf .nav-left{padding-bottom:0!important;}
     body.nav-shelf .nav-right{padding-bottom:0!important;}
     body.nav-shelf .page{padding-top:calc(58px + env(safe-area-inset-top,0px))!important;}
-    body.nav-shelf #page-home .timeline-cover{margin-top:20px!important;}
+    body.nav-shelf #page-home .timeline-cover{margin-top:60px!important;}
     body.nav-shelf .pv-cover-banner{margin-top:0!important;}
     body.nav-shelf .gv-cover-banner{margin-top:0!important;}
 
@@ -2809,8 +2809,8 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .post-image,.post-video{max-width:100%;height:auto;object-fit:contain;}
     .profile-avatar{object-fit:cover;}
     .photos-preview img{object-fit:cover;}
-    .timeline-cover,.pv-cover-banner{height:260px!important;margin-top:20px!important;background-size:cover!important;}
-    .main-container{margin-top:-20px!important;}
+    .timeline-cover,.pv-cover-banner{height:260px!important;margin-top:60px!important;background-size:cover!important;}
+    .main-container{margin-top:-60px!important;}
     .profile-avatar-wrap{margin-top:-50px!important;width:clamp(90px,30%,120px)!important;}
     body.tpl-stream .profile-card .profile-avatar-wrap{top:-40px!important;width:90px!important;left:12px!important;}
     body.tpl-stream .profile-card .profile-info{padding-left:110px!important;padding-top:12px!important;min-height:70px;}
@@ -3085,7 +3085,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .album-photo-scroll{grid-template-rows:120px 120px!important;grid-auto-columns:120px!important;}
     .album-photo-scroll .photo-wrap{width:120px!important;height:120px!important;}
     .album-photo-scroll img{width:120px!important;height:120px!important;}
-    .timeline-cover,.pv-cover-banner{height:220px!important;margin-top:20px!important;background-size:cover!important;}
+    .timeline-cover,.pv-cover-banner{height:220px!important;margin-top:60px!important;background-size:cover!important;}
     .gv-cover-banner,.pv-cover-banner-group{height:220px!important;}
     .photo-album-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))!important;}
     .login-btn{padding:12px!important;font-size:14px!important;}
