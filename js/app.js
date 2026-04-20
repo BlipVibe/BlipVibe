@@ -10607,7 +10607,14 @@ function openCreateStory(preloadData){
     h+='</div>';
     // Font picker (hidden until text overlay selected)
     h+='<div class="story-font-picker" id="storyFontPicker" style="display:none;">';
-    h+='<select id="storyFontSelect2"><option value="Roboto">Roboto</option><option value="Orbitron">Orbitron</option><option value="Pacifico">Pacifico</option><option value="Quicksand">Quicksand</option><option value="Space Grotesk">Space Grotesk</option><option value="Caveat">Caveat</option><option value="Press Start 2P">Pixel</option><option value="Bungee">Bungee</option><option value="Satisfy">Satisfy</option><option value="Lobster">Lobster</option><option value="Cinzel">Cinzel</option><option value="Creepster">Creepster</option></select>';
+    h+='<div class="story-font-dropdown" id="storyFontDropdown" style="position:relative;">';
+    h+='<button type="button" id="storyFontSelect2" class="story-font-trigger" data-value="Roboto" style="background:rgba(0,0,0,.6);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:6px 28px 6px 12px;font-size:13px;cursor:pointer;min-width:140px;text-align:left;font-family:\'Roboto\',sans-serif;position:relative;">Roboto<i class="fas fa-caret-down" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);opacity:.7;"></i></button>';
+    h+='<div class="story-font-menu" id="storyFontMenu" style="display:none;position:absolute;bottom:calc(100% + 4px);left:0;min-width:170px;max-height:260px;overflow-y:auto;background:rgba(20,20,25,.95);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:50;padding:4px 0;">';
+    ['Roboto','Orbitron','Pacifico','Quicksand','Space Grotesk','Caveat',['Press Start 2P','Pixel'],'Bungee','Satisfy','Lobster','Cinzel','Creepster'].forEach(function(f){
+        var val=Array.isArray(f)?f[0]:f;var label=Array.isArray(f)?f[1]:f;
+        h+='<div class="story-font-item" data-value="'+val+'" style="padding:9px 14px;color:#fff;font-size:15px;cursor:pointer;font-family:\''+val+'\',sans-serif;white-space:nowrap;transition:background .15s;">'+label+'</div>';
+    });
+    h+='</div></div>';
     h+='<input type="color" id="storyTextColor2" value="#ffffff" title="Text Color">';
     h+='<input type="color" id="storyBgColor2" value="#000000" title="Background">';
     h+='</div>';
@@ -10741,7 +10748,7 @@ function openCreateStory(preloadData){
         // Show font picker
         var fp=document.getElementById('storyFontPicker');
         if(fp) fp.style.display='flex';
-        var fs=document.getElementById('storyFontSelect2');if(fs) fs.value=o.fontFamily;
+        var fs=document.getElementById('storyFontSelect2');if(fs&&fs._storySyncFont) fs._storySyncFont(o.fontFamily);
         var tc=document.getElementById('storyTextColor2');if(tc) tc.value=o.color;
     }
 
@@ -10831,14 +10838,44 @@ function openCreateStory(preloadData){
         _renderOverlay(overlay);
     });
 
-    // Font picker controls
-    document.getElementById('storyFontSelect2').addEventListener('change',function(){
-        if(_activeOverlay){
-            _activeOverlay.fontFamily=this.value;
-            var el=document.getElementById(_activeOverlay.id);
-            if(el) el.style.fontFamily="'"+this.value+"',sans-serif";
+    // Font picker — custom dropdown so each option renders in its own font for preview
+    (function(){
+        var trigger=document.getElementById('storyFontSelect2');
+        var menu=document.getElementById('storyFontMenu');
+        if(!trigger||!menu) return;
+        function _setFont(val,label){
+            trigger.dataset.value=val;
+            trigger.style.fontFamily="'"+val+"',sans-serif";
+            trigger.firstChild.nodeValue=label||val;
+            if(_activeOverlay){
+                _activeOverlay.fontFamily=val;
+                var el=document.getElementById(_activeOverlay.id);
+                if(el) el.style.fontFamily="'"+val+"',sans-serif";
+            }
         }
-    });
+        trigger.addEventListener('click',function(e){
+            e.stopPropagation();
+            menu.style.display=menu.style.display==='none'?'block':'none';
+        });
+        menu.querySelectorAll('.story-font-item').forEach(function(item){
+            item.addEventListener('mouseenter',function(){item.style.background='rgba(255,255,255,.08)';});
+            item.addEventListener('mouseleave',function(){item.style.background='';});
+            item.addEventListener('click',function(e){
+                e.stopPropagation();
+                _setFont(item.dataset.value,item.textContent);
+                menu.style.display='none';
+            });
+        });
+        // Close on outside click
+        document.addEventListener('click',function(e){
+            if(!menu.contains(e.target)&&e.target!==trigger) menu.style.display='none';
+        });
+        // Expose for _selectOverlay sync
+        trigger._storySyncFont=function(val){
+            var match=Array.from(menu.querySelectorAll('.story-font-item')).find(function(x){return x.dataset.value===val;});
+            _setFont(val,match?match.textContent:val);
+        };
+    })();
     document.getElementById('storyTextColor2').addEventListener('input',function(){
         if(_activeOverlay){
             _activeOverlay.color=this.value;
