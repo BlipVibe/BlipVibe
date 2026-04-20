@@ -2419,10 +2419,14 @@ function handleShare(btn){
         if(origPostId) sharePostToStory(origPostId);
         else showToast('Cannot share this post to story');
     });
-    // Message share — stub until wired
+    // Message share — opens contact picker, then chat with post attachment
     var msgBtn=document.getElementById('shareToMsgBtn');
     if(msgBtn) msgBtn.addEventListener('click',function(){
-        closeModal();showToast('Share via message — coming soon');
+        var origAuthorEl=post.querySelector('.post-avatar[data-person-id]');
+        var origAuthorId=origAuthorEl?origAuthorEl.getAttribute('data-person-id'):null;
+        var postMeta={postId:origPostId,authorId:origAuthorId,authorName:origName,avatarUrl:origAvatar,snippet:safeTruncate(origText||'',120,'...'),imageUrl:firstImgSrc||''};
+        closeModal();
+        showMsgContactPickerForShare(postMeta);
     });
     document.getElementById('sharePublishBtn').addEventListener('click',async function(){
         var comment=document.getElementById('shareComment').value.trim();
@@ -8957,6 +8961,25 @@ function _renderMsgContent(content){
     if(gifMatch) return {html:'<img src="'+escapeHtml(gifMatch[1])+'" style="max-width:200px;border-radius:8px;">',isMedia:true};
     var voiceMatch=content.match(/^\[voice\](.*?)\[\/voice\]$/);
     if(voiceMatch) return {html:'<audio src="'+escapeHtml(voiceMatch[1])+'" controls style="max-width:220px;height:36px;"></audio>',isMedia:true};
+    // Post embed: [post:base64json] optionally followed by a caption on the next line
+    var postMatch=content.match(/^\[post:([A-Za-z0-9+/=_-]+)\](?:\s*([\s\S]*))?$/);
+    if(postMatch){
+        try{
+            var b64=postMatch[1].replace(/-/g,'+').replace(/_/g,'/');
+            var meta=JSON.parse(decodeURIComponent(escape(atob(b64))));
+            var caption=(postMatch[2]||'').trim();
+            var card='<div class="msg-post-card" data-post-id="'+escapeHtml(meta.pid||'')+'" data-author-id="'+escapeHtml(meta.aid||'')+'" style="background:rgba(0,0,0,.15);border:1px solid var(--border);border-radius:10px;padding:10px;margin:2px 0;max-width:260px;cursor:pointer;">';
+            card+='<div class="msg-post-author" data-author-id="'+escapeHtml(meta.aid||'')+'" style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">';
+            card+='<img src="'+escapeHtml(meta.au||DEFAULT_AVATAR)+'" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">';
+            card+='<strong style="font-size:13px;">'+escapeHtml(meta.an||'Unknown')+'</strong>';
+            card+='</div>';
+            if(meta.sn) card+='<div style="font-size:12px;line-height:1.4;margin-bottom:'+(meta.iu?'8px':'0')+';">'+escapeHtml(meta.sn)+'</div>';
+            if(meta.iu) card+='<img src="'+escapeHtml(meta.iu)+'" style="width:100%;max-height:160px;object-fit:cover;border-radius:6px;display:block;">';
+            card+='</div>';
+            if(caption) card+='<div style="margin-top:6px;">'+renderPlainText(caption)+'</div>';
+            return {html:card,isMedia:true};
+        }catch(e){/* fall through */}
+    }
     return {html:renderPlainText(content),isMedia:false};
 }
 async function openChat(contact){
@@ -9072,6 +9095,22 @@ async function openChat(contact){
     $('#msgInput').addEventListener('keypress',function(e){if(e.key==='Enter')sendMessage();});
     $('#msgInput').focus();
 
+    // If a post is pending to share, show it as a preview above the input
+    if(_pendingPostAttachment){
+        var pa=_pendingPostAttachment;
+        var inputBar=chatEl?chatEl.querySelector('.msg-chat-input'):document.querySelector('.msg-chat-input');
+        if(inputBar){
+            var prev=document.createElement('div');
+            prev.id='msgPendingAttachment';
+            prev.style.cssText='position:absolute;bottom:100%;left:0;right:0;background:var(--card);border-top:1px solid var(--border);padding:8px 12px;display:flex;align-items:center;gap:10px;';
+            prev.innerHTML='<img src="'+escapeHtml(pa.avatarUrl||DEFAULT_AVATAR)+'" style="width:30px;height:30px;border-radius:50%;object-fit:cover;flex-shrink:0;"><div style="flex:1;min-width:0;overflow:hidden;"><div style="font-size:11px;color:var(--gray);">Attaching post by</div><strong style="font-size:12px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+escapeHtml(pa.authorName||'Unknown')+'</strong></div>'+(pa.imageUrl?'<img src="'+escapeHtml(pa.imageUrl)+'" style="width:34px;height:34px;border-radius:4px;object-fit:cover;flex-shrink:0;">':'')+'<button id="msgCancelAttachment" style="background:none;border:none;color:var(--gray);font-size:16px;cursor:pointer;padding:4px 8px;">×</button>';
+            inputBar.appendChild(prev);
+            document.getElementById('msgCancelAttachment').addEventListener('click',function(){_pendingPostAttachment=null;prev.remove();});
+            var placeholderInput=document.getElementById('msgInput');
+            if(placeholderInput) placeholderInput.placeholder='Add a message…';
+        }
+    }
+
     // Voice note handler
     var _voiceRecording=false;
     $('#msgVoiceBtn').addEventListener('click',function(){
@@ -9180,8 +9219,20 @@ async function sendMessage(){
     var input=$('#msgInput');
     if(!input) return;
     var text=input.value.trim();
-    if(!text||!activeChat||!currentUser) return;
+    // Allow sending with empty text if a post is attached
+    if(!activeChat||!currentUser) return;
+    if(!text&&!_pendingPostAttachment) return;
     input.value='';
+    // Prepend post attachment token if present; then clear attachment + preview
+    if(_pendingPostAttachment){
+        var token='[post:'+_encodePostMeta(_pendingPostAttachment)+']';
+        text=text?(token+'\n'+text):token;
+        _pendingPostAttachment=null;
+        var prevEl=document.getElementById('msgPendingAttachment');
+        if(prevEl) prevEl.remove();
+        var placeholderInput2=document.getElementById('msgInput');
+        if(placeholderInput2) placeholderInput2.placeholder='Type a message...';
+    }
     // Optimistically show the message
     var msgArea=$('#chatMessages');
     var placeholder=msgArea.querySelector('div[style*="text-align:center"]');
@@ -9194,7 +9245,9 @@ async function sendMessage(){
         text='[reply:'+_replyingToMsg.mid+']'+text;
         clearReplyTo();
     }
-    msgArea.insertAdjacentHTML('beforeend','<div class="msg-bubble sent">'+replyHtml+escapeHtml(text.replace(/^\[reply:[^\]]+\]/,''))+'</div>');
+    var _bodyText=text.replace(/^\[reply:[^\]]+\]/,'');
+    var _rend=_renderMsgContent(_bodyText);
+    msgArea.insertAdjacentHTML('beforeend','<div class="msg-bubble sent">'+replyHtml+(_rend.isMedia?_rend.html:escapeHtml(_bodyText))+'</div>');
     autoFetchLinkPreviewsMini(msgArea,'.msg-bubble:last-child');
     msgArea.scrollTop=msgArea.scrollHeight;
     try{
@@ -9207,6 +9260,96 @@ async function sendMessage(){
         console.error('Send message:',e);
         showToast('Message failed to send');
     }
+}
+
+// Share-to-message: pending post attachment (picked post card displayed above chat input until sent or canceled)
+var _pendingPostAttachment=null;
+// Click delegation for post-embed cards in messages
+document.addEventListener('click',function(e){
+    var authorEl=e.target.closest('.msg-post-author');
+    if(authorEl){
+        e.stopPropagation();
+        var aid=authorEl.getAttribute('data-author-id');
+        if(aid){sbGetProfile(aid).then(function(p){if(p) showProfileView(profileToPerson(p));}).catch(function(){});}
+        return;
+    }
+    var cardEl=e.target.closest('.msg-post-card');
+    if(cardEl){
+        var pid=cardEl.getAttribute('data-post-id');
+        if(pid){
+            // Navigate to the post: scroll to it if on feed, else open lightbox-ish detail
+            var existing=document.querySelector('.feed-post .like-btn[data-post-id="'+pid+'"]');
+            if(existing){
+                var targetPost=existing.closest('.feed-post');
+                if(targetPost){targetPost.scrollIntoView({behavior:'smooth',block:'center'});targetPost.style.outline='2px solid var(--primary)';setTimeout(function(){targetPost.style.outline='';},1800);}
+            } else {
+                // Fallback — show author profile since we don't have a single-post route
+                var aid2=cardEl.getAttribute('data-author-id');
+                if(aid2) sbGetProfile(aid2).then(function(p){if(p) showProfileView(profileToPerson(p));}).catch(function(){});
+            }
+        }
+    }
+});
+function _encodePostMeta(meta){
+    var compact={pid:meta.postId||'',aid:meta.authorId||'',an:meta.authorName||'',au:meta.avatarUrl||'',sn:meta.snippet||'',iu:meta.imageUrl||''};
+    // Use btoa with UTF-8 safe encoding; make url-safe
+    var json=JSON.stringify(compact);
+    var b64=btoa(unescape(encodeURIComponent(json))).replace(/\+/g,'-').replace(/\//g,'_');
+    return b64;
+}
+function showMsgContactPickerForShare(postMeta){
+    var h='<div class="modal-header"><h3>Send to</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body">';
+    // Post preview at top
+    h+='<div style="background:rgba(0,0,0,.1);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:12px;display:flex;align-items:center;gap:10px;">';
+    h+='<img src="'+escapeHtml(postMeta.avatarUrl||DEFAULT_AVATAR)+'" style="width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0;">';
+    h+='<div style="flex:1;min-width:0;"><div style="font-size:12px;color:var(--gray);">Sharing post by</div><strong style="font-size:13px;">'+escapeHtml(postMeta.authorName||'Unknown')+'</strong></div>';
+    if(postMeta.imageUrl) h+='<img src="'+escapeHtml(postMeta.imageUrl)+'" style="width:44px;height:44px;border-radius:6px;object-fit:cover;flex-shrink:0;">';
+    h+='</div>';
+    h+='<input type="text" id="msgShareSearch" placeholder="Search people..." style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:20px;font-size:13px;background:var(--light-bg);color:var(--dark);margin-bottom:10px;box-sizing:border-box;">';
+    h+='<div id="msgShareList" style="max-height:300px;overflow-y:auto;"></div>';
+    h+='</div>';
+    showModal(h);
+    function _renderList(items){
+        var list=document.getElementById('msgShareList');
+        if(!list) return;
+        if(!items||!items.length){list.innerHTML='<div style="padding:20px;text-align:center;color:var(--gray);font-size:13px;">No people found.</div>';return;}
+        var html='';
+        items.forEach(function(p){
+            var name=p.display_name||p.username||p.name||'User';
+            var avatar=p.avatar_url||p.avatar||DEFAULT_AVATAR;
+            html+='<div class="msg-share-item" data-uid="'+escapeHtml(p.id)+'" data-name="'+escapeHtml(name)+'" data-avatar="'+escapeHtml(avatar)+'" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;cursor:pointer;transition:background .15s;">';
+            html+='<img src="'+escapeHtml(avatar)+'" style="width:38px;height:38px;border-radius:50%;object-fit:cover;">';
+            html+='<strong style="font-size:14px;">'+escapeHtml(name)+'</strong>';
+            html+='</div>';
+        });
+        list.innerHTML=html;
+        list.querySelectorAll('.msg-share-item').forEach(function(el){
+            el.addEventListener('mouseenter',function(){el.style.background='var(--border)';});
+            el.addEventListener('mouseleave',function(){el.style.background='';});
+            el.addEventListener('click',function(){
+                var uid=el.dataset.uid,name=el.dataset.name,avatar=el.dataset.avatar;
+                _pendingPostAttachment=postMeta;
+                closeModal();
+                startConversation(uid,name,avatar);
+            });
+        });
+    }
+    // Seed with existing conversations + followed users
+    var seed=[];
+    (msgConversations||[]).forEach(function(c){if(c.partner&&c.partner.id) seed.push(c.partner);});
+    _renderList(seed);
+    // Live search
+    var _searchT=null;
+    var searchEl=document.getElementById('msgShareSearch');
+    if(searchEl) searchEl.addEventListener('input',function(){
+        var q=this.value.trim();
+        clearTimeout(_searchT);
+        if(!q){_renderList(seed);return;}
+        _searchT=setTimeout(async function(){
+            try{var results=await sbSearchProfiles(q,20);_renderList((results||[]).filter(function(p){return p.id!==currentUser.id;}));}
+            catch(e){console.error('Share search error:',e);}
+        },200);
+    });
 }
 
 // Start a conversation from a profile (called by Message buttons)
