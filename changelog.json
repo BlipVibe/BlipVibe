@@ -1,5 +1,30 @@
 [
   {
+    "version": "0.6.5",
+    "date": "2026-04-19",
+    "added": [
+      "\ud83d\udcf8 Separate desktop & mobile cover photo crops \u2014 upload once, crop wide for desktop and 4:3 for mobile (skip button falls back to desktop crop)",
+      "\ud83d\udcf7 Mobile post modal: camera icon replaces the big drop-zone, sits next to a smaller Publish button",
+      "\ud83d\udce4 Share to Story \u2014 new button on the Share modal posts the image as a story with the original author's watermark",
+      "\ud83d\udce8 Send as Message \u2014 share any post directly into a DM as a rich post card (author avatar, name, snippet, image); tap the card to jump to the post, tap the author to open their profile",
+      "\ud83d\udcac Messages empty-state now guides new users to start a chat via the search bar"
+    ],
+    "changed": [
+      "\ud83d\udda5\ufe0f Cover photo reverted to original 1280\u00d7350 wide format on desktop; mobile gets its own 4:3 crop that fills full-width at 280px tall",
+      "\ud83d\udcf1 Mobile cover sits slightly below the navbar and overlaps the profile card (Facebook-style) \u2014 profile avatar and content stay pinned in place",
+      "\ud83d\udd04 Re-cropping an existing cover no longer overwrites the original photo \u2014 the original stays in your cover picker, the new crop is used as the active cover",
+      "\ud83d\udcf7 Cover camera button moved to top-right and properly centered in its circle",
+      "\ud83d\udd32 Mobile profile card now renders with rounded corners across all themes and premium skins",
+      "\ud83d\udcf0 View All Photos now fetches every post you've ever made (was capped at 50)"
+    ],
+    "fixed": [
+      "\ud83d\udc4e Thumbs-down \u2014 no longer needs a double-click; duplicate click handlers were canceling out the first tap",
+      "\ud83d\udcd0 Closed the 10px gap between the mobile navbar and page content on every tab",
+      "\ud83d\udcf2 Cover picker thumbnails now tap reliably on mobile (iOS touch handling)",
+      "\ud83d\udcbe Re-cropped covers are hidden from the cover picker so you don't see duplicate versions of the same photo"
+    ]
+  },
+  {
     "version": "0.6.4",
     "date": "2026-04-15",
     "added": [
