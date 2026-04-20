@@ -2384,10 +2384,21 @@ function handleShare(btn){
     var origName=username?username.textContent:'Unknown';
     var origTime=time?time.textContent:'';
     var origText=desc?desc.textContent:'';
-    // Get images from the post
+    // Get images from the post — look in the media grid first, then any nested
+    // share-preview (reshares), then any <img> inside the post that isn't the avatar
+    var firstImgSrc=null;
     var postGrid=post.querySelector('.post-media-grid');
-    var firstImg=postGrid?postGrid.querySelector('img'):null;
-    var firstImgSrc=firstImg?firstImg.src:null;
+    if(postGrid){var _gi=postGrid.querySelector('img,video');if(_gi) firstImgSrc=_gi.currentSrc||_gi.src||null;}
+    if(!firstImgSrc){
+        var sharedImg=post.querySelector('.share-preview img:not(.post-avatar):not([class*="avatar"])');
+        if(sharedImg) firstImgSrc=sharedImg.currentSrc||sharedImg.src||null;
+    }
+    if(!firstImgSrc){
+        var anyImg=Array.from(post.querySelectorAll('img')).find(function(im){
+            return !im.classList.contains('post-avatar') && !/avatar/i.test(im.className||'') && (im.naturalWidth>64 || !im.complete);
+        });
+        if(anyImg) firstImgSrc=anyImg.currentSrc||anyImg.src||null;
+    }
     // Get shared post preview if this is a reshare
     var sharedPreview=post.querySelector('.share-preview');
     // Get the original post UUID from the like button's data-post-id
