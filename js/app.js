@@ -2406,8 +2406,24 @@ function handleShare(btn){
         if(firstImgSrc) html+='<img src="'+firstImgSrc+'" style="width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin-top:8px;">';
         html+='</div>';
     }
-    html+='<button id="sharePublishBtn" class="btn btn-primary" style="width:100%;margin-top:12px;">Share</button></div>';
+    html+='<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">';
+    html+='<button id="sharePublishBtn" class="btn btn-primary" style="flex:1;min-width:120px;"><i class="fas fa-globe"></i> Share to Feed</button>';
+    html+='<button id="shareToStoryBtn" class="btn btn-outline" style="flex:1;min-width:120px;"><i class="fas fa-circle-play"></i> Share to Story</button>';
+    html+='<button id="shareToMsgBtn" class="btn btn-outline" style="flex:1;min-width:120px;"><i class="fas fa-paper-plane"></i> Send as Message</button>';
+    html+='</div></div>';
     showModal(html);
+    // Story share
+    var storyBtn=document.getElementById('shareToStoryBtn');
+    if(storyBtn) storyBtn.addEventListener('click',function(){
+        closeModal();
+        if(origPostId) sharePostToStory(origPostId);
+        else showToast('Cannot share this post to story');
+    });
+    // Message share — stub until wired
+    var msgBtn=document.getElementById('shareToMsgBtn');
+    if(msgBtn) msgBtn.addEventListener('click',function(){
+        closeModal();showToast('Share via message — coming soon');
+    });
     document.getElementById('sharePublishBtn').addEventListener('click',async function(){
         var comment=document.getElementById('shareComment').value.trim();
         var shareContent=comment||'Shared a post';
@@ -6383,6 +6399,7 @@ function bindPostEvents(){
     function _$$(sel){return Array.from(_fc.querySelectorAll(sel));}
     // Like buttons (Supabase-backed for UUID post IDs, local for legacy numeric IDs)
     _$$('.like-btn').forEach(function(btn){
+        if(btn.dataset._likeBound) return; btn.dataset._likeBound='1';
         btn.addEventListener('click', async function(e){
             var postId=btn.getAttribute('data-post-id');
             var countEl=btn.querySelector('.like-count');
@@ -6428,6 +6445,7 @@ function bindPostEvents(){
 
     // Dislike buttons
     _$$('.dislike-btn').forEach(function(btn){
+        if(btn.dataset._disBound) return; btn.dataset._disBound='1';
         btn.addEventListener('click', async function(){
             var postId=btn.getAttribute('data-post-id');
             var countEl=btn.querySelector('.dislike-count');
@@ -9900,7 +9918,27 @@ function _bindPhotoAlbumMenus(){
     });
     _bindPhotoDeleteBtns();
 }
-$('#viewAllPhotos').addEventListener('click',function(e){e.preventDefault();renderPhotoAlbum();navigateTo('photos');});
+$('#viewAllPhotos').addEventListener('click',async function(e){
+    e.preventDefault();
+    navigateTo('photos');
+    // Fetch ALL of user's posts (not just the 50 loaded at login) so the album shows every photo/video
+    if(currentUser){
+        try{
+            var allPosts=await sbGetUserPosts(currentUser.id,500);
+            var postPhotos=[];
+            allPosts.forEach(function(p){
+                var ts=new Date(p.created_at).getTime();
+                if(p.media_urls&&p.media_urls.length){
+                    p.media_urls.forEach(function(u){postPhotos.push({src:u,date:ts,postId:p.id,postMediaUrls:p.media_urls,isVideo:isVideoUrl(u)});});
+                } else if(p.image_url){
+                    postPhotos.push({src:p.image_url,date:ts,postId:p.id,postMediaUrls:null,isVideo:isVideoUrl(p.image_url)});
+                }
+            });
+            state.photos.post=postPhotos;
+        }catch(err){console.error('View all photos fetch error:',err);}
+    }
+    renderPhotoAlbum();
+});
 // Photo select mode — button + delegated click
 $('#photoSelectBtn').addEventListener('click',function(){_togglePhotoSelectMode();});
 $('#photoAlbumContent').addEventListener('click',function(e){
