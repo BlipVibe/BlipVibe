@@ -10449,6 +10449,88 @@ function renderStoriesBar(){
     });
 }
 
+// Composite text overlays onto the story image via canvas so positions are frozen.
+// Returns a new File (JPEG). Measures each overlay's rendered position relative to
+// the preview canvas element, scales to a 1080px-wide target, and draws the image
+// (cover-fit) plus each overlay's text with rotation, background, color and font.
+async function _bakeOverlaysIntoImage(file, overlayEls, canvasEl){
+    return new Promise(function(resolve, reject){
+        var img=new Image();
+        img.crossOrigin='anonymous';
+        img.onload=function(){
+            try{
+                var canvasRect=canvasEl.getBoundingClientRect();
+                if(!canvasRect.width||!canvasRect.height){reject(new Error('Canvas has no size'));return;}
+                var targetW=1080;
+                var targetH=Math.round(targetW*canvasRect.height/canvasRect.width);
+                var c=document.createElement('canvas');c.width=targetW;c.height=targetH;
+                var ctx=c.getContext('2d');
+                // Draw source image cover-fit
+                var imgAR=img.width/img.height;
+                var cAR=targetW/targetH;
+                var dw,dh,dx,dy;
+                if(imgAR>cAR){dh=targetH;dw=targetH*imgAR;dx=(targetW-dw)/2;dy=0;}
+                else{dw=targetW;dh=targetW/imgAR;dx=0;dy=(targetH-dh)/2;}
+                ctx.drawImage(img,dx,dy,dw,dh);
+                var scaleX=targetW/canvasRect.width;
+                var scaleY=targetH/canvasRect.height;
+                overlayEls.forEach(function(el){
+                    // Grab just the overlay's main text (ignore child buttons/handles)
+                    var text='';
+                    Array.from(el.childNodes).forEach(function(n){if(n.nodeType===3) text+=n.textContent;});
+                    text=text.trim();
+                    if(!text&&(el.textContent||'').trim()){
+                        // Fallback: use full textContent if no text node found (watermark)
+                        text=(el.textContent||'').replace(/[×]/g,'').trim();
+                    }
+                    if(!text) return;
+                    var style=window.getComputedStyle(el);
+                    var rect=el.getBoundingClientRect();
+                    var fontSize=parseFloat(style.fontSize)*scaleX;
+                    var fontFamily=style.fontFamily||'sans-serif';
+                    var fontWeight=style.fontWeight||'normal';
+                    var color=style.color||'#ffffff';
+                    var bgColor=style.backgroundColor||'';
+                    var cx=(rect.left+rect.width/2-canvasRect.left)*scaleX;
+                    var cy=(rect.top+rect.height/2-canvasRect.top)*scaleY;
+                    // Extract rotation angle from computed transform matrix
+                    var angle=0;
+                    var m=style.transform&&style.transform.match(/matrix\(([^)]+)\)/);
+                    if(m){var p=m[1].split(',').map(parseFloat);angle=Math.atan2(p[1],p[0]);}
+                    ctx.save();
+                    ctx.translate(cx,cy);
+                    if(angle) ctx.rotate(angle);
+                    ctx.font=fontWeight+' '+fontSize+'px '+fontFamily;
+                    ctx.textAlign='center';
+                    ctx.textBaseline='middle';
+                    // Draw background pill if non-transparent
+                    if(bgColor&&bgColor!=='rgba(0, 0, 0, 0)'&&bgColor!=='transparent'){
+                        var metrics=ctx.measureText(text);
+                        var padX=fontSize*0.35,padY=fontSize*0.2;
+                        ctx.fillStyle=bgColor;
+                        var r=Math.min(fontSize*0.3,14);
+                        var bx=-metrics.width/2-padX,by=-fontSize/2-padY,bw=metrics.width+padX*2,bh=fontSize+padY*2;
+                        if(ctx.roundRect){ctx.beginPath();ctx.roundRect(bx,by,bw,bh,r);ctx.fill();}
+                        else ctx.fillRect(bx,by,bw,bh);
+                    }
+                    ctx.fillStyle=color;
+                    // Subtle shadow so white-on-white is still legible
+                    ctx.shadowColor='rgba(0,0,0,.4)';ctx.shadowBlur=Math.max(2,fontSize*0.05);
+                    ctx.fillText(text,0,0);
+                    ctx.restore();
+                });
+                c.toBlob(function(blob){
+                    if(!blob){reject(new Error('Canvas toBlob failed'));return;}
+                    var newFile=new File([blob], (file.name||'story').replace(/\.[^.]+$/,'')+'.jpg', {type:'image/jpeg'});
+                    resolve(newFile);
+                },'image/jpeg',0.92);
+            }catch(err){reject(err);}
+        };
+        img.onerror=function(){reject(new Error('Image failed to load for baking'));};
+        img.src=URL.createObjectURL(file);
+    });
+}
+
 function sharePostToStory(postId, directImg, directAuthor, directText){
     // Prefer direct params from the calling context (DOM) — falls back to feedPosts lookup
     var fp=feedPosts.find(function(x){return x.idx===postId;});
@@ -10841,16 +10923,34 @@ function openCreateStory(preloadData){
         try{
             var isVid=_storyFile.type.startsWith('video/');
             var mediaUrl;
-            if(isVid) mediaUrl=await sbUploadPostVideo(currentUser.id,_storyFile);
-            else mediaUrl=await sbUploadPostImage(currentUser.id,_storyFile);
-            // Collect overlay data
+            // For IMAGE stories with overlays: bake the overlays directly into the image
+            // so they render in exactly the spot the user placed them, regardless of
+            // viewer aspect ratio or device. (Videos still store overlay data — baking
+            // into video would need frame-by-frame processing.)
+            var uploadFile=_storyFile;
             var overlayData=null;
-            if(_storyOverlays.length){
+            if(!isVid && (_storyOverlays.length || canvas.querySelector('.story-watermark'))){
+                try{
+                    var overlayEls=Array.from(canvas.querySelectorAll('.story-text-overlay, .story-watermark'));
+                    uploadFile=await _bakeOverlaysIntoImage(_storyFile, overlayEls, canvas);
+                }catch(bakeErr){
+                    console.warn('Overlay bake failed, falling back to overlay data:',bakeErr);
+                    // Fall back to storing overlay data if bake fails
+                    if(_storyOverlays.length){
+                        overlayData=_storyOverlays.map(function(o){
+                            var el=document.getElementById(o.id);
+                            return {text:el?(el.textContent||el.innerText||o.text):o.text,x:o.x,y:o.y,rotation:o.rotation,scale:o.scale,fontSize:o.fontSize,fontFamily:o.fontFamily,color:o.color,bgColor:o.bgColor};
+                        });
+                    }
+                }
+            } else if(isVid && _storyOverlays.length){
                 overlayData=_storyOverlays.map(function(o){
                     var el=document.getElementById(o.id);
                     return {text:el?(el.textContent||el.innerText||o.text):o.text,x:o.x,y:o.y,rotation:o.rotation,scale:o.scale,fontSize:o.fontSize,fontFamily:o.fontFamily,color:o.color,bgColor:o.bgColor};
                 });
             }
+            if(isVid) mediaUrl=await sbUploadPostVideo(currentUser.id,uploadFile);
+            else mediaUrl=await sbUploadPostImage(currentUser.id,uploadFile);
             await sbCreateStory(currentUser.id,mediaUrl,isVid?'video':'image','',_storySongId||null,_storySongStart,_storySongVol,overlayData);
             if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
             closeModal();
