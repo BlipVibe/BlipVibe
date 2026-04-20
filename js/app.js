@@ -10563,8 +10563,13 @@ function openCreateStory(preloadData){
         }
     }
 
-    // Close buttons
+    // Close buttons — bind BOTH step1 and step2 close so they work from any entry point
     document.getElementById('storyCloseBtn').addEventListener('click',function(){
+        if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
+        closeModal();
+    });
+    var _cb2Early=document.getElementById('storyCloseBtn2');
+    if(_cb2Early) _cb2Early.addEventListener('click',function(){
         if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
         closeModal();
     });
@@ -10603,8 +10608,13 @@ function openCreateStory(preloadData){
     document.getElementById('storyFileInput').addEventListener('change',handleFileSelect);
     document.getElementById('storyCameraInput').addEventListener('change',handleFileSelect);
 
-    // Back button → go to step 1
+    // Back button → go to step 1 (or close entirely when arriving via share-to-story)
     document.getElementById('storyBackBtn').addEventListener('click',function(){
+        if(preloadData){
+            if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
+            closeModal();
+            return;
+        }
         step2.style.display='none';
         step1.style.display='flex';
         canvas.innerHTML='';
