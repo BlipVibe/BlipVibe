@@ -2412,11 +2412,12 @@ function handleShare(btn){
     html+='<button id="shareToMsgBtn" class="btn btn-outline" style="flex:1;min-width:120px;"><i class="fas fa-paper-plane"></i> Send as Message</button>';
     html+='</div></div>';
     showModal(html);
-    // Story share
+    // Story share — pass DOM-grabbed image/author so it works even if the post
+    // isn't in feedPosts (e.g. profile view, search results, reshares)
     var storyBtn=document.getElementById('shareToStoryBtn');
     if(storyBtn) storyBtn.addEventListener('click',function(){
         closeModal();
-        if(origPostId) sharePostToStory(origPostId);
+        if(origPostId) sharePostToStory(origPostId, firstImgSrc||null, origName||null, origText||null);
         else showToast('Cannot share this post to story');
     });
     // Message share — opens contact picker, then chat with post attachment
@@ -10437,32 +10438,36 @@ function renderStoriesBar(){
     });
 }
 
-function sharePostToStory(postId){
-    // Find the post data
+function sharePostToStory(postId, directImg, directAuthor, directText){
+    // Prefer direct params from the calling context (DOM) — falls back to feedPosts lookup
     var fp=feedPosts.find(function(x){return x.idx===postId;});
-    if(!fp){showToast('Post not found');return;}
-    var imgUrl=fp.images&&fp.images.length?fp.images[0]:null;
-    var authorName=fp.person.name||'Unknown';
+    var imgUrl=directImg
+        || (fp ? (fp.images&&fp.images.length?fp.images[0]
+                : (fp.sharedPost&&fp.sharedPost.images&&fp.sharedPost.images.length?fp.sharedPost.images[0]:null))
+              : null);
+    var authorName=directAuthor || (fp?fp.person.name:'') || 'Unknown';
+    var postText=directText || (fp?fp.text:'') || '';
     if(imgUrl){
-        // Fetch image as blob so we can pass it as a file to the story creator
-        fetch(imgUrl).then(function(r){return r.blob();}).then(function(blob){
+        // Fetch image as blob; preview uses the blob URL so it ALWAYS renders (avoids
+        // stale cache-buster query strings and CORS quirks from the original URL)
+        fetch(imgUrl,{mode:'cors'}).then(function(r){return r.blob();}).then(function(blob){
             var file=new File([blob],'shared.jpg',{type:blob.type||'image/jpeg'});
-            openCreateStory({file:file,imageUrl:imgUrl,watermark:'@'+authorName});
+            var previewUrl=URL.createObjectURL(blob);
+            openCreateStory({file:file,imageUrl:previewUrl,watermark:'@'+authorName});
         }).catch(function(){
-            // If fetch fails (CORS), use URL directly
+            // If fetch fails (CORS), use original URL directly — preview may still show
             openCreateStory({imageUrl:imgUrl,watermark:'@'+authorName});
         });
     } else {
         // Text-only post — create an image from the text
         var c=document.createElement('canvas');c.width=720;c.height=1280;
         var ctx=c.getContext('2d');
-        // Gradient background
         var grad=ctx.createLinearGradient(0,0,720,1280);
         grad.addColorStop(0,'#1a1a2e');grad.addColorStop(0.5,'#16213e');grad.addColorStop(1,'#0f3460');
         ctx.fillStyle=grad;ctx.fillRect(0,0,720,1280);
-        // Draw text
         ctx.fillStyle='#ffffff';ctx.font='600 28px Roboto,sans-serif';ctx.textAlign='center';
-        var words=fp.text.split(' ');var lines=[];var line='';
+        var drawText=postText||'Shared post';
+        var words=drawText.split(' ');var lines=[];var line='';
         words.forEach(function(w){var test=line+(line?' ':'')+w;if(ctx.measureText(test).width>600){lines.push(line);line=w;}else line=test;});
         if(line) lines.push(line);
         var y=640-(lines.length*36/2);
