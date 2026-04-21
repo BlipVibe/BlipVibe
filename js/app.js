@@ -127,6 +127,47 @@ async function getKlipyTrending(perPage){
     }catch(e){console.error('Klipy trending error:',e);return[];}
 }
 
+// Reusable GIF picker modal — opens a Klipy-backed grid, calls onPick(url)
+// with the selected GIF's full URL. Used by the post creator; comments and
+// DMs have their own inline pickers already.
+function showGifPickerModal(onPick){
+    var h='<div class="modal-header"><h3><i class="fas fa-film" style="color:var(--primary);margin-right:8px;"></i>Pick a GIF</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    h+='<div class="modal-body">';
+    h+='<input type="text" id="gpmSearch" placeholder="Search GIFs..." style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:20px;font-size:13px;background:var(--light-bg);color:var(--dark);margin-bottom:10px;box-sizing:border-box;">';
+    h+='<div id="gpmGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;max-height:360px;overflow-y:auto;"></div>';
+    h+='<div style="font-size:11px;color:var(--gray);text-align:right;margin-top:6px;">Powered by <strong>KLIPY</strong></div>';
+    h+='</div>';
+    showModal(h);
+    var grid=document.getElementById('gpmGrid');
+    var search=document.getElementById('gpmSearch');
+    function _render(items){
+        if(!items||!items.length){grid.innerHTML='<p style="grid-column:1/-1;text-align:center;color:var(--gray);padding:20px;">No GIFs found.</p>';return;}
+        grid.innerHTML=items.map(function(g){
+            return '<img src="'+escapeHtml(g.preview)+'" data-full="'+escapeHtml(g.full||g.preview)+'" style="width:100%;height:100px;object-fit:cover;border-radius:6px;cursor:pointer;display:block;" loading="lazy">';
+        }).join('');
+        grid.querySelectorAll('img').forEach(function(im){
+            im.addEventListener('click',function(){
+                var full=im.dataset.full;
+                closeModal();
+                if(full&&onPick) onPick(full);
+            });
+        });
+    }
+    grid.innerHTML='<p style="grid-column:1/-1;text-align:center;color:var(--gray);padding:20px;">Loading...</p>';
+    getKlipyTrending(24).then(_render);
+    var _t=null;
+    search.addEventListener('input',function(){
+        clearTimeout(_t);
+        var q=search.value.trim();
+        _t=setTimeout(async function(){
+            if(!q){_render(await getKlipyTrending(24));return;}
+            grid.innerHTML='<p style="grid-column:1/-1;text-align:center;color:var(--gray);padding:20px;">Searching...</p>';
+            _render(await searchKlipyGifs(q,24));
+        },300);
+    });
+    search.focus();
+}
+
 // ======================== AUTHENTICATION (Supabase) ========================
 // currentUser holds the live profile row; currentAuthUser holds auth.users row
 var currentUser = null;    // { id, username, display_name, bio, avatar_url, ... }
@@ -6790,7 +6831,7 @@ $('#openPostModal').addEventListener('click',function(){
     html+='<div class="cpm-tags-section"><div class="cpm-tags-wrap" id="cpmTagsWrap"></div></div>';
     html+='<div class="cpm-link-section" id="cpmLinkSection" style="display:none;"><div id="cpmLinkPreview"></div></div>';
     html+='<div id="cpmPollSection" style="display:none;padding:0 20px 12px;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><strong style="font-size:13px;"><i class="fas fa-chart-bar" style="margin-right:6px;color:var(--primary);"></i>Poll</strong><button id="cpmRemovePoll" style="background:none;color:#e74c3c;font-size:12px;cursor:pointer;"><i class="fas fa-times"></i> Remove</button></div><div id="cpmPollOptions"><div class="cpm-poll-opt"><input type="text" class="post-input cpm-poll-input" placeholder="Option 1" maxlength="80" style="font-size:13px;"></div><div class="cpm-poll-opt"><input type="text" class="post-input cpm-poll-input" placeholder="Option 2" maxlength="80" style="font-size:13px;"></div></div><button id="cpmAddPollOpt" style="background:none;color:var(--primary);font-size:12px;cursor:pointer;margin-top:6px;"><i class="fas fa-plus"></i> Add option</button></div>';
-    html+='</div><div class="cpm-footer"><div id="cpmEmojiPanel" class="emoji-picker-panel"></div><div class="char-counter" id="cpmCharCounter">0 / 5000</div><div style="display:flex;gap:8px;align-items:center;width:100%;"><button class="cpm-emoji-btn" id="cpmEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="cpm-emoji-btn" id="cpmCameraBtn" title="Add Photos/Videos"><i class="fas fa-camera"></i></button><button class="cpm-emoji-btn" id="cpmPollBtn" title="Add Poll"><i class="fas fa-chart-bar"></i></button><button class="cpm-emoji-btn" id="cpmScheduleBtn" title="Schedule Post"><i class="far fa-clock"></i></button><button class="btn btn-primary" id="cpmPublish" style="flex:1;">Publish</button></div></div></div>';
+    html+='</div><div class="cpm-footer"><div id="cpmEmojiPanel" class="emoji-picker-panel"></div><div class="char-counter" id="cpmCharCounter">0 / 5000</div><div style="display:flex;gap:8px;align-items:center;width:100%;"><button class="cpm-emoji-btn" id="cpmEmojiBtn" title="Emoji"><i class="fas fa-face-smile"></i></button><button class="cpm-emoji-btn" id="cpmCameraBtn" title="Add Photos/Videos"><i class="fas fa-camera"></i></button><button class="cpm-emoji-btn" id="cpmGifBtn" title="Add GIF"><i class="fas fa-film"></i></button><button class="cpm-emoji-btn" id="cpmPollBtn" title="Add Poll"><i class="fas fa-chart-bar"></i></button><button class="cpm-emoji-btn" id="cpmScheduleBtn" title="Schedule Post"><i class="far fa-clock"></i></button><button class="btn btn-primary" id="cpmPublish" style="flex:1;">Publish</button></div></div></div>';
     showModal(html);
     document.getElementById('cpmEmojiBtn').addEventListener('click',function(){openEmojiPicker('cpmEmojiPanel',document.getElementById('cpmText'));});
     initMentionAutocomplete('cpmText',null);
@@ -6861,6 +6902,23 @@ $('#openPostModal').addEventListener('click',function(){
         });
     }
     document.getElementById('cpmCameraBtn').addEventListener('click',function(){showCameraMenu(this,fileInput,addFilesToMedia);});
+    // GIF picker: opens a lightweight modal, selecting a GIF fetches the URL as a
+    // blob, wraps it in a File, and drops it into addFilesToMedia so the normal
+    // upload + thumbnail flow handles everything else.
+    var cpmGifBtn=document.getElementById('cpmGifBtn');
+    if(cpmGifBtn) cpmGifBtn.addEventListener('click',function(){
+        showGifPickerModal(async function(gifUrl){
+            try{
+                var r=await fetch(gifUrl);
+                var blob=await r.blob();
+                var file=new File([blob],'gif-'+Date.now()+'.gif',{type:blob.type||'image/gif'});
+                addFilesToMedia([file]);
+            }catch(e){
+                console.error('GIF fetch error:',e);
+                showToast('Failed to load GIF');
+            }
+        });
+    });
     function renderGrid(){
         grid.innerHTML='';
         mediaList.forEach(function(m,i){
