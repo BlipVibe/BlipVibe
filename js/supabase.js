@@ -124,8 +124,8 @@ async function sbEnsureProfile(authUser) {
 }
 
 function sbOnAuthChange(callback) {
-  sb.auth.onAuthStateChange((_event, session) => {
-    callback(session);
+  sb.auth.onAuthStateChange((event, session) => {
+    callback(session, event);
   });
 }
 

@@ -278,7 +278,12 @@ document.querySelector('.login-forgot').addEventListener('click', async function
     var cdSecs = checkCooldown('reset', 10000);
     if (cdSecs) { loginError.textContent = 'Please wait ' + cdSecs + 's before requesting another reset.'; loginError.classList.add('show'); return; }
     try {
-        await sb.auth.resetPasswordForEmail(email);
+        // redirectTo ensures the email link returns to this site with a recovery token
+        // in the URL hash. Supabase's onAuthStateChange fires a 'PASSWORD_RECOVERY'
+        // event once that hash is parsed, and we catch it below to show the
+        // 'Set new password' modal.
+        var redirectTo = window.location.origin + window.location.pathname;
+        await sb.auth.resetPasswordForEmail(email, { redirectTo: redirectTo });
         loginError.textContent = 'Password reset email sent! Check your inbox.';
         loginError.classList.add('show');
         loginError.style.color = 'var(--primary)';
@@ -742,7 +747,20 @@ async function initApp() {
 }
 
 // Listen for auth state changes
-sbOnAuthChange(function (session) {
+var _pwRecoveryHandled = false;
+sbOnAuthChange(function (session, event) {
+    // When the user clicks the password-reset link in their email, Supabase
+    // creates a temporary session and fires PASSWORD_RECOVERY. Show the
+    // change-password modal instead of booting them into the app or login page.
+    if (event === 'PASSWORD_RECOVERY' && !_pwRecoveryHandled) {
+        _pwRecoveryHandled = true;
+        // Small delay so any showLogin/initApp UI work settles first
+        setTimeout(function () {
+            try { showChangePasswordModal(); }
+            catch (e) { console.error('Password recovery modal error:', e); }
+        }, 100);
+        return;
+    }
     if (session) {
         initApp();
     } else {

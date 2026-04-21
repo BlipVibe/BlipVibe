@@ -6,3 +6,7 @@ Testing/
 ~$*
 .idea/
 android/.idea/
+
+# Local-only QA docs (not for public repo)
+BlipVibe_QA_Requirements.xlsx
+_gen_requirements.py
