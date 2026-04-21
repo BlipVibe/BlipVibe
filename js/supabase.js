@@ -1052,11 +1052,13 @@ async function sbGetConversations(userId) {
     .or('sender_id.eq.' + userId + ',receiver_id.eq.' + userId)
     .order('created_at', { ascending: false });
   if (error) throw error;
-  data = _sanitizeData(data);
+  // NOTE: `data` is a const binding from destructuring — we can't reassign it.
+  // Sanitize into a separate local variable instead.
+  const sanitized = _sanitizeData(data);
 
   // Group by conversation partner
   var convos = {};
-  (data || []).forEach(function(m) {
+  (sanitized || []).forEach(function(m) {
     var partnerId = m.sender_id === userId ? m.receiver_id : m.sender_id;
     if (!convos[partnerId]) {
       var partner = m.sender_id === userId ? m.receiver : m.sender;
