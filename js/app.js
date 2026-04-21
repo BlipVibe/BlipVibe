@@ -10483,12 +10483,23 @@ async function _bakeOverlaysIntoImage(file, overlayEls, canvasEl){
                 var targetH=Math.round(targetW*canvasRect.height/canvasRect.width);
                 var c=document.createElement('canvas');c.width=targetW;c.height=targetH;
                 var ctx=c.getContext('2d');
-                // Draw source image cover-fit
+                // Fill with the same background color the preview uses so letterbox
+                // bars match what the user saw while composing the story.
+                ctx.fillStyle='#111';
+                ctx.fillRect(0,0,targetW,targetH);
+                // Draw source image CONTAIN-fit so the entire image is visible
+                // (matches the preview's object-fit:contain). Wider or narrower
+                // images get letterboxed top/bottom or left/right respectively.
                 var imgAR=img.width/img.height;
                 var cAR=targetW/targetH;
                 var dw,dh,dx,dy;
-                if(imgAR>cAR){dh=targetH;dw=targetH*imgAR;dx=(targetW-dw)/2;dy=0;}
-                else{dw=targetW;dh=targetW/imgAR;dx=0;dy=(targetH-dh)/2;}
+                if(imgAR>cAR){
+                    // image is wider than canvas → full width, letterbox top/bottom
+                    dw=targetW;dh=targetW/imgAR;dx=0;dy=(targetH-dh)/2;
+                } else {
+                    // image is taller/narrower than canvas → full height, letterbox sides
+                    dh=targetH;dw=targetH*imgAR;dy=0;dx=(targetW-dw)/2;
+                }
                 ctx.drawImage(img,dx,dy,dw,dh);
                 var scaleX=targetW/canvasRect.width;
                 var scaleY=targetH/canvasRect.height;
