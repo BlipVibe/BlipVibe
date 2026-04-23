@@ -5837,7 +5837,7 @@ document.addEventListener('click',function(e){
             if(dlBtn) dlBtn.addEventListener('click',function(){closeModal();downloadMyData();});
             // Scheduled posts
             var schedBtn=document.getElementById('settingsScheduled');
-            if(schedBtn) schedBtn.addEventListener('click',function(){
+            if(schedBtn) schedBtn.addEventListener('click',async function(){
                 if(!currentUser){showToast('Sign in first');return;}
                 var serverScheduled=[];
                 try{serverScheduled=await sbListScheduledPosts(currentUser.id);}
