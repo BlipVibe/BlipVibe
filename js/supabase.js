@@ -250,6 +250,38 @@ async function sbGetAllProfiles(limit = 50) {
 
 // ---- 4. POSTS ---------------------------------------------------------------
 
+// ---- Scheduled posts (server-side via pg_cron) -----------------------------
+// Writes a pending post into public.scheduled_posts. The publish_scheduled_posts
+// cron job on the database runs every minute and moves matured rows into posts.
+async function sbCreateScheduledPost(userId, content, scheduledAt, imageUrl = null, mediaUrls = null, location = null) {
+  const row = {
+    user_id: userId,
+    content: content || '',
+    image_url: imageUrl,
+    media_urls: (mediaUrls && mediaUrls.length) ? mediaUrls : null,
+    location: location,
+    scheduled_at: new Date(scheduledAt).toISOString()
+  };
+  const { data, error } = await sb.from('scheduled_posts').insert(row).select().single();
+  if (error) throw error;
+  return data;
+}
+
+async function sbListScheduledPosts(userId) {
+  const { data, error } = await sb.from('scheduled_posts')
+    .select('*')
+    .eq('user_id', userId)
+    .order('scheduled_at', { ascending: true });
+  if (error) throw error;
+  return data || [];
+}
+
+async function sbDeleteScheduledPost(id) {
+  const { error } = await sb.from('scheduled_posts').delete().eq('id', id);
+  if (error) throw error;
+  return true;
+}
+
 async function sbCreatePost(authorId, content, imageUrl = null, groupId = null, sharedPostId = null, location = null, mediaUrls = null) {
   var row = { author_id: authorId, content: content || '', image_url: imageUrl, group_id: groupId };
   if (sharedPostId) row.shared_post_id = sharedPostId;

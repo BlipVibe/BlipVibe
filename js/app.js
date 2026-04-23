@@ -5838,11 +5838,22 @@ document.addEventListener('click',function(e){
             // Scheduled posts
             var schedBtn=document.getElementById('settingsScheduled');
             if(schedBtn) schedBtn.addEventListener('click',function(){
-                if(!_scheduledPosts.length){showToast('No scheduled posts');return;}
+                if(!currentUser){showToast('Sign in first');return;}
+                var serverScheduled=[];
+                try{serverScheduled=await sbListScheduledPosts(currentUser.id);}
+                catch(err){console.error('List scheduled:',err);showToast('Failed to load scheduled posts');return;}
+                if(!serverScheduled.length){showToast('No scheduled posts');return;}
                 var sh='<div class="modal-header"><h3>Scheduled Posts</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body" style="max-height:50vh;overflow-y:auto;">';
-                _scheduledPosts.forEach(function(s,i){sh+='<div style="padding:8px 0;border-bottom:1px solid var(--border);"><p style="font-size:13px;">'+escapeHtml(s.content.substring(0,80))+'</p><span style="font-size:11px;color:var(--gray);">Scheduled: '+new Date(s.scheduledAt).toLocaleString()+'</span> <button class="btn btn-outline cancel-sched" data-idx="'+i+'" style="font-size:11px;padding:2px 8px;color:#e74c3c;border-color:#e74c3c;">Cancel</button></div>';});
+                serverScheduled.forEach(function(s){
+                    var preview=(s.content||'').substring(0,80);
+                    sh+='<div style="padding:8px 0;border-bottom:1px solid var(--border);"><p style="font-size:13px;">'+escapeHtml(preview)+'</p><span style="font-size:11px;color:var(--gray);">Scheduled: '+new Date(s.scheduled_at).toLocaleString()+'</span> <button class="btn btn-outline cancel-sched" data-sid="'+s.id+'" style="font-size:11px;padding:2px 8px;color:#e74c3c;border-color:#e74c3c;">Cancel</button></div>';
+                });
                 sh+='</div>';closeModal();showModal(sh);
-                $$('.cancel-sched').forEach(function(b){b.addEventListener('click',function(){_scheduledPosts.splice(parseInt(b.dataset.idx),1);persistScheduled();b.textContent='Cancelled';b.disabled=true;});});
+                $$('.cancel-sched').forEach(function(b){b.addEventListener('click',async function(){
+                    var sid=b.dataset.sid;b.disabled=true;b.textContent='Cancelling...';
+                    try{await sbDeleteScheduledPost(sid);b.textContent='Cancelled';}
+                    catch(err){console.error('Cancel scheduled:',err);b.textContent='Cancel failed';b.disabled=false;}
+                });});
             });
             $$('.stoggle').forEach(function(t){t.style.cursor='pointer';t.addEventListener('click',function(){
                 var k=t.dataset.key;settings[k]=!settings[k];
@@ -6859,17 +6870,21 @@ $('#openPostModal').addEventListener('click',function(){
         div.innerHTML='<input type="text" class="post-input cpm-poll-input" placeholder="Option '+(opts.length+1)+'" maxlength="80" style="font-size:13px;">';
         document.getElementById('cpmPollOptions').appendChild(div);
     });
-    // Schedule post handler
+    // Schedule post handler (server-side — uses scheduled_posts table + pg_cron)
     var SCHEDULED_POST_CAP=5;
-    document.getElementById('cpmScheduleBtn').addEventListener('click',function(){
-        if((_scheduledPosts||[]).length>=SCHEDULED_POST_CAP){
+    document.getElementById('cpmScheduleBtn').addEventListener('click',async function(){
+        if(!currentUser){showToast('Sign in to schedule posts');return;}
+        // Check current pending count from the server so the cap is accurate
+        var pending=[];
+        try{pending=await sbListScheduledPosts(currentUser.id);}catch(e){console.error('List scheduled:',e);}
+        if(pending.length>=SCHEDULED_POST_CAP){
             showToast('Limit reached — you can have at most '+SCHEDULED_POST_CAP+' scheduled posts.');
             return;
         }
         var sh='<div class="modal-header"><h3><i class="far fa-clock" style="color:var(--primary);margin-right:8px;"></i>Schedule Post</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
         sh+='<div class="modal-body"><p style="font-size:13px;color:var(--gray);margin-bottom:10px;">Choose when to publish this post:</p>';
         sh+='<input type="datetime-local" id="scheduleDateTime" class="post-input" style="width:100%;margin-bottom:12px;">';
-        sh+='<p style="font-size:11px;color:var(--gray);margin-bottom:14px;"><i class="fas fa-info-circle"></i> Up to '+SCHEDULED_POST_CAP+' scheduled posts ('+(_scheduledPosts||[]).length+' used). Posts publish when BlipVibe is open in any tab at or after the chosen time.</p>';
+        sh+='<p style="font-size:11px;color:var(--gray);margin-bottom:14px;"><i class="fas fa-info-circle"></i> Up to '+SCHEDULED_POST_CAP+' scheduled posts ('+pending.length+' used). Runs on our servers — your app does NOT need to be open.</p>';
         sh+='<div class="modal-actions"><button class="btn btn-outline modal-close">Cancel</button><button class="btn btn-primary" id="confirmSchedule">Schedule</button></div></div>';
         showModal(sh);
         // Set min to now (local-time-adjusted for the input)
@@ -6882,12 +6897,8 @@ $('#openPostModal').addEventListener('click',function(){
             if(schedTime<=Date.now()){showToast('Must be in the future');return;}
             var text=document.getElementById('cpmText')?document.getElementById('cpmText').value.trim():'';
             if(!text && !mediaList.length){showToast('Write something or attach media first');return;}
-            if((_scheduledPosts||[]).length>=SCHEDULED_POST_CAP){
-                showToast('Limit reached — max '+SCHEDULED_POST_CAP+' scheduled posts.');
-                return;
-            }
             var btn=this;btn.disabled=true;btn.textContent='Uploading media...';
-            // Upload any attached media NOW so the scheduled record only stores URLs
+            // Upload any attached media NOW so the scheduled row only stores URLs
             var mediaUrls=[];
             try{
                 for(var mi=0;mi<mediaList.length;mi++){
@@ -6910,19 +6921,28 @@ $('#openPostModal').addEventListener('click',function(){
                 btn.disabled=false;btn.textContent='Schedule';
                 return;
             }
-            _scheduledPosts.push({
-                content:text,
-                scheduledAt:schedTime,
-                createdAt:Date.now(),
-                imageUrl: mediaUrls[0]||null,
-                mediaUrls: mediaUrls.length>1 ? mediaUrls : null,
-                location: settings.showLocation?userLocation:null
-            });
-            persistScheduled();
-            closeModal();
-            showToast('Post scheduled for '+new Date(schedTime).toLocaleString());
-            // Also close the create-post modal since the draft is now handed off
-            setTimeout(closeModal,50);
+            btn.textContent='Scheduling...';
+            try{
+                await sbCreateScheduledPost(
+                    currentUser.id,
+                    text,
+                    schedTime,
+                    mediaUrls[0]||null,
+                    mediaUrls.length ? mediaUrls : null,
+                    settings.showLocation?userLocation:null
+                );
+                closeModal();
+                showToast('Post scheduled for '+new Date(schedTime).toLocaleString());
+                setTimeout(closeModal,50);
+            }catch(e){
+                console.error('Schedule post:',e);
+                // The DB trigger throws 23514 if the cap is hit — friendly message
+                var msg=(e.message||'').indexOf('limit reached')>-1
+                    ? 'Limit reached — max '+SCHEDULED_POST_CAP+' scheduled posts.'
+                    : 'Failed to schedule: '+(e.message||'Unknown error');
+                showToast(msg);
+                btn.disabled=false;btn.textContent='Schedule';
+            }
         });
     });
     var mediaList=[];
@@ -11774,40 +11794,17 @@ function isNotifEnabled(type){
 // Checked when someone tries to message via startConversation
 
 // ======================== SCHEDULED POSTS ========================
-// Persisted via skin_data JSON; runs while the user has the app open. Capped at
-// 5 pending posts per user (enforced at schedule time in the Create Post modal).
-var _scheduledPosts=[];
-var SCHEDULED_MAX=5;
-// _scheduledPosts loaded from skin_data via _applySkinDataFromCache. Keep only
-// the oldest 5 pending entries if legacy data has more.
-function persistScheduled(){
-    if((_scheduledPosts||[]).length>SCHEDULED_MAX){
-        _scheduledPosts.sort(function(a,b){return (a.scheduledAt||0)-(b.scheduledAt||0);});
-        _scheduledPosts=_scheduledPosts.slice(0,SCHEDULED_MAX);
-    }
-    saveState();
-}
-function checkScheduledPosts(){
-    if(!currentUser||!_scheduledPosts.length) return;
-    var now=Date.now();
-    var toPublish=_scheduledPosts.filter(function(s){return s.scheduledAt<=now;});
-    var remaining=_scheduledPosts.filter(function(s){return s.scheduledAt>now;});
-    if(!toPublish.length) return;
-    _scheduledPosts=remaining;
-    persistScheduled();
-    toPublish.forEach(function(s){
-        var imageUrl = s.imageUrl || null;
-        var mediaUrls = (s.mediaUrls && s.mediaUrls.length) ? s.mediaUrls : null;
-        var loc = s.location || null;
-        sbCreatePost(currentUser.id, s.content || '', imageUrl, null, null, loc, mediaUrls).then(function(){
-            showToast('Scheduled post published!');
-            generatePosts();
-        }).catch(function(e){console.error('Scheduled post publish:',e);showToast('A scheduled post failed to publish.');});
-    });
-}
-// Check scheduled posts every 30s AND once immediately on load (covers the
-// case where the user reopens the tab after the schedule time has passed).
-setInterval(checkScheduledPosts,30000);
+// Scheduling is SERVER-SIDE via a pg_cron job that runs every minute and
+// moves matured rows from public.scheduled_posts into public.posts. The
+// client only writes/lists/deletes from that table via sbCreateScheduledPost,
+// sbListScheduledPosts, sbDeleteScheduledPost. The app does NOT need to be
+// open for posts to publish.
+//
+// These legacy symbols remain no-ops so old callers (e.g. checkScheduledPosts
+// invoked on init) don't explode if they're still wired up somewhere.
+var _scheduledPosts=[]; // legacy — no longer used for state, but referenced by persistScheduled
+function persistScheduled(){ /* no-op: server owns the queue now */ }
+function checkScheduledPosts(){ /* no-op: pg_cron handles this every minute */ }
 
 // ======================== REPORT MODAL ========================
 function showReportModal(pid){
@@ -13380,19 +13377,24 @@ async function showSeenByModal(postId){
 }
 
 // ======================== SCHEDULED POSTS CALENDAR VIEW ========================
-function showScheduledCalendar(){
+async function showScheduledCalendar(){
+    if(!currentUser){showToast('Sign in first');return;}
     var now=new Date();
     var year=now.getFullYear();var month=now.getMonth();
     var monthNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
     var dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
     var firstDay=new Date(year,month,1).getDay();
     var daysInMonth=new Date(year,month+1,0).getDate();
+    // Load scheduled posts from the server
+    var serverScheduled=[];
+    try{serverScheduled=await sbListScheduledPosts(currentUser.id);}
+    catch(err){console.error('List scheduled:',err);showToast('Failed to load scheduled posts');return;}
     var h='<div class="modal-header"><h3><i class="fas fa-calendar" style="color:var(--primary);margin-right:8px;"></i>Scheduled Posts — '+monthNames[month]+' '+year+'</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     h+='<div class="modal-body">';
     // Map scheduled posts to days
     var dayMap={};
-    (_scheduledPosts||[]).forEach(function(s){
-        var d=new Date(s.scheduledAt);
+    serverScheduled.forEach(function(s){
+        var d=new Date(s.scheduled_at);
         if(d.getMonth()===month&&d.getFullYear()===year){
             var day=d.getDate();
             if(!dayMap[day]) dayMap[day]=[];
@@ -13409,10 +13411,11 @@ function showScheduledCalendar(){
     }
     h+='</div>';
     // List scheduled posts below
-    if(_scheduledPosts&&_scheduledPosts.length){
+    if(serverScheduled.length){
         h+='<div style="margin-top:16px;">';
-        _scheduledPosts.forEach(function(s,i){
-            h+='<div style="padding:8px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;"><div><p style="font-size:13px;">'+escapeHtml(s.content.substring(0,60))+(s.content.length>60?'...':'')+'</p><span style="font-size:11px;color:var(--gray);">'+new Date(s.scheduledAt).toLocaleString()+'</span></div><button class="btn btn-outline cancel-sched-cal" data-idx="'+i+'" style="font-size:11px;padding:2px 8px;color:#e74c3c;border-color:#e74c3c;flex-shrink:0;">Cancel</button></div>';
+        serverScheduled.forEach(function(s){
+            var preview=(s.content||'').substring(0,60);
+            h+='<div style="padding:8px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;"><div><p style="font-size:13px;">'+escapeHtml(preview)+((s.content||'').length>60?'...':'')+'</p><span style="font-size:11px;color:var(--gray);">'+new Date(s.scheduled_at).toLocaleString()+'</span></div><button class="btn btn-outline cancel-sched-cal" data-sid="'+s.id+'" style="font-size:11px;padding:2px 8px;color:#e74c3c;border-color:#e74c3c;flex-shrink:0;">Cancel</button></div>';
         });
         h+='</div>';
     } else {
@@ -13420,7 +13423,11 @@ function showScheduledCalendar(){
     }
     h+='<div class="modal-actions"><button class="btn btn-primary modal-close">Done</button></div></div>';
     showModal(h);
-    $$('.cancel-sched-cal').forEach(function(b){b.addEventListener('click',function(){_scheduledPosts.splice(parseInt(b.dataset.idx),1);persistScheduled();b.textContent='Cancelled';b.disabled=true;});});
+    $$('.cancel-sched-cal').forEach(function(b){b.addEventListener('click',async function(){
+        var sid=b.dataset.sid;b.disabled=true;b.textContent='Cancelling...';
+        try{await sbDeleteScheduledPost(sid);b.textContent='Cancelled';}
+        catch(err){console.error('Cancel scheduled:',err);b.textContent='Cancel failed';b.disabled=false;}
+    });});
 }
 
 // ======================== ADMIN REPORT QUEUE ========================
