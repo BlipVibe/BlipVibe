@@ -6874,6 +6874,15 @@ $('#openPostModal').addEventListener('click',function(){
     var SCHEDULED_POST_CAP=5;
     document.getElementById('cpmScheduleBtn').addEventListener('click',async function(){
         if(!currentUser){showToast('Sign in to schedule posts');return;}
+        // IMPORTANT: capture text and media BEFORE opening the schedule modal —
+        // showModal replaces #modalContent, so #cpmText won't exist once the
+        // schedule dialog is rendered on top of it.
+        var capturedText=document.getElementById('cpmText')?document.getElementById('cpmText').value.trim():'';
+        var capturedMedia=mediaList.slice(); // snapshot of current attachments
+        if(!capturedText && !capturedMedia.length){
+            showToast('Write something or attach media first');
+            return;
+        }
         // Check current pending count from the server so the cap is accurate
         var pending=[];
         try{pending=await sbListScheduledPosts(currentUser.id);}catch(e){console.error('List scheduled:',e);}
@@ -6895,14 +6904,14 @@ $('#openPostModal').addEventListener('click',function(){
             if(!dt){showToast('Pick a date and time');return;}
             var schedTime=new Date(dt).getTime();
             if(schedTime<=Date.now()){showToast('Must be in the future');return;}
-            var text=document.getElementById('cpmText')?document.getElementById('cpmText').value.trim():'';
-            if(!text && !mediaList.length){showToast('Write something or attach media first');return;}
+            var text=capturedText;
+            if(!text && !capturedMedia.length){showToast('Write something or attach media first');return;}
             var btn=this;btn.disabled=true;btn.textContent='Uploading media...';
             // Upload any attached media NOW so the scheduled row only stores URLs
             var mediaUrls=[];
             try{
-                for(var mi=0;mi<mediaList.length;mi++){
-                    var m=mediaList[mi];
+                for(var mi=0;mi<capturedMedia.length;mi++){
+                    var m=capturedMedia[mi];
                     var file=m.file;
                     if(!file && m.src && m.src.indexOf('data:')===0){
                         var resp=await fetch(m.src);
