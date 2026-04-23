@@ -267,17 +267,38 @@ async function sbCreateScheduledPost(userId, content, scheduledAt, imageUrl = nu
   return data;
 }
 
+// Only returns pending rows (not yet published, not cancelled)
 async function sbListScheduledPosts(userId) {
   const { data, error } = await sb.from('scheduled_posts')
     .select('*')
     .eq('user_id', userId)
+    .is('published_at', null)
+    .is('cancelled_at', null)
     .order('scheduled_at', { ascending: true });
   if (error) throw error;
   return data || [];
 }
 
+// Counts every scheduled post CREATED in the last 24 hours, including ones
+// that have already published or been cancelled. Used for the rolling
+// 5-per-24h rate limit — cancelling does NOT free a slot.
+async function sbCountScheduledIn24h(userId) {
+  const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  const { count, error } = await sb.from('scheduled_posts')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', userId)
+    .gt('created_at', since);
+  if (error) throw error;
+  return count || 0;
+}
+
+// Soft-cancel: marks cancelled_at. Keeps the row for rate-limit math so
+// a user can't cancel+re-schedule in a loop to bypass the cap.
 async function sbDeleteScheduledPost(id) {
-  const { error } = await sb.from('scheduled_posts').delete().eq('id', id);
+  const { error } = await sb.from('scheduled_posts')
+    .update({ cancelled_at: new Date().toISOString() })
+    .eq('id', id)
+    .is('published_at', null);
   if (error) throw error;
   return true;
 }

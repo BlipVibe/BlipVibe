@@ -6871,6 +6871,8 @@ $('#openPostModal').addEventListener('click',function(){
         document.getElementById('cpmPollOptions').appendChild(div);
     });
     // Schedule post handler (server-side — uses scheduled_posts table + pg_cron)
+    // Rate-limited: 5 scheduled-post creates per rolling 24 hours per user.
+    // Cancelling a scheduled post does NOT free a slot (no quota roll-over).
     var SCHEDULED_POST_CAP=5;
     document.getElementById('cpmScheduleBtn').addEventListener('click',async function(){
         if(!currentUser){showToast('Sign in to schedule posts');return;}
@@ -6883,17 +6885,18 @@ $('#openPostModal').addEventListener('click',function(){
             showToast('Write something or attach media first');
             return;
         }
-        // Check current pending count from the server so the cap is accurate
-        var pending=[];
-        try{pending=await sbListScheduledPosts(currentUser.id);}catch(e){console.error('List scheduled:',e);}
-        if(pending.length>=SCHEDULED_POST_CAP){
-            showToast('Limit reached — you can have at most '+SCHEDULED_POST_CAP+' scheduled posts.');
+        // Check usage in the rolling 24h window
+        var usedIn24h=0;
+        try{usedIn24h=await sbCountScheduledIn24h(currentUser.id);}catch(e){console.error('Count scheduled:',e);}
+        if(usedIn24h>=SCHEDULED_POST_CAP){
+            showToast('Limit reached — max '+SCHEDULED_POST_CAP+' scheduled posts per 24 hours.');
             return;
         }
+        var remaining=SCHEDULED_POST_CAP-usedIn24h;
         var sh='<div class="modal-header"><h3><i class="far fa-clock" style="color:var(--primary);margin-right:8px;"></i>Schedule Post</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
         sh+='<div class="modal-body"><p style="font-size:13px;color:var(--gray);margin-bottom:10px;">Choose when to publish this post:</p>';
         sh+='<input type="datetime-local" id="scheduleDateTime" class="post-input" style="width:100%;margin-bottom:12px;">';
-        sh+='<p style="font-size:11px;color:var(--gray);margin-bottom:14px;"><i class="fas fa-info-circle"></i> Up to '+SCHEDULED_POST_CAP+' scheduled posts ('+pending.length+' used). Runs on our servers — your app does NOT need to be open.</p>';
+        sh+='<p style="font-size:11px;color:var(--gray);margin-bottom:14px;"><i class="fas fa-info-circle"></i> '+remaining+' of '+SCHEDULED_POST_CAP+' remaining in the next 24 hours. Runs on our servers — your app does NOT need to be open. Cancelling doesn\'t refund a slot.</p>';
         sh+='<div class="modal-actions"><button class="btn btn-outline modal-close">Cancel</button><button class="btn btn-primary" id="confirmSchedule">Schedule</button></div></div>';
         showModal(sh);
         // Set min to now (local-time-adjusted for the input)
