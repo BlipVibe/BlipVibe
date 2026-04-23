@@ -641,7 +641,7 @@ async function initApp() {
     if(currentUser.cover_photo_url) { state.coverPhoto = currentUser.cover_photo_url; }
     if(currentUser.cover_photo_url_mobile) { state.coverPhotoMobile = currentUser.cover_photo_url_mobile; }
     if(state.coverPhoto||state.coverPhotoMobile) applyCoverPhoto();
-    // Parallel batch 1: Load likes, photos, follow counts, friends-of-friends concurrently
+    // Parallel batch 1: Load likes, dislikes, photos, follow counts, friends-of-friends concurrently
     var _parallelResults = await Promise.allSettled([
         sbGetUserLikes(currentUser.id, 'post'),
         sbGetUserLikes(currentUser.id, 'comment'),
@@ -649,11 +649,13 @@ async function initApp() {
         sbListUserCovers(currentUser.id),
         sbGetUserPosts(currentUser.id, 50),
         loadFollowCounts(),
-        sbGetFriendsOfFriends(currentUser.id)
+        sbGetFriendsOfFriends(currentUser.id),
+        sbGetUserLikes(currentUser.id, 'post_dislike')
     ]);
     // Process results from parallel batch
     if(_parallelResults[0].status==='fulfilled'){(_parallelResults[0].value||[]).forEach(function(l){state.likedPosts[l.target_id]=true;});}
     if(_parallelResults[1].status==='fulfilled'){(_parallelResults[1].value||[]).forEach(function(l){likedComments[l.target_id]=true;});}
+    if(_parallelResults[7] && _parallelResults[7].status==='fulfilled'){(_parallelResults[7].value||[]).forEach(function(l){state.dislikedPosts[l.target_id]=true;});}
     if(_parallelResults[2].status==='fulfilled'){
         var prevAvatars=_parallelResults[2].value||[];
         state.photos.profile=prevAvatars.map(function(a){return{src:a.src,date:a.date,name:a.name};});
@@ -3368,7 +3370,7 @@ async function showProfileView(person){
                 var pvReaction=_postReactions[post.id];
                 feedHtml+='<div class="post-actions"><div class="action-left">';
                 feedHtml+='<button class="action-btn like-btn'+(state.likedPosts[post.id]?' liked':'')+'" data-post-id="'+post.id+'"><i class="'+(state.likedPosts[post.id]?'fas':'far')+' fa-thumbs-up"></i><span class="like-count">'+pvLikes+'</span></button>';
-                feedHtml+='<button class="action-btn dislike-btn'+(state.dislikedPosts[post.id]?' disliked':'')+'" data-post-id="'+post.id+'"><i class="'+(state.dislikedPosts[post.id]?'fas':'far')+' fa-thumbs-down"></i><span class="dislike-count">0</span></button>';
+                feedHtml+='<button class="action-btn dislike-btn'+(state.dislikedPosts[post.id]?' disliked':'')+'" data-post-id="'+post.id+'"><i class="'+(state.dislikedPosts[post.id]?'fas':'far')+' fa-thumbs-down"></i><span class="dislike-count">'+(post.dislikes||post.dislike_count||0)+'</span></button>';
                 feedHtml+='<button class="action-btn react-btn" data-post-id="'+post.id+'" title="React">'+(pvReaction?'<span style="font-size:16px;">'+pvReaction+'</span>':'<i class="far fa-face-smile"></i>')+'</button>';
                 feedHtml+='<button class="action-btn comment-btn"><i class="far fa-comment"></i><span>'+pvComments+'</span></button>';
                 feedHtml+='<button class="action-btn share-btn"><i class="fas fa-share-from-square"></i><span>0</span></button>';
@@ -6263,7 +6265,7 @@ function _buildFeedPost(p,sharedMap){
         idx:p.id,
         person:{id:p.author.id,name:p.author.display_name||p.author.username||'User',img:null,avatar_url:p.author.avatar_url},
         text:p.content||'',tags:[],badge:null,loc:p.location||null,
-        likes:p.like_count||0,comments:[],
+        likes:p.like_count||0,dislikes:p.dislike_count||0,comments:[],
         commentCount:(p.comments&&p.comments[0])?p.comments[0].count:0,
         shares:p.share_count||0,images:p.media_urls&&p.media_urls.length?p.media_urls:(p.image_url?[p.image_url]:null),
         created_at:p.created_at
@@ -6361,7 +6363,7 @@ function getFollowingIds(){
     return ids;
 }
 function _buildPostHtml(p){
-    var i=p.idx,person=p.person,text=p.text,tags=p.tags||[],badge=p.badge,loc=p.loc,likes=p.likes,genComments=p.comments||[],shares=p.shares;
+    var i=p.idx,person=p.person,text=p.text,tags=p.tags||[],badge=p.badge,loc=p.loc,likes=p.likes,dislikes=p.dislikes||0,genComments=p.comments||[],shares=p.shares;
     var commentCount=p.commentCount||genComments.length;
     var menuId='post-menu-'+i;
     var pollResult=renderPollInPost(text,i);
@@ -6399,7 +6401,7 @@ function _buildPostHtml(p){
     }
     html+='<div class="post-actions"><div class="action-left">';
     html+='<button class="action-btn like-btn'+(state.likedPosts[i]?' liked':'')+'" data-post-id="'+i+'"><i class="'+(state.likedPosts[i]?'fas':'far')+' fa-thumbs-up"></i><span class="like-count">'+likes+'</span></button>';
-    html+='<button class="action-btn dislike-btn" data-post-id="'+i+'"><i class="'+(state.dislikedPosts[i]?'fas':'far')+' fa-thumbs-down"></i><span class="dislike-count">0</span></button>';
+    html+='<button class="action-btn dislike-btn" data-post-id="'+i+'"><i class="'+(state.dislikedPosts[i]?'fas':'far')+' fa-thumbs-down"></i><span class="dislike-count">'+dislikes+'</span></button>';
     var myReaction=_postReactions[i];
     html+='<button class="action-btn react-btn" data-post-id="'+i+'" title="React">'+(myReaction?'<span style="font-size:16px;">'+myReaction+'</span>':'<i class="far fa-face-smile"></i>')+'</button>';
     html+='<button class="action-btn comment-btn"><i class="far fa-comment"></i><span>'+commentCount+'</span></button>';
@@ -6529,31 +6531,43 @@ function bindPostEvents(){
         });
     });
 
-    // Dislike buttons
+    // Dislike buttons — persist via likes table with target_type='post_dislike'
     _$$('.dislike-btn').forEach(function(btn){
         if(btn.dataset._disBound) return; btn.dataset._disBound='1';
         btn.addEventListener('click', async function(){
             var postId=btn.getAttribute('data-post-id');
             var countEl=btn.querySelector('.dislike-count');
-            var count=parseInt(countEl.textContent);
+            var count=parseInt(countEl.textContent)||0;
             var had=!!(state.likedPosts[postId]||state.dislikedPosts[postId]||_postReactions[postId]);
+            var isUUID=/^[0-9a-f]{8}-/.test(postId);
             if(state.dislikedPosts[postId]){
+                // Un-dislike
                 delete state.dislikedPosts[postId];
                 btn.classList.remove('disliked');
                 btn.querySelector('i').className='far fa-thumbs-down';
                 countEl.textContent=Math.max(0,count-1);
+                if(isUUID&&currentUser){try{await sbToggleLike(currentUser.id,'post_dislike',postId);}catch(e){console.error('Dislike toggle:',e);}}
             } else {
-                // Clear like if active
+                // Clear existing like if active (locally + server)
                 if(state.likedPosts[postId]){
                     var lb=btn.closest('.action-left').querySelector('.like-btn');var lc=lb.querySelector('.like-count');lc.textContent=Math.max(0,parseInt(lc.textContent)-1);delete state.likedPosts[postId];lb.classList.remove('liked');lb.querySelector('i').className='far fa-thumbs-up';
-                    // Remove Supabase like
-                    var isUUID=/^[0-9a-f]{8}-/.test(postId);
                     if(isUUID&&currentUser){try{await sbToggleLike(currentUser.id,'post',postId);}catch(e){}}
                 }
                 state.dislikedPosts[postId]=true;
                 btn.classList.add('disliked');
                 btn.querySelector('i').className='fas fa-thumbs-down';
                 countEl.textContent=count+1;
+                // Persist dislike — rollback UI if it fails
+                if(isUUID&&currentUser){
+                    try{await sbToggleLike(currentUser.id,'post_dislike',postId);}
+                    catch(e){
+                        console.error('Dislike persist:',e);
+                        delete state.dislikedPosts[postId];
+                        btn.classList.remove('disliked');
+                        btn.querySelector('i').className='far fa-thumbs-down';
+                        countEl.textContent=count;
+                    }
+                }
             }
             var has=!!(state.likedPosts[postId]||state.dislikedPosts[postId]||_postReactions[postId]);
             if(!isOwnPost(postId)&&!had&&has){_earnCoins('postLike',1,postId).then(function(ok){if(ok)showCoinEarnAnimation(btn,1);});}

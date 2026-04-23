@@ -333,13 +333,15 @@ async function sbGetFeed(limit = 50, offset = 0) {
   // Fetch like counts and share counts in parallel
   await Promise.all((data || []).map(async function(post) {
     try {
-      var [likeRes, shareRes] = await Promise.all([
+      var [likeRes, dislikeRes, shareRes] = await Promise.all([
         sb.from('likes').select('*', { count: 'exact', head: true }).eq('target_type', 'post').eq('target_id', post.id),
+        sb.from('likes').select('*', { count: 'exact', head: true }).eq('target_type', 'post_dislike').eq('target_id', post.id),
         sb.from('posts').select('*', { count: 'exact', head: true }).eq('shared_post_id', post.id)
       ]);
       post.like_count = likeRes.count || 0;
+      post.dislike_count = dislikeRes.count || 0;
       post.share_count = shareRes.count || 0;
-    } catch(e) { post.like_count = 0; post.share_count = 0; }
+    } catch(e) { post.like_count = 0; post.dislike_count = 0; post.share_count = 0; }
   }));
   return _sanitizeData(data);
 }
@@ -368,12 +370,13 @@ async function sbGetFollowingFeed(userId, limit = 50, offset = 0) {
   // Fetch like counts in parallel (no FK between posts and likes)
   await Promise.all((data || []).map(async function(post) {
     try {
-      const { count } = await sb.from('likes')
-        .select('*', { count: 'exact', head: true })
-        .eq('target_type', 'post')
-        .eq('target_id', post.id);
-      post.like_count = count || 0;
-    } catch(e) { post.like_count = 0; }
+      const [likeRes, dislikeRes] = await Promise.all([
+        sb.from('likes').select('*', { count: 'exact', head: true }).eq('target_type', 'post').eq('target_id', post.id),
+        sb.from('likes').select('*', { count: 'exact', head: true }).eq('target_type', 'post_dislike').eq('target_id', post.id)
+      ]);
+      post.like_count = likeRes.count || 0;
+      post.dislike_count = dislikeRes.count || 0;
+    } catch(e) { post.like_count = 0; post.dislike_count = 0; }
   }));
   return _sanitizeData(data);
 }
@@ -402,13 +405,15 @@ async function sbGetUserPosts(userId, limit = 20, offset = 0) {
   // Fetch like counts in parallel
   await Promise.all((data || []).map(async function(post) {
     try {
-      var [likeRes, shareRes] = await Promise.all([
+      var [likeRes, dislikeRes, shareRes] = await Promise.all([
         sb.from('likes').select('*', { count: 'exact', head: true }).eq('target_type', 'post').eq('target_id', post.id),
+        sb.from('likes').select('*', { count: 'exact', head: true }).eq('target_type', 'post_dislike').eq('target_id', post.id),
         sb.from('posts').select('*', { count: 'exact', head: true }).eq('shared_post_id', post.id)
       ]);
       post.like_count = likeRes.count || 0;
+      post.dislike_count = dislikeRes.count || 0;
       post.share_count = shareRes.count || 0;
-    } catch(e) { post.like_count = 0; post.share_count = 0; }
+    } catch(e) { post.like_count = 0; post.dislike_count = 0; post.share_count = 0; }
   }));
   return _sanitizeData(data);
 }
@@ -1004,11 +1009,12 @@ async function sbGetGroupPosts(groupId, limit = 50) {
     .limit(limit);
   if (error) throw error;
   for (const post of (data || [])) {
-    const { count } = await sb.from('likes')
-      .select('*', { count: 'exact', head: true })
-      .eq('target_type', 'post')
-      .eq('target_id', post.id);
-    post.like_count = count || 0;
+    const [likeRes, dislikeRes] = await Promise.all([
+      sb.from('likes').select('*', { count: 'exact', head: true }).eq('target_type', 'post').eq('target_id', post.id),
+      sb.from('likes').select('*', { count: 'exact', head: true }).eq('target_type', 'post_dislike').eq('target_id', post.id)
+    ]);
+    post.like_count = likeRes.count || 0;
+    post.dislike_count = dislikeRes.count || 0;
   }
   return _sanitizeData(data || []);
 }
