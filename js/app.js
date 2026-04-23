@@ -6860,26 +6860,69 @@ $('#openPostModal').addEventListener('click',function(){
         document.getElementById('cpmPollOptions').appendChild(div);
     });
     // Schedule post handler
+    var SCHEDULED_POST_CAP=5;
     document.getElementById('cpmScheduleBtn').addEventListener('click',function(){
+        if((_scheduledPosts||[]).length>=SCHEDULED_POST_CAP){
+            showToast('Limit reached — you can have at most '+SCHEDULED_POST_CAP+' scheduled posts.');
+            return;
+        }
         var sh='<div class="modal-header"><h3><i class="far fa-clock" style="color:var(--primary);margin-right:8px;"></i>Schedule Post</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
-        sh+='<div class="modal-body"><p style="font-size:13px;color:var(--gray);margin-bottom:12px;">Choose when to publish this post:</p>';
-        sh+='<input type="datetime-local" id="scheduleDateTime" class="post-input" style="width:100%;margin-bottom:16px;">';
+        sh+='<div class="modal-body"><p style="font-size:13px;color:var(--gray);margin-bottom:10px;">Choose when to publish this post:</p>';
+        sh+='<input type="datetime-local" id="scheduleDateTime" class="post-input" style="width:100%;margin-bottom:12px;">';
+        sh+='<p style="font-size:11px;color:var(--gray);margin-bottom:14px;"><i class="fas fa-info-circle"></i> Up to '+SCHEDULED_POST_CAP+' scheduled posts ('+(_scheduledPosts||[]).length+' used). Posts publish when BlipVibe is open in any tab at or after the chosen time.</p>';
         sh+='<div class="modal-actions"><button class="btn btn-outline modal-close">Cancel</button><button class="btn btn-primary" id="confirmSchedule">Schedule</button></div></div>';
         showModal(sh);
-        // Set min to now
+        // Set min to now (local-time-adjusted for the input)
         var now=new Date();now.setMinutes(now.getMinutes()-now.getTimezoneOffset());
         document.getElementById('scheduleDateTime').min=now.toISOString().slice(0,16);
-        document.getElementById('confirmSchedule').addEventListener('click',function(){
+        document.getElementById('confirmSchedule').addEventListener('click',async function(){
             var dt=document.getElementById('scheduleDateTime').value;
             if(!dt){showToast('Pick a date and time');return;}
             var schedTime=new Date(dt).getTime();
             if(schedTime<=Date.now()){showToast('Must be in the future');return;}
             var text=document.getElementById('cpmText')?document.getElementById('cpmText').value.trim():'';
-            if(!text){showToast('Write something first');return;}
-            _scheduledPosts.push({content:text,scheduledAt:schedTime,createdAt:Date.now()});
+            if(!text && !mediaList.length){showToast('Write something or attach media first');return;}
+            if((_scheduledPosts||[]).length>=SCHEDULED_POST_CAP){
+                showToast('Limit reached — max '+SCHEDULED_POST_CAP+' scheduled posts.');
+                return;
+            }
+            var btn=this;btn.disabled=true;btn.textContent='Uploading media...';
+            // Upload any attached media NOW so the scheduled record only stores URLs
+            var mediaUrls=[];
+            try{
+                for(var mi=0;mi<mediaList.length;mi++){
+                    var m=mediaList[mi];
+                    var file=m.file;
+                    if(!file && m.src && m.src.indexOf('data:')===0){
+                        var resp=await fetch(m.src);
+                        var blob=await resp.blob();
+                        file=new File([blob],'sched-'+Date.now()+'-'+mi+(m.type==='video'?'.mp4':'.jpg'),{type:blob.type});
+                    }
+                    if(!file) continue;
+                    var u=m.type==='video'
+                        ? await sbUploadPostVideo(currentUser.id,file)
+                        : await sbUploadPostImage(currentUser.id,file);
+                    if(u) mediaUrls.push(u);
+                }
+            }catch(e){
+                console.error('Scheduled media upload:',e);
+                showToast('Media upload failed — post not scheduled.');
+                btn.disabled=false;btn.textContent='Schedule';
+                return;
+            }
+            _scheduledPosts.push({
+                content:text,
+                scheduledAt:schedTime,
+                createdAt:Date.now(),
+                imageUrl: mediaUrls[0]||null,
+                mediaUrls: mediaUrls.length>1 ? mediaUrls : null,
+                location: settings.showLocation?userLocation:null
+            });
             persistScheduled();
             closeModal();
             showToast('Post scheduled for '+new Date(schedTime).toLocaleString());
+            // Also close the create-post modal since the draft is now handed off
+            setTimeout(closeModal,50);
         });
     });
     var mediaList=[];
@@ -11731,9 +11774,19 @@ function isNotifEnabled(type){
 // Checked when someone tries to message via startConversation
 
 // ======================== SCHEDULED POSTS ========================
+// Persisted via skin_data JSON; runs while the user has the app open. Capped at
+// 5 pending posts per user (enforced at schedule time in the Create Post modal).
 var _scheduledPosts=[];
-// _scheduledPosts loaded from skin_data via _applySkinDataFromCache
-function persistScheduled(){saveState();}
+var SCHEDULED_MAX=5;
+// _scheduledPosts loaded from skin_data via _applySkinDataFromCache. Keep only
+// the oldest 5 pending entries if legacy data has more.
+function persistScheduled(){
+    if((_scheduledPosts||[]).length>SCHEDULED_MAX){
+        _scheduledPosts.sort(function(a,b){return (a.scheduledAt||0)-(b.scheduledAt||0);});
+        _scheduledPosts=_scheduledPosts.slice(0,SCHEDULED_MAX);
+    }
+    saveState();
+}
 function checkScheduledPosts(){
     if(!currentUser||!_scheduledPosts.length) return;
     var now=Date.now();
@@ -11743,13 +11796,17 @@ function checkScheduledPosts(){
     _scheduledPosts=remaining;
     persistScheduled();
     toPublish.forEach(function(s){
-        sbCreatePost(currentUser.id,s.content,null,null,null,null,null).then(function(){
+        var imageUrl = s.imageUrl || null;
+        var mediaUrls = (s.mediaUrls && s.mediaUrls.length) ? s.mediaUrls : null;
+        var loc = s.location || null;
+        sbCreatePost(currentUser.id, s.content || '', imageUrl, null, null, loc, mediaUrls).then(function(){
             showToast('Scheduled post published!');
             generatePosts();
-        }).catch(function(e){console.error('Scheduled post publish:',e);});
+        }).catch(function(e){console.error('Scheduled post publish:',e);showToast('A scheduled post failed to publish.');});
     });
 }
-// Check scheduled posts every 30s
+// Check scheduled posts every 30s AND once immediately on load (covers the
+// case where the user reopens the tab after the schedule time has passed).
 setInterval(checkScheduledPosts,30000);
 
 // ======================== REPORT MODAL ========================
