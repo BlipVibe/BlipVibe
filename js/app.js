@@ -138,27 +138,29 @@ function _captureVideoThumb(file){
             var v=document.createElement('video');
             v.preload='auto';
             v.muted=true;
+            v.defaultMuted=true;
             v.playsInline=true;
-            v.crossOrigin='anonymous';
+            v.setAttribute('playsinline','');
+            v.setAttribute('webkit-playsinline','');
+            v.setAttribute('muted','');
+            // iOS Safari: the <video> needs to actually be in the DOM (not just
+            // disconnected) for the decoder to fire reliably. Stash it 1px off-screen.
+            v.style.cssText='position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;';
+            document.body.appendChild(v);
             v.src=url;
             var done=false;
             function _finish(result){
                 if(done) return; done=true;
                 try{URL.revokeObjectURL(url);}catch(e){}
+                try{v.pause();}catch(e){}
+                try{v.removeAttribute('src'); v.load();}catch(e){}
+                try{document.body.removeChild(v);}catch(e){}
                 resolve(result);
             }
-            // Hard 4s budget — long enough to load metadata + paint, short enough not to stall the UI
-            var timer=setTimeout(function(){_finish(null);},4000);
-            v.addEventListener('error',function(){clearTimeout(timer);_finish(null);});
-            v.addEventListener('loadedmetadata',function(){
-                // Seek a hair past the start so the first frame is decoded
-                try{v.currentTime=Math.min(0.1, (v.duration||1)*0.05);}catch(e){clearTimeout(timer);_finish(null);}
-            });
-            v.addEventListener('seeked',function(){
-                clearTimeout(timer);
-                if(!v.videoWidth||!v.videoHeight){_finish(null);return;}
+            function _grab(){
+                if(done) return false;
+                if(!v.videoWidth||!v.videoHeight) return false;
                 var c=document.createElement('canvas');
-                // Cap at 480px on the long edge — keeps the preview light
                 var maxEdge=480;
                 var w=v.videoWidth, h=v.videoHeight;
                 if(w>h){if(w>maxEdge){h=Math.round(h*(maxEdge/w));w=maxEdge;}}
@@ -167,8 +169,35 @@ function _captureVideoThumb(file){
                 try{
                     c.getContext('2d').drawImage(v,0,0,w,h);
                     var dataUrl=c.toDataURL('image/jpeg',0.8);
-                    _finish(dataUrl||null);
-                }catch(e){_finish(null);}
+                    if(dataUrl && dataUrl.length>200){_finish(dataUrl);return true;}
+                }catch(e){}
+                return false;
+            }
+            // 8s budget — HEVC iPhone clips can take a moment to decode the first frame
+            var timer=setTimeout(function(){
+                // Last-ditch: try grabbing whatever's there
+                if(!_grab()) _finish(null);
+            },8000);
+            v.addEventListener('error',function(){clearTimeout(timer);_finish(null);});
+            v.addEventListener('loadeddata',function(){
+                // Some browsers paint frame 0 here without needing a seek
+                if(_grab()){clearTimeout(timer);}
+            });
+            v.addEventListener('loadedmetadata',function(){
+                // Trigger a small play→pause cycle: on iOS Safari this is what
+                // forces HEVC decode of the first frame, since seeking alone often
+                // doesn't paint anything decodable to canvas.
+                var p=v.play();
+                if(p && typeof p.catch==='function'){p.catch(function(){});}
+                setTimeout(function(){
+                    try{v.pause();}catch(e){}
+                    if(_grab()){clearTimeout(timer);return;}
+                    // Final fallback: nudge to 0.1s and try once more
+                    try{v.currentTime=Math.min(0.1,(v.duration||1)*0.05);}catch(e){}
+                },350);
+            });
+            v.addEventListener('seeked',function(){
+                if(_grab()) clearTimeout(timer);
             });
         }catch(e){resolve(null);}
     });
