@@ -6166,8 +6166,12 @@ function buildMediaGrid(imgs){
     var shown=imgs.slice(0,5);var extra=imgs.length-5;
     shown.forEach(function(src,i){
         var isVid=isVideoUrl(src);
+        // For video thumbnails: preload="metadata" + #t=0.5 alone is unreliable
+        // (many browsers, including iOS Safari WebView, never paint the frame and
+        // show a black box). Force the seek via onloadedmetadata so the frame at
+        // 0.5s (or first frame for very short clips) actually renders as a poster.
         var inner=isVid
-            ?'<video src="'+src+'#t=0.5" preload="metadata" muted playsinline></video><div class="pm-play-overlay"><i class="fas fa-play"></i></div>'
+            ?'<video src="'+src+'#t=0.5" preload="metadata" muted playsinline onloadedmetadata="this.currentTime=Math.min(0.5,(this.duration||1)-0.01);"></video><div class="pm-play-overlay"><i class="fas fa-play"></i></div>'
             :'<img src="'+src+'" alt="Post photo">';
         if(i===4&&extra>0){
             h+='<div class="pm-thumb pm-more" data-pgid="'+pid+'">'+inner+'<div class="pm-more-overlay">+'+extra+'</div></div>';

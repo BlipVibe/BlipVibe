@@ -1,5 +1,15 @@
 [
   {
+    "version": "0.6.6",
+    "date": "2026-04-25",
+    "added": [],
+    "changed": [],
+    "fixed": [
+      "\ud83c\udfac Uploaded videos in posts now reliably show a thumbnail frame instead of an empty/black box \u2014 caused by browsers (especially iOS Safari WebView) not painting the #t=0.5 seek frame from preload=\"metadata\" alone",
+      "\ud83d\udcd0 Single-video posts no longer collapse to 0px height before video metadata loads"
+    ]
+  },
+  {
     "version": "0.6.5",
     "date": "2026-04-19",
     "added": [

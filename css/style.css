@@ -486,8 +486,10 @@ img{display:block;}
 .pm-play-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;}
 .pm-play-overlay i{font-size:32px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.5);opacity:.85;}
 .pm-count-1{grid-template-columns:1fr;}
-.pm-count-1 .pm-thumb{max-height:500px;}
+.pm-count-1 .pm-thumb{max-height:500px;min-height:240px;}
 .pm-count-1 .pm-thumb img,.pm-count-1 .pm-thumb video{object-fit:contain;object-position:center;background:#000;height:auto;max-height:500px;}
+/* Fallback so a single-video post (height:auto on <video>) doesn't collapse to ~0px before metadata loads */
+.pm-count-1 .pm-thumb video{min-height:240px;}
 .pm-count-2{grid-template-columns:1fr 1fr;}
 .pm-count-2 .pm-thumb{height:280px;}
 .pm-count-3{grid-template-columns:1fr 1fr;}
