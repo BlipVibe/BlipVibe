@@ -127,6 +127,53 @@ async function getKlipyTrending(perPage){
     }catch(e){console.error('Klipy trending error:',e);return[];}
 }
 
+// Try to capture a thumbnail frame from a video File. Resolves with a data URL
+// on success, or null if the browser can't paint a frame (HEVC/AV1 on some
+// browsers, etc.). Used by the post creator and group post creator so the
+// preview tile shows an actual thumbnail instead of an empty/broken <video>.
+function _captureVideoThumb(file){
+    return new Promise(function(resolve){
+        try{
+            var url=URL.createObjectURL(file);
+            var v=document.createElement('video');
+            v.preload='auto';
+            v.muted=true;
+            v.playsInline=true;
+            v.crossOrigin='anonymous';
+            v.src=url;
+            var done=false;
+            function _finish(result){
+                if(done) return; done=true;
+                try{URL.revokeObjectURL(url);}catch(e){}
+                resolve(result);
+            }
+            // Hard 4s budget — long enough to load metadata + paint, short enough not to stall the UI
+            var timer=setTimeout(function(){_finish(null);},4000);
+            v.addEventListener('error',function(){clearTimeout(timer);_finish(null);});
+            v.addEventListener('loadedmetadata',function(){
+                // Seek a hair past the start so the first frame is decoded
+                try{v.currentTime=Math.min(0.1, (v.duration||1)*0.05);}catch(e){clearTimeout(timer);_finish(null);}
+            });
+            v.addEventListener('seeked',function(){
+                clearTimeout(timer);
+                if(!v.videoWidth||!v.videoHeight){_finish(null);return;}
+                var c=document.createElement('canvas');
+                // Cap at 480px on the long edge — keeps the preview light
+                var maxEdge=480;
+                var w=v.videoWidth, h=v.videoHeight;
+                if(w>h){if(w>maxEdge){h=Math.round(h*(maxEdge/w));w=maxEdge;}}
+                else{if(h>maxEdge){w=Math.round(w*(maxEdge/h));h=maxEdge;}}
+                c.width=w;c.height=h;
+                try{
+                    c.getContext('2d').drawImage(v,0,0,w,h);
+                    var dataUrl=c.toDataURL('image/jpeg',0.8);
+                    _finish(dataUrl||null);
+                }catch(e){_finish(null);}
+            });
+        }catch(e){resolve(null);}
+    });
+}
+
 // Reusable GIF picker modal — opens a Klipy-backed grid, calls onPick(url)
 // with the selected GIF's full URL. Used by the post creator; comments and
 // DMs have their own inline pickers already.
@@ -5264,11 +5311,41 @@ function openGroupPostModal(group){
     var zone=document.getElementById('gvCpmMediaZone'),grid=document.getElementById('gvCpmGrid'),dropZone=document.getElementById('gvCpmDropZone'),fileInput=document.getElementById('gvCpmFileInput');
     dropZone.addEventListener('click',function(){fileInput.click();});
     function gvAddFilesToMedia(files){
-        Array.from(files).forEach(function(f){var isV=f.type.startsWith('video/');if(isV){mediaList.push({src:URL.createObjectURL(f),type:'video',file:f});renderGrid();}else{var r=new FileReader();r.onload=function(e){mediaList.push({src:e.target.result,type:'image',file:f});renderGrid();};r.readAsDataURL(f);}});
+        Array.from(files).forEach(function(f){
+            var isV=f.type.startsWith('video/');
+            if(isV){
+                var entry={src:URL.createObjectURL(f),type:'video',file:f,previewSrc:null};
+                mediaList.push(entry);
+                renderGrid();
+                _captureVideoThumb(f).then(function(dataUrl){
+                    if(dataUrl){entry.previewSrc=dataUrl;renderGrid();}
+                });
+            } else {
+                var r=new FileReader();
+                r.onload=function(e){mediaList.push({src:e.target.result,type:'image',file:f});renderGrid();};
+                r.readAsDataURL(f);
+            }
+        });
     }
     document.getElementById('gvCpmCameraBtn').addEventListener('click',function(){showCameraMenu(this,fileInput,gvAddFilesToMedia);});
     function renderGrid(){
-        grid.innerHTML='';mediaList.forEach(function(m,i){var t=document.createElement('div');t.className='cpm-thumb';t.innerHTML=(m.type==='video'?'<video src="'+m.src+'#t=0.5" preload="metadata" muted></video>':'<img src="'+m.src+'">')+'<button class="remove-thumb" data-idx="'+i+'"><i class="fas fa-times"></i></button>';grid.appendChild(t);});
+        grid.innerHTML='';
+        mediaList.forEach(function(m,i){
+            var t=document.createElement('div');t.className='cpm-thumb';
+            var inner;
+            if(m.type==='video'){
+                if(m.previewSrc){
+                    inner='<img src="'+m.previewSrc+'"><div class="cpm-thumb-play" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;color:#fff;font-size:22px;text-shadow:0 1px 4px rgba(0,0,0,.7);"><i class="fas fa-play-circle"></i></div>';
+                } else {
+                    var label=(m.file&&m.file.name)?escapeHtml(m.file.name.replace(/^.*[\\/]/,'')):'Video';
+                    inner='<div class="cpm-thumb-fallback" style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;background:#1f2937;color:#fff;text-align:center;padding:8px;box-sizing:border-box;"><i class="fas fa-film" style="font-size:24px;margin-bottom:4px;"></i><span style="font-size:10px;line-height:1.2;word-break:break-all;max-width:100%;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">'+label+'</span></div>';
+                }
+            } else {
+                inner='<img src="'+m.src+'">';
+            }
+            t.innerHTML=inner+'<button class="remove-thumb" data-idx="'+i+'"><i class="fas fa-times"></i></button>';
+            grid.appendChild(t);
+        });
         zone.classList.toggle('has-media',mediaList.length>0);
         grid.querySelectorAll('.remove-thumb').forEach(function(btn){btn.addEventListener('click',function(e){e.stopPropagation();mediaList.splice(parseInt(btn.dataset.idx),1);renderGrid();});});
     }
@@ -7009,8 +7086,14 @@ $('#openPostModal').addEventListener('click',function(){
         Array.from(files).forEach(function(f){
             var isV=f.type.startsWith('video/');
             if(isV){
-                mediaList.push({src:URL.createObjectURL(f),type:'video',file:f});
+                var entry={src:URL.createObjectURL(f),type:'video',file:f,previewSrc:null};
+                mediaList.push(entry);
                 renderGrid();
+                // Try to capture a real thumbnail frame asynchronously. If it works,
+                // re-render so the tile updates from "Video selected" to a real frame.
+                _captureVideoThumb(f).then(function(dataUrl){
+                    if(dataUrl){entry.previewSrc=dataUrl;renderGrid();}
+                });
             } else {
                 var r=new FileReader();
                 r.onload=function(e){mediaList.push({src:e.target.result,type:'image',file:f});renderGrid();};
@@ -7040,7 +7123,20 @@ $('#openPostModal').addEventListener('click',function(){
         grid.innerHTML='';
         mediaList.forEach(function(m,i){
             var thumb=document.createElement('div');thumb.className='cpm-thumb';
-            thumb.innerHTML=(m.type==='video'?'<video src="'+m.src+'#t=0.5" preload="metadata" muted></video>':'<img src="'+m.src+'">')+'<button class="remove-thumb" data-idx="'+i+'"><i class="fas fa-times"></i></button>'+(m.type!=='video'?'<button class="alt-text-btn" data-idx="'+i+'" title="Add alt text">ALT</button>':'');
+            var inner;
+            if(m.type==='video'){
+                if(m.previewSrc){
+                    // Captured frame from the video — overlay a play badge
+                    inner='<img src="'+m.previewSrc+'"><div class="cpm-thumb-play" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;color:#fff;font-size:22px;text-shadow:0 1px 4px rgba(0,0,0,.7);"><i class="fas fa-play-circle"></i></div>';
+                } else {
+                    // Fallback tile — frame couldn't be decoded (HEVC on some browsers, etc.)
+                    var label=(m.file&&m.file.name)?escapeHtml(m.file.name.replace(/^.*[\\/]/,'')):'Video';
+                    inner='<div class="cpm-thumb-fallback" style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;background:#1f2937;color:#fff;text-align:center;padding:8px;box-sizing:border-box;"><i class="fas fa-film" style="font-size:24px;margin-bottom:4px;"></i><span style="font-size:10px;line-height:1.2;word-break:break-all;max-width:100%;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">'+label+'</span></div>';
+                }
+            } else {
+                inner='<img src="'+m.src+'">';
+            }
+            thumb.innerHTML=inner+'<button class="remove-thumb" data-idx="'+i+'"><i class="fas fa-times"></i></button>'+(m.type!=='video'?'<button class="alt-text-btn" data-idx="'+i+'" title="Add alt text">ALT</button>':'');
             grid.appendChild(thumb);
         });
         zone.classList.toggle('has-media',mediaList.length>0);
