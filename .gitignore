@@ -10,3 +10,30 @@ android/.idea/
 # Local-only QA docs (not for public repo)
 BlipVibe_QA_Requirements.xlsx
 _gen_requirements.py
+
+# --- Release signing & secrets (NEVER commit) ---
+# Android upload keystore + its passwords
+*.jks
+*.keystore
+android/keystore.properties
+# iOS / Apple signing artifacts
+*.p12
+*.mobileprovision
+*.cer
+*.certSigningRequest
+ios/App/ExportOptions.plist
+
+# --- Build outputs / per-user IDE state ---
+android/local.properties
+android/.gradle/
+android/build/
+android/app/build/
+ios/App/build/
+ios/App/Pods/
+ios/App/App.xcworkspace/xcuserdata/
+ios/App/App.xcodeproj/xcuserdata/
+ios/App/App.xcodeproj/project.xcworkspace/xcuserdata/
+
+# --- Local environment files ---
+.env
+.env.local
