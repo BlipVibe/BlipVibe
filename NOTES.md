@@ -1506,9 +1506,10 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - **Files changed:** `js/app.js` (`showStickyError` helper + 2 catch-site updates)
 - **Diagnostic note:** Added because mobile uploads of video were reportedly producing posts with no video and no visible error. The sticky banner makes the actual reason visible. Once the underlying mobile-only upload failure is identified and fixed, this banner stays useful for any future upload error.
 
-## Video Upload Size Limit Raised to 100MB (v0.6.6 — 2026-04-26)
+## Video Upload Size Limit Raised to 500MB (v0.6.6 — 2026-04-26)
 - **Symptom:** Mobile users uploading typical iPhone videos (e.g. `IMG_7464.MOV` at 60MB) saw the post publish with no video. The sticky error banner from the previous change revealed the cause: `Video: file too large (60.0MB). Maximum: 50MB.`
-- **Why iPhone clips hit this:** iPhones record `.MOV` (HEVC) at high bitrate by default. Even ~15-second clips routinely exceed 50MB.
-- **Fix (client):** `sbUploadPostVideo` in `js/supabase.js` raised from 50MB → 100MB. Image limit (`sbUploadPostImage`) unchanged at 10MB.
-- **Required (server) — must do once in the Supabase dashboard:** Storage > `posts` bucket > Edit bucket > set "File size limit" to ≥ 100MB (Supabase free tier default is 50MB). Without this dashboard change, uploads >50MB will still 413 server-side with a clearer "Payload too large" error.
-- **Files changed:** `js/supabase.js` (constant change + comment about bucket cap)
+- **Why iPhone clips hit this:** iPhones record `.MOV` (HEVC) at high bitrate by default. Even ~15-second clips routinely exceed 50MB; full-length 4K clips can run hundreds of megabytes.
+- **Fix (client):** `sbUploadPostVideo` in `js/supabase.js` raised from 50MB → 500MB. Image limit (`sbUploadPostImage`) unchanged at 10MB.
+- **Required (server) — must run once:** the `posts` storage bucket has its own `file_size_limit`. Run `supabase/raise-posts-bucket-size.sql` in the Supabase SQL editor (project owner / service role) — it sets the bucket's `file_size_limit` to 500MB. Alternative: set it via the dashboard under Storage > `posts` > Edit bucket > File size limit. Without this server-side change, uploads >50MB still 413 server-side.
+- **Plan tier:** Supabase Free tier hard-caps per-file uploads at 50MB regardless of bucket setting. You must be on Pro or higher for >50MB. BlipVibe is on a paid plan so this is fine.
+- **Files changed:** `js/supabase.js` (constant + comment), `supabase/raise-posts-bucket-size.sql` (new migration)

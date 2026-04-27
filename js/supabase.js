@@ -900,12 +900,15 @@ async function sbUploadPostImage(userId, file) {
 }
 
 async function sbUploadPostVideo(userId, file) {
-  // 100MB covers most iPhone clips at default recording settings.
+  // 500MB allows full-length / 4K iPhone clips without re-encoding.
   // NOTE: this client-side limit must be <= the Supabase Storage bucket's
-  // file_size_limit. If the bucket cap is lower, the upload will still
-  // 413 server-side. Configure the bucket in the Supabase dashboard under
-  // Storage > posts > Edit bucket > File size limit.
-  validateUploadFile(file, { maxSize: 100 * 1024 * 1024, label: 'Video' });
+  // file_size_limit. The `posts` bucket cap must also be 500MB or higher,
+  // otherwise the upload will still 413 server-side. Run the migration in
+  // supabase/raise-posts-bucket-size.sql, or set the limit manually in the
+  // dashboard under Storage > posts > Edit bucket > File size limit.
+  // Supabase Free tier caps per-file uploads at 50MB regardless of bucket
+  // setting — you must be on Pro or higher for >50MB videos.
+  validateUploadFile(file, { maxSize: 500 * 1024 * 1024, label: 'Video' });
   const ext = file.name.split('.').pop();
   const path = `${userId}/vid-${Date.now()}.${ext}`;
   return sbUploadFile('posts', path, file);
