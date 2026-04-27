@@ -5267,7 +5267,7 @@ function openGroupPostModal(group){
                     if(mItem.type==='video') url=await sbUploadPostVideo(currentUser.id,file);
                     else url=await sbUploadPostImage(currentUser.id,file);
                     if(url){allMediaUrls.push(url);if(!imageUrl)imageUrl=url;}
-                }catch(e){console.error('Group media upload:',e);showToast('Upload failed: '+(e.message||''));}
+                }catch(e){console.error('Group media upload:',e);showStickyError('Upload failed ('+(mItem.type||'media')+' "'+(file&&file.name||'?')+'", '+(file?Math.round(file.size/1024)+'KB':'no file')+'): '+(e.message||e.error_description||e.statusCode||JSON.stringify(e)));}
             }
             var gPost=await sbCreatePost(currentUser.id,text||'',imageUrl,group.id,null,null,allMediaUrls.length>1?allMediaUrls:null);
             if(gPost) notifyMentionedUsers(text,gPost.id);
@@ -7219,7 +7219,7 @@ $('#openPostModal').addEventListener('click',function(){
                     if(mItem.type === 'video') url = await sbUploadPostVideo(currentUser.id, file);
                     else url = await sbUploadPostImage(currentUser.id, file);
                     if(url){allImageUrls.push(url);if(!imageUrl)imageUrl=url;}
-                } catch(e) { console.error('Media upload ' + mi + ':', e); showToast('Upload failed: '+(e.message||'')); }
+                } catch(e) { console.error('Media upload ' + mi + ':', e); showStickyError('Upload failed ('+(mItem.type||'media')+' "'+(file&&file.name||'?')+'", '+(file?Math.round(file.size/1024)+'KB':'no file')+'): '+(e.message||e.error_description||e.statusCode||JSON.stringify(e))); }
             }
         }
 
@@ -12168,6 +12168,24 @@ function showToast(msg){
     document.body.appendChild(t);
     requestAnimationFrame(function(){t.classList.add('show');});
     setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove();},300);},2500);
+}
+// Sticky error banner that does NOT auto-dismiss. Use for upload failures or
+// other errors the user really needs to read (especially on mobile where a
+// 2.5s toast can blink past unnoticed). Tap the banner or the × to dismiss.
+function showStickyError(msg){
+    // Replace any existing sticky error so they don't stack.
+    var existing=document.getElementById('stickyErrorBanner');
+    if(existing) existing.remove();
+    var t=document.createElement('div');
+    t.id='stickyErrorBanner';
+    t.style.cssText='position:fixed;top:env(safe-area-inset-top,0);left:0;right:0;background:#dc2626;color:#fff;padding:12px 36px 12px 16px;z-index:99999;font-size:14px;line-height:1.4;box-shadow:0 2px 8px rgba(0,0,0,.3);word-wrap:break-word;cursor:pointer;';
+    t.textContent=msg;
+    var x=document.createElement('span');
+    x.textContent='×';
+    x.style.cssText='position:absolute;top:8px;right:12px;font-size:22px;line-height:1;font-weight:700;';
+    t.appendChild(x);
+    t.addEventListener('click',function(){t.remove();});
+    document.body.appendChild(t);
 }
 function showUndoToast(msg,onUndo){
     $$('.dq-toast').forEach(function(el){el.remove();});
