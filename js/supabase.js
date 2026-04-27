@@ -900,7 +900,12 @@ async function sbUploadPostImage(userId, file) {
 }
 
 async function sbUploadPostVideo(userId, file) {
-  validateUploadFile(file, { maxSize: 50 * 1024 * 1024, label: 'Video' });
+  // 100MB covers most iPhone clips at default recording settings.
+  // NOTE: this client-side limit must be <= the Supabase Storage bucket's
+  // file_size_limit. If the bucket cap is lower, the upload will still
+  // 413 server-side. Configure the bucket in the Supabase dashboard under
+  // Storage > posts > Edit bucket > File size limit.
+  validateUploadFile(file, { maxSize: 100 * 1024 * 1024, label: 'Video' });
   const ext = file.name.split('.').pop();
   const path = `${userId}/vid-${Date.now()}.${ext}`;
   return sbUploadFile('posts', path, file);

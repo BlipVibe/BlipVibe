@@ -7,7 +7,8 @@
     "fixed": [
       "\ud83c\udfac Uploaded videos in posts now reliably show a thumbnail frame instead of an empty/black box \u2014 caused by browsers (especially iOS Safari WebView) not painting the #t=0.5 seek frame from preload=\"metadata\" alone",
       "\ud83d\udcd0 Single-video posts no longer collapse to 0px height before video metadata loads",
-      "\ud83d\udea8 Failed media uploads now show a sticky red banner with the file name, size, and error message instead of a 2.5s toast that vanished before you could read it (especially on mobile)"
+      "\ud83d\udea8 Failed media uploads now show a sticky red banner with the file name, size, and error message instead of a 2.5s toast that vanished before you could read it (especially on mobile)",
+      "\ud83d\udcf9 Video upload limit raised from 50MB to 100MB so a typical iPhone clip uploads without re-encoding"
     ]
   },
   {

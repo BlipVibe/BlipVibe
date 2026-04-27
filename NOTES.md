@@ -1505,3 +1505,10 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - **Updated catch sites:** Both upload-loop catches now call `showStickyError` with a verbose message — file name, size in KB, and full error (`e.message || e.error_description || e.statusCode || JSON.stringify(e)`). `console.error` still fires for stack traces.
 - **Files changed:** `js/app.js` (`showStickyError` helper + 2 catch-site updates)
 - **Diagnostic note:** Added because mobile uploads of video were reportedly producing posts with no video and no visible error. The sticky banner makes the actual reason visible. Once the underlying mobile-only upload failure is identified and fixed, this banner stays useful for any future upload error.
+
+## Video Upload Size Limit Raised to 100MB (v0.6.6 — 2026-04-26)
+- **Symptom:** Mobile users uploading typical iPhone videos (e.g. `IMG_7464.MOV` at 60MB) saw the post publish with no video. The sticky error banner from the previous change revealed the cause: `Video: file too large (60.0MB). Maximum: 50MB.`
+- **Why iPhone clips hit this:** iPhones record `.MOV` (HEVC) at high bitrate by default. Even ~15-second clips routinely exceed 50MB.
+- **Fix (client):** `sbUploadPostVideo` in `js/supabase.js` raised from 50MB → 100MB. Image limit (`sbUploadPostImage`) unchanged at 10MB.
+- **Required (server) — must do once in the Supabase dashboard:** Storage > `posts` bucket > Edit bucket > set "File size limit" to ≥ 100MB (Supabase free tier default is 50MB). Without this dashboard change, uploads >50MB will still 413 server-side with a clearer "Payload too large" error.
+- **Files changed:** `js/supabase.js` (constant change + comment about bucket cap)
