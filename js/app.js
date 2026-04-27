@@ -338,23 +338,47 @@ document.querySelector('.login-forgot').addEventListener('click', async function
 
 // Logout handler (wired later after DOM references are set)
 function handleLogout() {
-    syncSkinDataToSupabase(true); // flush User A's data immediately
-    clearTimeout(_skinSyncTimer); // kill any pending debounce so it can't write to User B
-    _skinSyncTimer=null;
-    // Clean up all realtime subscriptions to prevent duplicate listeners on re-login
+    // Flush in-flight data and tear down timers BEFORE talking to the server,
+    // so even if signOut hangs/fails we don't keep writing or fire callbacks.
+    try{syncSkinDataToSupabase(true);}catch(e){}
+    clearTimeout(_skinSyncTimer); _skinSyncTimer=null;
     _realtimeSubs.forEach(function(ch){try{sb.removeChannel(ch);}catch(e){}});
     _realtimeSubs=[];
-    // Clear the saveState interval and last seen updater
     if(_saveStateInterval){clearInterval(_saveStateInterval);_saveStateInterval=null;}
     if(_lastSeenInterval){clearInterval(_lastSeenInterval);_lastSeenInterval=null;}
-    sbSignOut().then(function () {
+
+    // Local cleanup that ALWAYS runs, regardless of server response.
+    function _finishLogout(){
         currentUser = null;
         currentAuthUser = null;
         _initAppDone = false;
-        resetAllCustomizations();
+        try{resetAllCustomizations();}catch(e){console.error('resetAllCustomizations:',e);}
         try{sessionStorage.removeItem('blipvibe_lastPage');}catch(e){}
+        // Force-purge any stale Supabase auth tokens so a refresh can't auto-relogin
+        try{
+            Object.keys(localStorage).forEach(function(k){
+                if(k.indexOf('sb-')===0 && k.indexOf('-auth-token')!==-1) localStorage.removeItem(k);
+            });
+        }catch(e){}
         showLogin();
-    });
+    }
+
+    // Try to sign out on the server, but don't depend on success — some users
+    // have expired refresh tokens that make signOut() reject. Either way, log
+    // them out locally. Hard 4-second timeout in case the API hangs.
+    var done=false;
+    var timer=setTimeout(function(){
+        if(done) return; done=true;
+        console.warn('sbSignOut timed out — finishing logout locally.');
+        _finishLogout();
+    },4000);
+    sbSignOut()
+        .catch(function(err){console.warn('sbSignOut rejected — finishing logout anyway:',err);})
+        .then(function(){
+            if(done) return; done=true;
+            clearTimeout(timer);
+            _finishLogout();
+        });
 }
 // Reset all in-memory state and visual customizations so nothing leaks between accounts
 function resetAllCustomizations(){
