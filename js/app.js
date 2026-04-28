@@ -895,6 +895,7 @@ async function initApp() {
 
 // Listen for auth state changes
 var _pwRecoveryHandled = false;
+var _mfaChallengeInFlight = false;
 sbOnAuthChange(function (session, event) {
     // When the user clicks the password-reset link in their email, Supabase
     // creates a temporary session and fires PASSWORD_RECOVERY. Show the
@@ -909,11 +910,136 @@ sbOnAuthChange(function (session, event) {
         return;
     }
     if (session) {
-        initApp();
+        // Don't double-fire the MFA challenge if it's already up
+        if (_mfaChallengeInFlight) return;
+        // If the user has TOTP enrolled, gate initApp behind a 6-digit code.
+        // _enforceMfaIfRequired returns true if it handled the flow (either
+        // success → initApp, cancel → showLogin), false if MFA isn't required.
+        _enforceMfaIfRequired().then(function (handled) {
+            if (!handled) initApp();
+        }).catch(function (e) {
+            console.error('MFA enforcement error:', e);
+            initApp(); // Fail-open so a flaky MFA call doesn't lock anyone out
+        });
     } else {
         showLogin();
     }
 });
+
+// Returns a Promise<boolean>. Resolves true if MFA was required and the flow
+// was handled (either fully verified to AAL2, or user cancelled and was logged
+// out). Resolves false if no MFA is required and the caller should proceed.
+async function _enforceMfaIfRequired() {
+    var aal;
+    try {
+        var res = await sb.auth.mfa.getAuthenticatorAssuranceLevel();
+        aal = res && res.data;
+    } catch (e) {
+        // If the API call fails, treat as not-required (fail-open)
+        return false;
+    }
+    if (!aal) return false;
+    // Only challenge when the user has stepped UP available — currentLevel
+    // aal1 with nextLevel aal2 means they have a verified factor enrolled
+    // but haven't completed a challenge for this session.
+    if (aal.nextLevel !== 'aal2' || aal.currentLevel === 'aal2') return false;
+
+    var factorsRes;
+    try {
+        factorsRes = await sb.auth.mfa.listFactors();
+    } catch (e) {
+        return false;
+    }
+    var totp = factorsRes && factorsRes.data && factorsRes.data.totp && factorsRes.data.totp.find(function (f) { return f.status === 'verified'; });
+    if (!totp) return false; // No verified factor, nothing to challenge
+
+    _mfaChallengeInFlight = true;
+    return new Promise(function (resolve) {
+        _showMfaChallengeModal(totp, function (result) {
+            _mfaChallengeInFlight = false;
+            if (result === 'ok') {
+                initApp();
+            } else {
+                // User cancelled or failed too many times — sign out and bounce
+                sb.auth.signOut().catch(function () {});
+                showLogin();
+                if (loginError) {
+                    loginError.textContent = result === 'failed'
+                        ? 'Too many incorrect codes. Please sign in again.'
+                        : 'Two-factor authentication required. Please try again.';
+                    loginError.classList.add('show');
+                }
+            }
+            resolve(true);
+        });
+    });
+}
+
+// Shows the 6-digit TOTP challenge modal. Calls done('ok'|'cancel'|'failed').
+function _showMfaChallengeModal(totp, done) {
+    var html = '<div class="modal-header"><h3><i class="fas fa-shield-halved" style="color:var(--primary);margin-right:8px;"></i>Two-Factor Authentication</h3></div>';
+    html += '<div class="modal-body" style="text-align:center;">';
+    html += '<p style="font-size:14px;margin-bottom:16px;">Enter the 6-digit code from your authenticator app to finish signing in.</p>';
+    html += '<div class="login-field" style="margin-bottom:8px;"><input type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" id="mfaLoginCode" class="post-input" placeholder="000000" maxlength="6" style="width:100%;text-align:center;font-size:22px;letter-spacing:6px;font-family:monospace;"></div>';
+    html += '<p id="mfaLoginError" style="color:#ef4444;font-size:12px;min-height:16px;margin-bottom:8px;display:none;"></p>';
+    html += '<div class="modal-actions"><button class="btn btn-outline" id="mfaLoginCancel" style="min-width:100px;">Cancel</button><button class="btn btn-primary" id="mfaLoginVerify" style="min-width:100px;">Verify</button></div>';
+    html += '</div>';
+    showModal(html);
+    var input = document.getElementById('mfaLoginCode');
+    var verifyBtn = document.getElementById('mfaLoginVerify');
+    var cancelBtn = document.getElementById('mfaLoginCancel');
+    var errEl = document.getElementById('mfaLoginError');
+    if (input) input.focus();
+
+    var attempts = 0;
+    var MAX_ATTEMPTS = 5;
+
+    function _showErr(msg) {
+        if (!errEl) return;
+        errEl.textContent = msg;
+        errEl.style.display = 'block';
+    }
+
+    async function _verify() {
+        if (verifyBtn.disabled) return;
+        var code = (input.value || '').replace(/\D/g, '').trim();
+        if (code.length !== 6) { _showErr('Enter all 6 digits.'); return; }
+        verifyBtn.disabled = true;
+        verifyBtn.textContent = 'Verifying…';
+        try {
+            var ch = await sb.auth.mfa.challenge({ factorId: totp.id });
+            if (!ch || !ch.data) throw new Error('Could not start challenge');
+            var v = await sb.auth.mfa.verify({
+                factorId: totp.id,
+                challengeId: ch.data.id,
+                code: code
+            });
+            if (v && v.error) throw v.error;
+            // Success — session is now AAL2
+            closeModal();
+            done('ok');
+        } catch (e) {
+            attempts++;
+            verifyBtn.disabled = false;
+            verifyBtn.textContent = 'Verify';
+            input.value = '';
+            input.focus();
+            if (attempts >= MAX_ATTEMPTS) {
+                closeModal();
+                done('failed');
+                return;
+            }
+            _showErr((e && e.message) ? e.message : 'Invalid code. Try again.');
+        }
+    }
+
+    if (verifyBtn) verifyBtn.addEventListener('click', _verify);
+    if (input) input.addEventListener('keypress', function (e) { if (e.key === 'Enter') _verify(); });
+    if (cancelBtn) cancelBtn.addEventListener('click', function () {
+        closeModal();
+        done('cancel');
+    });
+}
 
 // Load real stats for the login page hero section
 (async function loadLoginStats() {
