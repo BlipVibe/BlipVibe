@@ -314,6 +314,10 @@ loginForm.addEventListener('submit', async function (e) {
     }
 });
 
+// Returns true if a string looks like an email address. Used to reject email
+// addresses being entered as a name or username during signup / edit-profile.
+function looksLikeEmail(s){return /[^\s@]+@[^\s@]+\.[^\s@]+/.test(String(s||''));}
+
 // Signup form submit
 signupForm.addEventListener('submit', async function (e) {
     e.preventDefault();
