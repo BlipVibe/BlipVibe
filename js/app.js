@@ -11887,6 +11887,9 @@ function hideTypingIndicator(){
 // ======================== STREAKS ========================
 var _streaks={};
 // _streaks loaded from skin_data via _applySkinDataFromCache
+// Per-day coin earning counters (used to enforce daily quest caps).
+// Loaded from skin_data on login, defaults to {} for new accounts.
+var _dailyCoinCounts={};
 function persistStreaks(){saveState();}
 function recordInteraction(userId){
     if(!currentUser||userId===currentUser.id) return;
