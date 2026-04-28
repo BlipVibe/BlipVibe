@@ -3696,9 +3696,15 @@ async function showProfileView(person){
 
     // Event: Back
     document.getElementById('pvBack').addEventListener('click',function(e){e.preventDefault();navigateTo('home');});
-    // Event: Edit Profile (own profile)
+    // Event: Edit Profile (own profile) — open the actual edit form, not the
+    // 'My Profile' preview modal. Programmatically clicking the home-page
+    // edit button reuses the same edit-form handler bound at #editProfileBtn.
     var pvEditBtn=document.getElementById('pvEditProfileBtn');
-    if(pvEditBtn) pvEditBtn.addEventListener('click',function(){showMyProfileModal();});
+    if(pvEditBtn) pvEditBtn.addEventListener('click',function(){
+        var homeEditBtn=document.getElementById('editProfileBtn');
+        if(homeEditBtn) homeEditBtn.click();
+        else showMyProfileModal(); // fallback if the home button isn't in the DOM
+    });
     // Event: Follow
     var followBtn=document.getElementById('pvFollowBtn');
     if(followBtn){
