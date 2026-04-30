@@ -1513,3 +1513,11 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - **Required (server) — must run once:** the `posts` storage bucket has its own `file_size_limit`. Run `supabase/raise-posts-bucket-size.sql` in the Supabase SQL editor (project owner / service role) — it sets the bucket's `file_size_limit` to 500MB. Alternative: set it via the dashboard under Storage > `posts` > Edit bucket > File size limit. Without this server-side change, uploads >50MB still 413 server-side.
 - **Plan tier:** Supabase Free tier hard-caps per-file uploads at 50MB regardless of bucket setting. You must be on Pro or higher for >50MB. BlipVibe is on a paid plan so this is fine.
 - **Files changed:** `js/supabase.js` (constant + comment), `supabase/raise-posts-bucket-size.sql` (new migration)
+
+## iOS App Icon Tightened (v0.6.6 — 2026-04-29)
+- **Symptom:** First device install showed the BlipVibe icon rendering very small inside the iPhone home-screen tile — the dark blue circle + character + "BlipVibe" text only filled ~50% of the icon, with a wide light-blue square padding around it.
+- **Root cause:** The 1024×1024 source PNG (`ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png`) was authored as "blue square frame outside, blue circle inside, logo inside the circle." iOS applies its own rounded-corner mask (~22% radius) but does not crop further. The result: a smaller circle floating inside a larger rounded-square.
+- **Fix:** Used `sharp` to extract the center 78% of the existing icon and re-scale to 1024×1024. The dark-blue circle now fills ~95% of the frame, so iOS's rounded-square mask comes to rest right at the circle's edges — character + wordmark are prominent edge-to-edge.
+- **Apple constraint to remember:** App Store rejects icons with transparency. Source must be opaque RGB (no alpha). The new icon stays `8-bit/color RGB, hasAlpha:false`. Any future icon redesign must keep this constraint — iOS rounds corners automatically; the source image is always a flat opaque square.
+- **Files changed:** `ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png` (re-cropped in place)
+- **Refresh on device:** iOS aggressively caches app icons. To see the new icon: long-press the BlipVibe app on the home screen → Remove App → Delete from Home Screen, then re-run from Xcode (⌘+R) for a fresh install.
