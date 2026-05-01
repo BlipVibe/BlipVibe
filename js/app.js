@@ -14752,62 +14752,93 @@ function _getCurrentAudio(){return _profileAudio||_myAudio;}
 // Fade out an audio element over duration ms
 function _fadeAudio(audio,fromVol,toVol,duration,onDone){
     if(!audio) {if(onDone)onDone();return;}
+    // Cancel any in-flight fade on this same audio so concurrent calls don't
+    // fight over the volume. Without this, visiting two profiles back-to-back
+    // can leave a stuck volume mid-curve.
+    if(audio._fadeInterval){clearInterval(audio._fadeInterval);audio._fadeInterval=null;}
     var steps=20;var stepTime=duration/steps;var volStep=(toVol-fromVol)/steps;var current=fromVol;var step=0;
-    var interval=setInterval(function(){
+    audio._fadeInterval=setInterval(function(){
         step++;current+=volStep;
         if(audio) audio.volume=Math.max(0,Math.min(1,current));
         if(step>=steps){
-            clearInterval(interval);
+            clearInterval(audio._fadeInterval);audio._fadeInterval=null;
             if(audio) audio.volume=Math.max(0,Math.min(1,toVol));
             if(onDone) onDone();
         }
     },stepTime);
 }
+// Fully stop and dispose an audio element: cancel fades, pause, drop src so
+// the browser releases the resource. Use this before letting a reference go
+// out of scope, otherwise the underlying <audio> keeps playing in memory.
+function _killAudio(audio){
+    if(!audio) return;
+    try{if(audio._fadeInterval){clearInterval(audio._fadeInterval);audio._fadeInterval=null;}}catch(e){}
+    try{audio.pause();}catch(e){}
+    try{audio.removeAttribute('src');audio.load();}catch(e){}
+}
 // Switch to someone else's song when visiting their profile (crossfade)
 function switchToProfileSong(song){
     if(!song) return;
-    // Fade out your own music
-    if(_myAudio&&!_myAudio.paused){
-        _fadeAudio(_myAudio,_myAudio.volume,0,800,function(){if(_myAudio)_myAudio.pause();});
+    // Idempotent: if we're already playing this exact song for this profile, no-op.
+    if(_viewingSong && _profileAudio && _viewingSong.id===song.id) return;
+
+    // CAPTURE the previous profile audio in a LOCAL before reassigning, so the
+    // fade-out targets the actual old element instead of the new one we're
+    // about to assign. Previously the global ref was reassigned mid-fade and
+    // the old <audio> kept playing forever, untracked.
+    var prevProfile=_profileAudio;
+    var prevMy=_myAudio;
+    _profileAudio=null;
+
+    // Fade out the previous profile audio (if any), then dispose it cleanly.
+    if(prevProfile){
+        _fadeAudio(prevProfile,prevProfile.volume||0,0,300,function(){_killAudio(prevProfile);});
     }
-    // Fade out any existing profile audio
-    if(_profileAudio){_fadeAudio(_profileAudio,_profileAudio.volume,0,300,function(){if(_profileAudio){_profileAudio.pause();_profileAudio=null;}});}
-    // Create their song with fade loop and auto-play
+    // Fade out your own music — only if it's actually audible. If it's already
+    // paused (e.g. mid-fade-out from a previous profile visit), leave it alone.
+    if(prevMy && !prevMy.paused && prevMy.volume>0){
+        _fadeAudio(prevMy,prevMy.volume,0,800,function(){try{prevMy.pause();}catch(e){}});
+    }
+
     _viewingSong=song;
     _profileAudio=new Audio(song.file_url);
     _profileAudio.volume=0;
     _setupFadeLoop(_profileAudio);
     _updateGlobalPlayer(song.title,song.artist||'BlipVibe',false);
     showGlobalPlayer();
-    // Auto-play with fade-in after a short delay (let fade-out finish)
+    var ownAudio=_profileAudio; // capture so a later switch can detect we've been replaced
     setTimeout(function(){
-        if(!_profileAudio) return;
-        _profileAudio.play().then(function(){
-            _fadeAudio(_profileAudio,0,_gmpBaseVol,800,function(){
-                _updateGlobalPlayer(song.title,song.artist||'BlipVibe',true);
+        // Bail if another profile visit replaced us during the fade-out window
+        if(_profileAudio!==ownAudio) return;
+        ownAudio.play().then(function(){
+            // Re-check after the play() promise resolves
+            if(_profileAudio!==ownAudio){_killAudio(ownAudio);return;}
+            _fadeAudio(ownAudio,0,_gmpBaseVol,800,function(){
+                if(_profileAudio===ownAudio) _updateGlobalPlayer(song.title,song.artist||'BlipVibe',true);
             });
         }).catch(function(){
-            // Browser blocked autoplay — user needs to click play
-            _updateGlobalPlayer(song.title,song.artist||'BlipVibe',false);
+            if(_profileAudio===ownAudio) _updateGlobalPlayer(song.title,song.artist||'BlipVibe',false);
         });
     },500);
 }
 // Resume your own song when leaving someone's profile (crossfade)
 function resumeMyMusic(){
-    if(_profileAudio){
-        _fadeAudio(_profileAudio,_profileAudio.volume,0,800,function(){
-            if(_profileAudio){_profileAudio.pause();_profileAudio=null;}_viewingSong=null;
-        });
+    var prevProfile=_profileAudio;
+    _profileAudio=null;
+    _viewingSong=null;
+    if(prevProfile){
+        _fadeAudio(prevProfile,prevProfile.volume||0,0,800,function(){_killAudio(prevProfile);});
     }
     if(_mySong&&_myAudio){
+        var myRef=_myAudio;
         _updateGlobalPlayer(_mySong.title,_mySong.artist||'BlipVibe',false);
-        // Fade your song back in after the other fades out
         setTimeout(function(){
-            if(!_mySong||!_myAudio) return;
-            _myAudio.volume=0;
-            _myAudio.play().then(function(){
-                _fadeAudio(_myAudio,0,_gmpBaseVol,1000,function(){
-                    _updateGlobalPlayer(_mySong.title,_mySong.artist||'BlipVibe',true);
+            if(_myAudio!==myRef||!_mySong) return;
+            myRef.volume=0;
+            myRef.play().then(function(){
+                if(_myAudio!==myRef) return;
+                _fadeAudio(myRef,0,_gmpBaseVol,1000,function(){
+                    if(_myAudio===myRef) _updateGlobalPlayer(_mySong.title,_mySong.artist||'BlipVibe',true);
                 });
             }).catch(function(){});
         },500);
