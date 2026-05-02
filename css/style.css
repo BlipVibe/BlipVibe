@@ -3160,10 +3160,19 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
 .pv-col-feed{grid-column:2;grid-row:2;display:flex;flex-direction:column;gap:16px;min-width:0;overflow-x:clip;}
 .pv-col-skin{grid-column:3;grid-row:2;position:sticky;top:80px;align-self:start;max-height:calc(100vh - 100px);overflow-y:auto;overflow-x:clip;}
 .pv-col-photos .photos-preview{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:10px 14px;}
-.pv-col-photos .photos-preview img{width:100%;aspect-ratio:4/3;object-fit:cover;object-position:center;border-radius:6px;cursor:pointer;transition:opacity .2s;}
-.pv-col-photos .photos-preview img:hover{opacity:.8;}
-.pv-col-photos .photos-preview img[draggable="true"]{cursor:grab;}
-.pv-col-photos .photos-preview img[draggable="true"]:active{cursor:grabbing;}
+/* Force the wrapper itself to be a uniform 4:3 tile so photos AND videos
+   behave the same. Without this, <video> children rendered at native
+   aspect ratio and broke row heights. */
+.pv-col-photos .photos-preview .photo-wrap{position:relative;width:100%;aspect-ratio:4/3;border-radius:6px;overflow:hidden;cursor:pointer;}
+.pv-col-photos .photos-preview .photo-wrap img,
+.pv-col-photos .photos-preview .photo-wrap video{width:100%!important;height:100%!important;object-fit:cover;object-position:center;display:block;}
+.pv-col-photos .photos-preview .photo-wrap:hover img,
+.pv-col-photos .photos-preview .photo-wrap:hover video{opacity:.85;}
+.pv-col-photos .photos-preview .photo-wrap[draggable="true"]{cursor:grab;}
+.pv-col-photos .photos-preview .photo-wrap[draggable="true"]:active{cursor:grabbing;}
+/* Legacy fallback if photo isn't wrapped in .photo-wrap */
+.pv-col-photos .photos-preview > img{width:100%;aspect-ratio:4/3;object-fit:cover;object-position:center;border-radius:6px;cursor:pointer;transition:opacity .2s;}
+.pv-col-photos .photos-preview > img:hover{opacity:.8;}
 .photos-card .search-tabs{margin-bottom:0;padding:0 14px 8px;}
 .pv-album-card{background:var(--card);border:2px solid var(--border);border-radius:10px;overflow:hidden;text-align:center;cursor:pointer!important;transition:border-color .2s,transform .2s,box-shadow .2s;min-width:150px;max-width:170px;flex-shrink:0;scroll-snap-align:start;position:relative;}
 .pv-album-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:var(--shadow-hover);}
