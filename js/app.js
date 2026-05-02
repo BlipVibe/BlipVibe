@@ -2187,17 +2187,29 @@ function renderNotifications(){
         html+='<div class="notif-icon '+ic.cls+'"><i class="fas '+ic.icon+'"></i></div>';
         html+='<div class="notif-text" style="flex:1;min-width:0;"><p style="display:flex;align-items:center;gap:6px;">'+escapeHtml(n.text)+newBadge+chevron+'</p><span>'+n.time+'</span></div>';
         html+='</div>';
-        // Expandable sub-list — hidden until the group row is tapped
+        // Expandable sub-list — hidden until the group row is tapped.
+        // Solid card background so names stay readable on top of premium
+        // backgrounds. Caps at ~5 rows tall (~280px) and scrolls beyond that.
         if(n._grouped && n._entries && n._entries.length>1){
-            html+='<div class="notif-group-expand" id="notifGroup'+i+'" style="display:none;background:rgba(255,255,255,.02);border-left:3px solid var(--primary);margin:0 0 10px 36px;border-radius:0 8px 8px 0;overflow:hidden;">';
+            var ENTRY_HEIGHT_PX=56; // approx per-row height incl padding/borders
+            var maxRows=5;
+            var capHeight=ENTRY_HEIGHT_PX*maxRows;
+            var needsScroll=n._entries.length>maxRows;
+            var scrollStyle=needsScroll?'max-height:'+capHeight+'px;overflow-y:auto;-webkit-overflow-scrolling:touch;':'';
+            html+='<div class="notif-group-expand" id="notifGroup'+i+'" style="display:none;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--primary);margin:-6px 0 10px 36px;border-radius:0 10px 10px 10px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.25);">';
+            html+='<div style="'+scrollStyle+'">';
             n._entries.forEach(function(entry){
                 var entryClickable=entry.postId?' data-post-id="'+entry.postId+'" style="cursor:pointer;"':'';
-                html+='<div class="notif-sub-item'+(entry.read?'':' unread')+'"'+entryClickable+' style="padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:center;gap:10px;font-size:13px;">';
+                html+='<div class="notif-sub-item'+(entry.read?'':' unread')+'"'+entryClickable+' style="padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;font-size:13px;color:var(--dark);">';
                 html+='<i class="fas fa-circle" style="font-size:5px;color:var(--gray);flex-shrink:0;"></i>';
                 html+='<div style="flex:1;min-width:0;"><div style="line-height:1.3;">'+escapeHtml(entry.text)+'</div>';
                 html+='<span style="font-size:11px;color:var(--gray);">'+escapeHtml(entry.time||'')+'</span></div>';
                 html+='</div>';
             });
+            html+='</div>';
+            if(needsScroll){
+                html+='<div style="text-align:center;font-size:10px;color:var(--gray);padding:4px;background:rgba(0,0,0,.15);border-top:1px solid var(--border);">Scroll for more &middot; '+n._entries.length+' total</div>';
+            }
             html+='</div>';
         }
     });
