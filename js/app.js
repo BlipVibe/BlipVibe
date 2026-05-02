@@ -2171,12 +2171,60 @@ function renderNotifications(){
     var html='';
     filtered.forEach(function(n,i){
         var ic=getNotifIcon(n.type);
-        var clickable=n.postId?' data-post-id="'+n.postId+'" style="cursor:pointer;"':'';
-        if(n.type==='group_invite'&&n.data&&n.data.group_id) clickable=' data-group-id="'+n.data.group_id+'" style="cursor:pointer;"';
+        var clickable='';var dataAttrs='';
+        // Grouped notifs get expand-toggle behavior instead of post navigation
+        if(n._grouped && n._entries && n._entries.length>1){
+            clickable=' style="cursor:pointer;" data-expand-group="'+i+'"';
+        } else if(n.postId){
+            clickable=' data-post-id="'+n.postId+'" style="cursor:pointer;"';
+        } else if(n.type==='group_invite'&&n.data&&n.data.group_id){
+            clickable=' data-group-id="'+n.data.group_id+'" style="cursor:pointer;"';
+        }
         var newBadge=!n.read?'<span class="notif-new-badge">New</span>':'';
-        html+='<div class="notif-item'+(n.read?'':' unread')+'"'+clickable+'><div class="notif-icon '+ic.cls+'"><i class="fas '+ic.icon+'"></i></div><div class="notif-text"><p>'+escapeHtml(n.text)+newBadge+'</p><span>'+n.time+'</span></div></div>';
+        var chevron=(n._grouped&&n._entries&&n._entries.length>1)
+            ? '<i class="fas fa-chevron-down notif-expand-chevron" id="notifChevron'+i+'" style="margin-left:8px;color:var(--gray);font-size:12px;transition:transform .2s;"></i>' : '';
+        html+='<div class="notif-item'+(n.read?'':' unread')+'"'+clickable+'>';
+        html+='<div class="notif-icon '+ic.cls+'"><i class="fas '+ic.icon+'"></i></div>';
+        html+='<div class="notif-text" style="flex:1;min-width:0;"><p style="display:flex;align-items:center;gap:6px;">'+escapeHtml(n.text)+newBadge+chevron+'</p><span>'+n.time+'</span></div>';
+        html+='</div>';
+        // Expandable sub-list — hidden until the group row is tapped
+        if(n._grouped && n._entries && n._entries.length>1){
+            html+='<div class="notif-group-expand" id="notifGroup'+i+'" style="display:none;background:rgba(255,255,255,.02);border-left:3px solid var(--primary);margin:0 0 10px 36px;border-radius:0 8px 8px 0;overflow:hidden;">';
+            n._entries.forEach(function(entry){
+                var entryClickable=entry.postId?' data-post-id="'+entry.postId+'" style="cursor:pointer;"':'';
+                html+='<div class="notif-sub-item'+(entry.read?'':' unread')+'"'+entryClickable+' style="padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:center;gap:10px;font-size:13px;">';
+                html+='<i class="fas fa-circle" style="font-size:5px;color:var(--gray);flex-shrink:0;"></i>';
+                html+='<div style="flex:1;min-width:0;"><div style="line-height:1.3;">'+escapeHtml(entry.text)+'</div>';
+                html+='<span style="font-size:11px;color:var(--gray);">'+escapeHtml(entry.time||'')+'</span></div>';
+                html+='</div>';
+            });
+            html+='</div>';
+        }
     });
     container.innerHTML=html;
+    // Wire expand-collapse on grouped rows
+    $$('#notifList .notif-item[data-expand-group]').forEach(function(el){
+        el.addEventListener('click',function(ev){
+            // Don't fire if a sub-item swallowed the click
+            if(ev.target.closest('.notif-sub-item')) return;
+            var idx=el.getAttribute('data-expand-group');
+            var panel=document.getElementById('notifGroup'+idx);
+            var chev=document.getElementById('notifChevron'+idx);
+            if(!panel) return;
+            var open=panel.style.display!=='none';
+            panel.style.display=open?'none':'block';
+            if(chev) chev.style.transform=open?'rotate(0deg)':'rotate(180deg)';
+        });
+    });
+    // Wire post-link navigation on sub-items inside groups
+    $$('#notifList .notif-sub-item[data-post-id]').forEach(function(el){
+        el.addEventListener('click',function(ev){
+            ev.stopPropagation();
+            var pid=el.getAttribute('data-post-id');
+            navigateTo('home');
+            setTimeout(function(){showComments(pid);},200);
+        });
+    });
     // Click handler for post-linked notifications
     $$('#notifList .notif-item[data-post-id]').forEach(function(el){
         el.addEventListener('click',function(){
@@ -13291,14 +13339,14 @@ function groupNotifications(notifs){
     notifs.forEach(function(n){
         if(n.type==='like'&&n.data&&n.data.post_id){
             var key='like:'+n.data.post_id;
-            if(!likeMap[key]){likeMap[key]={base:n,count:1,names:[n.text.split(' ')[0]]};grouped.push(likeMap[key]);}
-            else{likeMap[key].count++;likeMap[key].names.push(n.text.split(' ')[0]);}
+            if(!likeMap[key]){likeMap[key]={base:n,count:1,names:[n.text.split(' ')[0]],entries:[n]};grouped.push(likeMap[key]);}
+            else{likeMap[key].count++;likeMap[key].names.push(n.text.split(' ')[0]);likeMap[key].entries.push(n);}
         } else if(n.type==='follow'){
             var key='follow:batch';
-            if(!followMap[key]){followMap[key]={base:n,count:1,names:[n.text.split(' ')[0]]};grouped.push(followMap[key]);}
-            else{followMap[key].count++;followMap[key].names.push(n.text.split(' ')[0]);}
+            if(!followMap[key]){followMap[key]={base:n,count:1,names:[n.text.split(' ')[0]],entries:[n]};grouped.push(followMap[key]);}
+            else{followMap[key].count++;followMap[key].names.push(n.text.split(' ')[0]);followMap[key].entries.push(n);}
         } else {
-            grouped.push({base:n,count:1,names:[]});
+            grouped.push({base:n,count:1,names:[],entries:[n]});
         }
     });
     return grouped.map(function(g){
@@ -13307,6 +13355,13 @@ function groupNotifications(notifs){
             var others=g.count-1;
             if(g.base.type==='like') n.text=g.names[0]+' and '+others+' other'+(others>1?'s':'')+' liked your post';
             else if(g.base.type==='follow') n.text=g.names[0]+' and '+others+' other'+(others>1?'s':'')+' followed you';
+            // Attach the underlying entries so the renderer can show an
+            // expandable list of who each individual was, with their own time.
+            n._entries=g.entries;
+            n._grouped=true;
+            // Mark the group as 'unread' if ANY underlying entry is unread —
+            // keeps the badge meaningful even after one of N is marked read.
+            n.read=g.entries.every(function(e){return e.read;});
             return n;
         }
         return g.base;
