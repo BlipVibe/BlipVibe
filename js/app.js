@@ -2085,7 +2085,10 @@ async function toggleFollow(userId,btn){
             state.followedUsers[userId]=true;
             state.following++;
             updateFollowBtn(btn,true);
-            sbGetProfile(userId).then(function(p){if(p)addNotification('follow','You are now following '+(p.display_name||p.username));}).catch(function(){});
+            // No local self-notification — the user just clicked Follow, they don't
+            // need a 'You are now following X' entry cluttering their bell badge,
+            // and it was getting grouped with real incoming follow notifs producing
+            // 'You and N people followed you'.
             // Notify the person being followed
             var myName=currentUser.display_name||currentUser.username||'Someone';
             sbCreateNotification(userId,'follow',myName+' started following you','',{originalType:'follow',follower_id:currentUser.id}).catch(function(e){console.error('Follow notif error:',e);});
@@ -11471,7 +11474,7 @@ function openCreateStory(preloadData){
             await sbCreateStory(currentUser.id,mediaUrl,isVid?'video':'image','',_storySongId||null,_storySongStart,_storySongVol,overlayData);
             if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
             closeModal();
-            showToast('Story shared!');
+            showStoryPostedToast();
             loadStories();
         }catch(e){
             console.error('Create story:',e);
@@ -12472,6 +12475,30 @@ function showToast(msg){
     requestAnimationFrame(function(){t.classList.add('show');});
     setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove();},300);},2500);
 }
+// Celebratory toast for posting a story — bigger, animated, with sparkles.
+// Replaces the plain 'Story shared!' showToast for that one specific event.
+function showStoryPostedToast(){
+    // Remove any existing instance so rapid posts don't stack
+    var prev=document.getElementById('storyPostedToast');
+    if(prev) prev.remove();
+    var t=document.createElement('div');
+    t.id='storyPostedToast';
+    t.className='story-posted-toast';
+    t.innerHTML=
+        '<div class="spt-burst">'+
+            '<span class="spt-spark spt-s1">✨</span>'+
+            '<span class="spt-spark spt-s2">✨</span>'+
+            '<span class="spt-spark spt-s3">✨</span>'+
+            '<span class="spt-spark spt-s4">✨</span>'+
+            '<span class="spt-spark spt-s5">✨</span>'+
+            '<span class="spt-spark spt-s6">✨</span>'+
+        '</div>'+
+        '<div class="spt-icon"><i class="fas fa-circle-play"></i></div>'+
+        '<div class="spt-text">Story posted!</div>';
+    document.body.appendChild(t);
+    requestAnimationFrame(function(){t.classList.add('show');});
+    setTimeout(function(){t.classList.add('out');setTimeout(function(){t.remove();},500);},2200);
+}
 // Sticky error banner that does NOT auto-dismiss. Use for upload failures or
 // other errors the user really needs to read (especially on mobile where a
 // 2.5s toast can blink past unnoticed). Tap the banner or the × to dismiss.
@@ -13250,6 +13277,16 @@ function initDraftAutoSave(textareaId){
 
 // ======================== NOTIFICATION GROUPING ========================
 function groupNotifications(notifs){
+    // Drop any stale self-action notifs that crept in before the various
+    // sender !== currentUser guards existed. Detected by the 'You ' prefix
+    // on like/follow/comment/reply/mention/share notifications — those types
+    // should always start with the OTHER user's name, never 'You'.
+    var FILTERABLE_TYPES = {like:1, follow:1, comment:1, reply:1, mention:1};
+    notifs = (notifs||[]).filter(function(n){
+        if(!n) return false;
+        if(FILTERABLE_TYPES[n.type] && /^you\b/i.test((n.text||'').trim())) return false;
+        return true;
+    });
     var grouped=[];var likeMap={};var followMap={};
     notifs.forEach(function(n){
         if(n.type==='like'&&n.data&&n.data.post_id){
