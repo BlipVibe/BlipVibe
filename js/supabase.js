@@ -66,9 +66,12 @@ async function sbSignUp(email, password, username, birthday = null, firstName = 
 }
 
 async function sbGetEmailByUsername(username) {
+  // Case-insensitive lookup so 'Rion' typed by iOS auto-capitalize still finds 'rion'.
+  // ilike with no wildcards behaves like a case-insensitive equality match.
   const { data, error } = await sb.from('profiles')
     .select('email')
-    .eq('username', username)
+    .ilike('username', username)
+    .limit(1)
     .maybeSingle();
   if (error || !data || !data.email) return null;
   return data.email;

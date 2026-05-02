@@ -284,23 +284,37 @@ document.getElementById('togglePassword').addEventListener('click', function () 
 loginForm.addEventListener('submit', async function (e) {
     e.preventDefault();
     loginError.classList.remove('show');
+    loginError.style.color = ''; // reset success-green from prior reset-email message
     var submitBtn = loginForm.querySelector('button[type="submit"]');
     if (submitBtn.disabled) return;
+    // Trim BOTH fields — iOS autofill sometimes injects a leading space into
+    // the password, which makes Supabase reject the login as 'wrong password'
+    // with no clear hint to the user.
     var input = loginEmail.value.trim();
-    var pw = loginPass.value;
+    var pw = loginPass.value.trim();
     if (!input || !pw) { loginError.textContent = 'Please enter both username/email and password.'; loginError.classList.add('show'); return; }
     var cdSecs = checkCooldown('login', 3000);
     if (cdSecs) { loginError.textContent = 'Please wait ' + cdSecs + 's before trying again.'; loginError.classList.add('show'); return; }
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+    // Hard 20s timeout so a hung mobile network can't leave the user staring
+    // at a forever-spinner.
+    var timedOut = false;
+    var timeoutId = setTimeout(function () { timedOut = true; }, 20000);
     try {
         var email = input;
         if (!input.includes('@')) {
             var looked = await sbGetEmailByUsername(input);
+            if (timedOut) throw { message: 'Network is slow — please try again.' };
             if (!looked) throw { message: 'Username not found.' };
             email = looked;
         }
-        await sbSignIn(email, pw);
+        await Promise.race([
+            sbSignIn(email, pw),
+            new Promise(function (_, reject) {
+                setTimeout(function () { reject({ message: 'Network is slow — please try again.' }); }, 20000);
+            })
+        ]);
         loginForm.reset();
         // onAuthStateChange will call initApp()
     } catch (err) {
@@ -309,6 +323,7 @@ loginForm.addEventListener('submit', async function (e) {
         loginError.textContent = msg;
         loginError.classList.add('show');
     } finally {
+        clearTimeout(timeoutId);
         submitBtn.disabled = false;
         submitBtn.innerHTML = 'Sign In <i class="fas fa-arrow-right"></i>';
     }
