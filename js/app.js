@@ -447,6 +447,10 @@ function handleLogout() {
         currentUser = null;
         currentAuthUser = null;
         _initAppDone = false;
+        // Re-close the skin-data sync gate so the next sign-in waits for
+        // cloud data to load before syncing — protects against fresh-device
+        // overwrite of owned-skins.
+        _skinDataLoaded = false;
         try{resetAllCustomizations();}catch(e){console.error('resetAllCustomizations:',e);}
         try{sessionStorage.removeItem('blipvibe_lastPage');}catch(e){}
         // Force-purge any stale Supabase auth tokens so a refresh can't auto-relogin
@@ -1198,6 +1202,12 @@ function _buildSkinData(){
 }
 function syncSkinDataToSupabase(immediate){
     if(!currentUser) return;
+    // CRITICAL: never sync until cloud skin_data has been loaded into memory.
+    // Otherwise the 10s autosave / visibilitychange / beforeunload paths will
+    // serialize the empty in-memory defaults and overwrite the user's
+    // ownedSkins / ownedPremiumSkins on the server. This is what wiped
+    // accounts on iOS rebuilds and fresh-device logins.
+    if(!_skinDataLoaded) return;
     // Never sync while viewing another profile or group — state contains their skin, not ours
     if(_pvSaved||_gvSaved) return;
     clearTimeout(_skinSyncTimer);
@@ -1286,17 +1296,34 @@ function _applySkinDataFromCache(sd){
     // infinityCoins only checked via currentUser.skin_data (server truth)
     // Group skin data now loaded from group's own skin_data column (see loadGroups)
 }
+// Set true ONLY after loadSkinDataFromSupabase completes (success or
+// confirmed-empty). Until then, syncSkinDataToSupabase is a no-op. Without
+// this gate, the 10s save interval and visibilitychange handlers can fire
+// BEFORE cloud data finishes loading and overwrite owned-skins etc. with
+// the empty in-memory defaults — wiping the user's account on every fresh
+// device login (iOS rebuild, new browser, etc.).
+var _skinDataLoaded=false;
 async function loadSkinDataFromSupabase(){
-    if(!currentUser) return;
+    if(!currentUser){_skinDataLoaded=false;return;}
     try{
         // Must use sbGetOwnProfile (SECURITY DEFINER RPC) — skin_data SELECT
         // is revoked from authenticated role, so sbGetProfile returns null for it
         var profile=await sbGetOwnProfile();
-        if(!profile||!profile.skin_data) return;
-        var sd=profile.skin_data;
-        currentUser.skin_data=sd; // update server truth for _hasInfinity() etc.
-        _applySkinDataFromCache(sd);
-    }catch(e){console.warn('Load skin data from Supabase:',e);}
+        if(profile&&profile.skin_data){
+            var sd=profile.skin_data;
+            currentUser.skin_data=sd; // update server truth for _hasInfinity() etc.
+            _applySkinDataFromCache(sd);
+        }
+        // Whether skin_data existed or not, the load attempt is complete.
+        // Future saves are now safe — they'll either preserve loaded data or
+        // legitimately initialize a brand-new account that had nothing to load.
+        _skinDataLoaded=true;
+    }catch(e){
+        console.warn('Load skin data from Supabase:',e);
+        // On hard error, leave the gate CLOSED so we don't risk overwriting
+        // potentially-loaded data with empty defaults. A subsequent successful
+        // load (e.g., after a retry) will open it.
+    }
 }
 // loadState removed — all state loaded from Supabase
 function reapplyCustomizations(){
