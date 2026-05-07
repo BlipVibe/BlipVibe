@@ -2734,9 +2734,9 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     body.nav-float .search-bar:focus-within{width:120px!important;}
     body.nav-float .page{padding-top:calc(48px + env(safe-area-inset-top,0px))!important;}
     body.nav-float #page-home{padding-top:calc(48px + env(safe-area-inset-top,0px))!important;}
-    body.nav-float .timeline-cover{margin:calc(48px + env(safe-area-inset-top,0px)) auto 0!important;border-radius:0!important;}
+    body.nav-float .timeline-cover{margin:0 auto!important;border-radius:0!important;}
     body.nav-float .main-container{margin-top:calc(-60px - env(safe-area-inset-top,0px))!important;}
-    body.nav-float .pv-cover-banner{margin:calc(48px + env(safe-area-inset-top,0px)) auto 0!important;border-radius:0!important;}
+    body.nav-float .pv-cover-banner{margin:0 auto!important;border-radius:0!important;}
 
     body.nav-island .navbar{pointer-events:auto!important;}
     body.nav-island .nav-container{pointer-events:auto!important;padding:4px 8px!important;}
@@ -2746,9 +2746,9 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     body.nav-island .search-bar input{font-size:11px!important;}
     body.nav-island .page{padding-top:calc(48px + env(safe-area-inset-top,0px))!important;}
     body.nav-island #page-home{padding-top:calc(48px + env(safe-area-inset-top,0px))!important;}
-    body.nav-island .timeline-cover{margin:calc(48px + env(safe-area-inset-top,0px)) auto 0!important;border-radius:0!important;}
+    body.nav-island .timeline-cover{margin:0 auto!important;border-radius:0!important;}
     body.nav-island .main-container{margin-top:calc(-60px - env(safe-area-inset-top,0px))!important;}
-    body.nav-island .pv-cover-banner{margin:calc(48px + env(safe-area-inset-top,0px)) auto 0!important;border-radius:0!important;}
+    body.nav-island .pv-cover-banner{margin:0 auto!important;border-radius:0!important;}
 
     /* --- Image crop — prevent page scroll on touch --- */
     .crop-container,.crop-box,.crop-resize,
