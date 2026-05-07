@@ -12849,9 +12849,10 @@ updateFollowCounts();
     document.addEventListener('touchmove',function(e){
         if(!pulling||refreshing) return;
         var dy=e.touches[0].clientY-startY;
-        if(dy<0){ptrDist=0;ptrEl.style.transform='translateY(-50px)';ptrEl.style.opacity='0';return;}
+        if(dy<0){ptrDist=0;ptrEl.style.transform='translateX(-50%)';ptrEl.style.opacity='0';return;}
         ptrDist=Math.min(dy*0.4,120);
-        ptrEl.style.transform='translateY('+(ptrDist-50)+'px)';
+        // Add safe-area-inset-top to keep the spinner visible in the same place on a notched iPhone
+        ptrEl.style.transform='translateX(-50%) translateY('+(ptrDist+30)+'px) translateY(env(safe-area-inset-top,0px))';
         ptrEl.style.opacity=Math.min(ptrDist/threshold,1);
         var icon=ptrEl.querySelector('i');
         if(icon) icon.style.transform='rotate('+Math.min(ptrDist/threshold*360,360)+'deg)';
@@ -12866,7 +12867,7 @@ updateFollowCounts();
             var ic=ptrEl.querySelector('i');if(ic)ic.style.transform='';
             ptrEl.classList.add('ptr-loading');
             ptrEl.classList.remove('ptr-ready');
-            ptrEl.style.transform='translateY(20px)';ptrEl.style.opacity='1';
+            ptrEl.style.transform='translateX(-50%) translateY(100px) translateY(env(safe-area-inset-top,0px))';ptrEl.style.opacity='1';
             (async function(){
                 try{
                     var pg=document.querySelector('.page.active');
@@ -12878,10 +12879,10 @@ updateFollowCounts();
                     else if(pageId==='messages'){loadConversations();}
                     else{await generatePosts();renderFeed(activeFeedTab);}
                 }catch(e){console.error('PTR refresh error:',e);}
-                setTimeout(function(){refreshing=false;ptrEl.classList.remove('ptr-loading');ptrEl.style.transform='translateY(-50px)';ptrEl.style.opacity='0';},300);
+                setTimeout(function(){refreshing=false;ptrEl.classList.remove('ptr-loading');ptrEl.style.transform='translateX(-50%)';ptrEl.style.opacity='0';},300);
             })();
         } else {
-            ptrEl.style.transform='translateY(-50px)';ptrEl.style.opacity='0';
+            ptrEl.style.transform='translateX(-50%)';ptrEl.style.opacity='0';
             ptrEl.classList.remove('ptr-ready');
         }
     });
