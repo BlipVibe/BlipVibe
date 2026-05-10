@@ -433,6 +433,20 @@ document.querySelector('.login-forgot').addEventListener('click', async function
 
 // Logout handler (wired later after DOM references are set)
 function handleLogout() {
+    // Stop all music/video playback immediately on logout
+    try{ if(typeof _myAudio!=='undefined' && _myAudio){_myAudio.pause();_myAudio=null;} }catch(e){}
+    try{ if(typeof _profileAudio!=='undefined' && _profileAudio){_profileAudio.pause();_profileAudio=null;} }catch(e){}
+    try{ if(typeof _storySongPreview!=='undefined' && _storySongPreview){_storySongPreview.pause();_storySongPreview=null;} }catch(e){}
+    try{ if(typeof _shopPreviewAudio!=='undefined' && _shopPreviewAudio){_shopPreviewAudio.pause();_shopPreviewAudio=null;} }catch(e){}
+    try{ if(typeof _previewAudio!=='undefined' && _previewAudio){_previewAudio.pause();_previewAudio=null;} }catch(e){}
+    try{ if(typeof _mySong!=='undefined') _mySong=null; }catch(e){}
+    try{
+        document.querySelectorAll('video,audio').forEach(function(el){
+            try{ el.pause(); el.removeAttribute('src'); el.load(); }catch(e){}
+        });
+    }catch(e){}
+    try{ if(typeof hideGlobalPlayer==='function') hideGlobalPlayer(); }catch(e){}
+
     // Flush in-flight data and tear down timers BEFORE talking to the server,
     // so even if signOut hangs/fails we don't keep writing or fire callbacks.
     try{syncSkinDataToSupabase(true);}catch(e){}
@@ -1348,6 +1362,19 @@ window.addEventListener('beforeunload',function(){saveState();});
 _saveStateInterval=setInterval(function(){saveState();},10000); // save every 10s as safety net
 // Cross-device sync: push when leaving, pull when returning
 document.addEventListener('visibilitychange',function(){
+    if(document.visibilityState==='hidden'){
+        // Pause all audio/video when app is backgrounded or user switches apps
+        try{ if(typeof _myAudio!=='undefined' && _myAudio) _myAudio.pause(); }catch(e){}
+        try{ if(typeof _profileAudio!=='undefined' && _profileAudio) _profileAudio.pause(); }catch(e){}
+        try{ if(typeof _storySongPreview!=='undefined' && _storySongPreview) _storySongPreview.pause(); }catch(e){}
+        try{ if(typeof _shopPreviewAudio!=='undefined' && _shopPreviewAudio) _shopPreviewAudio.pause(); }catch(e){}
+        try{ if(typeof _previewAudio!=='undefined' && _previewAudio) _previewAudio.pause(); }catch(e){}
+        try{
+            document.querySelectorAll('video,audio').forEach(function(el){
+                try{ if(!el.paused) el.pause(); }catch(e){}
+            });
+        }catch(e){}
+    }
     if(!currentUser) return;
     if(document.visibilityState==='hidden'){
         // Sync immediately when page goes hidden (reliable on mobile unlike beforeunload)
