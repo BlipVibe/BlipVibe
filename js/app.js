@@ -4,14 +4,24 @@ document.addEventListener('DOMContentLoaded', function () {
 var _cookieConsent = false;
 function checkCookieConsent(){ try { return localStorage.getItem('blipvibe_cookie_consent')==='1'; } catch(e){ return false; } }
 function grantCookieConsent(){ _cookieConsent=true; try { localStorage.setItem('blipvibe_cookie_consent','1'); } catch(e){} var b=document.getElementById('cookieConsentBanner'); if(b) b.remove(); }
+// Detect running inside Capacitor / native iOS or Android shell. When wrapped
+// in a native app, the cookie banner is suppressed: the user has already
+// agreed to in-app behavior via App Store / Play install, and Apple's
+// 5.1.2 guideline rejects cookie prompts that aren't paired with App
+// Tracking Transparency. We don't actually track users across apps/sites,
+// so the safest move is to not surface the banner inside the native app.
+function _isNativeApp(){
+    return !!(window.Capacitor && (window.Capacitor.isNativePlatform ? window.Capacitor.isNativePlatform() : window.Capacitor.platform && window.Capacitor.platform !== 'web'));
+}
 function showCookieConsent(){
+    if(_isNativeApp()) return;          // skip entirely inside iOS/Android app
     if(checkCookieConsent()||_cookieConsent) return;
     var b=document.createElement('div');b.id='cookieConsentBanner';
     b.innerHTML='<div class="cookie-banner-inner">'
-        +'<p><strong>Cookies &amp; Third-Party Content</strong> — BlipVibe uses local storage for your session and preferences. Embedded content from YouTube, TikTok, Instagram, Twitter/X, Spotify, and others may set cookies. '
+        +'<p><strong>Cookies &amp; Local Storage</strong> — BlipVibe uses local storage for your session and preferences only. We do <strong>not</strong> use cookies or storage to track you across other apps or websites. Embedded content from YouTube, TikTok, Spotify, etc. may set its own cookies governed by those services. '
         +'<a href="#" id="cookiePolicyLink" style="color:var(--primary);">Privacy Policy</a></p>'
         +'<div class="cookie-banner-btns">'
-        +'<button class="btn btn-primary" id="cookieAcceptBtn">Accept All</button>'
+        +'<button class="btn btn-primary" id="cookieAcceptBtn">OK</button>'
         +'<button class="btn" id="cookieDeclineBtn" style="background:var(--border);color:var(--dark);">Essential Only</button>'
         +'</div></div>';
     document.body.appendChild(b);
@@ -344,15 +354,25 @@ signupForm.addEventListener('submit', async function (e) {
     var username = document.getElementById('signupUsername').value.trim();
     var email = document.getElementById('signupEmail').value.trim();
     var pw = document.getElementById('signupPassword').value;
-    var birthday = document.getElementById('signupBirthday').value;
+    // Age verification: self-attested 13+ checkbox (Apple guideline 5.1.1(v) —
+    // date of birth is not required for the app's core function). The legacy
+    // signupBirthday input is no longer in the form but the JS keeps a fallback
+    // in case any cached HTML still has it.
+    var ageConfirmEl = document.getElementById('signupAgeConfirm');
+    var legacyBirthdayEl = document.getElementById('signupBirthday');
+    var ageConfirmed = ageConfirmEl ? ageConfirmEl.checked : false;
+    var birthday = legacyBirthdayEl ? legacyBirthdayEl.value : null;
     var termsChecked = document.getElementById('signupTerms').checked;
     if (!firstName || !lastName) { signupError.textContent = 'First and last name are required.'; signupError.classList.add('show'); return; }
     if (looksLikeEmail(firstName)||looksLikeEmail(lastName)||looksLikeEmail(username)) { signupError.textContent = 'Names and usernames cannot be email addresses.'; signupError.classList.add('show'); return; }
     if (!username || !email || !pw) { signupError.textContent = 'All fields are required.'; signupError.classList.add('show'); return; }
     if (pw.length < 6) { signupError.textContent = 'Password must be at least 6 characters.'; signupError.classList.add('show'); return; }
-    if (!birthday) { signupError.textContent = 'Please enter your date of birth.'; signupError.classList.add('show'); return; }
-    var ageDiff = Date.now() - new Date(birthday).getTime();
-    if (ageDiff < 13 * 365.25 * 24 * 60 * 60 * 1000) { signupError.textContent = 'You must be at least 13 years old to use BlipVibe.'; signupError.classList.add('show'); return; }
+    if (!ageConfirmed && !birthday) { signupError.textContent = 'Please confirm you are at least 13 years old.'; signupError.classList.add('show'); return; }
+    // If user did provide a birthday (legacy / web users that filled it), still enforce the age gate
+    if (birthday) {
+        var ageDiff = Date.now() - new Date(birthday).getTime();
+        if (ageDiff < 13 * 365.25 * 24 * 60 * 60 * 1000) { signupError.textContent = 'You must be at least 13 years old to use BlipVibe.'; signupError.classList.add('show'); return; }
+    }
     if (!termsChecked) { signupError.textContent = 'You must agree to the Terms of Use.'; signupError.classList.add('show'); return; }
     var cdSecs = checkCooldown('signup', 5000);
     if (cdSecs) { signupError.textContent = 'Please wait ' + cdSecs + 's before trying again.'; signupError.classList.add('show'); return; }
