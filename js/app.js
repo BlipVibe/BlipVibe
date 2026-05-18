@@ -3515,6 +3515,10 @@ async function showProfileView(person){
     // Allow viewing own profile even if somehow in blockedUsers; block viewing others
     if(person.id&&!person.isMe&&blockedUsers[person.id]){showToast('This user is blocked');return;}
     if(person.id&&!person.isMe) trackQuestProgress('view_profile');
+    // Detach any prior profile view's infinite-scroll handler — its closure
+    // still references the previous userId and would append that user's posts
+    // into this view when the user scrolls.
+    if(typeof window._pvCleanupScroll==='function'){window._pvCleanupScroll();window._pvCleanupScroll=null;}
     pvPhotoTab='photos';
     $$('.page').forEach(function(p){p.classList.remove('active');});
     document.getElementById('page-profile-view').classList.add('active');
