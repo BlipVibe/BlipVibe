@@ -11203,6 +11203,23 @@ function openCreateStory(preloadData){
     var _overlayIdCounter=0;
     var _selectedSong=null;
 
+    // Pause the global feed/profile player while the story creator is open —
+    // otherwise it keeps playing over the music-picker preview.
+    var _wasGlobalPlaying=false;
+    var _globalAudio=_getCurrentAudio&&_getCurrentAudio();
+    if(_globalAudio&&!_globalAudio.paused){
+        _wasGlobalPlaying=true;
+        _fadeAudio(_globalAudio,_globalAudio.volume,0,400,function(){_globalAudio.pause();});
+    }
+    function _finalizeStoryAudio(){
+        if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
+        if(_wasGlobalPlaying){
+            var ga=_getCurrentAudio&&_getCurrentAudio();
+            if(ga){ga.volume=0;ga.play().then(function(){_fadeAudio(ga,0,_gmpBaseVol,600,null);}).catch(function(){});}
+            _wasGlobalPlaying=false;
+        }
+    }
+
     // ======== STEP 1: Pick Media ========
     var h='<div class="story-create-wrap">';
     h+='<div class="story-step1" id="storyStep1">';
@@ -11275,12 +11292,12 @@ function openCreateStory(preloadData){
 
     // Close buttons — bind BOTH step1 and step2 close so they work from any entry point
     document.getElementById('storyCloseBtn').addEventListener('click',function(){
-        if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
+        _finalizeStoryAudio();
         closeModal();
     });
     var _cb2Early=document.getElementById('storyCloseBtn2');
     if(_cb2Early) _cb2Early.addEventListener('click',function(){
-        if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
+        _finalizeStoryAudio();
         closeModal();
     });
 
@@ -11311,7 +11328,7 @@ function openCreateStory(preloadData){
         // Bind step 2 close
         var cb2=document.getElementById('storyCloseBtn2');
         if(cb2) cb2.addEventListener('click',function(){
-            if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
+            _finalizeStoryAudio();
             closeModal();
         });
     }
@@ -11321,7 +11338,7 @@ function openCreateStory(preloadData){
     // Back button → go to step 1 (or close entirely when arriving via share-to-story)
     document.getElementById('storyBackBtn').addEventListener('click',function(){
         if(preloadData){
-            if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
+            _finalizeStoryAudio();
             closeModal();
             return;
         }
@@ -11610,7 +11627,7 @@ function openCreateStory(preloadData){
             if(isVid) mediaUrl=await sbUploadPostVideo(currentUser.id,uploadFile);
             else mediaUrl=await sbUploadPostImage(currentUser.id,uploadFile);
             await sbCreateStory(currentUser.id,mediaUrl,isVid?'video':'image','',_storySongId||null,_storySongStart,_storySongVol,overlayData);
-            if(_storySongPreview){_storySongPreview.pause();_storySongPreview=null;}
+            _finalizeStoryAudio();
             closeModal();
             showStoryPostedToast();
             loadStories();
