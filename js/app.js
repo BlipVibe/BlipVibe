@@ -8263,7 +8263,11 @@ function shopBuy(owned,price,cls,attr,tryType,tryId){
     if(owned) return '<button class="btn btn-disabled">Owned</button>';
     var trying=_tryOnActive&&_tryOnActive.type===tryType&&_tryOnActive.id===tryId;
     var canBuy=_hasInfinity()||state.coins>=price;
-    return '<div class="skin-price"><i class="fas fa-coins"></i> '+(_hasInfinity()?'Free':price+' Coins')+'</div><div class="shop-card-actions"><button class="btn btn-outline try-on-btn'+(trying?' trying':'')+'" data-try-type="'+tryType+'" data-try-id="'+tryId+'">'+(trying?'Trying':'Try On')+'</button><button class="btn '+(canBuy?'btn-primary':'btn-disabled')+' '+cls+'" '+attr+(canBuy?'':' disabled')+'>Buy</button></div>';
+    // Render Buy as always-clickable: a real disabled attribute swallows the
+    // tap on iOS, which made the button look broken (App Store rejection
+    // 2.1(a) — "remained unresponsive when we tapped to buy"). The bind
+    // handler now shows an explicit "not enough coins" toast instead.
+    return '<div class="skin-price"><i class="fas fa-coins"></i> '+(_hasInfinity()?'Free':price+' Coins')+'</div><div class="shop-card-actions"><button class="btn btn-outline try-on-btn'+(trying?' trying':'')+'" data-try-type="'+tryType+'" data-try-id="'+tryId+'">'+(trying?'Trying':'Try On')+'</button><button class="btn '+(canBuy?'btn-primary':'btn-disabled')+' '+cls+'" '+attr+(canBuy?'':' data-cant-afford="1"')+' data-price="'+price+'">Buy</button></div>';
 }
 var currentShopTab=null;
 var _skinPageView='shop'; // 'shop' or 'mine'
@@ -8478,6 +8482,13 @@ function renderShop(){
             var id=btn.getAttribute(attrName);
             var item=itemList.find(function(x){return x.id===id;});
             if(!item) return;
+            // Affordability gate — surfaces explicit feedback instead of silently
+            // doing nothing (which Apple flagged as "unresponsive on tap").
+            if(btn.getAttribute('data-cant-afford')==='1' || (!_hasInfinity() && state.coins < item.price)){
+                var needed=Math.max(0,item.price-state.coins);
+                showToast('Need '+needed+' more coins. Earn coins by posting, commenting, liking, and completing daily quests.');
+                return;
+            }
             btn.disabled=true;var origText=btn.textContent;btn.textContent='...';
             try{
                 var result=await sbPurchaseItem(itemType,id,item.price);
@@ -14631,10 +14642,15 @@ function renderFeaturedSkin(){
     container.innerHTML='<div class="featured-header"><h4><i class="fas fa-fire"></i> Featured Skin</h4><span class="featured-timer"><i class="far fa-clock"></i> '+hoursLeft+'h '+minsLeft+'m left</span></div>'
         +'<div class="featured-body"><div class="featured-preview" style="background:'+skin.preview+';"></div>'
         +'<div class="featured-info"><h5>'+escapeHtml(skin.name)+'</h5><p>'+escapeHtml(skin.desc||'')+'</p></div>'
-        +(owned?'<button class="btn btn-disabled" style="padding:6px 14px;font-size:12px;">Owned</button>':'<button class="btn '+(canBuy?'btn-primary':'btn-disabled')+' featured-buy-btn" data-pid="'+skin.id+'" style="padding:6px 14px;font-size:12px;"'+(canBuy?'':' disabled')+'>'+(_hasInfinity()?'Free':''+skin.price+' <i class="fas fa-coins"></i>')+'</button>')
+        +(owned?'<button class="btn btn-disabled" style="padding:6px 14px;font-size:12px;">Owned</button>':'<button class="btn '+(canBuy?'btn-primary':'btn-disabled')+' featured-buy-btn" data-pid="'+skin.id+'" style="padding:6px 14px;font-size:12px;"'+(canBuy?'':' data-cant-afford="1"')+'>'+(_hasInfinity()?'Free':''+skin.price+' <i class="fas fa-coins"></i>')+'</button>')
         +'</div>';
     var buyBtn=container.querySelector('.featured-buy-btn');
     if(buyBtn) buyBtn.addEventListener('click',async function(){
+        if(buyBtn.getAttribute('data-cant-afford')==='1' || (!_hasInfinity() && state.coins < skin.price)){
+            var needed=Math.max(0,skin.price-state.coins);
+            showToast('Need '+needed+' more coins. Earn coins by posting, commenting, liking, and completing daily quests.');
+            return;
+        }
         buyBtn.disabled=true;buyBtn.textContent='...';
         try{
             var result=await sbPurchaseItem('premium',skin.id,skin.price);
