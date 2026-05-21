@@ -24,7 +24,7 @@
     }
   },
   "ios": {
-    "contentInset": "always",
+    "contentInset": "never",
     "allowsLinkPreview": true,
     "scrollEnabled": true
   },
