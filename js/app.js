@@ -1168,7 +1168,7 @@ var state = {
     groupCommentCoinPosts: {},
     groupReplyCoinPosts: {}
 };
-var settings={darkMode:false,notifSound:true,privateProfile:false,autoplay:true,commentOrder:'top',showLocation:false};
+var settings={darkMode:false,notifSound:true,privateProfile:false,autoplay:true,commentOrder:'top',showLocation:false,musicAutoplay:true};
 var userLocation=null; // Detected state/region from geolocation
 
 // Persist state to Supabase (sole source of truth)
@@ -1294,6 +1294,7 @@ function _applySkinDataFromCache(sd){
         if(sd.settings.notifSound!==undefined) settings.notifSound=sd.settings.notifSound;
         if(sd.settings.musicVolume!=null){settings.musicVolume=sd.settings.musicVolume;_gmpBaseVol=sd.settings.musicVolume;var _vs=document.getElementById('gmpVolume');if(_vs)_vs.value=Math.round(_gmpBaseVol*100);}
         if(sd.settings.musicMuted!==undefined){settings.musicMuted=!!sd.settings.musicMuted;var _mb=document.getElementById('gmpMuteBtn');if(_mb)_mb.innerHTML=settings.musicMuted?'<i class="fas fa-volume-xmark"></i>':'<i class="fas fa-volume-high"></i>';}
+        if(sd.settings.musicAutoplay!==undefined){settings.musicAutoplay=!!sd.settings.musicAutoplay;_updateAutoplayBtn();}
         if(sd.settings.privateProfile!==undefined) settings.privateProfile=!!sd.settings.privateProfile;
         if(sd.settings.commentOrder) settings.commentOrder=sd.settings.commentOrder;
         if(sd.settings.showLocation!==undefined) settings.showLocation=sd.settings.showLocation;
@@ -15008,6 +15009,15 @@ function _killAudio(audio){
     try{audio.removeAttribute('src');audio.load();}catch(e){}
 }
 // Switch to someone else's song when visiting their profile (crossfade)
+function _updateAutoplayBtn(){
+    var b=document.getElementById('gmpAutoplayBtn');
+    if(!b) return;
+    var on=settings.musicAutoplay!==false;
+    b.classList.toggle('autoplay-off',!on);
+    b.title=on?'Autoplay profile music (on) — click to disable':'Autoplay profile music (off) — click to enable';
+    b.innerHTML=on?'<i class="fas fa-circle-play"></i>':'<i class="fas fa-circle-stop"></i>';
+}
+
 function switchToProfileSong(song){
     if(!song) return;
     // Idempotent: if we're already playing this exact song for this profile, no-op.
@@ -15037,6 +15047,9 @@ function switchToProfileSong(song){
     _setupFadeLoop(_profileAudio);
     _updateGlobalPlayer(song.title,song.artist||'BlipVibe',false);
     showGlobalPlayer();
+    // User has disabled profile-music autoplay — set up the audio so the play
+    // button still works manually, but don't auto-start.
+    if(settings.musicAutoplay===false) return;
     var ownAudio=_profileAudio; // capture so a later switch can detect we've been replaced
     setTimeout(function(){
         // Bail if another profile visit replaced us during the fade-out window
@@ -15206,6 +15219,20 @@ function stopProfileAudio(){
         muteBtn.innerHTML=audio.muted?'<i class="fas fa-volume-xmark"></i>':'<i class="fas fa-volume-high"></i>';
         saveState();
     });
+    var autoplayBtn=document.getElementById('gmpAutoplayBtn');
+    if(autoplayBtn) autoplayBtn.addEventListener('click',function(){
+        settings.musicAutoplay=!settings.musicAutoplay;
+        _updateAutoplayBtn();
+        saveState();
+        try{syncSkinDataToSupabase(true);}catch(e){}
+        // If autoplay was just turned off and something is currently playing,
+        // pause it. Manual play still works via the play button.
+        if(!settings.musicAutoplay){
+            var a=_getCurrentAudio();
+            if(a && !a.paused){_fadeAudio(a,a.volume,0,300,function(){try{a.pause();}catch(e){}});}
+        }
+    });
+    _updateAutoplayBtn();
     // Nav music button toggles dropdown
     var navMusicBtn=document.getElementById('navMusicBtn');
     if(navMusicBtn) navMusicBtn.addEventListener('click',function(e){e.stopPropagation();_toggleMusicDropdown();});

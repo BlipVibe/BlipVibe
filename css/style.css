@@ -3861,8 +3861,13 @@ body.light-mode::before{background:#f8fafc;}
 #globalMiniPlayer .gmp-volume::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--primary);cursor:pointer;}
 #globalMiniPlayer.playing .gmp-art{animation:musicPulse 1.5s ease infinite;}
 @media(max-width:768px){
-    #globalMiniPlayer{width:240px;padding:12px;}
+    /* On phones the music button sits mid-navbar; the absolute popup
+       was right-anchored to the button and ran off the left edge.
+       Pin to viewport instead so it always fits. */
+    #globalMiniPlayer{position:fixed;top:calc(60px + env(safe-area-inset-top,0px) + 4px);left:8px;right:8px;width:auto;max-width:none;padding:12px;}
 }
+#globalMiniPlayer .gmp-btn.autoplay-off{color:var(--gray);opacity:.55;}
+#globalMiniPlayer .gmp-btn.autoplay-off:hover{color:var(--gray);}
 .profile-music-player.playing .pmp-art{animation:musicPulse 1.5s ease infinite;}
 
 /* ========== PORTRAIT LOCK OVERLAY (phones only) ========== */
