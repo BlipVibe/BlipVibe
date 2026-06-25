@@ -2802,6 +2802,12 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .gif-picker-panel{max-height:min(320px,45vh)!important;}
     .gif-picker-header{padding:8px 12px!important;}
     .gif-picker-grid{padding:0 10px 6px!important;gap:3px!important;}
+    /* Comment/reply GIF picker becomes a full-screen popup on mobile so the
+       on-screen keyboard can't cover the grid (search pinned at top). */
+    .gif-picker-panel.comment-gif-flow{position:fixed!important;inset:0!important;width:100%!important;height:100%!important;max-height:none!important;z-index:99996!important;border:none!important;border-radius:0!important;background:var(--card)!important;padding-top:env(safe-area-inset-top,0px)!important;}
+    .comment-gif-flow .gif-picker-header{padding:14px 16px!important;border-bottom:1px solid var(--border)!important;gap:10px!important;}
+    .comment-gif-flow #gifPickerClose{font-size:20px!important;padding:6px 10px!important;}
+    .comment-gif-flow .gif-picker-grid{grid-template-columns:repeat(3,1fr)!important;align-content:start!important;}
     .comment-gif{max-width:140px!important;max-height:100px!important;}
     .comment-post-embed{padding:12px 14px!important;}
 

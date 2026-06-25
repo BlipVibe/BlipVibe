@@ -251,7 +251,9 @@ function showGifPickerModal(onPick){
             _render(await searchKlipyGifs(q,24));
         },300);
     });
-    search.focus();
+    // Skip auto-focus on mobile so the keyboard doesn't immediately cover the
+    // GIF grid; the user taps the search field when they want to type.
+    if(window.innerWidth>768) search.focus();
 }
 
 // ======================== AUTHENTICATION (Supabase) ========================
@@ -3182,7 +3184,10 @@ async function showComments(postId,countEl,sortMode,autoReplyToCid){
         gifPanel.style.display='flex';
         gifSearchInput.value='';
         gifGrid.innerHTML='<p style="color:#777;text-align:center;grid-column:1/-1;padding:20px 0;">Loading...</p>';
-        gifSearchInput.focus();
+        // On mobile the picker is a full-screen popup; don't auto-focus the
+        // search (which would pop the keyboard and cover the GIF grid). Desktop
+        // keeps focus for fast typing. User taps the search field to type.
+        if(window.innerWidth>768) gifSearchInput.focus();
         var trending=await getKlipyTrending(20);
         renderGifGrid(trending);
     }
