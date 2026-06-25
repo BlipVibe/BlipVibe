@@ -1521,3 +1521,28 @@ Group coins are **shared** — they belong to the group, not individual users. A
 - **Apple constraint to remember:** App Store rejects icons with transparency. Source must be opaque RGB (no alpha). The new icon stays `8-bit/color RGB, hasAlpha:false`. Any future icon redesign must keep this constraint — iOS rounds corners automatically; the source image is always a flat opaque square.
 - **Files changed:** `ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png` (re-cropped in place)
 - **Refresh on device:** iOS aggressively caches app icons. To see the new icon: long-press the BlipVibe app on the home screen → Remove App → Delete from Home Screen, then re-run from Xcode (⌘+R) for a fresh install.
+
+## Free Video Transcoding Pipeline (2026-06-25)
+
+### Why
+Uploaded videos "wouldn't play" / "got stuck" in browsers. Root cause was NOT a code regression: user videos are raw iPhone uploads — mostly `.mov` (`video/quicktime`) and frequently **HEVC (`hvc1`)**, with the **moov atom at the end** of the file. Safari and the iOS app (WKWebView = Safari engine) play these fine, but **Chrome/Firefox can't decode HEVC and won't reliably play `video/quicktime`**, and moov-at-end forces the browser to download the whole file before playback starts (the "press play → spinner → nothing" symptom). This is the same processing gap every social platform fills on upload.
+
+### Solution — free, server-side, no App Store resubmit
+A **GitHub Actions** worker (repo is PUBLIC → Actions minutes are unlimited/free) runs **ffmpeg** to re-encode each uploaded video to **720p H.264 + AAC with `-movflags +faststart`** (moov moved to the front). Plays in every browser, starts instantly, much smaller (e.g. 6.8MB HEVC → 0.38MB; 20MB → 1.3MB).
+
+### Pieces
+- **`supabase/add-video-transcode.sql`** — adds `posts.video_status` (`processing` | `ready` | `failed`; NULL = no video) + partial index.
+- **`.github/scripts/transcode.mjs`** — the worker. Modes: `process` (posts flagged `processing`), `backfill` (any un-optimized video). Handles videos in BOTH `image_url` (legacy) and `media_urls`. Downloads raw from the `posts` storage bucket, transcodes, uploads `{path}-opt.mp4`, swaps the URL in, sets `video_status='ready'`. Raw originals are kept as fallback (not deleted).
+- **`.github/workflows/transcode-videos.yml`** — `*/5 * * * *` runs the live queue; `17 * * * *` hourly runs `backfill` as a safety net so **iOS-app uploads (which predate the client flag) still get optimized without an app rebuild**. Also `workflow_dispatch` (mode/limit/only_post_id) for manual runs.
+- **GitHub repo secrets:** `SUPABASE_URL`, `SUPABASE_SERVICE_KEY` (the `sb_secret_…` service key — set via `gh secret set`, lives only in Actions, never in client code).
+- **Client (`js/supabase.js`):** `sbCreatePost` now sets `video_status='processing'` when a post contains a raw (non `-opt.mp4`) video (`_postHasRawVideo`). Added `sbGetVideoStatus(ids)` for the feed poller.
+- **Client (`js/app.js`):** `buildMediaGrid(imgs, videoStatus)` renders an "Optimizing video…" placeholder while processing; `_pollProcessingVideos()` (kicked off in `renderFeed`) polls every 15s and `_refreshPostMedia()` swaps in the real video when ready. `_buildFeedPost` + the optimistic post-insert carry `videoStatus`. All inert unless a post is actually `processing`.
+- **CSS:** `.bv-vid-processing` placeholder + spinner.
+
+### One-time backfill
+Ran `workflow_dispatch` mode=backfill — all 11 video posts optimized, 0 failures. 10 orphan raw files remain in storage (not referenced by any post — leftovers from deleted/abandoned posts); harmless, can be deleted to reclaim space.
+
+### Notes / TODO
+- The `sb_secret_…` service key was pasted in chat during setup — **rotate it** in Supabase (Settings → API) and update the `SUPABASE_SERVICE_KEY` GitHub secret when convenient.
+- Profile/group/saved views call `buildMediaGrid` without `videoStatus`, so they show the video directly (no placeholder) — fine, since backfill already optimized everything; only matters for the ~few-min window on a brand-new post viewed there.
+- `changelog.json` entry not yet added (user-facing Developer Updates) — pending wording.
