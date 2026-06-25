@@ -96,25 +96,37 @@ function optimizedPath(rawPath) {
 }
 const isOptimized = (url) => /-opt\.mp4(\?|#|$)/i.test(url || '');
 
+// A post may hold its video in the legacy `image_url` column OR in the newer
+// `media_urls` array. Collect every un-optimized video URL across both.
+function collectVideoUrls(post) {
+  const out = [];
+  if (post.image_url && VIDEO_RE.test(post.image_url) && !isOptimized(post.image_url)) out.push(post.image_url);
+  for (const u of (post.media_urls || [])) if (VIDEO_RE.test(u) && !isOptimized(u)) out.push(u);
+  return out;
+}
+
 // ---- Work selection --------------------------------------------------------
+const SELECT = 'id,image_url,media_urls,video_status';
 async function getWork() {
   if (ONLY_POST_ID) {
-    return rest(`posts?id=eq.${ONLY_POST_ID}&select=id,media_urls,video_status`);
+    return rest(`posts?id=eq.${ONLY_POST_ID}&select=${SELECT}`);
   }
   if (MODE === 'backfill') {
-    const rows = await rest(`posts?media_urls=not.is.null&select=id,media_urls,video_status&order=created_at.desc&limit=1000`);
-    return rows
-      .filter(p => (p.media_urls || []).some(u => VIDEO_RE.test(u) && !isOptimized(u)))
+    const inImg = await rest(`posts?select=${SELECT}&or=(image_url.ilike.*.mov*,image_url.ilike.*.mp4*,image_url.ilike.*.webm*,image_url.ilike.*.m4v*)&limit=1000`);
+    const inArr = await rest(`posts?media_urls=not.is.null&select=${SELECT}&limit=1000`);
+    const byId = {};
+    for (const p of [...inImg, ...inArr]) byId[p.id] = p;
+    return Object.values(byId)
+      .filter(p => collectVideoUrls(p).length)
       .slice(0, LIMIT);
   }
   // default: live pending queue
-  return rest(`posts?video_status=eq.processing&select=id,media_urls,video_status&order=created_at.asc&limit=${LIMIT}`);
+  return rest(`posts?video_status=eq.processing&select=${SELECT}&order=created_at.asc&limit=${LIMIT}`);
 }
 
 // ---- Main ------------------------------------------------------------------
 async function processPost(post) {
-  const urls = post.media_urls || [];
-  const work = urls.filter(u => VIDEO_RE.test(u) && !isOptimized(u));
+  const work = [...new Set(collectVideoUrls(post))];
   if (!work.length) {
     // nothing to do (e.g. video already optimized) — just clear the flag
     if (post.video_status === 'processing') await patchPost(post.id, { video_status: 'ready' });
@@ -124,7 +136,7 @@ async function processPost(post) {
 
   const tmp = mkdtempSync(join(tmpdir(), 'bv-'));
   try {
-    const newUrls = [...urls];
+    const map = {}; // rawUrl -> optimized public URL
     for (const rawUrl of work) {
       const rawPath = urlToPath(rawUrl);
       if (!rawPath) { console.log(`  skip (foreign url): ${rawUrl}`); continue; }
@@ -137,10 +149,13 @@ async function processPost(post) {
       const outPath = optimizedPath(rawPath);
       console.log(`  uploading ${outPath}`);
       await upload(outPath, outFile, 'video/mp4');
-      const idx = newUrls.indexOf(rawUrl);
-      if (idx >= 0) newUrls[idx] = pathToUrl(outPath);
+      map[rawUrl] = pathToUrl(outPath);
     }
-    await patchPost(post.id, { media_urls: newUrls, video_status: 'ready' });
+    // Rewrite whichever field(s) held the raw video.
+    const body = { video_status: 'ready' };
+    if (post.image_url && map[post.image_url]) body.image_url = map[post.image_url];
+    if (post.media_urls) body.media_urls = post.media_urls.map(u => map[u] || u);
+    await patchPost(post.id, body);
     console.log(`post ${post.id}: READY`);
   } finally {
     rmSync(tmp, { recursive: true, force: true });
