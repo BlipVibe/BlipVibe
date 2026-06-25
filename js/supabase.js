@@ -306,11 +306,22 @@ async function sbDeleteScheduledPost(id) {
   return true;
 }
 
+// A freshly-uploaded raw video (iPhone .mov/HEVC) won't play in Chrome/Firefox
+// and loads slowly everywhere. Flagging the post 'processing' lets the free
+// transcode worker pick it up and swap in a fast-start H.264 MP4. Already-
+// optimized (-opt.mp4) URLs need nothing.
+function _postHasRawVideo(imageUrl, mediaUrls) {
+  var VID = /\.(mp4|mov|webm|m4v|qt)(\?|#|$)/i;
+  var isRaw = function (u) { return !!u && VID.test(u) && !/-opt\.mp4(\?|#|$)/i.test(u); };
+  return isRaw(imageUrl) || !!(mediaUrls && mediaUrls.some(isRaw));
+}
+
 async function sbCreatePost(authorId, content, imageUrl = null, groupId = null, sharedPostId = null, location = null, mediaUrls = null) {
   var row = { author_id: authorId, content: content || '', image_url: imageUrl, group_id: groupId };
   if (sharedPostId) row.shared_post_id = sharedPostId;
   if (location) row.location = location;
   if (mediaUrls && mediaUrls.length) row.media_urls = mediaUrls;
+  if (_postHasRawVideo(imageUrl, mediaUrls)) row.video_status = 'processing';
   const { data, error } = await sb.from('posts')
     .insert(row)
     .select(`

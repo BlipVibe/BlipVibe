@@ -9,7 +9,9 @@ name: Transcode videos
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/5 * * * *'   # live queue: posts flagged video_status='processing'
+    - cron: '17 * * * *'    # hourly safety net: catch ANY un-optimized video
+                            # (covers iOS-app uploads that predate the client flag)
   workflow_dispatch:
     inputs:
       mode:
@@ -43,7 +45,7 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-          MODE: ${{ github.event.inputs.mode || 'process' }}
-          LIMIT: ${{ github.event.inputs.limit || '5' }}
+          MODE: ${{ github.event.inputs.mode || (github.event.schedule == '17 * * * *' && 'backfill' || 'process') }}
+          LIMIT: ${{ github.event.inputs.limit || (github.event.schedule == '17 * * * *' && '10' || '5') }}
           ONLY_POST_ID: ${{ github.event.inputs.only_post_id || '' }}
         run: node .github/scripts/transcode.mjs
