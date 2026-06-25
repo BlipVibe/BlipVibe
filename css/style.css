@@ -485,6 +485,13 @@ img{display:block;}
 .pm-more-overlay{position:absolute;inset:0;background:rgba(0,0,0,.45);color:#fff;font-size:28px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;}
 .pm-play-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;}
 .pm-play-overlay i{font-size:32px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.5);opacity:.85;}
+/* "Optimizing video…" placeholder shown while the transcode worker runs */
+.bv-vid-processing{display:flex;align-items:center;justify-content:center;width:100%;min-height:240px;background:#10131a;border-radius:8px;cursor:default;}
+.bv-vid-processing-box{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:24px;}
+.bv-vid-spinner{width:34px;height:34px;border-radius:50%;border:3px solid rgba(255,255,255,.18);border-top-color:var(--primary,#6c8cff);animation:bv-vid-spin .9s linear infinite;}
+@keyframes bv-vid-spin{to{transform:rotate(360deg);}}
+.bv-vid-processing-title{font-size:14px;font-weight:600;color:#e8edf5;}
+.bv-vid-processing-sub{font-size:12px;color:#8a97a8;}
 .pm-count-1{grid-template-columns:1fr;}
 .pm-count-1 .pm-thumb{max-height:500px;min-height:240px;}
 .pm-count-1 .pm-thumb img,.pm-count-1 .pm-thumb video{object-fit:contain;object-position:center;background:#000;height:auto;max-height:500px;}

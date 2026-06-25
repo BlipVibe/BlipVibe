@@ -333,6 +333,17 @@ async function sbCreatePost(authorId, content, imageUrl = null, groupId = null, 
   return _sanitizeData(data);
 }
 
+// Poll video processing status for a set of posts (used by the feed to swap
+// the "Optimizing video…" placeholder for the real video once it's ready).
+async function sbGetVideoStatus(ids) {
+  if (!ids || !ids.length) return [];
+  const { data, error } = await sb.from('posts')
+    .select('id,video_status,image_url,media_urls')
+    .in('id', ids);
+  if (error) throw error;
+  return data || [];
+}
+
 async function sbGetFeed(limit = 50, offset = 0) {
   const { data, error } = await sb.from('posts')
     .select(`

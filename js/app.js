@@ -894,6 +894,7 @@ async function initApp() {
                     text:newPost.content||'',tags:[],badge:null,loc:newPost.location||null,
                     likes:0,comments:[],commentCount:0,shares:0,
                     images:newPost.media_urls&&newPost.media_urls.length?newPost.media_urls:(newPost.image_url?[newPost.image_url]:null),
+                    videoStatus:newPost.video_status||null,
                     created_at:newPost.created_at
                 };
                 // Don't add duplicates
@@ -6581,8 +6582,17 @@ function bindPollVotes(containerSel){
     });
 }
 
-function buildMediaGrid(imgs){
+function buildMediaGrid(imgs,videoStatus){
     if(!imgs||!imgs.length) return '';
+    // While a freshly-uploaded video is still being optimized by the transcode
+    // worker, show a "processing" card instead of the raw (possibly unplayable)
+    // video. The feed poller swaps in the real video the moment it's ready.
+    if(videoStatus==='processing' && imgs.some(function(s){return isVideoUrl(s)&&!/-opt\.mp4(\?|#|$)/i.test(s);})){
+        return '<div class="post-media-grid pm-count-1"><div class="pm-thumb bv-vid-processing">'
+            +'<div class="bv-vid-processing-box"><div class="bv-vid-spinner"></div>'
+            +'<div class="bv-vid-processing-title">Optimizing video…</div>'
+            +'<div class="bv-vid-processing-sub">Ready in about a minute</div></div></div></div>';
+    }
     var pid='pg-'+Date.now()+'-'+Math.random().toString(36).substr(2,5);
     var cnt=Math.min(imgs.length,5);
     var h='<div class="post-media-grid pm-count-'+cnt+'" data-pgid="'+pid+'">';
@@ -6695,6 +6705,7 @@ function _buildFeedPost(p,sharedMap){
         likes:p.like_count||0,dislikes:p.dislike_count||0,comments:[],
         commentCount:(p.comments&&p.comments[0])?p.comments[0].count:0,
         shares:p.share_count||0,images:p.media_urls&&p.media_urls.length?p.media_urls:(p.image_url?[p.image_url]:null),
+        videoStatus:p.video_status||null,
         created_at:p.created_at
     };
     if(p.shared_post_id){
@@ -6818,7 +6829,7 @@ function _buildPostHtml(p){
     html+='<div class="post-description"><p>'+short+(hasMore?'<span class="view-more-text hidden">'+rest+'</span>':'')+(hasMore?' . . . <button class="view-more-btn">View More</button>':'')+'</p></div>';
     if(pollHtml) html+=pollHtml;
     html+='<div class="post-tags">';tags.forEach(function(t){html+='<span class="skill-tag">'+t+'</span>';});html+='</div>';
-    html+=buildMediaGrid(p.images);
+    html+=buildMediaGrid(p.images,p.videoStatus);
     if(p.sharedPost){var sp=p.sharedPost;var spAvatar=sp.avatar_url||DEFAULT_AVATAR;var spClickAttr=sp.authorId?' data-person-id="'+sp.authorId+'"':'';
         html+='<div class="share-preview" style="margin:0 20px 14px;">';
         html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><img src="'+spAvatar+'" class="shared-post-author"'+spClickAttr+' style="width:28px;height:28px;border-radius:50%;object-fit:cover;cursor:pointer;"><strong class="share-preview-name shared-post-author"'+spClickAttr+' style="font-size:13px;cursor:pointer;">'+escapeHtml(sp.name)+'</strong><span class="share-preview-time" style="font-size:12px;">'+sp.time+'</span></div>';
@@ -6840,6 +6851,40 @@ function _buildPostHtml(p){
     return html;
 }
 var _discoverSortMode='popular';
+// ---- Processing-video auto-swap ------------------------------------------
+// While a just-posted video is being optimized (video_status='processing'),
+// the feed shows an "Optimizing video…" card. Poll the affected posts every
+// 15s and swap in the real, playable video the moment the worker finishes.
+var _videoPollTimer=null;
+function _refreshPostMedia(postId,fp){
+    var lb=document.querySelector('.feed-post .like-btn[data-post-id="'+(window.CSS&&CSS.escape?CSS.escape(postId):postId)+'"]');
+    var post=lb?lb.closest('.feed-post'):null;
+    if(!post) return;
+    var grid=post.querySelector('.post-media-grid');
+    if(!grid) return;
+    var tmp=document.createElement('div');
+    tmp.innerHTML=buildMediaGrid(fp.images,fp.videoStatus);
+    var ng=tmp.firstElementChild;
+    if(ng) grid.replaceWith(ng);
+}
+function _pollProcessingVideos(){
+    if(_videoPollTimer){clearTimeout(_videoPollTimer);_videoPollTimer=null;}
+    var ids=feedPosts.filter(function(p){return p.videoStatus==='processing';}).map(function(p){return p.idx;});
+    if(!ids.length) return;
+    _videoPollTimer=setTimeout(function(){
+        sbGetVideoStatus(ids).then(function(rows){
+            (rows||[]).forEach(function(r){
+                if(r.video_status==='processing') return;
+                var fp=feedPosts.find(function(p){return p.idx===r.id;});
+                if(!fp) return;
+                fp.videoStatus=r.video_status||null;
+                fp.images=(r.media_urls&&r.media_urls.length)?r.media_urls:(r.image_url?[r.image_url]:null);
+                _refreshPostMedia(r.id,fp);
+            });
+        }).catch(function(){}).then(function(){_pollProcessingVideos();});
+    },15000);
+}
+
 function renderFeed(tab){
     activeFeedTab=tab;
     var posts=_filterPostsByTab(feedPosts,tab);
@@ -6877,6 +6922,7 @@ function renderFeed(tab){
     bindPollVotes('#feedContainer');
     autoFetchLinkPreviews(container);
     initViewTracking();
+    _pollProcessingVideos();
     posts.forEach(function(p){renderInlineComments(p.idx);});
     // Load liker avatars asynchronously for Supabase posts
     posts.forEach(function(p){
