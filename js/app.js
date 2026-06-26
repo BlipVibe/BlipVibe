@@ -6126,7 +6126,7 @@ function showCropModal(src,isRecrop){
 }
 
 // Settings & dropdown handlers
-function settingsToggle(key){return '<label style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;"><span style="font-size:14px;">'+{darkMode:'Dark Mode',notifSound:'Notification Sounds',privateProfile:'Private Profile',autoplay:'Autoplay Videos',showLocation:'Show Location on Posts'}[key]+'</span><span class="stoggle" data-key="'+key+'" style="width:42px;height:24px;border-radius:12px;background:'+(settings[key]?'var(--green)':'#ccc')+';position:relative;display:inline-block;transition:background .2s;"><span style="width:20px;height:20px;border-radius:50%;background:#fff;position:absolute;top:2px;'+(settings[key]?'left:20px':'left:2px')+';transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);"></span></span></label>';}
+function settingsToggle(key){return '<label style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;"><span style="font-size:14px;">'+{darkMode:'Dark Mode',notifSound:'Notification Sounds',privateProfile:'Private Profile',autoplay:'Autoplay Videos',showLocation:'Show Location on Posts',musicAutoplay:'Play Music While Browsing'}[key]+'</span><span class="stoggle" data-key="'+key+'" style="width:42px;height:24px;border-radius:12px;background:'+(settings[key]?'var(--green)':'#ccc')+';position:relative;display:inline-block;transition:background .2s;"><span style="width:20px;height:20px;border-radius:50%;background:#fff;position:absolute;top:2px;'+(settings[key]?'left:20px':'left:2px')+';transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);"></span></span></label>';}
 document.addEventListener('click',function(e){
     var a=e.target.closest('.user-dropdown a');
     if(a){
@@ -6135,7 +6135,7 @@ document.addEventListener('click',function(e){
             e.preventDefault();
             $('#userDropdownMenu').classList.remove('show');
             var h='<div class="modal-header"><h3>Settings</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body">';
-            h+=settingsToggle('darkMode')+settingsToggle('notifSound')+settingsToggle('privateProfile')+settingsToggle('autoplay')+settingsToggle('showLocation');
+            h+=settingsToggle('darkMode')+settingsToggle('notifSound')+settingsToggle('privateProfile')+settingsToggle('autoplay')+settingsToggle('showLocation')+settingsToggle('musicAutoplay');
             // Light mode toggle
             var lmActive=document.body.classList.contains('light-mode');
             h+='<label style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;"><span style="font-size:14px;">Light Mode</span><span class="light-mode-toggle" style="width:42px;height:24px;border-radius:12px;background:'+(lmActive?'var(--green)':'#ccc')+';position:relative;display:inline-block;transition:background .2s;cursor:pointer;"><span style="width:20px;height:20px;border-radius:50%;background:#fff;position:absolute;top:2px;'+(lmActive?'left:20px':'left:2px')+';transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);"></span></span></label>';
@@ -6292,6 +6292,13 @@ document.addEventListener('click',function(e){
                 t.firstElementChild.style.left=settings[k]?'20px':'2px';
                 if(k==='darkMode'){document.body.style.background=settings[k]?'#1a1a2e':'';document.body.style.color=settings[k]?'#eee':'';}
                 if(k==='autoplay'&&!settings[k]) pauseAllVideos();
+                if(k==='musicAutoplay'){
+                    // Keep the music-player button in sync and, if turned off,
+                    // stop any song now so the user can play their own music.
+                    if(typeof _updateAutoplayBtn==='function') _updateAutoplayBtn();
+                    try{syncSkinDataToSupabase(true);}catch(e){}
+                    if(!settings[k]){var _a=_getCurrentAudio&&_getCurrentAudio();if(_a&&!_a.paused){_fadeAudio(_a,_a.volume,0,300,function(){try{_a.pause();}catch(e){}});}}
+                }
                 saveState();
             });});
         }
