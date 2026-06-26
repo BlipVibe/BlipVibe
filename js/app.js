@@ -14946,7 +14946,6 @@ function showPlaylistManager(){
 
 // Refresh the global player with a new song (called after setting profile song)
 async function refreshMyProfileMusic(){
-    if(settings.musicAutoplay===false){if(_myAudio){try{_myAudio.pause();}catch(e){}}return;}
     try{
         var song=await sbGetProfileSong(currentUser.id);
         if(!song){_mySong=null;if(_myAudio){_myAudio.pause();_myAudio=null;}hideGlobalPlayer();return;}
@@ -14958,6 +14957,7 @@ async function refreshMyProfileMusic(){
         _setupFadeLoop(_myAudio);
         _updateGlobalPlayer(song.title,song.artist||'BlipVibe',false);
         showGlobalPlayer();
+        if(settings.musicAutoplay===false) return; // master off: show player, don't play
         // Auto-play the new song
         _myAudio.volume=0;_myAudio.play().then(function(){
             _fadeAudio(_myAudio,0,_gmpBaseVol,500,function(){
@@ -14968,7 +14968,9 @@ async function refreshMyProfileMusic(){
 }
 async function initMyProfileMusic(){
     if(!currentUser) return;
-    if(settings.musicAutoplay===false) return; // master music switch off
+    // Note: this only sets up the player + shows the nav icon; it never calls
+    // play() itself (that's _tryAutoStartMusic, which respects the master
+    // switch). So we always show the icon — master-off just won't auto-play.
     // Try playlist first, fall back to single song
     try{
         await loadMyPlaylist();
@@ -15090,7 +15092,6 @@ function _updateAutoplayBtn(){
 }
 
 function switchToProfileSong(song){
-    if(settings.musicAutoplay===false) return; // master music switch off — no music anywhere
     if(!song) return;
     // Idempotent: if we're already playing this exact song for this profile, no-op.
     if(_viewingSong && _profileAudio && _viewingSong.id===song.id) return;
