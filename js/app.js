@@ -6298,6 +6298,7 @@ document.addEventListener('click',function(e){
                     if(typeof _updateAutoplayBtn==='function') _updateAutoplayBtn();
                     try{syncSkinDataToSupabase(true);}catch(e){}
                     if(!settings[k]){var _a=_getCurrentAudio&&_getCurrentAudio();if(_a&&!_a.paused){_fadeAudio(_a,_a.volume,0,300,function(){try{_a.pause();}catch(e){}});}}
+                    else{try{refreshMyProfileMusic();}catch(e){}}
                 }
                 saveState();
             });});
@@ -11883,6 +11884,7 @@ function openStoryViewer(userId){
             // Start new song immediately, don't wait for old to finish fading
             setTimeout(function(){
                 if(overlay._storyAudio!==storyAudio) return; // another render happened
+                if(settings.musicAutoplay===false) return; // master music switch off
                 storyAudio.play().then(function(){
                     _fadeAudio(storyAudio,0,s.song_volume||0.5,500,null);
                 }).catch(function(){});
@@ -13424,8 +13426,17 @@ updateFollowCounts();
     // Delegate clicks on images/videos in posts, albums, previews
     document.addEventListener('click',function(e){
         var t=e.target;
-        // Handle play overlay clicks — find the video in the same thumb
-        if(t.closest('.pm-play-overlay')){t=t.closest('.pm-thumb').querySelector('video')||t;}
+        // Play button on a feed video → play it INLINE (don't open the lightbox).
+        var _playOv=t.closest('.pm-play-overlay');
+        if(_playOv){
+            var _thumb=_playOv.closest('.pm-thumb');
+            var _v=_thumb&&_thumb.querySelector('video');
+            if(_v){_v.muted=false;_v.setAttribute('controls','controls');_playOv.style.display='none';try{_v.currentTime=0;}catch(_e){}_v.play().catch(function(){});}
+            e.stopPropagation();return;
+        }
+        // A playing inline video (it now has native controls) shouldn't open the
+        // lightbox on tap — let the user scrub/pause inline.
+        if(t.tagName==='VIDEO'&&t.controls) return;
         // Handle +X overlay clicks — open lightbox at the overflow image
         var moreOverlay=t.closest('.pm-more-overlay');
         if(moreOverlay){
@@ -14935,6 +14946,7 @@ function showPlaylistManager(){
 
 // Refresh the global player with a new song (called after setting profile song)
 async function refreshMyProfileMusic(){
+    if(settings.musicAutoplay===false){if(_myAudio){try{_myAudio.pause();}catch(e){}}return;}
     try{
         var song=await sbGetProfileSong(currentUser.id);
         if(!song){_mySong=null;if(_myAudio){_myAudio.pause();_myAudio=null;}hideGlobalPlayer();return;}
@@ -14956,6 +14968,7 @@ async function refreshMyProfileMusic(){
 }
 async function initMyProfileMusic(){
     if(!currentUser) return;
+    if(settings.musicAutoplay===false) return; // master music switch off
     // Try playlist first, fall back to single song
     try{
         await loadMyPlaylist();
@@ -15072,11 +15085,12 @@ function _updateAutoplayBtn(){
     if(!b) return;
     var on=settings.musicAutoplay!==false;
     b.classList.toggle('autoplay-off',!on);
-    b.title=on?'Autoplay profile music (on) — click to disable':'Autoplay profile music (off) — click to enable';
+    b.title=on?'Music is on — tap to turn off all music':'Music is off — tap to turn music on';
     b.innerHTML=on?'<i class="fas fa-circle-play"></i>':'<i class="fas fa-circle-stop"></i>';
 }
 
 function switchToProfileSong(song){
+    if(settings.musicAutoplay===false) return; // master music switch off — no music anywhere
     if(!song) return;
     // Idempotent: if we're already playing this exact song for this profile, no-op.
     if(_viewingSong && _profileAudio && _viewingSong.id===song.id) return;
@@ -15125,6 +15139,7 @@ function switchToProfileSong(song){
 }
 // Resume your own song when leaving someone's profile (crossfade)
 function resumeMyMusic(){
+    if(settings.musicAutoplay===false) return; // master music switch off
     var prevProfile=_profileAudio;
     _profileAudio=null;
     _viewingSong=null;
@@ -15283,11 +15298,12 @@ function stopProfileAudio(){
         _updateAutoplayBtn();
         saveState();
         try{syncSkinDataToSupabase(true);}catch(e){}
-        // If autoplay was just turned off and something is currently playing,
-        // pause it. Manual play still works via the play button.
+        // Master switch: OFF stops everything now, ON starts music again.
         if(!settings.musicAutoplay){
             var a=_getCurrentAudio();
             if(a && !a.paused){_fadeAudio(a,a.volume,0,300,function(){try{a.pause();}catch(e){}});}
+        } else {
+            try{refreshMyProfileMusic();}catch(e){}
         }
     });
     _updateAutoplayBtn();
@@ -15317,6 +15333,7 @@ function stopProfileAudio(){
 // Auto-start music after first user interaction on the page
 var _musicAutoStarted=false;
 function _tryAutoStartMusic(){
+    if(settings.musicAutoplay===false) return; // master music switch off
     if(_musicAutoStarted) return;
     // Only auto-start the CORRECT audio: profile audio if viewing someone, otherwise your own
     var audio=_viewingSong?_profileAudio:_myAudio;
