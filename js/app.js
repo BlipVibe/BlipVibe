@@ -14344,6 +14344,35 @@ function renderMutualFollowers(container,mutuals){
 }
 
 // ======================== PUSH NOTIFICATIONS (Capacitor) ========================
+// ======================== LIVE UPDATES (OTA) ========================
+// The native app ships a snapshot of the web bundle. Rather than an App Store
+// resubmit for every JS/CSS fix, it checks a manifest on launch and downloads
+// the newer bundle, applying it on the NEXT launch (never yanks the UI mid-use).
+// Apple permits this — it only ever updates interpreted (JS/CSS/HTML) code.
+// Safety: notifyAppReady() marks the running bundle healthy; if a bundle fails
+// to boot, the plugin automatically rolls back to the last good one.
+var OTA_MANIFEST_URL='https://jrybcihteqlqkdbrmagx.supabase.co/storage/v1/object/public/ota/manifest.json';
+async function initLiveUpdates(){
+    if(!window.Capacitor||!window.Capacitor.isNativePlatform()) return;
+    var U=window.Capacitor.Plugins.CapacitorUpdater;
+    if(!U) return;
+    try{await U.notifyAppReady();}catch(e){console.warn('[OTA] notifyAppReady:',e);}
+    try{
+        var res=await fetch(OTA_MANIFEST_URL+'?t='+Date.now(),{cache:'no-store'});
+        if(!res.ok) return;
+        var m=await res.json();
+        if(!m||!m.version||!m.url) return;
+        var cur=await U.current();
+        var curVer=(cur&&cur.bundle&&cur.bundle.version)||'builtin';
+        if(m.version===curVer) return; // already current
+        console.log('[OTA] update available:',curVer,'->',m.version);
+        var bundle=await U.download({url:m.url,version:m.version});
+        if(!bundle||!bundle.id||bundle.status==='error') return;
+        await U.next({id:bundle.id});
+        console.log('[OTA] downloaded — applies on next launch');
+    }catch(e){console.warn('[OTA] check failed:',e);}
+}
+
 async function initPushNotifications(){
     if(!window.Capacitor||!window.Capacitor.isNativePlatform()) return;
     try{
@@ -15517,6 +15546,8 @@ function wireNewFeatures(){
     setTimeout(checkDailyLoginReward,2000);
     // Push notifications
     initPushNotifications();
+    // Live updates — pull any newer web bundle (applies on next launch)
+    initLiveUpdates();
     // Feed cache disabled — was causing stale avatars and like counts
     // Init your profile music (background song)
     initMyProfileMusic();

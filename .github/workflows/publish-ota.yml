@@ -1,0 +1,74 @@
+name: Publish OTA bundle
+
+# Live updates. Every push to main that touches the web app publishes a new
+# web bundle to Supabase Storage. Installed apps check the manifest on launch,
+# download a newer bundle, and apply it on the NEXT launch — so JS/CSS/HTML
+# fixes reach users in minutes instead of an App Store review cycle.
+#
+# Apple permits this: it only ever updates interpreted (JS/CSS/HTML) code and
+# never changes native code or the app's purpose.
+#
+# Native changes (new plugins, capabilities) still require a real App Store
+# build — OTA only carries the web layer.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'dmca.html'
+      - 'manifest.json'
+      - 'changelog.json'
+      - 'js/**'
+      - 'css/**'
+      - 'images/**'
+  workflow_dispatch:
+
+concurrency:
+  group: publish-ota
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Mirrors sync-app.sh so the OTA bundle matches what a native build ships.
+      - name: Build web bundle
+        run: |
+          set -e
+          rm -rf otabuild && mkdir -p otabuild
+          cp index.html dmca.html changelog.json manifest.json otabuild/
+          cp -r js css images otabuild/
+          cd otabuild && zip -qr ../bundle.zip . && cd ..
+          ls -lh bundle.zip
+
+      - name: Publish bundle + manifest to Supabase Storage
+        env:
+          SB: ${{ secrets.SUPABASE_URL }}
+          KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          set -e
+          VER="${GITHUB_SHA::7}"
+          echo "Publishing OTA bundle version: $VER"
+
+          curl -sS -X POST "$SB/storage/v1/object/ota/bundles/$VER.zip" \
+            -H "apikey: $KEY" -H "Authorization: Bearer $KEY" \
+            -H "Content-Type: application/zip" -H "x-upsert: true" \
+            --data-binary @bundle.zip \
+            -o /dev/null -w "bundle upload -> HTTP %{http_code}\n"
+
+          # The manifest is the pointer installed apps poll on launch.
+          printf '{"version":"%s","url":"%s/storage/v1/object/public/ota/bundles/%s.zip"}' \
+            "$VER" "$SB" "$VER" > ota-manifest.json
+          cat ota-manifest.json; echo
+
+          curl -sS -X POST "$SB/storage/v1/object/ota/manifest.json" \
+            -H "apikey: $KEY" -H "Authorization: Bearer $KEY" \
+            -H "Content-Type: application/json" -H "x-upsert: true" \
+            -H "cache-control: no-cache" \
+            --data-binary @ota-manifest.json \
+            -o /dev/null -w "manifest upload -> HTTP %{http_code}\n"
+
+          echo "Done. Installed apps will fetch $VER on next launch."
