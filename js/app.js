@@ -15083,6 +15083,20 @@ function _updateGlobalPlayer(title,artist,isPlaying){
     if(navBtn) navBtn.classList.toggle('playing',!!isPlaying);
 }
 function _getCurrentAudio(){return _profileAudio||_myAudio;}
+// Pause music when the app leaves the foreground. iOS keeps WKWebView audio
+// alive in the background, so the profile song would keep playing over
+// whatever the user does next. Resume on return only if we were the ones who
+// paused it (and the master music switch is still on).
+var _musicPausedByBackground=false;
+document.addEventListener('visibilitychange',function(){
+    var a=_getCurrentAudio();
+    if(document.hidden){
+        if(a&&!a.paused){_musicPausedByBackground=true;try{a.pause();}catch(e){}}
+    } else if(_musicPausedByBackground){
+        _musicPausedByBackground=false;
+        if(settings.musicAutoplay!==false&&a&&a.paused){a.play().catch(function(){});}
+    }
+});
 // Fade out an audio element over duration ms
 function _fadeAudio(audio,fromVol,toVol,duration,onDone){
     if(!audio) {if(onDone)onDone();return;}
