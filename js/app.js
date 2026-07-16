@@ -13096,6 +13096,7 @@ updateFollowCounts();
         counter.textContent=(idx+1)+' / '+srcs.length;
         prev.style.display=srcs.length>1?'':'none';
         next.style.display=srcs.length>1?'':'none';
+        if(window._lbResetZoom)window._lbResetZoom(false);
         overlay.classList.add('show');
         document.body.style.overflow='hidden';
         resetReply();
@@ -13103,7 +13104,7 @@ updateFollowCounts();
         loadPhotoComments();
         loadPhotoReactions();
     }
-    function close(){vid.pause();vid.src='';overlay.classList.remove('show');document.body.style.overflow='';commentsPanel.classList.remove('lb-open');}
+    function close(){vid.pause();vid.src='';overlay.classList.remove('show');document.body.style.overflow='';commentsPanel.classList.remove('lb-open');if(window._lbResetZoom)window._lbResetZoom(false);}
     function go(d){idx=(idx+d+srcs.length)%srcs.length;show();}
     function resetReply(){replyTarget=null;replyIndicator.style.display='none';commentInput.placeholder='Write a comment...';}
 
@@ -13411,9 +13412,92 @@ updateFollowCounts();
     overlay.addEventListener('click',function(e){if(e.target===overlay)close();});
     document.addEventListener('keydown',function(e){if(!overlay.classList.contains('show'))return;if(e.key==='Escape'){if(commentsPanel.classList.contains('lb-open')){commentsPanel.classList.remove('lb-open');}else{close();}}if(e.key==='ArrowLeft')go(-1);if(e.key==='ArrowRight')go(1);});
 
-    // Touch swipe (only on media area)
-    media.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;dragging=true;},{passive:true});
-    media.addEventListener('touchend',function(e){if(!dragging)return;dragging=false;var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){dx>0?go(-1):go(1);}});
+    // ---- Zoom: pinch / double-tap (mobile), wheel / double-click + drag (desktop). Images only.
+    var zScale=1,zX=0,zY=0,pinchD=0,pinchStart=1,panning=false,panSX=0,panSY=0,panOX=0,panOY=0,lastTapT=0,lastTapX=0,lastTapY=0,lastDT=0,ty=0;
+    function tDist(t){return Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);}
+    function applyZoom(animate){
+        img.style.transition=animate?'transform .25s ease':'none';
+        img.style.transform=zScale>1?('translate('+zX+'px,'+zY+'px) scale('+zScale+')'):'';
+        img.style.cursor=zScale>1?'grab':'';
+    }
+    function clampPan(){
+        var r=media.getBoundingClientRect();
+        var mx=Math.max(0,(img.clientWidth*zScale-r.width)/2);
+        var my=Math.max(0,(img.clientHeight*zScale-r.height)/2);
+        zX=Math.max(-mx,Math.min(mx,zX));zY=Math.max(-my,Math.min(my,zY));
+    }
+    function resetZoom(animate){zScale=1;zX=0;zY=0;pinchD=0;panning=false;applyZoom(animate);}
+    function zoomToPoint(cx,cy,target){
+        var r=media.getBoundingClientRect();
+        zScale=target;
+        // Keep the tapped point under the finger/cursor
+        zX=-(cx-(r.left+r.width/2))*(zScale-1);
+        zY=-(cy-(r.top+r.height/2))*(zScale-1);
+        clampPan();applyZoom(true);
+    }
+    function toggleZoomAt(cx,cy){if(zScale>1)resetZoom(true);else zoomToPoint(cx,cy,2.5);}
+    window._lbResetZoom=resetZoom;
+
+    // Touch: pinch zooms, one finger pans when zoomed / swipes to prev-next when not
+    media.addEventListener('touchstart',function(e){
+        if(img.style.display==='none'){tx=e.touches[0].clientX;dragging=true;return;} // video: swipe only
+        if(e.touches.length===2){
+            pinchD=tDist(e.touches);pinchStart=zScale;dragging=false;panning=false;
+        } else if(e.touches.length===1){
+            if(zScale>1){panning=true;panSX=e.touches[0].clientX;panSY=e.touches[0].clientY;panOX=zX;panOY=zY;}
+            else{tx=e.touches[0].clientX;ty=e.touches[0].clientY;dragging=true;}
+        }
+    },{passive:true});
+    media.addEventListener('touchmove',function(e){
+        if(pinchD&&e.touches.length===2){
+            e.preventDefault();
+            zScale=Math.max(1,Math.min(4,pinchStart*tDist(e.touches)/pinchD));
+            clampPan();applyZoom(false);
+        } else if(panning&&e.touches.length===1){
+            e.preventDefault();
+            zX=panOX+(e.touches[0].clientX-panSX);
+            zY=panOY+(e.touches[0].clientY-panSY);
+            clampPan();applyZoom(false);
+        }
+    },{passive:false});
+    media.addEventListener('touchend',function(e){
+        if(pinchD){if(e.touches.length===0){pinchD=0;if(zScale<=1.05)resetZoom(true);}dragging=false;return;}
+        if(panning){if(e.touches.length===0)panning=false;return;}
+        if(!dragging)return;dragging=false;
+        var t=e.changedTouches[0],dx=t.clientX-tx,dy=t.clientY-ty;
+        if(Math.abs(dx)>50){dx>0?go(-1):go(1);return;}
+        // Double-tap to zoom (small movement, two taps close in time and space)
+        if(Math.abs(dx)<10&&Math.abs(dy)<10&&img.style.display!=='none'&&!e.target.closest('button')){
+            var now=Date.now();
+            if(now-lastTapT<300&&Math.abs(t.clientX-lastTapX)<40&&Math.abs(t.clientY-lastTapY)<40){
+                lastTapT=0;lastDT=now;toggleZoomAt(t.clientX,t.clientY);
+            } else {lastTapT=now;lastTapX=t.clientX;lastTapY=t.clientY;}
+        }
+    });
+    // Desktop: double-click toggles zoom, wheel zooms, drag pans
+    media.addEventListener('dblclick',function(e){
+        if(img.style.display==='none'||e.target.closest('button'))return;
+        if(Date.now()-lastDT<600)return; // already handled as touch double-tap
+        toggleZoomAt(e.clientX,e.clientY);
+    });
+    media.addEventListener('wheel',function(e){
+        if(img.style.display==='none')return;
+        e.preventDefault();
+        var ns=Math.max(1,Math.min(4,zScale*(e.deltaY<0?1.15:0.87)));
+        if(ns===zScale)return;
+        zScale=ns;
+        if(zScale<=1.02){resetZoom(false);return;}
+        clampPan();applyZoom(false);
+    },{passive:false});
+    img.addEventListener('mousedown',function(e){
+        if(zScale<=1)return;
+        e.preventDefault();
+        panning=true;panSX=e.clientX;panSY=e.clientY;panOX=zX;panOY=zY;img.style.cursor='grabbing';
+        function mv(ev){zX=panOX+(ev.clientX-panSX);zY=panOY+(ev.clientY-panSY);clampPan();applyZoom(false);}
+        function up(){panning=false;img.style.cursor='grab';document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);}
+        document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);
+    });
+    img.addEventListener('dragstart',function(e){e.preventDefault();});
     // Prevent close/swipe when interacting with comments
     commentsPanel.addEventListener('click',function(e){e.stopPropagation();});
     commentsPanel.addEventListener('touchstart',function(e){e.stopPropagation();},{passive:true});
@@ -14371,6 +14455,21 @@ async function initLiveUpdates(){
         await U.next({id:bundle.id});
         console.log('[OTA] downloaded — applies on next launch');
     }catch(e){console.warn('[OTA] check failed:',e);}
+}
+
+// ======================== iOS KEYBOARD FIX ========================
+// With resize:"body", opening the keyboard while a modal is up (comments,
+// post composer) makes iOS scroll the frozen position:fixed body off-screen —
+// the whole UI vanishes until the keyboard closes. "native" resizes the
+// webview frame instead, so fixed layouts reflow above the keyboard.
+// Set at runtime (not just capacitor.config.json) so the fix ships via OTA.
+async function initKeyboardFix(){
+    if(!window.Capacitor||!window.Capacitor.isNativePlatform()) return;
+    if(window.Capacitor.getPlatform()!=='ios') return;
+    try{
+        var K=window.Capacitor.Plugins.Keyboard;
+        if(K&&K.setResizeMode) await K.setResizeMode({mode:'native'});
+    }catch(e){console.warn('[Keyboard] setResizeMode:',e);}
 }
 
 async function initPushNotifications(){
@@ -15562,6 +15661,8 @@ function wireNewFeatures(){
     initPushNotifications();
     // Live updates — pull any newer web bundle (applies on next launch)
     initLiveUpdates();
+    // iOS: keyboard must resize the webview, not the body (blank-screen fix)
+    initKeyboardFix();
     // Feed cache disabled — was causing stale avatars and like counts
     // Init your profile music (background song)
     initMyProfileMusic();
