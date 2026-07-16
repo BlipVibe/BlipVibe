@@ -37,3 +37,6 @@ ios/App/App.xcodeproj/project.xcworkspace/xcuserdata/
 # --- Local environment files ---
 .env
 .env.local
+
+# Local secrets (NEVER commit)
+.local-secrets/
