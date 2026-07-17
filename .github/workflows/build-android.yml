@@ -25,7 +25,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       # Mirrors sync-app.sh: assemble www/ then copy into the android project
       - name: Build web assets
