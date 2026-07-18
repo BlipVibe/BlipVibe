@@ -2596,6 +2596,13 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .gv-mobile-right{display:flex!important;}
     .gv-center .card:first-child{text-align:center;}
     .gv-center .card:first-child .profile-stats{justify-content:center;}
+    /* Force the group card + avatar dead-center on mobile. The 3-column grid
+       could leave a reserved sidebar track that nudges the card left; these
+       id-level rules win over any grid/margin cascade. */
+    #page-group-view .gv-layout{grid-template-columns:1fr!important;}
+    #page-group-view .gv-center{align-items:stretch!important;min-width:0!important;}
+    #gvProfileCard{margin-left:auto!important;margin-right:auto!important;width:auto!important;max-width:none!important;}
+    #gvProfileCard .profile-avatar-wrap{margin-left:auto!important;margin-right:auto!important;float:none!important;}
     .gv-center .card:first-child .pv-actions,.gv-center .card:first-child .gv-actions{justify-content:center;flex-wrap:wrap;}
     .gv-cover-banner,.pv-cover-banner-group{height:200px!important;}
 
