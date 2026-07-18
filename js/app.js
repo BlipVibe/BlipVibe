@@ -15525,7 +15525,13 @@ document.addEventListener('click',function(e){
     var thumb=e.target.closest('[data-yt-id]');
     if(thumb){
         var ytId=thumb.dataset.ytId;
-        if(ytId) window.open('https://www.youtube.com/watch?v='+ytId,'_blank');
+        if(!ytId) return;
+        // Play INLINE in the app: swap the thumbnail for an autoplaying embed.
+        // The tap is the user gesture browsers require to allow autoplay, and
+        // playsinline keeps it in the feed instead of forcing native fullscreen.
+        thumb.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+ytId+'?enablejsapi=1&autoplay=1&playsinline=1&rel=0" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>';
+        thumb.style.cursor='default';
+        thumb.removeAttribute('data-yt-id'); // don't re-trigger on taps into the player
     }
 });
 
