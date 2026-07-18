@@ -15527,14 +15527,13 @@ document.addEventListener('click',function(e){
     var ytId=thumb.dataset.ytId;
     if(!ytId) return;
     var watchUrl='https://www.youtube.com/watch?v='+ytId;
-    // YouTube now blocks inline iframe embeds inside mobile browsers and the
-    // app WebView ("confirm you're not a bot" / error 153) — it's enforced
-    // server-side, no client bypass. So open the real YouTube page instead.
-    // In the native app, use the bundled Capacitor Browser (in-app Safari view)
-    // so the user stays inside BlipVibe; on mobile web, open it directly.
+    // YouTube blocks inline/in-app embeds on mobile (bot check / error 153), and
+    // the in-app browser still prompts a sign-in — so open the video EXTERNALLY.
+    // On the native app this hands off to the installed YouTube app (or the
+    // system browser); on mobile web it opens a new tab / the YouTube app.
     var Cap=window.Capacitor;
-    if(Cap&&Cap.isNativePlatform&&Cap.isNativePlatform()&&Cap.Plugins&&Cap.Plugins.Browser){
-        Cap.Plugins.Browser.open({url:watchUrl}).catch(function(){window.open(watchUrl,'_blank');});
+    if(Cap&&Cap.isNativePlatform&&Cap.isNativePlatform()){
+        window.open(watchUrl,'_system');
     }else{
         window.open(watchUrl,'_blank');
     }
