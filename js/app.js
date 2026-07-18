@@ -15523,15 +15523,20 @@ function showCoinEarnAnimation(anchorEl,amount){
 // ======================== YOUTUBE MOBILE THUMBNAIL CLICK HANDLER ========================
 document.addEventListener('click',function(e){
     var thumb=e.target.closest('[data-yt-id]');
-    if(thumb){
-        var ytId=thumb.dataset.ytId;
-        if(!ytId) return;
-        // Play INLINE in the app: swap the thumbnail for an autoplaying embed.
-        // The tap is the user gesture browsers require to allow autoplay, and
-        // playsinline keeps it in the feed instead of forcing native fullscreen.
-        thumb.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+ytId+'?enablejsapi=1&autoplay=1&playsinline=1&rel=0" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>';
-        thumb.style.cursor='default';
-        thumb.removeAttribute('data-yt-id'); // don't re-trigger on taps into the player
+    if(!thumb) return;
+    var ytId=thumb.dataset.ytId;
+    if(!ytId) return;
+    var watchUrl='https://www.youtube.com/watch?v='+ytId;
+    // YouTube now blocks inline iframe embeds inside mobile browsers and the
+    // app WebView ("confirm you're not a bot" / error 153) — it's enforced
+    // server-side, no client bypass. So open the real YouTube page instead.
+    // In the native app, use the bundled Capacitor Browser (in-app Safari view)
+    // so the user stays inside BlipVibe; on mobile web, open it directly.
+    var Cap=window.Capacitor;
+    if(Cap&&Cap.isNativePlatform&&Cap.isNativePlatform()&&Cap.Plugins&&Cap.Plugins.Browser){
+        Cap.Plugins.Browser.open({url:watchUrl}).catch(function(){window.open(watchUrl,'_blank');});
+    }else{
+        window.open(watchUrl,'_blank');
     }
 });
 
