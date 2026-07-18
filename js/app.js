@@ -9077,7 +9077,7 @@ function applySkin(skinId,silent){
     skins.forEach(function(s){card.classList.remove('skin-'+s.id);document.body.classList.remove('skin-'+s.id);});
     premiumSkins.forEach(function(s){document.body.classList.remove('premium-'+s.id);});
     document.body.classList.remove('premium-dark');
-    var avatars=document.querySelectorAll('#profileAvatarImg, #pvProfileCard .profile-avatar, .nav-avatar');
+    var avatars=document.querySelectorAll('#profileAvatarImg, .pv-profile-card .profile-avatar, .nav-avatar');
     avatars.forEach(function(av){av.classList.remove('premium-border');av.removeAttribute('data-premium');});
     if(!silent){state.activePremiumSkin=null;updatePremiumBg();}
     if(skinId&&skinId!=='default'){
@@ -9264,7 +9264,7 @@ function applyPremiumSkin(skinId,silent){
     // Clear all premium classes
     premiumSkins.forEach(function(s){document.body.classList.remove('premium-'+s.id);});
     document.body.classList.remove('premium-dark');
-    var avatars=document.querySelectorAll('#profileAvatarImg, #pvProfileCard .profile-avatar, .nav-avatar');
+    var avatars=document.querySelectorAll('#profileAvatarImg, .pv-profile-card .profile-avatar, .nav-avatar');
     avatars.forEach(function(av){av.classList.remove('premium-border');av.removeAttribute('data-premium');});
     if(skinId&&skinId!=='default'){
         // Clear basic skin first

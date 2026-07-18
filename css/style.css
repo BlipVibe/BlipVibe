@@ -3266,14 +3266,6 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
 .profile-avatar-wrap:has(.premium-border){overflow:visible;}
 .profile-avatar.premium-border{border:none!important;position:relative;z-index:1;}
 .profile-avatar-wrap:has(.premium-border)::before{content:'';position:absolute;inset:-6px;border-radius:20px;z-index:0;animation:premiumGlow 3s linear infinite;}
-/* The GROUP avatar (#gvProfileCard) must never show the personal premium-skin
-   glow: its spinning rounded-square ::before rendered as an off-center card
-   behind the group photo. Groups keep a clean, centered square avatar. Scoped
-   to #gvProfileCard so real user profiles (#pvProfileCard) keep their glow. */
-#gvProfileCard .profile-avatar-wrap::before,
-#gvProfileCard .profile-avatar-wrap::after{content:none!important;display:none!important;}
-#gvProfileCard .profile-avatar-wrap{overflow:hidden!important;}
-#gvProfileCard .profile-avatar{transform:none!important;}
 .nav-avatar.premium-border{border:3px solid var(--primary)!important;box-shadow:0 0 8px currentColor;}
 
 @keyframes premiumGlow{0%,100%{filter:brightness(1);}50%{filter:brightness(1.15);}}
