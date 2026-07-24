@@ -13551,6 +13551,8 @@ updateFollowCounts();
             var pid=feedPost?(feedPost.querySelector('.like-btn[data-post-id]')||{}).getAttribute&&feedPost.querySelector('.like-btn[data-post-id]').getAttribute('data-post-id'):null;
             if(list.length){open(list,list.indexOf(clickedSrc),pid);e.stopPropagation();return;}
         }
+        // Profile / group avatar → enlarge it like any other picture
+        if(t.classList.contains('profile-avatar')){open([clickedSrc],0);e.stopPropagation();return;}
         // Photo album grid
         var album=t.closest('.photo-album-grid');
         if(album){var list=collect(album);if(list.length){open(list,list.indexOf(clickedSrc));e.stopPropagation();return;}}

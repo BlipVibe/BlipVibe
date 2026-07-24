@@ -2307,7 +2307,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
 #page-profiles .page-container{padding-bottom:0;display:flex;flex-direction:column;height:calc(100vh - 80px);overflow:hidden;}
 #page-profiles .page-header{flex-shrink:0;}
 #page-profiles #profilesTabs{flex-shrink:0;}
-#page-profiles #profilesSections{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;}
+#page-profiles #profilesSections{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;}
 .connections-wrap{flex:1;min-height:0;display:flex;flex-direction:column;gap:16px;overflow:hidden;}
 .connections-columns{display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;min-height:0;}
 .connections-col{display:flex;flex-direction:column;gap:10px;background:var(--card);border-radius:12px;padding:14px;box-shadow:var(--shadow);min-height:0;}
@@ -2903,7 +2903,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     /* --- Network page — unlock scroll on mobile --- */
     #page-profiles{height:auto!important;overflow:auto!important;-webkit-overflow-scrolling:touch;}
     #page-profiles .page-container{height:auto!important;overflow:visible!important;}
-    #page-profiles #profilesSections{overflow:auto!important;-webkit-overflow-scrolling:touch;flex:none!important;}
+    #page-profiles #profilesSections{overflow:visible!important;flex:none!important;padding-bottom:90px!important;}
     .connections-wrap{overflow:visible!important;flex:none!important;}
     .connections-col{min-height:auto!important;max-height:60vh;overflow-y:auto!important;-webkit-overflow-scrolling:touch;}
 
