@@ -14477,6 +14477,11 @@ async function initKeyboardFix(){
 
 async function initPushNotifications(){
     if(!window.Capacitor||!window.Capacitor.isNativePlatform()) return;
+    // Android push requires Firebase (google-services.json), which isn't set up
+    // yet. Calling PushNotifications.register() without it crashes the app on
+    // Android on launch. Skip push on Android until Firebase is configured.
+    // (iOS is unaffected — it uses APNs, not Firebase.)
+    try{ if(window.Capacitor.getPlatform && window.Capacitor.getPlatform()==='android') return; }catch(e){ return; }
     try{
         var PushNotifications=window.Capacitor.Plugins.PushNotifications;
         if(!PushNotifications) return;
