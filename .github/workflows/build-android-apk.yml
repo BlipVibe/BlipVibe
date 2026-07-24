@@ -1,0 +1,47 @@
+name: Build Android debug APK (for testing)
+
+# Produces a sideloadable debug .apk (BlueStacks / Android Studio emulator /
+# a real phone via "Install unknown apps"). Unlike the release .aab, an APK
+# installs directly without Google Play. Debug builds are auto-signed with the
+# debug key — no signing secrets needed.
+#
+# Actions tab -> "Build Android debug APK (for testing)" -> Run workflow.
+# Download the artifact from the finished run.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Mirrors sync-app.sh: assemble www/ then copy into the android project
+      - name: Build web assets
+        run: |
+          set -e
+          npm ci
+          rm -rf www && mkdir -p www
+          cp index.html dmca.html changelog.json manifest.json www/
+          cp -r js css images www/
+          npx cap sync android
+
+      - name: Build debug APK
+        run: cd android && ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: blipvibe-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
