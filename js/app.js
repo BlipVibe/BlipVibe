@@ -9267,6 +9267,16 @@ function updatePremiumBg(forceShow){
     }
 }
 
+// The iOS status bar (time, battery, wifi) sits over the top of the page. Its
+// default white text is unreadable on light premium skins. Flip it to dark text
+// on light skins via the bundled Capacitor StatusBar plugin.
+// Capacitor Style: 'LIGHT' = dark text (for light bg), 'DARK' = light/white text.
+function _updateStatusBarStyle(isLightBg){
+    if(!window.Capacitor||!window.Capacitor.isNativePlatform()) return;
+    var SB=window.Capacitor.Plugins.StatusBar;
+    if(!SB||!SB.setStyle) return;
+    try{ SB.setStyle({style: isLightBg ? 'LIGHT' : 'DARK'}); }catch(e){}
+}
 function applyPremiumSkin(skinId,silent){
     var root=document.documentElement;var card=$('#profileCard');
     // Clear all premium classes
@@ -9282,6 +9292,7 @@ function applyPremiumSkin(skinId,silent){
         var skin=premiumSkins.find(function(s){return s.id===skinId;});
         document.body.classList.add('premium-'+skinId);
         if(skin.dark) document.body.classList.add('premium-dark');
+        _updateStatusBarStyle(!skin.dark); // light skin → dark status-bar text
         root.style.setProperty('--primary',skin.accent);
         root.style.setProperty('--primary-hover',skin.accentHover);
         root.style.setProperty('--nav-bg',skin.accent);
@@ -9290,6 +9301,7 @@ function applyPremiumSkin(skinId,silent){
         updatePremiumBg();
     } else {
         if(!silent) state.activePremiumSkin=null;
+        _updateStatusBarStyle(false); // default/basic skins keep the dark theme → white status-bar text
         updatePremiumBg();
         applySkin(state.activeSkin,true);
     }
