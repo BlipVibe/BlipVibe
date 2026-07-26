@@ -3968,3 +3968,126 @@ body.light-mode::before{background:#f8fafc;}
   .story-posted-toast .spt-icon{width:46px;height:46px;font-size:22px;}
   .story-posted-toast .spt-text{font-size:15px;}
 }
+
+/* Basic skins added later — missing skinColors + CSS caused them to "do nothing" (revert to previous skin) */
+/* --- CSS(append near the other basic-skin rules) --- */
+/* Volcanic Ash */
+.profile-card.skin-volcanic{background:#1e1e1e;}
+.profile-card.skin-volcanic .profile-cover{background:linear-gradient(135deg,#2c2c2c,#4a1a00)!important;}
+.profile-card.skin-volcanic .profile-name,.profile-card.skin-volcanic .stat-count{color:#b08030;}
+.profile-card.skin-volcanic .profile-coins{background:#fcf4dd;color:#b08030;}
+.profile-card.skin-volcanic .profile-stats{border-color:#fcf4dd;}
+.profile-card.skin-volcanic .view-profile-link{color:#b08030;}
+body.skin-volcanic{background:#1e1e1e;}
+body.skin-volcanic .navbar{background:#896425;}
+body.skin-volcanic .card,body.skin-volcanic .group-card,body.skin-volcanic .profile-card-item,body.skin-volcanic .notif-item{background:#1e1e1e;color:#f0c040;}
+body.skin-volcanic .feed-post{border-left:3px solid #b08030;}
+body.skin-volcanic .skill-tag{background:#fcf4dd;color:#b08030;}
+/* Lavender Fields */
+.profile-card.skin-lavender{background:#f5f0ff;}
+.profile-card.skin-lavender .profile-cover{background:linear-gradient(135deg,#9b72cf,#c4a7e7)!important;}
+.profile-card.skin-lavender .profile-name,.profile-card.skin-lavender .stat-count{color:#9b72cf;}
+.profile-card.skin-lavender .profile-coins{background:#e1dcea;color:#9b72cf;}
+.profile-card.skin-lavender .profile-stats{border-color:#e1dcea;}
+.profile-card.skin-lavender .view-profile-link{color:#9b72cf;}
+body.skin-lavender{background:#f9f6ff;}
+body.skin-lavender .navbar{background:#7959a1;}
+body.skin-lavender .card,body.skin-lavender .group-card,body.skin-lavender .profile-card-item,body.skin-lavender .notif-item{background:#fff;color:#333;}
+body.skin-lavender .feed-post{border-left:3px solid #9b72cf;}
+body.skin-lavender .skill-tag{background:#e1dcea;color:#9b72cf;}
+/* Coral Reef */
+.profile-card.skin-coral{background:#fff5f2;}
+.profile-card.skin-coral .profile-cover{background:linear-gradient(135deg,#ff6f61,#ff9a76)!important;}
+.profile-card.skin-coral .profile-name,.profile-card.skin-coral .stat-count{color:#ff6f61;}
+.profile-card.skin-coral .profile-coins{background:#f6dedc;color:#ff6f61;}
+.profile-card.skin-coral .profile-stats{border-color:#f6dedc;}
+.profile-card.skin-coral .view-profile-link{color:#ff6f61;}
+body.skin-coral{background:#fff9f7;}
+body.skin-coral .navbar{background:#c7574c;}
+body.skin-coral .card,body.skin-coral .group-card,body.skin-coral .profile-card-item,body.skin-coral .notif-item{background:#fff;color:#333;}
+body.skin-coral .feed-post{border-left:3px solid #ff6f61;}
+body.skin-coral .skill-tag{background:#f6dedc;color:#ff6f61;}
+/* Graphite */
+.profile-card.skin-graphite{background:#2d3436;}
+.profile-card.skin-graphite .profile-cover{background:linear-gradient(135deg,#2d3436,#636e72)!important;}
+.profile-card.skin-graphite .profile-name,.profile-card.skin-graphite .stat-count{color:#b2bec3;}
+.profile-card.skin-graphite .profile-coins{background:#f9fafb;color:#b2bec3;}
+.profile-card.skin-graphite .profile-stats{border-color:#f9fafb;}
+.profile-card.skin-graphite .view-profile-link{color:#b2bec3;}
+body.skin-graphite{background:#2d3436;}
+body.skin-graphite .navbar{background:#8b9498;}
+body.skin-graphite .card,body.skin-graphite .group-card,body.skin-graphite .profile-card-item,body.skin-graphite .notif-item{background:#2d3436;color:#dfe6e9;}
+body.skin-graphite .feed-post{border-left:3px solid #b2bec3;}
+body.skin-graphite .skill-tag{background:#f9fafb;color:#b2bec3;}
+/* Honeycomb */
+.profile-card.skin-honeycomb{background:#fff8e7;}
+.profile-card.skin-honeycomb .profile-cover{background:linear-gradient(135deg,#f0a500,#cf7500)!important;}
+.profile-card.skin-honeycomb .profile-name,.profile-card.skin-honeycomb .stat-count{color:#c08a20;}
+.profile-card.skin-honeycomb .profile-coins{background:#eae1d1;color:#c08a20;}
+.profile-card.skin-honeycomb .profile-stats{border-color:#eae1d1;}
+.profile-card.skin-honeycomb .view-profile-link{color:#c08a20;}
+body.skin-honeycomb{background:#fffbf1;}
+body.skin-honeycomb .navbar{background:#966c19;}
+body.skin-honeycomb .card,body.skin-honeycomb .group-card,body.skin-honeycomb .profile-card-item,body.skin-honeycomb .notif-item{background:#fff;color:#333;}
+body.skin-honeycomb .feed-post{border-left:3px solid #c08a20;}
+body.skin-honeycomb .skill-tag{background:#eae1d1;color:#c08a20;}
+/* Bubblegum Pop */
+.profile-card.skin-bubblegum{background:#fff0f6;}
+.profile-card.skin-bubblegum .profile-cover{background:linear-gradient(135deg,#ff1493,#ff69b4)!important;}
+.profile-card.skin-bubblegum .profile-name,.profile-card.skin-bubblegum .stat-count{color:#e0559a;}
+.profile-card.skin-bubblegum .profile-coins{background:#f5d5e9;color:#e0559a;}
+.profile-card.skin-bubblegum .profile-stats{border-color:#f5d5e9;}
+.profile-card.skin-bubblegum .view-profile-link{color:#e0559a;}
+body.skin-bubblegum{background:#fff6fa;}
+body.skin-bubblegum .navbar{background:#af4278;}
+body.skin-bubblegum .card,body.skin-bubblegum .group-card,body.skin-bubblegum .profile-card-item,body.skin-bubblegum .notif-item{background:#fff;color:#333;}
+body.skin-bubblegum .feed-post{border-left:3px solid #e0559a;}
+body.skin-bubblegum .skill-tag{background:#f5d5e9;color:#e0559a;}
+/* Dusk */
+.profile-card.skin-dusk{background:#1a1a2e;}
+.profile-card.skin-dusk .profile-cover{background:linear-gradient(135deg,#141e30,#6b2fa0,#c94b4b)!important;}
+.profile-card.skin-dusk .profile-name,.profile-card.skin-dusk .stat-count{color:#a07bc0;}
+.profile-card.skin-dusk .profile-coins{background:#fbf4fc;color:#a07bc0;}
+.profile-card.skin-dusk .profile-stats{border-color:#fbf4fc;}
+.profile-card.skin-dusk .view-profile-link{color:#a07bc0;}
+body.skin-dusk{background:#1a1a2e;}
+body.skin-dusk .navbar{background:#7d6096;}
+body.skin-dusk .card,body.skin-dusk .group-card,body.skin-dusk .profile-card-item,body.skin-dusk .notif-item{background:#1a1a2e;color:#e8c4f0;}
+body.skin-dusk .feed-post{border-left:3px solid #a07bc0;}
+body.skin-dusk .skill-tag{background:#fbf4fc;color:#a07bc0;}
+/* Mint Chip */
+.profile-card.skin-mint{background:#f0fff4;}
+.profile-card.skin-mint .profile-cover{background:linear-gradient(135deg,#00b894,#55efc4)!important;}
+.profile-card.skin-mint .profile-name,.profile-card.skin-mint .stat-count{color:#00b894;}
+.profile-card.skin-mint .profile-coins{background:#d1e8e1;color:#00b894;}
+.profile-card.skin-mint .profile-stats{border-color:#d1e8e1;}
+.profile-card.skin-mint .view-profile-link{color:#00b894;}
+body.skin-mint{background:#f6fff8;}
+body.skin-mint .navbar{background:#009073;}
+body.skin-mint .card,body.skin-mint .group-card,body.skin-mint .profile-card-item,body.skin-mint .notif-item{background:#fff;color:#333;}
+body.skin-mint .feed-post{border-left:3px solid #00b894;}
+body.skin-mint .skill-tag{background:#d1e8e1;color:#00b894;}
+/* Sandstone */
+.profile-card.skin-sandstone{background:#fdf5e6;}
+.profile-card.skin-sandstone .profile-cover{background:linear-gradient(135deg,#c2956a,#8b6914)!important;}
+.profile-card.skin-sandstone .profile-name,.profile-card.skin-sandstone .stat-count{color:#b8860b;}
+.profile-card.skin-sandstone .profile-coins{background:#e7e0da;color:#b8860b;}
+.profile-card.skin-sandstone .profile-stats{border-color:#e7e0da;}
+.profile-card.skin-sandstone .view-profile-link{color:#b8860b;}
+body.skin-sandstone{background:#fef9f0;}
+body.skin-sandstone .navbar{background:#906909;}
+body.skin-sandstone .card,body.skin-sandstone .group-card,body.skin-sandstone .profile-card-item,body.skin-sandstone .notif-item{background:#fff;color:#333;}
+body.skin-sandstone .feed-post{border-left:3px solid #b8860b;}
+body.skin-sandstone .skill-tag{background:#e7e0da;color:#b8860b;}
+/* Steel Blue */
+.profile-card.skin-steel{background:#eef3f8;}
+.profile-card.skin-steel .profile-cover{background:linear-gradient(135deg,#4682b4,#2c5f8a)!important;}
+.profile-card.skin-steel .profile-name,.profile-card.skin-steel .stat-count{color:#4682b4;}
+.profile-card.skin-steel .profile-coins{background:#d9e2ea;color:#4682b4;}
+.profile-card.skin-steel .profile-stats{border-color:#d9e2ea;}
+.profile-card.skin-steel .view-profile-link{color:#4682b4;}
+body.skin-steel{background:#f5f8fb;}
+body.skin-steel .navbar{background:#37658c;}
+body.skin-steel .card,body.skin-steel .group-card,body.skin-steel .profile-card-item,body.skin-steel .notif-item{background:#fff;color:#333;}
+body.skin-steel .feed-post{border-left:3px solid #4682b4;}
+body.skin-steel .skill-tag{background:#d9e2ea;color:#4682b4;}

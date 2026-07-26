@@ -9055,7 +9055,18 @@ var skinColors={
     slate:{primary:'#78909c',hover:'#607d8b',navBg:'#37474f'},
     ember:{primary:'#e64a19',hover:'#bf360c',navBg:'#bf360c',light:true},
     arctic:{primary:'#00acc1',hover:'#00838f',navBg:'#00838f',light:true},
-    moss:{primary:'#689f38',hover:'#558b2f',navBg:'#558b2f',light:true}
+    moss:{primary:'#689f38',hover:'#558b2f',navBg:'#558b2f',light:true},
+    pastel:{primary:'#b07cc3',hover:'#9669a6',navBg:'#896198',light:true},
+    volcanic:{primary:'#b08030',hover:'#966d29',navBg:'#896425'},
+    lavender:{primary:'#9b72cf',hover:'#8461b0',navBg:'#7959a1',light:true},
+    coral:{primary:'#ff6f61',hover:'#d95e52',navBg:'#c7574c',light:true},
+    graphite:{primary:'#b2bec3',hover:'#97a2a6',navBg:'#8b9498'},
+    honeycomb:{primary:'#c08a20',hover:'#a3751b',navBg:'#966c19',light:true},
+    bubblegum:{primary:'#e0559a',hover:'#be4883',navBg:'#af4278',light:true},
+    dusk:{primary:'#a07bc0',hover:'#8869a3',navBg:'#7d6096'},
+    mint:{primary:'#00b894',hover:'#009c7e',navBg:'#009073',light:true},
+    sandstone:{primary:'#b8860b',hover:'#9c7209',navBg:'#906909',light:true},
+    steel:{primary:'#4682b4',hover:'#3c6e99',navBg:'#37658c',light:true},
 };
 
 function setThemeVars(light){
