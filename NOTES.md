@@ -1546,3 +1546,44 @@ Ran `workflow_dispatch` mode=backfill — all 11 video posts optimized, 0 failur
 - The `sb_secret_…` service key was pasted in chat during setup — **rotate it** in Supabase (Settings → API) and update the `SUPABASE_SERVICE_KEY` GitHub secret when convenient.
 - Profile/group/saved views call `buildMediaGrid` without `videoStatus`, so they show the video directly (no placeholder) — fine, since backfill already optimized everything; only matters for the ~few-min window on a brand-new post viewed there.
 - `changelog.json` entry not yet added (user-facing Developer Updates) — pending wording.
+
+## Session batch — OTA, Android crash, UX fixes (2026-07-25)
+
+### OTA Live Updates (ship web fixes without an App Store/Play resubmit) — CRITICAL
+- Plugin: **`@capgo/capacitor-updater`** (registered in iOS `Package.swift` + Android gradle).
+- On launch, `initLiveUpdates()` (js/app.js) calls `notifyAppReady()` (auto-rollback if a bundle fails to boot), fetches a manifest, downloads any newer web bundle, applies it on the **next** launch.
+- Manifest + bundles live in a public Supabase Storage bucket **`ota`** (`ota/manifest.json`, `ota/bundles/<sha>.zip`).
+- **`.github/workflows/publish-ota.yml`** publishes a new bundle on every push to `main` that touches `index.html`/`js`/`css`/`images`/`manifest.json`/`changelog.json`.
+- **Implication:** once a build containing the updater is approved, JS/CSS/HTML fixes reach installed apps automatically. Only **native** changes (new plugins, capabilities, icon, `capacitor.config`) still need a store resubmit.
+
+### Android crash on launch — Play "Broken Functionality" rejection (FIXED)
+- Cause: app called `PushNotifications.register()` on Android, but there's **no `google-services.json`** (Firebase) → native crash on launch.
+- Fix: `initPushNotifications()` now **skips Android** (`Capacitor.getPlatform()==='android'`). iOS unaffected (APNs). Bumped Android `versionCode` 1 → 2.
+- **To enable Android push later:** create a Firebase project, add `google-services.json` to `android/app/`, build a send pipeline. Until then push stays off on Android.
+
+### Nav styles & templates are DESKTOP-ONLY (mobile never affected)
+- Controlled in **JS, not CSS**: `applyNavStyle()` only adds the `nav-*` body class when `innerWidth>768`; mobile always uses the standard bottom nav. `applyTemplate()` already forces `tpl-cinema` on mobile regardless of selection. Both re-evaluate in the window `resize` handler.
+- Don't try to scope the 700+ `body.nav-*`/`body.tpl-*` CSS rules — gating the body class in JS is the mechanism.
+
+### Android CI workflows
+- **`build-android.yml`** (manual) → signed `.aab` (for Play) **and** signed release `.apk` (sideload testing). Needs `ANDROID_KEYSTORE_*` GH secrets.
+- **`build-android-apk.yml`** (manual) → debug `.apk` for BlueStacks/emulator (no signing needed).
+- Note: BlueStacks Air's bundled adb is incompatible with hd-adb streamed install — sideload APKs via drag-and-drop, not adb.
+
+### Content / data how-tos
+- **Add a song:** upload `.mp3` to Supabase Storage **`Music`** bucket → insert a row in **`music_library`** (`title, artist, file_url` (public URL), `genre`, `price` in coins).
+- **Edit a user's coins:** `profiles.coin_balance` (integer, `>=0`). Group coins = `groups.coin_balance`. "Infinity" users are governed by `skin_data`, not `coin_balance`.
+
+### UX fixes this batch (all web / OTA-deliverable)
+- Video: lightbox close **✕** visible over native controls; feed videos **play inline** on ▶ tap, **tap the picture** to open full-screen; "Optimizing video…" placeholder while transcoding.
+- Music: **master on/off switch** (player button + Settings "Play Music While Browsing") gates ALL music (profile/group/own/autostart/stories); nav music icon stays visible when off; music **pauses when app is backgrounded** (`visibilitychange`).
+- GIF picker → **full-screen popup on mobile** (keyboard no longer covers it).
+- Group avatar: **centered** on mobile + premium **glow restored** (earlier removal was wrong; real bug was the 3-col grid centering).
+- Networking "People You May Know" list **scrolls** (was `overflow:hidden`).
+- Highlighted shop tabs **readable on all skins** (white text got a dark halo + bold — light `--primary` colors had no contrast).
+- Tap a **profile/group avatar → opens full-screen** in the lightbox.
+- **YouTube** links open the **YouTube app** externally (inline embeds hit YouTube's bot check / error 153 in mobile WebViews — no client bypass).
+- Terms **Section 3 "Free Expression Policy"**: playful free-speech statement + precise hate-speech definition (protected characteristics); profanity/controversial opinions explicitly allowed.
+
+### Changelog
+- `changelog.json` entry **v0.7.0 (2026-07-25)** added for this batch (user-facing Developer Updates).
