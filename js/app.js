@@ -9158,10 +9158,17 @@ function applyTemplate(tplId,silent){
 function applyNavStyle(nsId,silent){
     _wheelCleanup();
     navStyles.forEach(function(n){document.body.classList.remove('nav-'+n.id);});
-    if(nsId){document.body.classList.add('nav-'+nsId);state.activeNavStyle=nsId;if(!silent)addNotification('skin','You applied the "'+navStyles.find(function(n){return n.id===nsId;}).name+'" nav style!');}
-    else{state.activeNavStyle=null;}
+    // Nav styles are DESKTOP-ONLY. On mobile (<=768px) the standard bottom nav
+    // is always used, so we never add the nav-* class there — the selection
+    // still persists and re-applies when back on desktop (see resize handler).
+    var deskOnly=window.innerWidth>768;
+    if(nsId){
+        state.activeNavStyle=nsId;
+        if(deskOnly)document.body.classList.add('nav-'+nsId);
+        if(!silent)addNotification('skin','You applied the "'+navStyles.find(function(n){return n.id===nsId;}).name+'" nav style!');
+    }else{state.activeNavStyle=null;}
     requestAnimationFrame(syncNavPadding);
-    if(nsId==='wheel'){requestAnimationFrame(function(){_wheelBind();_wheelCenterActive();_wheelUpdate();});}
+    if(nsId==='wheel'&&deskOnly){requestAnimationFrame(function(){_wheelBind();_wheelCenterActive();_wheelUpdate();});}
 }
 function syncNavPadding(){
     var nav=document.querySelector('.navbar');
@@ -12955,7 +12962,7 @@ function initDragScroll(container){
 
 // ======================== INITIALIZE ========================
 // Reapply template on resize (mobile forces cinema, desktop uses user choice)
-window.addEventListener('resize',function(){var _rT;return function(){clearTimeout(_rT);_rT=setTimeout(function(){applyTemplate(state.activeTemplate,true);},200);};}());
+window.addEventListener('resize',function(){var _rT;return function(){clearTimeout(_rT);_rT=setTimeout(function(){applyTemplate(state.activeTemplate,true);applyNavStyle(state.activeNavStyle,true);},200);};}());
 if(!state.activeTemplate){applyTemplate('spotlight',true);state.activeTemplate='spotlight';}
 // generatePosts() is called in initApp() after auth — don't call here to avoid race condition
 renderSuggestions();
