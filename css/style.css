@@ -2851,9 +2851,9 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .profile-avatar{object-fit:cover;}
     .photos-preview img{object-fit:cover;}
     .timeline-cover,.pv-cover-banner{height:280px!important;aspect-ratio:auto!important;max-width:none!important;margin-top:0!important;background-size:cover!important;background-position:center!important;border-radius:12px!important;}
-    .main-container{margin-top:-60px!important;}
-    .profile-card,.pv-profile-card,body[class*="premium-"] .profile-card,body[class*="premium-"] .pv-profile-card{border-radius:12px!important;}
-    .profile-card .profile-cover{border-radius:12px 12px 0 0!important;}
+    .main-container{margin-top:2px!important;}
+    .profile-card,.pv-profile-card,body[class*="premium-"] .profile-card,body[class*="premium-"] .pv-profile-card{border-radius:16px!important;}
+    .profile-card .profile-cover{border-radius:16px 16px 0 0!important;}
     .profile-card .profile-info{border-radius:0 0 12px 12px;}
     .profile-avatar-wrap{margin-top:-50px!important;width:clamp(90px,30%,120px)!important;}
     body.tpl-stream .profile-card .profile-avatar-wrap{top:-40px!important;width:90px!important;left:12px!important;}
@@ -3102,7 +3102,7 @@ body.nav-pill .nav-link:hover span:not(.notif-badge),body.nav-split .nav-link:ho
     .search-bar input{padding:5px 8px 5px 26px!important;font-size:11px!important;}
     .nav-coins{padding:3px 6px!important;font-size:11px!important;margin-left:auto!important;}
     .nav-avatar{width:28px!important;height:28px!important;}
-    .main-container{padding:0 8px!important;width:100%!important;margin:-60px auto 0!important;}
+    .main-container{padding:0 8px!important;width:100%!important;margin:2px auto 0!important;}
     .feed-post{padding:12px 10px!important;border-left:none!important;border-right:none!important;}
     body[class*="premium-"] .feed-post,body[class*="skin-"] .feed-post{border-left:none!important;border-right:none!important;}
     #pvPostsFeed .card,#gvPostsFeed .card{width:100%!important;margin-left:0!important;margin-right:0!important;}
