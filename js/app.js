@@ -4002,7 +4002,7 @@ function _bindPvPostEvents(){
         });
     });
     $$('#pvPostsFeed .share-btn').forEach(function(btn){if(btn.dataset.pvBound) return;btn.dataset.pvBound='1';btn.addEventListener('click',function(){handleShare(btn);});});
-    $$('#pvPostsFeed .react-btn').forEach(function(btn){if(btn.dataset.pvBound) return;btn.dataset.pvBound='1';btn.addEventListener('click',function(){var postId=btn.getAttribute('data-post-id');showReactionPicker(postId,btn);});});
+    $$('#pvPostsFeed .react-btn').forEach(function(btn){if(btn.dataset.pvBound) return;btn.dataset.pvBound='1';btn.addEventListener('click',function(e){e.stopPropagation();var postId=btn.getAttribute('data-post-id');showReactionPicker(postId,btn);});});
     bindLikeCountClicks('#pvPostsFeed');
 }
 
