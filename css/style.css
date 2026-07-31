@@ -3697,6 +3697,8 @@ body.light-mode::before{background:#f8fafc;}
 .mutual-followers img:first-child{margin-left:0;}
 
 /* ========== ADD TO HOME SCREEN BANNER ========== */
+/* Store badges + install banner are browser-only — hidden inside the native app */
+.is-native-app .login-app-badges,.is-native-app .pwa-install-banner{display:none!important;}
 .pwa-install-banner{position:fixed;bottom:70px;left:12px;right:12px;z-index:5000;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 8px 32px rgba(0,0,0,.3);display:flex;align-items:center;gap:14px;animation:signupSlideIn .3s ease;}
 .pwa-install-banner .pwa-icon{width:48px;height:48px;border-radius:12px;background:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px;color:#fff;}
 .pwa-install-banner .pwa-text{flex:1;}
