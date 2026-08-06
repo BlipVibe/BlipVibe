@@ -193,16 +193,19 @@ img{display:block;}
 .dq-toast-undo{pointer-events:auto;display:flex;align-items:center;gap:14px;}
 .dq-toast-undo-btn{background:none;color:var(--primary);font-weight:700;font-size:14px;padding:0;text-decoration:underline;cursor:pointer;}
 @media(max-width:900px){
-    .login-center{padding:30px 16px;}
-    .login-logo-img{width:280px!important;}
-    .login-logo-area{margin-bottom:-80px!important;}
-    .login-stats{gap:32px!important;}
+    /* Mobile browsers have less height than the app's full-screen webview (address
+       bar + toolbar), so the absolute-centered login clipped its top/bottom with no
+       way to scroll. Switch to a scrollable, vertically-centered column instead. */
+    .login-page{overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch;}
+    .login-center{position:static!important;top:auto!important;left:auto!important;transform:none!important;width:100%!important;min-height:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(env(safe-area-inset-top,0px) + 14px) 16px calc(env(safe-area-inset-bottom,0px) + 22px)!important;}
+    .login-logo-img{width:240px!important;}
+    .login-logo-area{position:static!important;bottom:auto!important;left:auto!important;transform:none!important;margin:0 auto -4px!important;pointer-events:auto;}
+    .login-stats{gap:32px!important;padding-top:16px!important;}
     .login-stat strong{font-size:34px!important;}
     .login-card{padding:28px 24px;}
 }
 @media(max-width:480px){
-    .login-logo-img{width:220px!important;}
-    .login-logo-area{margin-bottom:-60px!important;}
+    .login-logo-img{width:200px!important;}
     .login-stats{gap:20px!important;}
     .login-stat strong{font-size:28px!important;}
 }
