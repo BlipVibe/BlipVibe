@@ -194,175 +194,178 @@ CREATE TRIGGER protect_profile_columns_trg
 
 
 -- =============================================================================
--- 6. POLICIES — BLOCK + SUSPENSION ENFORCEMENT ON CORE TABLES
+-- 6. GUARD POLICIES — BLOCK + SUSPENSION ENFORCEMENT
+--
+-- These are RESTRICTIVE policies. Postgres ANDs them with whatever policies the
+-- table already has, so nothing existing is dropped or rewritten — this only
+-- ever takes permission away, never grants it. Every guard is named bv_* so it
+-- is easy to find, and dropping the bv_* policies reverts this section entirely.
+--
+-- A restrictive policy is inert on a table that does not have RLS enabled. This
+-- script deliberately does NOT turn RLS on for you: flipping it on a table with
+-- no permissive policy would deny everything. Section 11 reports which tables
+-- have RLS off so you can see what is unprotected.
 -- =============================================================================
 
 -- ---- POSTS ------------------------------------------------------------------
-DROP POLICY IF EXISTS posts_select ON public.posts;
-CREATE POLICY posts_select ON public.posts
-    FOR SELECT USING (
-        public.is_platform_admin()
-        OR NOT public.is_blocked_pair(auth.uid(), author_id)
-    );
+DROP POLICY IF EXISTS bv_block_posts_sel ON public.posts;
+CREATE POLICY bv_block_posts_sel ON public.posts
+    AS RESTRICTIVE FOR SELECT
+    USING (public.is_platform_admin() OR NOT public.is_blocked_pair(auth.uid(), author_id));
 
-DROP POLICY IF EXISTS posts_insert ON public.posts;
-CREATE POLICY posts_insert ON public.posts
-    FOR INSERT WITH CHECK (
-        auth.uid() = author_id
-        AND NOT public.account_suspended(auth.uid())
-    );
+DROP POLICY IF EXISTS bv_suspend_posts_ins ON public.posts;
+CREATE POLICY bv_suspend_posts_ins ON public.posts
+    AS RESTRICTIVE FOR INSERT
+    WITH CHECK (NOT public.account_suspended(auth.uid()));
 
-DROP POLICY IF EXISTS posts_update ON public.posts;
-CREATE POLICY posts_update ON public.posts
-    FOR UPDATE USING (auth.uid() = author_id AND NOT public.account_suspended(auth.uid()))
-    WITH CHECK (auth.uid() = author_id);
-
--- Deleting your own content stays allowed even while suspended.
-DROP POLICY IF EXISTS posts_delete ON public.posts;
-CREATE POLICY posts_delete ON public.posts
-    FOR DELETE USING (auth.uid() = author_id);
+DROP POLICY IF EXISTS bv_suspend_posts_upd ON public.posts;
+CREATE POLICY bv_suspend_posts_upd ON public.posts
+    AS RESTRICTIVE FOR UPDATE
+    USING (NOT public.account_suspended(auth.uid()));
 
 -- ---- COMMENTS ---------------------------------------------------------------
-DROP POLICY IF EXISTS comments_select ON public.comments;
-CREATE POLICY comments_select ON public.comments
-    FOR SELECT USING (
-        public.is_platform_admin()
-        OR NOT public.is_blocked_pair(auth.uid(), author_id)
-    );
+DROP POLICY IF EXISTS bv_block_comments_sel ON public.comments;
+CREATE POLICY bv_block_comments_sel ON public.comments
+    AS RESTRICTIVE FOR SELECT
+    USING (public.is_platform_admin() OR NOT public.is_blocked_pair(auth.uid(), author_id));
 
-DROP POLICY IF EXISTS comments_insert ON public.comments;
-CREATE POLICY comments_insert ON public.comments
-    FOR INSERT WITH CHECK (
-        auth.uid() = author_id
-        AND NOT public.account_suspended(auth.uid())
+-- Suspended users cannot comment, and nobody can comment on a post whose author
+-- they are blocked from.
+DROP POLICY IF EXISTS bv_guard_comments_ins ON public.comments;
+CREATE POLICY bv_guard_comments_ins ON public.comments
+    AS RESTRICTIVE FOR INSERT
+    WITH CHECK (
+        NOT public.account_suspended(auth.uid())
         AND NOT public.is_blocked_pair(auth.uid(), public.post_author(post_id))
     );
 
-DROP POLICY IF EXISTS comments_update ON public.comments;
-CREATE POLICY comments_update ON public.comments
-    FOR UPDATE USING (auth.uid() = author_id AND NOT public.account_suspended(auth.uid()))
-    WITH CHECK (auth.uid() = author_id);
-
-DROP POLICY IF EXISTS comments_delete ON public.comments;
-CREATE POLICY comments_delete ON public.comments
-    FOR DELETE USING (auth.uid() = author_id);
+DROP POLICY IF EXISTS bv_suspend_comments_upd ON public.comments;
+CREATE POLICY bv_suspend_comments_upd ON public.comments
+    AS RESTRICTIVE FOR UPDATE
+    USING (NOT public.account_suspended(auth.uid()));
 
 -- ---- LIKES ------------------------------------------------------------------
-DROP POLICY IF EXISTS likes_insert ON public.likes;
-CREATE POLICY likes_insert ON public.likes
-    FOR INSERT WITH CHECK (
-        auth.uid() = user_id
-        AND NOT public.account_suspended(auth.uid())
+DROP POLICY IF EXISTS bv_guard_likes_ins ON public.likes;
+CREATE POLICY bv_guard_likes_ins ON public.likes
+    AS RESTRICTIVE FOR INSERT
+    WITH CHECK (
+        NOT public.account_suspended(auth.uid())
         AND (
-            target_type <> 'post'
+            target_type::text <> 'post'
             OR NOT public.is_blocked_pair(auth.uid(), public.post_author(target_id))
         )
     );
 
 -- ---- FOLLOWS ----------------------------------------------------------------
-DROP POLICY IF EXISTS follows_insert ON public.follows;
-CREATE POLICY follows_insert ON public.follows
-    FOR INSERT WITH CHECK (
-        auth.uid() = follower_id
-        AND NOT public.account_suspended(auth.uid())
+DROP POLICY IF EXISTS bv_block_follows_sel ON public.follows;
+CREATE POLICY bv_block_follows_sel ON public.follows
+    AS RESTRICTIVE FOR SELECT
+    USING (public.is_platform_admin() OR NOT public.is_blocked_pair(auth.uid(), follower_id));
+
+DROP POLICY IF EXISTS bv_guard_follows_ins ON public.follows;
+CREATE POLICY bv_guard_follows_ins ON public.follows
+    AS RESTRICTIVE FOR INSERT
+    WITH CHECK (
+        NOT public.account_suspended(auth.uid())
         AND NOT public.is_blocked_pair(auth.uid(), followed_id)
     );
 
-DROP POLICY IF EXISTS follows_select ON public.follows;
-CREATE POLICY follows_select ON public.follows
-    FOR SELECT USING (
-        public.is_platform_admin()
-        OR NOT public.is_blocked_pair(auth.uid(), follower_id)
-    );
-
 -- ---- MESSAGES ---------------------------------------------------------------
-DROP POLICY IF EXISTS messages_insert ON public.messages;
-CREATE POLICY messages_insert ON public.messages
-    FOR INSERT WITH CHECK (
-        auth.uid() = sender_id
-        AND NOT public.account_suspended(auth.uid())
+DROP POLICY IF EXISTS bv_guard_messages_ins ON public.messages;
+CREATE POLICY bv_guard_messages_ins ON public.messages
+    AS RESTRICTIVE FOR INSERT
+    WITH CHECK (
+        NOT public.account_suspended(auth.uid())
         AND NOT public.is_blocked_pair(sender_id, receiver_id)
     );
 
--- The old policy allowed only the receiver to update a row, which meant the
--- sender could never edit their own message. Both sides may update now; the
--- sender edits content, the receiver marks it read.
-DROP POLICY IF EXISTS messages_update ON public.messages;
-CREATE POLICY messages_update ON public.messages
-    FOR UPDATE USING (auth.uid() = sender_id OR auth.uid() = receiver_id)
-    WITH CHECK  (auth.uid() = sender_id OR auth.uid() = receiver_id);
+-- The existing messages_update policy only allows the RECEIVER to update a row,
+-- so a sender could never edit their own message. This is an extra PERMISSIVE
+-- policy, which Postgres ORs with the existing one: it adds the sender's right
+-- to edit without touching the receiver's right to mark a message read.
+DROP POLICY IF EXISTS bv_messages_update_sender ON public.messages;
+CREATE POLICY bv_messages_update_sender ON public.messages
+    FOR UPDATE
+    USING (auth.uid() = sender_id)
+    WITH CHECK (auth.uid() = sender_id);
 
 -- ---- NOTIFICATIONS ----------------------------------------------------------
-DROP POLICY IF EXISTS notifications_insert ON public.notifications;
-CREATE POLICY notifications_insert ON public.notifications
-    FOR INSERT WITH CHECK (
-        auth.role() = 'authenticated'
-        AND NOT public.account_suspended(auth.uid())
+DROP POLICY IF EXISTS bv_guard_notifications_ins ON public.notifications;
+CREATE POLICY bv_guard_notifications_ins ON public.notifications
+    AS RESTRICTIVE FOR INSERT
+    WITH CHECK (
+        NOT public.account_suspended(auth.uid())
         AND NOT public.is_blocked_pair(auth.uid(), user_id)
     );
 
 
 -- =============================================================================
--- 7. POLICIES — OPTIONAL TABLES (only applied if the table exists)
+-- 7. GUARD POLICIES — OPTIONAL TABLES
+--
+-- These tables do not exist in every deployment and do not agree on the name of
+-- their owner column, so this block looks up the real column in the catalog
+-- instead of assuming one. A table that is missing, or that has none of the
+-- known owner columns, is skipped rather than failing the migration.
 -- =============================================================================
 DO $do$
+DECLARE
+    t          TEXT;
+    owner_col  TEXT;
+    -- table name, and whether its rows are content other people read
+    targets    TEXT[][] := ARRAY[
+                   ARRAY['stories',              'read'],
+                   ARRAY['story_comments',       'read'],
+                   ARRAY['photo_comments',       'read'],
+                   ARRAY['photo_likes',          'write'],
+                   ARRAY['group_chat_messages',  'write'],
+                   ARRAY['scheduled_posts',      'write'],
+                   ARRAY['post_edits',           'write']
+               ];
+    i          INT;
 BEGIN
-    -- ---- STORIES ----
-    IF to_regclass('public.stories') IS NOT NULL THEN
-        EXECUTE 'ALTER TABLE public.stories ENABLE ROW LEVEL SECURITY';
-        EXECUTE 'DROP POLICY IF EXISTS stories_select ON public.stories';
-        EXECUTE 'CREATE POLICY stories_select ON public.stories FOR SELECT USING (
-                     public.is_platform_admin()
-                     OR NOT public.is_blocked_pair(auth.uid(), user_id))';
-        EXECUTE 'DROP POLICY IF EXISTS stories_insert ON public.stories';
-        EXECUTE 'CREATE POLICY stories_insert ON public.stories FOR INSERT WITH CHECK (
-                     auth.uid() = user_id
-                     AND NOT public.account_suspended(auth.uid()))';
-        EXECUTE 'DROP POLICY IF EXISTS stories_delete ON public.stories';
-        EXECUTE 'CREATE POLICY stories_delete ON public.stories FOR DELETE USING (auth.uid() = user_id)';
-    END IF;
+    FOR i IN 1 .. array_length(targets, 1) LOOP
+        t := targets[i][1];
 
-    -- ---- PHOTO COMMENTS ----
-    IF to_regclass('public.photo_comments') IS NOT NULL THEN
-        EXECUTE 'ALTER TABLE public.photo_comments ENABLE ROW LEVEL SECURITY';
-        EXECUTE 'DROP POLICY IF EXISTS photo_comments_select ON public.photo_comments';
-        EXECUTE 'CREATE POLICY photo_comments_select ON public.photo_comments FOR SELECT USING (
-                     public.is_platform_admin()
-                     OR NOT public.is_blocked_pair(auth.uid(), author_id))';
-        EXECUTE 'DROP POLICY IF EXISTS photo_comments_insert ON public.photo_comments';
-        EXECUTE 'CREATE POLICY photo_comments_insert ON public.photo_comments FOR INSERT WITH CHECK (
-                     auth.uid() = author_id
-                     AND NOT public.account_suspended(auth.uid()))';
-        EXECUTE 'DROP POLICY IF EXISTS photo_comments_delete ON public.photo_comments';
-        EXECUTE 'CREATE POLICY photo_comments_delete ON public.photo_comments FOR DELETE USING (auth.uid() = author_id)';
-    END IF;
+        IF to_regclass('public.' || t) IS NULL THEN
+            RAISE NOTICE 'skip %: table does not exist', t;
+            CONTINUE;
+        END IF;
 
-    -- ---- PHOTO LIKES / REACTIONS ----
-    IF to_regclass('public.photo_likes') IS NOT NULL THEN
-        EXECUTE 'ALTER TABLE public.photo_likes ENABLE ROW LEVEL SECURITY';
-        EXECUTE 'DROP POLICY IF EXISTS photo_likes_insert ON public.photo_likes';
-        EXECUTE 'CREATE POLICY photo_likes_insert ON public.photo_likes FOR INSERT WITH CHECK (
-                     auth.uid() = user_id
-                     AND NOT public.account_suspended(auth.uid()))';
-    END IF;
+        -- Whichever owner column this table actually uses, in preference order.
+        SELECT c.column_name INTO owner_col
+          FROM information_schema.columns c
+         WHERE c.table_schema = 'public'
+           AND c.table_name   = t
+           AND c.column_name IN ('author_id', 'user_id', 'sender_id', 'owner_id')
+         ORDER BY array_position(
+                    ARRAY['author_id', 'user_id', 'sender_id', 'owner_id'],
+                    c.column_name::text)
+         LIMIT 1;
 
-    -- ---- GROUP CHAT MESSAGES ----
-    IF to_regclass('public.group_chat_messages') IS NOT NULL THEN
-        EXECUTE 'ALTER TABLE public.group_chat_messages ENABLE ROW LEVEL SECURITY';
-        EXECUTE 'DROP POLICY IF EXISTS group_chat_messages_insert ON public.group_chat_messages';
-        EXECUTE 'CREATE POLICY group_chat_messages_insert ON public.group_chat_messages FOR INSERT WITH CHECK (
-                     auth.uid() = author_id
-                     AND NOT public.account_suspended(auth.uid()))';
-    END IF;
+        IF owner_col IS NULL THEN
+            RAISE NOTICE 'skip %: no recognised owner column', t;
+            CONTINUE;
+        END IF;
 
-    -- ---- SCHEDULED POSTS ----
-    IF to_regclass('public.scheduled_posts') IS NOT NULL THEN
-        EXECUTE 'ALTER TABLE public.scheduled_posts ENABLE ROW LEVEL SECURITY';
-        EXECUTE 'DROP POLICY IF EXISTS scheduled_posts_insert ON public.scheduled_posts';
-        EXECUTE 'CREATE POLICY scheduled_posts_insert ON public.scheduled_posts FOR INSERT WITH CHECK (
-                     auth.uid() = author_id
-                     AND NOT public.account_suspended(auth.uid()))';
-    END IF;
+        -- Suspended accounts cannot write to any of them.
+        EXECUTE format('DROP POLICY IF EXISTS %I ON public.%I', 'bv_suspend_' || t || '_ins', t);
+        EXECUTE format(
+            'CREATE POLICY %I ON public.%I AS RESTRICTIVE FOR INSERT
+             WITH CHECK (NOT public.account_suspended(auth.uid()))',
+            'bv_suspend_' || t || '_ins', t);
+
+        -- Content other people read is also hidden between blocked users.
+        IF targets[i][2] = 'read' THEN
+            EXECUTE format('DROP POLICY IF EXISTS %I ON public.%I', 'bv_block_' || t || '_sel', t);
+            EXECUTE format(
+                'CREATE POLICY %I ON public.%I AS RESTRICTIVE FOR SELECT
+                 USING (public.is_platform_admin()
+                        OR NOT public.is_blocked_pair(auth.uid(), %I))',
+                'bv_block_' || t || '_sel', t, owner_col);
+        END IF;
+
+        RAISE NOTICE 'guarded % (owner column %)', t, owner_col;
+    END LOOP;
 END
 $do$;
 
@@ -575,22 +578,45 @@ $do$;
 
 
 -- =============================================================================
--- 11. VERIFY — read the output of these to confirm the migration landed
+-- 11. VERIFY — one result set. Read every row.
+--
+--   summary        : headline counts. "guard policies" should be 13 or more.
+--   guard policy   : one row per protection that was installed.
+--   RLS OFF        : tables with row-level security switched off. A guard on
+--                    one of those is inert, so anything listed there is
+--                    unprotected. This script does not switch RLS on for you,
+--                    because doing that on a table with no permissive policy
+--                    would lock everyone out.
 -- =============================================================================
-SELECT 'blocks rows'            AS item, count(*)::text AS result FROM public.blocks
-UNION ALL
-SELECT 'reports rows',            count(*)::text FROM public.reports
-UNION ALL
-SELECT 'protect trigger present', count(*)::text FROM pg_trigger
-       WHERE tgname = 'protect_profile_columns_trg'
-UNION ALL
-SELECT 'block policies live',     count(*)::text FROM pg_policies
-       WHERE schemaname = 'public' AND qual LIKE '%is_blocked_pair%'
-UNION ALL
-SELECT 'suspension policies live', count(*)::text FROM pg_policies
-       WHERE schemaname = 'public'
-         AND (qual LIKE '%account_suspended%' OR with_check LIKE '%account_suspended%')
-UNION ALL
-SELECT 'suspended accounts',      count(*)::text FROM public.profiles WHERE is_suspended
-UNION ALL
-SELECT 'admins',                  count(*)::text FROM public.profiles WHERE is_admin;
+SELECT section, item, value
+FROM (
+    SELECT 1 AS ord, 'summary' AS section, 'blocks rows' AS item,
+           count(*)::text AS value FROM public.blocks
+    UNION ALL
+    SELECT 1, 'summary', 'reports rows', count(*)::text FROM public.reports
+    UNION ALL
+    SELECT 1, 'summary', 'protect trigger present', count(*)::text
+      FROM pg_trigger WHERE tgname = 'protect_profile_columns_trg'
+    UNION ALL
+    SELECT 1, 'summary', 'guard policies', count(*)::text
+      FROM pg_policies WHERE schemaname = 'public' AND policyname LIKE 'bv_%'
+    UNION ALL
+    SELECT 1, 'summary', 'suspended accounts', count(*)::text
+      FROM public.profiles WHERE is_suspended
+    UNION ALL
+    SELECT 1, 'summary', 'admins', count(*)::text
+      FROM public.profiles WHERE is_admin
+
+    UNION ALL
+    SELECT 2, 'guard policy', tablename || ' -> ' || policyname,
+           cmd || ' / ' || CASE WHEN permissive = 'PERMISSIVE' THEN 'adds' ELSE 'restricts' END
+      FROM pg_policies
+     WHERE schemaname = 'public' AND policyname LIKE 'bv_%'
+
+    UNION ALL
+    SELECT 3, 'RLS OFF', c.relname, 'unprotected - guards are inert here'
+      FROM pg_class c
+      JOIN pg_namespace n ON n.oid = c.relnamespace
+     WHERE n.nspname = 'public' AND c.relkind = 'r' AND NOT c.relrowsecurity
+) x
+ORDER BY ord, item;
