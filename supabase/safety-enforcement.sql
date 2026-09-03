@@ -577,12 +577,19 @@ $do$;
 -- =============================================================================
 -- 11. VERIFY — read the output of these to confirm the migration landed
 -- =============================================================================
-SELECT 'blocks rows'            AS check, count(*)::text AS value FROM public.blocks
+SELECT 'blocks rows'            AS item, count(*)::text AS result FROM public.blocks
 UNION ALL
 SELECT 'reports rows',            count(*)::text FROM public.reports
 UNION ALL
 SELECT 'protect trigger present', count(*)::text FROM pg_trigger
        WHERE tgname = 'protect_profile_columns_trg'
+UNION ALL
+SELECT 'block policies live',     count(*)::text FROM pg_policies
+       WHERE schemaname = 'public' AND qual LIKE '%is_blocked_pair%'
+UNION ALL
+SELECT 'suspension policies live', count(*)::text FROM pg_policies
+       WHERE schemaname = 'public'
+         AND (qual LIKE '%account_suspended%' OR with_check LIKE '%account_suspended%')
 UNION ALL
 SELECT 'suspended accounts',      count(*)::text FROM public.profiles WHERE is_suspended
 UNION ALL
