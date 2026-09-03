@@ -766,9 +766,24 @@ async function initApp() {
             showLogin(); return;
         }
     }
+    // Suspended accounts are refused entry. The database refuses their writes
+    // too (see supabase/safety-enforcement.sql), so this is the visible half of
+    // an enforcement that is real either way.
+    if (currentUser && currentUser.is_suspended) {
+        _initAppRunning = false;
+        try { await sbSignOut(); } catch (e) {}
+        showLogin();
+        if (loginError) {
+            loginError.textContent = 'This account has been suspended. Email hello@blipvibe.com if you think this is a mistake.';
+            loginError.classList.add('show');
+        }
+        return;
+    }
     state.coins = currentUser.coin_balance || 0;
     // Load all state from Supabase (sole source of truth)
     await loadSkinDataFromSupabase();
+    // Blocks come from the server so the client filter matches what RLS enforces
+    try { await loadBlockedUsers(); } catch (e) { console.warn('loadBlockedUsers:', e); }
     // Refresh coin display after skin_data loads (infinity status may not be available earlier)
     var _coinEl=document.getElementById('navCoinCount');
     if(_coinEl) if(_hasInfinity()){_coinEl.innerHTML='<span class="infinity">\u221E</span>';}else{_coinEl.textContent=currentUser.coin_balance||0;}
@@ -1469,6 +1484,17 @@ var _commentReactions={};
 var commentCoinAwarded={};
 var _tutorialsSeen={};
 function persistBlocked(){saveState();syncSkinDataToSupabase(true);}
+// Blocks live in the `blocks` table so the database can enforce them. skin_data
+// is kept in sync only as a legacy fallback for older builds.
+var _blockedProfiles=[];
+async function loadBlockedUsers(){
+    if(!currentUser) return;
+    var rows=await sbGetBlockedUsers();
+    var map={};
+    (rows||[]).forEach(function(b){ if(b&&b.id) map[b.id]=true; });
+    blockedUsers=map;
+    _blockedProfiles=rows||[];
+}
 function findPostFolder(pid){var s=String(pid);for(var i=0;i<savedFolders.length;i++){if(savedFolders[i].posts.indexOf(s)!==-1)return savedFolders[i];}return null;}
 
 // ======================== DATA ========================
@@ -2045,8 +2071,9 @@ async function renderSearchResults(q,tab){
 // ======================== COIN SYSTEM ========================
 function updateCoins(){
     if(currentUser){
+        // Display only. The balance is owned by the server (award_coins and the
+        // purchase RPCs); the client is no longer permitted to write the column.
         currentUser.coin_balance=state.coins;
-        sbUpdateProfile(currentUser.id,{coin_balance:state.coins}).catch(function(e){console.error('coinSync:',e);});
     }
     if(_hasInfinity()){$('#navCoinCount').innerHTML='<span class="infinity">\u221E</span>';}else{$('#navCoinCount').textContent=state.coins;}
     var el=$('#navCoins');
@@ -3473,9 +3500,9 @@ async function showProfileModal(person){
         closeModal();
         showProfileView(person);
     });
-    document.getElementById('modalBlockBtn').addEventListener('click',function(){
+    document.getElementById('modalBlockBtn').addEventListener('click',async function(){
         if(blockedUsers[person.id]){
-            unblockUser(person.id);
+            await unblockUser(person.id);
             closeModal();
             showProfileModal(person);
         } else {
@@ -3906,9 +3933,9 @@ async function showProfileView(person){
     }
     var blockBtn=document.getElementById('pvBlockBtn');
     if(blockBtn){
-        blockBtn.addEventListener('click',function(){
+        blockBtn.addEventListener('click',async function(){
             if(blockedUsers[person.id]){
-                unblockUser(person.id);
+                await unblockUser(person.id);
                 showProfileView(person);
             } else {
                 showBlockConfirmModal(person,function(){showProfileView(person);});
@@ -6174,7 +6201,7 @@ document.addEventListener('click',function(e){
             h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;">Close Friends</span><button class="btn btn-outline" id="settingsCloseFriends" style="padding:4px 14px;font-size:12px;color:#f59e0b;border-color:#f59e0b;"><i class="fas fa-star" style="margin-right:4px;"></i>'+Object.keys(_closeFriends).length+'</button></div>';
             // Admin: Report Queue
             if(_isAdmin){
-                h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;color:#e74c3c;"><i class="fas fa-shield-halved" style="margin-right:4px;"></i>Report Queue</span><button class="btn btn-outline" id="settingsReportQueue" style="padding:4px 14px;font-size:12px;color:#e74c3c;border-color:#e74c3c;"><i class="fas fa-flag" style="margin-right:4px;"></i>'+reportedPosts.length+'</button></div>';
+                h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;color:#e74c3c;"><i class="fas fa-shield-halved" style="margin-right:4px;"></i>Report Queue</span><button class="btn btn-outline" id="settingsReportQueue" style="padding:4px 14px;font-size:12px;color:#e74c3c;border-color:#e74c3c;"><i class="fas fa-flag" style="margin-right:4px;"></i>'+'<span id="settingsReportCount">\u2026</span></button></div>';
             }
             // Account Security section
             h+='<div style="padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:14px;font-weight:600;">Account Security</span>';
@@ -6240,6 +6267,16 @@ document.addEventListener('click',function(e){
             // Admin Report Queue
             var rqBtn=document.getElementById('settingsReportQueue');
             if(rqBtn) rqBtn.addEventListener('click',function(){closeModal();showAdminReportQueue();});
+            // Real open-report count from the server, filled in after the modal opens
+            if(rqBtn){
+                sbAdminOpenReportCount().then(function(n){
+                    var el=document.getElementById('settingsReportCount');
+                    if(el) el.textContent=n;
+                }).catch(function(){
+                    var el=document.getElementById('settingsReportCount');
+                    if(el) el.textContent='0';
+                });
+            }
             document.getElementById('settingsManageCookies').addEventListener('click',function(){
                 if(_cookieConsent){try{localStorage.setItem('blipvibe_cookie_consent','essential');}catch(e){}_cookieConsent=false;closeModal();showToast('Cookies revoked — third-party embeds are now blocked.');setTimeout(function(){location.reload();},800);}
                 else{grantCookieConsent();closeModal();showToast('Cookies accepted — embeds will now load.');setTimeout(function(){location.reload();},800);}
@@ -11061,6 +11098,11 @@ function showMuteConfirmModal(person,onDone){
 }
 
 // ======================== REPORT USER (not just posts) ========================
+function _reportErrorMessage(e){
+    var m=(e&&e.message)?String(e.message):'';
+    if(m.toLowerCase().indexOf('limit')!==-1) return 'Report limit reached. Please try again later.';
+    return 'Could not submit report. Please try again.';
+}
 function showReportUserModal(person){
     var h='<div class="modal-header"><h3><i class="fas fa-flag" style="color:#e74c3c;margin-right:8px;"></i>Report User</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     h+='<div class="modal-body"><p style="font-size:14px;margin-bottom:14px;color:var(--gray);">Why are you reporting <strong>'+escapeHtml(person.name||'this user')+'</strong>?</p>';
@@ -11071,11 +11113,15 @@ function showReportUserModal(person){
     h+='</div></div>';
     showModal(h);
     $$('.report-reason-btn').forEach(function(btn){
-        btn.addEventListener('click',function(){
-            reportedPosts.push({type:'user',userId:person.id,reason:btn.dataset.reason,time:Date.now()});
-            persistReports();
+        btn.addEventListener('click',async function(){
             closeModal();
-            showToast('Report submitted. Thank you.');
+            try{
+                await sbSubmitReport('user',person.id,person.id,btn.dataset.reason,null);
+                showToast('Report submitted. Thank you.');
+            }catch(e){
+                console.error('submitReport:',e);
+                showToast(_reportErrorMessage(e));
+            }
         });
     });
 }
@@ -12417,11 +12463,17 @@ function showReportModal(pid){
     h+='</div></div>';
     showModal(h);
     $$('.report-reason-btn').forEach(function(btn){
-        btn.addEventListener('click',function(){
-            reportedPosts.push({pid:pid,reason:btn.dataset.reason,time:Date.now()});
-            persistReports();
+        btn.addEventListener('click',async function(){
+            var fp=(typeof feedPosts!=='undefined'&&feedPosts)?feedPosts.find(function(p){return p.idx===pid;}):null;
+            var targetUser=(fp&&fp.person)?fp.person.id:null;
             closeModal();
-            showToast('Report submitted. Thank you.');
+            try{
+                await sbSubmitReport('post',pid,targetUser,btn.dataset.reason,null);
+                showToast('Report submitted. Thank you.');
+            }catch(e){
+                console.error('submitReport:',e);
+                showToast(_reportErrorMessage(e));
+            }
         });
     });
 }
@@ -12596,20 +12648,31 @@ function showHiddenPostsModal(){
 // ======================== BLOCK USER SYSTEM ========================
 function showBlockConfirmModal(person,onDone){
     if(currentUser&&person.id===currentUser.id){showToast('You can\'t block yourself');return;}
-    var h='<div class="modal-header"><h3><i class="fas fa-ban" style="color:#e74c3c;margin-right:8px;"></i>Block '+person.name+'?</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    var h='<div class="modal-header"><h3><i class="fas fa-ban" style="color:#e74c3c;margin-right:8px;"></i>Block '+escapeHtml(person.name||'this user')+'?</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     h+='<div class="modal-body">';
     h+='<p style="color:var(--gray);font-size:14px;text-align:center;margin-bottom:16px;">They won\'t be able to see your posts or interact with you. Their posts will be hidden from your feed.</p>';
     h+='<div class="modal-actions"><button class="btn btn-outline modal-close">Cancel</button><button class="btn" id="confirmBlockBtn" style="background:#e74c3c;color:#fff;"><i class="fas fa-ban"></i> Block</button></div>';
     h+='</div>';
     showModal(h);
-    document.getElementById('confirmBlockBtn').addEventListener('click',function(){
-        blockUser(person.id);
+    document.getElementById('confirmBlockBtn').addEventListener('click',async function(){
+        var btn=document.getElementById('confirmBlockBtn');
+        btn.disabled=true;
+        await blockUser(person.id);
         closeModal();
         if(onDone) onDone();
     });
 }
-function blockUser(uid){
+async function blockUser(uid){
     if(currentUser&&uid===currentUser.id){showToast('You can\'t block yourself');return;}
+    // Server first — the block is only real once the `blocks` row exists. RLS
+    // uses that row to hide our content from them and stop them contacting us.
+    try{
+        await sbBlockUser(uid);
+    }catch(e){
+        console.error('blockUser:',e);
+        showToast('Could not block this user. Please try again.');
+        return;
+    }
     blockedUsers[uid]=true;
     persistBlocked();
     // Unfollow them if following
@@ -12631,26 +12694,38 @@ function blockUser(uid){
     }
     showToast('User blocked');
 }
-function unblockUser(uid){
+async function unblockUser(uid){
+    try{
+        await sbUnblockUser(uid);
+    }catch(e){
+        console.error('unblockUser:',e);
+        showToast('Could not unblock this user. Please try again.');
+        return;
+    }
     delete blockedUsers[uid];
+    _blockedProfiles=_blockedProfiles.filter(function(b){return b.id!==uid;});
     persistBlocked();
     renderFeed(activeFeedTab);
     showToast('User unblocked');
 }
 async function showBlockedUsersModal(){
-    var uids=Object.keys(blockedUsers);
-    var h='<div class="modal-header"><h3><i class="fas fa-ban" style="color:#e74c3c;margin-right:8px;"></i>Blocked Users ('+uids.length+')</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
+    // Source of truth is the server, so the list matches what RLS is enforcing.
+    try{ await loadBlockedUsers(); }catch(e){}
+    var list=_blockedProfiles||[];
+    var h='<div class="modal-header"><h3><i class="fas fa-ban" style="color:#e74c3c;margin-right:8px;"></i>Blocked Users ('+list.length+')</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     h+='<div class="modal-body" style="max-height:60vh;overflow-y:auto;">';
-    if(!uids.length){
+    if(!list.length){
         h+='<p style="text-align:center;color:var(--gray);padding:20px;">No blocked users.</p>';
     } else {
-        for(var i=0;i<uids.length;i++){
-            var uid=uids[i];
-            var name='User';var bio='';var avatar=DEFAULT_AVATAR;
-            try{var p=await sbGetProfile(uid);if(p){name=p.display_name||p.username||'User';bio=p.bio||'';avatar=p.avatar_url||DEFAULT_AVATAR;}}catch(e){}
+        for(var i=0;i<list.length;i++){
+            var b=list[i];
+            var uid=b.id;
+            var name=b.displayName||b.username||'User';
+            var bio=b.bio||'';
+            var avatar=b.avatarUrl||DEFAULT_AVATAR;
             h+='<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);">';
-            h+='<img src="'+avatar+'" style="width:40px;height:40px;border-radius:50%;flex-shrink:0;">';
-            h+='<div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;">'+name+'</div><p style="font-size:12px;color:var(--gray);">'+bio+'</p></div>';
+            h+='<img src="'+escapeHtml(avatar)+'" style="width:40px;height:40px;border-radius:50%;flex-shrink:0;">';
+            h+='<div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;">'+escapeHtml(name)+'</div><p style="font-size:12px;color:var(--gray);">'+escapeHtml(bio)+'</p></div>';
             h+='<button class="btn btn-outline unblock-btn" data-uid="'+uid+'" style="padding:6px 14px;font-size:12px;flex-shrink:0;color:#e74c3c;border-color:#e74c3c;"><i class="fas fa-unlock"></i> Unblock</button>';
             h+='</div>';
         }
@@ -12658,8 +12733,9 @@ async function showBlockedUsersModal(){
     h+='</div>';
     showModal(h);
     $$('.unblock-btn').forEach(function(btn){
-        btn.addEventListener('click',function(){
-            unblockUser(btn.dataset.uid);
+        btn.addEventListener('click',async function(){
+            btn.disabled=true;
+            await unblockUser(btn.dataset.uid);
             showBlockedUsersModal();
         });
     });
@@ -14186,33 +14262,99 @@ async function showScheduledCalendar(){
 }
 
 // ======================== ADMIN REPORT QUEUE ========================
-function showAdminReportQueue(){
+async function showAdminReportQueue(status){
+    var view=status||'open';
     var h='<div class="modal-header"><h3><i class="fas fa-flag" style="color:#e74c3c;margin-right:8px;"></i>Report Queue</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
-    h+='<div class="modal-body" style="max-height:60vh;overflow-y:auto;">';
-    // Gather all reports from reportedPosts
-    if(!reportedPosts||!reportedPosts.length){
-        h+='<p style="text-align:center;color:var(--gray);padding:20px;">No reports to review.</p>';
+    h+='<div class="modal-body" style="max-height:60vh;overflow-y:auto;"><p style="text-align:center;color:var(--gray);padding:20px;"><i class="fas fa-spinner fa-spin"></i> Loading reports\u2026</p></div>';
+    showModal(h);
+
+    var reports=[];
+    try{
+        reports=await sbAdminGetReports(view,200,0);
+    }catch(e){
+        console.error('adminGetReports:',e);
+        var body=document.querySelector('#modalContent .modal-body');
+        if(body) body.innerHTML='<p style="text-align:center;color:#e74c3c;padding:20px;">Could not load reports. '+escapeHtml((e&&e.message)||'')+'</p>';
+        return;
+    }
+
+    var tabs='<div class="search-tabs" style="margin-bottom:12px;">'
+        +['open','actioned','dismissed','all'].map(function(t){
+            return '<button class="search-tab arq-tab'+(t===view?' active':'')+'" data-status="'+t+'">'+t.charAt(0).toUpperCase()+t.slice(1)+'</button>';
+        }).join('')+'</div>';
+
+    var body='<div class="modal-body" style="max-height:60vh;overflow-y:auto;">'+tabs;
+    if(!reports.length){
+        body+='<p style="text-align:center;color:var(--gray);padding:20px;">No '+escapeHtml(view==='all'?'':view)+' reports.</p>';
     } else {
-        reportedPosts.forEach(function(r,i){
-            var typeClass=r.reason?r.reason.toLowerCase().replace(/\s+/g,''):'other';
+        reports.forEach(function(r){
+            var reasonRaw=r.reason||'Report';
+            var typeClass=reasonRaw.toLowerCase().replace(/\s+/g,'');
             if(typeClass==='inappropriatecontent') typeClass='inappropriate';
-            h+='<div class="report-queue-item">';
-            h+='<div style="flex:1;"><div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;"><span class="report-type '+(typeClass==='spam'?'spam':typeClass==='harassment'?'harassment':typeClass==='inappropriate'?'inappropriate':'other')+'">'+(r.reason||'Report')+'</span><span style="font-size:11px;color:var(--gray);">'+timeAgoReal(r.time||r.created_at||Date.now())+'</span></div>';
-            h+='<p style="font-size:13px;">'+escapeHtml(r.type==='user'?'User: '+(r.userId||'').substring(0,8)+'...':'Post: '+(r.postId||r.pid||'').toString().substring(0,8)+'...')+'</p>';
-            if(r.details) h+='<p style="font-size:12px;color:var(--gray);margin-top:2px;">'+escapeHtml(r.details)+'</p>';
-            h+='</div>';
-            h+='<button class="btn btn-outline dismiss-report" data-idx="'+i+'" style="font-size:11px;padding:4px 10px;flex-shrink:0;">Dismiss</button>';
-            h+='</div>';
+            var cls=(typeClass==='spam'?'spam':typeClass==='harassment'?'harassment':typeClass==='inappropriate'?'inappropriate':'other');
+            body+='<div class="report-queue-item" data-rid="'+escapeHtml(r.id)+'">';
+            body+='<div style="flex:1;min-width:0;">';
+            body+='<div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap;">';
+            body+='<span class="report-type '+cls+'">'+escapeHtml(reasonRaw)+'</span>';
+            body+='<span style="font-size:11px;color:var(--gray);">'+escapeHtml(timeAgoReal(r.created_at||Date.now()))+'</span>';
+            if(r.status&&r.status!=='open') body+='<span style="font-size:11px;color:var(--gray);">\u00b7 '+escapeHtml(r.status)+'</span>';
+            body+='</div>';
+            body+='<p style="font-size:13px;">'+escapeHtml((r.target_type||'item').charAt(0).toUpperCase()+(r.target_type||'item').slice(1))
+                 +(r.target_username?' \u2014 @'+escapeHtml(r.target_username):'')
+                 +(r.target_suspended?' <span style="color:#e74c3c;">(suspended)</span>':'')+'</p>';
+            body+='<p style="font-size:12px;color:var(--gray);margin-top:2px;">Reported by '
+                 +escapeHtml(r.reporter_username||'unknown')
+                 +(r.target_id?' \u00b7 id '+escapeHtml(String(r.target_id).substring(0,8))+'\u2026':'')+'</p>';
+            if(r.details) body+='<p style="font-size:12px;color:var(--gray);margin-top:2px;">'+escapeHtml(r.details)+'</p>';
+            body+='</div>';
+            body+='<div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0;">';
+            if(r.status==='open'){
+                body+='<button class="btn btn-outline arq-resolve" data-rid="'+escapeHtml(r.id)+'" data-status="actioned" style="font-size:11px;padding:4px 10px;color:var(--green);border-color:var(--green);">Action taken</button>';
+                body+='<button class="btn btn-outline arq-resolve" data-rid="'+escapeHtml(r.id)+'" data-status="dismissed" style="font-size:11px;padding:4px 10px;">Dismiss</button>';
+            } else {
+                body+='<button class="btn btn-outline arq-resolve" data-rid="'+escapeHtml(r.id)+'" data-status="open" style="font-size:11px;padding:4px 10px;">Reopen</button>';
+            }
+            if(r.target_user_id){
+                body+='<button class="btn btn-outline arq-suspend" data-uid="'+escapeHtml(r.target_user_id)+'" style="font-size:11px;padding:4px 10px;color:#f59e0b;border-color:#f59e0b;">'+(r.target_suspended?'Unsuspend':'Suspend')+'</button>';
+            }
+            body+='</div></div>';
         });
     }
-    h+='<div class="modal-actions"><button class="btn btn-primary modal-close">Done</button></div></div>';
-    showModal(h);
-    $$('.dismiss-report').forEach(function(b){b.addEventListener('click',function(){
-        reportedPosts.splice(parseInt(b.dataset.idx),1);
-        persistReports();
-        b.closest('.report-queue-item').style.opacity='.3';
-        b.textContent='Dismissed';b.disabled=true;
-    });});
+    body+='<div class="modal-actions"><button class="btn btn-primary modal-close">Done</button></div></div>';
+
+    var bodyEl=document.querySelector('#modalContent .modal-body');
+    if(bodyEl) bodyEl.outerHTML=body;
+
+    $$('.arq-tab').forEach(function(t){
+        t.addEventListener('click',function(){showAdminReportQueue(t.dataset.status);});
+    });
+    $$('.arq-resolve').forEach(function(b){
+        b.addEventListener('click',async function(){
+            b.disabled=true;
+            try{
+                await sbAdminResolveReport(b.dataset.rid,b.dataset.status);
+                showAdminReportQueue(view);
+            }catch(e){
+                console.error('resolveReport:',e);
+                showToast('Could not update report');
+                b.disabled=false;
+            }
+        });
+    });
+    $$('.arq-suspend').forEach(function(b){
+        b.addEventListener('click',async function(){
+            b.disabled=true;
+            try{
+                var newStatus=await sbAdminToggleSuspend(b.dataset.uid);
+                showToast(newStatus?'User suspended':'User unsuspended');
+                showAdminReportQueue(view);
+            }catch(e){
+                console.error('toggleSuspend:',e);
+                showToast('Error: '+((e&&e.message)||'Failed'));
+                b.disabled=false;
+            }
+        });
+    });
 }
 
 // ======================== GLOBAL CLICKABLE AVATARS ========================

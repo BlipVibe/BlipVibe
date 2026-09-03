@@ -54,8 +54,9 @@ async function sbSignUp(email, password, username, birthday = null, firstName = 
       email: email,
       bio: '',
       avatar_url: null,
-      cover_photo_url: null,
-      coin_balance: 100
+      cover_photo_url: null
+      // coin_balance intentionally omitted — the DB column default sets the
+      // starting balance, and the client is no longer allowed to write it.
     };
     if (birthday) row.birthday = birthday;
     const { error: profileErr } = await sb.from('profiles')
@@ -1766,6 +1767,68 @@ async function sbClaimDailyReward() {
   const { data, error } = await sb.rpc('claim_daily_reward');
   if (error) throw error;
   return data;
+}
+
+// ---- BLOCKING (server-enforced) ---------------------------------------------
+// Blocks live in the `blocks` table. RLS on posts/comments/messages/follows uses
+// them, so a block is enforced by the database, not just hidden in the UI.
+
+async function sbBlockUser(targetId) {
+  const { error } = await sb.rpc('block_user', { p_target: targetId });
+  if (error) throw error;
+}
+
+async function sbUnblockUser(targetId) {
+  const { error } = await sb.rpc('unblock_user', { p_target: targetId });
+  if (error) throw error;
+}
+
+// Returns [{ id, username, displayName, bio, avatarUrl, createdAt }] for the
+// users the current user has blocked (never the ones who blocked them).
+async function sbGetBlockedUsers() {
+  const { data, error } = await sb.rpc('get_blocked_users');
+  if (error) throw error;
+  return data || [];
+}
+
+// ---- REPORTING --------------------------------------------------------------
+// Reports go to the `reports` table via a SECURITY DEFINER RPC that rate-limits
+// them. Admins read them back with sbAdminGetReports().
+
+async function sbSubmitReport(targetType, targetId, targetUserId, reason, details) {
+  const { data, error } = await sb.rpc('submit_report', {
+    p_target_type:    targetType,
+    p_target_id:      targetId ? String(targetId) : null,
+    p_target_user_id: targetUserId || null,
+    p_reason:         reason || 'Other',
+    p_details:        details || null
+  });
+  if (error) throw error;
+  return data;
+}
+
+async function sbAdminGetReports(status, limit, offset) {
+  const { data, error } = await sb.rpc('admin_get_reports', {
+    p_status: status || 'open',
+    p_limit:  limit  || 100,
+    p_offset: offset || 0
+  });
+  if (error) throw error;
+  return data || [];
+}
+
+async function sbAdminResolveReport(reportId, status) {
+  const { error } = await sb.rpc('admin_resolve_report', {
+    p_report_id: reportId,
+    p_status:    status
+  });
+  if (error) throw error;
+}
+
+async function sbAdminOpenReportCount() {
+  const { data, error } = await sb.rpc('admin_open_report_count');
+  if (error) return 0;
+  return data || 0;
 }
 
 // ---- EXPORT (globals for vanilla JS) ----------------------------------------

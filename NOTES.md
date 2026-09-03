@@ -1587,3 +1587,76 @@ Ran `workflow_dispatch` mode=backfill — all 11 video posts optimized, 0 failur
 
 ### Changelog
 - `changelog.json` entry **v0.7.0 (2026-07-25)** added for this batch (user-facing Developer Updates).
+
+## Safety Enforcement — blocks, reports, suspension, column locks (v0.7.1 — 2026-09-02)
+
+A code audit found that three safety features looked like they worked but were
+never enforced anywhere on the server. This session made all three real.
+
+### Migration
+Run `supabase/safety-enforcement.sql` in the Supabase SQL Editor **before**
+deploying the new `js/app.js` / `js/supabase.js` — the client calls RPCs that the
+migration creates. The file is idempotent and safe to re-run. It ends with a
+verification SELECT that reports row counts and confirms the trigger is present.
+
+### 1. Blocking is now server-enforced
+- New `blocks` table (`blocker_id`, `blocked_id`), RLS: you can read only the
+  blocks **you** created, so a blocked user cannot discover that they were blocked.
+- `public.is_blocked_pair(a,b)` — SECURITY DEFINER, checks both directions.
+- Applied to the SELECT policies on `posts`, `comments`, `follows`, `stories`,
+  `photo_comments`, and to the INSERT policies on `comments`, `likes`, `follows`,
+  `messages`, `notifications`. A blocked user therefore cannot see the blocker's
+  content, comment on it, like it, follow them, message them, or notify them.
+- `block_user()` / `unblock_user()` / `get_blocked_users()` RPCs.
+  `block_user()` also deletes follows in both directions.
+- Client: `blockUser()` / `unblockUser()` are now async and hit the server first;
+  they only update the local map once the row exists. `loadBlockedUsers()` runs in
+  `initApp()` so the client filter matches what RLS is enforcing.
+- `skin_data.blockedUsers` is kept in sync as a legacy fallback only. The
+  migration backfills every existing skin_data block into the `blocks` table.
+
+### 2. Reports now reach moderation
+- New `reports` table (reporter, target type/id, target user, reason, details,
+  status, reviewer, timestamps). All writes go through SECURITY DEFINER RPCs, so
+  the table itself rejects direct client INSERT/UPDATE/DELETE.
+- `submit_report()` rate-limits to 30 reports per user per rolling 24 hours.
+- `admin_get_reports(status, limit, offset)`, `admin_resolve_report(id, status)`,
+  `admin_open_report_count()` — all admin-gated.
+- `showAdminReportQueue()` was reading the admin's own local array (so reports
+  filed by other users were invisible). It now loads from the server, has
+  Open / Actioned / Dismissed / All tabs, and can suspend a reported user inline.
+  Resolutions are written to `admin_logs`.
+- The Settings "Report Queue" badge shows the real open count.
+
+### 3. Suspension is enforced
+- `public.account_suspended(uid)` is checked in the INSERT/UPDATE policies for
+  posts, comments, likes, follows, messages, notifications, stories,
+  photo_comments, photo_likes, group chat and scheduled posts. Deleting your own
+  content is still allowed while suspended.
+- `initApp()` signs a suspended user out and shows the reason on the login page.
+
+### 4. Protected profile columns
+- `coin_balance`, `is_admin` and `is_suspended` can no longer be written by the
+  client. Column-level REVOKE does **not** override a table-level grant (which is
+  why the old `REVOKE UPDATE (is_admin)` may never have taken effect), so the
+  guarantee is a `BEFORE INSERT OR UPDATE` trigger, `protect_profile_columns()`,
+  that reverts those columns for the `authenticated` / `anon` roles.
+- SECURITY DEFINER RPCs run as their owner, so `award_coins`, the purchase
+  functions and `admin_toggle_suspend` are unaffected and needed no changes.
+- Reverts are silent rather than errors, so older app builds keep working.
+- `updateCoins()` no longer writes `coin_balance`; `sbSignUp()` no longer sends it.
+  The starting balance is now the column default (set to 100, which is what new
+  users already effectively received).
+
+### 5. Other fixes in the same pass
+- **XSS:** `showBlockConfirmModal()` and `showBlockedUsersModal()` interpolated
+  another user's display name and bio without escaping. Both now use
+  `escapeHtml()`, and the blocked list renders from `get_blocked_users()` instead
+  of an N+1 loop of `sbGetProfile()` calls.
+- **Message editing:** `messages_update` only allowed `auth.uid() = receiver_id`,
+  so a sender could never edit their own message. Both parties may update now.
+
+### Local-only QA docs (gitignored)
+- `BlipVibe_QA_Requirements.xlsx` — tester checklist, one sheet per platform
+  (Browser / iOS / Android) plus a sheet of audit findings to verify.
+- `_gen_requirements.py` — regenerates that workbook.
