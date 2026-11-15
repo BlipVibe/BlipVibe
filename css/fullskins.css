@@ -1281,3 +1281,26 @@ body.fs-scrapbook :is(.pv-profile-card, #profileCard) .fs-namecard > .profile-na
 body.fs-scrapbook :is(.pv-profile-card, #profileCard) .fs-namecard > :is(.profile-title, .profile-about) {
   margin: 0 !important; position: static !important;
 }
+
+/* banner v2 — collage of torn scraps like the master's Home header; shorter, icons smaller and closer */
+body.fs-scrapbook .navbar {
+  background: var(--fs-banner-collage) center bottom / 100% 100% no-repeat !important;
+  height: calc(58px + env(safe-area-inset-top, 0px)) !important;
+  max-height: calc(58px + env(safe-area-inset-top, 0px)) !important;
+}
+@media (max-width: 768px) {
+  body.fs-scrapbook #page-home.page.active { padding-top: calc(62px + env(safe-area-inset-top, 0px)) !important; }
+  body.fs-scrapbook .navbar .nav-logo { font-size: 24px !important; padding-left: 14px !important; }
+  body.fs-scrapbook .navbar .nav-right { gap: 6px !important; }
+  body.fs-scrapbook .navbar .mobile-search-btn > i,
+  body.fs-scrapbook .navbar .mobile-notif-btn > i,
+  body.fs-scrapbook .navbar .nav-music-btn > i { width: 22px !important; height: 22px !important; }
+  body.fs-scrapbook .navbar .nav-avatar { width: 34px !important; height: 34px !important; }
+  body.fs-scrapbook .nav-user::after { width: 42px !important; height: 42px !important; }
+}
+body.fs-scrapbook .nav-coins {
+  border: 6px solid transparent !important;
+  border-image: var(--fs-coin-tag-small) 50 fill / 8px round !important;
+  padding: 0 6px !important; font-size: 14px !important; min-height: 0 !important;
+}
+body.fs-scrapbook .nav-coins > i { width: 20px !important; height: 18px !important; }
