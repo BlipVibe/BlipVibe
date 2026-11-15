@@ -1,7 +1,7 @@
 """Rebuild Anime Blaze frame art with SMOOTH black ink defining the content space (no column/stair artefacts).
 usage: frames.py <skin_dir> <out_dir>
  - cover-frame.png (1290x1105): both zigzags on one canvas; transparent photo window traced from the strokes;
-   black ink = an 8px round outline of the strokes + everything outside the window (fading far from it).
+   only the strokes' own ink + a short soft shadow outside the window (no fill block).
  - cover-mask.png: window grown 4px (photo runs under the ink outline).
  - photo-frame.png: the post frame with a smooth 12px black band inside its window.
  - photo-mask.png: that window grown 4px.
@@ -35,7 +35,11 @@ lab, _ = ndi.label(free)
 window = lab == lab[H // 2, W // 2]                      # the photo band between the two lines
 d_win = ndi.distance_transform_edt(~window)              # distance from the window (0 inside)
 # ink alpha: solid near the window, fading after 150px out (blends into page / hides under the bar)
-ink = np.clip(1 - (d_win - 150) / 150, 0, 1) * (~window)
+# no black FILL outside the window (owner: it read as a filled block ending in a straight line) — only a short
+# soft ink shadow hugging the strokes, faded to nothing well before the canvas edges
+ink = 0.55 * np.clip(1 - d_win / 34.0, 0, 1) ** 1.6 * (~window)
+yy = np.arange(H)[:, None]; edge = np.clip(np.minimum(yy, H - 1 - yy) / 40.0, 0, 1)
+ink = ink * edge
 # (no extra outline: the photo meets the white line directly)
 ink = np.where(window, 0, ink)
 ink = np.minimum(1, ink)
