@@ -2050,3 +2050,51 @@ html body.fs.fs-anime-blaze #gvProfileCard .profile-title { grid-row: 3; }
 html body.fs.fs-anime-blaze #gvProfileCard .stat-label { white-space: nowrap; font-size: 14px !important; }
 html body.fs.fs-anime-blaze #gvProfileCard .profile-info { grid-template-rows: 58px auto auto; }
 html body.fs.fs-anime-blaze #gvProfileCard .profile-avatar-wrap { margin-top: -58px !important; }
+
+/* Other person's profile (concept other-profile): their photo as a slanted cut-in on the right of the cover,
+   name on the red slanted tag over the cover's bottom-left, Follow red, the rest dark slanted chips */
+@media (max-width: 768px) {
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .profile-info { position: relative; align-items: flex-start !important; }
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .profile-avatar-wrap {
+    position: absolute !important; right: 4px; top: -235px; width: 150px !important; height: 185px !important; margin: 0 !important; z-index: 3; }
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .profile-avatar-wrap .profile-avatar {
+    width: 100% !important; height: 100% !important; border-radius: 0 !important; object-fit: cover;
+    clip-path: polygon(22% 0, 100% 0, 78% 100%, 0 100%); box-shadow: none !important; }
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .profile-avatar-wrap::after { display: none !important; }
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .fs-namecard { margin: -58px 0 8px 6px !important; padding: 8px 34px 8px 16px !important;
+    background: var(--fs-name-tag) center / 100% 100% no-repeat !important; z-index: 2; text-align: left; }
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .fs-namecard > .profile-name { font-size: 26px !important; text-align: left !important; }
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .fs-namecard > :is(.profile-title, .profile-about) { display: none !important; }
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .profile-info > :is(.profile-title, .profile-about, p, div:not(.fs-namecard):not(.profile-stats):not(.pv-actions):not(.profile-avatar-wrap)) { text-align: left !important; align-self: stretch; padding: 0 8px; }
+}
+html body.fs.fs-anime-blaze #pvFollowBtn { border: 0 !important; border-image: none !important; background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: #fff !important; font-style: italic; font-weight: 700; }
+html body.fs.fs-anime-blaze .pv-actions:has(#pvFollowBtn) .btn:not(#pvFollowBtn) { border: 0 !important; border-image: none !important;
+  background: var(--fs-tab) center / 100% 100% no-repeat !important; color: #fff !important; font-size: 13px !important; padding: 8px 14px !important; }
+@media (max-width: 768px) {
+  /* cut-in gets the concept's white ink edge with black outside it */
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .profile-avatar-wrap {
+    filter: drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff)
+            drop-shadow(2px 0 0 #000) drop-shadow(-2px 0 0 #000) drop-shadow(0 2px 0 #000) drop-shadow(0 -2px 0 #000); }
+  /* the red tag sits behind the NAME only; status + bio show below it (concept) */
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .fs-namecard { background: none !important; padding: 0 !important; margin: -60px 0 8px 4px !important; }
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .fs-namecard > .profile-name {
+    display: inline-block !important; background: var(--fs-name-tag) center / 100% 100% no-repeat !important; padding: 8px 40px 10px 16px !important; }
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .fs-namecard > :is(.profile-title, .profile-about) {
+    display: block !important; text-align: left !important; color: #eee !important; font-size: 15px !important; margin: 8px 0 0 4px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .fs-namecard > :first-of-type + :is(.profile-title, .profile-about) { margin-top: 70px !important; }
+}
+/* create post (concept create-post): textarea on the field art, gold-outlined tool tiles, big flame Post button */
+html body.fs.fs-anime-blaze .create-post-modal .modal-header h3 { color: #fff !important; font-style: italic; font-weight: 700; }
+html body.fs.fs-anime-blaze .cpm-footer { gap: 8px; }
+@media (max-width: 768px) {
+  /* the person's photo is the main subject: fully below the top bar, allowed to break over the zigzag (in front) */
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .profile-avatar-wrap { top: -205px !important; height: 210px !important; width: 165px !important; z-index: 6 !important; }
+}
+/* top bar art bleeds past both screen edges (its PNG has a 3px clear margin each side) */
+html body.fs.fs-anime-blaze .navbar { background-size: 102% 100% !important; background-position: center bottom !important; }
+@media (max-width: 768px) {
+  /* show the cover's slanted white top line just under the bar (was tucked 66px under it) */
+  html body.fs.fs-anime-blaze :is(#timelineCover, #pvCoverBanner) { margin-top: -6px !important; }
+}
