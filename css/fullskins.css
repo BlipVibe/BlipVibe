@@ -1543,3 +1543,130 @@ body.fs-scrapbook :is(.msg-search, .search-bar, .page-search) input { padding-le
 .fsk-colors { display: flex; justify-content: center; gap: 6px; margin: 4px 0 6px; }
 .fsk-color { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(0,0,0,.35); background: var(--sw); padding: 0; cursor: pointer; }
 .fsk-color.is-on { outline: 2px solid currentColor; outline-offset: 2px; }
+
+/* ======================================================================================
+   ANIME BLAZE — first pass (Nov 15). Built from images/skins/anime-blaze/concept-v1-approved.png
+   + concept-2.png (NOT from Scrapbook). Art: kit/extras1 (+ extras2 for the profile). Colour options
+   swap the art folder (engine); photo tint below follows data-fs-variant.
+   ====================================================================================== */
+body.fs-anime-blaze { background: #111 !important; font-family: var(--fs-font) !important; }
+body.fs-anime-blaze :is(h1, h2, h3, h4, .profile-name, .post-username, .card-heading, .nav-logo) { font-family: var(--fs-title-font) !important; letter-spacing: .5px; }
+/* page sits under the top bar */
+@media (max-width: 768px) {
+  body.fs-anime-blaze .page.active { padding-top: calc(62px + env(safe-area-inset-top, 0px)) !important; }
+}
+/* top bar: flame banner; content centred above its jagged bottom edge */
+body.fs-anime-blaze .navbar {
+  border: 0 !important; border-image: none !important; box-sizing: border-box !important;
+  background: var(--fs-banner) center bottom / 100% 100% no-repeat !important;
+  height: calc(58px + env(safe-area-inset-top, 0px)) !important; max-height: calc(58px + env(safe-area-inset-top, 0px)) !important;
+  padding-bottom: 14px !important;
+}
+body.fs-anime-blaze .nav-logo { font-size: 26px !important; color: #fff !important; background: none !important; }
+body.fs-anime-blaze .nav-coins { background: none !important; border: 8px solid transparent !important; border-radius: 0 !important;
+  border-image: var(--fs-coin-pill) 60 fill / 10px round !important; color: #fff !important; }
+/* bottom bar */
+@media (max-width: 768px) {
+  body.fs-anime-blaze .nav-center { border: 0 !important; border-image: none !important; box-shadow: none !important;
+    background: var(--fs-navbar) center top / 100% 100% no-repeat !important; padding-top: 18px !important; }
+  body.fs-anime-blaze .nav-center .nav-link { border: 6px solid transparent !important; border-radius: 0 !important; background: none !important; color: #ddd !important; }
+  body.fs-anime-blaze .nav-center .nav-link.active { border-image: var(--fs-nav-active) 30% fill / 8px stretch !important; color: #fff !important; }
+}
+/* panels: composer, Featured Skin, quests, coin goal, menus, comments */
+body.fs-anime-blaze :is(.card:not(.feed-post), .quest-panel, .coin-goal-bar, .featured-skin-banner, .post-dropdown, .comment-item) {
+  background: none !important; box-shadow: none !important; border: 16px solid transparent !important; border-radius: 0 !important;
+  border-image: var(--fs-panel9) 150 fill / 18px round !important;
+}
+/* posts: two slanted panel looks mixed down the feed */
+body.fs-anime-blaze .feed-post { background: none !important; box-shadow: none !important; border: 16px solid transparent !important; border-radius: 0 !important;
+  border-image: var(--fs-panel9) 150 fill / 18px round !important; }
+body.fs-anime-blaze .feed-post:is([data-fs-v="2"], [data-fs-v="4"], [data-fs-v="6"]) { border-image-source: var(--fs-panel9-alt) !important; }
+body.fs-anime-blaze .post-actions { border: 0 !important; }
+body.fs-anime-blaze .post-media-grid .pm-thumb { border-radius: 0 !important; }
+body.fs-anime-blaze .post-media-grid .pm-thumb img { object-fit: contain !important; height: auto !important; max-height: 520px !important; }
+/* rows: messages, notifications, groups, people */
+body.fs-anime-blaze :is(.msg-contact, .notif-item, .group-card, .profile-card-item) {
+  background: none !important; box-shadow: none !important; border-style: solid !important; border-color: transparent !important; border-radius: 0 !important;
+  border-width: 14px 18px !important; border-image: var(--fs-row9) 90 120 fill / 14px 18px round !important; margin-bottom: 6px !important;
+}
+body.fs-anime-blaze .notif-item.unread { border-image-source: var(--fs-row9-hot) !important; }
+/* buttons, tabs, fields, titles */
+body.fs-anime-blaze :is(.btn-primary, .featured-buy-btn, .join-group-btn, #pvEditProfileBtn, #profileCard .profile-links) {
+  background: none !important; border: 12px solid transparent !important; border-radius: 0 !important; box-shadow: none !important;
+  border-image: var(--fs-button9-red) 80 fill / 12px round !important; color: #fff !important; font-family: var(--fs-title-font) !important;
+}
+body.fs-anime-blaze :is(.btn-outline, .btn-disabled) { background: none !important; border: 12px solid transparent !important; border-radius: 0 !important;
+  border-image: var(--fs-button9-dark) 80 fill / 12px round !important; color: #fff !important; }
+body.fs-anime-blaze .search-tab { background: none !important; border: 10px solid transparent !important; border-radius: 0 !important;
+  border-image: var(--fs-chip9) 70 fill / 10px round !important; color: #eee !important; }
+body.fs-anime-blaze .search-tab.active { border-image-source: var(--fs-chip9-active) !important; color: #fff !important; }
+body.fs-anime-blaze :is(.post-input-fake, .msg-search, .search-bar, .page-search, #msgInput) {
+  background: none !important; border: 12px solid transparent !important; border-radius: 0 !important; box-shadow: none !important;
+  border-image: var(--fs-field9) 80 fill / 12px round !important; color: #ddd !important;
+}
+body.fs-anime-blaze :is(.msg-search, .search-bar, .page-search) input { background: transparent !important; border: 0 !important; color: #fff !important; padding-left: 30px !important; }
+body.fs-anime-blaze :is(.msg-search, .search-bar, .page-search) > i { left: 8px !important; color: #fff !important; }
+body.fs-anime-blaze :is(.page-header h2, .msg-sidebar-header h3) {
+  display: table !important; margin: 0 auto 8px !important; padding: 0 18px !important; color: #fff !important;
+  border: 14px solid transparent !important; border-image: var(--fs-label9) 90 fill / 14px round !important; background: none !important;
+}
+/* chat */
+body.fs-anime-blaze .msg-bubble { background: none !important; border: 14px solid transparent !important; border-radius: 0 !important;
+  border-image: var(--fs-bubble9-dark) 110 fill / 14px round !important; color: #fff !important; }
+body.fs-anime-blaze .msg-bubble.sent { border-image-source: var(--fs-bubble9-red) !important; }
+body.fs-anime-blaze .messages-layout, body.fs-anime-blaze .msg-sidebar { background: transparent !important; box-shadow: none !important; }
+/* quests */
+body.fs-anime-blaze .quest-bar { background: none !important; border-image: var(--fs-track) 20 40 fill / 5px 10px stretch !important; }
+body.fs-anime-blaze .quest-bar-fill { background: none !important; border-image: var(--fs-fill) 20 40 fill / 5px 10px stretch !important; }
+
+/* ---------- profile block (own profile + Home top), from the concept close-up ---------- */
+body.fs-anime-blaze :is(.pv-profile-card, #profileCard) { background: transparent !important; border: 0 !important; border-image: none !important; box-shadow: none !important; }
+body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-cover { display: none !important; }
+/* cover: full-width band, the photo tinted to the skin colour (photo treatment for the user's own photo) */
+body.fs-anime-blaze .fs-timeline { position: absolute; inset: 0; }
+body.fs-anime-blaze .fs-tl-slot-1 { position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 100% 78%, 0 96%); }
+body.fs-anime-blaze .fs-tl-slot img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) sepia(1) saturate(5) hue-rotate(-28deg) contrast(1.05) brightness(.9); }
+body.fs-anime-blaze[data-fs-variant="blue"] .fs-tl-slot img { filter: grayscale(1) sepia(1) saturate(4) hue-rotate(175deg) contrast(1.05) brightness(.9); }
+body.fs-anime-blaze[data-fs-variant="purple"] .fs-tl-slot img { filter: grayscale(1) sepia(1) saturate(4) hue-rotate(225deg) contrast(1.05) brightness(.9); }
+body.fs-anime-blaze[data-fs-variant="green"] .fs-tl-slot img { filter: grayscale(1) sepia(1) saturate(4) hue-rotate(75deg) contrast(1.05) brightness(.9); }
+body.fs-anime-blaze[data-fs-variant="pink"] .fs-tl-slot img { filter: grayscale(1) sepia(1) saturate(4) hue-rotate(290deg) contrast(1.05) brightness(.95); }
+@media (max-width: 768px) {
+  body.fs-anime-blaze :is(#timelineCover, #pvCoverBanner) { height: 230px !important; margin: 0 -8px !important; border-radius: 0 !important; }
+}
+/* round photo, thin dark outline + red rim (no flame ring — concept) */
+body.fs-anime-blaze :is(#profileAvatarImg, .pv-profile-card .profile-avatar) {
+  -webkit-mask: none !important; mask: none !important; border-radius: 50% !important;
+  border: 3px solid #0d0d0d !important; box-shadow: 0 0 0 2px var(--fs-accent) !important; object-fit: cover;
+}
+body.fs-anime-blaze .profile-avatar-wrap::after { display: none !important; }
+body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-avatar-wrap { width: 120px !important; height: 120px !important; margin: -70px auto 6px !important; border-radius: 50% !important; overflow: visible !important; }
+body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-avatar-wrap .profile-avatar { width: 100% !important; height: 100% !important; }
+body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-name { font-size: 34px !important; color: #fff !important; font-style: italic; border: 0 !important; border-image: none !important; background: none !important; margin: 0 !important; }
+body.fs-anime-blaze :is(.pv-profile-card, #profileCard) :is(.profile-title, .profile-about) { color: #ddd !important; margin: 0 0 10px !important; position: static !important; font-size: 15px !important; }
+body.fs-anime-blaze .fs-namecard { border: 0 !important; border-image: none !important; background: none !important; transform: none !important; width: auto !important; padding: 0 !important; margin: 0 auto 6px !important; }
+body.fs-anime-blaze .fs-namecard::before { display: none !important; }
+/* stats: two slanted callouts */
+body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-stats { display: flex !important; gap: 12px; justify-content: center; border: 0 !important; border-image: none !important; background: none !important; width: 90%; margin: 0 auto 12px !important; }
+body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-stats > .stat { flex: 1 1 0; border: 12px solid transparent !important; border-image: var(--fs-coin-pill) 60 fill / 12px round !important; background: none !important; }
+body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-stats > .stat + .stat::before { display: none !important; }
+body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .stat-count { color: #fff !important; font-family: var(--fs-title-font) !important; font-size: 26px !important; }
+body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .stat-label { color: #eee !important; font-size: 14px !important; }
+body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-links { display: flex !important; justify-content: center; gap: 12px; width: 70%; margin: 0 auto 8px !important; }
+body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .view-profile-link,
+body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .edit-profile-btn i { color: #fff !important; font-size: 20px !important; }
+body.fs-anime-blaze .pv-back-link { display: none !important; }
+/* Anime Blaze tweaks after first look: concept type is bold italic sans (not all-caps), deeper red cover,
+   one camera badge, compact stat callouts */
+body.fs-anime-blaze :is(h1, h2, h3, h4, .profile-name, .post-username, .card-heading, .nav-logo, .stat-count, .btn-primary, #pvEditProfileBtn, .view-profile-link) { font-weight: 700 !important; font-style: italic !important; }
+body.fs-anime-blaze .fs-tl-slot img { filter: grayscale(1) sepia(1) saturate(7) hue-rotate(-38deg) contrast(1.15) brightness(.78) !important; }
+body.fs-anime-blaze[data-fs-variant="blue"] .fs-tl-slot img { filter: grayscale(1) sepia(1) saturate(5) hue-rotate(170deg) contrast(1.15) brightness(.8) !important; }
+body.fs-anime-blaze[data-fs-variant="purple"] .fs-tl-slot img { filter: grayscale(1) sepia(1) saturate(5) hue-rotate(222deg) contrast(1.15) brightness(.8) !important; }
+body.fs-anime-blaze[data-fs-variant="green"] .fs-tl-slot img { filter: grayscale(1) sepia(1) saturate(5) hue-rotate(70deg) contrast(1.15) brightness(.8) !important; }
+body.fs-anime-blaze[data-fs-variant="pink"] .fs-tl-slot img { filter: grayscale(1) sepia(1) saturate(5) hue-rotate(285deg) contrast(1.1) brightness(.85) !important; }
+body.fs-anime-blaze :is(#coverEditBtn, #pvCoverEditBtn) { display: none !important; }
+body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-stats > .stat { padding: 0 !important; }
+body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .stat-count { font-size: 24px !important; line-height: 1.05 !important; }
+body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .stat-label { line-height: 1.1 !important; }
+/* owner: the timeline photo has NO filter — the user's photo shows as-is (overrides the tints above) */
+body.fs-anime-blaze .fs-tl-slot img,
+body.fs-anime-blaze[data-fs-variant] .fs-tl-slot img { filter: none !important; }

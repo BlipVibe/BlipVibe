@@ -19,7 +19,16 @@ italic display type. Accent red-orange; ink near-white on dark.
   sheet 1** instead shows: **one big slanted cover panel** (photo with red duotone) and the **round
   avatar centred, overlapping its bottom edge** with a red ring + camera badge; name + bio under it;
   Following / Followers in **two slanted callout boxes**; red slanted **Edit Profile**. Build the concept.
-- Timeline photos: **1** slot (slanted manga cover), filter = red-orange duotone + halftone + ink outline.
+- Timeline photos: **1** slot (full-width cover band, diagonal cut). **NO filter** on the photo (owner, Nov 15) — the old plan's red duotone is dropped; the user's photo shows as-is.
+- **Own Profile (concept close-up, owner Nov 15):** NO flame ring on the picture — a plain round photo with a
+  thin dark outline + slight red rim, camera badge bottom-right. The cover is NOT a framed panel: it's a
+  full-width band bleeding to the screen edges, red-duotone tinted, with a jagged DIAGONAL bottom edge and
+  white slash streaks; camera badge top-right. Name bold white italic; bio under it; two slanted stat
+  callouts (gold keyline); red slanted Edit Profile.
+- **Other person's Profile (sheet 2):** their picture is a cut-in on the cover (right side), name on a slanted
+  red label at the cover's bottom-left; buttons Follow (red) · Message · Close Friend · Invite to Group (dark
+  slanted chips); Mute/Block/Report in the ⋯ menu; photo strip below. (Different from your own profile.)
+- `avatar-ring.png` and `cover-frame.png` from set 1 do NOT match the concept profile — don't use them there.
 - Home (sheet 2 order, matches the real app): stories row → composer → Featured Skin → **Daily Quests
   (slanted rows, red progress, coin pills)** → coin goal bar → Following / Discover / My Posts → posts.
   Home ALSO keeps the cover + profile picture + profile card at the top (owner rule — never removed).
