@@ -1526,3 +1526,11 @@ body.fs-scrapbook .quest-bar { border-image: var(--fs-track-real) 30 60 fill / 5
 body.fs-scrapbook .quest-bar-fill { border-image: var(--fs-fill-real) 30 60 fill / 5px 10px stretch !important; }
 body.fs-scrapbook .quest-icon { background: var(--fs-tile-real) center / 100% 100% no-repeat !important; }
 body.fs-scrapbook .post-actions { border-image: var(--fs-button9-real) 80 fill / 12px round !important; }
+
+/* bars, vertically centred (owner Nov 15: header content too low, bottom tabs too high).
+   Top: the banner's torn bottom edge takes ~18px of the 58px band, so centre the logo/icons in what's above it.
+   Bottom: tabs sat right under the torn top edge with ~40px below; move them down toward the home indicator. */
+body.fs-scrapbook .navbar { box-sizing: border-box !important; padding-bottom: 16px !important; }
+@media (max-width: 768px) {
+  body.fs-scrapbook .nav-center { padding-top: 22px !important; padding-bottom: calc(env(safe-area-inset-bottom, 0px) - 6px) !important; }
+}
