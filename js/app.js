@@ -1297,17 +1297,26 @@ function syncSkinDataToSupabase(immediate){
         var base=_lastSyncedSkinObj||{};
         var changed=Object.keys(skinData).filter(function(k){return JSON.stringify(skinData[k])!==JSON.stringify(base[k]);});
         if(!changed.length){_lastSyncedSkinJSON=json;return;}
+        // Your look (skin, font, template... timeline photos) only changes on the server through
+        // set_skin_look — i.e. when you applied something on THIS device. Plain saves can't touch it
+        // (server rule guard_stale_look_writes), so old app copies can't put an old skin back.
+        var LOOK=['activePremiumSkin','activeSkin','activeFont','activeTemplate','activeNavStyle','activeIconSet','activeLogo','activeCoinSkin','premiumBgUrl','premiumBgOverlay','premiumBgDarkness','premiumCardTransparency','fsTimelinePhotos'];
+        var look={},other=[];
+        changed.forEach(function(k){if(LOOK.indexOf(k)>=0) look[k]=skinData[k]; else other.push(k);});
         _skinSyncChain=_skinSyncChain.then(function(){
-            return sbGetOwnProfile().then(function(profile){
-                var server=(profile&&profile.skin_data)||{};
-                var merged=Object.assign({},server);
-                changed.forEach(function(k){merged[k]=skinData[k];});
-                merged.syncV=2; // marks a merge-safe save; the server ignores look changes from saves without it (old app copies)
-                return sbUpdateProfile(currentUser.id,{skin_data:merged}).then(function(){
-                    currentUser.skin_data=merged;
-                    _lastSyncedSkinObj=JSON.parse(JSON.stringify(skinData));
-                    _lastSyncedSkinJSON=json;
+            var step=Object.keys(look).length?sbSetSkinLook(look):Promise.resolve();
+            return step.then(function(){
+                if(!other.length) return;
+                return sbGetOwnProfile().then(function(profile){
+                    var server=(profile&&profile.skin_data)||{};
+                    var merged=Object.assign({},server);
+                    other.forEach(function(k){merged[k]=skinData[k];});
+                    merged.syncV=2;
+                    return sbUpdateProfile(currentUser.id,{skin_data:merged}).then(function(){currentUser.skin_data=merged;});
                 });
+            }).then(function(){
+                _lastSyncedSkinObj=JSON.parse(JSON.stringify(skinData));
+                _lastSyncedSkinJSON=json;
             });
         }).catch(function(e){
             console.warn('Skin data sync error:',e);

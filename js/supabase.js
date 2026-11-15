@@ -168,6 +168,13 @@ async function sbGetProfileByUsername(username) {
   return _sanitizeProfile(data);
 }
 
+// Change your look (equipped skin, font, template, timeline photos...). The only way these keys
+// change on the server — plain profile saves keep them as they are (supabase/guard-stale-look-writes.sql).
+async function sbSetSkinLook(changes) {
+  const { error } = await sb.rpc('set_skin_look', { p_changes: changes });
+  if (error) throw error;
+}
+
 async function sbUpdateProfile(userId, updates) {
   const { error } = await sb.from('profiles')
     .update(updates)
