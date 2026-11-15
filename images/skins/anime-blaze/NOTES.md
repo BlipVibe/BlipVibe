@@ -158,3 +158,7 @@ kit/redraw-a + redraw-b), sketchy comic ink, incl. the page BACKGROUND (was miss
   (stretch), wraps long names. Action strip: one line. Emoji show as "?" boxes in the iOS SIMULATOR only (even
   in the plain system font) — it's the simulator's emoji font, not the skin; don't add emoji fonts to the stack
   (Apple Color Emoji in the stack broke "∞"). To open someone's profile in QA, tap their NAME, not the picture.
+- Nov 15: SHIPPED (owner: "make anime blaze available"). `wip` flag removed; assets/ (red base + blue/purple/green/
+  pink, ~3.5–4 MB per colour, only the chosen colour loads) whitelisted in .gitignore and live on blipvibe.com.
+  Covers now bleed from the screen edges (`calc(50% - 50vw - 8px)`) — the other-profile page has different padding
+  and showed a dark strip down the left on some widths. Still to check vs concept: Create post, Story viewer.
