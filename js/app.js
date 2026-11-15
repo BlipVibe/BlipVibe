@@ -1234,6 +1234,7 @@ function _buildSkinData(){
         commentCoinAwarded:commentCoinAwarded||{},
         commentReactions:_commentReactions||{},
         savedFolders:savedFolders||[],
+        fsTimelinePhotos:state.fsTimelinePhotos||[],
         hiddenPosts:hiddenPosts||{},
         reportedPosts:reportedPosts||[],
         pinnedPosts:state.pinnedPosts||{},
@@ -1301,6 +1302,7 @@ function _applySkinDataFromCache(sd){
     if('activeLogo' in sd) state.activeLogo=sd.activeLogo||null;
     if('activeCoinSkin' in sd) state.activeCoinSkin=sd.activeCoinSkin||null;
     if('premiumBgUrl' in sd) premiumBgImage=sd.premiumBgUrl||null;
+    if('fsTimelinePhotos' in sd) state.fsTimelinePhotos=Array.isArray(sd.fsTimelinePhotos)?sd.fsTimelinePhotos:[];
     if(sd.premiumBgOverlay!==undefined) premiumBgOverlay=sd.premiumBgOverlay;
     if(sd.premiumBgDarkness!==undefined) premiumBgDarkness=sd.premiumBgDarkness;
     if(sd.premiumCardTransparency!==undefined) premiumCardTransparency=sd.premiumCardTransparency;
@@ -3594,6 +3596,7 @@ async function showProfileView(person){
                 person.font=pubSkin.activeFont||person.font||null;
                 person.template=pubSkin.activeTemplate||person.template||null;
                 if(pubSkin.premiumBgUrl) person.premiumBg={src:pubSkin.premiumBgUrl,overlay:pubSkin.premiumBgOverlay!=null?pubSkin.premiumBgOverlay:0,darkness:pubSkin.premiumBgDarkness!=null?pubSkin.premiumBgDarkness:0,cardTrans:pubSkin.premiumCardTransparency!=null?pubSkin.premiumCardTransparency:0.1};
+                person.fsTimeline=Array.isArray(pubSkin.fsTimelinePhotos)?pubSkin.fsTimelinePhotos:null;
                 person._skinLoaded=true;
             }
         }catch(e){console.warn('Failed to load public skin data:',e);}
@@ -3677,6 +3680,7 @@ async function showProfileView(person){
     if(isMe) cardHtml+='<div class="pv-actions"><button class="btn btn-primary" id="pvEditProfileBtn"><i class="fas fa-pen"></i> Edit Profile</button></div>';
     cardHtml+='<div class="profile-links"><a href="#" class="pv-back-link" id="pvBack"><i class="fas fa-arrow-left"></i> Back to Home</a></div>';
     cardHtml+='</div>';
+    window._fsViewedTimeline=isMe?null:(person.fsTimeline||null);
     $('#pvProfileCard').innerHTML=cardHtml;
     if(window.BlipFullSkins) BlipFullSkins.render();
 
@@ -10568,7 +10572,34 @@ function getAllPhotos(){
 // read-only data the full-skin engine (js/fullskins.js) uses for timeline photo slots
 window.BlipFullSkinsData={
     photos:function(){try{return getAllPhotos();}catch(e){return [];}},
-    cover:function(){return state.coverPhotoMobile||state.coverPhoto||null;}
+    cover:function(){return state.coverPhotoMobile||state.coverPhoto||null;},
+    chosen:function(){return state.fsTimelinePhotos||[];},          // your picks, by slot
+    viewed:function(){return window._fsViewedTimeline||null;},      // the viewed person's picks
+    // let you choose which of your photos goes in timeline frame `slot`
+    pick:function(slot){
+        var cover=state.coverPhotoMobile||state.coverPhoto;
+        var list=[];
+        if(cover) list.push(cover);
+        try{getAllPhotos().forEach(function(p){if(p&&p.src&&!p.isVideo&&list.indexOf(p.src)<0) list.push(p.src);});}catch(e){}
+        var html='<div class="modal-header"><h3>Choose a photo</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body">';
+        if(!list.length) html+='<p style="text-align:center;padding:20px 0;">Post a photo or add a cover photo first.</p>';
+        else{
+            html+='<div class="fs-pick-grid">';
+            list.slice(0,60).forEach(function(src){html+='<button class="fs-pick" data-src="'+escapeHtml(src)+'"><img src="'+escapeHtml(src)+'" alt="" loading="lazy"></button>';});
+            html+='</div>';
+        }
+        html+='</div>';
+        showModal(html);
+        $$('.fs-pick').forEach(function(b){b.addEventListener('click',function(){
+            var arr=(state.fsTimelinePhotos||[]).slice();
+            while(arr.length<slot) arr.push(null);
+            arr[slot]=b.dataset.src;
+            state.fsTimelinePhotos=arr;
+            saveState();syncSkinDataToSupabase(true);closeModal();
+            if(window.BlipFullSkins) BlipFullSkins.render();
+            showToast('Timeline photo updated');
+        });});
+    }
 };
 function renderPhotosCard(){
     if(window.BlipFullSkins) BlipFullSkins.render(); // timeline photo slots use your latest photos

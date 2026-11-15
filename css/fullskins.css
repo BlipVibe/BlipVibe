@@ -268,26 +268,35 @@ body.fs .pm-thumb img,
 body.fs .pm-thumb video { background: transparent !important; }
 
 /* ================================================================
-   SCRAPBOOK (owner's master)
+   SCRAPBOOK (owner's master) — every visual is kit art; CSS only places it
    ================================================================ */
-body.fs-scrapbook .fs-tl-slot {
-  background: #fffdf7;
-  padding: 7px 7px 22px;
-  box-shadow: 0 4px 10px rgba(62, 45, 32, .32);
-  width: 44%;
-  aspect-ratio: 1 / 1.08;
+/* Home on a phone: the concept's home has no cover — the polaroid timeline lives on the profile */
+@media (max-width: 768px) {
+  body.fs-scrapbook #page-home #timelineCover { display: none !important; }
 }
-body.fs-scrapbook .fs-tl-empty::before { height: auto; aspect-ratio: 1 / .92; background: #e9dcc4; }
-body.fs-scrapbook .fs-tl-slot img { height: auto; aspect-ratio: 1 / .92; filter: sepia(.18) saturate(.92) contrast(.96) brightness(1.03); }
-body.fs-scrapbook .fs-tl-slot { max-width: 290px; }
-body.fs-scrapbook .fs-tl-slot-1 { left: max(6%, calc(50% - 320px)); top: 8%; transform: rotate(-7deg); }
-body.fs-scrapbook .fs-tl-slot-2 { right: max(4%, calc(50% - 320px)); top: 14%; transform: rotate(6deg); }
-body.fs-scrapbook .profile-card .profile-cover { display: none !important; }
+
+/* timeline: the kit's polaroid pair (lace + flower) with your photos behind its two windows.
+   Window boxes measured from timeline-frame.webp (872x848): centre, size and tilt of each. */
+body.fs-scrapbook .fs-timeline {
+  inset: auto;
+  left: 50%; top: -2%;
+  transform: translateX(-50%);
+  width: min(84%, 330px);
+  aspect-ratio: 872 / 848;
+}
 body.fs-scrapbook .fs-timeline::after {
   content: "";
-  position: absolute; left: 0; bottom: -6%; width: 30%; aspect-ratio: 1;
-  background: var(--fs-deco-1) left bottom / contain no-repeat;
+  position: absolute; inset: 0;
+  background: var(--fs-timeline-frame) center / 100% 100% no-repeat;
+  pointer-events: none;
 }
+body.fs-scrapbook .fs-tl-slot-1 { left: 3.9%; top: 9.9%; width: 46.9%; height: 47%; transform: rotate(-13.3deg); }
+body.fs-scrapbook .fs-tl-slot-2 { left: 46.6%; top: 23.7%; width: 46.1%; height: 46.7%; transform: rotate(11.6deg); }
+body.fs-scrapbook .fs-tl-slot img { filter: sepia(.15) saturate(.92); }
+body.fs-scrapbook .fs-tl-empty::before { background: var(--fs-panel-card) center / cover no-repeat; }
+body.fs-scrapbook .profile-card .profile-cover { display: none !important; }
+body.fs-scrapbook #pvCoverBanner { min-height: 250px; }
+
 /* profile view: no big panel — torn name label, torn stats strip, torn Edit button (master) */
 body.fs-scrapbook .pv-profile-card {
   border: 0 !important;
@@ -314,7 +323,6 @@ body.fs-scrapbook .pv-profile-card .profile-name {
   padding: 12px 0 36px;
   font-size: 34px !important;
   background: var(--fs-btn-secondary) center / 100% 100% no-repeat;
-  filter: drop-shadow(0 2px 3px rgba(62, 45, 32, .25));
 }
 body.fs-scrapbook .pv-profile-card .profile-info:not(:has(> .profile-title)) > .profile-about { order: 0; }
 body.fs-scrapbook .pv-profile-card .profile-info:not(:has(> .profile-title)) > .profile-about,
@@ -329,11 +337,9 @@ body.fs-scrapbook .pv-profile-card .profile-stats {
   margin: 0 auto 16px;
   padding: 10px 0;
   background: var(--fs-btn-secondary) center / 100% 100% no-repeat;
-  filter: drop-shadow(0 2px 3px rgba(62, 45, 32, .25));
+  display: flex !important; flex-wrap: nowrap !important;
 }
-body.fs-scrapbook .pv-profile-card .profile-stats { display: flex !important; flex-wrap: nowrap !important; }
 body.fs-scrapbook .pv-profile-card .profile-stats > .stat { flex: 1 1 0; min-width: 0; }
-body.fs-scrapbook .pv-profile-card .stat + .stat { border-left: 1.5px solid rgba(62, 45, 32, .25); }
 body.fs-scrapbook .pv-profile-card .stat-count { font-family: var(--fs-title-font); font-size: 30px !important; }
 body.fs-scrapbook .pv-profile-card .stat-label { color: var(--fs-ink) !important; font-size: 16px !important; }
 body.fs-scrapbook .pv-actions .btn-primary {
@@ -347,15 +353,26 @@ body.fs-scrapbook .pv-actions .btn-primary {
   font-family: var(--fs-title-font);
   font-size: 22px !important;
   border-image-source: var(--fs-btn-secondary) !important;
-  filter: drop-shadow(0 2px 3px rgba(62, 45, 32, .25));
 }
 
-/* quest card: spiral binding, pink icon squares, gingham bow (master) */
+/* header: paperclip clipped over the logo (master) */
+body.fs-scrapbook .navbar { position: relative; }
+body.fs-scrapbook .navbar::before {
+  content: "";
+  position: absolute; left: -20px; top: 6px;
+  width: 56px; height: 30px;
+  background: var(--fs-deco-5) center / contain no-repeat;
+  transform: rotate(-62deg);
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* quest card: spiral binding, pink paper icon tiles, paper progress bars, torn dividers, bow */
 body.fs-scrapbook .quest-panel { position: relative; padding-left: 26px !important; overflow: visible !important; }
 body.fs-scrapbook .quest-panel::before {
   content: "";
-  position: absolute; left: -14px; top: 4%; bottom: 4%; width: 30px;
-  background: var(--fs-quest-0) left center / auto 100% no-repeat;
+  position: absolute; left: -18px; top: 8px; bottom: 8px; width: 34px;
+  background: var(--fs-deco-6) center / 100% 100% no-repeat;
   pointer-events: none;
 }
 body.fs-scrapbook .quest-panel::after {
@@ -367,18 +384,112 @@ body.fs-scrapbook .quest-panel::after {
 }
 body.fs-scrapbook .quest-icon,
 body.fs-scrapbook .quest-item[data-fs-q] .quest-icon {
-  background: #e7b7bb !important;
-  width: 30px !important; height: 30px !important;
-  border-radius: 3px !important;
-  box-shadow: 0 1px 2px rgba(62, 45, 32, .25);
+  background: var(--fs-tile) center / 100% 100% no-repeat !important;
+  width: 34px !important; height: 34px !important;
+  border-radius: 0 !important;
 }
 body.fs-scrapbook .quest-icon > i { display: inline-block !important; color: #7b3f4c !important; font-size: 14px; }
+body.fs-scrapbook .quest-item {
+  border: 0 !important;
+  background: var(--fs-divider) center bottom / 92% 5px no-repeat;
+}
+body.fs-scrapbook .quest-item:last-child { background: none; }
 
+/* progress bars (quests + coin goal): paper track + rose fill, ends kept round by 9-slicing */
+body.fs-scrapbook .quest-bar,
+body.fs-scrapbook .coin-goal-track {
+  background: transparent !important;
+  border: 5px solid transparent !important;
+  border-image: var(--fs-bar-track) 35 36 fill / 5px stretch !important;
+  border-radius: 0 !important;
+  height: 12px !important;
+  overflow: visible !important;
+  box-sizing: border-box;
+}
+body.fs-scrapbook .quest-bar-fill,
+body.fs-scrapbook .coin-goal-fill {
+  background: transparent !important;
+  border: 5px solid transparent;
+  border-image: var(--fs-bar-fill) 35 36 fill / 5px stretch;
+  border-radius: 0 !important;
+  margin: -5px;
+  height: 12px !important;
+  min-width: 12px;
+  box-sizing: border-box;
+}
+body.fs-scrapbook .quest-bar-fill[style*="width:0%"],
+body.fs-scrapbook .quest-bar-fill[style*="width: 0%"] { display: none; }
+
+/* text fields: the kit's paper strip */
+body.fs-scrapbook .post-input-fake,
+body.fs-scrapbook .page-search,
+body.fs-scrapbook .search-bar,
+body.fs-scrapbook #msgInput,
+body.fs-scrapbook .msg-search,
+body.fs-scrapbook .comment-input,
+body.fs-scrapbook .cpm-textarea,
+body.fs-scrapbook #searchPageInput {
+  background: var(--fs-field) center / 100% 100% no-repeat !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* stories: the kit's avatar frame instead of the gradient ring */
+body.fs-scrapbook .story-ring,
+body.fs-scrapbook .story-add .story-ring {
+  background: var(--fs-avatar-frame) center / 100% 100% no-repeat !important;
+  padding: 4px !important;
+}
+body.fs-scrapbook .story-ring img { border: 0 !important; }
+
+/* posts: photo in the kit's polaroid frame with washi tape, a paper heart and a lavender sprig */
+body.fs-scrapbook .post-media-grid { position: relative; overflow: visible !important; }
 body.fs-scrapbook .post-media-grid .pm-thumb {
-  background: #fffdf7;
-  padding: 7px 7px 20px;
-  box-shadow: 0 3px 8px rgba(62, 45, 32, .3);
+  position: relative;
+  overflow: visible !important;
+  background: transparent !important;
+  border-style: solid !important;
+  border-color: transparent !important;
+  border-width: 12px 14px 38px 12px !important;
+  border-image: var(--fs-photo-frame) 44 49 137 40 fill / 12px 14px 38px 12px stretch !important;
+  border-radius: 0 !important;
   transform: rotate(-1.2deg);
+}
+body.fs-scrapbook .post-media-grid .pm-thumb:nth-child(even) { transform: rotate(1.4deg); }
+body.fs-scrapbook .post-media-grid .pm-thumb img,
+body.fs-scrapbook .post-media-grid .pm-thumb video {
+  border-radius: 0 !important;
+  width: 100% !important; height: 100% !important; max-height: 100% !important;
+  object-fit: cover !important;
+}
+body.fs-scrapbook .post-media-grid .pm-thumb::before {
+  content: "";
+  position: absolute; top: -24px; left: 50%;
+  width: 92px; height: 26px;
+  background: var(--fs-deco-4) center / 100% 100% no-repeat;
+  transform: translateX(-50%) rotate(-4deg);
+  z-index: 2;
+  pointer-events: none;
+}
+body.fs-scrapbook .post-media-grid .pm-thumb:nth-child(even)::before { background-image: var(--fs-tape-2); transform: translateX(-50%) rotate(5deg); }
+body.fs-scrapbook .post-media-grid::after {
+  content: "";
+  position: absolute; top: -16px; right: -12px;
+  width: 46px; height: 42px;
+  background: var(--fs-deco-3) center / contain no-repeat;
+  transform: rotate(14deg);
+  z-index: 3;
+  pointer-events: none;
+}
+body.fs-scrapbook .post-media-grid::before {
+  content: "";
+  position: absolute; left: -16px; bottom: -6px;
+  width: 30px; height: 92px;
+  background: var(--fs-deco-1) center / contain no-repeat;
+  transform: rotate(-10deg);
+  z-index: 3;
+  pointer-events: none;
 }
 
 /* page titles sit on a torn paper label (master: Groups / Messages / Skins headers) */
@@ -389,7 +500,6 @@ body.fs-scrapbook .msg-sidebar-header h3 {
   font-family: var(--fs-title-font) !important;
   font-size: 30px !important;
   background: var(--fs-btn-secondary) center / 100% 100% no-repeat;
-  filter: drop-shadow(0 2px 3px rgba(62, 45, 32, .25));
 }
 body.fs-scrapbook .page-header h2 { margin-bottom: 10px; }
 body.fs-scrapbook .page-header h2 > i,
@@ -420,7 +530,6 @@ body.fs-scrapbook #groupsSections .group-card-banner {
   border-radius: 3px;
   overflow: hidden;
   font-size: 22px;
-  box-shadow: 0 1px 3px rgba(62, 45, 32, .3);
 }
 body.fs-scrapbook #groupsSections .group-card-banner img {
   width: 100% !important; height: 100% !important;
@@ -445,7 +554,6 @@ body.fs-scrapbook #groupsSections .group-card-actions .btn {
   display: flex !important; align-items: center; justify-content: center;
   color: var(--fs-ink) !important;
 }
-body.fs-scrapbook #groupsSections .group-card-actions .btn-primary { filter: hue-rotate(-20deg) saturate(2.2) brightness(.95); }
 body.fs-scrapbook #groupsSections .gc-btn-text { display: none !important; }
 
 /* messages: rows sit straight on the collage; no flat panel behind them */
@@ -497,7 +605,7 @@ body.fs .skin-card-body { background: transparent !important; padding: 10px 2px 
 body.fs .skin-card-body h4,
 body.fs .skin-card-body h4 i { color: var(--fs-ink) !important; }
 body.fs .skin-card-body p { color: var(--fs-muted) !important; }
-body.fs .skin-preview { border-radius: 2px !important; box-shadow: 0 1px 3px rgba(0, 0, 0, .25); }
+body.fs .skin-preview { border-radius: 2px !important; }
 body.fs .page-subtitle { color: var(--fs-muted) !important; }
 body.fs .connections-col { background: transparent !important; box-shadow: none !important; border-color: transparent !important; }
 
@@ -573,5 +681,23 @@ body.fs .fsk-card {
 body.fs .fsk-name { font-family: var(--fs-title-font); color: var(--fs-ink) !important; font-size: 18px; }
 body.fs .fsk-is-equipped { border-image-source: var(--fs-panel-card-active); }
 body.fs .fsk-badge { background: var(--fs-accent); }
-body.fs-scrapbook .fsk-thumb { padding: 5px 5px 14px; background: #fffdf7; box-shadow: 0 2px 5px rgba(62, 45, 32, .3); transform: rotate(-1deg); }
+body.fs-scrapbook .fsk-thumb {
+  overflow: visible;
+  border: solid transparent; border-width: 8px 9px 24px 8px;
+  border-image: var(--fs-photo-frame) 44 49 137 40 fill / 8px 9px 24px 8px stretch;
+  transform: rotate(-1deg);
+}
 body.fs-scrapbook .fsk-card:nth-child(even) .fsk-thumb { transform: rotate(1.2deg); }
+
+/* quick-link pills (People You May Know / Trending Groups) on the kit's chip art */
+body.fs .mobile-pill {
+  background: var(--fs-chip) center / 100% 100% no-repeat !important;
+  border: 0 !important; box-shadow: none !important; color: var(--fs-ink) !important;
+}
+body.fs .featured-skin-banner::before, body.fs .featured-skin-banner::after { display: none !important; }
+
+/* timeline frames you can tap to choose a photo (your own profile) */
+.fs-tl-own { pointer-events: auto; cursor: pointer; }
+.fs-pick-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-height: 60vh; overflow-y: auto; }
+.fs-pick { padding: 0; border: 0; background: none; aspect-ratio: 1; cursor: pointer; }
+.fs-pick img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 6px; }

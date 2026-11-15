@@ -31,7 +31,11 @@ GRIDS = {
     "frames":  (2, 2, ["timeline-frame", "avatar-frame", "avatar-mask", "post-frame"], 1000, False),
     "quests":  (3, 1, ["quest-0", "quest-50", "quest-100"], 420, False),
     "deco":    (3, 2, [f"deco-{i}" for i in range(1, 7)], 520, False),
+    # optional extras sheet (prototypes/extras-kit-brief.md)
+    "extras":  (3, 3, ["photo-frame", "tile", "tape-2", "bar-track", "bar-fill", "field",
+                       "sticker-1", "sticker-2", "divider"], 700, False),
 }
+OPTIONAL = {"extras"}
 LOSSLESS = {"avatar-mask"}          # masks must stay crisp
 ALPHA_MIN = 10                      # pixels fainter than this count as empty
 PAD = 6
@@ -49,7 +53,8 @@ def trim(img: Image.Image) -> Image.Image | None:
 
 
 STRETCH_PARTS = {"panel-card", "panel-card-active", "chip", "chip-active",
-                 "btn-primary", "btn-secondary", "nav-bar", "header-bar"}
+                 "btn-primary", "btn-secondary", "nav-bar", "header-bar",
+                 "bar-track", "bar-fill", "field"}
 CENTER_MAX_STD = 14.0     # luminance std-dev allowed in the middle of a stretchable part
 BG_MAX_STD = 38.0         # luminance std-dev allowed in the middle of the app background
 
@@ -114,7 +119,8 @@ def slice_skin(skin: str) -> dict:
     for sheet, (cols, rows, names, max_px, _) in GRIDS.items():
         src = kit / f"{sheet}.png"
         if not src.exists():
-            warnings.append(f"missing {sheet}.png")
+            if sheet not in OPTIONAL:
+                warnings.append(f"missing {sheet}.png")
             continue
         im = Image.open(src).convert("RGBA")
         cw, ch = im.width / cols, im.height / rows

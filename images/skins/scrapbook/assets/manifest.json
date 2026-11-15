@@ -221,6 +221,51 @@
       "w": 97,
       "h": 520
     },
+    "photo-frame": {
+      "file": "photo-frame.webp",
+      "w": 434,
+      "h": 513
+    },
+    "tile": {
+      "file": "tile.webp",
+      "w": 431,
+      "h": 432
+    },
+    "tape-2": {
+      "file": "tape-2.webp",
+      "w": 547,
+      "h": 162
+    },
+    "bar-track": {
+      "file": "bar-track.webp",
+      "w": 610,
+      "h": 71
+    },
+    "bar-fill": {
+      "file": "bar-fill.webp",
+      "w": 610,
+      "h": 71
+    },
+    "field": {
+      "file": "field.webp",
+      "w": 611,
+      "h": 122
+    },
+    "sticker-1": {
+      "file": "sticker-1.webp",
+      "w": 337,
+      "h": 337
+    },
+    "sticker-2": {
+      "file": "sticker-2.webp",
+      "w": 273,
+      "h": 263
+    },
+    "divider": {
+      "file": "divider.webp",
+      "w": 611,
+      "h": 36
+    },
     "thumb": {
       "file": "thumb.webp",
       "w": 512,

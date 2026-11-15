@@ -23,6 +23,8 @@
     'btn-secondary', 'btn-round', 'nav-active', 'nav-bar', 'header-bar', 'timeline-frame',
     'avatar-frame', 'avatar-mask', 'post-frame', 'quest-0', 'quest-50', 'quest-100',
     'deco-1', 'deco-2', 'deco-3', 'deco-4', 'deco-5', 'deco-6', 'thumb'];
+  // extras sheet (prototypes/extras-kit-brief.md) — only for skins whose registry entry sets `extras`
+  var EXTRAS = ['photo-frame', 'tile', 'tape-2', 'bar-track', 'bar-fill', 'field', 'sticker-1', 'sticker-2', 'divider'];
 
   /* Per-skin settings. `dark` = light text on dark surfaces. `timeline` = how many timeline photo
    * slots the profile shows. `slice` = border-image slice (percent) for stretchable panels. */
@@ -30,7 +32,10 @@
     scrapbook: {
       name: 'Scrapbook', dark: false, ink: '#3e2d20', muted: '#75604b', accent: '#cf6f8c',
       font: "'Kalam', cursive", titleFont: "'Caveat', cursive",
-      timeline: 2, avatar: 'center', slice: 18,
+      timeline: 2, avatar: 'center', slice: 7,
+      // art swapped in for a standard part (asset file names in images/skins/<id>/assets/)
+      parts: { 'panel-card': 'panel-paper', 'panel-card-active': 'panel-paper-pink' },
+      extras: true,
       // the app's own theme variables (style.css :root) re-pointed at this skin, so every surface the
       // engine doesn't restyle by hand (inputs, pills, rings, menus) still matches
       theme: { '--dark': '#3e2d20', '--gray': '#75604b', '--light-bg': '#fbf4e6', '--card': '#f1e4cb',
@@ -92,7 +97,7 @@
     var wasActive = active;
     Object.keys(FULL_SKINS).forEach(function (id) { b.classList.remove('fs-' + id); });
     b.classList.remove('fs', 'fs-dark', 'fs-light');
-    PARTS.forEach(function (p) { b.style.removeProperty('--fs-' + p); });
+    PARTS.concat(EXTRAS).forEach(function (p) { b.style.removeProperty('--fs-' + p); });
     ICONS.forEach(function (n) { b.style.removeProperty('--fs-icon-' + n); });
     ['--fs-ink', '--fs-muted', '--fs-accent', '--fs-font', '--fs-title-font', '--fs-slice'].forEach(function (v) {
       b.style.removeProperty(v);
@@ -112,7 +117,8 @@
     var b = document.body;
     loadFonts(cfg);
     b.classList.add('fs', 'fs-' + id, cfg.dark ? 'fs-dark' : 'fs-light');
-    PARTS.forEach(function (p) { b.style.setProperty('--fs-' + p, url(id, p)); });
+    var parts = cfg.extras ? PARTS.concat(EXTRAS) : PARTS;
+    parts.forEach(function (p) { b.style.setProperty('--fs-' + p, url(id, (cfg.parts && cfg.parts[p]) || p)); });
     ICONS.forEach(function (n) { b.style.setProperty('--fs-icon-' + n, url(id, 'icon-' + n)); });
     b.style.setProperty('--fs-ink', cfg.ink);
     b.style.setProperty('--fs-muted', cfg.muted);
@@ -150,6 +156,11 @@
       (data().photos() || []).filter(function (p) { return p && p.src && !p.isVideo; })
         .forEach(function (p) { if (urls.length < count && urls.indexOf(p.src) < 0) urls.push(p.src); });
     }
+    // photos picked for specific frames win over the defaults (yours, or the viewed person's)
+    var picks = own ? (data().chosen && data().chosen()) : (coverEl && coverEl.id === 'pvCoverBanner' && data().viewed && data().viewed());
+    if (picks && picks.length) {
+      for (var i = 0; i < count; i++) if (picks[i]) urls[i] = picks[i];
+    }
     // no photos at all (e.g. someone without a cover): empty slots render as blank photo paper
     while (urls.length < count) urls.push(urls[0] || null);
     return urls.slice(0, count);
@@ -163,6 +174,12 @@
     timelinePhotos(coverEl, cfg.timeline).forEach(function (src, i) {
       var slot = document.createElement('div');
       slot.className = 'fs-tl-slot fs-tl-slot-' + (i + 1);
+      if (isOwnTimeline(coverEl) && data().pick) { // tap a frame to choose its photo
+        slot.className += ' fs-tl-own';
+        slot.setAttribute('role', 'button');
+        slot.setAttribute('aria-label', 'Choose photo ' + (i + 1));
+        (function (n) { slot.addEventListener('click', function (e) { e.stopPropagation(); data().pick(n); }); })(i);
+      }
       if (src) {
         var img = document.createElement('img');
         img.src = src; img.alt = ''; img.loading = 'lazy';
@@ -205,6 +222,11 @@
   // app data the engine reads (exposed by app.js as window.BlipFullSkinsData)
   function data() {
     return window.BlipFullSkinsData || { photos: function () { return []; }, cover: function () { return null; } };
+  }
+  function isOwnTimeline(coverEl) {
+    var editBtn = document.getElementById('pvCoverEditBtn');
+    return !!coverEl && (coverEl.id === 'timelineCover' ||
+      (coverEl.id === 'pvCoverBanner' && !!editBtn && editBtn.style.display !== 'none'));
   }
 
   /* ---------- catalog for the Skins section of the shop ---------- */

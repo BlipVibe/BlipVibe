@@ -25,7 +25,9 @@ BEGIN
     'premiumBgUrl', sd->'premiumBgUrl',
     'premiumBgOverlay', sd->'premiumBgOverlay',
     'premiumBgDarkness', sd->'premiumBgDarkness',
-    'premiumCardTransparency', sd->'premiumCardTransparency'
+    'premiumCardTransparency', sd->'premiumCardTransparency',
+    -- full skins: the photos the owner picked for their timeline frames (Nov 2026)
+    'fsTimelinePhotos', sd->'fsTimelinePhotos'
   );
 END;
 $$;
