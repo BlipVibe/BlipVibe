@@ -43,6 +43,16 @@ Same as Scrapbook's table (`prototypes/scrapbook-field-corrections.md`): live us
   buttons, chips, fields, banner, navbar, cover frame, avatar ring, quest bar, coin pill, burst.
 - Icons from the base kit (white/red comic icons with flame flicks) look right — keep.
 
+## 4b. Color options (owner, Nov 15: "not everyone likes red" — ~5 colors, same look across the board)
+- Graphics first: each color is a REAL recolored copy of the art (`assets/<color>/…`), made offline by
+  shifting only the red-orange accent hues (dark fills, white/gold keylines and ink stay), then reviewed.
+  Not a CSS hue-rotate filter.
+- The choice is a new look key (e.g. `fsVariant`), so it must be added to `set_skin_look`'s allowed list +
+  the guard trigger list (`supabase/guard-stale-look-writes.sql`, live DB change → owner OK) and to `LOOK`
+  in app.js. The Skins card gets color dots to pick from.
+- Set 1 status: 19/21 pieces delivered (coin-pill, burst pending); avatar-ring has faint haze in its top
+  corners — zero alpha < 60 outside the ring when converting.
+
 ## 5. Engine wiring (to do)
 - Add `FULL_SKINS['anime-blaze']`: `dark: true`, ink near-white, accent red-orange, comic display font
   for titles, `timeline: 1`, parts/assets as the art lands; flip `ready: true` in the catalog when shipped.
@@ -50,4 +60,4 @@ Same as Scrapbook's table (`prototypes/scrapbook-field-corrections.md`): live us
 - CSS: scope everything under `body.fs-anime-blaze`; reuse the Scrapbook block structure (§5 of its notes).
 
 ## 6. Progress log
-- Nov 15: notes + first art brief written (owner: NOT realistic — clean comic art); Codex set 1 requested.
+- Nov 15: notes + first art brief written (owner: realism is case by case — this one is clean comic art; goal = as close to the concept as possible; graphics first, CSS only when necessary); Codex set 1 delivered 19/21; color-option plan added.
