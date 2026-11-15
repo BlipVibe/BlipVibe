@@ -1264,6 +1264,8 @@ function _buildSkinData(){
 // so an idle tab or second device holding older data can't overwrite a newer choice made elsewhere
 // (the 10s autosave used to re-send everything, last writer winning).
 var _lastSyncedSkinJSON=null;
+var _lastSyncedSkinObj=null; // what this device last loaded/saved — saves send only keys changed since then
+var _skinSyncChain=Promise.resolve();
 function syncSkinDataToSupabase(immediate){
     if(!currentUser) return;
     // CRITICAL: never sync until cloud skin_data has been loaded into memory.
@@ -1289,8 +1291,23 @@ function syncSkinDataToSupabase(immediate){
         }
         var json=JSON.stringify(skinData);
         if(json===_lastSyncedSkinJSON) return; // nothing changed on this device
-        sbUpdateProfile(currentUser.id,{skin_data:skinData}).then(function(){
-            _lastSyncedSkinJSON=json;
+        // Merge, don't overwrite: another device or an old session may have saved since this one loaded.
+        // Send only the keys THIS device changed, on top of the server's current copy, so a stale session
+        // can't put back an old skin or wipe timeline photos it never touched.
+        var base=_lastSyncedSkinObj||{};
+        var changed=Object.keys(skinData).filter(function(k){return JSON.stringify(skinData[k])!==JSON.stringify(base[k]);});
+        if(!changed.length){_lastSyncedSkinJSON=json;return;}
+        _skinSyncChain=_skinSyncChain.then(function(){
+            return sbGetOwnProfile().then(function(profile){
+                var server=(profile&&profile.skin_data)||{};
+                var merged=Object.assign({},server);
+                changed.forEach(function(k){merged[k]=skinData[k];});
+                return sbUpdateProfile(currentUser.id,{skin_data:merged}).then(function(){
+                    currentUser.skin_data=merged;
+                    _lastSyncedSkinObj=JSON.parse(JSON.stringify(skinData));
+                    _lastSyncedSkinJSON=json;
+                });
+            });
         }).catch(function(e){
             console.warn('Skin data sync error:',e);
         });
@@ -1384,7 +1401,7 @@ async function loadSkinDataFromSupabase(){
             currentUser.skin_data=sd; // update server truth for _hasInfinity() etc.
             _applySkinDataFromCache(sd);
         }
-        try{_lastSyncedSkinJSON=JSON.stringify(_buildSkinData());}catch(e){}
+        try{var _b=_buildSkinData();_lastSyncedSkinJSON=JSON.stringify(_b);_lastSyncedSkinObj=JSON.parse(_lastSyncedSkinJSON);}catch(e){}
         // Whether skin_data existed or not, the load attempt is complete.
         // Future saves are now safe — they'll either preserve loaded data or
         // legitimately initialize a brand-new account that had nothing to load.
@@ -3611,7 +3628,9 @@ async function showProfileView(person){
         }catch(e){console.warn('Failed to load public skin data:',e);}
     }
     // Apply viewed person's skin/font/template visually WITHOUT mutating state
-    _pvSaved=true; // flag: we're on a profile view, restore from Supabase/cache on exit
+    // flag: someone else's skin is on screen — block saves and restore ours on exit. Not set for your own
+    // profile: nothing is swapped there, and blocking saves lost timeline photos picked on it.
+    _pvSaved=isMe?null:true;
     if(!isMe){
         // Save our real values before any visual changes
         _pvRealSkin={premiumSkin:state.activePremiumSkin,skin:state.activeSkin,font:state.activeFont,tpl:state.activeTemplate,bgImage:premiumBgImage,bgOverlay:premiumBgOverlay,bgDarkness:premiumBgDarkness,cardTrans:premiumCardTransparency};
