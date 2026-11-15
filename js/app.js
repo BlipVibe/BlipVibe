@@ -10519,6 +10519,7 @@ window.BlipFullSkinsData={
     cover:function(){return state.coverPhotoMobile||state.coverPhoto||null;}
 };
 function renderPhotosCard(){
+    if(window.BlipFullSkins) BlipFullSkins.render(); // timeline photo slots use your latest photos
     var all=getAllPhotos();
     var el=$('#photosPreview');
     if(!el)return;

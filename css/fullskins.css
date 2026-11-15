@@ -67,6 +67,17 @@ body.fs .coin-goal-bar:empty,
 body.fs .featured-skin-banner:empty,
 body.fs .quest-panel:empty { display: none !important; }
 
+/* story create/view screens are full-bleed media: no panel frame, keep their own dark styling */
+body.fs .modal-content:has(.story-create-wrap, .story-canvas-full, .story-content, .story-progress) {
+  border: 0 !important;
+  border-image: none !important;
+  background: #000 !important;
+  color: #fff !important;
+}
+body.fs .modal-content:has(.story-create-wrap, .story-canvas-full, .story-content, .story-progress) :is(h1, h2, h3, h4, p, span) {
+  color: #fff !important;
+}
+
 /* ---------- tabs / chips ---------- */
 body.fs .search-tab {
   text-shadow: none !important;
@@ -121,7 +132,7 @@ body.fs .mobile-search-btn > i,
 body.fs .mobile-notif-btn > i,
 body.fs .nav-music-btn > i,
 body.fs .nav-coins > i,
-body.fs .action-btn > i,
+body.fs .action-btn > i:is(.fa-thumbs-up, .fa-thumbs-down, .fa-face-smile, .fa-comment, .fa-share-from-square, .fa-share),
 body.fs .avatar-edit-btn > i,
 body.fs .timeline-cover-btn > i {
   display: inline-block !important;
@@ -135,7 +146,7 @@ body.fs .mobile-search-btn > i::before,
 body.fs .mobile-notif-btn > i::before,
 body.fs .nav-music-btn > i::before,
 body.fs .nav-coins > i::before,
-body.fs .action-btn > i::before,
+body.fs .action-btn > i:is(.fa-thumbs-up, .fa-thumbs-down, .fa-face-smile, .fa-comment, .fa-share-from-square, .fa-share)::before,
 body.fs .avatar-edit-btn > i::before,
 body.fs .timeline-cover-btn > i::before { content: "" !important; }
 body.fs .nav-link[data-page="home"] > i { background-image: var(--fs-icon-home); }
@@ -148,11 +159,12 @@ body.fs .mobile-notif-btn > i { background-image: var(--fs-icon-bell); }
 body.fs .mobile-search-btn > i { background-image: var(--fs-icon-search); }
 body.fs .nav-music-btn > i { background-image: var(--fs-icon-music); }
 body.fs .nav-coins > i { background-image: var(--fs-icon-coin); }
-body.fs .like-btn > i { background-image: var(--fs-icon-like); }
-body.fs .dislike-btn > i { background-image: var(--fs-icon-dislike); }
-body.fs .react-btn > i { background-image: var(--fs-icon-emoji); }
-body.fs .comment-btn > i { background-image: var(--fs-icon-comment); }
-body.fs .share-btn > i { background-image: var(--fs-icon-share); }
+body.fs .action-btn > i.fa-thumbs-up { background-image: var(--fs-icon-like); }
+body.fs .action-btn > i.fa-thumbs-down { background-image: var(--fs-icon-dislike); }
+body.fs .action-btn > i.fa-face-smile { background-image: var(--fs-icon-emoji); }
+body.fs .action-btn > i.fa-comment { background-image: var(--fs-icon-comment); }
+body.fs .action-btn > i:is(.fa-share-from-square, .fa-share) { background-image: var(--fs-icon-share); }
+body.fs .action-btn > i { color: var(--fs-ink); }
 body.fs .avatar-edit-btn > i,
 body.fs .timeline-cover-btn > i { background-image: var(--fs-icon-camera); }
 body.fs .action-btn { color: var(--fs-ink) !important; }
@@ -249,6 +261,7 @@ body.fs #pvCoverBanner {
 .fs-timeline { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
 .fs-tl-slot { position: absolute; }
 .fs-tl-slot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.fs-tl-empty::before { content: ""; display: block; width: 100%; height: 100%; background: rgba(0, 0, 0, .06); }
 
 /* post photos: the app letterboxes portrait images on black — let the skin's frame show instead */
 body.fs .pm-thumb img,
@@ -264,9 +277,12 @@ body.fs-scrapbook .fs-tl-slot {
   width: 44%;
   aspect-ratio: 1 / 1.08;
 }
+body.fs-scrapbook .fs-tl-empty::before { height: auto; aspect-ratio: 1 / .92; background: #e9dcc4; }
 body.fs-scrapbook .fs-tl-slot img { height: auto; aspect-ratio: 1 / .92; filter: sepia(.18) saturate(.92) contrast(.96) brightness(1.03); }
-body.fs-scrapbook .fs-tl-slot-1 { left: 6%; top: 8%; transform: rotate(-7deg); }
-body.fs-scrapbook .fs-tl-slot-2 { right: 4%; top: 14%; transform: rotate(6deg); }
+body.fs-scrapbook .fs-tl-slot { max-width: 290px; }
+body.fs-scrapbook .fs-tl-slot-1 { left: max(6%, calc(50% - 320px)); top: 8%; transform: rotate(-7deg); }
+body.fs-scrapbook .fs-tl-slot-2 { right: max(4%, calc(50% - 320px)); top: 14%; transform: rotate(6deg); }
+body.fs-scrapbook .profile-card .profile-cover { display: none !important; }
 body.fs-scrapbook .fs-timeline::after {
   content: "";
   position: absolute; left: 0; bottom: -6%; width: 30%; aspect-ratio: 1;
@@ -315,6 +331,8 @@ body.fs-scrapbook .pv-profile-card .profile-stats {
   background: var(--fs-btn-secondary) center / 100% 100% no-repeat;
   filter: drop-shadow(0 2px 3px rgba(62, 45, 32, .25));
 }
+body.fs-scrapbook .pv-profile-card .profile-stats { display: flex !important; flex-wrap: nowrap !important; }
+body.fs-scrapbook .pv-profile-card .profile-stats > .stat { flex: 1 1 0; min-width: 0; }
 body.fs-scrapbook .pv-profile-card .stat + .stat { border-left: 1.5px solid rgba(62, 45, 32, .25); }
 body.fs-scrapbook .pv-profile-card .stat-count { font-family: var(--fs-title-font); font-size: 30px !important; }
 body.fs-scrapbook .pv-profile-card .stat-label { color: var(--fs-ink) !important; font-size: 16px !important; }
@@ -362,3 +380,136 @@ body.fs-scrapbook .post-media-grid .pm-thumb {
   box-shadow: 0 3px 8px rgba(62, 45, 32, .3);
   transform: rotate(-1.2deg);
 }
+
+/* page titles sit on a torn paper label (master: Groups / Messages / Skins headers) */
+body.fs-scrapbook .page-header h2,
+body.fs-scrapbook .msg-sidebar-header h3 {
+  display: inline-block;
+  padding: 6px 22px 8px;
+  font-family: var(--fs-title-font) !important;
+  font-size: 30px !important;
+  background: var(--fs-btn-secondary) center / 100% 100% no-repeat;
+  filter: drop-shadow(0 2px 3px rgba(62, 45, 32, .25));
+}
+body.fs-scrapbook .page-header h2 > i,
+body.fs-scrapbook .msg-sidebar-header h3 > i { display: none; }
+
+/* groups: one torn strip per group — square icon, name + members, round join/view (master) */
+body.fs-scrapbook #groupsSections .shop-scroll-row {
+  display: flex !important;
+  flex-direction: column;
+  gap: 10px;
+  overflow: visible !important;
+  scroll-snap-type: none;
+  grid-template-columns: none !important;
+  grid-auto-flow: row !important;
+}
+body.fs-scrapbook #groupsSections .group-card {
+  min-width: 0 !important;
+  max-width: none !important;
+  width: 100%;
+  display: grid !important;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  transform: none !important;
+}
+body.fs-scrapbook #groupsSections .group-card-banner {
+  width: 56px; height: 56px !important;
+  border-radius: 3px;
+  overflow: hidden;
+  font-size: 22px;
+  box-shadow: 0 1px 3px rgba(62, 45, 32, .3);
+}
+body.fs-scrapbook #groupsSections .group-card-banner img {
+  width: 100% !important; height: 100% !important;
+  border-radius: 0 !important; border: 0 !important;
+}
+body.fs-scrapbook #groupsSections .gc-icon-edit-btn { display: none !important; }
+body.fs-scrapbook #groupsSections .group-card-body { padding: 0 !important; min-width: 0; }
+body.fs-scrapbook #groupsSections .group-card-body h4 {
+  margin: 0; font-size: 18px !important;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+body.fs-scrapbook #groupsSections .group-card-body p {
+  margin: 0; font-size: 12px !important;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+body.fs-scrapbook #groupsSections .group-card-actions { padding: 0 !important; gap: 6px; }
+body.fs-scrapbook #groupsSections .group-card-actions .btn {
+  width: 36px; height: 36px; min-width: 0;
+  padding: 0 !important;
+  border: 0 !important; border-image: none !important;
+  background: var(--fs-btn-round) center / contain no-repeat !important;
+  display: flex !important; align-items: center; justify-content: center;
+  color: var(--fs-ink) !important;
+}
+body.fs-scrapbook #groupsSections .group-card-actions .btn-primary { filter: hue-rotate(-20deg) saturate(2.2) brightness(.95); }
+body.fs-scrapbook #groupsSections .gc-btn-text { display: none !important; }
+
+/* messages: rows sit straight on the collage; no flat panel behind them */
+body.fs .messages-layout {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+body.fs .msg-sidebar,
+body.fs .msg-sidebar-header { border-color: transparent !important; background: transparent !important; }
+body.fs .msg-contact { padding-top: 2px !important; padding-bottom: 2px !important; }
+
+/* open chat: the skin background behind it, bubbles cut from the kit (sent = primary, received =
+   secondary), header + input on the kit's bars */
+body.fs .msg-chat,
+body.fs .messages-layout.chat-open .msg-chat { background: var(--fs-background) center top / cover no-repeat !important; }
+body.fs .msg-chat-messages { background: transparent !important; }
+body.fs .msg-chat-header {
+  background: var(--fs-header-bar) center / 100% 100% no-repeat !important;
+  border: 0 !important;
+}
+body.fs .msg-chat-input {
+  background: var(--fs-nav-bar) center / 100% 100% no-repeat !important;
+  border: 0 !important;
+}
+body.fs .msg-bubble {
+  background: transparent !important;
+  border: 12px solid transparent !important;
+  border-image: var(--fs-btn-secondary) 30% fill / 12px stretch !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: var(--fs-ink) !important;
+  padding: 2px 6px !important;
+}
+body.fs .msg-bubble.sent { border-image-source: var(--fs-btn-primary) !important; }
+body.fs-dark .msg-bubble.sent { color: #fff !important; }
+body.fs .msg-bubble * { color: inherit; }
+
+/* shop cards: keep each product's own preview, but the card itself is the skin's panel */
+body.fs .skin-card,
+body.fs .profile-card-item {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 14px solid transparent !important;
+  border-image: var(--fs-panel-card) calc(var(--fs-slice) * 1%) fill / 14px stretch !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+}
+body.fs .skin-card-body { background: transparent !important; padding: 10px 2px 2px !important; }
+body.fs .skin-card-body h4,
+body.fs .skin-card-body h4 i { color: var(--fs-ink) !important; }
+body.fs .skin-card-body p { color: var(--fs-muted) !important; }
+body.fs .skin-preview { border-radius: 2px !important; box-shadow: 0 1px 3px rgba(0, 0, 0, .25); }
+body.fs .page-subtitle { color: var(--fs-muted) !important; }
+body.fs .connections-col { background: transparent !important; box-shadow: none !important; border-color: transparent !important; }
+
+/* create post: the kit's thicker buttons need the footer to wrap; keep the counter on one line */
+body.fs .cpm-footer { flex-wrap: wrap; row-gap: 6px; }
+body.fs #cpmCharCounter { white-space: nowrap; flex-shrink: 0; width: 100%; text-align: right; color: var(--fs-muted) !important; }
+
+/* "Earn coins" sidebar chips */
+body.fs .coin-rule {
+  background: var(--fs-chip) center / 100% 100% no-repeat !important;
+  color: var(--fs-ink) !important;
+  border: 0 !important;
+}
+body.fs .coin-rule i { color: var(--fs-accent) !important; }
+body.fs .promo-title { color: var(--fs-ink) !important; }
+body.fs .promo-subtitle { color: var(--fs-muted) !important; }

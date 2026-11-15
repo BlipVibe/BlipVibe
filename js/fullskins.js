@@ -150,7 +150,8 @@
       (data().photos() || []).filter(function (p) { return p && p.src && !p.isVideo; })
         .forEach(function (p) { if (urls.length < count && urls.indexOf(p.src) < 0) urls.push(p.src); });
     }
-    while (urls.length < count) urls.push(urls[0] || 'images/default-avatar.svg');
+    // no photos at all (e.g. someone without a cover): empty slots render as blank photo paper
+    while (urls.length < count) urls.push(urls[0] || null);
     return urls.slice(0, count);
   }
 
@@ -162,9 +163,13 @@
     timelinePhotos(coverEl, cfg.timeline).forEach(function (src, i) {
       var slot = document.createElement('div');
       slot.className = 'fs-tl-slot fs-tl-slot-' + (i + 1);
-      var img = document.createElement('img');
-      img.src = src; img.alt = ''; img.loading = 'lazy';
-      slot.appendChild(img);
+      if (src) {
+        var img = document.createElement('img');
+        img.src = src; img.alt = ''; img.loading = 'lazy';
+        slot.appendChild(img);
+      } else {
+        slot.className += ' fs-tl-empty';
+      }
       wrap.appendChild(slot);
     });
     coverEl.appendChild(wrap);
