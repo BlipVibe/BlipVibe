@@ -1,5 +1,5 @@
 -- =============================================================================
--- Your look changes only when YOU apply it.  (Nov 15 2026, owner's idea)
+-- Your look changes only when YOU apply it.  (applied live Nov 15 2026, owner's idea)
 --
 -- Problem: an outdated BlipVibe session (old browser tab / another device on an
 -- older build) kept saving its whole skin_data every few seconds and put back an
