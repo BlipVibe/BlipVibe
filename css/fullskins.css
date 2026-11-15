@@ -1224,3 +1224,60 @@ body.fs-scrapbook .post-header img.post-avatar {
 /* skin cards: the photo frame's border must sit inside the card (was spilling past it and under the name) */
 body.fs .fsk-thumb { box-sizing: border-box; width: 100%; }
 body.fs-scrapbook .fsk-name { margin-top: 4px !important; }
+
+/* ---------- owner review on a phone ---------- */
+@media (max-width: 768px) {
+  /* Home like the concept: banner → quests → tabs → posts. The cover, profile card and photos card that
+     the phone (Cinema) layout puts on top of Home live on the Profile screen instead. */
+  body.fs-scrapbook #page-home #timelineCover,
+  body.fs-scrapbook #page-home .left-sidebar .profile-card,
+  body.fs-scrapbook #page-home .left-sidebar .photos-card { display: none !important; }
+  body.fs-scrapbook #page-home .main-container { padding-top: 8px !important; }
+}
+/* name + status/bio in one paper label (.fs-namecard, wrapped by the engine) — replaces the old
+   negative-margin overlap, which broke at some font sizes */
+body.fs-scrapbook .fs-namecard {
+  width: 78%; margin: 12px auto 14px; padding: 4px 8px 8px; text-align: center;
+  border: 14px solid transparent; border-image: var(--fs-label9) 70 fill / 14px round;
+  order: 0;
+}
+body.fs-scrapbook .fs-namecard > .profile-name {
+  border: 0 !important; border-image: none !important; background: none !important;
+  width: auto !important; margin: 0 !important; padding: 0 !important; display: block;
+}
+body.fs-scrapbook .fs-namecard > .profile-title,
+body.fs-scrapbook .fs-namecard > .profile-about { margin: 2px 0 0 !important; position: static !important; }
+/* stats: no grey tap/hover box */
+body.fs .stat, body.fs .stat:hover, body.fs .stat:active, body.fs .stat-clickable:hover { background: none !important; }
+body.fs .stat { -webkit-tap-highlight-color: transparent; }
+/* paperclip below the status bar, not in it */
+body.fs-scrapbook .navbar::before { top: calc(env(safe-area-inset-top, 0px) + 4px) !important; }
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-info > .fs-namecard { order: 0 !important; }
+/* the polaroids replace the cover photo, and each has its own camera badge, so the app's separate
+   "change cover photo" button is redundant under Scrapbook */
+body.fs-scrapbook #coverEditBtn,
+body.fs-scrapbook #pvCoverEditBtn { display: none !important; }
+@media (max-width: 768px) {
+  /* the app pulls the composer 12px past both edges on phones; keep it in line with the other cards */
+  body.fs-scrapbook #openPostModal { margin-left: 0 !important; margin-right: 0 !important; }
+  body.fs-scrapbook #page-home .main-container { padding-top: 4px !important; }
+}
+/* spiral binding: rings loop out from the card's left edge (art flipped), not over the quest icons */
+body.fs-scrapbook .quest-panel::before {
+  left: -24px !important; width: 34px !important;
+  transform: scaleX(-1);
+}
+body.fs-scrapbook .quest-panel { padding-left: 14px !important; }
+/* My Profile popup: torn paper dividers instead of thick CSS lines */
+body.fs-scrapbook .modal-profile-stats {
+  border-color: transparent !important;
+  background: var(--fs-divider) center top / 92% 5px no-repeat, var(--fs-divider) center bottom / 92% 5px no-repeat !important;
+}
+/* the name inside .fs-namecard is plain text (the card is the label); beats the older name-label rule */
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .fs-namecard > .profile-name {
+  border: 0 !important; border-image: none !important; background: none !important;
+  width: auto !important; margin: 0 !important; padding: 0 !important;
+}
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .fs-namecard > :is(.profile-title, .profile-about) {
+  margin: 0 !important; position: static !important;
+}

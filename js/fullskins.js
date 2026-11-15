@@ -244,12 +244,28 @@
       p.setAttribute('data-fs-v', String(hashStr(key) % VARIANTS + 1));
     });
   }
+  // Profile name + its status/bio share one paper label (concept): wrap them in .fs-namecard. The app
+  // re-renders profile cards with innerHTML, so this re-runs from the same observer as the posts.
+  function wrapNameCards() {
+    document.querySelectorAll('.profile-card .profile-info > .profile-name').forEach(function (h) {
+      if (h.parentElement.classList.contains('fs-namecard')) return;
+      var info = h.parentElement, card = document.createElement('div');
+      card.className = 'fs-namecard';
+      info.insertBefore(card, h);
+      card.appendChild(h);
+      var next = card.nextElementSibling, sub = null;
+      if (next && next.classList.contains('profile-title')) sub = next;
+      else if (!info.querySelector('.profile-title')) sub = info.querySelector('.profile-about');
+      if (sub) card.appendChild(sub);
+    });
+  }
   function watchPosts() {
     tagPosts();
+    wrapNameCards();
     if (postObserver || !window.MutationObserver) return;
     postObserver = new MutationObserver(function (muts) {
       if (!active) return;
-      for (var i = 0; i < muts.length; i++) if (muts[i].addedNodes.length) { tagPosts(); break; }
+      for (var i = 0; i < muts.length; i++) if (muts[i].addedNodes.length) { tagPosts(); wrapNameCards(); break; }
     });
     postObserver.observe(document.body, { childList: true, subtree: true });
   }
