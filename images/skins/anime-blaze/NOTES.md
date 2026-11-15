@@ -119,3 +119,10 @@ kit/redraw-a + redraw-b), sketchy comic ink, incl. the page BACKGROUND (was miss
   later rules; override with `html body.fs.fs-anime-blaze …` (+ repeated classes where needed).
   NEXT: QA Skins, Groups, Messages, Chat, Network, Notifications, Search, group page, other profile, comments,
   create post, story against their crops (CSS for most is written, not yet checked).
+- Nov 15 (screens round 1): Skins cards (name on the art's band, red Equipped tag), Groups + Network as full-width
+  slanted rows with red Join/Follow, Messages list (slim search, italic names, white-ring avatars), chat header on the
+  redrawn header art. FLUSH rule (owner: content never smaller than or past the white lines; clip to the INNERMOST
+  line): post photo masked to the frame window and the frame stretched to the photo's own box (window 26..1161 ×
+  34..763 of 1200×800 → frame inset −4.66% −3.44% −5.08% −2.29%; mask 40.2% 47.8% / 105.7% 109.7%); cover mask cut
+  at the CENTRE of each zigzag stroke so the photo runs under the line; drawn panels padded ~24px to clear their edges.
+  NEXT: Notifications, Search, group page, other profile, comments, create post, story.

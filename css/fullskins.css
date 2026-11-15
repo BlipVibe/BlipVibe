@@ -1941,3 +1941,79 @@ html body.fs.fs-anime-blaze .post-media-grid .pm-thumb { padding: 0 !important; 
 html body.fs.fs-anime-blaze .post-media-grid .pm-thumb::after { inset: -9% -8% !important; z-index: 2; }
 html body.fs.fs-anime-blaze .post-media-grid .pm-thumb { margin: 13% 8% !important; }
 html body.fs.fs-anime-blaze .post-media-grid .pm-thumb::after { inset: -15% -10% !important; }
+/* Skins cards like the concept: name on the slanted dark band over the art's bottom, left-aligned; Equipped = red tag */
+html body.fs.fs-anime-blaze .fsk-body { position: relative; margin-top: -46px !important; padding: 6px 12px 4px !important; text-align: left !important;
+  background: linear-gradient(transparent, transparent) !important; z-index: 2; }
+html body.fs.fs-anime-blaze .fsk-name { text-align: left !important; font-size: 19px !important; margin: 0 0 6px !important; text-shadow: 0 2px 0 #000 !important; }
+html body.fs.fs-anime-blaze .fsk-equipped { display: none !important; }
+html body.fs.fs-anime-blaze .fsk-badge { width: auto !important; height: auto !important; padding: 3px 12px 3px 10px !important; color: #fff !important;
+  font-style: italic; font-weight: 700; font-size: 13px; display: inline-flex !important; gap: 4px; align-items: center; }
+html body.fs.fs-anime-blaze .fsk-badge::after { content: "Equipped"; }
+html body.fs.fs-anime-blaze .fsk-badge i { display: none !important; }
+html body.fs.fs-anime-blaze .fsk-soon { color: #ddd !important; font-size: 14px; }
+html body.fs.fs-anime-blaze .fsk-takeoff { color: #ddd !important; }
+/* skin card: name + price sit on the art's dark slanted band (concept), left-aligned, not over the picture */
+html body.fs.fs-anime-blaze .fsk-body { margin-top: 0 !important; padding: 4px 14px 8px !important; }
+html body.fs.fs-anime-blaze .fsk-name { text-shadow: none !important; }
+html body.fs.fs-anime-blaze .fsk-soon, html body.fs.fs-anime-blaze .fsk-takeoff { display: block; text-align: left !important; }
+
+/* Groups list (concept groups): full-width slanted rows — group picture left, name + members, red Join right */
+body.fs-anime-blaze #groupsSections .shop-scroll-row { display: flex !important; flex-direction: column; gap: 8px; overflow: visible !important;
+  grid-template-columns: none !important; grid-auto-flow: row !important; scroll-snap-type: none; }
+html body.fs.fs-anime-blaze #groupsSections .group-card { min-width: 0 !important; max-width: none !important; width: 100%;
+  display: grid !important; grid-template-columns: 60px minmax(0, 1fr) auto; align-items: center; gap: 12px; transform: none !important;
+  background: none !important; border: 14px solid transparent !important; border-image: var(--fs-list-row) 75 100 fill / 14px 18px stretch !important; padding: 2px 4px !important; }
+body.fs-anime-blaze #groupsSections .group-card-banner { width: 60px; height: 60px !important; border-radius: 4px; overflow: hidden; background: none !important; }
+body.fs-anime-blaze #groupsSections .group-card-banner img { width: 100% !important; height: 100% !important; border-radius: 0 !important; border: 0 !important; object-fit: cover; }
+body.fs-anime-blaze #groupsSections .gc-icon-edit-btn { display: none !important; }
+body.fs-anime-blaze #groupsSections .group-card-body { padding: 0 !important; min-width: 0; }
+body.fs-anime-blaze #groupsSections .group-card-body h4 { margin: 0; font-size: 18px !important; font-style: italic; font-weight: 700; color: #fff !important;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body.fs-anime-blaze #groupsSections .group-card-body p { margin: 2px 0 0; font-size: 13px !important; color: #ddd !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body.fs-anime-blaze #groupsSections .group-card-body p:not(.group-members) { display: none; }
+body.fs-anime-blaze #groupsSections .group-card-actions { padding: 0 !important; gap: 6px; display: flex; }
+body.fs-anime-blaze #groupsSections .group-card-actions .btn { min-width: 0; padding: 6px 14px !important; border: 0 !important; border-image: none !important;
+  background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: #fff !important; font-style: italic; font-weight: 700; }
+/* Messages list (concept): slim search field, bold italic names, avatars with a thin white ring */
+html body.fs.fs-anime-blaze :is(.msg-search, .page-search, .search-bar) { padding: 0 6px !important; min-height: 0 !important; }
+html body.fs.fs-anime-blaze :is(.msg-search, .page-search, .search-bar) input { padding: 6px 6px 6px 32px !important; height: auto !important; font-size: 16px !important; }
+body.fs-anime-blaze .msg-contact-name { color: #fff !important; font-style: italic; font-weight: 700; font-size: 18px !important; }
+body.fs-anime-blaze .msg-contact-preview { color: #ddd !important; }
+body.fs-anime-blaze .msg-contact-time { color: #ccc !important; }
+body.fs-anime-blaze .msg-contact > img, body.fs-anime-blaze .msg-contact .msg-contact-avatar { border-radius: 50% !important; -webkit-mask: none !important; mask: none !important;
+  box-shadow: 0 0 0 2px #f2f2f2, 0 0 0 3px #111 !important; border: 0 !important; background: none !important; padding: 0 !important; }
+body.fs-anime-blaze .msg-contact [style*="border-radius:50%"][style*="background"] { background: #e8321e !important; }
+/* chat header (concept chat): the redrawn flame header, avatar with white ring, bold italic name */
+html body.fs.fs-anime-blaze .msg-chat-header { background: var(--fs-header) center bottom / 100% 100% no-repeat !important; border: 0 !important; border-image: none !important; }
+html body.fs.fs-anime-blaze .msg-chat-header img { border-radius: 50% !important; -webkit-mask: none !important; mask: none !important;
+  box-shadow: 0 0 0 2px #f2f2f2, 0 0 0 3px #111 !important; padding: 0 !important; background: none !important; }
+html body.fs.fs-anime-blaze .msg-chat-header h4 { color: #fff !important; font-style: italic; font-weight: 700; }
+html body.fs.fs-anime-blaze .msg-back-btn, html body.fs.fs-anime-blaze .msg-back-btn i { color: #fff !important; background: none !important; }
+/* Network / Search people (concept network + search): full-width slanted rows — avatar, name (+ bio line), red Follow right */
+body.fs-anime-blaze :is(.connections-grid, .profiles-grid, #profilesGrid, .shop-scroll-row) :has(> .profile-card-item) { display: flex !important; }
+body.fs-anime-blaze .connections-grid { display: flex !important; flex-direction: column; gap: 8px !important; }
+html body.fs.fs-anime-blaze .profile-card-item { display: grid !important; grid-template-columns: 56px minmax(0,1fr) auto; grid-template-rows: auto auto;
+  align-items: center; column-gap: 12px; text-align: left !important; width: 100% !important; max-width: none !important; min-width: 0 !important;
+  padding: 2px 4px !important; border: 14px solid transparent !important; border-image: var(--fs-list-row) 75 100 fill / 14px 18px stretch !important; background: none !important; }
+html body.fs.fs-anime-blaze .profile-card-item .profile-card-avatar { grid-row: 1 / span 2; width: 56px !important; height: 56px !important; margin: 0 !important;
+  border-radius: 50% !important; -webkit-mask: none !important; mask: none !important; box-shadow: 0 0 0 2px #f2f2f2, 0 0 0 3px #111 !important; }
+html body.fs.fs-anime-blaze .profile-card-item .profile-card-name { grid-column: 2; margin: 0 !important; font-size: 17px !important; color: #fff !important; font-style: italic; font-weight: 700;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left !important; }
+html body.fs.fs-anime-blaze .profile-card-item .profile-card-bio { grid-column: 2; margin: 0 !important; color: #ddd !important; font-size: 13px !important; text-align: left !important;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html body.fs.fs-anime-blaze .profile-card-item .profile-follow-btn { grid-column: 3; grid-row: 1 / span 2; width: auto !important; margin: 0 !important; padding: 6px 16px !important;
+  border: 0 !important; border-image: none !important; background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: #fff !important; font-style: italic; font-weight: 700; }
+
+/* FLUSH (owner: content must never be smaller than or go past the white frame lines) */
+/* post photo: the frame stretches to the photo's own box; photo cut to the frame's window (window = 26..1161 × 34..763
+   of the 1200×800 art), frame offsets from that, so photo edge = white line */
+html body.fs.fs-anime-blaze .post-media-grid .pm-thumb { margin: 6% 4% !important; padding: 0 !important; }
+html body.fs.fs-anime-blaze .post-media-grid .pm-thumb::after { inset: -4.66% -3.44% -5.08% -2.29% !important; }
+html body.fs.fs-anime-blaze .post-media-grid .pm-thumb :is(img, video) {
+  -webkit-mask: var(--fs-photo-mask) 40.2% 47.8% / 105.7% 109.7% no-repeat !important; mask: var(--fs-photo-mask) 40.2% 47.8% / 105.7% 109.7% no-repeat !important; }
+/* drawn panels: content padded inside the drawn edges (~4% of the art each side) */
+html body.fs.fs-anime-blaze :is(.card:not(.feed-post):not(.profile-card):not(.pv-profile-card), .comment-item, .post-dropdown) { padding: 24px 24px 22px !important; }
+html body.fs.fs-anime-blaze .photos-card .photos-preview { overflow: hidden !important; }
+html body.fs.fs-anime-blaze .featured-skin-banner { padding: 26px 30px 24px 26px !important; }
+html body.fs.fs-anime-blaze #openPostModal { margin: 0 !important; width: auto !important; box-sizing: border-box; padding: 0 4px !important; }
+html body.fs.fs-anime-blaze #openPostModal .post-input-fake { min-width: 0; box-sizing: border-box; }
