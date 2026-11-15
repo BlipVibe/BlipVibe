@@ -109,3 +109,13 @@ available; no new fields"). References: `prototypes/reference/anime-blaze/<scree
 | story | progress bars, author, ⋯/close, reply field + heart | — |
 Art: sets 1–4 rejected as "too clean" → full redraw traced from the crops (`prototypes/anime-blaze-redraw-brief.md`,
 kit/redraw-a + redraw-b), sketchy comic ink, incl. the page BACKGROUND (was missing) and black-outlined zigzag.
+- Nov 15 (redraw): sets 1–4 replaced by kit/redraw-a (22) + redraw-b (21), traced from the screen crops in sketchy
+  comic ink; all recoloured into 5 colours. Home QA'd against the concept: background, top bar (avatar · logo ·
+  icons · coin pill, reordered — same fields), cover zigzag (mask rebuilt from the new edge art), stats, button,
+  composer, Featured Skin frame, Daily Quests (plate, rows, tiles, segment bars, reward pills), tabs, post panel
+  (9-slice stretched so the top edge stays above the header), post header (name + time stacked), photo frame
+  drawn around the WHOLE photo (owner rule beats the slanted window), action strip, bottom bar.
+  CSS gotcha: `:is()` takes its heaviest selector's weight — the first-pass `:is(.card:not(...)…)` rule outranked
+  later rules; override with `html body.fs.fs-anime-blaze …` (+ repeated classes where needed).
+  NEXT: QA Skins, Groups, Messages, Chat, Network, Notifications, Search, group page, other profile, comments,
+  create post, story against their crops (CSS for most is written, not yet checked).

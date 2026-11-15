@@ -1774,3 +1774,170 @@ body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-stats > .stat {
   body.fs-anime-blaze #pvEditProfileBtn,
   body.fs-anime-blaze #profileCard .profile-links { margin-top: 10px !important; }
 }
+
+/* ======================================================================================
+   ANIME BLAZE — REDRAW (Nov 15, owner: "too clean"; every piece traced from the concept crops in
+   prototypes/reference/anime-blaze/ — kit/redraw-a + redraw-b). Built per concept window, real fields only.
+   ====================================================================================== */
+/* page background (was missing): the concept's dark halftone page with flame slashes at the edges */
+body.fs-anime-blaze { background: #111 !important; }
+body.fs-anime-blaze #premiumBgLayer { display: block !important; background: var(--fs-background) center / cover no-repeat !important; }
+body.fs-anime-blaze :is(.page, .main-container, .center-feed, .page-container) { background: transparent !important; }
+
+/* ---------- top bar (concept home): avatar · logo · search · bell · music · coin pill ---------- */
+body.fs-anime-blaze .navbar { background: var(--fs-header) center bottom / 100% 100% no-repeat !important; }
+@media (max-width: 768px) {
+  body.fs-anime-blaze .nav-container { display: flex !important; align-items: center !important; }
+  body.fs-anime-blaze .navbar .nav-right { display: contents !important; }
+  body.fs-anime-blaze .navbar .nav-user { order: -2; margin: 0 6px 0 10px !important; }
+  body.fs-anime-blaze .navbar .nav-left { order: -1; margin-right: auto; }
+  body.fs-anime-blaze .navbar .nav-logo { padding-left: 0 !important; font-size: 30px !important; }
+  body.fs-anime-blaze .navbar .nav-coins { order: 5; margin-right: 10px !important; border: 0 !important; border-image: none !important;
+    background: var(--fs-coin-pill) center / 100% 100% no-repeat !important; padding: 4px 12px !important; }
+  body.fs-anime-blaze .navbar .nav-avatar { width: 40px !important; height: 40px !important; border-radius: 50% !important; -webkit-mask: none !important; mask: none !important; box-shadow: 0 0 0 2px #e8321e, 0 0 0 4px #111 !important; }
+  body.fs-anime-blaze .navbar .nav-user::after { display: none !important; }
+}
+
+/* ---------- bottom bar (concept): drawn bar, sketchy dividers, red slanted active tile ---------- */
+@media (max-width: 768px) {
+  body.fs-anime-blaze .nav-center { background: var(--fs-nav-bar) center top / 100% 100% no-repeat !important; border-top: 0 !important; }
+}
+
+/* ---------- panels + posts (concept home/post) ---------- */
+body.fs-anime-blaze :is(.card:not(.feed-post), .featured-skin-banner, .post-dropdown, .comment-item) { border-image-source: var(--fs-post-panel) !important; border-image-slice: 150 fill !important; }
+body.fs-anime-blaze .feed-post,
+body.fs-anime-blaze .feed-post:is([data-fs-v]) { border-image: var(--fs-post-panel) 150 fill / 18px stretch !important; }
+body.fs-anime-blaze .post-media-grid .pm-thumb { position: relative; }
+body.fs-anime-blaze .post-media-grid .pm-thumb::after { content: ""; position: absolute; inset: -6px; pointer-events: none;
+  background: var(--fs-photo-frame) center / 100% 100% no-repeat; }
+body.fs-anime-blaze .post-actions { border: 10px solid transparent !important; border-image: var(--fs-action-strip) 50 90 fill / 10px 16px stretch !important; padding: 0 6px !important; margin-top: 8px !important; }
+body.fs-anime-blaze .post-actions .action-left { width: 100%; justify-content: space-around; }
+
+/* ---------- feed tabs ---------- */
+body.fs-anime-blaze .search-tab { border-image: var(--fs-tab) 50 80 fill / 10px 16px stretch !important; font-style: italic; font-weight: 700; }
+body.fs-anime-blaze .search-tab.active { border-image-source: var(--fs-tab-active) !important; }
+
+/* ---------- Daily Quests (concept home): plate title, slanted rows, red tiles, segment bars, reward pills ---------- */
+body.fs-anime-blaze .quest-panel { border: 0 !important; border-image: none !important; background: none !important; padding: 0 !important; }
+body.fs-anime-blaze .quest-panel-header { display: inline-flex !important; align-items: center; padding: 10px 40px 10px 22px !important;
+  background: var(--fs-quests-plate) center / 100% 100% no-repeat !important; color: #fff !important; font-style: italic; font-weight: 700; font-size: 22px; margin-bottom: 6px; }
+body.fs-anime-blaze .quest-panel-header i, body.fs-anime-blaze .quest-reset { display: none !important; }
+body.fs-anime-blaze .quest-item { border: 0 !important; background: var(--fs-quest-row) center / 100% 100% no-repeat !important; padding: 10px 14px 10px 6px !important; margin-bottom: 6px !important; align-items: center; }
+body.fs-anime-blaze .quest-icon { background: var(--fs-quest-tile) center / 100% 100% no-repeat !important; width: 46px !important; height: 46px !important; }
+body.fs-anime-blaze .quest-icon > i { display: block !important; color: #fff !important; font-size: 20px; line-height: 46px; text-align: center; }
+body.fs-anime-blaze .quest-info p { color: #fff !important; font-style: italic; font-weight: 700; }
+body.fs-anime-blaze .quest-bar { border-image: none !important; background: var(--fs-quest-track) center / 100% 100% no-repeat !important; height: 14px !important; border-radius: 0 !important; }
+body.fs-anime-blaze .quest-bar-fill { border-image: none !important; background: var(--fs-quest-fill) left center / auto 100% no-repeat !important; height: 100% !important; border-radius: 0 !important; }
+body.fs-anime-blaze .quest-reward { background: var(--fs-reward-pill) center / 100% 100% no-repeat !important; padding: 6px 16px !important; color: #fff !important; font-weight: 700; }
+body.fs-anime-blaze .quest-progress { color: #eee !important; }
+
+/* ---------- page titles (skins/groups/messages…) ---------- */
+body.fs-anime-blaze :is(.page-header h2, .msg-sidebar-header h3) { border: 0 !important; border-image: none !important;
+  background: var(--fs-title-plate) center / 100% 100% no-repeat !important; padding: 6px 60px 6px 18px !important; font-style: italic; font-size: 28px !important; }
+/* profile cover, redraw: top edge = cover-top art, bottom edge = cover-cut art (white zigzag outlined in black);
+   the photo mask is built from those exact lines so the zigzag always covers the photo edge */
+@media (max-width: 768px) {
+  body.fs-anime-blaze :is(#timelineCover, #pvCoverBanner) { height: auto !important; aspect-ratio: 1290 / 1105; }
+  body.fs-anime-blaze .fs-timeline::before { top: 0 !important; bottom: auto !important; transform: none !important;
+    aspect-ratio: 1290 / 300 !important; background-image: var(--fs-cover-top) !important; }
+  body.fs-anime-blaze .fs-timeline::after { bottom: 0 !important; top: auto !important; transform: none !important;
+    aspect-ratio: 1290 / 420 !important; background-image: var(--fs-cover-cut) !important; }
+}
+
+/* ---------- Anime Blaze redraw, part B screens ---------- */
+/* list rows: messages, groups, network, search, notifications (concept: slanted dark strip, sketchy outline) */
+body.fs-anime-blaze :is(.msg-contact, .notif-item, .group-card, .profile-card-item, .follow-list-item) {
+  border: 14px solid transparent !important; border-image: var(--fs-list-row) 75 100 fill / 14px 18px stretch !important; background: none !important; }
+body.fs-anime-blaze :is(.msg-contact.unread, .notif-item.unread) { border-image-source: var(--fs-list-row-gold) !important; }
+body.fs-anime-blaze :is(.join-group-btn, .suggestion-follow-btn, .follow-btn) { border: 0 !important; border-image: none !important;
+  background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: #fff !important; font-style: italic; font-weight: 700; }
+/* skins shop (concept skins): card frame with slanted name band, filter chips, Equipped tag */
+body.fs-anime-blaze .fsk-card { background: var(--fs-skin-card) center / 100% 100% no-repeat !important; border: 0 !important; border-image: none !important; padding: 8px 8px 10px !important; }
+body.fs-anime-blaze .fsk-thumb { border: 0 !important; border-image: none !important; }
+body.fs-anime-blaze .fsk-name { color: #fff !important; font-style: italic; font-weight: 700; }
+body.fs-anime-blaze .fsk-filter { border: 0 !important; border-image: none !important; background: var(--fs-filter-chip) center / 100% 100% no-repeat !important; color: #fff !important; }
+body.fs-anime-blaze .fsk-filter.active { background-image: var(--fs-filter-chip-active) !important; }
+body.fs-anime-blaze .fsk-badge { background: var(--fs-equipped-tag) center / 100% 100% no-repeat !important; border-radius: 0 !important; }
+/* chat (concept chat): bubbles, input bar, field, + / send */
+body.fs-anime-blaze .msg-bubble { border: 14px solid transparent !important; border-image: var(--fs-bubble-in) 100 fill / 14px stretch !important; }
+body.fs-anime-blaze .msg-bubble.sent { border-image-source: var(--fs-bubble-out) !important; }
+body.fs-anime-blaze .msg-chat-input { background: var(--fs-input-bar) center top / 100% 100% no-repeat !important; border: 0 !important; }
+body.fs-anime-blaze :is(#msgInput, .post-input-fake, .msg-search, .page-search, .search-bar, .comment-input) {
+  border: 10px solid transparent !important; border-image: var(--fs-field) 60 fill / 10px stretch !important; background: none !important; }
+body.fs-anime-blaze .msg-media-btn { background: var(--fs-round-btn) center / 100% 100% no-repeat !important; color: #fff !important; border-radius: 0 !important; }
+body.fs-anime-blaze #sendMsgBtn { background: var(--fs-send-btn) center / 100% 100% no-repeat !important; border-radius: 0 !important; }
+/* home extras (concept home-full): composer, Featured Skin frame, coin goal, story rings */
+body.fs-anime-blaze #openPostModal { border: 0 !important; border-image: none !important; background: none !important; }
+body.fs-anime-blaze .post-input-fake { border-image-source: var(--fs-composer) !important; color: #ddd !important; }
+body.fs-anime-blaze .featured-skin-banner { border: 0 !important; border-image: none !important; background: var(--fs-featured-frame) center / 100% 100% no-repeat !important; }
+body.fs-anime-blaze .coin-goal-bar { border: 0 !important; border-image: none !important; background: var(--fs-coin-goal-bar) center / 100% 100% no-repeat !important; padding: 10px 16px 10px 44px !important; }
+body.fs-anime-blaze .coin-goal-track { background: var(--fs-quest-track) center / 100% 100% no-repeat !important; border-radius: 0 !important; }
+body.fs-anime-blaze .coin-goal-fill { background: var(--fs-quest-fill) left center / auto 100% no-repeat !important; border-radius: 0 !important; }
+body.fs-anime-blaze .story-ring { background: var(--fs-story-ring) center / contain no-repeat !important; padding: 5px !important; }
+/* create post (concept create-post): tool tiles, big Post button */
+body.fs-anime-blaze :is(#cpmCameraBtn, #cpmEmojiBtn, #cpmGifBtn, #cpmPollBtn, #cpmScheduleBtn, #cpmMediaZone) {
+  border: 0 !important; border-image: none !important; background: var(--fs-tile) center / 100% 100% no-repeat !important; color: #fff !important; border-radius: 0 !important; }
+body.fs-anime-blaze #cpmPublish { border: 0 !important; border-image: none !important; background: var(--fs-post-btn) center / 100% 100% no-repeat !important; min-height: 54px; font-size: 22px !important; }
+body.fs-anime-blaze .cpm-textarea { border: 10px solid transparent !important; border-image: var(--fs-field) 60 fill / 10px stretch !important; background: none !important; color: #fff !important; }
+/* other-profile: ⋯ menu panel */
+body.fs-anime-blaze .post-dropdown, body.fs-anime-blaze .pv-more-menu { border: 0 !important; border-image: none !important; background: var(--fs-menu-panel) center / 100% 100% no-repeat !important; }
+@media (max-width: 768px) {
+  /* the app forces cover height/aspect with !important on phones — size the band from the art's ratio */
+  body.fs-anime-blaze :is(#timelineCover, #pvCoverBanner) { height: calc((100vw + 16px) * 1105 / 1290) !important; aspect-ratio: auto !important; }
+}
+/* drawn panels are whole pictures (flames in the corners), not 9-slices — show them whole so no seams */
+html body.fs-anime-blaze :is(.card:not(.feed-post):not(.profile-card):not(.pv-profile-card), .comment-item, .post-dropdown, .feed-post) {
+  border: 0 !important; border-image: none !important; box-shadow: none !important;
+  background: var(--fs-post-panel) center / 100% 100% no-repeat !important; padding: 18px 16px !important; }
+html body.fs-anime-blaze .featured-skin-banner { border: 0 !important; border-image: none !important;
+  background: var(--fs-featured-frame) center / 100% 100% no-repeat !important; padding: 16px 18px !important; }
+/* composer (concept home-full): slim field, round avatar, no panel */
+html body.fs-anime-blaze #openPostModal { background: none !important; padding: 0 2px !important; display: flex; align-items: center; gap: 8px; }
+html body.fs-anime-blaze .post-create-avatar { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important;
+  width: 42px !important; height: 42px !important; box-shadow: 0 0 0 2px #e8321e !important; }
+html body.fs-anime-blaze .post-input-fake { border: 0 !important; border-image: none !important; background: var(--fs-composer) center / 100% 100% no-repeat !important;
+  padding: 12px 20px !important; min-height: 0 !important; font-style: italic; flex: 1; }
+/* specificity bump: the first-pass :is(.card…) rule outranked these */
+html body.fs.fs-anime-blaze .quest-panel { border: 0 !important; border-image: none !important; background: none !important; padding: 0 !important; }
+html body.fs.fs-anime-blaze .featured-skin-banner { border: 0 !important; border-image: none !important;
+  background: var(--fs-featured-frame) center / 100% 100% no-repeat !important; padding: 16px 18px !important; }
+html body.fs.fs-anime-blaze #openPostModal { margin-left: 6px !important; }
+/* posts: panel edges at a fixed thickness (9-slice, stretched) so the drawn top edge sits above the header,
+   whatever the post height; the photo is cut to the frame art's slanted window and the frame drawn over it */
+html body.fs.fs-anime-blaze .feed-post { background: none !important;
+  border: 22px solid transparent !important; border-image: var(--fs-post-panel) 150 fill / 22px stretch !important; padding: 4px 2px 2px !important; }
+html body.fs.fs-anime-blaze .post-media-grid .pm-thumb img,
+html body.fs.fs-anime-blaze .post-media-grid .pm-thumb video {
+  -webkit-mask: var(--fs-photo-mask) center / 100% 100% no-repeat; mask: var(--fs-photo-mask) center / 100% 100% no-repeat; }
+html body.fs.fs-anime-blaze .post-media-grid .pm-thumb::after { inset: 0 !important; }
+html body.fs.fs-anime-blaze .post-media-grid .pm-thumb { line-height: 0; }
+/* posts: beat the first-pass :is(.card…) weight; fixed-thickness panel edges */
+html body.fs.fs-anime-blaze .feed-post.feed-post.feed-post.feed-post { background: none !important;
+  border: 22px solid transparent !important; border-image: var(--fs-post-panel) 150 fill / 22px stretch !important; padding: 4px 2px 2px !important; }
+/* whole photo, never cropped (owner rule, same as Scrapbook): the frame hugs the photo at its own shape */
+body.fs-anime-blaze .post-media-grid[class*="pm-count"] { display: flex !important; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px;
+  height: auto !important; max-height: none !important; aspect-ratio: auto !important; overflow: visible !important; background: none !important; }
+body.fs-anime-blaze .post-media-grid[class*="pm-count"] .pm-thumb { flex: 0 1 auto; width: auto !important; height: auto !important; min-height: 0 !important;
+  max-height: none !important; max-width: 100%; border: 0 !important; border-image: none !important; background: none !important; }
+body.fs-anime-blaze .post-media-grid[class*="pm-count"] .pm-thumb :is(img, video) { display: block; width: auto !important; height: auto !important;
+  max-width: 100% !important; max-height: 520px !important; object-fit: contain !important; background: transparent !important; }
+body.fs-anime-blaze .post-media-grid[class*="pm-count"]:not(.pm-count-1) .pm-thumb { max-width: calc(50% - 6px); }
+body.fs-anime-blaze .post-media-grid[class*="pm-count"]:not(.pm-count-1) .pm-thumb :is(img, video) { max-height: 260px !important; }
+/* post header like the concept: avatar with a thin white ring, bold italic name, time under it, ⋯ right */
+body.fs-anime-blaze .post-header { align-items: center !important; margin-bottom: 6px !important; }
+body.fs-anime-blaze .post-header .post-avatar { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important;
+  width: 46px !important; height: 46px !important; box-shadow: 0 0 0 2px #f2f2f2, 0 0 0 3px #111 !important; }
+body.fs-anime-blaze .post-user-top { flex-direction: column !important; align-items: flex-start !important; gap: 0 !important; }
+body.fs-anime-blaze .post-username { color: #fff !important; font-style: italic; font-weight: 700; font-size: 18px !important; }
+body.fs-anime-blaze .post-time { color: #ddd !important; font-size: 13px !important; }
+body.fs-anime-blaze .post-menu-btn, body.fs-anime-blaze .post-menu-btn i { color: #fff !important; }
+body.fs-anime-blaze .post-media-grid { margin-top: 4px !important; }
+/* owner rule "photos never cropped" beats the slanted window: show the whole photo just inside the frame */
+html body.fs.fs-anime-blaze .post-media-grid .pm-thumb { padding: 5% 6% !important; }
+html body.fs.fs-anime-blaze .post-media-grid .pm-thumb img,
+html body.fs.fs-anime-blaze .post-media-grid .pm-thumb video { -webkit-mask: none !important; mask: none !important; }
+/* frame drawn just larger than the photo: its slanted window (2–9% in from the art's edges) encloses the whole photo */
+html body.fs.fs-anime-blaze .post-media-grid .pm-thumb { padding: 0 !important; margin: 7% 6% !important; overflow: visible !important; }
+html body.fs.fs-anime-blaze .post-media-grid .pm-thumb::after { inset: -9% -8% !important; z-index: 2; }
+html body.fs.fs-anime-blaze .post-media-grid .pm-thumb { margin: 13% 8% !important; }
+html body.fs.fs-anime-blaze .post-media-grid .pm-thumb::after { inset: -15% -10% !important; }
