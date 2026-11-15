@@ -111,7 +111,7 @@ def slice_skin(skin: str) -> dict:
         sd = (sum((p - m) ** 2 for p in px) / len(px)) ** .5
         if sd > BG_MAX_STD:
             warnings.append(f"QA FAIL background: busy middle (std {sd:.1f})")
-        im.save(out / "background.webp", "WEBP", quality=74, method=4)
+        im.save(out / "background.webp", "WEBP", quality=90, method=6)
         manifest["assets"]["background"] = {"file": "background.webp", "w": tw, "h": th}
     else:
         warnings.append("missing background.png")

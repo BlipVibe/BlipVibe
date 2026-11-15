@@ -5,13 +5,19 @@
 
 /* ---------- page + typography ---------- */
 body.fs {
-  background: #000 var(--fs-background) center top / cover no-repeat fixed !important;
+  /* the skin background is painted by the fixed #premiumBgLayer below, not here: iOS ignores
+     background-attachment:fixed and would stretch it over the whole page (blurry) */
+  background: #d9c7b3 !important;
   color: var(--fs-ink) !important;
   font-family: var(--fs-font);
 }
 body.fs::before { background: transparent !important; }
 /* the user's custom premium background photo + overlay give way to the skin's own background */
-body.fs #premiumBgLayer,
+body.fs #premiumBgLayer {
+  display: block !important;
+  background: var(--fs-background) center / cover no-repeat !important;
+  filter: none !important;
+}
 body.fs #premiumBgOverlay,
 body.fs #premiumBgDarkness { display: none !important; }
 /* shop logos give way to the skin's wordmark */
@@ -320,7 +326,7 @@ body.fs-scrapbook .pv-profile-card .profile-name {
   display: block;
   width: 72%;
   margin: 14px auto 0;
-  padding: 0 0 22px;
+  padding: 0 0 34px;
   font-size: 34px !important;
   border: var(--fs-edge) solid transparent;
   border-image: var(--fs-btn-secondary) 16.67% fill / var(--fs-edge) round;
@@ -329,8 +335,8 @@ body.fs-scrapbook .pv-profile-card .profile-info:not(:has(> .profile-title)) > .
 body.fs-scrapbook .pv-profile-card .profile-info:not(:has(> .profile-title)) > .profile-about,
 body.fs-scrapbook .pv-profile-card .profile-title {
   position: relative;
-  margin-top: -34px;
-  margin-bottom: 22px;
+  margin-top: -50px;
+  margin-bottom: 30px;
   font-size: 17px !important;
 }
 body.fs-scrapbook .pv-profile-card .profile-stats {
@@ -358,7 +364,6 @@ body.fs-scrapbook #pvEditProfileBtn {
 }
 
 /* header: paperclip clipped over the logo (master) */
-body.fs-scrapbook .navbar { position: relative; }
 body.fs-scrapbook .navbar::before {
   content: "";
   position: absolute; left: -20px; top: 6px;
@@ -852,3 +857,50 @@ body.fs-scrapbook .post-media-grid::before {
   transform: rotate(-6deg);
 }
 body.fs-scrapbook .nav-logo { background: none !important; box-shadow: none !important; border: 0 !important; font-size: 24px !important; padding-left: 14px !important; }
+
+/* group page header (concept): avatar on the left, name + description beside it */
+body.fs-scrapbook #gvProfileCard .profile-info {
+  display: grid !important; grid-template-columns: 96px minmax(0, 1fr); grid-template-rows: 58px auto auto;
+  column-gap: 12px; align-items: center;
+}
+body.fs-scrapbook #gvProfileCard .profile-info > * { grid-column: 1 / -1; order: 0 !important; }
+body.fs-scrapbook #gvProfileCard .profile-avatar-wrap { grid-column: 1; grid-row: 1 / span 3; margin: 0 !important; width: 96px; height: 96px; align-self: start; }
+body.fs-scrapbook #gvProfileCard .profile-avatar-wrap .profile-avatar,
+body.fs-scrapbook #gvProfileCard .gv-icon-wrap { width: 96px !important; height: 96px !important; }
+body.fs-scrapbook #gvProfileCard .profile-name {
+  grid-column: 2; grid-row: 2; width: auto; margin: 0 !important; padding: 0 !important;
+  border: 0 !important; border-image: none !important; text-align: left; font-size: 28px !important; line-height: 1.1;
+}
+body.fs-scrapbook #gvProfileCard .profile-title { grid-column: 2; grid-row: 3; align-self: start; margin: 0 !important; text-align: left; font-size: 14px !important; }
+
+/* Skins shop grid (concept): three columns of torn-edge photo cards */
+@media (max-width: 768px) {
+  body.fs-scrapbook .fsk-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  body.fs-scrapbook .fsk-card { border-width: 10px; border-image-width: 14px; }
+  body.fs-scrapbook .fsk-name { font-size: 15px !important; line-height: 1.1; }
+  body.fs-scrapbook .fsk-body { padding: 6px 0 2px; gap: 4px; }
+  body.fs-scrapbook .fsk-body .shop-card-actions { flex-direction: column; gap: 4px; }
+  body.fs-scrapbook .fsk-body .shop-card-actions .btn,
+  body.fs-scrapbook .fsk-body > .btn { font-size: 12px !important; padding: 0 !important; height: 30px; }
+  body.fs-scrapbook .fsk-soon { font-size: 11px; }
+}
+body.fs-scrapbook .fsk-thumb {
+  border-width: 9px; border-image: var(--fs-photo9-torn) 16.67% fill / 12px round;
+}
+
+/* chat: a paper heart and a flower spray on the page behind the bubbles (master) */
+body.fs-scrapbook .msg-chat-messages { position: relative; }
+body.fs-scrapbook .msg-chat::before,
+body.fs-scrapbook .msg-chat::after {
+  content: ""; position: absolute; pointer-events: none; z-index: 0;
+}
+body.fs-scrapbook .msg-chat::before {
+  left: 18px; bottom: 120px; width: 54px; height: 50px;
+  background: var(--fs-heart-sticker) center / contain no-repeat; transform: rotate(-12deg);
+}
+body.fs-scrapbook .msg-chat::after {
+  right: 6px; bottom: 90px; width: 74px; height: 124px;
+  background: var(--fs-flowers-spray) center / contain no-repeat; transform: rotate(8deg);
+}
+body.fs-scrapbook .msg-chat > * { position: relative; z-index: 1; }
+body.fs-scrapbook #gvProfileCard .stat-label { font-size: 13px !important; white-space: nowrap; }
