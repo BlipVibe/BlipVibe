@@ -254,10 +254,13 @@
       card.className = 'fs-namecard';
       info.insertBefore(card, h);
       card.appendChild(h);
-      var next = card.nextElementSibling, sub = null;
-      if (next && next.classList.contains('profile-title')) sub = next;
-      else if (!info.querySelector('.profile-title')) sub = info.querySelector('.profile-about');
-      if (sub) card.appendChild(sub);
+      // status and bio both go on the label (Home has both; an empty one takes no space)
+      var next = card.nextElementSibling;
+      while (next && (next.classList.contains('profile-title') || next.classList.contains('profile-about'))) {
+        var after = next.nextElementSibling;
+        card.appendChild(next);
+        next = after;
+      }
     });
   }
   function watchPosts() {

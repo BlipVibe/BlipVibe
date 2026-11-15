@@ -1226,14 +1226,8 @@ body.fs .fsk-thumb { box-sizing: border-box; width: 100%; }
 body.fs-scrapbook .fsk-name { margin-top: 4px !important; }
 
 /* ---------- owner review on a phone ---------- */
-@media (max-width: 768px) {
-  /* Home like the concept: banner → quests → tabs → posts. The cover, profile card and photos card that
-     the phone (Cinema) layout puts on top of Home live on the Profile screen instead. */
-  body.fs-scrapbook #page-home #timelineCover,
-  body.fs-scrapbook #page-home .left-sidebar .profile-card,
-  body.fs-scrapbook #page-home .left-sidebar .photos-card { display: none !important; }
-  body.fs-scrapbook #page-home .main-container { padding-top: 8px !important; }
-}
+/* Home on phones keeps the cover polaroids, profile picture and profile card at the top
+   (owner, Nov 15: wanted them back after they were hidden to match the concept) */
 /* name + status/bio in one paper label (.fs-namecard, wrapped by the engine) — replaces the old
    negative-margin overlap, which broke at some font sizes */
 body.fs-scrapbook .fs-namecard {
@@ -1360,3 +1354,7 @@ body.fs-scrapbook .dislike-btn.disliked > i { background-image: var(--fs-icon-di
 body.fs-scrapbook .post-actions { gap: 0 !important; }
 body.fs-scrapbook .post-actions .action-right { margin: -4px 0 4px 4px !important; }
 body.fs-scrapbook .post-tags:empty { display: none !important; }
+/* Home's profile card: keep the bio inside the name label */
+body.fs-scrapbook #profileCard .fs-namecard { padding-bottom: 14px !important; }
+body.fs-scrapbook .fs-namecard > :is(.profile-title, .profile-about):empty { display: none !important; }
+body.fs-scrapbook .fs-namecard > .profile-about { font-size: 15px !important; padding: 0 !important; margin: 2px 0 0 !important; position: static !important; }
