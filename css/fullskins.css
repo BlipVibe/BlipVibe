@@ -1417,3 +1417,75 @@ body.fs-scrapbook #profileCard .edit-profile-btn i { color: var(--fs-ink) !impor
    under the frame, never poking out past it (owner, Nov 15) */
 body.fs-scrapbook .fs-tl-slot-1 { left: 5% !important; top: 7.85% !important; width: 46.4% !important; height: 46.5% !important; transform: rotate(-13.3deg) !important; }
 body.fs-scrapbook .fs-tl-slot-2 { left: 46.85% !important; top: 24.2% !important; width: 45.7% !important; height: 46% !important; transform: rotate(11.4deg) !important; }
+
+/* ================================================================
+   REALISTIC PAPER (owner Nov 15: "looks a bit too much like CSS") — photographed torn paper
+   (kit/extras8) on rows, chat notes, labels, fields, the chat bar and round buttons
+   ================================================================ */
+/* list rows: three sheets mixed down the list like a real scrapbook */
+body.fs-scrapbook :is(.msg-contact, .notif-item, .group-card, .profile-card-item) {
+  border-style: solid !important; border-color: transparent !important;
+  border-image: var(--fs-row9-real-a) 90 120 fill / 20px 24px round !important;
+  background: none !important; box-shadow: none !important;
+}
+body.fs-scrapbook :is(.msg-contact, .notif-item, .group-card, .profile-card-item):nth-child(3n+2) { border-image-source: var(--fs-row9-real-b) !important; }
+body.fs-scrapbook :is(.msg-contact, .notif-item, .group-card, .profile-card-item):nth-child(3n) { border-image-source: var(--fs-row9-real-c) !important; }
+@media (max-width: 768px) {
+  body.fs-scrapbook :is(.msg-contact, .notif-item, .group-card, .profile-card-item) { border-width: 18px 20px !important; margin-bottom: 4px !important; }
+  body.fs-scrapbook .msg-contact { min-height: 64px; padding: 0 2px !important; }
+  body.fs-scrapbook .msg-contact img, body.fs-scrapbook .msg-contact .msg-contact-avatar { width: 50px !important; height: 50px !important; }
+}
+/* chat notes */
+body.fs-scrapbook .msg-bubble { border-image: var(--fs-bubble9-real-cream) 100 fill / 16px round !important; border-width: 14px !important; }
+body.fs-scrapbook .msg-bubble.sent { border-image-source: var(--fs-bubble9-real-pink) !important; }
+body.fs-scrapbook .msg-edit-btn { color: rgba(62, 45, 32, .45) !important; }
+/* labels: page titles, the profile name tag and stats strip, subtitles */
+body.fs-scrapbook :is(.page-header h2, .msg-sidebar-header h3, .page-subtitle, .connections-heading),
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) :is(.fs-namecard, .profile-stats) {
+  border-image: var(--fs-label9-real) 80 fill / 14px round !important;
+}
+/* fields */
+body.fs-scrapbook :is(.msg-search, .search-bar, .page-search) {
+  background: none !important; border: 14px solid transparent !important; border-radius: 0 !important;
+  border-image: var(--fs-field9-real) 80 fill / 14px round !important; box-shadow: none !important;
+}
+body.fs-scrapbook #msgInput { border-image: var(--fs-field9-real) 80 fill / 14px round !important; }
+/* chat input bar and its round paper buttons */
+body.fs-scrapbook .msg-chat-input { background: var(--fs-bar9-real) center top / 100% 100% no-repeat !important; padding-top: 16px !important; }
+body.fs-scrapbook .msg-media-btn {
+  width: 40px !important; height: 40px !important; flex: 0 0 40px; border-radius: 0 !important;
+  background: var(--fs-circle-real) center / contain no-repeat !important; color: var(--fs-ink) !important;
+}
+body.fs-scrapbook #sendMsgBtn { background: var(--fs-circle-real-rose) center / contain no-repeat !important; }
+
+/* ================================================================
+   POST PHOTOS — always the whole picture, scaled to fit inside the post (owner Nov 15).
+   The frame hugs each photo at its own shape; nothing is cropped.
+   ================================================================ */
+body.fs-scrapbook .post-media-grid[class*="pm-count"] {
+  display: flex !important; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px;
+  height: auto !important; max-height: none !important; aspect-ratio: auto !important; overflow: visible !important;
+}
+body.fs-scrapbook .post-media-grid[class*="pm-count"] .pm-thumb {
+  flex: 0 1 auto; width: auto !important; height: auto !important; min-height: 0 !important; max-height: none !important;
+  max-width: 100%; grid-column: auto !important;
+}
+body.fs-scrapbook .post-media-grid[class*="pm-count"] .pm-thumb img {
+  display: block; width: auto !important; height: auto !important; max-width: 100% !important; max-height: 520px !important;
+  object-fit: contain !important; background: transparent !important;
+}
+body.fs-scrapbook .post-media-grid[class*="pm-count"] .pm-thumb video {
+  display: block; width: 100% !important; height: auto !important; max-height: 520px !important; object-fit: contain !important;
+}
+body.fs-scrapbook .post-media-grid[class*="pm-count"]:not(.pm-count-1) .pm-thumb { max-width: calc(50% - 6px); }
+body.fs-scrapbook .post-media-grid[class*="pm-count"]:not(.pm-count-1) .pm-thumb img { max-height: 260px !important; }
+body.fs-scrapbook .post-media-grid[class*="pm-count"]:not(.pm-count-1) .pm-thumb video { width: auto !important; max-width: 100%; max-height: 260px !important; }
+/* the comments window shows the post small */
+body.fs-scrapbook .comment-post-embed .post-media-grid[class*="pm-count"] .pm-thumb :is(img, video) { max-height: 22vh !important; }
+body.fs-scrapbook :is(.msg-search, .search-bar, .page-search) { padding: 0 8px !important; min-height: 0 !important; height: auto !important; }
+body.fs-scrapbook :is(.msg-search, .search-bar, .page-search) input { padding: 4px 6px !important; height: auto !important; }
+/* Messages on phones: the top bar's padding is 52px taller than before, so the messages box shrinks by the
+   same amount; otherwise the page scrolls and iOS stops drawing the bottom of the open chat (input bar) */
+@media (max-width: 768px) {
+  body.fs-scrapbook #page-messages .messages-layout { height: calc(100vh - 172px) !important; }
+}
