@@ -2017,3 +2017,36 @@ html body.fs.fs-anime-blaze .photos-card .photos-preview { overflow: hidden !imp
 html body.fs.fs-anime-blaze .featured-skin-banner { padding: 26px 30px 24px 26px !important; }
 html body.fs.fs-anime-blaze #openPostModal { margin: 0 !important; width: auto !important; box-sizing: border-box; padding: 0 4px !important; }
 html body.fs.fs-anime-blaze #openPostModal .post-input-fake { min-width: 0; box-sizing: border-box; }
+/* Notifications (concept): compact rows, plain white type icon (no coloured disc), white text, unread = gold row */
+html body.fs.fs-anime-blaze .notif-item { min-height: 0 !important; padding: 0 6px !important; align-items: center; gap: 12px; }
+html body.fs.fs-anime-blaze .notif-icon { background: none !important; width: 30px !important; height: 30px !important; color: #fff !important; }
+html body.fs.fs-anime-blaze .notif-icon i { color: #fff !important; font-size: 20px !important; }
+html body.fs.fs-anime-blaze .notif-text p { color: #fff !important; font-size: 15px !important; margin: 0 !important; }
+html body.fs.fs-anime-blaze .notif-text span { color: #ccc !important; font-size: 12px !important; }
+
+/* Group page (concept group-page): full-width cover, then group picture LEFT with name + tagline beside it,
+   stat callouts, red Join, dark slanted secondary buttons */
+@media (max-width: 768px) {
+  html body.fs.fs-anime-blaze #gvCoverBanner, html body.fs.fs-anime-blaze .gv-cover-banner { border-radius: 0 !important; margin: 0 -8px !important; }
+}
+html body.fs.fs-anime-blaze #gvProfileCard { background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; padding: 0 !important; }
+html body.fs.fs-anime-blaze #gvProfileCard .profile-cover { display: none !important; }
+html body.fs.fs-anime-blaze #gvProfileCard .profile-info { display: grid !important; grid-template-columns: 92px minmax(0, 1fr); column-gap: 12px; align-items: center; text-align: left; }
+html body.fs.fs-anime-blaze #gvProfileCard .profile-info > * { grid-column: 1 / -1; }
+html body.fs.fs-anime-blaze #gvProfileCard .profile-avatar-wrap { grid-column: 1; grid-row: 1 / span 2; margin: -40px 0 0 6px !important; width: 92px !important; height: 92px !important; }
+html body.fs.fs-anime-blaze #gvProfileCard .profile-avatar-wrap :is(.profile-avatar, .gv-icon-wrap, img) { width: 92px !important; height: 92px !important; border-radius: 10px !important;
+  -webkit-mask: none !important; mask: none !important; box-shadow: 0 0 0 2px #f2f2f2, 0 0 0 4px #111 !important; }
+html body.fs.fs-anime-blaze #gvProfileCard .profile-name { grid-column: 2; grid-row: 1; margin: 6px 0 0 !important; font-size: 26px !important; text-align: left !important; line-height: 1.1; }
+html body.fs.fs-anime-blaze #gvProfileCard .profile-title { grid-column: 2; grid-row: 2; margin: 2px 0 0 !important; text-align: left !important; font-size: 14px !important; }
+html body.fs.fs-anime-blaze #gvProfileCard .profile-stats { margin-top: 14px !important; }
+html body.fs.fs-anime-blaze :is(#gvJoinBtn) { border: 0 !important; border-image: none !important; background: var(--fs-button-slant) center / 100% 100% no-repeat !important; color: #fff !important; }
+html body.fs.fs-anime-blaze :is(#gvEditBtn, #gvLeaveBtn, .gv-rules-btn, .gv-invite-link-btn, #gvUploadPhotoBtn) {
+  border: 0 !important; border-image: none !important; background: var(--fs-tab) center / 100% 100% no-repeat !important; color: #fff !important; font-style: italic; font-weight: 700; padding: 10px 22px !important; }
+/* group page: name + tagline BELOW the cover beside the overlapping picture (concept); stat labels on one line */
+html body.fs.fs-anime-blaze #gvProfileCard .profile-info { grid-template-rows: 46px auto auto; }
+html body.fs.fs-anime-blaze #gvProfileCard .profile-avatar-wrap { grid-row: 1 / span 3; margin: -46px 0 0 6px !important; align-self: start; }
+html body.fs.fs-anime-blaze #gvProfileCard .profile-name { grid-row: 2; margin: 0 !important; }
+html body.fs.fs-anime-blaze #gvProfileCard .profile-title { grid-row: 3; }
+html body.fs.fs-anime-blaze #gvProfileCard .stat-label { white-space: nowrap; font-size: 14px !important; }
+html body.fs.fs-anime-blaze #gvProfileCard .profile-info { grid-template-rows: 58px auto auto; }
+html body.fs.fs-anime-blaze #gvProfileCard .profile-avatar-wrap { margin-top: -58px !important; }
