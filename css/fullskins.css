@@ -2181,3 +2181,71 @@ html body.fs.fs-anime-blaze .featured-skin-banner .featured-header { margin-bott
     width: calc(100vw + 16px) !important; max-width: none !important;
     margin-left: calc(50% - 50vw - 8px) !important; margin-right: calc(50% - 50vw - 8px) !important; }
 }
+/* Create post = the concept's full-screen page: page art behind, title on the flame title plate, the photo in the
+   white ink ring, the field art, big gold tool tiles with labels (2×2: the app's 4 phone tools — emoji is the
+   keyboard's on phones), and the full-width flame Post button */
+@media (max-width: 768px) {
+  html body.fs.fs-anime-blaze .modal-overlay:has(#cpmText) { padding: 0 !important; }
+  html body.fs.fs-anime-blaze .modal-content:has(#cpmText) {
+    width: 100% !important; max-width: none !important; height: 100% !important; max-height: none !important; border: 0 !important;
+    border-image: none !important; border-radius: 0 !important; box-shadow: none !important;
+    background: #111 var(--fs-background) center top / cover no-repeat !important;
+    padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px) !important; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) { height: 100%; max-height: none !important; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .modal-header {
+    border: 0 !important; background: none !important; padding: 14px 16px 6px !important; justify-content: flex-start !important; gap: 10px; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .modal-header h3 {
+    order: 2; background: var(--fs-title-plate) center / 100% 100% no-repeat !important; padding: 8px 64px 10px 18px !important;
+    font-size: 30px !important; line-height: 1.1; margin: 0 !important; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .modal-close {
+    order: 1; background: none !important; border: 0 !important; color: #fff !important; font-size: 26px !important; width: 40px; height: 40px; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-scroll { flex: 0 1 auto; overflow-y: auto; }
+  /* tiles right under the field, Post button pinned to the bottom (concept) */
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-footer { flex: 1 1 auto; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-footer > div:last-child { flex: 1 1 auto; grid-template-rows: auto auto 1fr; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) #cpmPublish { align-self: end; margin-bottom: 8px; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-scroll > div:first-child img {
+    width: 62px !important; height: 62px !important; padding: 4px; box-sizing: border-box; object-fit: cover;
+    background: var(--fs-avatar-rim) center / 100% 100% no-repeat; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-scroll > div:first-child strong { font-size: 20px !important; font-style: italic; color: #fff; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-textarea { min-height: 190px !important; margin: 12px 16px !important; width: calc(100% - 32px) !important; font-size: 17px !important; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) :is(.cpm-media-zone, .cpm-tags-section) { border: 0 !important; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-footer { border: 0 !important; background: none !important; padding: 6px 16px 16px !important; flex-direction: column; align-items: stretch; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-footer .char-counter { text-align: right; margin: -58px 46px 38px 0; color: #bbb; font-style: italic; font-size: 16px; position: relative; z-index: 2; pointer-events: none; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-footer > div:last-child {
+    display: grid !important; grid-template-columns: 1fr 1fr; gap: 12px !important; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) :is(#cpmCameraBtn, #cpmGifBtn, #cpmPollBtn, #cpmScheduleBtn) {
+    width: auto !important; height: 84px !important; margin: 0 !important; flex-direction: column; gap: 6px; font-size: 26px !important;
+    background: var(--fs-tile) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) :is(#cpmCameraBtn, #cpmGifBtn, #cpmPollBtn, #cpmScheduleBtn)::after {
+    font: italic 700 16px var(--fs-font); color: #fff; }
+  html body.fs.fs-anime-blaze #cpmCameraBtn::after { content: "Add photo"; }
+  html body.fs.fs-anime-blaze #cpmGifBtn::after { content: "GIF"; }
+  html body.fs.fs-anime-blaze #cpmPollBtn::after { content: "Poll"; }
+  html body.fs.fs-anime-blaze #cpmScheduleBtn::after { content: "Schedule"; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) #cpmPublish {
+    grid-column: 1 / -1; width: 100% !important; max-width: none !important; min-height: 80px !important; margin-top: 14px; padding: 0 !important;
+    font-size: 34px !important; font-style: italic; font-weight: 700; border: 0 !important; border-image: none !important;
+    background: var(--fs-post-btn) center / 100% 100% no-repeat !important; border-radius: 0 !important; box-shadow: none !important; }
+  /* the counter sits inside the field's bottom-right like the concept; empty media/tag zones take no space */
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-media-zone:not(:has(.cpm-media-grid > *)) { margin: 0 !important; padding: 0 !important; min-height: 0 !important; height: 0; overflow: hidden; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-tags-section:not(:has(.cpm-tags-wrap > *)) { display: none !important; }
+}
+/* Story viewer (concept story): white progress bar under the status bar, avatar in the white ink ring, bold italic
+   name with the time under it, plain white ✕, reply field on the field art, send on the red send tile */
+html body.fs.fs-anime-blaze .story-progress { margin: calc(env(safe-area-inset-top, 0px) + 8px) 16px 0; height: 4px; background: rgba(255,255,255,.35); border-radius: 2px; }
+html body.fs.fs-anime-blaze .story-progress-fill { background: #fff; }
+html body.fs.fs-anime-blaze .story-header { padding: 14px 16px 10px !important; gap: 12px; }
+html body.fs.fs-anime-blaze .story-header-avatar { width: 56px !important; height: 56px !important; padding: 3px; box-sizing: border-box;
+  background: var(--fs-avatar-rim) center / 100% 100% no-repeat; }
+html body.fs.fs-anime-blaze .story-header strong { font: italic 700 21px var(--fs-title-font) !important; color: #fff !important; }
+html body.fs.fs-anime-blaze .story-header strong + span { display: block; margin: 2px 0 0 !important; font-size: 15px !important; color: #ddd !important; }
+html body.fs.fs-anime-blaze .story-close { background: none !important; font-size: 30px !important; }
+html body.fs.fs-anime-blaze .story-input-bar { padding: 10px 14px calc(12px + env(safe-area-inset-bottom, 0px)) !important; gap: 10px; }
+html body.fs.fs-anime-blaze .story-comment-input { height: 52px; border: 10px solid transparent !important; border-image: var(--fs-field) 60 fill / 10px stretch !important;
+  border-radius: 0 !important; background: none !important; font: italic 600 16px var(--fs-font) !important; color: #fff !important; padding: 0 8px !important; }
+html body.fs.fs-anime-blaze .story-send-btn { width: 52px; height: 48px; background: var(--fs-send-btn) center / 100% 100% no-repeat !important; color: #fff !important; font-size: 18px !important; }
+/* story reply: reactions on their own centred line above, so the reply field runs wide like the concept */
+html body.fs.fs-anime-blaze .story-input-bar { flex-wrap: wrap; }
+html body.fs.fs-anime-blaze .story-reactions-row { order: -1; width: 100%; justify-content: center; gap: 14px; margin: 0 0 4px !important; }
+html body.fs.fs-anime-blaze .story-react-btn { font-size: 26px !important; color: inherit; }

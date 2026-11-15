@@ -162,3 +162,11 @@ kit/redraw-a + redraw-b), sketchy comic ink, incl. the page BACKGROUND (was miss
   pink, ~3.5–4 MB per colour, only the chosen colour loads) whitelisted in .gitignore and live on blipvibe.com.
   Covers now bleed from the screen edges (`calc(50% - 50vw - 8px)`) — the other-profile page has different padding
   and showed a dark strip down the left on some widths. Still to check vs concept: Create post, Story viewer.
+- Nov 15: Create post → the concept's full-screen page (only the main composer, scoped by :has(#cpmText) so group
+  channel modals that reuse .create-post-modal are untouched): page art behind, "Create a Post" on the title-plate
+  art, ✕ left, avatar in avatar-rim, field art with the counter inside its bottom-right, tool tiles (tile art) in a
+  2×2 grid with labels via ::after (Add photo / GIF / Poll / Schedule — emoji is hidden on phones by style.css, the
+  app has no separate Camera tool), Publish full-width on post-btn art pinned to the bottom.
+  Story viewer → progress bar under the status bar, avatar in avatar-rim, bold italic name with time beneath, plain
+  ✕, reply on field art (reactions on their own centred line above it), send on send-btn art. Verified with a
+  display-only preview (no one had a live story). All 16 concept screens now built.
