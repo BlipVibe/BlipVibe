@@ -15,8 +15,8 @@ Older decisions/plan for all 22 skins: `prototypes/skin-engine-spec.md`.
 1. **Targets**: approved concept sheets + close-up crops of single screens. Write a field-corrections
    table (concept text vs real app fields). Concepts omit the top bar and invent things — the app keeps
    its top bar and every real feature; never remove a feature to match a concept.
-2. **Art from Codex, from briefs** (`prototypes/<id>-extras-N-brief.md`): one chat per set; ask for
-   REALISTIC material (photographed texture, irregular edges, soft shadow, depth), real alpha,
+2. **Art from Codex, from briefs** (`prototypes/<id>-extras-N-brief.md`): one chat per set; describe the
+   concept's own material (realistic paper for Scrapbook, clean comic art for Anime Blaze…), real alpha,
    9-slice border zones stated in px, seamless edge tiling, a contact sheet. Review the contact sheet
    before wiring anything.
 3. **Convert** PNG → WebP (Pillow in a scratch venv), add every piece to the skin's `assets` list in
@@ -28,7 +28,8 @@ Older decisions/plan for all 22 skins: `prototypes/skin-engine-spec.md`.
 6. Owner checks on his phone (close/reopen the app twice for OTA), fix, repeat.
 
 ## Non-negotiables (owner)
-- Minimal CSS; generated art for every visual; realistic, not "CSS-looking".
+- Minimal CSS; generated art for every visual; never "CSS-looking". Match the CONCEPT's material:
+  Scrapbook = realistic photographed paper; Anime Blaze = clean comic illustration (owner: not realistic).
 - Home always shows cover + profile picture + profile card; top bar on every page; no "Back to Home".
 - Photos never cropped; profile picture in front of cover frames; liked state visibly solid.
 - Bars vertically centred; search text clears the icon; static sharp background on iPhone.
