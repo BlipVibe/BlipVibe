@@ -32,9 +32,14 @@
     scrapbook: {
       name: 'Scrapbook', dark: false, ink: '#3e2d20', muted: '#75604b', accent: '#cf6f8c',
       font: "'Kalam', cursive", titleFont: "'Caveat', cursive",
-      timeline: 2, avatar: 'center', slice: 7,
+      timeline: 2, avatar: 'center', slice: 16.67,
       // art swapped in for a standard part (asset file names in images/skins/<id>/assets/)
-      parts: { 'panel-card': 'panel-paper', 'panel-card-active': 'panel-paper-pink' },
+      parts: { 'panel-card': 'panel9-layered', 'panel-card-active': 'panel9-pink',
+        'btn-secondary': 'strip9-layered', 'btn-primary': 'strip9-pink', 'header-bar': 'header9-pink',
+        'nav-bar': 'strip9-layered', 'nav-active': 'tile', 'icon-coin': 'coin-stack' },
+      // skin-only art, exposed as --fs-<name>
+      assets: ['photo9-torn', 'tape-corner-a', 'tape-corner-b', 'flowers-spray', 'heart-sticker'],
+      edge: 26, // px: on-screen width of the 9-slice border zone (art border zone is 128px)
       extras: true,
       // the app's own theme variables (style.css :root) re-pointed at this skin, so every surface the
       // engine doesn't restyle by hand (inputs, pills, rings, menus) still matches
@@ -99,9 +104,12 @@
     b.classList.remove('fs', 'fs-dark', 'fs-light');
     PARTS.concat(EXTRAS).forEach(function (p) { b.style.removeProperty('--fs-' + p); });
     ICONS.forEach(function (n) { b.style.removeProperty('--fs-icon-' + n); });
-    ['--fs-ink', '--fs-muted', '--fs-accent', '--fs-font', '--fs-title-font', '--fs-slice'].forEach(function (v) {
+    ['--fs-ink', '--fs-muted', '--fs-accent', '--fs-font', '--fs-title-font', '--fs-slice', '--fs-edge'].forEach(function (v) {
       b.style.removeProperty(v);
     });
+    if (active && FULL_SKINS[active]) {
+      (FULL_SKINS[active].assets || []).forEach(function (a) { b.style.removeProperty('--fs-' + a); });
+    }
     if (active && FULL_SKINS[active] && FULL_SKINS[active].theme) {
       Object.keys(FULL_SKINS[active].theme).forEach(function (v) { b.style.removeProperty(v); });
     }
@@ -119,13 +127,17 @@
     b.classList.add('fs', 'fs-' + id, cfg.dark ? 'fs-dark' : 'fs-light');
     var parts = cfg.extras ? PARTS.concat(EXTRAS) : PARTS;
     parts.forEach(function (p) { b.style.setProperty('--fs-' + p, url(id, (cfg.parts && cfg.parts[p]) || p)); });
-    ICONS.forEach(function (n) { b.style.setProperty('--fs-icon-' + n, url(id, 'icon-' + n)); });
+    ICONS.forEach(function (n) {
+      b.style.setProperty('--fs-icon-' + n, url(id, (cfg.parts && cfg.parts['icon-' + n]) || 'icon-' + n));
+    });
+    (cfg.assets || []).forEach(function (a) { b.style.setProperty('--fs-' + a, url(id, a)); });
     b.style.setProperty('--fs-ink', cfg.ink);
     b.style.setProperty('--fs-muted', cfg.muted);
     b.style.setProperty('--fs-accent', cfg.accent);
     b.style.setProperty('--fs-font', cfg.font);
     b.style.setProperty('--fs-title-font', cfg.titleFont || cfg.font);
     b.style.setProperty('--fs-slice', String(cfg.slice || 18));
+    b.style.setProperty('--fs-edge', (cfg.edge || 16) + 'px');
     if (cfg.theme) Object.keys(cfg.theme).forEach(function (v) { b.style.setProperty(v, cfg.theme[v]); });
     active = id;
     startSuspending();
