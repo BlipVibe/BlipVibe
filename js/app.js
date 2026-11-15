@@ -3678,6 +3678,7 @@ async function showProfileView(person){
     cardHtml+='<div class="profile-links"><a href="#" class="pv-back-link" id="pvBack"><i class="fas fa-arrow-left"></i> Back to Home</a></div>';
     cardHtml+='</div>';
     $('#pvProfileCard').innerHTML=cardHtml;
+    if(window.BlipFullSkins) BlipFullSkins.render();
 
     // Load mutual followers (async, non-blocking)
     if(!isMe&&currentUser){
@@ -5873,6 +5874,7 @@ function applyCoverPhoto(){
         var pvBanner=$('#pvCoverBanner');
         if(pvBanner) pvBanner.style.backgroundImage='url('+url+')';
     }
+    if(window.BlipFullSkins) BlipFullSkins.render();
 }
 if(!window._coverResizeHook){window._coverResizeHook=true;window.addEventListener('resize',function(){if(window._coverResizeTimer) clearTimeout(window._coverResizeTimer);window._coverResizeTimer=setTimeout(applyCoverPhoto,150);});}
 
@@ -9343,7 +9345,8 @@ function applyPremiumSkin(skinId,silent){
         skins.forEach(function(s){card.classList.remove('skin-'+s.id);document.body.classList.remove('skin-'+s.id);});
         if(!silent)state.activeSkin=null;
         // Apply premium
-        var skin=premiumSkins.find(function(s){return s.id===skinId;});
+        var skin=premiumSkins.find(function(s){return s.id===skinId;})||(window.BlipFullSkins&&BlipFullSkins.meta(skinId));
+        if(!skin){applyPremiumSkin('default',silent);return;}
         document.body.classList.add('premium-'+skinId);
         if(skin.dark) document.body.classList.add('premium-dark');
         _updateStatusBarStyle(!skin.dark); // light skin → dark status-bar text
@@ -9359,6 +9362,7 @@ function applyPremiumSkin(skinId,silent){
         updatePremiumBg();
         applySkin(state.activeSkin,true);
     }
+    if(window.BlipFullSkins) BlipFullSkins.onSkin(skinId&&skinId!=='default'?skinId:null);
 }
 
 var currentMySkinsTab=null;
@@ -10509,6 +10513,11 @@ function getAllPhotos(){
     var all=state.photos.profile.concat(state.photos.cover,state.photos.post);
     return all;
 }
+// read-only data the full-skin engine (js/fullskins.js) uses for timeline photo slots
+window.BlipFullSkinsData={
+    photos:function(){try{return getAllPhotos();}catch(e){return [];}},
+    cover:function(){return state.coverPhotoMobile||state.coverPhoto||null;}
+};
 function renderPhotosCard(){
     var all=getAllPhotos();
     var el=$('#photosPreview');
@@ -14993,6 +15002,7 @@ function renderQuestPanel(){
         html+='<div class="quest-item"><div class="quest-icon" style="background:'+q.color+'20;color:'+q.color+';"><i class="fas '+q.icon+'"></i></div><div class="quest-info"><p>'+q.label+'</p><div class="quest-bar"><div class="quest-bar-fill" style="width:'+pct+'%;background:'+q.color+';"></div></div><span class="quest-progress">'+Math.min(count,q.target)+' / '+q.target+'</span></div>'+(done?'<span class="quest-check"><i class="fas fa-check-circle"></i></span>':'<span class="quest-reward"><i class="fas fa-coins"></i> +'+q.reward+'</span>')+'</div>';
     }
     container.innerHTML=html;
+    if(window.BlipFullSkins) BlipFullSkins.render();
 }
 
 // ======================== COIN PROGRESS BAR ========================

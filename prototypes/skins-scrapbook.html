@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scrapbook Skin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{
+  --A:'../images/skins/scrapbook/';
+  --ink:#3e2d20;
+  --ink-soft:#75604b;
+  --pink-deep:#cf6f8c;
+  --gold:#e3a72f;
+  --sh:rgba(62,45,32,.32);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;min-height:100%;background:#2a2521;}
+body{display:flex;flex-wrap:wrap;justify-content:center;gap:26px;padding:22px 14px 48px;font-family:'Kalam',cursive;color:var(--ink);}
+.label{width:100%;text-align:center;color:#d9c8a9;font-family:'Caveat',cursive;font-size:22px;margin:0;}
+
+/* ---------- phone ---------- */
+.phone{width:372px;max-width:100%;height:800px;border-radius:54px;background:#0e0c0b;padding:11px;flex:0 0 auto;box-shadow:0 30px 70px rgba(0,0,0,.55),0 0 0 2px #2b2521;}
+.screen{position:relative;width:100%;height:100%;border-radius:44px;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;
+  background:#ead9bf url('../images/skins/scrapbook/background-collage.png') center/cover no-repeat;}
+.status{position:relative;z-index:4;display:flex;justify-content:space-between;align-items:center;padding:13px 28px 0;font:700 15px system-ui,sans-serif;color:#22170f;flex:0 0 auto;}
+.status .r{display:flex;gap:6px;font-size:13px;}
+.scroll{flex:1;overflow-y:auto;scrollbar-width:none;padding:2px 12px 12px;}
+.scroll::-webkit-scrollbar{display:none;}
+
+/* ---------- real torn-paper panels (9-slice of generated art) ---------- */
+.paper{border:14px solid transparent;border-image:url('../images/skins/scrapbook/panel-cream.png') 130 fill / 14px round;
+  filter:drop-shadow(1px 2px 1.5px var(--sh));}
+.paper.pink{border-image-source:url('../images/skins/scrapbook/panel-pink.png');}
+.paper.thin{border-width:10px;border-image-width:10px;}
+
+/* ---------- header ---------- */
+.topstrip{position:absolute;top:0;left:-10px;right:-10px;height:118px;z-index:0;border:22px solid transparent;
+  border-image:url('../images/skins/scrapbook/panel-pink.png') 130 fill / 22px round;opacity:.92;transform:rotate(-1deg);}
+.hdr{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:6px 14px 8px;flex:0 0 auto;}
+.logo{font:700 32px/1 'Caveat',cursive;color:#33241a;position:relative;padding-left:4px;}
+.hicons{display:flex;align-items:center;gap:11px;font-size:19px;color:#33241a;}
+.bell{position:relative;}
+.bell b{position:absolute;top:-7px;right:-8px;background:#f2c230;color:#5a3d07;font:700 10px system-ui;border-radius:9px;padding:1px 5px;}
+.coins{display:flex;align-items:center;gap:5px;font:700 15px 'Kalam',cursive;padding:0 2px;}
+.coins i{color:var(--gold);filter:drop-shadow(0 1px 0 #9a6c16);}
+.avatar{width:38px;height:38px;border-radius:50%;border:2px solid #fff;box-shadow:0 2px 4px var(--sh);object-fit:cover;background:#ccc;}
+.round{width:44px;height:44px;display:grid;place-items:center;font-size:18px;padding:0;border-radius:50%;}
+.title{font:700 32px/1 'Caveat',cursive;padding:0 14px 2px;}
+.deco{position:absolute;pointer-events:none;z-index:5;}
+
+/* ---------- chips ---------- */
+.chips{display:flex;gap:6px;padding:2px 12px 8px;overflow-x:auto;scrollbar-width:none;flex:0 0 auto;position:relative;z-index:2;}
+.chips::-webkit-scrollbar{display:none;}
+.chip{flex:0 0 auto;font:400 13px/1.1 'Kalam',cursive;color:var(--ink);padding:0 4px;cursor:pointer;background:none;}
+.chip.active{color:#b8476b;font-weight:700;border-image-source:url('../images/skins/scrapbook/panel-pink.png');}
+
+/* ---------- skins grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px 6px;}
+.skin{grid-column:span 2;padding:0;cursor:pointer;text-align:center;position:relative;}
+.skin.wide{grid-column:span 3;}
+.skin .ph{position:relative;aspect-ratio:1/.95;overflow:hidden;background:#d8c7a5;box-shadow:0 0 0 2px #fffaf0,0 1px 2px var(--sh);}
+.skin.wide .ph{aspect-ratio:4/3;}
+.skin .ph img{width:100%;height:100%;object-fit:cover;display:block;}
+.skin .nm{font:700 16px/1 'Caveat',cursive;margin:6px 0 2px;min-height:2em;display:flex;align-items:center;justify-content:center;}
+.skin.wide .nm{min-height:1em;font-size:18px;}
+.skin .pr{display:flex;align-items:center;justify-content:center;gap:4px;font:700 13px 'Kalam',cursive;}
+.skin .pr i{color:var(--gold);}
+.skin .pr.owned,.skin .pr.owned i{color:#6f9a5b;}
+.ck{position:absolute;top:-14px;right:-12px;width:28px;height:28px;border-radius:50%;background:var(--pink-deep);color:#fff;display:grid;place-items:center;font-size:13px;border:2px solid #fff;box-shadow:0 2px 5px var(--sh);z-index:6;}
+
+/* ---------- quests ---------- */
+.quests{position:relative;margin:0 0 12px 12px;padding:0 0 0 10px;}
+.spiral{position:absolute;left:-26px;top:-6px;bottom:-6px;width:34px;background:url('../images/skins/scrapbook/deco/spiral.png') center/100% 100% no-repeat;z-index:6;}
+.q{display:flex;align-items:center;gap:9px;padding:5px 0;}
+.q + .q{border-top:1px dashed rgba(117,96,75,.3);}
+.qi{width:34px;height:34px;flex:0 0 auto;display:grid;place-items:center;color:#a8405f;font-size:16px;padding:0;border-width:8px;border-image-width:8px;}
+.qb{flex:1;min-width:0;}
+.ql{font:700 17px/1 'Caveat',cursive;}
+.bar{height:6px;border-radius:5px;background:#e3d1bd;margin:5px 0 1px;overflow:hidden;box-shadow:inset 0 1px 1px #0002;}
+.bar span{display:block;height:100%;width:var(--p,8%);background:linear-gradient(90deg,#e48fa7,#cf6f8c);}
+.qn{font-size:11px;color:var(--ink-soft);}
+.qr{display:flex;align-items:center;gap:4px;font:700 14px 'Kalam',cursive;}
+.qr i{color:var(--gold);}
+
+/* ---------- post ---------- */
+.post{position:relative;margin:0 0 10px;padding:0;}
+.prow{display:flex;align-items:center;gap:8px;}
+.pav{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid #fff;box-shadow:0 1px 3px var(--sh);}
+.pname{font:700 18px 'Caveat',cursive;}
+.psub{font-size:12px;color:var(--ink-soft);}
+.pdate{font-size:12px;color:var(--ink-soft);margin-left:auto;}
+.polaroid{position:relative;margin:9px 4px 8px;background:#fffdf7;padding:7px 7px 18px;transform:rotate(-1.4deg);box-shadow:0 3px 8px var(--sh);}
+.polaroid img.main{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;}
+.acts{display:flex;justify-content:space-around;align-items:center;font-size:14px;padding:0 4px;}
+.acts span{display:flex;align-items:center;gap:5px;}
+
+/* ---------- lists (groups / messages) ---------- */
+.row{display:flex;align-items:center;gap:10px;margin-bottom:7px;padding:0;position:relative;}
+.row img.th{width:46px;height:46px;border-radius:8px;object-fit:cover;box-shadow:0 0 0 2px #fffaf0;}
+.row img.th.circle{border-radius:50%;}
+.row .t1{font:700 17px/1 'Caveat',cursive;}
+.row .t2{font-size:11px;color:var(--ink-soft);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:170px;}
+.row .end{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-size:10px;color:var(--ink-soft);}
+.join{width:28px;height:28px;border-radius:50%;background:linear-gradient(160deg,#f2b9c9,#e596ad);color:#8e3553;display:grid;place-items:center;font-size:13px;box-shadow:0 1px 2px var(--sh);}
+.dot{width:8px;height:8px;border-radius:50%;background:#e1658a;}
+
+/* ---------- profile ---------- */
+.pol-wrap{position:relative;height:262px;margin:-8px -6px 0;}
+.pframe{position:absolute;background:#fffdf7;padding:7px 7px 24px;box-shadow:0 4px 10px var(--sh);}
+.pframe img{display:block;width:100%;aspect-ratio:1/.92;object-fit:cover;}
+.bigav{position:absolute;left:50%;top:118px;transform:translateX(-50%);width:132px;height:132px;border-radius:50%;border:5px solid #fffaf2;box-shadow:0 4px 10px var(--sh);object-fit:cover;background:#cbb;z-index:3;}
+.cam{position:absolute;width:30px;height:30px;border-radius:50%;background:#3a2c22;color:#fff;display:grid;place-items:center;font-size:13px;border:2px solid #fff;z-index:4;}
+.nameplate{position:relative;z-index:4;text-align:center;margin:8px 28px 10px;padding:0;}
+.nameplate .n{font:700 34px/1 'Caveat',cursive;}
+.nameplate .b{font-size:14px;color:var(--ink-soft);}
+.stats{display:flex;margin:0 6px 10px;padding:0;}
+.stats div{flex:1;text-align:center;}
+.stats div + div{border-left:1px dashed rgba(117,96,75,.35);}
+.stats b{display:block;font:700 24px/1 'Caveat',cursive;}
+.stats span{font-size:14px;}
+.btnp{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 30px;font:700 20px 'Caveat',cursive;padding:0;}
+
+/* ---------- chat ---------- */
+.bub{max-width:76%;margin:0 0 4px;padding:0;font-size:13px;line-height:1.35;}
+.bub.me{margin-left:auto;}
+.ts{font-size:10px;color:var(--ink-soft);margin:0 6px 10px;}
+.ts.me{text-align:right;}
+.composer{display:flex;align-items:center;gap:8px;margin:0 10px 18px;padding:0;font-size:13px;color:var(--ink-soft);}
+.composer .send{margin-left:auto;width:32px;height:32px;border-radius:50%;background:linear-gradient(160deg,#ee9fb5,#d4708d);color:#fff;display:grid;place-items:center;}
+
+/* ---------- bottom nav ---------- */
+.nav{position:relative;z-index:3;flex:0 0 auto;display:flex;justify-content:space-around;align-items:flex-end;margin:0 6px 14px;padding:0 0 4px;
+  border:16px solid transparent;border-image:url('../images/skins/scrapbook/panel-cream.png') 130 fill / 16px round;filter:drop-shadow(0 -1px 3px var(--sh));}
+.ni{display:flex;flex-direction:column;align-items:center;font:400 11px 'Kalam',cursive;color:var(--ink);position:relative;width:56px;padding:4px 0 0;}
+.ni img{width:28px;height:28px;object-fit:contain;position:relative;z-index:1;}
+.ni span{position:relative;z-index:1;}
+.ni.on{font-weight:700;color:#8e3553;}
+.ni.on::before{content:"";position:absolute;inset:-8px -2px -6px;z-index:0;border:10px solid transparent;
+  border-image:url('../images/skins/scrapbook/panel-pink.png') 130 fill / 10px round;}
+.homebar{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:120px;height:5px;border-radius:3px;background:#22170f;z-index:6;}
+.sechdr{display:flex;align-items:center;gap:8px;padding:6px 12px 8px;position:relative;z-index:3;flex:0 0 auto;}
+.sechdr .title{margin-right:auto;}
+.ic{font-size:18px;color:#33241a;}
+</style>
+</head>
+<body>
+<p class="label">BlipVibe · Scrapbook skin · prototype (real generated artwork · fields corrected to the live app)</p>
+
+<!-- ================= HOME ================= -->
+<div class="phone"><div class="screen">
+  <div class="topstrip"></div>
+  <div class="status"><span>6:11</span><span class="r"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-three-quarters"></i></span></div>
+  <div class="hdr">
+    <span class="logo">BlipVibe<img class="deco" src="../images/skins/scrapbook/deco/paperclip.png" style="width:46px;left:-24px;top:14px;transform:rotate(100deg);"></span>
+    <span class="hicons">
+      <i class="fas fa-magnifying-glass"></i>
+      <span class="bell"><i class="fas fa-bell"></i><b>1</b></span>
+      <i class="fas fa-music"></i>
+      <span class="coins paper thin"><i class="fas fa-coins"></i>3209</span>
+      <img class="avatar" src="../images/default-avatar.svg" alt="">
+    </span>
+  </div>
+  <div class="scroll">
+    <div class="quests paper">
+      <div class="spiral"></div>
+      <div class="q"><div class="qi paper pink"><i class="fas fa-thumbs-up"></i></div><div class="qb"><div class="ql">React to 5 posts</div><div class="bar" style="--p:14%"><span></span></div><div class="qn">0 / 5</div></div><div class="qr"><i class="fas fa-coins"></i>+5</div></div>
+      <div class="q"><div class="qi paper pink"><i class="fas fa-paper-plane"></i></div><div class="qb"><div class="ql">Send 3 messages</div><div class="bar" style="--p:6%"><span></span></div><div class="qn">0 / 3</div></div><div class="qr"><i class="fas fa-coins"></i>+10</div></div>
+      <div class="q"><div class="qi paper pink"><i class="fas fa-heart"></i></div><div class="qb"><div class="ql">Like 5 posts</div><div class="bar" style="--p:10%"><span></span></div><div class="qn">0 / 5</div></div><div class="qr"><i class="fas fa-coins"></i>+5</div></div>
+      <img class="deco" src="../images/skins/scrapbook/deco/heart.png" style="width:40px;top:-22px;right:-16px;transform:rotate(14deg);">
+      <img class="deco" src="../images/skins/scrapbook/deco/bow.png" style="width:90px;bottom:-34px;right:-22px;transform:rotate(-8deg);">
+    </div>
+    <div class="chips" style="padding:0 0 8px;">
+      <span class="chip paper active"><i class="fas fa-user-group"></i> Following</span>
+      <span class="chip paper"><i class="fas fa-compass"></i> Discover</span>
+      <span class="chip paper"><i class="fas fa-user"></i> My Posts</span>
+    </div>
+    <div class="post paper">
+      <div class="prow">
+        <img class="pav" src="../images/skins/thumbs/galaxy.png" alt="">
+        <span class="pname">Crystals Blip</span>
+        <span class="pdate">10/25/2026</span>
+        <i class="fas fa-ellipsis" style="margin-left:4px;"></i>
+      </div>
+      <div class="polaroid">
+        <img class="main" src="../images/skins/scrapbook/thumbs/cottagecore-book.png" alt="">
+        <img class="deco" src="../images/skins/scrapbook/deco/tape.png" style="width:70px;top:-10px;left:-22px;transform:rotate(-38deg);">
+        <img class="deco" src="../images/skins/scrapbook/deco/heart.png" style="width:40px;top:-16px;right:-14px;transform:rotate(12deg);">
+        <img class="deco" src="../images/skins/scrapbook/deco/lavender.png" style="width:58px;bottom:-22px;left:-30px;transform:rotate(-6deg);">
+      </div>
+      <!-- corrected to the live app: like · dislike · comment · share -->
+      <div class="acts">
+        <span><i class="far fa-thumbs-up"></i>0</span>
+        <span><i class="far fa-thumbs-down"></i>0</span>
+        <span><i class="far fa-comment"></i>0</span>
+        <span><i class="fas fa-share"></i>0</span>
+      </div>
+    </div>
+  </div>
+  <nav class="nav">
+    <div class="ni on"><img src="../images/skins/scrapbook/icons/home.png"><span>Home</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/groups.png"><span>Groups</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/skins.png"><span>Skins</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/network.png"><span>Network</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/messages.png"><span>Messages</span></div>
+  </nav>
+  <div class="homebar"></div>
+</div></div>
+
+<!-- ================= SKINS ================= -->
+<div class="phone"><div class="screen">
+  <div class="status"><span>6:11</span><span class="r"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-three-quarters"></i></span></div>
+  <div class="hdr">
+    <span class="round paper"><i class="fas fa-arrow-left"></i></span>
+    <span class="title paper">Skins</span>
+    <span class="coins paper thin"><i class="fas fa-coins"></i>3209</span>
+  </div>
+  <div class="chips" id="cats"></div>
+  <div class="scroll" style="padding-top:12px;"><div class="grid" id="grid"></div></div>
+  <nav class="nav">
+    <div class="ni"><img src="../images/skins/scrapbook/icons/home.png"><span>Home</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/groups.png"><span>Groups</span></div>
+    <div class="ni on"><img src="../images/skins/scrapbook/icons/skins.png"><span>Skins</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/network.png"><span>Network</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/messages.png"><span>Messages</span></div>
+  </nav>
+  <div class="homebar"></div>
+</div></div>
+
+<!-- ================= PROFILE ================= -->
+<div class="phone"><div class="screen">
+  <div class="status"><span>6:11</span><span class="r"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-three-quarters"></i></span></div>
+  <div class="scroll" style="padding-top:0;">
+    <div class="pol-wrap">
+      <span class="round paper" style="position:absolute;left:4px;top:8px;z-index:4;"><i class="fas fa-arrow-left"></i></span>
+      <!-- The two polaroids ARE the timeline: they show the user's cover photo
+           (cover_photo_url_mobile in front, cover_photo_url behind; same photo if only one is set).
+           The camera on the back polaroid = Change Cover Photo. -->
+      <div class="pframe" style="left:56px;top:22px;width:150px;transform:rotate(-7deg);z-index:1;">
+        <img src="sample/cover-1.png" onerror="this.src='../images/login-bg.webp'" alt="Timeline photo">
+      </div>
+      <div class="pframe" style="right:6px;top:40px;width:158px;transform:rotate(6deg);z-index:2;">
+        <img src="sample/cover-2.png" onerror="this.src='../images/login-bg.webp';this.style.objectPosition='80% 50%'" alt="Timeline photo">
+        <span class="cam" style="right:-8px;bottom:-4px;"><i class="fas fa-camera"></i></span>
+      </div>
+      <img class="deco" src="../images/skins/scrapbook/deco/lavender.png" style="width:64px;left:-14px;top:120px;transform:rotate(-12deg);">
+      <img class="deco" src="../images/skins/scrapbook/deco/tape.png" style="width:62px;left:44px;top:12px;transform:rotate(-40deg);z-index:6;">
+      <!-- real profile picture (avatar_url); camera = change profile photo -->
+      <img class="bigav" src="sample/avatar.png" onerror="this.src='../images/default-avatar.svg'" alt="Profile picture">
+      <span class="cam" style="left:calc(50% + 36px);top:218px;"><i class="fas fa-camera"></i></span>
+    </div>
+    <div class="nameplate paper">
+      <div class="n">Rion</div>
+      <div class="b">I'm cool . . . .</div>
+      <img class="deco" src="../images/skins/scrapbook/deco/tape.png" style="width:70px;left:-34px;top:-8px;transform:rotate(-52deg);">
+    </div>
+    <div class="stats paper">
+      <div><b>35</b><span>Following</span></div>
+      <div><b>21</b><span>Followers</span></div>
+    </div>
+    <div class="btnp paper">Edit Profile <i class="fas fa-pen"></i></div>
+  </div>
+  <nav class="nav">
+    <div class="ni"><img src="../images/skins/scrapbook/icons/home.png"><span>Home</span></div>
+    <div class="ni on"><img src="../images/skins/scrapbook/icons/groups.png"><span>Groups</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/skins.png"><span>Skins</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/network.png"><span>Network</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/messages.png"><span>Messages</span></div>
+  </nav>
+  <div class="homebar"></div>
+</div></div>
+
+<!-- ================= GROUPS ================= -->
+<div class="phone"><div class="screen">
+  <div class="status"><span>6:11</span><span class="r"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-three-quarters"></i></span></div>
+  <div class="sechdr">
+    <span class="round paper"><i class="fas fa-arrow-left"></i></span>
+    <span class="title paper">Groups</span>
+    <i class="ic fas fa-magnifying-glass"></i><i class="ic fas fa-plus"></i>
+  </div>
+  <!-- corrected to the live app: My Groups · Moderating · Joined · Discover -->
+  <div class="chips">
+    <span class="chip paper">My Groups</span>
+    <span class="chip paper active">Moderating</span>
+    <span class="chip paper">Joined</span>
+    <span class="chip paper">Discover</span>
+  </div>
+  <div class="scroll">
+    <div class="row paper"><img class="th" src="../images/skins/thumbs/witchcraft.png"><div><div class="t1">Crystal Lovers</div><div class="t2">12.4K members</div></div><div class="end"><span class="join"><i class="fas fa-plus"></i></span></div></div>
+    <div class="row paper"><img class="th" src="../images/skins/thumbs/autumn-leaves.png"><div><div class="t1">Nature &amp; Outdoors</div><div class="t2">8.1K members</div></div><div class="end"><span class="join"><i class="fas fa-plus"></i></span></div></div>
+    <div class="row paper"><img class="th" src="../images/skins/thumbs/neon-wave.png"><div><div class="t1">Gaming Vibes</div><div class="t2">24.9K members</div></div><div class="end"><span class="join"><i class="fas fa-plus"></i></span></div></div>
+    <div class="row paper"><img class="th" src="../images/skins/thumbs/anime-blaze.png"><div><div class="t1">Anime World</div><div class="t2">18.3K members</div></div><div class="end"><span class="join"><i class="fas fa-plus"></i></span></div></div>
+  </div>
+  <nav class="nav">
+    <div class="ni"><img src="../images/skins/scrapbook/icons/home.png"><span>Home</span></div>
+    <div class="ni on"><img src="../images/skins/scrapbook/icons/groups.png"><span>Groups</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/skins.png"><span>Skins</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/network.png"><span>Network</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/messages.png"><span>Messages</span></div>
+  </nav>
+  <div class="homebar"></div>
+</div></div>
+
+<!-- ================= POST VIEW ================= -->
+<div class="phone"><div class="screen">
+  <div class="status"><span>6:11</span><span class="r"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-three-quarters"></i></span></div>
+  <div class="scroll" style="padding-top:40px;">
+    <div class="post paper">
+      <div class="prow">
+        <img class="pav" src="../images/skins/thumbs/galaxy.png" alt="">
+        <div><div class="pname">Crystals Blip</div><div class="psub">Today's Vibe ✨</div></div>
+        <i class="fas fa-ellipsis" style="margin-left:auto;"></i>
+      </div>
+      <div class="polaroid" style="transform:none;padding-bottom:7px;">
+        <img class="main" src="../images/skins/scrapbook/thumbs/cottagecore-book.png" style="aspect-ratio:1/1.05;" alt="">
+        <img class="deco" src="../images/skins/scrapbook/deco/tape.png" style="width:70px;top:-12px;left:-20px;transform:rotate(-38deg);">
+      </div>
+      <div class="acts">
+        <span><i class="fas fa-thumbs-up" style="color:#cf6f8c"></i>48</span>
+        <span><i class="far fa-thumbs-down"></i>12</span>
+        <span><i class="far fa-comment"></i>6</span>
+        <span><i class="fas fa-share"></i>3</span>
+      </div>
+    </div>
+  </div>
+  <nav class="nav">
+    <div class="ni"><img src="../images/skins/scrapbook/icons/home.png"><span>Home</span></div>
+    <div class="ni on"><img src="../images/skins/scrapbook/icons/groups.png"><span>Groups</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/skins.png"><span>Skins</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/network.png"><span>Network</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/messages.png"><span>Messages</span></div>
+  </nav>
+  <div class="homebar"></div>
+</div></div>
+
+<!-- ================= MESSAGES ================= -->
+<div class="phone"><div class="screen">
+  <div class="status"><span>6:11</span><span class="r"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-three-quarters"></i></span></div>
+  <div class="sechdr">
+    <span class="title paper">Messages</span>
+    <i class="ic fas fa-magnifying-glass"></i><i class="ic fas fa-pen-to-square"></i>
+  </div>
+  <div class="scroll">
+    <div class="row paper"><img class="th circle" src="../images/skins/thumbs/sakura.png"><div><div class="t1">LunaMae</div><div class="t2">Hey! Are you joining the event tonight?</div></div><div class="end"><span class="dot"></span>2m</div></div>
+    <div class="row paper"><img class="th circle" src="../images/skins/thumbs/vaporwave.png"><div><div class="t1">PixelJay</div><div class="t2">That sounds awesome!</div></div><div class="end"><span class="dot"></span>12m</div></div>
+    <div class="row paper"><img class="th circle" src="../images/skins/thumbs/witchcraft.png"><div><div class="t1">CrystalCrew</div><div class="t2">Rion: New post in the group!</div></div><div class="end">35m</div></div>
+    <div class="row paper"><img class="th circle" src="../images/skins/thumbs/autumn-leaves.png"><div><div class="t1">NatureVibes</div><div class="t2">Photo</div></div><div class="end">1h</div></div>
+  </div>
+  <nav class="nav">
+    <div class="ni"><img src="../images/skins/scrapbook/icons/home.png"><span>Home</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/groups.png"><span>Groups</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/skins.png"><span>Skins</span></div>
+    <div class="ni"><img src="../images/skins/scrapbook/icons/network.png"><span>Network</span></div>
+    <div class="ni on"><img src="../images/skins/scrapbook/icons/messages.png"><span>Messages</span></div>
+  </nav>
+  <div class="homebar"></div>
+</div></div>
+
+<!-- ================= CHAT ================= -->
+<div class="phone"><div class="screen">
+  <div class="status"><span>6:11</span><span class="r"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-three-quarters"></i></span></div>
+  <div class="sechdr">
+    <i class="ic fas fa-chevron-left"></i>
+    <img class="avatar" src="../images/skins/thumbs/sakura.png" style="width:34px;height:34px;">
+    <span class="title" style="font-size:24px;padding:0;">LunaMae</span>
+    <i class="ic fas fa-phone"></i><i class="ic fas fa-ellipsis"></i>
+  </div>
+  <div class="scroll" style="padding-top:14px;">
+    <div class="bub paper">Hey! Are you joining the event tonight?</div>
+    <div class="ts">6:02 PM</div>
+    <div class="bub paper pink me">Yes! I'll be there! 😊</div>
+    <div class="ts me">6:05 PM</div>
+    <div class="bub paper">Awesome! Can't wait! ✨</div>
+    <div class="ts">6:06 PM</div>
+    <img src="../images/skins/scrapbook/deco/heart.png" style="width:54px;margin:6px 0 0 30px;transform:rotate(-10deg);opacity:.9;">
+  </div>
+  <div class="composer paper"><i class="fas fa-plus"></i>Type a message...<i class="far fa-face-smile" style="margin-left:auto;"></i><span class="send" style="margin-left:0;"><i class="fas fa-paper-plane"></i></span></div>
+</div></div>
+
+<script>
+// Real BlipVibe premium skins (js/app.js premiumSkins) + Scrapbook, at real prices.
+var SKINS=[
+ {id:'scrapbook',name:'Scrapbook',cat:'scrapbook',owned:true,active:true,thumb:'../images/skins/scrapbook/thumbs/scrapbook-journal.png'},
+ {id:'witchcraft',name:'Witchcraft',cat:'aesthetic'},{id:'anime-blaze',name:'Anime Blaze',cat:'aesthetic'},
+ {id:'kawaii-cats',name:'Kawaii Cats',cat:'aesthetic'},{id:'sakura',name:'Sakura Bloom',cat:'realistic'},
+ {id:'autumn-leaves',name:'Autumn Leaves',cat:'realistic'},{id:'galaxy',name:'Galaxy Swirl',cat:'animated'},
+ {id:'ocean-tide',name:'Ocean Tide',cat:'realistic'},{id:'neon-wave',name:'Neon Wave',cat:'animated'},
+ {id:'molten-gold',name:'Molten Gold',cat:'realistic'},{id:'geo-prism',name:'Geo Prism',cat:'aesthetic'},
+ {id:'dark-prism',name:'Dark Prism',cat:'aesthetic'},{id:'cotton-candy',name:'Cotton Candy',cat:'aesthetic'},
+ {id:'pastel-aurora',name:'Pastel Aurora',cat:'animated'},{id:'vaporwave',name:'Vaporwave',cat:'animated'},
+ {id:'blood-moon',name:'Blood Moon',cat:'realistic'},{id:'heavens-light',name:"Heaven's Light",cat:'realistic'},
+ {id:'toxic-green',name:'Toxic Green',cat:'animated'},{id:'matrix',name:'Matrix',cat:'animated'},
+ {id:'deep-wave',name:'Deep Wave',cat:'animated'}
+];
+var CATS=[['all','All'],['aesthetic','Aesthetic'],['realistic','Realistic'],['scrapbook','Scrapbook'],['animated','Animated']];
+var current='all';
+function card(s,wide){
+  var src=s.thumb||('../images/skins/thumbs/'+s.id+'.png');
+  var price=s.owned?'<div class="pr owned"><i class="fas fa-check"></i>'+(s.active?'Equipped':'Owned')+'</div>'
+                   :'<div class="pr"><i class="fas fa-coins"></i>300</div>';
+  return '<div class="skin paper'+(wide?' wide':'')+'">'+(s.active?'<span class="ck"><i class="fas fa-check"></i></span>':'')
+    +'<div class="ph"><img src="'+src+'" alt=""></div><div class="nm">'+s.name+'</div>'+price+'</div>';
+}
+function render(){
+  document.getElementById('cats').innerHTML=CATS.map(function(c){
+    return '<span class="chip paper'+(c[0]===current?' active':'')+'" data-c="'+c[0]+'">'+c[1]+'</span>';}).join('');
+  var list=SKINS.filter(function(s){return current==='all'||s.cat===current;});
+  var html='',i=0,row=0;
+  while(i<list.length){var n=(row%2===0)?3:2;list.slice(i,i+n).forEach(function(s){html+=card(s,n===2);});i+=n;row++;}
+  document.getElementById('grid').innerHTML=html;
+  document.querySelectorAll('#cats .chip').forEach(function(b){b.onclick=function(){current=b.dataset.c;render();};});
+}
+render();
+</script>
+</body>
+</html>

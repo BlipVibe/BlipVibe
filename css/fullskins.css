@@ -1,0 +1,364 @@
+/* BlipVibe full-skin engine styles. Active only under body.fs (see js/fullskins.js).
+ * Asset URLs arrive as --fs-* custom properties set on <body>, so nothing downloads until a
+ * full skin is applied. Many rules need !important because existing premium/mobile rules use it
+ * and some surfaces get inline styles from JS (documented in the engine spec). */
+
+/* ---------- page + typography ---------- */
+body.fs {
+  background: #000 var(--fs-background) center top / cover no-repeat fixed !important;
+  color: var(--fs-ink) !important;
+  font-family: var(--fs-font);
+}
+body.fs::before { background: transparent !important; }
+/* the user's custom premium background photo + overlay give way to the skin's own background */
+body.fs #premiumBgLayer,
+body.fs #premiumBgOverlay,
+body.fs #premiumBgDarkness { display: none !important; }
+/* shop logos give way to the skin's wordmark */
+body.fs .nav-logo .nav-logo-img { display: none !important; }
+body.fs .nav-logo.nav-logo-image::after { content: "BlipVibe"; }
+body.fs .page,
+body.fs .main-container,
+body.fs .center-feed { background: transparent !important; }
+body.fs h1, body.fs h2, body.fs h3, body.fs h4,
+body.fs .nav-logo, body.fs .profile-name, body.fs .post-username, body.fs .card-heading {
+  font-family: var(--fs-title-font);
+  color: var(--fs-ink) !important;
+}
+body.fs p, body.fs span, body.fs .post-time, body.fs .stat-label,
+body.fs .profile-title, body.fs .profile-about { color: inherit; }
+body.fs .post-time, body.fs .stat-label, body.fs .quest-progress,
+body.fs .quest-reset, body.fs .profile-title { color: var(--fs-muted) !important; }
+
+/* ---------- stretchable surfaces (9-slice panels from the kit) ---------- */
+body.fs .card,
+body.fs .feed-post,
+body.fs .modal-content,
+body.fs .user-dropdown,
+body.fs .post-dropdown,
+body.fs .quest-panel,
+body.fs .coin-goal-bar,
+body.fs .featured-skin-banner,
+body.fs .msg-contact,
+body.fs .notif-item,
+body.fs .group-card,
+body.fs .comment-item {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 16px solid transparent !important;
+  border-image-source: var(--fs-panel-card) !important;
+  border-image-slice: calc(var(--fs-slice) * 1%) fill !important;
+  border-image-width: 16px !important;
+  border-image-repeat: stretch !important;
+  border-radius: 0 !important;
+  color: var(--fs-ink) !important;
+}
+body.fs .card:hover,
+body.fs .msg-contact.active,
+body.fs .notif-item.unread { border-image-source: var(--fs-panel-card-active) !important; }
+
+/* featured-skin banner text comes with the featured skin's own inline colours */
+body.fs .featured-skin-banner h4,
+body.fs .featured-skin-banner [style*="color"] { color: var(--fs-ink) !important; }
+body.fs .featured-skin-banner p { color: var(--fs-muted) !important; }
+
+/* panels the app leaves empty (e.g. coin goal with infinite coins) shouldn't draw a blank card */
+body.fs .coin-goal-bar:empty,
+body.fs .featured-skin-banner:empty,
+body.fs .quest-panel:empty { display: none !important; }
+
+/* ---------- tabs / chips ---------- */
+body.fs .search-tab {
+  text-shadow: none !important;
+  background: transparent !important;
+  border: 10px solid transparent !important;
+  border-image: var(--fs-chip) 30% fill / 10px stretch !important;
+  border-radius: 0 !important;
+  color: var(--fs-ink) !important;
+  box-shadow: none !important;
+}
+body.fs .search-tab.active {
+  border-image-source: var(--fs-chip-active) !important;
+  color: var(--fs-ink) !important;
+  font-weight: 700;
+}
+
+/* ---------- buttons ---------- */
+body.fs .btn-primary,
+body.fs .featured-buy-btn,
+body.fs .join-group-btn {
+  background: transparent !important;
+  border: 12px solid transparent !important;
+  border-image: var(--fs-btn-primary) 30% fill / 12px stretch !important;
+  border-radius: 0 !important;
+  color: var(--fs-ink) !important;
+  box-shadow: none !important;
+}
+body.fs-dark .btn-primary { color: #fff !important; }
+body.fs .btn-outline,
+body.fs .btn-disabled {
+  background: transparent !important;
+  border: 12px solid transparent !important;
+  border-image: var(--fs-btn-secondary) 30% fill / 12px stretch !important;
+  border-radius: 0 !important;
+  color: var(--fs-ink) !important;
+}
+
+/* ---------- top navbar ---------- */
+body.fs .navbar {
+  background: var(--fs-header-bar) center / 100% 100% no-repeat !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+body.fs .nav-logo { color: var(--fs-ink) !important; }
+body.fs .nav-coins,
+body.fs .nav-coins .coin-count { color: var(--fs-ink) !important; }
+
+/* ---------- image icons (replace Font Awesome glyphs) ---------- */
+body.fs .fs-ico,
+body.fs .nav-link[data-page] > i,
+body.fs .mobile-search-btn > i,
+body.fs .mobile-notif-btn > i,
+body.fs .nav-music-btn > i,
+body.fs .nav-coins > i,
+body.fs .action-btn > i,
+body.fs .avatar-edit-btn > i,
+body.fs .timeline-cover-btn > i {
+  display: inline-block !important;
+  width: 1.45em; height: 1.45em;
+  background: center / contain no-repeat;
+  color: transparent !important;
+  vertical-align: middle;
+}
+body.fs .nav-link[data-page] > i::before,
+body.fs .mobile-search-btn > i::before,
+body.fs .mobile-notif-btn > i::before,
+body.fs .nav-music-btn > i::before,
+body.fs .nav-coins > i::before,
+body.fs .action-btn > i::before,
+body.fs .avatar-edit-btn > i::before,
+body.fs .timeline-cover-btn > i::before { content: "" !important; }
+body.fs .nav-link[data-page="home"] > i { background-image: var(--fs-icon-home); }
+body.fs .nav-link[data-page="groups"] > i { background-image: var(--fs-icon-groups); }
+body.fs .nav-link[data-page="shop"] > i { background-image: var(--fs-icon-skins); }
+body.fs .nav-link[data-page="profiles"] > i { background-image: var(--fs-icon-network); }
+body.fs .nav-link[data-page="messages"] > i { background-image: var(--fs-icon-messages); }
+body.fs .nav-link[data-page="notifications"] > i,
+body.fs .mobile-notif-btn > i { background-image: var(--fs-icon-bell); }
+body.fs .mobile-search-btn > i { background-image: var(--fs-icon-search); }
+body.fs .nav-music-btn > i { background-image: var(--fs-icon-music); }
+body.fs .nav-coins > i { background-image: var(--fs-icon-coin); }
+body.fs .like-btn > i { background-image: var(--fs-icon-like); }
+body.fs .dislike-btn > i { background-image: var(--fs-icon-dislike); }
+body.fs .react-btn > i { background-image: var(--fs-icon-emoji); }
+body.fs .comment-btn > i { background-image: var(--fs-icon-comment); }
+body.fs .share-btn > i { background-image: var(--fs-icon-share); }
+body.fs .avatar-edit-btn > i,
+body.fs .timeline-cover-btn > i { background-image: var(--fs-icon-camera); }
+body.fs .action-btn { color: var(--fs-ink) !important; }
+body.fs .like-btn.liked > i { filter: drop-shadow(0 0 3px var(--fs-accent)); }
+
+/* ---------- bottom nav (mobile) ---------- */
+@media (max-width: 768px) {
+  body.fs .nav-center {
+    background: var(--fs-nav-bar) center / 100% 100% no-repeat !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+  body.fs .nav-center .nav-link { color: var(--fs-ink) !important; background: transparent !important; }
+  body.fs .nav-center .nav-link.active {
+    background: var(--fs-nav-active) center / 100% 100% no-repeat !important;
+    color: var(--fs-ink) !important;
+  }
+  body.fs .nav-center .nav-link > i { width: 28px !important; min-width: 28px; height: 28px !important; flex-shrink: 0; }
+}
+
+/* ---------- avatars: skin shape (mask) ---------- */
+body.fs #profileAvatarImg,
+body.fs .modal-profile-top img,
+body.fs .pv-profile-card .profile-avatar,
+body.fs .nav-avatar,
+body.fs .post-create-avatar {
+  border-radius: 0 !important;
+  border: 0 !important;
+  -webkit-mask: var(--fs-avatar-mask) center / contain no-repeat;
+  mask: var(--fs-avatar-mask) center / contain no-repeat;
+}
+body.fs .profile-avatar-wrap::before { display: none !important; }
+body.fs .profile-avatar-wrap {
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+body.fs .profile-avatar-wrap::after {
+  content: "";
+  position: absolute; inset: -5%;
+  background: var(--fs-avatar-frame) center / contain no-repeat;
+  pointer-events: none;
+  z-index: 2;
+}
+body.fs .profile-avatar-wrap { position: relative; }
+
+/* ---------- quests (state image chosen by js: data-fs-q = 0 | 50 | 100) ---------- */
+body.fs .quest-icon {
+  background: var(--fs-quest-0) center / contain no-repeat !important;
+  width: 44px !important; height: 44px !important;
+  border-radius: 0 !important;
+}
+body.fs .quest-icon > i { display: none !important; }
+body.fs .quest-item[data-fs-q="50"] .quest-icon { background-image: var(--fs-quest-50) !important; }
+body.fs .quest-item[data-fs-q="100"] .quest-icon { background-image: var(--fs-quest-100) !important; }
+body.fs .quest-item { border-color: rgba(0, 0, 0, .1) !important; }
+body.fs .quest-bar { background: rgba(0, 0, 0, .12) !important; }
+body.fs .quest-bar-fill { background: var(--fs-accent) !important; }
+body.fs .quest-reward,
+body.fs .quest-reward i { color: var(--fs-ink) !important; }
+
+/* ---------- profile card text, stats, links ---------- */
+body.fs .stat-count { color: var(--fs-ink) !important; }
+body.fs .profile-stats { border-color: transparent !important; }
+body.fs .view-profile-link,
+body.fs .pv-back-link,
+body.fs .profile-website { color: var(--fs-muted) !important; }
+body.fs .coin-goal-bar p strong { color: var(--fs-accent) !important; }
+body.fs .coin-goal-track { background: rgba(0, 0, 0, .12) !important; }
+body.fs .coin-goal-fill { background: var(--fs-accent) !important; }
+
+/* ---------- round photo buttons (cover / avatar camera) ---------- */
+body.fs .timeline-cover-btn,
+body.fs .avatar-edit-btn {
+  background: var(--fs-btn-round) center / contain no-repeat !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: var(--fs-ink) !important;
+  z-index: 5 !important;
+}
+body.fs .timeline-cover-btn > i,
+body.fs .avatar-edit-btn > i { width: 18px !important; height: 18px !important; }
+
+/* ---------- timeline (cover) photos rendered by js ---------- */
+body.fs #timelineCover,
+body.fs #pvCoverBanner {
+  background-image: none !important;
+  background-color: transparent !important;
+  position: relative;
+  overflow: visible;
+}
+.fs-timeline { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.fs-tl-slot { position: absolute; }
+.fs-tl-slot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* post photos: the app letterboxes portrait images on black — let the skin's frame show instead */
+body.fs .pm-thumb img,
+body.fs .pm-thumb video { background: transparent !important; }
+
+/* ================================================================
+   SCRAPBOOK (owner's master)
+   ================================================================ */
+body.fs-scrapbook .fs-tl-slot {
+  background: #fffdf7;
+  padding: 7px 7px 22px;
+  box-shadow: 0 4px 10px rgba(62, 45, 32, .32);
+  width: 44%;
+  aspect-ratio: 1 / 1.08;
+}
+body.fs-scrapbook .fs-tl-slot img { height: auto; aspect-ratio: 1 / .92; filter: sepia(.18) saturate(.92) contrast(.96) brightness(1.03); }
+body.fs-scrapbook .fs-tl-slot-1 { left: 6%; top: 8%; transform: rotate(-7deg); }
+body.fs-scrapbook .fs-tl-slot-2 { right: 4%; top: 14%; transform: rotate(6deg); }
+body.fs-scrapbook .fs-timeline::after {
+  content: "";
+  position: absolute; left: 0; bottom: -6%; width: 30%; aspect-ratio: 1;
+  background: var(--fs-deco-1) left bottom / contain no-repeat;
+}
+/* profile view: no big panel — torn name label, torn stats strip, torn Edit button (master) */
+body.fs-scrapbook .pv-profile-card {
+  border: 0 !important;
+  border-image: none !important;
+  background: transparent !important;
+}
+body.fs-scrapbook .pv-profile-card .profile-cover { display: none !important; }
+/* name + status share one torn label; badges, bio etc. follow it (real cards add a badge row
+   between them) */
+body.fs-scrapbook .pv-profile-card .profile-info { display: flex; flex-direction: column; align-items: center; }
+body.fs-scrapbook .pv-profile-card .profile-info > * { order: 2; }
+body.fs-scrapbook .pv-profile-card .profile-info > .profile-avatar-wrap,
+body.fs-scrapbook .pv-profile-card .profile-info > .profile-name,
+body.fs-scrapbook .pv-profile-card .profile-info > .profile-title { order: 0; }
+body.fs-scrapbook .pv-profile-card .profile-info > .badge-row,
+body.fs-scrapbook .pv-profile-card .profile-info > .profile-about,
+body.fs-scrapbook .pv-profile-card .profile-info > .profile-website { order: 1; margin-bottom: 12px; }
+body.fs-scrapbook .pv-profile-card .profile-stats,
+body.fs-scrapbook .pv-profile-card .pv-actions { align-self: stretch; }
+body.fs-scrapbook .pv-profile-card .profile-name {
+  display: block;
+  width: 72%;
+  margin: 14px auto 0;
+  padding: 12px 0 36px;
+  font-size: 34px !important;
+  background: var(--fs-btn-secondary) center / 100% 100% no-repeat;
+  filter: drop-shadow(0 2px 3px rgba(62, 45, 32, .25));
+}
+body.fs-scrapbook .pv-profile-card .profile-info:not(:has(> .profile-title)) > .profile-about { order: 0; }
+body.fs-scrapbook .pv-profile-card .profile-info:not(:has(> .profile-title)) > .profile-about,
+body.fs-scrapbook .pv-profile-card .profile-title {
+  position: relative;
+  margin-top: -40px;
+  margin-bottom: 18px;
+  font-size: 17px !important;
+}
+body.fs-scrapbook .pv-profile-card .profile-stats {
+  width: 90%;
+  margin: 0 auto 16px;
+  padding: 10px 0;
+  background: var(--fs-btn-secondary) center / 100% 100% no-repeat;
+  filter: drop-shadow(0 2px 3px rgba(62, 45, 32, .25));
+}
+body.fs-scrapbook .pv-profile-card .stat + .stat { border-left: 1.5px solid rgba(62, 45, 32, .25); }
+body.fs-scrapbook .pv-profile-card .stat-count { font-family: var(--fs-title-font); font-size: 30px !important; }
+body.fs-scrapbook .pv-profile-card .stat-label { color: var(--fs-ink) !important; font-size: 16px !important; }
+body.fs-scrapbook .pv-actions .btn-primary {
+  display: flex !important;
+  align-items: center;
+  margin: 0 auto;
+  width: 80%;
+  justify-content: center;
+  flex-direction: row-reverse;
+  gap: 14px;
+  font-family: var(--fs-title-font);
+  font-size: 22px !important;
+  border-image-source: var(--fs-btn-secondary) !important;
+  filter: drop-shadow(0 2px 3px rgba(62, 45, 32, .25));
+}
+
+/* quest card: spiral binding, pink icon squares, gingham bow (master) */
+body.fs-scrapbook .quest-panel { position: relative; padding-left: 26px !important; overflow: visible !important; }
+body.fs-scrapbook .quest-panel::before {
+  content: "";
+  position: absolute; left: -14px; top: 4%; bottom: 4%; width: 30px;
+  background: var(--fs-quest-0) left center / auto 100% no-repeat;
+  pointer-events: none;
+}
+body.fs-scrapbook .quest-panel::after {
+  content: "";
+  position: absolute; right: -12px; bottom: -22px; width: 74px; height: 64px;
+  background: var(--fs-deco-2) center / contain no-repeat;
+  transform: rotate(8deg);
+  pointer-events: none;
+}
+body.fs-scrapbook .quest-icon,
+body.fs-scrapbook .quest-item[data-fs-q] .quest-icon {
+  background: #e7b7bb !important;
+  width: 30px !important; height: 30px !important;
+  border-radius: 3px !important;
+  box-shadow: 0 1px 2px rgba(62, 45, 32, .25);
+}
+body.fs-scrapbook .quest-icon > i { display: inline-block !important; color: #7b3f4c !important; font-size: 14px; }
+
+body.fs-scrapbook .post-media-grid .pm-thumb {
+  background: #fffdf7;
+  padding: 7px 7px 20px;
+  box-shadow: 0 3px 8px rgba(62, 45, 32, .3);
+  transform: rotate(-1.2deg);
+}

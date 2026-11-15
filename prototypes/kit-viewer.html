@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kit Viewer</title>
+<style>
+:root{--bg:#1d1b19;--fg:#e8dcc6;}
+body{margin:0;padding:14px;background:var(--bg);color:var(--fg);font:13px system-ui}
+h1{font-size:16px;margin:0 0 10px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+figure{margin:0;background:#2a2724;border-radius:8px;padding:6px}
+.chk{background:conic-gradient(#3a3a3a 25%,#2b2b2b 0 50%,#3a3a3a 0 75%,#2b2b2b 0) 0 0/20px 20px;border-radius:4px;overflow:hidden}
+figure img{display:block;width:100%;height:auto}
+figcaption{margin-top:4px;font-size:11px;opacity:.8}
+.bg{grid-row:span 2}
+</style></head><body>
+<h1 id="t"></h1>
+<div class="grid" id="g"></div>
+<script>
+var skin=new URLSearchParams(location.search).get('skin')||'witchcraft';
+document.getElementById('t').textContent='Asset kit: '+skin;
+var files=['background','icons','panels','buttons','nav','frames','quests','deco'];
+document.getElementById('g').innerHTML=files.map(function(f){
+  return '<figure class="'+(f==='background'?'bg':'')+'"><div class="chk"><img src="../images/skins/'+skin+'/kit/'+f+'.png" onerror="this.alt=\'missing\'"></div><figcaption>'+f+'</figcaption></figure>';
+}).join('');
+</script></body></html>
