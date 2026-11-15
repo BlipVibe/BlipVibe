@@ -2249,3 +2249,192 @@ html body.fs.fs-anime-blaze .story-send-btn { width: 52px; height: 48px; backgro
 html body.fs.fs-anime-blaze .story-input-bar { flex-wrap: wrap; }
 html body.fs.fs-anime-blaze .story-reactions-row { order: -1; width: 100%; justify-content: center; gap: 14px; margin: 0 0 4px !important; }
 html body.fs.fs-anime-blaze .story-react-btn { font-size: 26px !important; color: inherit; }
+
+/* ======================================================================================
+   WITCHCRAFT (Nov 15). Built FROM the approved concept: images/skins/witchcraft/concept-v3-approved.png
+   (sheet 1) + concept-2.png (sheet 2); crops in prototypes/reference/witchcraft/. Art traced from those crops
+   (prototypes/witchcraft-redraw-brief.md → kit/redraw-a + redraw-b). Real app fields only. Notes: NOTES.md.
+   ====================================================================================== */
+body.fs-witchcraft { background: #120d13 !important; font-family: var(--fs-font) !important; font-size: 16px; }
+body.fs-witchcraft * { border-image-repeat: stretch !important; }
+body.fs-witchcraft :is(h1, h2, h3, h4, .profile-name, .post-username, .card-heading, .nav-logo, .stat-count, .msg-contact-name,
+  .profile-card-name, .fsk-name, .group-card-body h4) { font-family: var(--fs-title-font) !important; font-weight: 700 !important; color: #ecd3a0 !important; letter-spacing: .2px; }
+body.fs-witchcraft #premiumBgLayer { display: block !important; background: var(--fs-background) center / cover no-repeat !important; }
+body.fs-witchcraft :is(.page, .main-container, .center-feed, .page-container) { background: transparent !important; }
+
+/* ---------- top bar (concept home): gold logo centred with the moon ornament, icon row under it ---------- */
+@media (max-width: 768px) {
+  body.fs-witchcraft .navbar { border: 0 !important; border-image: none !important; box-shadow: none !important;
+    background: var(--fs-header) center bottom / 100% 100% no-repeat !important;
+    height: calc(118px + env(safe-area-inset-top, 0px)) !important; max-height: none !important; padding: env(safe-area-inset-top, 0px) 0 14px !important; box-sizing: border-box !important; }
+  body.fs-witchcraft .page.active { padding-top: calc(120px + env(safe-area-inset-top, 0px)) !important; }
+  body.fs-witchcraft .nav-container { display: grid !important; grid-template-columns: 52px 46px 46px 1fr auto 52px; grid-template-rows: 50px 48px;
+    align-items: center; column-gap: 6px; padding: 0 12px !important; height: 100%; }
+  body.fs-witchcraft .navbar :is(.nav-left, .nav-right) { display: contents !important; }
+  body.fs-witchcraft .navbar .nav-logo { grid-row: 1; grid-column: 1 / -1; justify-self: center; align-self: end;
+    font-size: 34px !important; color: #ecc98a !important; background: none !important; padding: 0 !important;
+    text-shadow: 0 0 10px rgba(236,201,138,.35), 0 2px 0 #2a1a10; }
+  body.fs-witchcraft .navbar .search-bar { display: none !important; }
+  body.fs-witchcraft .navbar .mobile-search-btn { grid-row: 2; grid-column: 1; }
+  body.fs-witchcraft .navbar .mobile-notif-btn { grid-row: 2; grid-column: 2; }
+  body.fs-witchcraft .navbar .nav-music-wrap { grid-row: 2; grid-column: 3; }
+  body.fs-witchcraft .navbar .nav-coins { grid-row: 2; grid-column: 5; }
+  body.fs-witchcraft .navbar .nav-user { grid-row: 2; grid-column: 6; justify-self: end; margin: 0 !important; }
+  body.fs-witchcraft .navbar .nav-user::after { display: none !important; }
+  body.fs-witchcraft .navbar .mobile-search-btn { width: 44px !important; height: 40px !important; border: 0 !important; border-radius: 0 !important;
+    background: var(--fs-field) center / 100% 100% no-repeat !important; }
+  body.fs-witchcraft .navbar .nav-coins { border: 0 !important; border-image: none !important; border-radius: 0 !important;
+    background: var(--fs-price-pill) center / 100% 100% no-repeat !important; padding: 6px 16px !important; color: #f1e2c4 !important; font-size: 18px; }
+  body.fs-witchcraft .navbar .nav-avatar { width: 40px !important; height: 46px !important; border-radius: 20px 20px 6px 6px !important;
+    -webkit-mask: none !important; mask: none !important; box-shadow: 0 0 0 2px #c79b55, 0 0 0 3px #1a1016 !important; object-fit: cover; }
+}
+
+/* ---------- bottom bar: carved shelf, gold line icons, magenta glow behind the active one ---------- */
+@media (max-width: 768px) {
+  body.fs-witchcraft .nav-center { border: 0 !important; border-image: none !important; box-shadow: none !important;
+    background: var(--fs-nav-bar) center top / 100% 100% no-repeat !important;
+    padding-top: 26px !important; padding-bottom: calc(env(safe-area-inset-bottom, 0px) - 6px) !important; }
+  body.fs-witchcraft .nav-center .nav-link { border: 0 !important; border-image: none !important; background: none !important; color: #d9c6a6 !important; font-family: var(--fs-font); font-weight: 600; position: relative; }
+  body.fs-witchcraft .nav-center .nav-link.active { color: #ff8cf2 !important; background: var(--fs-nav-glow) center top / 100% 80% no-repeat !important; }
+}
+
+/* ---------- panels + posts ---------- */
+html body.fs.fs-witchcraft :is(.card:not(.feed-post):not(.profile-card):not(.pv-profile-card), .comment-item, .post-dropdown) {
+  border: 22px solid transparent !important; border-image: var(--fs-post-panel) 160 fill / 22px stretch !important; background: none !important;
+  box-shadow: none !important; padding: 4px 6px !important; }
+html body.fs.fs-witchcraft .feed-post.feed-post.feed-post { background: none !important; box-shadow: none !important;
+  border: 22px solid transparent !important; border-image: var(--fs-post-panel) 160 fill / 22px stretch !important; padding: 2px 4px !important; }
+body.fs-witchcraft .post-header .post-avatar { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important;
+  width: 44px !important; height: 44px !important; padding: 3px; box-sizing: border-box; background: var(--fs-story-ring) center / 100% 100% no-repeat; }
+body.fs-witchcraft .post-username { font-size: 18px !important; }
+body.fs-witchcraft .post-time { color: #bfae9c !important; }
+body.fs-witchcraft .post-menu-btn, body.fs-witchcraft .post-menu-btn i { color: #e6d2ae !important; }
+body.fs-witchcraft .post-actions { border: 0 !important; }
+body.fs-witchcraft .action-btn { color: #e6d2ae !important; }
+/* whole photo, never cropped (owner rule) */
+body.fs-witchcraft .post-media-grid[class*="pm-count"] { display: flex !important; flex-wrap: wrap; justify-content: center; gap: 10px;
+  height: auto !important; max-height: none !important; aspect-ratio: auto !important; overflow: visible !important; background: none !important; }
+body.fs-witchcraft .post-media-grid[class*="pm-count"] .pm-thumb { flex: 0 1 auto; width: auto !important; height: auto !important; max-width: 100%;
+  border: 0 !important; background: none !important; border-radius: 4px !important; overflow: hidden; }
+body.fs-witchcraft .post-media-grid[class*="pm-count"] .pm-thumb :is(img, video) { display: block; width: auto !important; height: auto !important;
+  max-width: 100% !important; max-height: 520px !important; object-fit: contain !important; }
+body.fs-witchcraft .post-media-grid[class*="pm-count"]:not(.pm-count-1) .pm-thumb { max-width: calc(50% - 5px); }
+
+/* ---------- feed tabs: wooden plaques hanging on chains, active glows magenta ---------- */
+body.fs-witchcraft .search-tab { border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important;
+  background: var(--fs-tab) center / 100% 100% no-repeat !important; color: #e8d6b4 !important; padding: 26px 18px 10px !important; font-weight: 600; }
+body.fs-witchcraft .search-tab.active { background-image: var(--fs-tab-active) !important; color: #ffd9fb !important; }
+body.fs-witchcraft .search-tab > i { display: none !important; }
+
+/* ---------- Home: stories, composer, Featured Skin, coin goal ---------- */
+body.fs-witchcraft .story-ring { background: var(--fs-story-ring) center / contain no-repeat !important; padding: 5px !important; }
+body.fs-witchcraft .story-add .story-ring:not(.story-has) { background-image: var(--fs-story-add) !important; }
+html body.fs.fs-witchcraft #openPostModal { border: 0 !important; border-image: none !important; background: var(--fs-composer) center / 100% 100% no-repeat !important;
+  padding: 12px 16px !important; display: flex; align-items: center; gap: 10px; }
+html body.fs.fs-witchcraft .post-create-avatar { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; width: 46px !important; height: 46px !important;
+  padding: 3px; box-sizing: border-box; background: var(--fs-story-ring) center / 100% 100% no-repeat; }
+html body.fs.fs-witchcraft .post-input-fake { background: none !important; border: 0 !important; color: #cdbba2 !important; flex: 1; }
+html body.fs.fs-witchcraft .featured-skin-banner { border: 0 !important; border-image: none !important; background: var(--fs-featured-frame) center / 100% 100% no-repeat !important; padding: 18px 24px !important; }
+html body.fs.fs-witchcraft .coin-goal-bar { border: 0 !important; border-image: none !important; background: var(--fs-coin-goal-bar) center / 100% 100% no-repeat !important; padding: 12px 18px 12px 56px !important; }
+body.fs-witchcraft .coin-goal-track { background: var(--fs-goal-track) center / 100% 100% no-repeat !important; border-radius: 0 !important; }
+body.fs-witchcraft .coin-goal-fill { background: var(--fs-goal-fill) left center / auto 100% no-repeat !important; border-radius: 0 !important; }
+
+/* ---------- Daily Quests (concept): gothic arch frame, three cards in a row, a potion bottle on each that fills with progress ---------- */
+html body.fs.fs-witchcraft .quest-panel { border: 0 !important; border-image: none !important; box-shadow: none !important;
+  background: var(--fs-quests-frame) center / 100% 100% no-repeat !important; padding: 18px 16px 18px !important;
+  display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+html body.fs.fs-witchcraft #questPanel[style*="none"] { display: none !important; }
+body.fs-witchcraft .quest-panel-header { grid-column: 1 / -1; justify-content: center !important; border: 0 !important; margin: 0 0 4px !important; }
+body.fs-witchcraft .quest-panel-header h4 { font-size: 24px !important; color: #ecc98a !important; }
+body.fs-witchcraft .quest-panel-header h4::before, body.fs-witchcraft .quest-panel-header h4::after { content: "✦"; color: #e8c27a; margin: 0 8px; font-size: 16px; }
+body.fs-witchcraft .quest-panel-header i, body.fs-witchcraft .quest-reset { display: none !important; }
+body.fs-witchcraft .quest-item { display: flex !important; flex-direction: column; align-items: center; text-align: center; gap: 2px;
+  border: 0 !important; border-image: none !important; background: var(--fs-quest-card) center bottom / 100% calc(100% - 30px) no-repeat !important;
+  padding: 0 6px 10px !important; margin: 0 !important; min-width: 0; }
+body.fs-witchcraft .quest-icon { width: 54px !important; height: 64px !important; margin: 0 0 -2px !important; border-radius: 0 !important;
+  background: var(--fs-potion-0) center / contain no-repeat !important; }
+body.fs-witchcraft .quest-item[data-fs-q="50"] .quest-icon { background-image: var(--fs-potion-50) !important; }
+body.fs-witchcraft .quest-item[data-fs-q="100"] .quest-icon { background-image: var(--fs-potion-100) !important; }
+body.fs-witchcraft .quest-icon > i { display: none !important; }
+body.fs-witchcraft .quest-info { display: flex; flex-direction: column; align-items: center; }
+body.fs-witchcraft .quest-info p { color: #efe2c8 !important; font-size: 15px !important; line-height: 1.15; margin: 0 !important; }
+body.fs-witchcraft .quest-bar { display: none !important; }
+body.fs-witchcraft .quest-progress { color: #cdb894 !important; font-size: 14px !important; }
+body.fs-witchcraft .quest-reward, body.fs-witchcraft .quest-check { background: none !important; color: #f0dcae !important; font-size: 16px; font-weight: 600; padding: 0 !important; }
+
+/* ---------- page titles + cobweb corner (groups, messages, network, notifications, search) ---------- */
+body.fs-witchcraft :is(.page-header h2, .msg-sidebar-header h3) { border: 0 !important; border-image: none !important; background: none !important;
+  font-size: 30px !important; color: #ecc98a !important; padding: 0 !important; }
+body.fs-witchcraft :is(.page-header, .msg-sidebar-header) { position: relative; }
+body.fs-witchcraft :is(.page-header, .msg-sidebar-header)::after { content: ""; position: absolute; top: -10px; right: -8px; width: 110px; height: 110px;
+  background: var(--fs-cobweb-corner) right top / contain no-repeat; pointer-events: none; z-index: 0; }
+
+/* ---------- list rows (groups, network, search, messages, notifications) ---------- */
+html body.fs.fs-witchcraft :is(.msg-contact, .notif-item, .profile-card-item, .follow-list-item) {
+  border: 16px solid transparent !important; border-image: var(--fs-list-row) 80 110 fill / 16px 20px stretch !important; background: none !important; box-shadow: none !important; }
+html body.fs.fs-witchcraft :is(.join-group-btn, .suggestion-follow-btn, .follow-btn, .profile-follow-btn, #pvFollowBtn) {
+  border: 0 !important; border-image: none !important; border-radius: 0 !important; background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: #f0dcae !important; font-weight: 600; }
+body.fs-witchcraft :is(.msg-contact > img, .msg-contact .msg-contact-avatar, .profile-card-item .profile-card-avatar, .notif-item img) {
+  -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; border: 0 !important;
+  padding: 3px !important; box-sizing: border-box; background: var(--fs-story-ring) center / 100% 100% no-repeat !important; }
+
+/* ---------- fields ---------- */
+html body.fs.fs-witchcraft :is(#msgInput, .msg-search, .page-search, .search-bar, .comment-input, .cpm-textarea) {
+  border: 12px solid transparent !important; border-image: var(--fs-field) 70 fill / 12px stretch !important; background: none !important; color: #efe2c8 !important; border-radius: 0 !important; }
+
+/* ---------- chat ---------- */
+body.fs-witchcraft .msg-bubble { border: 14px solid transparent !important; border-image: var(--fs-bubble-in) 100 fill / 14px stretch !important; background: none !important; color: #efe2c8 !important; border-radius: 0 !important; }
+body.fs-witchcraft .msg-bubble.sent { border-image-source: var(--fs-bubble-out) !important; color: #fff !important; }
+body.fs-witchcraft .msg-chat-input { background: var(--fs-input-bar) center top / 100% 100% no-repeat !important; border: 0 !important; }
+
+/* ---------- profile (concept profile): four tarot cards fanned across the top (timeline photos), gothic windows behind,
+   gold-ringed round photo, name + bio with sparkles, double-arch stats with the pentagram, Edit Profile plaque ---------- */
+body.fs-witchcraft :is(.pv-profile-card, #profileCard) { background: transparent !important; border: 0 !important; border-image: none !important; box-shadow: none !important; }
+body.fs-witchcraft :is(.pv-profile-card, #profileCard) .profile-cover { display: none !important; }
+body.fs-witchcraft :is(#coverEditBtn, #pvCoverEditBtn) { display: none !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft :is(#timelineCover, #pvCoverBanner) { height: 340px !important; aspect-ratio: auto !important; border-radius: 0 !important;
+    width: calc(100vw + 16px) !important; max-width: none !important; margin-left: calc(50% - 50vw - 8px) !important; margin-right: calc(50% - 50vw - 8px) !important;
+    background: var(--fs-cover-arches) center bottom / 100% auto no-repeat !important; overflow: visible !important; }
+}
+body.fs-witchcraft .fs-timeline { position: absolute; inset: 0; }
+body.fs-witchcraft .fs-tl-slot { position: absolute; top: 18px; width: 25%; aspect-ratio: 520 / 860; transform-origin: 50% 100%; }
+body.fs-witchcraft .fs-tl-slot::after { content: ""; position: absolute; inset: 0; background: var(--fs-tarot-card) center / 100% 100% no-repeat; pointer-events: none; }
+body.fs-witchcraft .fs-tl-slot img { position: absolute; inset: 7% 8%; width: 84%; height: 86%; object-fit: cover; border-radius: 3px; }
+body.fs-witchcraft .fs-tl-slot-1 { left: 3%; top: 44px; transform: rotate(-11deg); }
+body.fs-witchcraft .fs-tl-slot-2 { left: 26%; transform: rotate(-4deg); }
+body.fs-witchcraft .fs-tl-slot-3 { left: 49%; transform: rotate(4deg); }
+body.fs-witchcraft .fs-tl-slot-4 { left: 72%; top: 44px; transform: rotate(11deg); }
+body.fs-witchcraft :is(#profileAvatarImg, .pv-profile-card .profile-avatar) { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; border: 0 !important; box-shadow: none !important; object-fit: cover; }
+body.fs-witchcraft :is(.pv-profile-card, #profileCard) .profile-avatar-wrap { width: 150px !important; height: 150px !important; margin: -150px auto 0 !important; border-radius: 50% !important; overflow: visible !important; z-index: 3; position: relative; }
+body.fs-witchcraft :is(.pv-profile-card, #profileCard) .profile-avatar-wrap .profile-avatar { width: 100% !important; height: 100% !important; }
+body.fs-witchcraft :is(.pv-profile-card, #profileCard) .profile-avatar-wrap::after { display: block !important; content: ""; position: absolute; inset: -5%;
+  background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; pointer-events: none; z-index: 2; border: 0 !important; }
+body.fs-witchcraft :is(.pv-profile-card, #profileCard) .avatar-edit-btn { z-index: 4 !important; }
+body.fs-witchcraft .fs-namecard { border: 0 !important; border-image: none !important; background: none !important; transform: none !important; width: auto !important; padding: 0 !important; margin: 8px auto 0 !important; }
+body.fs-witchcraft .fs-namecard::before { display: none !important; }
+body.fs-witchcraft :is(.pv-profile-card, #profileCard) .profile-name { font-size: 40px !important; line-height: 1.05 !important; border: 0 !important; background: none !important; margin: 0 !important; }
+body.fs-witchcraft :is(.pv-profile-card, #profileCard) :is(.profile-title, .profile-about) { color: #e6d6bb !important; font-style: italic; font-size: 18px !important; margin: 4px 0 0 !important; }
+body.fs-witchcraft :is(.pv-profile-card, #profileCard) .fs-namecard > .profile-title::before { content: "✦ "; color: #e8c27a; }
+body.fs-witchcraft :is(.pv-profile-card, #profileCard) .fs-namecard > .profile-title::after { content: " ✦"; color: #e8c27a; }
+body.fs-witchcraft :is(.pv-profile-card, #profileCard) .profile-stats { display: flex !important; justify-content: space-around; width: 94% !important; margin: 14px auto 0 !important;
+  aspect-ratio: 1200 / 460; border: 0 !important; border-image: none !important; background: var(--fs-stats-arch) center / 100% 100% no-repeat !important; padding: 18% 6% 4% !important; box-sizing: border-box; }
+body.fs-witchcraft :is(.pv-profile-card, #profileCard) .profile-stats > .stat { flex: 0 0 40%; border: 0 !important; border-image: none !important; background: none !important; padding: 0 !important; }
+body.fs-witchcraft :is(.pv-profile-card, #profileCard) .profile-stats > .stat + .stat::before { display: none !important; }
+body.fs-witchcraft :is(.pv-profile-card, #profileCard) .stat-count { font-size: 34px !important; line-height: 1 !important; }
+body.fs-witchcraft :is(.pv-profile-card, #profileCard) .stat-label { color: #efe2c8 !important; font-size: 18px !important; }
+html body.fs.fs-witchcraft #pvEditProfileBtn,
+html body.fs.fs-witchcraft #profileCard .profile-links { border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important;
+  background: var(--fs-plaque-btn) center / 100% 100% no-repeat !important; width: 82% !important; min-height: 64px; margin: 16px auto 8px !important;
+  display: flex !important; align-items: center; justify-content: center; gap: 10px; color: #efe2c8 !important; font-size: 24px !important; }
+body.fs-witchcraft #profileCard .view-profile-link, body.fs-witchcraft #profileCard .edit-profile-btn i { color: #efe2c8 !important; font-size: 24px !important; font-family: var(--fs-title-font); }
+body.fs-witchcraft #profileCard::after, body.fs-witchcraft .pv-profile-card::after { content: ""; display: block; height: 0; padding-bottom: 43%; margin: 6px -8px 0;
+  background: var(--fs-shelf-cat) center bottom / 100% auto no-repeat; }
+body.fs-witchcraft .pv-back-link { display: none !important; }
+
+/* ---------- skins shop (concept skins): gothic arch cards, hanging chips, price/Equipped pills ---------- */
+body.fs-witchcraft .fsk-card { background: var(--fs-skin-card) center / 100% 100% no-repeat !important; border: 0 !important; border-image: none !important; box-shadow: none !important; }
+body.fs-witchcraft .fsk-thumb { border: 0 !important; border-image: none !important; border-radius: 40% 40% 0 0 / 22% 22% 0 0 !important; overflow: hidden; }
+body.fs-witchcraft .fsk-filter { border: 0 !important; border-image: none !important; background: var(--fs-chip) center / 100% 100% no-repeat !important; color: #e8d6b4 !important; padding-top: 18px !important; }
+body.fs-witchcraft .fsk-filter.active { background-image: var(--fs-chip-active) !important; color: #ffd9fb !important; }
+body.fs-witchcraft .fsk-badge { background: var(--fs-equipped-pill) center / 100% 100% no-repeat !important; border-radius: 0 !important; }

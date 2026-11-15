@@ -73,6 +73,21 @@
       '--border': 'rgba(255,255,255,.18)', '--nav-bg': '#141416' },
     fonts: 'https://fonts.googleapis.com/css2?family=Bangers&family=Barlow+Semi+Condensed:ital,wght@0,500;0,700;1,700&display=swap'
   };
+  FULL_SKINS.witchcraft = {
+    name: 'Witchcraft', wip: true, dark: true, ink: '#efe4d6', muted: '#bfae9c', accent: '#c94cff',
+    font: "'Cormorant Garamond', serif", titleFont: "'Cormorant Garamond', serif",
+    timeline: 4, avatar: 'center', slice: 15, edge: 16,
+    // traced from the approved concept (prototypes/witchcraft-redraw-brief.md → kit/redraw-a + redraw-b)
+    assets: ['header', 'cobweb-corner', 'nav-glow', 'tab', 'tab-active', 'post-panel', 'photo-arch', 'quests-frame',
+      'quest-card', 'potion-0', 'potion-50', 'potion-100', 'coin-goal-bar', 'goal-track', 'goal-fill', 'composer',
+      'featured-frame', 'story-ring', 'story-add', 'avatar-ring', 'tarot-card', 'cover-arches', 'stats-arch',
+      'plaque-btn', 'shelf-cat', 'shelf-cauldron', 'shelf-skull', 'candle', 'list-row', 'join-btn', 'gem', 'skin-card',
+      'price-pill', 'equipped-pill', 'bubble-in', 'bubble-out', 'chat-window', 'field', 'input-bar', 'menu-panel',
+      'name-ribbon', 'avatar-arch', 'tile', 'post-btn', 'tab-bar'],
+    theme: { '--dark': '#efe4d6', '--gray': '#bfae9c', '--light-bg': '#140f16', '--card': '#1b141d',
+      '--border': 'rgba(201,160,110,.28)', '--nav-bg': '#120d13' },
+    fonts: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap'
+  };
   window.FULL_SKINS = FULL_SKINS;
 
   // Absolute: a relative url() inside a custom property resolves against the stylesheet that
