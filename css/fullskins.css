@@ -2162,15 +2162,11 @@ html body.fs.fs-anime-blaze .featured-skin-banner .featured-header { margin-bott
 @media (max-width: 768px) {
   body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-avatar-wrap::after { inset: -4% !important; }
 }
-/* other profile: the tilted cut-in (owner loved it). The photo box is opaque (dark backing) so the white/black
-   ink edge follows the clean slant instead of the picture's own soft/transparent edges (that was the blur), and the
-   photo is zoomed 1.2x inside the slant so borders baked into a picture stay hidden */
+/* other profile: the tilted cut-in exactly as first built (owner loves it, incl. the sticker shape the ink edge
+   traces around see-through pictures). Its blur came from the outline tracing the picture's SOFT alpha → the photo
+   gets fsCrispAlpha (SVG filter injected by fullskins.js: alpha becomes solid-or-clear) so the edge stays sharp */
 @media (max-width: 768px) {
-  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .profile-avatar-wrap { overflow: visible !important; }
-  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .profile-avatar-wrap .profile-avatar {
-    position: absolute !important; left: -10% !important; top: -10% !important; width: 120% !important; height: 120% !important;
-    max-width: none !important; margin: 0 !important; background: #111 !important; object-fit: cover !important;
-    clip-path: polygon(26.67% 8.33%, 91.67% 8.33%, 73.33% 91.67%, 8.33% 91.67%) !important; }
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .profile-avatar-wrap .profile-avatar { filter: url(#fsCrispAlpha) !important; }
   /* the red name tag stretches with the name (ends keep their shape) and wraps for very long names */
   html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .fs-namecard { max-width: calc(100% - 8px); position: relative; z-index: 7 !important; }
   html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .fs-namecard > .profile-name {

@@ -149,10 +149,11 @@ kit/redraw-a + redraw-b), sketchy comic ink, incl. the page BACKGROUND (was miss
 - Nov 15 (later): cover-frame has NO black fill outside the band any more (owner: it read as a filled block ending
   in a straight line) — just the strokes' own ink + a 34px soft shadow, faded to 0 before the canvas top/bottom.
   Profile photo ring = `avatar-rim` rebuilt by `prototypes/tools/anime_blaze_avatar.py`: the concept's white ring
-  outlined in black ink, at inset −4%. Other profile cut-in: owner LOVES the tilted cut-in (tried the gold
-  lightning `avatar-frame` art — rejected, keep the tilt). Its old blur came from the drop-shadow outline tracing
-  the picture's own soft/transparent alpha → the photo now has a dark opaque backing (edge follows the clean slant)
-  and is zoomed 1.2× inside the slant so borders baked into a picture are hidden. Owner floated a crop/placement
+  outlined in black ink, at inset −4%. Other profile cut-in: owner LOVES the original tilted cut-in, incl. the
+  sticker shape its ink edge traces around see-through pictures (tried the gold lightning `avatar-frame` art and an
+  opaque/zoomed slant — both rejected, keep the original). Its blur came from the drop-shadow outline tracing the
+  picture's soft, ragged alpha → the photo gets SVG filter `fsCrispAlpha` (injected by fullskins.js ensureFilters():
+  blur alpha 5px + steep ramp = one smooth silhouette, dark fill inside, picture on top), then the same drop-shadows. Owner floated a crop/placement
   editor for non-circle pictures — would need a new saved field, not built. Name tag = 9-slice border-image
   (stretch), wraps long names. Action strip: one line. Emoji show as "?" boxes in the iOS SIMULATOR only (even
   in the plain system font) — it's the simulator's emoji font, not the skin; don't add emoji fonts to the stack

@@ -163,12 +163,31 @@
     if (wasActive) restoreExtras();
   }
 
+  // SVG filters CSS can reference: fsCrispAlpha turns a picture's soft/ragged transparent edge into one smooth solid
+  // silhouette, so an ink outline drawn around it (drop-shadow) stays sharp instead of smearing the soft pixels.
+  function ensureFilters() {
+    if (document.getElementById('fsSvgFilters')) return;
+    var d = document.createElement('div');
+    d.id = 'fsSvgFilters';
+    d.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden';
+    // blur the alpha, then a steep ramp = a smooth, anti-aliased silhouette (ragged/speckled edges become one clean
+    // curve); dark fill inside it, the picture on top, anything outside it dropped
+    d.innerHTML = '<svg width="0" height="0" aria-hidden="true"><filter id="fsCrispAlpha" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">' +
+      '<feGaussianBlur in="SourceAlpha" stdDeviation="5" result="b"/>' +
+      '<feComponentTransfer in="b" result="m"><feFuncA type="linear" slope="10" intercept="-4.5"/></feComponentTransfer>' +
+      '<feFlood flood-color="#111" result="f"/><feComposite in="f" in2="m" operator="in" result="bg"/>' +
+      '<feComposite in="SourceGraphic" in2="m" operator="in" result="fg"/>' +
+      '<feMerge><feMergeNode in="bg"/><feMergeNode in="fg"/></feMerge></filter></svg>';
+    document.body.appendChild(d);
+  }
+
   function apply(id) {
     var cfg = FULL_SKINS[id];
     clear();
     if (!cfg) return;
     var b = document.body;
     loadFonts(cfg);
+    ensureFilters();
     variant = pickVariant(id);
     b.classList.add('fs', 'fs-' + id, cfg.dark ? 'fs-dark' : 'fs-light');
     if (cfg.variants) b.setAttribute('data-fs-variant', variant || cfg.variants[0].id);
