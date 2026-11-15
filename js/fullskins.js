@@ -34,12 +34,16 @@
       font: "'Kalam', cursive", titleFont: "'Caveat', cursive",
       timeline: 2, avatar: 'center', slice: 16.67,
       // art swapped in for a standard part (asset file names in images/skins/<id>/assets/)
-      parts: { 'background': 'background-v2', 'panel-card': 'panel9-layered', 'panel-card-active': 'panel9-pink',
+      parts: { 'background': 'background-v2', 'panel-card': 'card9-soft', 'panel-card-active': 'panel9-pink',
         'btn-secondary': 'strip9-layered', 'btn-primary': 'strip9-pink', 'header-bar': 'header9-pink',
         'nav-bar': 'strip9-layered', 'nav-active': 'tile', 'icon-coin': 'coin-stack' },
       // skin-only art, exposed as --fs-<name>
       assets: ['photo9-torn', 'tape-corner-a', 'tape-corner-b', 'flowers-spray', 'heart-sticker',
-        'banner', 'navbar', 'row9-crumpled', 'chip9', 'chip9-active', 'coin-pill', 'avatar-ring'],
+        'banner', 'navbar', 'row9-crumpled', 'chip9', 'chip9-active', 'coin-pill', 'avatar-ring',
+        'row9-soft', 'label9', 'bubble9-cream', 'bubble9-pink', 'icon-circle', 'send-circle', 'field9-soft',
+        'bar9-soft', 'tape-card', 'heart-doodle', 'unread-dot', 'photo-soft-edge',
+        'backing9-aged', 'backing9-ledger', 'scrap-pink', 'scrap-kraft', 'scrap-blue', 'tape-beige',
+        'tape-pink-grid', 'tape-sage', 'action-strip9', 'sticker-daisy', 'sticker-stamp'],
       edge: 16, // px: on-screen width of the 9-slice border zone (art border zone is 128px); concept edges are thin
       extras: true,
       // the app's own theme variables (style.css :root) re-pointed at this skin, so every surface the
@@ -120,6 +124,7 @@
     }
     removeRendered();
     active = null;
+    unwatchPosts();
     if (wasActive) restoreExtras();
   }
 
@@ -146,6 +151,7 @@
     if (cfg.theme) Object.keys(cfg.theme).forEach(function (v) { b.style.setProperty(v, cfg.theme[v]); });
     active = id;
     startSuspending();
+    watchPosts();
     render();
   }
 
@@ -216,6 +222,39 @@
       var pct = f ? parseFloat(f.style.width) || 0 : 0;
       it.setAttribute('data-fs-q', pct >= 100 || it.querySelector('.quest-check') ? '100' : pct >= 40 ? '50' : '0');
     });
+  }
+
+  /* Posts look different from each other, like a real scrapbook: each gets one of several looks
+   * (data-fs-v="1".."6": paper scrap colour, tape, tilt, sticker) chosen from its id, so the same post
+   * always looks the same. Posts arrive whenever the feed loads, so new ones are tagged as they appear. */
+  var VARIANTS = 6;
+  var postObserver = null;
+  function hashStr(str) {
+    var h = 0;
+    for (var i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0;
+    return Math.abs(h);
+  }
+  function tagPosts(root) {
+    (root || document).querySelectorAll('.feed-post:not([data-fs-v])').forEach(function (p) {
+      var idEl = p.matches('[data-post-id]') ? p : p.querySelector('[data-post-id]');
+      var key = (idEl && idEl.getAttribute('data-post-id')) ||
+        ((p.querySelector('.post-username') || {}).textContent || '') + '|' +
+        ((p.querySelector('.post-time') || {}).textContent || '') + '|' +
+        ((p.querySelector('.post-description') || {}).textContent || '').slice(0, 60);
+      p.setAttribute('data-fs-v', String(hashStr(key) % VARIANTS + 1));
+    });
+  }
+  function watchPosts() {
+    tagPosts();
+    if (postObserver || !window.MutationObserver) return;
+    postObserver = new MutationObserver(function (muts) {
+      if (!active) return;
+      for (var i = 0; i < muts.length; i++) if (muts[i].addedNodes.length) { tagPosts(); break; }
+    });
+    postObserver.observe(document.body, { childList: true, subtree: true });
+  }
+  function unwatchPosts() {
+    if (postObserver) { postObserver.disconnect(); postObserver = null; }
   }
 
   function render() {

@@ -1068,3 +1068,156 @@ body.fs #scrollToTopBtn {
   background: var(--fs-btn-round) center / contain no-repeat !important;
   color: var(--fs-ink) !important; box-shadow: none !important; border: 0 !important;
 }
+
+/* ================================================================
+   SCRAPBOOK set 4 — soft paper, built against the owner's post / messages / chat crops
+   ================================================================ */
+/* list rows: soft paper (set 3's crumpled was too wrinkled) */
+body.fs-scrapbook .msg-contact,
+body.fs-scrapbook #groupsSections .group-card,
+body.fs-scrapbook #page-profiles .profile-card-item,
+body.fs-scrapbook #page-search .profile-card-item,
+body.fs-scrapbook .notif-item {
+  border-image-source: var(--fs-row9-soft) !important;
+  border-image-slice: 80 100 fill !important;
+  border-image-width: 14px 16px !important;
+}
+/* labels (page titles, profile name, stats strip, subtitles, section headings): torn paper tag */
+body.fs-scrapbook .page-header h2,
+body.fs-scrapbook .msg-sidebar-header h3,
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-name,
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-stats,
+body.fs-scrapbook .page-subtitle,
+body.fs-scrapbook .connections-heading {
+  border-image: var(--fs-label9) 70 fill / 12px round !important;
+}
+/* unread marker: the kit's rose dot instead of a count pill */
+body.fs-scrapbook .msg-contact-name span[style*="border-radius:10px"] {
+  display: inline-block; width: 12px; height: 12px; padding: 0 !important; margin-left: 8px !important;
+  font-size: 0 !important; vertical-align: middle;
+  background: var(--fs-unread-dot) center / contain no-repeat !important;
+}
+
+/* POST (concept-post): soft card, tape on the card's corner, name with the time under it,
+   landscape photo on a soft deckled mat, compact action row */
+body.fs-scrapbook .feed-post { position: relative; overflow: visible !important; }
+body.fs-scrapbook .feed-post::before {
+  content: ""; position: absolute; left: -14px; top: -10px; width: 74px; height: 24px;
+  background: var(--fs-tape-card) center / 100% 100% no-repeat; transform: rotate(-24deg);
+  z-index: 4; pointer-events: none;
+}
+body.fs-scrapbook .post-user-top { flex-direction: column !important; align-items: flex-start !important; gap: 0 !important; }
+body.fs-scrapbook .post-username { font-size: 19px !important; line-height: 1.1; }
+body.fs-scrapbook .post-time { font-size: 13px !important; }
+body.fs-scrapbook .post-header img.post-avatar,
+body.fs-scrapbook .post-header .post-avatar { width: 44px !important; height: 44px !important; }
+body.fs-scrapbook .post-media-grid.pm-count-1 { height: auto !important; aspect-ratio: 4 / 3; }
+body.fs-scrapbook .post-media-grid .pm-thumb {
+  transform: none !important;
+  border-width: 8px !important;
+  border-image: var(--fs-photo-soft-edge) 90 fill / 10px round !important;
+}
+body.fs-scrapbook .post-media-grid .pm-thumb:nth-child(even) { transform: none !important; }
+body.fs-scrapbook .post-media-grid .pm-thumb::before { display: none !important; }
+body.fs-scrapbook .post-actions { padding: 6px 4px 0 !important; border: 0 !important; }
+body.fs-scrapbook .post-actions .action-left { width: 100%; justify-content: space-between; }
+body.fs-scrapbook .action-btn.liked > i { filter: none; }
+
+/* CHAT (concept-chat): torn-note bubbles, plain header on the page, soft paper input bar,
+   rose round send button, hand-drawn heart */
+body.fs-scrapbook .msg-chat-header { background: none !important; border: 0 !important; }
+body.fs-scrapbook .msg-chat-header h4 { font-family: var(--fs-title-font); font-size: 22px !important; color: var(--fs-ink) !important; }
+body.fs-scrapbook .msg-bubble {
+  border-image: var(--fs-bubble9-cream) 90 fill / 14px round !important;
+  padding: 0 4px !important; max-width: 78%;
+}
+body.fs-scrapbook .msg-bubble.sent { border-image-source: var(--fs-bubble9-pink) !important; }
+body.fs-scrapbook .msg-chat-input {
+  background: var(--fs-bar9-soft) center top / 100% 100% no-repeat !important;
+  padding-top: 14px !important; border: 0 !important;
+}
+body.fs-scrapbook #msgInput {
+  background: transparent !important; border: 12px solid transparent !important; border-radius: 0 !important;
+  border-image: var(--fs-field9-soft) 80 fill / 14px round !important; box-shadow: none !important;
+}
+body.fs-scrapbook #sendMsgBtn {
+  background: var(--fs-send-circle) center / contain no-repeat !important;
+  border: 0 !important; box-shadow: none !important; color: #fff !important;
+}
+body.fs-scrapbook .msg-media-btn { background: none !important; color: var(--fs-ink) !important; border: 0 !important; }
+body.fs-scrapbook .msg-chat::before { background-image: var(--fs-heart-doodle) !important; }
+
+/* ================================================================
+   SCRAPBOOK POSTS — layered like the concept, and each post a little different (data-fs-v 1-6)
+   backing paper (9-slice) · torn scrap across the top (::before) · corner tape (::after)
+   · photo on a soft mat with tape over its corner · light strip behind the action row
+   ================================================================ */
+body.fs-scrapbook .feed-post {
+  position: relative; overflow: visible !important;
+  border-image-source: var(--fs-backing9-aged) !important;
+  border-image-slice: 128 fill !important;
+  padding-top: 18px !important;
+}
+body.fs-scrapbook .feed-post::before {   /* torn scrap across the top */
+  content: ""; position: absolute; left: -6px; right: -6px; top: -16px; height: 28px;
+  background: var(--fs-scrap-pink) center / 100% 100% no-repeat;
+  transform: rotate(-0.6deg); z-index: 2; pointer-events: none;
+}
+body.fs-scrapbook .feed-post::after {    /* tape on the backing's corner */
+  content: ""; position: absolute; right: 18px; top: -20px; width: 78px; height: 24px;
+  background: var(--fs-tape-beige) center / 100% 100% no-repeat;
+  transform: rotate(8deg); z-index: 3; pointer-events: none;
+}
+body.fs-scrapbook .post-media-grid .pm-thumb::before {   /* tape over the photo's top-left corner */
+  display: block !important; content: ""; position: absolute; left: -16px; top: -6px;
+  width: 70px; height: 22px; background: var(--fs-tape-beige) center / 100% 100% no-repeat;
+  transform: rotate(-32deg); z-index: 3; pointer-events: none;
+}
+body.fs-scrapbook .post-actions {
+  border: 8px solid transparent !important;
+  border-image: var(--fs-action-strip9) 80 fill / 10px round !important;
+  margin-top: 6px !important;
+}
+/* the stickers / flowers shown on the photo (grid ::after / ::before) change per look; default none */
+body.fs-scrapbook .post-media-grid::after, body.fs-scrapbook .post-media-grid::before { background-image: none !important; }
+
+/* the six looks */
+body.fs-scrapbook .feed-post[data-fs-v="1"] { transform: rotate(-0.5deg); }
+body.fs-scrapbook .feed-post[data-fs-v="1"] .post-media-grid::after { background-image: var(--fs-heart-sticker) !important; }
+
+body.fs-scrapbook .feed-post[data-fs-v="2"] { transform: rotate(0.5deg); }
+body.fs-scrapbook .feed-post[data-fs-v="2"]::before { background-image: var(--fs-scrap-kraft); transform: rotate(0.8deg); }
+body.fs-scrapbook .feed-post[data-fs-v="2"]::after { background-image: var(--fs-tape-pink-grid); right: auto; left: 22px; transform: rotate(-9deg); }
+body.fs-scrapbook .feed-post[data-fs-v="2"] .pm-thumb::before { background-image: var(--fs-tape-pink-grid); }
+body.fs-scrapbook .feed-post[data-fs-v="2"] .post-media-grid::after {
+  background-image: var(--fs-sticker-daisy) !important; width: 44px !important; height: 44px !important;
+}
+
+body.fs-scrapbook .feed-post[data-fs-v="3"] { transform: rotate(-0.25deg); }
+body.fs-scrapbook .feed-post[data-fs-v="3"]::before { background-image: var(--fs-scrap-blue); }
+body.fs-scrapbook .feed-post[data-fs-v="3"]::after { background-image: var(--fs-tape-sage); }
+body.fs-scrapbook .feed-post[data-fs-v="3"] .pm-thumb::before { background-image: var(--fs-tape-sage); }
+body.fs-scrapbook .feed-post[data-fs-v="3"] .post-media-grid::after {
+  background-image: var(--fs-sticker-stamp) !important; width: 40px !important; height: 48px !important;
+}
+
+body.fs-scrapbook .feed-post[data-fs-v="4"] { border-image-source: var(--fs-backing9-ledger) !important; transform: rotate(0.3deg); }
+body.fs-scrapbook .feed-post[data-fs-v="4"] .post-media-grid::before { background-image: var(--fs-flowers-spray) !important; }
+
+body.fs-scrapbook .feed-post[data-fs-v="5"] { transform: rotate(0.7deg); }
+body.fs-scrapbook .feed-post[data-fs-v="5"]::before { background-image: var(--fs-scrap-kraft); }
+body.fs-scrapbook .feed-post[data-fs-v="5"]::after { background-image: var(--fs-tape-2); right: auto; left: 30px; transform: rotate(-6deg); }
+body.fs-scrapbook .feed-post[data-fs-v="5"] .pm-thumb::before { background-image: var(--fs-tape-2); }
+
+body.fs-scrapbook .feed-post[data-fs-v="6"] { border-image-source: var(--fs-backing9-ledger) !important; transform: rotate(-0.6deg); }
+body.fs-scrapbook .feed-post[data-fs-v="6"]::before { background-image: var(--fs-scrap-blue); transform: rotate(-1deg); }
+body.fs-scrapbook .feed-post[data-fs-v="6"]::after { background-image: var(--fs-tape-pink-grid); }
+body.fs-scrapbook .feed-post[data-fs-v="6"] .post-media-grid::after { background-image: var(--fs-heart-sticker) !important; }
+/* avatars in the paper ring (concept: chat header, message rows, post headers) */
+body.fs-scrapbook .msg-chat-header img,
+body.fs-scrapbook .msg-contact > img,
+body.fs-scrapbook .post-header img.post-avatar {
+  padding: 3px !important; box-sizing: border-box;
+  background: var(--fs-avatar-ring) center / contain no-repeat !important;
+  border: 0 !important;
+}
