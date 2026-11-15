@@ -66,15 +66,19 @@
     loadedFonts[cfg.fonts] = true;
   }
 
-  /* Shop extras a full skin overrides (spec: shop-item policy): layout templates (body.tpl-*) and
+  /* Shop extras a full skin overrides (spec: shop-item policy): layout templates (body.tpl-*),
    * nav styles (body.nav-*) are taken off while the skin is on and put back when it comes off. The
    * app can re-add them at any time (profile view, try-on), so an observer keeps them off. */
-  var SUSPEND = /^(tpl|nav)-/;
+  // also the custom-premium-background styling (body.has-premium-bg, ~50 rules painting see-through panels):
+  // a full skin brings its own background, so that class is kept off too
+  var SUSPEND = /^(tpl|nav)-|^has-premium-bg$/;
   var suspended = [];
   var observer = null;
   function suspendExtras() {
     var b = document.body;
     [].slice.call(b.classList).forEach(function (c) {
+      // phones always run the Cinema template — it IS the mobile layout (app.js applyTemplate), keep it
+      if (c === 'tpl-cinema' && window.innerWidth <= 768) return;
       if (SUSPEND.test(c)) {
         b.classList.remove(c);
         suspended = suspended.filter(function (x) { return !SUSPEND.test(x) || x.split('-')[0] !== c.split('-')[0]; });

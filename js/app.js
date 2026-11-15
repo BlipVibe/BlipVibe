@@ -1260,6 +1260,10 @@ function _buildSkinData(){
         infinityCoins:(currentUser&&currentUser.skin_data&&currentUser.skin_data.infinityCoins)||false
     };
 }
+// What the server last had (loaded or saved by this device). Saves are skipped when nothing changed,
+// so an idle tab or second device holding older data can't overwrite a newer choice made elsewhere
+// (the 10s autosave used to re-send everything, last writer winning).
+var _lastSyncedSkinJSON=null;
 function syncSkinDataToSupabase(immediate){
     if(!currentUser) return;
     // CRITICAL: never sync until cloud skin_data has been loaded into memory.
@@ -1283,7 +1287,11 @@ function syncSkinDataToSupabase(immediate){
             console.warn('[Sync failsafe] Blocked: activeSkin "'+skinData.activeSkin+'" not owned — likely profile bleed');
             return;
         }
-        sbUpdateProfile(currentUser.id,{skin_data:skinData}).catch(function(e){
+        var json=JSON.stringify(skinData);
+        if(json===_lastSyncedSkinJSON) return; // nothing changed on this device
+        sbUpdateProfile(currentUser.id,{skin_data:skinData}).then(function(){
+            _lastSyncedSkinJSON=json;
+        }).catch(function(e){
             console.warn('Skin data sync error:',e);
         });
     }
@@ -1376,6 +1384,7 @@ async function loadSkinDataFromSupabase(){
             currentUser.skin_data=sd; // update server truth for _hasInfinity() etc.
             _applySkinDataFromCache(sd);
         }
+        try{_lastSyncedSkinJSON=JSON.stringify(_buildSkinData());}catch(e){}
         // Whether skin_data existed or not, the load attempt is complete.
         // Future saves are now safe — they'll either preserve loaded data or
         // legitimately initialize a brand-new account that had nothing to load.

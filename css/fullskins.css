@@ -276,10 +276,6 @@ body.fs .pm-thumb video { background: transparent !important; }
 /* ================================================================
    SCRAPBOOK (owner's master) — every visual is kit art; CSS only places it
    ================================================================ */
-/* Home on a phone: the concept's home has no cover — the polaroid timeline lives on the profile */
-@media (max-width: 768px) {
-  body.fs-scrapbook #page-home #timelineCover { display: none !important; }
-}
 
 /* timeline: the kit's polaroid pair (lace + flower) with your photos behind its two windows.
    Window boxes measured from timeline-frame.webp (872x848): centre, size and tilt of each. */
@@ -304,25 +300,25 @@ body.fs-scrapbook .profile-card .profile-cover { display: none !important; }
 body.fs-scrapbook #pvCoverBanner { min-height: 250px; }
 
 /* profile view: no big panel — torn name label, torn stats strip, torn Edit button (master) */
-body.fs-scrapbook .pv-profile-card {
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) {
   border: 0 !important;
   border-image: none !important;
   background: transparent !important;
 }
-body.fs-scrapbook .pv-profile-card .profile-cover { display: none !important; }
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-cover { display: none !important; }
 /* name + status share one torn label; badges, bio etc. follow it (real cards add a badge row
    between them) */
-body.fs-scrapbook .pv-profile-card .profile-info { display: flex; flex-direction: column; align-items: center; }
-body.fs-scrapbook .pv-profile-card .profile-info > * { order: 2; }
-body.fs-scrapbook .pv-profile-card .profile-info > .profile-avatar-wrap,
-body.fs-scrapbook .pv-profile-card .profile-info > .profile-name,
-body.fs-scrapbook .pv-profile-card .profile-info > .profile-title { order: 0; }
-body.fs-scrapbook .pv-profile-card .profile-info > .badge-row,
-body.fs-scrapbook .pv-profile-card .profile-info > .profile-about,
-body.fs-scrapbook .pv-profile-card .profile-info > .profile-website { order: 1; margin-bottom: 12px; }
-body.fs-scrapbook .pv-profile-card .profile-stats,
-body.fs-scrapbook .pv-profile-card .pv-actions { align-self: stretch; }
-body.fs-scrapbook .pv-profile-card .profile-name {
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-info { display: flex; flex-direction: column; align-items: center; }
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-info > * { order: 2; }
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-info > .profile-avatar-wrap,
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-info > .profile-name,
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-info > .profile-title { order: 0; }
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-info > .badge-row,
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-info > .profile-about,
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-info > .profile-website { order: 1; margin-bottom: 12px; }
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-stats,
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .pv-actions { align-self: stretch; }
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-name {
   display: block;
   width: 72%;
   margin: 14px auto 0;
@@ -331,15 +327,15 @@ body.fs-scrapbook .pv-profile-card .profile-name {
   border: var(--fs-edge) solid transparent;
   border-image: var(--fs-btn-secondary) 16.67% fill / var(--fs-edge) round;
 }
-body.fs-scrapbook .pv-profile-card .profile-info:not(:has(> .profile-title)) > .profile-about { order: 0; }
-body.fs-scrapbook .pv-profile-card .profile-info:not(:has(> .profile-title)) > .profile-about,
-body.fs-scrapbook .pv-profile-card .profile-title {
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-info:not(:has(> .profile-title)) > .profile-about { order: 0; }
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-info:not(:has(> .profile-title)) > .profile-about,
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-title {
   position: relative;
   margin-top: -50px;
   margin-bottom: 30px;
   font-size: 17px !important;
 }
-body.fs-scrapbook .pv-profile-card .profile-stats {
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-stats {
   width: 90%;
   margin: 0 auto 16px;
   padding: 0;
@@ -347,9 +343,9 @@ body.fs-scrapbook .pv-profile-card .profile-stats {
   border-image: var(--fs-btn-secondary) 16.67% fill / var(--fs-edge) round;
   display: flex !important; flex-wrap: nowrap !important;
 }
-body.fs-scrapbook .pv-profile-card .profile-stats > .stat { flex: 1 1 0; min-width: 0; }
-body.fs-scrapbook .pv-profile-card .stat-count { font-family: var(--fs-title-font); font-size: 30px !important; }
-body.fs-scrapbook .pv-profile-card .stat-label { color: var(--fs-ink) !important; font-size: 16px !important; }
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-stats > .stat { flex: 1 1 0; min-width: 0; }
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .stat-count { font-family: var(--fs-title-font); font-size: 30px !important; }
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) .stat-label { color: var(--fs-ink) !important; font-size: 16px !important; }
 body.fs-scrapbook #pvEditProfileBtn {
   display: flex !important;
   align-items: center;
@@ -820,6 +816,8 @@ body.fs-scrapbook .navbar::after {
     border: 16px solid transparent !important;
     border-image: var(--fs-nav-bar) 16.67% fill / 18px round !important;
   }
+  /* every tab has the same (invisible) border so switching tabs doesn't resize or shift the bar */
+  body.fs-scrapbook .nav-center .nav-link { border: 6px solid transparent !important; border-radius: 0 !important; }
   body.fs-scrapbook .nav-center .nav-link.active {
     background: none !important;
     border: 6px solid transparent !important;
@@ -904,3 +902,37 @@ body.fs-scrapbook .msg-chat::after {
 }
 body.fs-scrapbook .msg-chat > * { position: relative; z-index: 1; }
 body.fs-scrapbook #gvProfileCard .stat-label { font-size: 13px !important; white-space: nowrap; }
+
+/* the app adds text shadows for custom premium backgrounds (body.has-premium-bg); on paper they smear */
+body.fs * { text-shadow: none !important; }
+
+/* compact paper chips (concept: one slim row of small chips), and readable page subtitles */
+body.fs .search-tabs { gap: 6px !important; margin-bottom: 10px !important; padding: 2px 0 !important; }
+body.fs .search-tab {
+  padding: 0 10px !important; border-width: 8px !important; border-image-width: 8px !important;
+  font-size: 13px !important; line-height: 1.6 !important; min-height: 0 !important;
+}
+body.fs .page-header { background: transparent !important; margin-left: 0 !important; margin-right: 0 !important; padding: 0 !important; border-radius: 0 !important; }
+body.fs-scrapbook .page-subtitle {
+  display: inline-block; margin: 2px 0 8px;
+  padding: 0 6px; border: 10px solid transparent;
+  border-image: var(--fs-btn-secondary) 16.67% fill / 10px round;
+  color: var(--fs-ink) !important; font-size: 13px !important;
+}
+/* Messages title in the same spot as Groups / Skins / Network (their page container is 0 8px) */
+body.fs .msg-sidebar-header { padding: 0 8px 10px 0 !important; }
+body.fs .msg-contact-list { padding-left: 8px !important; padding-right: 8px !important; }
+/* section headings that sit straight on the background go on a paper strip so they stay readable */
+body.fs-scrapbook .connections-heading,
+body.fs-scrapbook #groupsSections .shop-section-title,
+body.fs-scrapbook .shop-section-title {
+  display: inline-flex; align-items: center; gap: 6px; width: auto !important;
+  padding: 0 6px; border: 10px solid transparent;
+  border-image: var(--fs-btn-secondary) 16.67% fill / 10px round;
+  color: var(--fs-ink) !important; font-size: 15px !important;
+}
+/* Cinema template paints photo-card headings with a solid colour bar; under a full skin they're plain */
+body.fs .pv-col-photos .card-heading,
+body.fs .photos-card .card-heading { background: none !important; color: var(--fs-ink) !important; border-radius: 0 !important; }
+body.fs-scrapbook .pv-back-link,
+body.fs-scrapbook #gvBack { color: var(--fs-ink) !important; font-size: 15px; }
