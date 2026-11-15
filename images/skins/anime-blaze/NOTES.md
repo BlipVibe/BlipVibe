@@ -87,3 +87,25 @@ Same as Scrapbook's table (`prototypes/scrapbook-field-corrections.md`): live us
   and registered; next: Home sections (stories, composer, Featured Skin, quests, coin goal, tabs), post, chat.
 - Simulator QA: the app runs the downloaded update snapshot (Library/NoCloud/ionic_built_snapshots/<id>, see
   serverBasePath in its prefs), NOT App.app/public — install test files there (scratch `sim_install.sh`).
+
+## 7. Concept window → real app (owner, Nov 15: "make it look exactly like each page within what's actually
+available; no new fields"). References: `prototypes/reference/anime-blaze/<screen>.png` (3× crops).
+| Concept screen | Build | Concept extras NOT built (no such field in the app) |
+|---|---|---|
+| home (sheet 1) + home-full (sheet 2) | top bar (logo, search, bell, music, coins, avatar — concept puts the avatar LEFT of the logo: reorder, same field) · stories · composer · Featured Skin · Daily Quests (plate + 3 rows + tiles + segment bars + reward pills) · coin goal · Following/Discover/My Posts · posts · cover/profile block stays (owner rule) | — |
+| skins | title plate + coin pill, filter chips (real categories: All/Aesthetic/Cute/Mystic/Neon/Nature), skin cards (art + slanted name band + coin price), Equipped tag | concept's Realistic/Scrapbook/Animated chips |
+| profile | done round 3 (cover zigzag, photo, name, bio, stat boxes, Edit Profile) | back arrow over the cover (app has bottom nav) |
+| groups | title plate, real tabs My Groups/Moderating/Joined/Discover, list rows + Join button | header search/+ icons (app: search field + Create Group button — style those) |
+| post (= comments / open post) | post panel, photo frame, action strip | — |
+| messages | title plate, list rows (unread gold), search field | header search/compose icons |
+| chat | header (back, avatar, name), in/out bubbles, input bar: app's photo/GIF/voice buttons + field + send | phone/⋯ in header, emoji button |
+| network | tabs Connections / Not Following Back / People You May Know, rows, Follow buttons | — |
+| notifications | rows with type icon + avatar + text + time + unread dot | — |
+| search | field, tabs People/Groups/Posts, rows with chevron | — |
+| group-page | cover, group avatar/name/members, Join, tabs Feed/Chat/Group Shop, posts | — |
+| other-profile | cover with their photo cut-in, red name tag, bio, stat boxes, Follow/Message/Close Friend/Invite to Group, ⋯ menu Mute/Block/Report, photo strip | — |
+| comments | post embed, comment rows (like/dislike/React/Reply), add-comment field with GIF/emoji | — |
+| create-post | author + audience, text box with counter, tiles Add photo/Camera/Emoji/GIF/Poll/Schedule, big Post button | — |
+| story | progress bars, author, ⋯/close, reply field + heart | — |
+Art: sets 1–4 rejected as "too clean" → full redraw traced from the crops (`prototypes/anime-blaze-redraw-brief.md`,
+kit/redraw-a + redraw-b), sketchy comic ink, incl. the page BACKGROUND (was missing) and black-outlined zigzag.
