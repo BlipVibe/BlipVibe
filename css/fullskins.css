@@ -1304,3 +1304,59 @@ body.fs-scrapbook .nav-coins {
   padding: 0 6px !important; font-size: 14px !important; min-height: 0 !important;
 }
 body.fs-scrapbook .nav-coins > i { width: 20px !important; height: 18px !important; }
+
+/* ================================================================
+   POSTS — owner review Nov 15: photos taped straight onto the card (no mat gap),
+   shared posts stay inside their paper, action row fits and the liked thumb goes solid
+   ================================================================ */
+/* the photo fills its box; a thin deckled paper edge hugs it (art drawn over the photo's rim, no fill) */
+body.fs-scrapbook .post-media-grid .pm-thumb {
+  border: 0 !important;
+  border-image: var(--fs-photo-edge9) 30 / 6px / 3px round !important;
+}
+/* single photo: the row must be the grid's height or a tall photo spills out the bottom */
+body.fs-scrapbook .post-media-grid.pm-count-1 { grid-template-rows: minmax(0, 1fr) !important; }
+body.fs-scrapbook .post-media-grid.pm-count-1 .pm-thumb { min-height: 0 !important; height: 100% !important; }
+body.fs-scrapbook .post-media-grid .pm-thumb img,
+body.fs-scrapbook .post-media-grid .pm-thumb video { height: 100% !important; max-height: none !important; object-fit: cover !important; }
+
+/* shared post: a lighter paper card inside the post instead of the app's outlined box */
+body.fs-scrapbook .share-preview {
+  margin: 4px 0 12px !important;
+  background: none !important;
+  border: 12px solid transparent !important;
+  border-radius: 0 !important;
+  border-image: var(--fs-card9-soft) 128 fill / 14px round !important;
+  padding: 2px 4px !important;
+  overflow: hidden;
+}
+body.fs-scrapbook .share-preview .post-media-grid::after,
+body.fs-scrapbook .share-preview .post-media-grid::before { display: none !important; }
+
+/* action row: six buttons share the width instead of running off the right edge */
+body.fs-scrapbook .post-actions { flex-wrap: wrap !important; padding: 2px 2px 0 !important; }
+body.fs-scrapbook .post-actions .action-left {
+  width: 100%; min-width: 0; gap: 0 !important; flex-wrap: nowrap !important; justify-content: space-between !important;
+}
+body.fs-scrapbook .post-actions .action-btn {
+  min-width: 0; padding: 4px 2px !important; gap: 3px !important; font-size: 14px !important;
+  display: inline-flex; align-items: center; white-space: nowrap;
+}
+body.fs-scrapbook .post-actions .action-btn > i { width: 1.35em !important; height: 1.35em !important; font-size: 15px; }
+body.fs-scrapbook .post-actions .view-count-btn > i.fa-eye {
+  display: inline-block; background: var(--fs-icon-eye) center / contain no-repeat; color: transparent !important;
+}
+body.fs-scrapbook .post-actions .view-count-btn > i.fa-eye::before { content: "" !important; }
+/* who liked it: small row under the buttons, gone when nobody has */
+body.fs-scrapbook .post-actions .action-right:has(.liked-avatars:empty) { display: none !important; }
+body.fs-scrapbook .post-actions .action-right { width: 100%; margin-top: 2px; }
+body.fs-scrapbook .post-actions .liked-avatars img { width: 22px !important; height: 22px !important; }
+
+/* liked / disliked: the solid rose thumb from the concept */
+body.fs-scrapbook .action-btn > i.fas.fa-thumbs-up,
+body.fs-scrapbook .like-btn.liked > i { background-image: var(--fs-icon-like-filled) !important; filter: none !important; }
+body.fs-scrapbook .action-btn > i.fas.fa-thumbs-down,
+body.fs-scrapbook .dislike-btn.disliked > i { background-image: var(--fs-icon-dislike-filled) !important; filter: none !important; }
+body.fs-scrapbook .post-actions { gap: 0 !important; }
+body.fs-scrapbook .post-actions .action-right { margin: -4px 0 4px 4px !important; }
+body.fs-scrapbook .post-tags:empty { display: none !important; }

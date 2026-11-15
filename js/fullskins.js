@@ -44,7 +44,7 @@
         'bar9-soft', 'tape-card', 'heart-doodle', 'unread-dot', 'photo-soft-edge',
         'backing9-aged', 'backing9-ledger', 'scrap-pink', 'scrap-kraft', 'scrap-blue', 'tape-beige',
         'tape-pink-grid', 'tape-sage', 'action-strip9', 'sticker-daisy', 'sticker-stamp',
-        'banner-collage', 'coin-tag-small'],
+        'banner-collage', 'coin-tag-small', 'icon-like-filled', 'icon-dislike-filled', 'icon-eye', 'photo-edge9'],
       edge: 16, // px: on-screen width of the 9-slice border zone (art border zone is 128px); concept edges are thin
       extras: true,
       // the app's own theme variables (style.css :root) re-pointed at this skin, so every surface the
