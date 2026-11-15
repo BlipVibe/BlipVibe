@@ -1221,3 +1221,6 @@ body.fs-scrapbook .post-header img.post-avatar {
   background: var(--fs-avatar-ring) center / contain no-repeat !important;
   border: 0 !important;
 }
+/* skin cards: the photo frame's border must sit inside the card (was spilling past it and under the name) */
+body.fs .fsk-thumb { box-sizing: border-box; width: 100%; }
+body.fs-scrapbook .fsk-name { margin-top: 4px !important; }
