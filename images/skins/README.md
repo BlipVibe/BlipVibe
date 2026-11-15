@@ -35,5 +35,7 @@ Older decisions/plan for all 22 skins: `prototypes/skin-engine-spec.md`.
 - Bars vertically centred — EVERY skin: top-bar content sits ABOVE the banner art's bottom edge (padding-bottom
   ≈ the edge's height), bottom-bar tabs pushed DOWN toward the home indicator (padding-bottom ≈ safe-area − 6px).
   The owner has flagged this on two skins. Search text clears the icon; static sharp background on iPhone.
+- REJECT anything that doesn't match the concept exactly or extremely close (owner rule). Only exception: the
+  concept's fake/made-up fields — QA those against the real app fields.
 - Each concept window is the literal spec ("no room for interpretation"), down to how a post is presented.
 - Skins are web-only (no native/Capacitor changes); look keys save only via `set_skin_look`.

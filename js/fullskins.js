@@ -68,7 +68,7 @@
     ],
     assets: ['panel9', 'panel9-alt', 'row9', 'row9-hot', 'bubble9-dark', 'bubble9-red', 'label9', 'button9-red',
       'button9-dark', 'chip9', 'chip9-active', 'field9', 'banner', 'navbar', 'cover-frame', 'avatar-ring',
-      'track', 'fill', 'coin-pill', 'burst', 'cover-cut', 'cover-top', 'stat9', 'avatar-rim'],
+      'track', 'fill', 'coin-pill', 'burst', 'cover-cut', 'cover-top', 'stat9', 'avatar-rim', 'header', 'title-plate9', 'quest-row9', 'quest-tile', 'quest-track', 'quest-fill', 'reward-pill9', 'post-frame', 'action-strip9', 'nav-divider', 'stat-box', 'button-slant', 'cover-mask'],
     theme: { '--dark': '#f5f1ea', '--gray': '#b9b1a6', '--light-bg': '#1b1b1d', '--card': '#151517',
       '--border': 'rgba(255,255,255,.18)', '--nav-bg': '#141416' },
     fonts: 'https://fonts.googleapis.com/css2?family=Bangers&family=Barlow+Semi+Condensed:ital,wght@0,500;0,700;1,700&display=swap'

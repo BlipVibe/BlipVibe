@@ -1740,3 +1740,37 @@ body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-stats > .stat {
   border: 0 !important; border-image: none !important;
   background: var(--fs-stat9) center / 100% 100% no-repeat !important;
 }
+
+/* ---- Anime Blaze, owner review round 3 (reject anything not exactly like the concept) ---- */
+@media (max-width: 768px) {
+  /* the photo is masked by a shape made FROM the zigzag art (cut at each white line's centre), so the white
+     lightning line always covers the photo's edge — nothing pokes past it */
+  body.fs-anime-blaze .fs-tl-slot-1 { clip-path: none !important;
+    -webkit-mask: var(--fs-cover-mask) center / 100% 100% no-repeat; mask: var(--fs-cover-mask) center / 100% 100% no-repeat; }
+  /* round photo ≈36% of the width (concept), centred on the cut */
+  body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-avatar-wrap { width: 145px !important; height: 145px !important; margin: -105px auto 0 !important; }
+  /* stats: the concept's boxes (lightning notch on the left), nearly touching, ~17pt under the bio */
+  body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-stats { width: 88% !important; gap: 4px !important; margin: 17px auto 0 !important; }
+  body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-stats > .stat { height: 72px; background-image: var(--fs-stat-box) !important; }
+  /* Edit / View Profile: the concept's slanted red button, ~28pt under the stats */
+  body.fs-anime-blaze #pvEditProfileBtn,
+  body.fs-anime-blaze #profileCard .profile-links {
+    border: 0 !important; border-image: none !important; background: var(--fs-button-slant) center / 100% 100% no-repeat !important;
+    width: 66% !important; min-height: 62px; margin: 28px auto 12px !important; }
+  /* top bar: the concept's calmer header (thin flame streak along the bottom) */
+  body.fs-anime-blaze .navbar { background-image: var(--fs-header) !important; }
+  /* bottom bar like the concept: plain dark bar, slanted dividers, white icons/labels, red slanted active tab */
+  body.fs-anime-blaze .nav-center { background: #141414 !important; border-top: 1px solid rgba(255,255,255,.14) !important; }
+  body.fs-anime-blaze .nav-center .nav-link { position: relative; color: #fff !important; }
+  body.fs-anime-blaze .nav-center .nav-link + .nav-link::before {
+    content: ""; position: absolute; left: -8px; top: -6px; bottom: -6px; width: 10px;
+    background: var(--fs-nav-divider) center / 100% 100% no-repeat; pointer-events: none; }
+  body.fs-anime-blaze .nav-center .nav-link.active { border: 0 !important; border-image: none !important;
+    background: var(--fs-nav-active) center / 100% 100% no-repeat !important; }
+  body.fs-anime-blaze .nav-center .nav-link > span, body.fs-anime-blaze .nav-center .nav-link { font-weight: 700 !important; }
+}
+@media (max-width: 768px) {
+  /* the button art carries a flame burst above its shape, so its box starts higher than the visible button */
+  body.fs-anime-blaze #pvEditProfileBtn,
+  body.fs-anime-blaze #profileCard .profile-links { margin-top: 10px !important; }
+}

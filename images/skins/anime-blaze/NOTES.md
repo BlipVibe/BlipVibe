@@ -77,3 +77,13 @@ Same as Scrapbook's table (`prototypes/scrapbook-field-corrections.md`): live us
   "Coming soon") until the screens are built. Asset weight: ~10 MB red + ~2 MB per colour — before shipping,
   load only the active colour (already the case: CSS vars point at one folder) and consider keeping
   variants out of the OTA zip.
+- Nov 15 (round 3, owner: "reject anything not exactly like the concept"): profile block rebuilt to the concept
+  close-up — cover band masked by `cover-mask` (generated FROM the cover-cut art's white-line centres, so the
+  zigzag always covers the photo edge; top edge = cover-cut rotated 180°), photo 145pt (~36% width) on the cut,
+  set 4 `stat-box` (lightning notch left) + `button-slant` used whole (not 9-slice — slanted edges sawtooth when
+  repeated; all Anime Blaze border-images use `stretch`), concept spacing (stats 17pt under bio, 4pt apart,
+  72pt tall; button 62pt, 66% wide right under). Set 3 `header` (calm, thin flame streak) as top bar; bottom bar =
+  concept's plain dark bar + `nav-divider` + set 3 `nav-active`. Set 3 quest/post/action pieces are converted
+  and registered; next: Home sections (stories, composer, Featured Skin, quests, coin goal, tabs), post, chat.
+- Simulator QA: the app runs the downloaded update snapshot (Library/NoCloud/ionic_built_snapshots/<id>, see
+  serverBasePath in its prefs), NOT App.app/public — install test files there (scratch `sim_install.sh`).
