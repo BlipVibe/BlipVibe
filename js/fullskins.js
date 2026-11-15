@@ -44,7 +44,7 @@
         'bar9-soft', 'tape-card', 'heart-doodle', 'unread-dot', 'photo-soft-edge',
         'backing9-aged', 'backing9-ledger', 'scrap-pink', 'scrap-kraft', 'scrap-blue', 'tape-beige',
         'tape-pink-grid', 'tape-sage', 'action-strip9', 'sticker-daisy', 'sticker-stamp',
-        'banner-collage', 'coin-tag-small', 'icon-like-filled', 'icon-dislike-filled', 'icon-eye', 'photo-edge9', 'row9-real-a', 'row9-real-b', 'row9-real-c', 'bubble9-real-cream', 'bubble9-real-pink', 'label9-real', 'field9-real', 'bar9-real', 'circle-real', 'circle-real-rose'],
+        'banner-collage', 'coin-tag-small', 'icon-like-filled', 'icon-dislike-filled', 'icon-eye', 'photo-edge9', 'row9-real-a', 'row9-real-b', 'row9-real-c', 'bubble9-real-cream', 'bubble9-real-pink', 'label9-real', 'field9-real', 'bar9-real', 'circle-real', 'circle-real-rose', 'panel9-real-a', 'panel9-real-b', 'post9-real-a', 'post9-real-b', 'post9-real-c', 'button9-real', 'button9-real-rose', 'chip9-real', 'chip9-real-active', 'track-real', 'fill-real', 'tile-real'],
       edge: 16, // px: on-screen width of the 9-slice border zone (art border zone is 128px); concept edges are thin
       extras: true,
       // the app's own theme variables (style.css :root) re-pointed at this skin, so every surface the

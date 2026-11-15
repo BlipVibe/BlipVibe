@@ -1489,3 +1489,40 @@ body.fs-scrapbook :is(.msg-search, .search-bar, .page-search) input { padding: 4
 @media (max-width: 768px) {
   body.fs-scrapbook #page-messages .messages-layout { height: calc(100vh - 172px) !important; }
 }
+
+/* ================================================================
+   REALISTIC PANELS (Codex set 9; owner Nov 15: "all the boxes look CSS generated")
+   ================================================================ */
+/* big cards: composer, Featured Skin, Daily Quests, coin goal, menus, comments */
+body.fs-scrapbook :is(.card:not(.feed-post), .quest-panel, .coin-goal-bar, .featured-skin-banner, .post-dropdown, .comment-item) {
+  border-image-source: var(--fs-panel9-real-a) !important;
+  border-image-slice: 140 fill !important;
+  border-image-width: 22px !important;
+  border-image-repeat: round !important;
+}
+body.fs-scrapbook :is(.quest-panel, .featured-skin-banner) { border-image-source: var(--fs-panel9-real-b) !important; }
+/* the profile cards stay frameless (polaroids + tag + strip), keep them clear */
+body.fs-scrapbook :is(.pv-profile-card, #profileCard) { border-image: none !important; }
+/* posts: three photographed backings mixed down the feed */
+body.fs-scrapbook .feed-post {
+  border-image-source: var(--fs-post9-real-a) !important; border-image-slice: 140 fill !important;
+  border-image-width: 22px !important; border-image-repeat: round !important;
+}
+body.fs-scrapbook .feed-post:is([data-fs-v="2"], [data-fs-v="6"]) { border-image-source: var(--fs-post9-real-b) !important; }
+body.fs-scrapbook .feed-post:is([data-fs-v="3"], [data-fs-v="4"]) { border-image-source: var(--fs-post9-real-c) !important; }
+/* buttons and the composer's "What are we posting today?" strip */
+body.fs-scrapbook :is(.btn-outline, .btn-disabled, .post-input-fake, #pvEditProfileBtn, #profileCard .profile-links) {
+  border-image: var(--fs-button9-real) 80 fill / 12px round !important;
+}
+body.fs-scrapbook :is(.btn-primary, .featured-buy-btn, .join-group-btn) {
+  border-image: var(--fs-button9-real-rose) 80 fill / 12px round !important;
+}
+body.fs-scrapbook .post-input-fake { background: none !important; border: 12px solid transparent !important; border-radius: 0 !important; box-shadow: none !important; }
+/* feed tabs */
+body.fs-scrapbook .search-tab { border-image-source: var(--fs-chip9-real) !important; border-image-slice: 70 fill !important; }
+body.fs-scrapbook .search-tab.active { border-image-source: var(--fs-chip9-real-active) !important; }
+/* quest progress bars and icon tiles */
+body.fs-scrapbook .quest-bar { border-image: var(--fs-track-real) 30 60 fill / 5px 10px stretch !important; }
+body.fs-scrapbook .quest-bar-fill { border-image: var(--fs-fill-real) 30 60 fill / 5px 10px stretch !important; }
+body.fs-scrapbook .quest-icon { background: var(--fs-tile-real) center / 100% 100% no-repeat !important; }
+body.fs-scrapbook .post-actions { border-image: var(--fs-button9-real) 80 fill / 12px round !important; }
