@@ -255,12 +255,10 @@
       info.insertBefore(card, h);
       card.appendChild(h);
       // status and bio both go on the label (Home has both; an empty one takes no space)
-      var next = card.nextElementSibling;
-      while (next && (next.classList.contains('profile-title') || next.classList.contains('profile-about'))) {
-        var after = next.nextElementSibling;
-        card.appendChild(next);
-        next = after;
-      }
+      // (the Profile page puts the badge row between the name and the status, so look at every child)
+      [].slice.call(info.children).forEach(function (el) {
+        if (el.classList.contains('profile-title') || el.classList.contains('profile-about')) card.appendChild(el);
+      });
     });
   }
   function watchPosts() {
