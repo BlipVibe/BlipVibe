@@ -1,7 +1,80 @@
 # Anime Blaze — build notes
 
-Status (Nov 15 2026): **starting.** Concepts approved earlier; base kit exists; not yet `ready` in the catalog.
-Process and owner rules: `../README.md` and `../scrapbook/NOTES.md` (read both first).
+**Status (Nov 15 2026): SHIPPED** — live in the shop (300 coins, 5 colours), all 16 concept screens built.
+Process and owner rules for every skin: `../README.md` and `../scrapbook/NOTES.md` (read both first).
+This file = the full reference for this skin (sections A–H), then the original plan (1–7) and the dated log.
+
+## A. What ships
+- Registry: `js/fullskins.js` → `FULL_SKINS['anime-blaze']` — `dark: true`, ink `#f5f1ea`, accent `#e8321e`,
+  font Barlow Semi Condensed (bold italic for titles/names/buttons), `timeline: 1`, `variants` (5 colours), a long
+  `assets` list (each name → CSS var `--fs-<name>` → `images/skins/anime-blaze/assets/[<colour>/]<name>.webp`).
+- Art: `images/skins/anime-blaze/assets/` = red (root) + `blue/ purple/ green/ pink/` (~3.5–4 MB each; only the
+  chosen colour downloads). Whitelisted in `.gitignore`. Raw PNGs (`kit/`) and concepts stay local.
+- CSS: `css/fullskins.css`, everything under `body.fs-anime-blaze` (first pass ~line 1547, redraw block after the
+  "ANIME BLAZE — REDRAW" banner, then owner-review rounds appended in order — later rules win).
+- JS bits added for this skin (engine-wide, harmless for other skins): colour variants (`pickVariant`, `url()`),
+  `ensureFilters()` (SVG `fsCrispAlpha` filter), Featured Skin shows the skin's `card.webp` (app.js).
+- Server: colour choice saved as look key `fsVariants` through `set_skin_look` (guard trigger + public skin data
+  updated live — `supabase/guard-stale-look-writes.sql`, `supabase/get-public-skin-data.sql`).
+
+## B. Screen by screen (concept crop → what was built). Crops: `prototypes/reference/anime-blaze/<screen>.png`
+| Screen | Built | Key art | Notes / decisions |
+|---|---|---|---|
+| Top bar (all pages) | avatar · logo · search · bell · music · coin pill (reordered, same fields) | `header`, `coin-pill` | bar art bleeds 102% (PNG has 3px clear edges) and is backed by a solid ink gradient (2px clear at top showed a line); content padded above the flame edge (bars vertically centred) |
+| Bottom bar | dark drawn bar, sketchy dividers, red slanted active tile | `nav-bar`, `nav-divider`, `nav-active` | tabs pushed down toward the home indicator |
+| Background | concept page (halftone, slashes, flames at edges) | `background` on `#premiumBgLayer` | was missing in the first pass |
+| Home profile block | cover band with two zigzags, round photo centred on the cut, name, bio, 2 stat boxes, View/Edit Profile | `cover-frame` (+`cover-mask`), `avatar-rim`, `stat-box`, `button-slant` | Home ALWAYS keeps cover + photo + card (owner). Cover height = `(100vw+16px)*1105/1290`, bleeds from the SCREEN edges (`margin-left: calc(50% - 50vw - 8px)`) |
+| Home sections | stories (ring art), composer, Featured Skin (skin's own card art), Daily Quests (plate, rows, tiles, segment bars, reward pills), coin goal, tabs | `story-ring`, `composer`, `featured-frame`, `quests-plate`, `quest-row`, `quest-tile`, `quest-track/fill`, `reward-pill`, `coin-goal-bar`, `tab`, `tab-active` | Featured Skin: 40px under the red tag so the picture doesn't touch it |
+| Posts | 9-slice panel (22px, stretch), header (avatar white ring, name+time stacked), photo in the drawn frame, one-line action strip | `post-panel`, `photo-frame` (+`photo-mask`), `action-strip` | WHOLE photo, never cropped; frame stretched to the photo's own box, photo masked to the frame window so it meets the white line; `.action-right` (views) hidden so the strip stays one line |
+| Profile (own) | same block as Home | as above | NO filter on the cover photo, NO flame ring (owner) |
+| Other profile | cover + their photo as a TILTED cut-in on the right (may break over the zigzag), red name tag (9-slice, wraps long names), bio, stats, Follow red + dark chips, ⋯ menu panel | `name-tag`, `join-btn`, `tab`, `menu-panel` | cut-in = clip-path parallelogram + white/black drop-shadow ink edge, photo through `fsCrispAlpha` so see-through/ragged pictures get one smooth sharp edge |
+| Skins | title plate, filter chips, cards (picture masked to the card window, frame on top, name/price on the dark band), red Equipped tag, colour dots | `title-plate`, `filter-chip(-active)`, `skin-card` (+`skin-card-mask`), `equipped-tag` | card 8/9; body absolute at left 7% top 66.5% 74%×24% |
+| Groups / Network / Search / Messages / Notifications | full-width slanted rows, red Join/Follow, slim search field, white-ring avatars, unread = gold row | `list-row`, `list-row-gold`, `join-btn`, `field` | notifications: plain white type icons, compact |
+| Chat | flame header, in/out bubbles, input bar, round + and red send | `header`, `bubble-in/out`, `input-bar`, `round-btn`, `send-btn` | simulator only draws the input bar with the keyboard up (fine on device) |
+| Group page | full-width cover, group picture left with name+tagline beside, stats, red Join, dark chips | `button-slant`, `tab` | |
+| Comments | one stretched post panel modal, post embed with the whole photo (30vh), rows | `post-panel` | |
+| Create post | full-screen page (scoped `:has(#cpmText)`), title plate, ✕ left, compact Publish top-right, ringed avatar, field with counter inside, 2×2 labelled tiles | `title-plate`, `join-btn`, `avatar-rim`, `field`, `tile` | 4 tiles (phones hide emoji; no separate camera); owner wanted Publish compact |
+| Story viewer | white progress bar under status bar, ringed avatar, italic name + time, ✕, wide reply field, reactions above, red send | `avatar-rim`, `field`, `send-btn` | checked with a display-only preview |
+
+## C. Art inventory (what generated it)
+- `kit/redraw-a` + `kit/redraw-b` (Codex, from `prototypes/anime-blaze-redraw-brief.md`): every piece traced from the
+  concept crops in sketchy comic ink — this is the set in use. Sets 1–4 (`extras1..4`) were rejected as "too clean".
+- Script-built (`prototypes/tools/`): `anime_blaze_frames.py` → `cover-frame`, `cover-mask`, `photo-frame`,
+  `photo-mask` (scipy distance transforms on the stroke art; window found by flood fill; masks = window +6px);
+  `anime_blaze_avatar.py` → `avatar-rim` (white ring + black ink, hand wobble). Run, then recolour.
+- Colours: a scratch `recolor.py` hue-shifts only warm (red/orange/yellow) pixels into blue/purple/green/pink; dark
+  fills, white strokes and ink stay. Run it on every new/changed piece (it only recolours the files you pass it).
+
+## D. Owner rules learned on this skin (and what got rejected)
+- Match the concept window exactly ("no room for interpretation"), but only with REAL app fields — no new fields.
+- Graphics first, CSS only to place art. "Too clean" → art must be sketchy, hand-drawn comic like the concept.
+- Content never smaller than or past the white lines — clip to the innermost line; photo meets the white line with
+  no black gap; black ink defines the space but NO filled black blocks (a straight-edged fill was rejected).
+- The profile picture may go out of bounds (main subject). Photos are never cropped.
+- Rejected: flame ring on the photo, filter on the cover photo, gold lightning frame + opaque/zoomed slant for the
+  other-profile photo (keep the tilted sticker cut-in), full-width Post button, two-line action strip.
+- Colour options: red, blue, purple, green, pink — real recoloured art, not a CSS filter.
+
+## E. Gotchas
+- `:is()` takes its heaviest selector's weight — beat early `:is(.card…)` rules with `html body.fs.fs-anime-blaze …`.
+- Slanted art + `border-image-repeat: round` = sawtooth → always `stretch` (or a whole-image background).
+- The app forces cover height with `!important` on phones — size the band explicitly.
+- Simulator: runs the downloaded snapshot (`Library/NoCloud/ionic_built_snapshots/<id>`, see `serverBasePath`), not
+  App.app/public; install with scratch `sim_install.sh [skin]` (adds a LOCAL QA look-only switch — never commit it,
+  remove after QA). Momentum scrolling moves the feed after a swipe: wait ~1.5s before tapping.
+- Emoji render as "?" boxes in the simulator only; Apple Color Emoji in the font stack breaks "∞" — don't add it.
+
+## F. QA checklist for changes
+1. `sim_install.sh anime-blaze` → compare each screen with its crop → screenshot to the owner.
+2. Check all 5 colours if art changed (recolour first). 3. Push to main (site + OTA). 4. Remove the QA switch.
+
+## G. Open items
+- Other-profile black strip on the left was reported on the owner's phone; covers now bleed from the screen edges —
+  confirm on device. Story viewer not yet seen with a real story. Crop/placement editor for non-circle profile
+  pictures: idea only (needs a new saved field).
+
+## H. History
+Sections 1–7 below are the original plan; the dated log in section 6 records every round of owner feedback.
 
 ## 1. Visual targets
 | File (local, git-ignored) | What |
@@ -62,7 +135,7 @@ Same as Scrapbook's table (`prototypes/scrapbook-field-corrections.md`): live us
 - Set 1 status: 19/21 pieces delivered (coin-pill, burst pending); avatar-ring has faint haze in its top
   corners — zero alpha < 60 outside the ring when converting.
 
-## 5. Engine wiring (to do)
+## 5. Engine wiring (DONE — see A; kept for history)
 - Add `FULL_SKINS['anime-blaze']`: `dark: true`, ink near-white, accent red-orange, comic display font
   for titles, `timeline: 1`, parts/assets as the art lands; flip `ready: true` in the catalog when shipped.
 - Whitelist `images/skins/anime-blaze/assets/` in `.gitignore` when it ships.
