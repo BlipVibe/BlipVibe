@@ -1534,3 +1534,6 @@ body.fs-scrapbook .navbar { box-sizing: border-box !important; padding-bottom: 1
 @media (max-width: 768px) {
   body.fs-scrapbook .nav-center { padding-top: 22px !important; padding-bottom: calc(env(safe-area-inset-bottom, 0px) - 6px) !important; }
 }
+/* search boxes: the magnifier is absolutely placed — keep the text clear of it (owner Nov 15) */
+body.fs-scrapbook :is(.msg-search, .search-bar, .page-search) > i { left: 8px !important; color: var(--fs-ink) !important; z-index: 1; }
+body.fs-scrapbook :is(.msg-search, .search-bar, .page-search) input { padding-left: 30px !important; }
