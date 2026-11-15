@@ -27,7 +27,9 @@ BEGIN
     'premiumBgDarkness', sd->'premiumBgDarkness',
     'premiumCardTransparency', sd->'premiumCardTransparency',
     -- full skins: the photos the owner picked for their timeline frames (Nov 2026)
-    'fsTimelinePhotos', sd->'fsTimelinePhotos'
+    'fsTimelinePhotos', sd->'fsTimelinePhotos',
+    -- full skins: colour option per skin, e.g. {"anime-blaze":"blue"} (Nov 2026)
+    'fsVariants', sd->'fsVariants'
   );
 END;
 $$;

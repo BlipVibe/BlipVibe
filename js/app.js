@@ -1235,6 +1235,7 @@ function _buildSkinData(){
         commentReactions:_commentReactions||{},
         savedFolders:savedFolders||[],
         fsTimelinePhotos:state.fsTimelinePhotos||[],
+        fsVariants:state.fsVariants||{},
         hiddenPosts:hiddenPosts||{},
         reportedPosts:reportedPosts||[],
         pinnedPosts:state.pinnedPosts||{},
@@ -1300,7 +1301,7 @@ function syncSkinDataToSupabase(immediate){
         // Your look (skin, font, template... timeline photos) only changes on the server through
         // set_skin_look — i.e. when you applied something on THIS device. Plain saves can't touch it
         // (server rule guard_stale_look_writes), so old app copies can't put an old skin back.
-        var LOOK=['activePremiumSkin','activeSkin','activeFont','activeTemplate','activeNavStyle','activeIconSet','activeLogo','activeCoinSkin','premiumBgUrl','premiumBgOverlay','premiumBgDarkness','premiumCardTransparency','fsTimelinePhotos'];
+        var LOOK=['activePremiumSkin','activeSkin','activeFont','activeTemplate','activeNavStyle','activeIconSet','activeLogo','activeCoinSkin','premiumBgUrl','premiumBgOverlay','premiumBgDarkness','premiumCardTransparency','fsTimelinePhotos','fsVariants'];
         var look={},other=[];
         changed.forEach(function(k){if(LOOK.indexOf(k)>=0) look[k]=skinData[k]; else other.push(k);});
         _skinSyncChain=_skinSyncChain.then(function(){
@@ -1338,6 +1339,7 @@ function _applySkinDataFromCache(sd){
     if('activeCoinSkin' in sd) state.activeCoinSkin=sd.activeCoinSkin||null;
     if('premiumBgUrl' in sd) premiumBgImage=sd.premiumBgUrl||null;
     if('fsTimelinePhotos' in sd) state.fsTimelinePhotos=Array.isArray(sd.fsTimelinePhotos)?sd.fsTimelinePhotos:[];
+    if('fsVariants' in sd) state.fsVariants=(sd.fsVariants&&typeof sd.fsVariants==='object')?sd.fsVariants:{};
     if(sd.premiumBgOverlay!==undefined) premiumBgOverlay=sd.premiumBgOverlay;
     if(sd.premiumBgDarkness!==undefined) premiumBgDarkness=sd.premiumBgDarkness;
     if(sd.premiumCardTransparency!==undefined) premiumCardTransparency=sd.premiumCardTransparency;
@@ -1884,6 +1886,7 @@ function navigateTo(page,skipPush){
         applyPremiumSkin(null,true);
         applySkin(null,true);
         _pvRealSkin=null;
+        window._fsViewedVariants=null;
         loadSkinDataFromSupabase().then(function(){
             _pvSaved=null; // only clear AFTER server data is loaded
             reapplyCustomizations();
@@ -3618,6 +3621,7 @@ async function showProfileView(person){
         applyPremiumSkin(null,true);
         applySkin(null,true);
         _pvRealSkin=null;
+        window._fsViewedVariants=null;
         await loadSkinDataFromSupabase();
         _pvSaved=null; // only clear AFTER server data is loaded
         reapplyCustomizations();
@@ -3633,6 +3637,7 @@ async function showProfileView(person){
                 person.template=pubSkin.activeTemplate||person.template||null;
                 if(pubSkin.premiumBgUrl) person.premiumBg={src:pubSkin.premiumBgUrl,overlay:pubSkin.premiumBgOverlay!=null?pubSkin.premiumBgOverlay:0,darkness:pubSkin.premiumBgDarkness!=null?pubSkin.premiumBgDarkness:0,cardTrans:pubSkin.premiumCardTransparency!=null?pubSkin.premiumCardTransparency:0.1};
                 person.fsTimeline=Array.isArray(pubSkin.fsTimelinePhotos)?pubSkin.fsTimelinePhotos:null;
+                person.fsVariants=(pubSkin.fsVariants&&typeof pubSkin.fsVariants==='object')?pubSkin.fsVariants:null;
                 person._skinLoaded=true;
             }
         }catch(e){console.warn('Failed to load public skin data:',e);}
@@ -3641,6 +3646,7 @@ async function showProfileView(person){
     // flag: someone else's skin is on screen — block saves and restore ours on exit. Not set for your own
     // profile: nothing is swapped there, and blocking saves lost timeline photos picked on it.
     _pvSaved=isMe?null:true;
+    window._fsViewedVariants=isMe?null:(person.fsVariants||{}); // their full-skin colour options
     if(!isMe){
         // Save our real values before any visual changes
         _pvRealSkin={premiumSkin:state.activePremiumSkin,skin:state.activeSkin,font:state.activeFont,tpl:state.activeTemplate,bgImage:premiumBgImage,bgOverlay:premiumBgOverlay,bgDarkness:premiumBgDarkness,cardTrans:premiumCardTransparency};
@@ -8488,6 +8494,21 @@ function doTryOn(type,id){
 // ---- Skins section (full skins: js/fullskins.js) ----
 var _fskFilter='all';
 function _fskCatalog(){return window.BlipFullSkins?BlipFullSkins.catalog():[];}
+// colour options (e.g. Anime Blaze red/blue/purple/green/pink): dots on the card once you own it
+function _fskColorsHtml(k,owned){
+    if(!k.variants||!k.ready||!owned) return '';
+    var cur=(window.BlipFullSkinsData&&BlipFullSkinsData.variant(k.id))||k.variants[0].id;
+    return '<div class="fsk-colors" role="group" aria-label="Colour">'+k.variants.map(function(v){
+        return '<button class="fsk-color'+(v.id===cur?' is-on':'')+'" data-fsk-id="'+k.id+'" data-variant="'+v.id+'" title="'+escapeHtml(v.name)+'" aria-label="'+escapeHtml(v.name)+'" style="--sw:'+v.swatch+'"></button>';
+    }).join('')+'</div>';
+}
+document.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('.fsk-color');
+    if(!b||!window.BlipFullSkinsData) return;
+    e.preventDefault();e.stopPropagation();
+    BlipFullSkinsData.setVariant(b.dataset.fskId,b.dataset.variant);
+    $$('.fsk-color[data-fsk-id="'+b.dataset.fskId+'"]').forEach(function(x){x.classList.toggle('is-on',x.dataset.variant===b.dataset.variant);});
+});
 function _fskCardHtml(k,mode){
     // mode 'shop' (buy / try on / equip) or 'mine' (equip only, uses My Skins' apply binding)
     var owned=!!state.ownedPremiumSkins[k.id];
@@ -8506,7 +8527,7 @@ function _fskCardHtml(k,mode){
     }
     return '<div class="fsk-card'+(k.ready?'':' fsk-locked')+(equipped?' fsk-is-equipped':'')+'" data-fsk-cat="'+k.cat+'">'
         +'<div class="fsk-thumb"><img src="'+k.card+'" alt="" loading="lazy">'+(equipped?'<span class="fsk-badge"><i class="fas fa-check"></i></span>':'')+'</div>'
-        +'<div class="fsk-body"><h4 class="fsk-name">'+escapeHtml(k.name)+'</h4>'+actions+'</div></div>';
+        +'<div class="fsk-body"><h4 class="fsk-name">'+escapeHtml(k.name)+'</h4>'+_fskColorsHtml(k,owned)+actions+'</div></div>';
 }
 function _fskSectionHtml(){
     var chips='<div class="fsk-filters">';
@@ -10613,6 +10634,14 @@ window.BlipFullSkinsData={
     cover:function(){return state.coverPhotoMobile||state.coverPhoto||null;},
     chosen:function(){return state.fsTimelinePhotos||[];},          // your picks, by slot
     viewed:function(){return window._fsViewedTimeline||null;},      // the viewed person's picks
+    // colour option for full skin `id`: the viewed person's while on their profile, else yours
+    variant:function(id){var v=window._fsViewedVariants||state.fsVariants||{};return v[id]||null;},
+    setVariant:function(id,v){
+        state.fsVariants=Object.assign({},state.fsVariants||{});state.fsVariants[id]=v;
+        saveState();syncSkinDataToSupabase(true);
+        if(window.BlipFullSkins&&BlipFullSkins.active()===id) BlipFullSkins.apply(id);
+        if(typeof renderShop==='function'&&$('#page-shop.active')) renderShop();
+    },
     // let you choose which of your photos goes in timeline frame `slot`
     pick:function(slot){
         var cover=state.coverPhotoMobile||state.coverPhoto;

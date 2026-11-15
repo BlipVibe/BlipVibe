@@ -57,7 +57,14 @@ Same as Scrapbook's table (`prototypes/scrapbook-field-corrections.md`): live us
 - Add `FULL_SKINS['anime-blaze']`: `dark: true`, ink near-white, accent red-orange, comic display font
   for titles, `timeline: 1`, parts/assets as the art lands; flip `ready: true` in the catalog when shipped.
 - Whitelist `images/skins/anime-blaze/assets/` in `.gitignore` when it ships.
-- CSS: scope everything under `body.fs-anime-blaze`; reuse the Scrapbook block structure (§5 of its notes).
+- CSS: scope everything under `body.fs-anime-blaze`. Build from THIS skin's concept — Scrapbook is a reference where something applies (owner, Nov 15), never a template.
 
 ## 6. Progress log
 - Nov 15: notes + first art brief written (owner: realism is case by case — this one is clean comic art; goal = as close to the concept as possible; graphics first, CSS only when necessary); Codex set 1 delivered 19/21; color-option plan added.
+- Nov 15: colour options wired: engine `variants` (red root + assets/blue|purple|green|pink, made by
+  `<scratch>/recolor.py`-style hue shift of warm pixels only), `data-fs-variant` on body, swatch dots on the
+  owned skin card, choice saved as `fsVariants` via set_skin_look (DB updated + tested in a rolled-back
+  transaction; public skin data exposes it so visitors see your colour). Skin entry is `wip: true` (shows
+  "Coming soon") until the screens are built. Asset weight: ~10 MB red + ~2 MB per colour — before shipping,
+  load only the active colour (already the case: CSS vars point at one folder) and consider keeping
+  variants out of the OTA zip.

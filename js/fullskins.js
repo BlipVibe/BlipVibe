@@ -54,6 +54,25 @@
       fonts: 'https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Kalam:wght@400;700&display=swap'
     }
   };
+  FULL_SKINS['anime-blaze'] = {
+    name: 'Anime Blaze', wip: true, dark: true, ink: '#f5f1ea', muted: '#b9b1a6', accent: '#e8321e',
+    font: "'Barlow Semi Condensed', sans-serif", titleFont: "'Bangers', cursive",
+    timeline: 1, avatar: 'center', slice: 15, edge: 16,
+    // colour options (owner, Nov 15): same art recoloured offline into assets/<id>/; first = assets/ root
+    variants: [
+      { id: 'red', name: 'Blaze Red', accent: '#e8321e', swatch: '#e8321e' },
+      { id: 'blue', name: 'Blue', accent: '#2f6dff', swatch: '#2f6dff' },
+      { id: 'purple', name: 'Purple', accent: '#9a33ff', swatch: '#9a33ff' },
+      { id: 'green', name: 'Green', accent: '#20c447', swatch: '#20c447' },
+      { id: 'pink', name: 'Pink', accent: '#ff3f9b', swatch: '#ff3f9b' }
+    ],
+    assets: ['panel9', 'panel9-alt', 'row9', 'row9-hot', 'bubble9-dark', 'bubble9-red', 'label9', 'button9-red',
+      'button9-dark', 'chip9', 'chip9-active', 'field9', 'banner', 'navbar', 'cover-frame', 'avatar-ring',
+      'track', 'fill', 'coin-pill', 'burst'],
+    theme: { '--dark': '#f5f1ea', '--gray': '#b9b1a6', '--light-bg': '#1b1b1d', '--card': '#151517',
+      '--border': 'rgba(255,255,255,.18)', '--nav-bg': '#141416' },
+    fonts: 'https://fonts.googleapis.com/css2?family=Bangers&family=Barlow+Semi+Condensed:ital,wght@0,500;0,700;1,700&display=swap'
+  };
   window.FULL_SKINS = FULL_SKINS;
 
   // Absolute: a relative url() inside a custom property resolves against the stylesheet that
@@ -62,7 +81,21 @@
   var active = null;
   var loadedFonts = {};
 
-  function url(id, part) { return 'url("' + BASE + id + '/assets/' + part + '.webp")'; }
+  // colour option in use for the active skin (null = the skin's default art, at assets/ root)
+  var variant = null;
+  function url(id, part) {
+    var dir = variant ? variant + '/' : '';
+    return 'url("' + BASE + id + '/assets/' + dir + part + '.webp")';
+  }
+  // the colour option to show for skin `id`: yours, or the viewed person's while on their profile
+  function pickVariant(id) {
+    var cfg = FULL_SKINS[id];
+    if (!cfg || !cfg.variants) return null;
+    var v = data().variant ? data().variant(id) : null;
+    var known = cfg.variants.map(function (x) { return x.id; });
+    if (!v || known.indexOf(v) < 0) v = known[0];
+    return v === known[0] ? null : v;           // first option = the art at assets/ root
+  }
 
   function loadFonts(cfg) {
     if (!cfg.fonts || loadedFonts[cfg.fonts]) return;
@@ -112,6 +145,7 @@
     var wasActive = active;
     Object.keys(FULL_SKINS).forEach(function (id) { b.classList.remove('fs-' + id); });
     b.classList.remove('fs', 'fs-dark', 'fs-light');
+    b.removeAttribute('data-fs-variant');
     PARTS.concat(EXTRAS).forEach(function (p) { b.style.removeProperty('--fs-' + p); });
     ICONS.forEach(function (n) { b.style.removeProperty('--fs-icon-' + n); });
     ['--fs-ink', '--fs-muted', '--fs-accent', '--fs-font', '--fs-title-font', '--fs-slice', '--fs-edge'].forEach(function (v) {
@@ -135,7 +169,9 @@
     if (!cfg) return;
     var b = document.body;
     loadFonts(cfg);
+    variant = pickVariant(id);
     b.classList.add('fs', 'fs-' + id, cfg.dark ? 'fs-dark' : 'fs-light');
+    if (cfg.variants) b.setAttribute('data-fs-variant', variant || cfg.variants[0].id);
     var parts = cfg.extras ? PARTS.concat(EXTRAS) : PARTS;
     parts.forEach(function (p) { b.style.setProperty('--fs-' + p, url(id, (cfg.parts && cfg.parts[p]) || p)); });
     ICONS.forEach(function (n) {
@@ -144,7 +180,8 @@
     (cfg.assets || []).forEach(function (a) { b.style.setProperty('--fs-' + a, url(id, a)); });
     b.style.setProperty('--fs-ink', cfg.ink);
     b.style.setProperty('--fs-muted', cfg.muted);
-    b.style.setProperty('--fs-accent', cfg.accent);
+    var vcfg = cfg.variants && cfg.variants.filter(function (x) { return x.id === (variant || cfg.variants[0].id); })[0];
+    b.style.setProperty('--fs-accent', (vcfg && vcfg.accent) || cfg.accent);
     b.style.setProperty('--fs-font', cfg.font);
     b.style.setProperty('--fs-title-font', cfg.titleFont || cfg.font);
     b.style.setProperty('--fs-slice', String(cfg.slice || 18));
@@ -325,7 +362,9 @@
 
   function catalog() {
     return CATALOG.map(function (c) {
-      return { id: c[0], name: c[1], cat: c[2], price: PRICE, ready: !!FULL_SKINS[c[0]],
+      var cfg = FULL_SKINS[c[0]];
+      return { id: c[0], name: c[1], cat: c[2], price: PRICE, ready: !!cfg && !cfg.wip,
+        variants: cfg && cfg.variants ? cfg.variants.slice() : null,
         card: BASE + c[0] + '/card.webp' };
     }).sort(function (a, b) { return (b.ready ? 1 : 0) - (a.ready ? 1 : 0); }); // finished skins first
   }
@@ -340,5 +379,7 @@
 
   window.BlipFullSkins = { onSkin: onSkin, apply: apply, clear: clear, render: render, meta: meta,
     catalog: catalog, categories: function () { return CATEGORIES.slice(); },
-    active: function () { return active; } };
+    active: function () { return active; },
+    variants: function (id) { return FULL_SKINS[id] && FULL_SKINS[id].variants ? FULL_SKINS[id].variants.slice() : null; },
+    variant: function () { return variant; } };
 })();

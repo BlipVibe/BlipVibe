@@ -1537,3 +1537,9 @@ body.fs-scrapbook .navbar { box-sizing: border-box !important; padding-bottom: 1
 /* search boxes: the magnifier is absolutely placed — keep the text clear of it (owner Nov 15) */
 body.fs-scrapbook :is(.msg-search, .search-bar, .page-search) > i { left: 8px !important; color: var(--fs-ink) !important; z-index: 1; }
 body.fs-scrapbook :is(.msg-search, .search-bar, .page-search) input { padding-left: 30px !important; }
+
+/* full-skin colour options: swatch dots on the skin card (Anime Blaze ...). The swatch colour is data
+   (the option's own colour), so a plain dot is drawn here; the selected one gets a ring. */
+.fsk-colors { display: flex; justify-content: center; gap: 6px; margin: 4px 0 6px; }
+.fsk-color { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(0,0,0,.35); background: var(--sw); padding: 0; cursor: pointer; }
+.fsk-color.is-on { outline: 2px solid currentColor; outline-offset: 2px; }

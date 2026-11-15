@@ -1,5 +1,5 @@
 -- =============================================================================
--- Your look changes only when YOU apply it.  (applied live Nov 15 2026, owner's idea)
+-- Your look changes only when YOU apply it.  (applied live Nov 15 2026, owner's idea; fsVariants added + applied same day)
 --
 -- Problem: an outdated BlipVibe session (old browser tab / another device on an
 -- older build) kept saving its whole skin_data every few seconds and put back an
@@ -9,7 +9,7 @@
 -- Rule: ordinary client saves to profiles.skin_data can no longer change the
 -- "look" keys — they keep their current value. The only way to change them is
 -- set_skin_look(), which the app calls when you apply a skin/font/template/etc.
--- or pick a timeline photo. Everything else (coins, quests, settings) saves as
+-- or pick a timeline photo / a full-skin colour option (fsVariants, added Nov 15 for Anime Blaze). Everything else (coins, quests, settings) saves as
 -- before; owned items are still protected by preserve_owned_items.
 -- =============================================================================
 
@@ -23,7 +23,7 @@ DECLARE
   sd JSONB;
   allowed TEXT[] := ARRAY['activePremiumSkin','activeSkin','activeFont','activeTemplate','activeNavStyle',
                           'activeIconSet','activeLogo','activeCoinSkin','premiumBgUrl','premiumBgOverlay',
-                          'premiumBgDarkness','premiumCardTransparency','fsTimelinePhotos'];
+                          'premiumBgDarkness','premiumCardTransparency','fsTimelinePhotos','fsVariants'];
 BEGIN
   IF auth.uid() IS NULL THEN RAISE EXCEPTION 'not signed in'; END IF;
   IF jsonb_typeof(p_changes) <> 'object' THEN RAISE EXCEPTION 'changes must be an object'; END IF;
@@ -52,7 +52,7 @@ BEGIN
   IF NEW.skin_data IS NULL THEN RETURN NEW; END IF;
   FOREACH k IN ARRAY ARRAY['activePremiumSkin','activeSkin','activeFont','activeTemplate','activeNavStyle',
                            'activeIconSet','activeLogo','activeCoinSkin','premiumBgUrl','premiumBgOverlay',
-                           'premiumBgDarkness','premiumCardTransparency','fsTimelinePhotos'] LOOP
+                           'premiumBgDarkness','premiumCardTransparency','fsTimelinePhotos','fsVariants'] LOOP
     IF OLD.skin_data ? k THEN
       NEW.skin_data := jsonb_set(NEW.skin_data, ARRAY[k], OLD.skin_data->k, true);
     ELSE
