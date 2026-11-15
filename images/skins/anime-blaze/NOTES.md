@@ -139,3 +139,10 @@ kit/redraw-a + redraw-b), sketchy comic ink, incl. the page BACKGROUND (was miss
   slanted cut-in (white+black ink edge via drop-shadow) on the cover's right, allowed to break over the zigzag
   (owner: the profile picture may go out of bounds — it's the main subject); name on the red name-tag art; status
   + bio below the cover; Follow red, other buttons on tab art. NEXT: comments, create post, story viewer.
+- Nov 15: frames rebuilt by `prototypes/tools/anime_blaze_frames.py` (scipy distance transforms, no per-column
+  artefacts): cover = ONE image `cover-frame` (both zigzags + solid ink outside the photo band, fading out), photo
+  meets the white line directly (owner: no black gap between picture and line), mask = band +6px under the line.
+  Post photo frame same (no inner band). Skin cards: card art 800×900 = one window with the dark name band over its
+  bottom-left → picture fills the window, masked by `skin-card-mask`, frame drawn on top via ::after, name/actions
+  on the band (left 7%, top 66.5%, 74%×24%). Featured Skin shows the skin's own card.webp (app.js, falls back to
+  the swatch) with room under the red tag. Top bar backed with solid ink (art has 2px clear at its top).
