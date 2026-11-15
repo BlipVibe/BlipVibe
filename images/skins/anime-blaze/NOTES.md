@@ -166,7 +166,7 @@ kit/redraw-a + redraw-b), sketchy comic ink, incl. the page BACKGROUND (was miss
   channel modals that reuse .create-post-modal are untouched): page art behind, "Create a Post" on the title-plate
   art, ✕ left, avatar in avatar-rim, field art with the counter inside its bottom-right, tool tiles (tile art) in a
   2×2 grid with labels via ::after (Add photo / GIF / Poll / Schedule — emoji is hidden on phones by style.css, the
-  app has no separate Camera tool), Publish full-width on post-btn art pinned to the bottom.
+  app has no separate Camera tool). Publish: owner wanted it compact, so it sits top-right of the header on join-btn art (title 25px beside it); counter kept inside the field via padding-right.
   Story viewer → progress bar under the status bar, avatar in avatar-rim, bold italic name with time beneath, plain
   ✕, reply on field art (reactions on their own centred line above it), send on send-btn art. Verified with a
   display-only preview (no one had a live story). All 16 concept screens now built.

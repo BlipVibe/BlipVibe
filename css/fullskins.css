@@ -2195,15 +2195,14 @@ html body.fs.fs-anime-blaze .featured-skin-banner .featured-header { margin-bott
   html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .modal-header {
     border: 0 !important; background: none !important; padding: 14px 16px 6px !important; justify-content: flex-start !important; gap: 10px; }
   html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .modal-header h3 {
-    order: 2; background: var(--fs-title-plate) center / 100% 100% no-repeat !important; padding: 8px 64px 10px 18px !important;
-    font-size: 30px !important; line-height: 1.1; margin: 0 !important; }
+    order: 2; background: var(--fs-title-plate) center / 100% 100% no-repeat !important; padding: 8px 46px 10px 16px !important;
+    font-size: 25px !important; line-height: 1.1; margin: 0 !important; white-space: nowrap; }
   html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .modal-close {
     order: 1; background: none !important; border: 0 !important; color: #fff !important; font-size: 26px !important; width: 40px; height: 40px; }
   html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-scroll { flex: 0 1 auto; overflow-y: auto; }
-  /* tiles right under the field, Post button pinned to the bottom (concept) */
-  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-footer { flex: 1 1 auto; }
-  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-footer > div:last-child { flex: 1 1 auto; grid-template-rows: auto auto 1fr; }
-  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) #cpmPublish { align-self: end; margin-bottom: 8px; }
+  /* owner: Publish as a compact button (top-right of the header), not a full-width bar */
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) { position: relative; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-footer { position: static !important; }
   html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-scroll > div:first-child img {
     width: 62px !important; height: 62px !important; padding: 4px; box-sizing: border-box; object-fit: cover;
     background: var(--fs-avatar-rim) center / 100% 100% no-repeat; }
@@ -2211,7 +2210,7 @@ html body.fs.fs-anime-blaze .featured-skin-banner .featured-header { margin-bott
   html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-textarea { min-height: 190px !important; margin: 12px 16px !important; width: calc(100% - 32px) !important; font-size: 17px !important; }
   html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) :is(.cpm-media-zone, .cpm-tags-section) { border: 0 !important; }
   html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-footer { border: 0 !important; background: none !important; padding: 6px 16px 16px !important; flex-direction: column; align-items: stretch; }
-  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-footer .char-counter { text-align: right; margin: -58px 46px 38px 0; color: #bbb; font-style: italic; font-size: 16px; position: relative; z-index: 2; pointer-events: none; }
+  html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-footer .char-counter { text-align: right; margin: -58px 0 38px 0 !important; padding-right: 50px !important; color: #bbb; font-style: italic; font-size: 16px; position: relative; z-index: 2; pointer-events: none; }
   html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-footer > div:last-child {
     display: grid !important; grid-template-columns: 1fr 1fr; gap: 12px !important; }
   html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) :is(#cpmCameraBtn, #cpmGifBtn, #cpmPollBtn, #cpmScheduleBtn) {
@@ -2224,9 +2223,10 @@ html body.fs.fs-anime-blaze .featured-skin-banner .featured-header { margin-bott
   html body.fs.fs-anime-blaze #cpmPollBtn::after { content: "Poll"; }
   html body.fs.fs-anime-blaze #cpmScheduleBtn::after { content: "Schedule"; }
   html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) #cpmPublish {
-    grid-column: 1 / -1; width: 100% !important; max-width: none !important; min-height: 80px !important; margin-top: 14px; padding: 0 !important;
-    font-size: 34px !important; font-style: italic; font-weight: 700; border: 0 !important; border-image: none !important;
-    background: var(--fs-post-btn) center / 100% 100% no-repeat !important; border-radius: 0 !important; box-shadow: none !important; }
+    position: absolute !important; top: 16px; right: 14px; width: 104px !important; max-width: none !important; min-width: 0 !important;
+    height: 46px !important; min-height: 0 !important; margin: 0 !important; padding: 0 !important; flex: none !important; z-index: 3;
+    font-size: 19px !important; font-style: italic; font-weight: 700; border: 0 !important; border-image: none !important;
+    background: var(--fs-join-btn) center / 100% 100% no-repeat !important; border-radius: 0 !important; box-shadow: none !important; }
   /* the counter sits inside the field's bottom-right like the concept; empty media/tag zones take no space */
   html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-media-zone:not(:has(.cpm-media-grid > *)) { margin: 0 !important; padding: 0 !important; min-height: 0 !important; height: 0; overflow: hidden; }
   html body.fs.fs-anime-blaze .create-post-modal:has(#cpmText) .cpm-tags-section:not(:has(.cpm-tags-wrap > *)) { display: none !important; }
