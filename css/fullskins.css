@@ -322,7 +322,7 @@ body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-name {
   display: block;
   width: 72%;
   margin: 14px auto 0;
-  padding: 0 0 34px;
+  padding: 0 0 26px;
   font-size: 34px !important;
   border: var(--fs-edge) solid transparent;
   border-image: var(--fs-btn-secondary) 16.67% fill / var(--fs-edge) round;
@@ -331,8 +331,8 @@ body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-info:not(:has(> .
 body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-info:not(:has(> .profile-title)) > .profile-about,
 body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-title {
   position: relative;
-  margin-top: -50px;
-  margin-bottom: 30px;
+  margin-top: -38px;
+  margin-bottom: 22px;
   font-size: 17px !important;
 }
 body.fs-scrapbook :is(.pv-profile-card, #profileCard) .profile-stats {
@@ -936,3 +936,135 @@ body.fs .pv-col-photos .card-heading,
 body.fs .photos-card .card-heading { background: none !important; color: var(--fs-ink) !important; border-radius: 0 !important; }
 body.fs-scrapbook .pv-back-link,
 body.fs-scrapbook #gvBack { color: var(--fs-ink) !important; font-size: 15px; }
+
+/* each of your timeline photos shows a camera badge (concept) so it's clear every frame can be changed */
+.fs-tl-own::after {
+  content: "";
+  position: absolute; right: 6%; top: 6%;
+  width: 30px; height: 30px;
+  background: var(--fs-icon-camera) center / 55% no-repeat, var(--fs-btn-round) center / contain no-repeat;
+  z-index: 3; pointer-events: none;
+}
+
+/* ================================================================
+   SCRAPBOOK SPACING — measured from the owner's master at phone scale:
+   cards/rows ~8pt from the screen edge, 8-10pt gaps, thin torn edges, compact rows
+   ================================================================ */
+@media (max-width: 768px) {
+  body.fs-scrapbook .card,
+  body.fs-scrapbook .feed-post,
+  body.fs-scrapbook .quest-panel,
+  body.fs-scrapbook .coin-goal-bar,
+  body.fs-scrapbook .featured-skin-banner,
+  body.fs-scrapbook .msg-contact,
+  body.fs-scrapbook .notif-item,
+  body.fs-scrapbook .group-card,
+  body.fs-scrapbook .profile-card-item {
+    border-width: 12px !important;
+    margin-bottom: 8px !important;
+  }
+  body.fs-scrapbook .main-container,
+  body.fs-scrapbook .page-container { padding-left: 8px !important; padding-right: 8px !important; }
+  body.fs-scrapbook .center-feed { gap: 0 !important; }
+  /* message / people / group rows: compact like the concept (~84pt tall, 64pt avatars) */
+  body.fs-scrapbook .msg-contact { padding: 0 4px !important; min-height: 72px; align-items: center; }
+  body.fs-scrapbook .msg-contact img, body.fs-scrapbook .msg-contact .msg-contact-avatar { width: 56px !important; height: 56px !important; }
+  body.fs-scrapbook .msg-contact-name { font-family: var(--fs-title-font); font-size: 20px !important; }
+  body.fs-scrapbook .msg-contact-list { padding-left: 0 !important; padding-right: 0 !important; }
+
+  /* other pages: no global header (concept) — the page title sits centred at the top */
+  body.fs-scrapbook:not(:has(#page-home.active)) .navbar .nav-left,
+  body.fs-scrapbook:not(:has(#page-home.active)) .navbar .nav-right { display: none !important; }
+  body.fs-scrapbook:not(:has(#page-home.active)) .navbar {
+    border-image: none !important; border-bottom-width: 0 !important;
+    height: env(safe-area-inset-top, 0px) !important; max-height: env(safe-area-inset-top, 0px) !important;
+    padding-top: 0 !important; overflow: visible !important;
+  }
+  body.fs-scrapbook:not(:has(#page-home.active)) .navbar::before,
+  body.fs-scrapbook:not(:has(#page-home.active)) .navbar::after { display: none !important; }
+  body.fs-scrapbook:not(:has(#page-home.active)) .page.active { padding-top: calc(env(safe-area-inset-top, 0px) + 10px) !important; }
+  body.fs-scrapbook .page-header { text-align: center; }
+  body.fs-scrapbook .page-header h2,
+  body.fs-scrapbook .msg-sidebar-header h3 { display: table !important; margin: 0 auto 8px !important; }
+  body.fs-scrapbook .msg-sidebar-header { padding: 0 0 6px !important; text-align: center; }
+}
+body.fs .msg-contact-name { color: var(--fs-ink) !important; }
+body.fs .msg-contact-preview, body.fs .msg-contact-time { color: var(--fs-muted) !important; }
+/* concept: body text is ink, never the accent colour */
+body.fs .quest-info p, body.fs .quest-info p strong { color: var(--fs-ink) !important; }
+body.fs .group-card-body p, body.fs .group-card-body h4 { color: var(--fs-ink) !important; }
+body.fs .post-menu-btn, body.fs .post-menu-btn i { color: var(--fs-ink) !important; }
+body.fs .notif-text p { color: var(--fs-ink) !important; }
+body.fs .notif-text span { color: var(--fs-muted) !important; }
+@media (max-width: 768px) {
+  body.fs-scrapbook .notif-item { padding: 0 4px !important; min-height: 60px; }
+  /* skins grid cards: Buy is the button, Try On a small link under it — keeps every card the same height */
+  body.fs-scrapbook .fsk-body .shop-card-actions { flex-direction: column-reverse !important; gap: 2px !important; }
+  body.fs-scrapbook .fsk-body .try-on-btn {
+    border: 0 !important; border-image: none !important; background: none !important;
+    height: auto !important; font-size: 11px !important; text-decoration: underline; color: var(--fs-muted) !important;
+  }
+  body.fs-scrapbook .fsk-body .skin-price { font-size: 11px !important; }
+}
+/* modal dividers: torn paper strip instead of a CSS line */
+body.fs-scrapbook .modal-header,
+body.fs-scrapbook .cpm-footer,
+body.fs-scrapbook .cpm-header {
+  border-color: transparent !important;
+}
+body.fs-scrapbook .modal-header { background: var(--fs-divider) center bottom / 94% 5px no-repeat !important; }
+body.fs-scrapbook .cpm-footer { background: var(--fs-divider) center top / 94% 5px no-repeat !important; }
+
+/* ================================================================
+   SCRAPBOOK set 3 — textured banner, nav bar, crumpled rows, chips, coin tag, avatar ring
+   ================================================================ */
+/* banner: the full-width torn pink strip (art spans the screen; bottom edge deckled) */
+body.fs-scrapbook .navbar {
+  border: 0 !important; border-image: none !important;
+  background: var(--fs-banner) center bottom / 100% 100% no-repeat !important;
+  height: calc(70px + env(safe-area-inset-top, 0px)) !important;
+  max-height: calc(70px + env(safe-area-inset-top, 0px)) !important;
+}
+/* coin balance on the paper tag; header avatar in the paper ring */
+body.fs-scrapbook .nav-coins {
+  background: transparent !important; border: 8px solid transparent !important; border-radius: 0 !important;
+  border-image: var(--fs-coin-pill) 70 fill / 10px round !important; padding: 0 4px !important;
+}
+body.fs-scrapbook .nav-user { position: relative; }
+body.fs-scrapbook .nav-user::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 46px; height: 46px; transform: translate(-50%, -50%);
+  background: var(--fs-avatar-ring) center / contain no-repeat; pointer-events: none;
+}
+body.fs-scrapbook .nav-user .nav-username, body.fs-scrapbook .nav-user > i { display: none !important; }
+/* bottom nav: the textured torn strip, full width */
+@media (max-width: 768px) {
+  body.fs-scrapbook .nav-center {
+    border: 0 !important; border-image: none !important;
+    background: var(--fs-navbar) center top / 100% 100% no-repeat !important;
+    padding-top: 14px !important;
+  }
+}
+/* list rows (Messages, Groups, Network, Search, Notifications): crumpled paper like the concept */
+body.fs-scrapbook .msg-contact,
+body.fs-scrapbook #groupsSections .group-card,
+body.fs-scrapbook #page-profiles .profile-card-item,
+body.fs-scrapbook #page-search .profile-card-item,
+body.fs-scrapbook .notif-item {
+  border-image-source: var(--fs-row9-crumpled) !important;
+  border-image-slice: 90 100 fill !important;
+  border-image-width: 14px 16px !important;
+}
+/* tabs / chips: textured paper tags */
+body.fs-scrapbook .search-tab { border-image-source: var(--fs-chip9) !important; border-image-slice: 60 fill !important; }
+body.fs-scrapbook .search-tab.active { border-image-source: var(--fs-chip9-active) !important; }
+@media (max-width: 768px) {
+  body.fs-scrapbook .msg-contact-list { gap: 0 !important; }
+  body.fs-scrapbook .msg-contact { margin: 0 0 4px !important; }
+  body.fs-scrapbook #groupsSections .shop-scroll-row { gap: 4px !important; }
+  body.fs-scrapbook .connections-grid, body.fs-scrapbook #page-search .page-grid { gap: 4px !important; }
+}
+/* back-to-top button on the kit's round paper button */
+body.fs #scrollToTopBtn {
+  background: var(--fs-btn-round) center / contain no-repeat !important;
+  color: var(--fs-ink) !important; box-shadow: none !important; border: 0 !important;
+}

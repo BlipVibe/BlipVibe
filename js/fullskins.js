@@ -34,12 +34,13 @@
       font: "'Kalam', cursive", titleFont: "'Caveat', cursive",
       timeline: 2, avatar: 'center', slice: 16.67,
       // art swapped in for a standard part (asset file names in images/skins/<id>/assets/)
-      parts: { 'panel-card': 'panel9-layered', 'panel-card-active': 'panel9-pink',
+      parts: { 'background': 'background-v2', 'panel-card': 'panel9-layered', 'panel-card-active': 'panel9-pink',
         'btn-secondary': 'strip9-layered', 'btn-primary': 'strip9-pink', 'header-bar': 'header9-pink',
         'nav-bar': 'strip9-layered', 'nav-active': 'tile', 'icon-coin': 'coin-stack' },
       // skin-only art, exposed as --fs-<name>
-      assets: ['photo9-torn', 'tape-corner-a', 'tape-corner-b', 'flowers-spray', 'heart-sticker'],
-      edge: 26, // px: on-screen width of the 9-slice border zone (art border zone is 128px)
+      assets: ['photo9-torn', 'tape-corner-a', 'tape-corner-b', 'flowers-spray', 'heart-sticker',
+        'banner', 'navbar', 'row9-crumpled', 'chip9', 'chip9-active', 'coin-pill', 'avatar-ring'],
+      edge: 16, // px: on-screen width of the 9-slice border zone (art border zone is 128px); concept edges are thin
       extras: true,
       // the app's own theme variables (style.css :root) re-pointed at this skin, so every surface the
       // engine doesn't restyle by hand (inputs, pills, rings, menus) still matches
