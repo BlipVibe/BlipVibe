@@ -146,3 +146,14 @@ kit/redraw-a + redraw-b), sketchy comic ink, incl. the page BACKGROUND (was miss
   bottom-left → picture fills the window, masked by `skin-card-mask`, frame drawn on top via ::after, name/actions
   on the band (left 7%, top 66.5%, 74%×24%). Featured Skin shows the skin's own card.webp (app.js, falls back to
   the swatch) with room under the red tag. Top bar backed with solid ink (art has 2px clear at its top).
+- Nov 15 (later): cover-frame has NO black fill outside the band any more (owner: it read as a filled block ending
+  in a straight line) — just the strokes' own ink + a 34px soft shadow, faded to 0 before the canvas top/bottom.
+  Profile photo ring = `avatar-rim` rebuilt by `prototypes/tools/anime_blaze_avatar.py`: the concept's white ring
+  outlined in black ink, at inset −4%. Other profile cut-in: owner LOVES the tilted cut-in (tried the gold
+  lightning `avatar-frame` art — rejected, keep the tilt). Its old blur came from the drop-shadow outline tracing
+  the picture's own soft/transparent alpha → the photo now has a dark opaque backing (edge follows the clean slant)
+  and is zoomed 1.2× inside the slant so borders baked into a picture are hidden. Owner floated a crop/placement
+  editor for non-circle pictures — would need a new saved field, not built. Name tag = 9-slice border-image
+  (stretch), wraps long names. Action strip: one line. Emoji show as "?" boxes in the iOS SIMULATOR only (even
+  in the plain system font) — it's the simulator's emoji font, not the skin; don't add emoji fonts to the stack
+  (Apple Color Emoji in the stack broke "∞"). To open someone's profile in QA, tap their NAME, not the picture.
