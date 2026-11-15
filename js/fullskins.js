@@ -55,7 +55,7 @@
     }
   };
   FULL_SKINS['anime-blaze'] = {
-    name: 'Anime Blaze', wip: true, dark: true, ink: '#f5f1ea', muted: '#b9b1a6', accent: '#e8321e',
+    name: 'Anime Blaze', dark: true, ink: '#f5f1ea', muted: '#b9b1a6', accent: '#e8321e',
     font: "'Barlow Semi Condensed', sans-serif", titleFont: "'Barlow Semi Condensed', sans-serif",
     timeline: 1, avatar: 'center', slice: 15, edge: 16,
     // colour options (owner, Nov 15): same art recoloured offline into assets/<id>/; first = assets/ root

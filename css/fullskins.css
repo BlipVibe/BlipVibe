@@ -2174,3 +2174,10 @@ html body.fs.fs-anime-blaze .featured-skin-banner .featured-header { margin-bott
     border-image: var(--fs-name-tag) 50 120 56 64 fill / 10px 34px 12px 18px stretch !important;
     padding: 0 4px !important; max-width: 100%; white-space: normal !important; overflow-wrap: anywhere; line-height: 1.1 !important; }
 }
+/* covers bleed from the SCREEN edges (not the page padding, which differs on the other-profile page and left a
+   dark strip down the left on some widths) */
+@media (max-width: 768px) {
+  html body.fs.fs-anime-blaze :is(#timelineCover, #pvCoverBanner) {
+    width: calc(100vw + 16px) !important; max-width: none !important;
+    margin-left: calc(50% - 50vw - 8px) !important; margin-right: calc(50% - 50vw - 8px) !important; }
+}
