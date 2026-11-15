@@ -46,6 +46,8 @@ ios/App/App.xcodeproj/project.xcworkspace/xcuserdata/
 images/skins/**
 !images/skins/*/
 !images/skins/*/card.webp
+!images/skins/*/NOTES.md
+!images/skins/README.md
 !images/skins/scrapbook/
 !images/skins/scrapbook/assets/
 !images/skins/scrapbook/assets/**

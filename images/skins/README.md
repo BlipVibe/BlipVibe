@@ -1,0 +1,35 @@
+# Full skins — playbook
+
+Each skin's folder has a `NOTES.md` (targets, art sets, wiring, CSS map, owner feedback, leftovers).
+Read `scrapbook/NOTES.md` first: it is the master and records every rule the owner set.
+Older decisions/plan for all 22 skins: `prototypes/skin-engine-spec.md`.
+
+## Folder layout (per skin `<id>`)
+- `concept*.png` — approved concept sheets (local only, git-ignored)
+- `kit/` — raw Codex PNGs (local only)
+- `assets/*.webp` — shipped art (must be whitelisted in `.gitignore` when the skin ships)
+- `card.webp` — 256px shop card (shipped)
+- `NOTES.md` — this skin's build notes (shipped in git)
+
+## Build loop (what worked on Scrapbook)
+1. **Targets**: approved concept sheets + close-up crops of single screens. Write a field-corrections
+   table (concept text vs real app fields). Concepts omit the top bar and invent things — the app keeps
+   its top bar and every real feature; never remove a feature to match a concept.
+2. **Art from Codex, from briefs** (`prototypes/<id>-extras-N-brief.md`): one chat per set; ask for
+   REALISTIC material (photographed texture, irregular edges, soft shadow, depth), real alpha,
+   9-slice border zones stated in px, seamless edge tiling, a contact sheet. Review the contact sheet
+   before wiring anything.
+3. **Convert** PNG → WebP (Pillow in a scratch venv), add every piece to the skin's `assets` list in
+   `js/fullskins.js`, reference it as `var(--fs-<name>)`.
+4. **CSS only places art**: `border-image: var(--fs-x) <slice> fill / <width> round`. Measure windows/slots
+   from the art's alpha, never eyeball.
+5. **QA in the real app** (iPhone simulator with the look-only switch), page by page, compare with the
+   concept, send the owner screenshots at each step, push (site + OTA publish on push to main).
+6. Owner checks on his phone (close/reopen the app twice for OTA), fix, repeat.
+
+## Non-negotiables (owner)
+- Minimal CSS; generated art for every visual; realistic, not "CSS-looking".
+- Home always shows cover + profile picture + profile card; top bar on every page; no "Back to Home".
+- Photos never cropped; profile picture in front of cover frames; liked state visibly solid.
+- Bars vertically centred; search text clears the icon; static sharp background on iPhone.
+- Skins are web-only (no native/Capacitor changes); look keys save only via `set_skin_look`.
