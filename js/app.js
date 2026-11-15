@@ -1302,6 +1302,7 @@ function syncSkinDataToSupabase(immediate){
                 var server=(profile&&profile.skin_data)||{};
                 var merged=Object.assign({},server);
                 changed.forEach(function(k){merged[k]=skinData[k];});
+                merged.syncV=2; // marks a merge-safe save; the server ignores look changes from saves without it (old app copies)
                 return sbUpdateProfile(currentUser.id,{skin_data:merged}).then(function(){
                     currentUser.skin_data=merged;
                     _lastSyncedSkinObj=JSON.parse(JSON.stringify(skinData));
