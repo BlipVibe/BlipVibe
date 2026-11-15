@@ -1670,3 +1670,73 @@ body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .stat-label { line-heigh
 /* owner: the timeline photo has NO filter — the user's photo shows as-is (overrides the tints above) */
 body.fs-anime-blaze .fs-tl-slot img,
 body.fs-anime-blaze[data-fs-variant] .fs-tl-slot img { filter: none !important; }
+
+/* Anime Blaze profile block — measured from the owner's concept close-up (1 concept px ≈ 1.39pt on a 402pt
+   phone): cover = slanted band 358pt with both edges angled; round photo 161pt centred on the cut; name 39pt;
+   bio 17pt; stat callouts 69pt tall, 89% wide, 19pt gap; Edit/View Profile 61pt tall, 67% wide, 48pt above */
+@media (max-width: 768px) {
+  body.fs-anime-blaze :is(#timelineCover, #pvCoverBanner) { height: 358px !important; min-height: 0 !important; margin: 0 -8px !important; }
+  body.fs-anime-blaze .fs-tl-slot-1 { clip-path: polygon(0 18.6%, 100% 0, 100% 81.4%, 0 100%) !important; }
+  body.fs-anime-blaze .fs-tl-own::after { right: 5% !important; top: 22% !important; }
+  body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-avatar-wrap { width: 161px !important; height: 161px !important; margin: -113px auto 0 !important; z-index: 3; }
+  body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .avatar-edit-btn { right: 4px !important; bottom: 10px !important; width: 40px !important; height: 40px !important; }
+  body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-name { font-size: 39px !important; line-height: 1.05 !important; margin-top: 8px !important; }
+  body.fs-anime-blaze :is(.pv-profile-card, #profileCard) :is(.profile-title, .profile-about) { font-size: 17px !important; line-height: 1.25 !important; margin: 6px 0 0 !important; }
+  body.fs-anime-blaze .fs-namecard { margin: 0 auto !important; }
+  body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .badge-row { margin: 8px auto 0 !important; }
+  body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-stats { width: 89% !important; gap: 19px !important; margin: 12px auto 0 !important; }
+  body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-stats > .stat { height: 69px; display: flex !important; flex-direction: column; justify-content: center; align-items: center; }
+  body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .stat-count { font-size: 28px !important; }
+  body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .stat-label { font-size: 16px !important; font-weight: 700; font-style: italic; }
+  body.fs-anime-blaze #pvEditProfileBtn,
+  body.fs-anime-blaze #profileCard .profile-links { width: 67% !important; min-height: 61px; margin: 48px auto 12px !important; font-size: 26px !important; display: flex !important; align-items: center; justify-content: center; }
+  body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .pv-actions { margin: 0 !important; }
+  body.fs-anime-blaze #profileCard .view-profile-link { font-size: 26px !important; }
+}
+@media (max-width: 768px) {
+  /* the concept has no app top bar: its cover's slanted top edge starts under the status bar. Tuck the cover's
+     top-right corner (66pt higher than its top-left) up under the banner so the rest keeps the concept spacing */
+  body.fs-anime-blaze :is(#timelineCover, #pvCoverBanner) { margin-top: -66px !important; position: relative; z-index: 0; }
+  body.fs-anime-blaze .navbar { z-index: 1000 !important; }
+}
+/* Anime Blaze bars, vertically centred (owner: navbar too high, banner content too low — same as Scrapbook):
+   top bar content centred above the banner's jagged flame edge; bottom tabs moved down toward the home indicator */
+body.fs-anime-blaze .navbar { padding-bottom: 22px !important; }
+@media (max-width: 768px) {
+  body.fs-anime-blaze .nav-center { padding-top: 24px !important; padding-bottom: calc(env(safe-area-inset-bottom, 0px) - 6px) !important; }
+}
+/* Anime Blaze profile, set 2 art (graphics, not CSS shapes): the cover's diagonal edges are the cover-cut art
+   (bottom) and the same art turned 180° (top); its white lightning line matches the concept's 16% slope.
+   Overlay height = width × 420/1290; offsets put the lines on the band's corners (measured). */
+@media (max-width: 768px) {
+  body.fs-anime-blaze .fs-tl-slot-1 { clip-path: none !important; }
+  body.fs-anime-blaze .fs-timeline::after,
+  body.fs-anime-blaze .fs-timeline::before {
+    content: ""; position: absolute; left: 0; right: 0; aspect-ratio: 1290 / 420;
+    background: var(--fs-cover-cut) center / 100% 100% no-repeat; pointer-events: none; z-index: 2;
+  }
+  body.fs-anime-blaze .fs-timeline::after { bottom: -4.7vw; }
+  body.fs-anime-blaze .fs-timeline::before { top: -4.7vw; transform: rotate(180deg); }
+  body.fs-anime-blaze .fs-tl-own::after { z-index: 3 !important; }
+  /* the picture's thin dark ring with a red rim is art */
+  body.fs-anime-blaze :is(#profileAvatarImg, .pv-profile-card .profile-avatar) { border: 0 !important; box-shadow: none !important; }
+  body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-avatar-wrap::after {
+    display: block !important; content: ""; position: absolute; inset: -2%;
+    background: var(--fs-avatar-rim) center / contain no-repeat !important; pointer-events: none; z-index: 2;
+  }
+  body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .avatar-edit-btn { z-index: 4 !important; }
+  /* stat callouts: the gold-keyline slanted box */
+  body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-stats > .stat { border-image: var(--fs-stat9) 70 fill / 14px round !important; }
+}
+/* cover-cut art now carries only the white lightning line + flame (its dark fill is transparent), so the photo
+   is trimmed along the same line — clip-path is the necessary bit here; the line art sits on the edge */
+@media (max-width: 768px) {
+  body.fs-anime-blaze .fs-tl-slot-1 { clip-path: polygon(0 18.6%, 100% 0, 100% 81.4%, 0 100%) !important; }
+}
+/* Anime Blaze art is slanted: repeating a 9-slice edge turns a slant into a sawtooth (owner: "doesn't look
+   right"). Stretch every edge instead; fixed-size callouts show their art whole. */
+body.fs-anime-blaze * { border-image-repeat: stretch !important; }
+body.fs-anime-blaze :is(.pv-profile-card, #profileCard) .profile-stats > .stat {
+  border: 0 !important; border-image: none !important;
+  background: var(--fs-stat9) center / 100% 100% no-repeat !important;
+}

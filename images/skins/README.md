@@ -32,5 +32,8 @@ Older decisions/plan for all 22 skins: `prototypes/skin-engine-spec.md`.
   Scrapbook = realistic photographed paper; Anime Blaze = clean comic illustration (owner: not realistic).
 - Home always shows cover + profile picture + profile card; top bar on every page; no "Back to Home".
 - Photos never cropped; profile picture in front of cover frames; liked state visibly solid.
-- Bars vertically centred; search text clears the icon; static sharp background on iPhone.
+- Bars vertically centred — EVERY skin: top-bar content sits ABOVE the banner art's bottom edge (padding-bottom
+  ≈ the edge's height), bottom-bar tabs pushed DOWN toward the home indicator (padding-bottom ≈ safe-area − 6px).
+  The owner has flagged this on two skins. Search text clears the icon; static sharp background on iPhone.
+- Each concept window is the literal spec ("no room for interpretation"), down to how a post is presented.
 - Skins are web-only (no native/Capacitor changes); look keys save only via `set_skin_look`.
