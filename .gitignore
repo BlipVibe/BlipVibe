@@ -44,6 +44,8 @@ ios/App/App.xcodeproj/project.xcworkspace/xcuserdata/
 # --- Full skins: source art stays local (concepts, raw kits, collage sources are 500+ MB) ---
 # Only a skin's sliced, lazy-loaded WebP assets/ ship; un-ignore each skin as it's wired up.
 images/skins/**
+!images/skins/*/
+!images/skins/*/card.webp
 !images/skins/scrapbook/
 !images/skins/scrapbook/assets/
 !images/skins/scrapbook/assets/**

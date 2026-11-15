@@ -3733,7 +3733,7 @@ async function showProfileView(person){
     var pvFontId=isMe?state.activeFont:person.font;
     var pvTplId=isMe?state.activeTemplate:person.template;
     var pvSkinName=null;
-    if(pvSkinId){pvSkinName=skins.find(function(s){return s.id===pvSkinId;})||premiumSkins.find(function(s){return s.id===pvSkinId;});}
+    if(pvSkinId){pvSkinName=skins.find(function(s){return s.id===pvSkinId;})||premiumSkins.find(function(s){return s.id===pvSkinId;})||(window.BlipFullSkins&&BlipFullSkins.meta(pvSkinId));}
     var pvFontName=pvFontId?fonts.find(function(f){return f.id===pvFontId;}):null;
     var pvTplName=pvTplId?templates.find(function(t){return t.id===pvTplId;}):null;
     var skinHtml='<div class="card" style="padding:20px;"><h4 style="font-size:15px;font-weight:600;margin-bottom:14px;"><i class="fas fa-wand-magic-sparkles" style="color:var(--primary);margin-right:8px;"></i>What Skin Am I?</h4>';
@@ -8443,8 +8443,41 @@ function doTryOn(type,id){
         b.textContent=match?'Trying':'Try On';
     });
 }
+// ---- Skins section (full skins: js/fullskins.js) ----
+var _fskFilter='all';
+function _fskCatalog(){return window.BlipFullSkins?BlipFullSkins.catalog():[];}
+function _fskCardHtml(k,mode){
+    // mode 'shop' (buy / try on / equip) or 'mine' (equip only, uses My Skins' apply binding)
+    var owned=!!state.ownedPremiumSkins[k.id];
+    var equipped=_myActivePremiumSkin()===k.id;
+    var actions='';
+    if(!k.ready){
+        actions='<span class="fsk-soon">'+(owned?'Owned · ':'')+'Coming soon</span>';
+    } else if(equipped){
+        actions='<button class="btn btn-disabled fsk-equipped" disabled><i class="fas fa-check"></i> Equipped</button>'
+            +(mode==='shop'?'<button class="fsk-takeoff" data-fsk-id="'+k.id+'">Take off</button>':'<button class="fsk-takeoff apply-premium-btn" data-pid="default">Take off</button>');
+    } else if(owned){
+        actions=mode==='shop'?'<button class="btn btn-primary fsk-equip" data-fsk-id="'+k.id+'">Equip</button>'
+            :'<button class="btn btn-primary apply-premium-btn" data-pid="'+k.id+'">Equip</button>';
+    } else {
+        actions=shopBuy(false,k.price,'fsk-buy','data-fsk-id="'+k.id+'"','premium',k.id);
+    }
+    return '<div class="fsk-card'+(k.ready?'':' fsk-locked')+(equipped?' fsk-is-equipped':'')+'" data-fsk-cat="'+k.cat+'">'
+        +'<div class="fsk-thumb"><img src="'+k.card+'" alt="" loading="lazy">'+(equipped?'<span class="fsk-badge"><i class="fas fa-check"></i></span>':'')+'</div>'
+        +'<div class="fsk-body"><h4 class="fsk-name">'+escapeHtml(k.name)+'</h4>'+actions+'</div></div>';
+}
+function _fskSectionHtml(){
+    var chips='<div class="fsk-filters">';
+    (window.BlipFullSkins?BlipFullSkins.categories():[]).forEach(function(c){chips+='<button class="search-tab fsk-filter'+(c[0]===_fskFilter?' active':'')+'" data-fsk-filter="'+c[0]+'">'+c[1]+'</button>';});
+    chips+='</div>';
+    var grid='<div class="fsk-grid">';
+    _fskCatalog().forEach(function(k){if(_fskFilter==='all'||k.cat===_fskFilter) grid+=_fskCardHtml(k,'shop');});
+    grid+='</div>';
+    return chips+grid;
+}
 function getShopCategories(){
     var cats=[];
+    if(_fskCatalog().length) cats.push({key:'fullskins',label:'<i class="fas fa-wand-magic-sparkles"></i> Skins',items:[],render:null});
     cats.push({key:'basic',label:'<i class="fas fa-palette"></i> Basic Skins',items:skins,render:function(s){return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="skin-preview-inner" style="color:#333;background:#fff;">Profile Preview</div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';">'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p>'+shopBuy(state.ownedSkins[s.id],s.price,'buy-skin-btn','data-sid="'+s.id+'"','skin',s.id)+'</div></div>';}});
     cats.push({key:'premium',label:'<i class="fas fa-gem"></i> Premium Skins',items:premiumSkins,render:function(s){return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="premium-preview-frame" style="background:'+s.border+';"><img src="images/default-avatar.svg" class="premium-preview-avatar"></div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';"><i class="fas '+s.icon+'" style="color:'+s.iconColor+';margin-right:6px;"></i>'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p>'+shopBuy(state.ownedPremiumSkins[s.id],s.price,'buy-premium-btn','data-pid="'+s.id+'"','premium',s.id)+'</div></div>';}});
     cats.push({key:'fonts',label:'<i class="fas fa-font"></i> Font Styles',items:fonts,render:function(f){return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#667eea,#764ba2);"><span style="font-family:\''+f.family+'\',sans-serif;color:#fff;font-size:24px;">Aa Bb Cc</span></div><div class="skin-card-body"><h4 style="font-family:\''+f.family+'\',sans-serif;">'+f.name+'</h4><p>'+f.desc+'</p>'+shopBuy(state.ownedFonts[f.id],f.price,'buy-font-btn','data-fid="'+f.id+'"','font',f.id)+'</div></div>';}});
@@ -8565,13 +8598,21 @@ function renderShop(){
     var tabsHtml='';
     cats.forEach(function(c){tabsHtml+='<button class="search-tab'+(c.key===currentShopTab?' active':'')+'" data-stab="'+c.key+'">'+c.label+'</button>';});
     $('#shopTabs').innerHTML=tabsHtml;
-    var active=cats.find(function(c){return c.key===currentShopTab;});
-    var html='<div class="shop-scroll-row scroll-2row">';
-    active.items.forEach(function(item){html+=active.render(item);});
-    html+='</div>';
+    var active=cats.find(function(c){return c.key===currentShopTab;})||cats[0];
+    var html;
+    if(active.key==='fullskins'){html=_fskSectionHtml();}
+    else{
+        html='<div class="shop-scroll-row scroll-2row">';
+        active.items.forEach(function(item){html+=active.render(item);});
+        html+='</div>';
+    }
     $('#shopGrid').innerHTML=html;
     function shopPurchased(btn,tryType,tryId){
         var body=btn.closest('.skin-card-body');
+        if(!body){ // Skins section card: just redraw (it then offers Equip)
+            if(_tryOnActive&&_tryOnActive.type===tryType&&_tryOnActive.id===tryId){revertTryOn();}
+            renderShop();renderMySkins();loadSkinDataFromSupabase();return;
+        }
         var priceEl=body.querySelector('.skin-price');if(priceEl)priceEl.remove();
         var actions=body.querySelector('.shop-card-actions');
         if(actions){var owned=document.createElement('button');owned.className='btn btn-disabled';owned.textContent='Owned';owned.disabled=true;actions.replaceWith(owned);}
@@ -8614,6 +8655,14 @@ function renderShop(){
     _bindBuyBtn('.buy-tpl-btn','data-tid','template',state.ownedTemplates,templates,'name');
     _bindBuyBtn('.buy-premium-btn','data-pid','premium',state.ownedPremiumSkins,premiumSkins,'name');
     _bindBuyBtn('.buy-nav-btn','data-nid','navstyle',state.ownedNavStyles,navStyles,'name');
+    _bindBuyBtn('.fsk-buy','data-fsk-id','premium',state.ownedPremiumSkins,_fskCatalog(),'name');
+    $$('.fsk-filter').forEach(function(btn){btn.addEventListener('click',function(){_fskFilter=btn.dataset.fskFilter;renderShop();});});
+    $$('.fsk-equip').forEach(function(btn){btn.addEventListener('click',function(){
+        revertTryOn();applyPremiumSkin(btn.dataset.fskId);saveState();syncSkinDataToSupabase(true);renderShop();
+    });});
+    $$('.fsk-takeoff').forEach(function(btn){btn.addEventListener('click',function(){
+        revertTryOn();applyPremiumSkin(null);saveState();syncSkinDataToSupabase(true);renderShop();
+    });});
     // Try On button handlers
     $$('.try-on-btn').forEach(function(btn){btn.addEventListener('click',function(){doTryOn(btn.dataset.tryType,btn.dataset.tryId);});});
     // Song preview buttons
@@ -9156,6 +9205,7 @@ function applySkin(skinId,silent){
         root.style.setProperty('--nav-bg','#0f172a');
         setThemeVars(false);
     }
+    if(window.BlipFullSkins) BlipFullSkins.onSkin(null);
 }
 
 function applyFont(fontId,silent){
@@ -9381,6 +9431,8 @@ function getMySkinCategories(){
     var ownedC=coinSkins.filter(function(s){return state.ownedCoinSkins[s.id];});
     var ownedT=templates.filter(function(t){return state.ownedTemplates[t.id];});
     if(ownedS.length) cats.push({key:'basic',label:'<i class="fas fa-palette"></i> Basic Skins',items:ownedS,render:function(s){var a=_myActiveSkin()===s.id;return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="skin-preview-inner" style="color:#333;background:#fff;">Preview</div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';">'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p><button class="btn '+(a?'btn-disabled':'btn-primary')+' apply-skin-btn" data-sid="'+s.id+'">'+(a?'Active':'Apply')+'</button></div></div>';},defaultCard:'<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);"><div class="skin-preview-inner" style="color:#333;background:#fff;">Default</div></div><div class="skin-card-body"><h4>Default</h4><p>The BlipVibe signature look.</p><button class="btn '+(!_myActiveSkin()?'btn-disabled':'btn-primary')+' apply-skin-btn" data-sid="default">'+(!_myActiveSkin()?'Active':'Apply')+'</button></div></div>'});
+    var ownedFull=_fskCatalog().filter(function(k){return k.ready&&state.ownedPremiumSkins[k.id];});
+    if(ownedFull.length) cats.push({key:'fullskins',label:'<i class="fas fa-wand-magic-sparkles"></i> Skins',items:ownedFull,render:function(k){return _fskCardHtml(k,'mine');}});
     if(ownedP.length) cats.push({key:'premium',label:'<i class="fas fa-gem"></i> Premium Skins',items:ownedP,render:function(s){var a=_myActivePremiumSkin()===s.id;return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="premium-preview-frame" style="background:'+s.border+';"><img src="images/default-avatar.svg" class="premium-preview-avatar"></div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';"><i class="fas '+s.icon+'" style="color:'+s.iconColor+';margin-right:6px;"></i>'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p><button class="btn '+(a?'btn-disabled':'btn-primary')+' apply-premium-btn" data-pid="'+s.id+'">'+(a?'Active':'Apply')+'</button></div></div>';},defaultCard:'<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);"><div style="color:#fff;font-size:14px;font-weight:600;">Default</div></div><div class="skin-card-body"><h4>Default</h4><p>The BlipVibe signature look.</p><button class="btn '+(!_myActivePremiumSkin()?'btn-disabled':'btn-primary')+' apply-premium-btn" data-pid="default">'+(!_myActivePremiumSkin()?'Active':'Apply')+'</button></div></div>'});
     if(ownedF.length) cats.push({key:'fonts',label:'<i class="fas fa-font"></i> Font Styles',items:ownedF,render:function(f){var a=_myActiveFont()===f.id;return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#667eea,#764ba2);"><span style="font-family:\''+f.family+'\',sans-serif;color:#fff;font-size:24px;">Aa Bb Cc</span></div><div class="skin-card-body"><h4 style="font-family:\''+f.family+'\',sans-serif;">'+f.name+'</h4><p>'+f.desc+'</p><button class="btn '+(a?'btn-disabled':'btn-primary')+' apply-font-btn" data-fid="'+f.id+'">'+(a?'Active':'Apply')+'</button></div></div>';},defaultCard:'<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#667eea,#764ba2);"><span style="font-family:Roboto,sans-serif;color:#fff;font-size:24px;">Aa Bb Cc</span></div><div class="skin-card-body"><h4>Default (Roboto)</h4><p>The original BlipVibe font.</p><button class="btn '+(!_myActiveFont()?'btn-disabled':'btn-primary')+' apply-font-btn" data-fid="default">'+(!_myActiveFont()?'Active':'Apply')+'</button></div></div>'});
     if(ownedL.length) cats.push({key:'logos',label:'<i class="fas fa-star"></i> Logo Styles',items:ownedL,render:function(l){var a=state.activeLogo===l.id;var preview=l.img?'<img src="'+l.img+'" style="height:80px;object-fit:contain;">':'<span style="color:#fff;font-size:22px;font-weight:700;">'+(l.text||'')+'</span>';return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;">'+preview+'</div><div class="skin-card-body"><h4>'+l.name+'</h4><p>'+l.desc+'</p><button class="btn '+(a?'btn-disabled':'btn-primary')+' apply-logo-btn" data-lid="'+l.id+'">'+(a?'Active':'Apply')+'</button></div></div>';},defaultCard:'<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#f093fb,#f5576c);"><span style="color:#fff;font-size:22px;font-weight:700;">BlipVibe</span></div><div class="skin-card-body"><h4>Default</h4><p>The original BlipVibe logo.</p><button class="btn '+(!state.activeLogo?'btn-disabled':'btn-primary')+' apply-logo-btn" data-lid="default">'+(!state.activeLogo?'Active':'Apply')+'</button></div></div>'});

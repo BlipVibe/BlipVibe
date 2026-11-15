@@ -391,6 +391,7 @@ body.fs-scrapbook .msg-sidebar-header h3 {
   background: var(--fs-btn-secondary) center / 100% 100% no-repeat;
   filter: drop-shadow(0 2px 3px rgba(62, 45, 32, .25));
 }
+body.fs-scrapbook .page-header h2 { margin-bottom: 10px; }
 body.fs-scrapbook .page-header h2 > i,
 body.fs-scrapbook .msg-sidebar-header h3 > i { display: none; }
 
@@ -513,3 +514,64 @@ body.fs .coin-rule {
 body.fs .coin-rule i { color: var(--fs-accent) !important; }
 body.fs .promo-title { color: var(--fs-ink) !important; }
 body.fs .promo-subtitle { color: var(--fs-muted) !important; }
+
+/* ================================================================
+   SKINS SECTION (shop tab) — styled with the app's own variables so it
+   fits the default theme, any legacy skin, and full skins alike
+   ================================================================ */
+.fsk-filters { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 12px; scrollbar-width: none; }
+.fsk-filters::-webkit-scrollbar { display: none; }
+.fsk-filters .search-tab { flex-shrink: 0; }
+.fsk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  align-items: start;
+  gap: 14px;
+  padding-bottom: 20px;
+}
+.fsk-card {
+  background: var(--card);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.fsk-thumb { position: relative; aspect-ratio: 1; overflow: hidden; }
+.fsk-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fsk-locked .fsk-thumb img { filter: saturate(.55) brightness(.8); }
+.fsk-badge {
+  position: absolute; top: 8px; right: 8px;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--primary); color: #fff;
+  display: flex; align-items: center; justify-content: center; font-size: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .3);
+}
+.fsk-body { padding: 10px 10px 12px; display: flex; flex-direction: column; gap: 6px; align-items: stretch; text-align: center; }
+.fsk-name { font-size: 15px; font-weight: 600; color: var(--dark); margin: 0; }
+.fsk-body .skin-price { font-size: 12px; color: var(--gray); }
+.fsk-body .shop-card-actions { display: flex; gap: 6px; }
+.fsk-body .shop-card-actions .btn { flex: 1; padding: 7px 4px; font-size: 12px; }
+.fsk-body > .btn { padding: 8px; font-size: 13px; }
+.fsk-soon { font-size: 12px; color: var(--gray); padding: 6px 0; }
+.fsk-takeoff { background: none; border: 0; color: var(--gray); font-size: 12px; text-decoration: underline; padding: 2px; }
+@media (max-width: 768px) {
+  .fsk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+}
+/* My Skins renders its rows as horizontal scrollers */
+.shop-scroll-row .fsk-card { min-width: 160px; max-width: 160px; flex-shrink: 0; }
+
+/* under a full skin the cards become the skin's own panels */
+body.fs .fsk-card {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  border: 12px solid transparent;
+  border-image: var(--fs-panel-card) calc(var(--fs-slice) * 1%) fill / 12px stretch;
+  overflow: visible;
+}
+body.fs .fsk-name { font-family: var(--fs-title-font); color: var(--fs-ink) !important; font-size: 18px; }
+body.fs .fsk-is-equipped { border-image-source: var(--fs-panel-card-active); }
+body.fs .fsk-badge { background: var(--fs-accent); }
+body.fs-scrapbook .fsk-thumb { padding: 5px 5px 14px; background: #fffdf7; box-shadow: 0 2px 5px rgba(62, 45, 32, .3); transform: rotate(-1deg); }
+body.fs-scrapbook .fsk-card:nth-child(even) .fsk-thumb { transform: rotate(1.2deg); }

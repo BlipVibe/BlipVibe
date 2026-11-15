@@ -196,12 +196,42 @@
 
   // end of applyPremiumSkin(): id is the applied premium skin, or null for none/default
   function onSkin(id) {
+    // app.js only strips premium-<id> classes for skins in its legacy premiumSkins list, so drop any
+    // left over from a full skin (e.g. after a try-on is reverted)
+    Object.keys(FULL_SKINS).forEach(function (k) { if (k !== id) document.body.classList.remove('premium-' + k); });
     if (id && FULL_SKINS[id]) apply(id); else clear();
   }
 
   // app data the engine reads (exposed by app.js as window.BlipFullSkinsData)
   function data() {
     return window.BlipFullSkinsData || { photos: function () { return []; }, cover: function () { return null; } };
+  }
+
+  /* ---------- catalog for the Skins section of the shop ---------- */
+
+  // Every full skin with art. `ready` = wired into the engine (has a FULL_SKINS entry); the rest show
+  // as "Coming soon". Ids match the legacy premium skins, so owning one carries over.
+  var CATALOG = [
+    ['scrapbook', 'Scrapbook', 'aesthetic'], ['basic', '#Basic', 'aesthetic'],
+    ['pastel-aurora', 'Pastel Aurora', 'aesthetic'], ['heavens-light', "Heaven's Light", 'aesthetic'],
+    ['sakura', 'Sakura Bloom', 'aesthetic'],
+    ['kawaii-cats', 'Kawaii Cats', 'cute'], ['cotton-candy', 'Cotton Candy', 'cute'], ['good-witch', 'Good Witch', 'cute'],
+    ['witchcraft', 'Witchcraft', 'mystic'], ['blood-moon', 'Blood Moon', 'mystic'], ['galaxy', 'Galaxy Swirl', 'mystic'],
+    ['dark-prism', 'Dark Prism', 'mystic'],
+    ['neon-wave', 'Neon Wave', 'neon'], ['vaporwave', 'Vaporwave', 'neon'], ['matrix', 'Matrix', 'neon'],
+    ['toxic-green', 'Toxic Green', 'neon'], ['geo-prism', 'Geo Prism', 'neon'], ['anime-blaze', 'Anime Blaze', 'neon'],
+    ['autumn-leaves', 'Autumn Leaves', 'nature'], ['ocean-tide', 'Ocean Tide', 'nature'], ['deep-wave', 'Deep Wave', 'nature'],
+    ['molten-gold', 'Molten Gold', 'nature']
+  ];
+  var CATEGORIES = [['all', 'All'], ['aesthetic', 'Aesthetic'], ['cute', 'Cute'], ['mystic', 'Mystic'],
+    ['neon', 'Neon'], ['nature', 'Nature']];
+  var PRICE = 300;
+
+  function catalog() {
+    return CATALOG.map(function (c) {
+      return { id: c[0], name: c[1], cat: c[2], price: PRICE, ready: !!FULL_SKINS[c[0]],
+        card: BASE + c[0] + '/card.webp' };
+    }).sort(function (a, b) { return (b.ready ? 1 : 0) - (a.ready ? 1 : 0); }); // finished skins first
   }
 
   // premiumSkins-shaped metadata for full skins that aren't in the legacy premiumSkins list
@@ -213,5 +243,6 @@
   }
 
   window.BlipFullSkins = { onSkin: onSkin, apply: apply, clear: clear, render: render, meta: meta,
+    catalog: catalog, categories: function () { return CATEGORIES.slice(); },
     active: function () { return active; } };
 })();
