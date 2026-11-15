@@ -1412,3 +1412,8 @@ body.fs-scrapbook #profileCard .profile-links {
 body.fs-scrapbook #profileCard .view-profile-link { font-family: var(--fs-title-font); font-size: 20px !important; color: var(--fs-ink) !important; }
 body.fs-scrapbook #profileCard .edit-profile-btn,
 body.fs-scrapbook #profileCard .edit-profile-btn i { color: var(--fs-ink) !important; font-size: 18px !important; }
+/* polaroid windows re-measured from timeline-frame.webp (872x848): window 1 centre 28.2%/31.1%, 45.4x45.5%,
+   -13.3deg; window 2 centre 69.7%/47.2%, 44.7x45%, 11.4deg. Photos are 1% larger so their edges tuck
+   under the frame, never poking out past it (owner, Nov 15) */
+body.fs-scrapbook .fs-tl-slot-1 { left: 5% !important; top: 7.85% !important; width: 46.4% !important; height: 46.5% !important; transform: rotate(-13.3deg) !important; }
+body.fs-scrapbook .fs-tl-slot-2 { left: 46.85% !important; top: 24.2% !important; width: 45.7% !important; height: 46% !important; transform: rotate(11.4deg) !important; }
