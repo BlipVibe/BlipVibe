@@ -3417,3 +3417,15 @@ html body.fs.fs-good-witch .featured-skin-banner .btn { min-width: 76px !importa
 html body.fs.fs-good-witch .quest-item[data-fs-started="1"]:not([data-fs-q="100"]):nth-child(2) .quest-icon { background-image: var(--fs-constellation-a-50) !important; }
 html body.fs.fs-good-witch .quest-item[data-fs-started="1"]:not([data-fs-q="100"]):nth-child(3) .quest-icon { background-image: var(--fs-constellation-b-50) !important; }
 html body.fs.fs-good-witch .quest-item[data-fs-started="1"]:not([data-fs-q="100"]):nth-child(4) .quest-icon { background-image: var(--fs-constellation-c-50) !important; }
+/* themed Home banner (owner): sky + crescent + owl above, calm band for the bar (art rows 262–442), scalloped gold edge */
+@media (max-width: 768px) {
+  html body.fs.fs-good-witch .navbar { height: calc(100vw * 520 / 1290) !important; min-height: calc(env(safe-area-inset-top, 0px) + 96px) !important;
+    padding: calc(100vw * 262 / 1290) 0 calc(100vw * 78 / 1290) !important; background: var(--fs-header) center top / 100% 100% no-repeat !important; }
+  html body.fs.fs-good-witch .nav-container { height: 100% !important; }
+  html body.fs.fs-good-witch .page.active { padding-top: calc(100vw * 500 / 1290 + 4px) !important; }
+  html body.fs.fs-good-witch #timelineCover { margin-top: -10px !important; }
+}
+/* enchanted photo frame: 9-slice corners (210x160) + the crescent crest centred on the top rim */
+html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] .pm-thumb::before { content: ""; position: absolute; left: 50%; top: -20px; width: 90px; height: 36px;
+  transform: translateX(-50%); z-index: 3; pointer-events: none; background: var(--fs-photo-crest) center / contain no-repeat; }
+html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] .pm-thumb::after { border-image: var(--fs-photo-frame) 160 210 / 46px 58px stretch !important; }
