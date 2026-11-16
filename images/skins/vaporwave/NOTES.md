@@ -46,3 +46,8 @@ Status: IN PROGRESS (started Nov 15 2026).
   (loadingUpdate: 90s "BlipVibe Setup" window with pink segmented bar / Modern frosted card with glowing cyan bar,
   uneven installer progress + status lines, then the installer screen dissolves tile by tile into the new OS).
   Skins page = window cards (name in title bar, same size). Pop-ups: title bar now INSIDE the window (× was untappable).
+- Nov 16: owner: profile card was tucked under the top bar → #profileCard margin-top 30px. Start button made real
+  (js/fullskins.js vaporStart): opens a themed Start menu (BlipVibe 95 / XP side strip) — My Profile, Saved Posts,
+  Skins, Settings, Switch to Modern/Retro, Night/Day Mode, Screensaver (starry synthwave grid with the skin's icons
+  bouncing; tap to wake), Shut Down… (owner: "a shutting down load bar") = Shut Down window with a stepped bar →
+  screen collapses to a line → "It's now safe to turn off your BlipVibe." → boot screen with logo + bar.

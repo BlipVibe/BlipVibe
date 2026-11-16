@@ -632,6 +632,132 @@
     });
   }
 
+  /* ---------- Vaporwave Start button (owner, Nov 16: "Start doesn't do anything — make it fun"): a real Start button on
+     the taskbar opens a themed Start menu (shortcuts, Retro/Modern + Day/Night switches, a screensaver, and a joke
+     Shut Down that switches the "monitor" off and boots straight back up). ---------- */
+  function removeVaporStart() {
+    ['fsStart', 'fsStartMenu', 'fsSaver', 'fsShutdown'].forEach(function (i) { var e = document.getElementById(i); if (e) e.remove(); });
+  }
+  function closeStartMenu() { var m = document.getElementById('fsStartMenu'); if (m) m.classList.remove('is-open'); var b = document.getElementById('fsStart'); if (b) b.classList.remove('is-on'); }
+  function vaporStart() {
+    var bar = document.querySelector('.nav-center');
+    if (!bar || document.getElementById('fsStart')) return;
+    var btn = document.createElement('button');
+    btn.id = 'fsStart'; btn.type = 'button'; btn.className = 'fs-start-btn'; btn.innerHTML = '<span>Start</span>';
+    btn.setAttribute('aria-label', 'Start menu');
+    bar.insertBefore(btn, bar.firstChild);
+    var dark = /-dark$/.test(variant || ''), modern = (variant || '').indexOf('modern') === 0;
+    var items = [
+      ['profile', 'icon-home', 'My Profile', function () { var e = document.getElementById('dropdownViewProfile'); if (e) e.click(); }],
+      ['saved', 'icon-photo', 'Saved Posts', function () { var e = document.getElementById('dropdownSaved'); if (e) e.click(); }],
+      ['skins', 'icon-skins', 'Skins', function () { var e = document.querySelector('.nav-link[data-page="shop"]'); if (e) e.click(); }],
+      ['settings', 'icon-compose', 'Settings', function () {
+        var a = Array.prototype.filter.call(document.querySelectorAll('#userDropdownMenu a'), function (x) { return /Settings/.test(x.textContent); })[0]; if (a) a.click(); }],
+      '-',
+      ['os', modern ? 'toggle-retro' : 'toggle-modern', modern ? 'Switch to Retro' : 'Switch to Modern', function () { var e = document.getElementById('fsDayNight'); if (e) e.click(); }],
+      ['lamp', dark ? 'toggle-sun' : 'toggle-moon', dark ? 'Day Mode' : 'Night Mode', function () { var e = document.getElementById('fsLamp'); if (e) e.click(); }],
+      ['saver', 'toggle-sun', 'Screensaver', vaporSaver],
+      '-',
+      ['shutdown', 'icon-close', 'Shut Down…', vaporShutdown]
+    ];
+    var m = document.createElement('div');
+    m.id = 'fsStartMenu'; m.className = 'fs-start-menu';
+    var html = '<div class="fs-start-side"><span>BlipVibe<b>' + (modern ? 'XP' : '95') + '</b></span></div><div class="fs-start-list">';
+    items.forEach(function (it, k) {
+      if (it === '-') { html += '<hr>'; return; }
+      html += '<button type="button" data-k="' + k + '"><i style="background-image:var(--fs-' + it[1] + ')"></i>' + it[2] + '</button>';
+    });
+    m.innerHTML = html + '</div>';
+    document.body.appendChild(m);
+    m.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-k]'); if (!b) return;
+      e.preventDefault(); e.stopPropagation(); closeStartMenu();
+      var it = items[+b.getAttribute('data-k')]; setTimeout(it[3], 120);
+    });
+    btn.addEventListener('click', function (e) {
+      e.preventDefault(); e.stopPropagation();
+      var open = !m.classList.contains('is-open'); m.classList.toggle('is-open', open); btn.classList.toggle('is-on', open);
+    });
+    if (!vaporStart._doc) {
+      vaporStart._doc = true;
+      document.addEventListener('click', function (e) { if (!e.target.closest('#fsStartMenu, #fsStart')) closeStartMenu(); }, true);
+    }
+  }
+  // screensaver: starry synthwave grid with the skin's own art drifting and bouncing like an old desktop saver; tap to wake
+  function vaporSaver() {
+    if (document.getElementById('fsSaver')) return;
+    var W = innerWidth, H = innerHeight, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var o = document.createElement('div'); o.id = 'fsSaver'; o.className = 'fs-saver';
+    var cv = document.createElement('canvas'); cv.width = W * dpr; cv.height = H * dpr; o.appendChild(cv);
+    var hint = document.createElement('div'); hint.className = 'fs-saver-hint'; hint.textContent = 'tap to wake'; o.appendChild(hint);
+    document.body.appendChild(o);
+    var g = cv.getContext('2d'); g.scale(dpr, dpr);
+    var modern = (variant || '').indexOf('modern') === 0, base = BASE + 'vaporwave/assets/' + (variant && variant !== 'retro' ? variant + '/' : '');
+    var names = ['toggle-sun', 'toggle-retro', 'toggle-modern', 'coin', 'quest-icon-like', 'toggle-moon', 'wordmark'];
+    var sprites = names.map(function (n, k) {
+      var im = new Image(); im.src = base + n + '.webp';
+      var sz = n === 'wordmark' ? 150 : 56 + Math.random() * 30;
+      return { im: im, w: sz, x: Math.random() * (W - sz), y: Math.random() * (H - sz), vx: (Math.random() < .5 ? -1 : 1) * (.6 + Math.random() * 1.2), vy: (Math.random() < .5 ? -1 : 1) * (.6 + Math.random() * 1.2), r: Math.random() * 6.28, vr: (Math.random() - .5) * .02 };
+    });
+    var stars = []; for (var k = 0; k < 90; k++) stars.push([Math.random() * W, Math.random() * H * .55, Math.random()]);
+    var t0 = performance.now(), alive = true;
+    (function draw(now) {
+      if (!alive) return;
+      var t = (now - t0) / 1000;
+      var sky = g.createLinearGradient(0, 0, 0, H);
+      sky.addColorStop(0, modern ? '#030a1f' : '#0b0221'); sky.addColorStop(.55, modern ? '#0a2a6c' : '#3a0b5c'); sky.addColorStop(1, modern ? '#05101f' : '#12021f');
+      g.fillStyle = sky; g.fillRect(0, 0, W, H);
+      stars.forEach(function (s) { g.fillStyle = 'rgba(255,255,255,' + (.3 + .7 * Math.abs(Math.sin(t * 1.5 + s[2] * 9))) + ')'; g.fillRect(s[0], s[1], 2, 2); });
+      var hz = H * .62, col = modern ? '63,208,255' : '255,79,200';   // perspective grid rolling toward you
+      g.strokeStyle = 'rgba(' + col + ',.7)'; g.lineWidth = 1.2;
+      for (var i = -12; i <= 12; i++) { g.beginPath(); g.moveTo(W / 2 + i * 14, hz); g.lineTo(W / 2 + i * 120, H); g.stroke(); }
+      for (var j = 0; j < 14; j++) { var p = ((j + (t * .8) % 1) / 14); var y = hz + (H - hz) * p * p; g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); }
+      sprites.forEach(function (s) {
+        s.x += s.vx; s.y += s.vy; s.r += s.vr;
+        if (s.x < 0 || s.x > W - s.w) s.vx *= -1; if (s.y < 0 || s.y > H - s.w * (s.im.naturalHeight / (s.im.naturalWidth || 1) || 1)) s.vy *= -1;
+        if (!s.im.complete || !s.im.naturalWidth) return;
+        var h = s.w * s.im.naturalHeight / s.im.naturalWidth;
+        g.save(); g.translate(s.x + s.w / 2, s.y + h / 2); if (s.im.src.indexOf('wordmark') < 0) g.rotate(Math.sin(s.r) * .25);
+        g.drawImage(s.im, -s.w / 2, -h / 2, s.w, h); g.restore();
+      });
+      requestAnimationFrame(draw);
+    })(t0);
+    setTimeout(function () { o.addEventListener('click', function () { alive = false; o.classList.add('is-out'); setTimeout(function () { o.remove(); }, 300); }); }, 400);
+  }
+  // Shut Down… (owner: "a shutting down load bar"): a themed shut-down window fills its bar while the steps tick by,
+  // the monitor switches off (everything collapses to a glowing line), a moment of "It's now safe to turn off", then it
+  // boots back up with the BlipVibe logo and a loading bar.
+  function vaporShutdown() {
+    if (document.getElementById('fsShutdown')) return;
+    var modern = (variant || '').indexOf('modern') === 0;
+    var steps = ['Saving your settings…', 'Closing windows…', 'Logging off…', 'Shutting down…'];
+    var o = document.createElement('div'); o.id = 'fsShutdown'; o.className = 'fs-shutdown' + (modern ? ' is-modern' : '');
+    o.innerHTML = '<div class="fs-sd-win"><div class="fs-sd-title">' + (modern ? 'Shutting down' : 'Shut Down BlipVibe') + '</div>' +
+      '<div class="fs-sd-step">' + steps[0] + '</div><div class="fs-sd-bar"><i></i></div><div class="fs-sd-pct">0%</div></div>' +
+      '<div class="fs-sd-msg">' + (modern ? '<b class="fs-sd-power"></b>' : 'It’s now safe to turn off<br>your BlipVibe.') + '</div>' +
+      '<div class="fs-sd-boot"><b></b><div class="fs-sd-bar"><i></i></div><span>Starting BlipVibe…</span></div><div class="fs-sd-line"></div>';
+    o.style.setProperty('--fs-wordmark', getComputedStyle(document.body).getPropertyValue('--fs-wordmark'));
+    document.documentElement.appendChild(o);   // outside <body>, which collapses like a switched-off screen
+    var bar = o.querySelector('.fs-sd-win .fs-sd-bar i'), pct = o.querySelector('.fs-sd-pct'), step = o.querySelector('.fs-sd-step');
+    var marks = [[0, 0], [.2, .22], [.35, .26], [.55, .61], [.72, .66], [.9, .94], [1, 1]];
+    function prog(x) { for (var k = 1; k < marks.length; k++) if (x <= marks[k][0]) { var a = marks[k - 1], b = marks[k]; return a[1] + (b[1] - a[1]) * (x - a[0]) / (b[0] - a[0]); } return 1; }
+    requestAnimationFrame(function () { o.classList.add('is-in'); });
+    var LOAD = 2000, t0 = performance.now();
+    (function tick(now) {
+      var x = Math.min(1, (now - t0 - 250) / LOAD); if (x < 0) x = 0;
+      var p = prog(x); bar.style.width = (p * 100) + '%'; pct.textContent = Math.floor(p * 100) + '%';
+      step.textContent = steps[Math.min(steps.length - 1, Math.floor(x * steps.length))];
+      if (x < 1) requestAnimationFrame(tick); else off();
+    })(t0);
+    function off() {
+      setTimeout(function () { o.classList.add('is-off'); document.documentElement.classList.add('fs-sd-off'); }, 250);
+      setTimeout(function () { o.classList.add('is-msg'); }, 1100);
+      setTimeout(function () { o.classList.remove('is-msg'); o.classList.add('is-boot'); }, 2700);
+      setTimeout(function () { document.documentElement.classList.remove('fs-sd-off'); o.classList.add('is-out'); }, 4500);
+      setTimeout(function () { o.remove(); }, 5000);
+    }
+  }
+
   function magicSwap(btn, id, next) {
     if (id === 'anime-blaze') return blazeSwap(btn, id, next);
     if (swapping) return;
@@ -745,6 +871,7 @@
     if (!b) return;
     var dn = document.getElementById('fsDayNight');
     if (dn) dn.remove();
+    removeVaporStart();
     var lamp = document.getElementById('fsLamp');
     if (lamp) lamp.remove();
     var wasActive = active;
@@ -820,6 +947,7 @@
     Object.keys(theme).forEach(function (v) { b.style.setProperty(v, theme[v]); });
     active = id;
     dayNightToggle(id, cfg);
+    if (id === 'vaporwave') vaporStart(); else removeVaporStart();
     startSuspending();
     watchPosts();
     render();

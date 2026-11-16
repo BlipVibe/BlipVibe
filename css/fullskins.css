@@ -4207,3 +4207,65 @@ html body.fs.fs-vaporwave .modal-content .modal-header .modal-close i { opacity:
   html body.fs.fs-vaporwave #page-home #profileCard { margin-top: 30px !important; }
   html body.fs.fs-vaporwave:not(:has(#page-home.active)) .page.active { padding-top: calc(92px + env(safe-area-inset-top, 0px)) !important; }
 }
+
+/* ---------- Vaporwave Start button + Start menu + screensaver + Shut Down ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-vaporwave .nav-center::before { display: none !important; content: none !important; }
+  html body.fs.fs-vaporwave .fs-start-btn { order: -1; display: flex; align-items: center; justify-content: flex-end; height: 46px; padding: 0 9px 0 0; border: 0; box-sizing: border-box;
+    background: var(--fs-start-btn) center / 100% 100% no-repeat; color: var(--vw-ink); font: 700 14px var(--fs-font); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  html body.fs.fs-vaporwave .fs-start-btn.is-on { filter: brightness(.88); transform: translateY(1px); }
+}
+.fs-start-menu { position: fixed; left: 4px; bottom: calc(66px + env(safe-area-inset-bottom, 0px)); z-index: 10050; width: 250px; display: flex; visibility: hidden; opacity: 0;
+  transform: translateY(12px); transition: opacity .15s, transform .15s, visibility 0s .15s; border: solid transparent; border-width: 4px;
+  border-image: var(--fs-panel) 14 fill / 4px stretch; box-shadow: 3px 3px 0 rgba(0,0,0,.35); }
+.fs-start-menu.is-open { visibility: visible; opacity: 1; transform: none; transition: opacity .15s, transform .15s; }
+body[data-fs-variant^="modern"] .fs-start-menu { border-width: 8px; border-image-slice: 30 fill; border-radius: 0; box-shadow: 0 10px 28px rgba(0,30,90,.45); }
+.fs-start-side { width: 30px; flex: 0 0 30px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px;
+  background: linear-gradient(0deg, #ff4fc8, #6b2bd8 55%, #0a1a8c); }
+body[data-fs-variant^="modern"] .fs-start-side { background: linear-gradient(0deg, #3fd0ff, #1c4fd8 60%, #0a2a6c); border-radius: 10px 0 0 10px; }
+.fs-start-side span { writing-mode: vertical-rl; transform: rotate(180deg); color: #fff; font: 700 18px Verdana, sans-serif; letter-spacing: .5px; white-space: nowrap; }
+.fs-start-side b { color: #ffe36e; margin-top: 4px; }
+.fs-start-list { flex: 1; display: flex; flex-direction: column; padding: 4px; }
+.fs-start-list button { display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 4px 8px; border: 0; background: none; text-align: left;
+  color: var(--vw-ink, #1d1640); font: 600 15px Verdana, sans-serif; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.fs-start-list button:active { background: #0a1a8c; color: #fff; }
+body[data-fs-variant^="modern"] .fs-start-list button:active { background: linear-gradient(90deg, #1c4fd8, #3fd0ff); border-radius: 8px; }
+.fs-start-list button i { width: 26px; height: 26px; flex: 0 0 26px; background: center / contain no-repeat; }
+.fs-start-list hr { border: 0; border-top: 1px solid rgba(0,0,0,.3); border-bottom: 1px solid rgba(255,255,255,.7); margin: 3px 4px; }
+body[data-fs-variant$="-dark"] .fs-start-list hr { border-top-color: rgba(0,0,0,.6); border-bottom-color: rgba(255,255,255,.12); }
+.fs-saver { position: fixed; inset: 0; z-index: 2147482000; background: #000; animation: fsSaverIn .4s ease-out; }
+.fs-saver canvas { width: 100%; height: 100%; display: block; }
+.fs-saver-hint { position: absolute; left: 0; right: 0; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); text-align: center; color: rgba(255,255,255,.55); font: 22px 'VT323', monospace; letter-spacing: 2px; }
+.fs-saver.is-out { opacity: 0; transition: opacity .3s; }
+@keyframes fsSaverIn { from { opacity: 0; } to { opacity: 1; } }
+html.fs-sd-off body { animation: fsTvOff .5s cubic-bezier(.6,0,.9,.4) forwards; }
+@keyframes fsTvOff { 0% { transform: none; filter: none; } 70% { transform: scale(1, .006); filter: brightness(4); } 100% { transform: scale(0, .006); filter: brightness(6); } }
+.fs-shutdown { position: fixed; inset: 0; z-index: 2147482500; display: flex; align-items: center; justify-content: center; background: rgba(10, 8, 40, 0); transition: background .25s; font-family: Verdana, sans-serif; }
+.fs-shutdown.is-in { background: rgba(10, 8, 40, .55); }
+.fs-shutdown.is-off { background: #000; transition: background .35s .3s; }
+.fs-sd-win { width: min(320px, 86vw); padding: 0 0 14px; background: #c8c8d0; border: 2px solid; border-color: #fff #555 #555 #fff; box-shadow: 3px 3px 0 rgba(0,0,0,.4);
+  transform: scale(.9); opacity: 0; transition: transform .2s, opacity .2s; }
+.fs-shutdown.is-in .fs-sd-win { transform: none; opacity: 1; }
+.fs-shutdown.is-off .fs-sd-win { animation: fsTvOff .5s cubic-bezier(.6,0,.9,.4) forwards; }
+.fs-sd-title { padding: 5px 10px; color: #fff; font-weight: 700; font-size: 14px; background: linear-gradient(90deg, #0a1a8c, #1c4fd8); }
+.fs-sd-step { margin: 16px 16px 10px; color: #1d1640; font-size: 14px; }
+.fs-sd-bar { margin: 0 16px; height: 22px; background: #fff; border: 2px solid; border-color: #7a7a86 #fff #fff #7a7a86; padding: 3px; box-sizing: border-box; }
+.fs-sd-bar i { display: block; height: 100%; width: 0; background: repeating-linear-gradient(90deg, #ff4fc8 0 12px, transparent 12px 15px); }
+.fs-sd-pct { margin: 8px 16px 0; text-align: center; color: #1d1640; font-weight: 700; font-size: 13px; }
+.fs-shutdown.is-modern .fs-sd-win { background: rgba(14, 34, 80, .82); border: 1px solid rgba(90, 210, 255, .6); border-radius: 18px; box-shadow: 0 12px 34px rgba(0, 20, 60, .5); overflow: hidden; }
+.fs-shutdown.is-modern .fs-sd-title { background: none; text-align: center; font-size: 17px; padding-top: 16px; color: #e6f6ff; }
+.fs-shutdown.is-modern :is(.fs-sd-step, .fs-sd-pct) { color: #bfeaff; text-align: center; }
+.fs-shutdown.is-modern .fs-sd-bar { height: 10px; border: 0; padding: 0; border-radius: 5px; background: rgba(255,255,255,.15); }
+.fs-shutdown.is-modern .fs-sd-bar i { border-radius: 5px; background: linear-gradient(90deg, #1c4fd8, #3fd0ff); box-shadow: 0 0 12px #3fd0ff; }
+.fs-sd-msg { position: absolute; color: #ff9a1f; font: 700 21px/1.4 Verdana, sans-serif; text-align: center; opacity: 0; transition: opacity .3s; }
+.fs-shutdown.is-msg .fs-sd-msg { opacity: 1; }
+.fs-sd-power { display: block; width: 64px; height: 64px; border-radius: 50%; border: 5px solid #3fd0ff; border-top-color: transparent; position: relative; box-shadow: 0 0 22px #3fd0ff; }
+.fs-sd-power::after { content: ""; position: absolute; left: 50%; top: -14px; width: 6px; height: 34px; margin-left: -3px; background: #3fd0ff; border-radius: 3px; }
+.fs-sd-boot { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; opacity: 0; transition: opacity .25s; }
+.fs-shutdown.is-boot .fs-sd-boot { opacity: 1; }
+.fs-sd-boot b { width: 240px; height: 60px; background: var(--fs-wordmark) center / contain no-repeat; }
+.fs-sd-boot .fs-sd-bar { width: 200px; margin: 0; }
+.fs-shutdown.is-boot .fs-sd-boot .fs-sd-bar i { animation: fsBoot 1.5s steps(14) forwards; }
+.fs-sd-boot span { color: #fff; font-size: 14px; }
+@keyframes fsBoot { from { width: 0; } to { width: 100%; } }
+.fs-shutdown.is-out { opacity: 0; transition: opacity .45s; }
