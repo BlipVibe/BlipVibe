@@ -260,7 +260,7 @@
       var osBtn = document.createElement('button');
       osBtn.id = 'fsDayNight'; osBtn.type = 'button';
       osBtn.className = 'fs-daynight fs-os-btn is-' + os;
-      osBtn.setAttribute('aria-label', os === 'retro' ? 'Switch to Modern' : 'Switch to Retro');
+      osBtn.setAttribute('aria-label', os === 'retro' ? 'Update to XP' : 'Switch to Retro');
       osBtn.innerHTML = '<i></i>';
       osBtn.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation();
         vaporSwap(osBtn, id, vid(os === 'retro' ? 'modern' : 'retro', drk), 'os'); });
@@ -657,7 +657,7 @@
       ['settings', 'icon-compose', 'Settings', function () {
         var a = Array.prototype.filter.call(document.querySelectorAll('#userDropdownMenu a'), function (x) { return /Settings/.test(x.textContent); })[0]; if (a) a.click(); }],
       '-',
-      ['os', modern ? 'toggle-retro' : 'toggle-modern', modern ? 'Switch to Retro' : 'Switch to Modern', function () { var e = document.getElementById('fsDayNight'); if (e) e.click(); }],
+      ['os', modern ? 'toggle-retro' : 'toggle-modern', modern ? 'Switch to Retro' : 'Update to XP', function () { var e = document.getElementById('fsDayNight'); if (e) e.click(); }],
       ['lamp', dark ? 'toggle-sun' : 'toggle-moon', dark ? 'Day Mode' : 'Night Mode', function () { var e = document.getElementById('fsLamp'); if (e) e.click(); }],
       ['saver', 'toggle-sun', 'Screensaver', vaporSaver],
       '-',
