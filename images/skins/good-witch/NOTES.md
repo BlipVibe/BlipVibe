@@ -10,6 +10,9 @@
   white cat, crystals. Plum serif type (Cormorant Garamond).
 
 ## Owner direction
+- Match the concept ALMOST 1:1 (owner, Nov 15): every screen built to its crop — same layout, sizes, spacing, ornament,
+  icons and props. QA each page side by side with its crop in the simulator before showing it; anything that differs is
+  a bug unless the concept shows a field the app doesn't have.
 - Build every asset FROM THE CONCEPT, complete inventory up front (lesson from Witchcraft's misses):
   `prototypes/good-witch-redraw-brief.md` → Codex → `kit/gw/`.
 - TWO renditions (owner: "because it's so bright"): **Day** (concept) and **Night** — a real redraw (midnight sky,

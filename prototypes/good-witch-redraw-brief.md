@@ -1,6 +1,6 @@
 # Good Witch — production art traced from the approved concept (complete, one pass)
 
-Owner: build the skin's assets FROM THE CONCEPT. Every piece must look like its counterpart in the concept crops —
+Owner: build the skin's assets FROM THE CONCEPT and match it ALMOST 1:1. Every piece must look like its counterpart in the concept crops —
 same shape, proportion, ornament, material, colour. Do not invent a different style. (Lesson from Witchcraft: the
 owner wants EVERYTHING visible in the concept — icons, badges, frames, props — so this list is the full inventory.)
 
