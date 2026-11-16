@@ -6793,3 +6793,20 @@ html body.fs.fs-blood-moon .profile-stats:has(> .stat:nth-child(3))::before, htm
 /* people-row avatars (Network / Search / suggestions): the thin silver ring, on the rendition's own dark */
 html body.fs.fs-blood-moon .profile-card-item img.profile-card-avatar { background: var(--fs-avatar-ring-small) center / 100% 100% no-repeat, #1a0608 !important; padding: 3px !important; border: 0 !important; box-shadow: none !important; box-sizing: border-box !important; border-radius: 50% !important; }
 html body.fs.fs-blood-moon[data-fs-variant="silver"] .profile-card-item img.profile-card-avatar { background-color: #0b1426 !important; }
+/* bottom bar, final (owner: labels were clipped, "there is space at the bottom that can be used"): the bar art is drawn
+   taller (--bmh = 1.2x its natural height) and sits lower, into the empty band above the home indicator; each tab fills
+   its arched cell (arch top ≈ 30 % → bottom rail ≈ 90 % of the art), icon + full label inside */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .nav-center { --bmh: calc(100vw * 300 / 1290 * 1.2);
+    height: calc(var(--bmh) + env(safe-area-inset-bottom, 0px) - 16px) !important; padding: 0 0 calc(env(safe-area-inset-bottom, 0px) - 16px) !important;
+    background: var(--fs-nav-bar) center top / 100% var(--bmh) no-repeat, linear-gradient(transparent calc(var(--bmh) - 6px), var(--bm-navfill) 0) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link { transform: none !important; height: calc(var(--bmh) * .6) !important; margin: 0 0 calc(var(--bmh) * .1) !important;
+    padding: 0 0 3px !important; justify-content: flex-end !important; gap: 2px !important; line-height: 1.15 !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link span { font-size: 12px !important; line-height: 1.15 !important; padding-bottom: 1px; overflow: visible !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link > i { width: 26px !important; min-width: 26px; height: 24px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .nav-center { height: calc(var(--bmh) + env(safe-area-inset-bottom, 0px) - 30px) !important; padding-bottom: calc(env(safe-area-inset-bottom, 0px) - 30px) !important;
+    background: var(--fs-nav-bar) center top / 100% var(--bmh) no-repeat, linear-gradient(transparent calc(var(--bmh) - 8px), var(--bm-navfill) 0) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link { transform: translateY(15px) !important; }
+}
