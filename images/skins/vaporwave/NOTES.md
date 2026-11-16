@@ -1,6 +1,6 @@
 # Vaporwave — build notes
 
-Status: IN PROGRESS (started Nov 15 2026).
+Status: SHIPPED Nov 16 2026 (available in the skin store). Four renditions: Retro, Modern, Retro Dark, Modern Dark.
 
 ## Targets
 - Retro (approved concept): `concept.png` (home, skins, profile, groups, post, messages, chat) and `concept-2.png`
@@ -51,3 +51,7 @@ Status: IN PROGRESS (started Nov 15 2026).
   Skins, Settings, Switch to Modern/Retro, Night/Day Mode, Screensaver (starry synthwave grid with the skin's icons
   bouncing; tap to wake), Shut Down… (owner: "a shutting down load bar") = Shut Down window with a stepped bar →
   screen collapses to a line → "It's now safe to turn off your BlipVibe." → boot screen with logo + bar.
+- Nov 16: comments + create post styled; someone else's profile rebuilt (owner: "the profile view needs a lot of work"):
+  same order as Home (Avatar.exe card, then Timeline.exe), compact header, 3+2+2 bevel button grid, admin as one row,
+  no "Back to Home", empty VHS tapes show a sunset test screen. Checked all four renditions (Home, Groups, Messages,
+  Network, Skins, chat, profile). SHIPPED: `wip` removed.

@@ -136,7 +136,7 @@
   FULL_SKINS.vaporwave = {
     name: 'Vaporwave', dark: false, ink: '#1d1640', muted: '#5d5784', accent: '#ff4fc8',
     font: "Verdana, 'DejaVu Sans', sans-serif", titleFont: "Verdana, 'DejaVu Sans', sans-serif",
-    timeline: 4, avatar: 'center', slice: 15, edge: 16, wip: true,
+    timeline: 4, avatar: 'center', slice: 15, edge: 16,
     tlLabels: ['PLAY \u25B6\nPM 08:47\nAPR 21 1995', 'PM 11:02\nAPR 21 1995', 'PM 10:23\nAPR 21 1995', 'PM 05:17\nAPR 21 1995'],
     // owner (Nov 15): "retro then modern, keeping it semi Windows / OS themed" + a dark mode for both.
     // Retro = 1995 desktop (assets/ root, concept.png); Modern = blue frosted-glass OS (assets/modern/, concept-modern.png).
