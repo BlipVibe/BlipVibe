@@ -72,3 +72,7 @@ violet/magenta glow, candlelight; gold serif type (Cormorant Garamond); cobwebs 
   Open: Messages page's right cobweb is clipped by the sidebar (shows as two stubs); Notifications/Search/Comments/
   Create post/Story/Group page still unchecked on device. Simulator gotcha: taps during scroll momentum only stop the
   scroll — wait ~3s after a swipe before tapping the bottom bar.
+- Nov 15 (late): chat props shelf no longer scrolls (owner: "this part shouldn't move") — it hangs off the input bar
+  (`.msg-chat-input::before`, bottom: 100%) and the message list gets an empty spacer at the end so the last message
+  clears it; messages scroll up/down behind the fixed shelf. The pentagram sigil was removed from chat entirely (owner:
+  it blocked too much of your own messages) — don't bring it back over the message area.
