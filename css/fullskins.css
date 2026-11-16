@@ -3466,3 +3466,15 @@ html body.fs.fs-good-witch :is(.quest-reward, .quest-check) { font-size: 14px !i
 html body.fs.fs-good-witch .quest-reward > i { width: 17px; height: 17px; }
 html body.fs.fs-good-witch .quest-panel { align-content: center !important; padding-top: 12% !important; padding-bottom: 17% !important; }
 html body.fs.fs-good-witch .quest-panel-header { margin-bottom: 8px !important; }
+/* People You May Know / Trending Groups (owner, every skin): the pair centred in the row, each pill splits the width
+   evenly and its icon + label are centred inside, clear of the art's end ornaments */
+@media (max-width: 768px) {
+  html body.fs .mobile-pills-bar { justify-content: center !important; gap: 10px !important; padding: 2px 4px !important; }
+  html body.fs .mobile-pill { flex: 1 1 0 !important; min-width: 0; max-width: 220px; justify-content: center !important; text-align: center;
+    padding-left: 22px !important; padding-right: 22px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+@media (max-width: 768px) {
+  html body.fs .mobile-pill { font-size: 14px !important; line-height: 1.1 !important; padding-top: 7px !important; padding-bottom: 7px !important; }
+  html body.fs .mobile-pill i { font-size: 13px !important; }
+}
+@media (max-width: 768px) { html body.fs .mobile-pill { font-size: 12.5px !important; padding-left: 26px !important; padding-right: 26px !important; gap: 5px !important; } }
