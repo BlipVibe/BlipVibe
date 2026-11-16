@@ -3586,3 +3586,8 @@ html body.fs.fs-good-witch .share-preview { border-width: 24px 34px !important; 
 html body.fs.fs-good-witch .comment-item { border-width: 24px 34px !important; border-image: var(--fs-comment-bubble) 115 180 fill / 24px 34px stretch !important; }
 /* cat-on-cloud: never tucked under the button (its ear and the crystal tips were cut off) */
 html body.fs.fs-good-witch :is(#profileCard, .pv-profile-card)::after { margin: 10px -8px 0 !important; padding-bottom: 34% !important; background-size: 92% auto !important; background-position: center top !important; position: relative; z-index: 0; }
+/* themed sun / moon art on the Day/Night toggle (Good Witch) */
+html body.fs.fs-good-witch .fs-daynight { width: 40px; height: 40px; }
+html body.fs.fs-good-witch .fs-daynight i { font-size: 0 !important; width: 36px; height: 36px; display: block; filter: none !important; background: center / contain no-repeat; }
+html body.fs.fs-good-witch .fs-daynight.is-day i { background-image: var(--fs-toggle-sun); filter: drop-shadow(0 0 5px rgba(255, 210, 120, .8)) !important; }
+html body.fs.fs-good-witch .fs-daynight.is-night i { background-image: var(--fs-toggle-moon); filter: drop-shadow(0 0 5px rgba(200, 165, 255, .8)) !important; }
