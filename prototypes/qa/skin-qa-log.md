@@ -16,6 +16,8 @@ kept on this machine only), `images/skins/README.md` and the skin's `NOTES.md`. 
 | B | **Bars clear** | anything overlaps the top banner or the bottom bar (scrolling content passing under the bars is fine) |
 | A | **Art, not CSS** | a CSS-drawn frame, gradient or ring stands in for art; fake checkerboard painted into art; old premium overlays (spinning ring, `.premium-border`) |
 | R | **Readable** | text is hard to read over its background (menus included); text fields under 16px |
+| L | **Long names** | a long display name (test: "Alexandria Montgomery") on Home's profile card, my Profile or someone else's profile breaks mid-word, becomes unreadable, collides with or hides behind decorations (flourishes, laurels, frames, candelabras), or pushes the layout under the cover art |
+| U | **Unreadable text** | any text too close in colour to what's behind it — button labels (Free / Buy / Join / Follow / tabs, active and inactive), pop-up titles, names and placeholders, field placeholders and typed text, card headings, app-coloured icons left unthemed. Pass ≈ WCAG 4.5:1 body, 3:1 large titles. Also grep for CSS variables used but never defined (they fall back silently) |
 | M | **Menus/motion** | the account menu has every item on screen with Log out reachable; liked/disliked visibly fill; the skin's own swap/equip animations play and nothing just pops in |
 
 Automated checks run on every capture too (`qaCheck` / `qaPlace` in the QA harness): horizontal scroll, fields < 16px,
@@ -88,3 +90,29 @@ Commits: 7d78031, 88f1231, 94e8360.
 |---|---|---|
 | Group page layout doesn't match the concept (compact header + Feed / Chat / Group Shop tabs) | all | rework per skin, keeping Edit / Leave / Rules / Invite in the ⋯ menu; needs the owner's OK on where those go |
 | Heaven's Light rendition swap starts with one plain white frame | HL | confirm with the owner whether the flash is intended |
+
+## Owner-reported findings
+
+Every finding the owner reports (directly or through another session) gets a row here and is re-tested on every QA pass
+so nothing comes back. Re-check column: date of the last pass that confirmed it.
+
+| # | Date | Skin / rendition | Screen | What the owner saw | Fix | Re-check |
+|---|---|---|---|---|---|---|
+| 1 | Nov 16 | Vaporwave | store | "Coming soon" on the phone — the app update failed (54 MB bundle over the 50 MB limit) | 951906b (skin art loads from blipvibe.com) | pending: needs an OTA upload with HTTP 200 + Equip showing on the phone |
+| 2 | Nov 16 | Vaporwave | Home / profile | Avatar.exe label covered the profile photo (premium ::before ring) | 7cc1616 | Nov 16 pass 1 ✓ |
+| 3 | Nov 16 | all | avatars | old premium spinning avatar ring must never show on full skins | — | Nov 16 pass 1 ✓ (no ring in any capture) |
+| 4 | Nov 16 | Vaporwave | Start menu | Start menu transparent (now solid); label "Update to XP" / "Roll back to 95" | — | pending |
+| 5 | Nov 16 | Vaporwave Retro (+ every skin) | Home profile card | profile card tucked under / bleeding into the top banner | margin fix | Nov 16 pass 1 ✓ all 15 renditions |
+| 6 | Nov 16 | Vaporwave | someone else's profile | needed rebuilding to the concept | — | Nov 16 pass 1 ✓ (⋯ menu added 7d78031) |
+| 7 | Nov 16 | Vaporwave Retro / Modern | Start button | emblem squished | 46e9b97 (9-slice) | Nov 16 pass 1 ✓ |
+| 8 | Nov 16 | all | equip transition | must be themed per skin; Anime Blaze shatters, not fades; nothing pops in | — | Nov 16 pass 1 ✓ (all 6 recorded) |
+| 9 | Nov 16 | Good Witch Day / Night | Home, equip | owl replaces the cat; wings-spread owl flies in, constellations everywhere | 9a808c2, b7769c9 | Nov 16 pass 1 ✓ |
+| 10 | Nov 16 | all | feed | liked/disliked must visibly fill or change | 98b8b61 | Nov 16 pass 1 ✓ |
+| 11 | Nov 16 | Witchcraft | Skins header, equip | triple moon needs a full middle moon | 26d56dc | Nov 16 pass 1 ✓ |
+| 12 | Nov 16 | Heaven's Light Day / Twilight | menu, Home, transition | Logout unreachable; banner/profile/timeline photos misaligned; wings mirrored; Twilight checkerboard on banner + navbar; profile bleeding into banner; wordmark hidden; "Coming soon" off-centre | e51302b + later | Nov 16 pass 1 ✓ (menu, photos, banner, wordmark, store); re-check after the HL session's next push |
+| 13 | Nov 16 | all | account menu | off screen; text unreadable over the page (frosted OK if readable; Vaporwave solid) | e191467 | Nov 16 pass 1 ✓ (Witchcraft menu bars fixed 88f1231) |
+| 14 | Nov 16 | all | store | "Owned · Coming soon" too big → small Owned tag on the picture; cards same size; options in the top bar | e191467 | Nov 16 pass 1 ✓ (Witchcraft tag fixed 7d78031) |
+| 15 | Nov 16 | Good Witch | chat, fields, pop-ups | chat input hidden while chat open; iOS zoom on fields < 16px; pop-up × untappable; Night pop-ups | — | Nov 16 pass 1 ✓ |
+| 16 | Nov 16 | Anime Blaze (any skin viewing a Heaven's Light user) | bottom bar | grey checkerboard + clouds behind the bars | 7d78031 | Nov 16 ✓ |
+| 17 | Nov 16 | all | profile card / profiles | long names must wrap by word, stay readable, not hit decorations or push under the cover (criterion L) | — | pass 2 |
+| 18 | Nov 16 | all | everywhere | unreadable text: buttons, pop-ups, placeholders, headings, app-coloured icons (criterion U) | — | pass 2 |
