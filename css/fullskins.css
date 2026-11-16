@@ -3403,3 +3403,17 @@ html body.fs.fs-good-witch :is(.msg-search, .page-search) { padding: 0 22px 0 30
    rims stretch; the gold still curls over the photo corners */
 html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] .pm-thumb::after { inset: -6px !important; background: none !important;
   border: solid transparent !important; border-width: 46px 58px !important; border-image: var(--fs-photo-frame) 160 210 / 46px 58px stretch !important; }
+/* Featured Skin (owner: not fitted right): 9-slice so the corner ornaments keep their shape, text kept inside the rim */
+html body.fs.fs-good-witch .featured-skin-banner { background: none !important; border: solid transparent !important; border-width: 30px 40px !important;
+  border-image: var(--fs-featured-frame) 110 150 fill / 30px 40px stretch !important; padding: 2px 0 !important; box-sizing: border-box; }
+html body.fs.fs-good-witch .featured-skin-banner .featured-header { display: flex !important; justify-content: space-between; align-items: center; gap: 8px; margin: 0 0 6px !important; }
+html body.fs.fs-good-witch .featured-skin-banner .featured-header h4 { font-size: 17px !important; margin: 0 !important; white-space: nowrap; }
+html body.fs.fs-good-witch .featured-skin-banner .featured-timer { font-size: 14px !important; white-space: nowrap; }
+html body.fs.fs-good-witch .featured-skin-banner .featured-body { display: grid !important; grid-template-columns: 70px minmax(0, 1fr) auto; align-items: center; gap: 10px; }
+html body.fs.fs-good-witch .featured-skin-banner .featured-preview { width: 70px !important; height: 70px !important; }
+html body.fs.fs-good-witch .featured-skin-banner .featured-info p { font-size: 14px !important; line-height: 1.25; margin: 2px 0 0 !important; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+html body.fs.fs-good-witch .featured-skin-banner .btn { min-width: 76px !important; }
+/* any progress (1/3) lights the constellation halfway, not only from 40% */
+html body.fs.fs-good-witch .quest-item[data-fs-started="1"]:not([data-fs-q="100"]):nth-child(2) .quest-icon { background-image: var(--fs-constellation-a-50) !important; }
+html body.fs.fs-good-witch .quest-item[data-fs-started="1"]:not([data-fs-q="100"]):nth-child(3) .quest-icon { background-image: var(--fs-constellation-b-50) !important; }
+html body.fs.fs-good-witch .quest-item[data-fs-started="1"]:not([data-fs-q="100"]):nth-child(4) .quest-icon { background-image: var(--fs-constellation-c-50) !important; }

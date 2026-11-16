@@ -344,6 +344,7 @@
       var pct = f ? parseFloat(f.style.width) || 0 : 0;
       var done = pct >= 100 || !!it.querySelector('.quest-check');
       it.setAttribute('data-fs-q', done ? '100' : pct >= 40 ? '50' : '0');
+      it.setAttribute('data-fs-started', pct > 0 || done ? '1' : '0');   // any progress at all (e.g. 1/3)
       // exact progress (0–1) for skins that fill a graphic proportionally (Witchcraft's potions)
       it.style.setProperty('--fs-q', String(done ? 1 : Math.max(0, Math.min(1, pct / 100))));
     });

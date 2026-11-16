@@ -152,3 +152,7 @@ as an ENCHANTED frame — gold corner clusters (vines, crystal/pearl, glints, sp
 that), plain uniform rims between corners, no centre motif; crescent moved to its own piece photo-crest.png (300x120).
 Owner also wants a themed top BANNER (header.png 1290x520): sky, crescent moon, owl on a gold branch, crystals, fairy
 lights, scalloped gold vine edge, calm band for the bar icons.
+Owner (Nov 15): featured-frame "generic and unthemed" → enchanted banner (owl top-left, crystals top-right, vines bottom);
+composer/coin-goal-bar/join-btn/chip-active/stats-frame get themed end charms; Daily Quests = a CUTE QUEST BOARD
+(quests-frame 1200x760: pearly board in gold frame, hanging crescent sign, fairy lights, ribbons, flowers, crystals) +
+quest-card 380x420 (pinned note with gold star pin + ribbon). All 9-slice-safe.
