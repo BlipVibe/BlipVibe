@@ -4202,3 +4202,8 @@ html body.fs.fs-vaporwave .modal-content .modal-header { position: sticky; top: 
   background: none !important; border-image: var(--fs-window) 122 240 776 14 fill / 30px 59px 0 4px stretch !important; display: flex !important; align-items: center; }
 html body.fs.fs-vaporwave .modal-content .modal-header .modal-close { position: absolute !important; right: 2px; top: 0; width: 24px; height: 30px; opacity: 1 !important; background: none !important; border: 0 !important; z-index: 6; }
 html body.fs.fs-vaporwave .modal-content .modal-header .modal-close i { opacity: 0 !important; }
+/* owner (Nov 16): the profile card's top edge was hidden under the top bar — start Home a little lower */
+@media (max-width: 768px) {
+  html body.fs.fs-vaporwave #page-home #profileCard { margin-top: 30px !important; }
+  html body.fs.fs-vaporwave:not(:has(#page-home.active)) .page.active { padding-top: calc(92px + env(safe-area-inset-top, 0px)) !important; }
+}
