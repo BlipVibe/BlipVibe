@@ -3506,3 +3506,83 @@ html body.fs.fs-good-witch .photos-card { margin-left: 0 !important; margin-righ
 /* post card v3 (iridescent + ornate gold, 140px corners) and thicker photo frame (210x160 corners) */
 html body.fs.fs-good-witch .feed-post.feed-post.feed-post { border-width: 34px !important; border-image: var(--fs-post-panel) 140 fill / 34px stretch !important; }
 html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] .pm-thumb::after { border-image: var(--fs-photo-frame) 160 210 / 50px 64px stretch !important; border-width: 50px 64px !important; inset: -10px !important; }
+/* owner: same square card, gold rim as thick as Witchcraft's — draw the frame art larger (rim ~1.8x) and push it
+   outward with an outset so the post content keeps its room */
+html body.fs.fs-good-witch .feed-post.feed-post.feed-post { border-width: 34px !important; border-image-source: var(--fs-post-panel) !important;
+  border-image-slice: 140 fill !important; border-image-width: 62px !important; border-image-outset: 12px !important; border-image-repeat: stretch !important;
+  margin-left: 12px !important; margin-right: 12px !important; margin-bottom: 26px !important; }
+/* Day/Night toggle in the Home top bar (sun = Day, moon = Night) */
+@media (max-width: 768px) {
+  html body.fs.fs-good-witch .nav-container { grid-template-columns: 50px 1fr 36px 36px 36px 36px auto !important; }
+  html body.fs.fs-good-witch .navbar .fs-daynight { grid-column: 3; grid-row: 1; }
+  html body.fs.fs-good-witch .navbar .mobile-search-btn { grid-column: 4 !important; }
+  html body.fs.fs-good-witch .navbar .mobile-notif-btn { grid-column: 5 !important; }
+  html body.fs.fs-good-witch .navbar .nav-music-wrap { grid-column: 6 !important; }
+  html body.fs.fs-good-witch .navbar .nav-coins { grid-column: 7 !important; }
+  html body.fs.fs-good-witch:not(:has(#page-home.active)) .navbar .fs-daynight { display: none !important; }
+}
+html body.fs .fs-daynight { width: 36px; height: 36px; padding: 0; border: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
+  -webkit-tap-highlight-color: transparent; background: none; }
+html body.fs .fs-daynight i { font-size: 21px; }
+html body.fs .fs-daynight.is-day i { color: #e9b44c; filter: drop-shadow(0 0 6px rgba(255, 205, 90, .9)); }
+html body.fs .fs-daynight.is-night i { color: #e7dcff; filter: drop-shadow(0 0 6px rgba(190, 160, 255, .9)); }
+/* Day/Night magical swap overlay (js/fullskins.js magicSwap) — shared by any skin with a day/night pair */
+.fs-swap { position: fixed; inset: 0; z-index: 2147483000; pointer-events: none; }
+.fs-swap-sky { position: absolute; inset: 0; background: center / cover no-repeat; clip-path: circle(0 at var(--x) var(--y));
+  transition: clip-path .5s cubic-bezier(.7, 0, .3, 1), opacity .55s ease, filter .55s ease; }
+.fs-swap-sky::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at var(--x) var(--y), rgba(255, 236, 170, .55), transparent 45%); mix-blend-mode: screen; }
+.fs-swap.is-in .fs-swap-sky { clip-path: circle(160% at var(--x) var(--y)); }
+.fs-swap.is-out .fs-swap-sky { opacity: 0; filter: brightness(1.6) blur(6px); }
+.fs-swap-spark { position: absolute; left: var(--x); top: var(--y); font-size: calc(18px * var(--s)); line-height: 1; color: #ffe39a;
+  text-shadow: 0 0 6px #fff4c2, 0 0 14px #f7c95a; transform: translate(-50%, -50%) scale(.2); opacity: 0; }
+.fs-swap-night .fs-swap-spark { color: #efe4ff; text-shadow: 0 0 6px #fff, 0 0 14px #b993ff; }
+.fs-swap.is-in .fs-swap-spark { animation: fsSpark .9s cubic-bezier(.2, .7, .3, 1) var(--d) forwards; }
+@keyframes fsSpark {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.2) rotate(0deg); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1) rotate(160deg); }
+}
+@media (prefers-reduced-motion: reduce) { .fs-swap-sky { transition-duration: .01s; } .fs-swap.is-in .fs-swap-spark { animation: none; } }
+/* spell book pages are light parchment in Day AND Night — always write on them in deep plum ink */
+html body.fs.fs-good-witch .quest-panel :is(h4, p, span, .quest-progress, .quest-reward, .quest-check) { color: #2e0f3d !important; text-shadow: 0 0 1px rgba(255, 245, 230, .5); }
+html body.fs.fs-good-witch .quest-panel .quest-info p { font-weight: 700 !important; }
+/* Night readability: badges become smoky glass with light text; soft text a touch brighter */
+body.fs-good-witch[data-fs-variant="night"] { --gw-soft: #d9ccf5; }
+html body.fs.fs-good-witch[data-fs-variant="night"] .post-badges :is(span, .post-badge) { background: rgba(30, 18, 60, .75) !important; color: #f4ecff !important; border-color: rgba(227, 194, 126, .7) !important; }
+html body.fs.fs-good-witch[data-fs-variant="night"] .post-badges :is(span, .post-badge) i { color: #d9b8ff !important; }
+/* swap v2 (owner: no hard edges — a magical burn-in / burn-out): the new sky spreads from the button behind a soft,
+   glowing gold-lilac burning edge; after the skin switches, a second burning edge sweeps out and dissolves the sky away */
+@property --fsr { syntax: '<length>'; inherits: true; initial-value: 0px; }
+@property --fsr2 { syntax: '<length>'; inherits: true; initial-value: 0px; }
+.fs-swap { --fsr: 0px; --fsr2: 0px; }
+.fs-swap-sky { clip-path: none !important; transition: none !important;
+  -webkit-mask-image: radial-gradient(circle at var(--x) var(--y), #000 calc(var(--fsr) - 140px), transparent var(--fsr)),
+    radial-gradient(circle at var(--x) var(--y), transparent calc(var(--fsr2) - 140px), #000 var(--fsr2));
+  -webkit-mask-composite: source-in; mask-composite: intersect;
+  mask-image: radial-gradient(circle at var(--x) var(--y), #000 calc(var(--fsr) - 140px), transparent var(--fsr)),
+    radial-gradient(circle at var(--x) var(--y), transparent calc(var(--fsr2) - 140px), #000 var(--fsr2)); }
+.fs-swap.is-out .fs-swap-sky { opacity: 1 !important; filter: none !important; }
+.fs-swap-burn { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen;
+  background: radial-gradient(circle at var(--x) var(--y), transparent calc(var(--fsr) - 120px), rgba(255, 214, 140, .0) calc(var(--fsr) - 110px),
+      rgba(255, 226, 160, .85) calc(var(--fsr) - 55px), rgba(214, 170, 255, .75) calc(var(--fsr) - 20px), transparent calc(var(--fsr) + 25px)); }
+.fs-swap.is-out .fs-swap-burn { background: radial-gradient(circle at var(--x) var(--y), transparent calc(var(--fsr2) - 140px),
+      rgba(214, 170, 255, .75) calc(var(--fsr2) - 90px), rgba(255, 226, 160, .9) calc(var(--fsr2) - 45px), transparent calc(var(--fsr2) + 10px)); }
+.fs-swap.is-in { animation: fsBurnIn .85s cubic-bezier(.55, 0, .35, 1) forwards; }
+.fs-swap.is-out { --fsr: 220vmax; animation: fsBurnOut .95s cubic-bezier(.45, 0, .3, 1) forwards; }
+@keyframes fsBurnIn { from { --fsr: 0px; } to { --fsr: 220vmax; } }
+@keyframes fsBurnOut { from { --fsr2: 0px; } to { --fsr2: 230vmax; } }
+.fs-swap.is-out .fs-swap-spark { animation: fsSpark 1s cubic-bezier(.2, .7, .3, 1) var(--d) forwards; }
+/* swap v3: drawn on a canvas (WebKit doesn't repaint animated CSS masks) — soft burning edge, no hard lines */
+.fs-swap-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.fs-swap-sky, .fs-swap-burn { display: none !important; }
+.fs-swap.is-in, .fs-swap.is-out { animation: none !important; }
+.fs-swap.is-in .fs-swap-spark { animation: fsSpark 1.1s cubic-bezier(.2, .7, .3, 1) var(--d) forwards !important; }
+/* swap v4: View Transition — new skin revealed behind the pulse; our glow layer rides on top, live */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-group(fs-swap-glow), ::view-transition-new(fs-swap-glow), ::view-transition-old(fs-swap-glow) { animation: none; }
+::view-transition-group(fs-swap-glow) { z-index: 10; }
+/* shared-post box: slice must contain the whole corner ornament (art corners ~175x110) or the vines smear down the sides */
+html body.fs.fs-good-witch .share-preview { border-width: 24px 34px !important; border-image: var(--fs-comment-bubble) 115 180 fill / 24px 34px stretch !important; padding: 2px 0 !important; }
+html body.fs.fs-good-witch .comment-item { border-width: 24px 34px !important; border-image: var(--fs-comment-bubble) 115 180 fill / 24px 34px stretch !important; }
+/* cat-on-cloud: never tucked under the button (its ear and the crystal tips were cut off) */
+html body.fs.fs-good-witch :is(#profileCard, .pv-profile-card)::after { margin: 10px -8px 0 !important; padding-bottom: 34% !important; background-size: 92% auto !important; background-position: center top !important; position: relative; z-index: 0; }

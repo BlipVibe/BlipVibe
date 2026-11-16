@@ -199,9 +199,140 @@
     suspended = [];
   }
 
+  // Day/Night toggle (skins whose variants are a 'day' + 'night' pair, e.g. Good Witch): a sun/moon button next to search
+  // in the top bar. Sun = Day showing; tapping it saves Night (same path as the shop's colour swatches) and vice versa.
+  function dayNightToggle(id, cfg) {
+    var old = document.getElementById('fsDayNight');
+    if (old) old.remove();
+    var ids = (cfg && cfg.variants || []).map(function (x) { return x.id; });
+    if (ids.indexOf('day') < 0 || ids.indexOf('night') < 0) return;
+    var search = document.getElementById('mobileSearchBtn');
+    if (!search || !search.parentNode) return;
+    var isNight = variant === 'night';
+    var btn = document.createElement('button');
+    btn.id = 'fsDayNight';
+    btn.type = 'button';
+    btn.className = 'fs-daynight ' + (isNight ? 'is-night' : 'is-day');
+    btn.setAttribute('aria-label', isNight ? 'Switch to day' : 'Switch to night');
+    btn.innerHTML = '<i class="fas ' + (isNight ? 'fa-moon' : 'fa-sun') + '"></i>';
+    btn.addEventListener('click', function (e) {
+      e.preventDefault(); e.stopPropagation();
+      magicSwap(btn, id, isNight ? 'day' : 'night');
+    });
+    search.parentNode.insertBefore(btn, search);
+  }
+
+  // The Day/Night swap (owner: "a magical swap, not a slow fade"): a burst of gold sparkles from the button and a circle
+  // of the new sky sweeping out over the screen; the skin switches underneath once the new art has loaded, then the sky
+  // dissolves away in a shimmer.
+  var swapping = false;
+  function magicSwap(btn, id, next) {
+    if (swapping) return;
+    swapping = true;
+    var dir = next === (FULL_SKINS[id].variants[0].id) ? '' : next + '/';
+    var base = BASE + id + '/assets/' + dir;
+    function load(n) { return new Promise(function (ok) { var i = new Image(); i.onload = i.onerror = function () { ok(i); }; i.src = base + n + '.webp'; }); }
+    var skyP = load('background');
+    var rest = ['header', 'post-panel', 'nav-bar', 'nav-orb', 'nav-orb-active', 'stats-frame', 'edit-btn'].map(load);
+    var br = btn.getBoundingClientRect(), cx = br.left + br.width / 2, cy = br.top + br.height / 2;
+    var W = innerWidth, H = innerHeight, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var maxR = Math.hypot(Math.max(cx, W - cx), Math.max(cy, H - cy)) + 180;
+    var o = document.createElement('div');
+    o.className = 'fs-swap fs-swap-' + next;
+    o.style.setProperty('--x', cx + 'px'); o.style.setProperty('--y', cy + 'px');
+    var cv = document.createElement('canvas');
+    cv.width = W * dpr; cv.height = H * dpr; cv.className = 'fs-swap-canvas';
+    o.appendChild(cv);
+    for (var k = 0; k < 26; k++) {
+      var sp = document.createElement('span');
+      var ang = (k / 26) * Math.PI * 2 + Math.random() * .4, dist = 60 + Math.random() * 200;
+      sp.className = 'fs-swap-spark';
+      sp.textContent = k % 3 ? '\u2726' : '\u2727';
+      sp.style.setProperty('--dx', Math.cos(ang) * dist + 'px'); sp.style.setProperty('--dy', Math.sin(ang) * dist + 'px');
+      sp.style.setProperty('--d', (Math.random() * 160) + 'ms'); sp.style.setProperty('--s', (0.6 + Math.random() * 0.9).toFixed(2));
+      o.appendChild(sp);
+    }
+    document.documentElement.appendChild(o);
+    requestAnimationFrame(function () { o.classList.add('is-in'); });
+    var g = cv.getContext('2d'); g.scale(dpr, dpr);
+    var night = next === 'night';
+    var glowA = night ? 'rgba(200,160,255,' : 'rgba(255,224,150,', glowB = night ? 'rgba(255,226,170,' : 'rgba(205,165,255,';
+    function cover(img) { var s = Math.max(W / img.width, H / img.height), w = img.width * s, h = img.height * s; g.drawImage(img, (W - w) / 2, (H - h) / 2, w, h); }
+    function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+    function ring(r, a) {   // the burning edge: soft gold + lilac glow band at radius r
+      if (r <= 0) return;
+      g.globalCompositeOperation = 'lighter';
+      var rg = g.createRadialGradient(cx, cy, Math.max(0, r - 120), cx, cy, r + 70);
+      rg.addColorStop(0, glowA + '0)'); rg.addColorStop(.42, glowA + (.5 * a) + ')');
+      rg.addColorStop(.63, glowB + (.85 * a) + ')'); rg.addColorStop(.78, glowA + (.55 * a) + ')'); rg.addColorStop(1, glowB + '0)');
+      g.fillStyle = rg; g.fillRect(0, 0, W, H);
+      g.globalCompositeOperation = 'source-over';
+    }
+    function frame(sky, r, mode) {     // mode 'in': sky inside r; 'out': sky outside r
+      g.clearRect(0, 0, W, H);
+      cover(sky);
+      g.globalCompositeOperation = mode === 'in' ? 'destination-in' : 'destination-out';
+      var m = g.createRadialGradient(cx, cy, Math.max(0, r - 150), cx, cy, Math.max(1, r));
+      m.addColorStop(0, 'rgba(0,0,0,1)'); m.addColorStop(1, 'rgba(0,0,0,0)');
+      g.fillStyle = m;
+      if (mode === 'in') g.fillRect(0, 0, W, H); else { g.beginPath(); g.arc(cx, cy, Math.max(1, r), 0, Math.PI * 2); g.fill(); }
+      g.globalCompositeOperation = 'source-over';
+      ring(r, 1);
+    }
+    function run(sky, mode, ms, done) {
+      var t0 = performance.now();
+      (function step(now) {
+        var t = Math.min(1, (now - t0) / ms);
+        frame(sky, ease(t) * maxR, mode);
+        if (t < 1) requestAnimationFrame(step); else done();
+      })(t0);
+    }
+    // Preferred: the new skin is revealed right behind the pulse (View Transitions). The new page snapshot grows as a
+    // circle from the button while the glowing ring rides exactly on that edge, so the ring is where Day turns Night.
+    if (document.startViewTransition) {
+      o.remove();
+      o.style.viewTransitionName = 'fs-swap-glow';
+      Promise.all(rest.concat([skyP])).then(function () {
+        var vt = document.startViewTransition(function () {
+          if (data().setVariant) data().setVariant(id, next);
+          document.documentElement.appendChild(o);
+          o.classList.add('is-in');
+        });
+        vt.ready.then(function () {
+          var ms = 1250, ez = 'cubic-bezier(.55,0,.3,1)';
+          document.documentElement.animate(
+            { clipPath: ['circle(0px at ' + cx + 'px ' + cy + 'px)', 'circle(' + maxR + 'px at ' + cx + 'px ' + cy + 'px)'] },
+            { duration: ms, easing: ez, fill: 'forwards', pseudoElement: '::view-transition-new(root)' });
+          var t0 = performance.now();
+          (function step(now) {
+            var t = Math.min(1, (now - t0) / ms), r = ease(t) * maxR;
+            g.clearRect(0, 0, W, H);
+            ring(r, 1 - Math.max(0, t - .8) * 5 * .6);
+            if (t < 1) requestAnimationFrame(step);
+          })(t0);
+        }).catch(function () {});
+        vt.finished.then(function () { o.remove(); swapping = false; }, function () { o.remove(); swapping = false; });
+      });
+      return;
+    }
+    skyP.then(function (sky) {
+      run(sky, 'in', 850, function () {
+        Promise.all(rest).then(function () {
+          if (data().setVariant) data().setVariant(id, next);
+          setTimeout(function () {
+            o.classList.add('is-out');
+            run(sky, 'out', 950, function () { o.remove(); swapping = false; });
+          }, 160);
+        });
+      });
+    });
+  }
+
   function clear() {
     var b = document.body;
     if (!b) return;
+    var dn = document.getElementById('fsDayNight');
+    if (dn) dn.remove();
     var wasActive = active;
     Object.keys(FULL_SKINS).forEach(function (id) { b.classList.remove('fs-' + id); });
     b.classList.remove('fs', 'fs-dark', 'fs-light');
@@ -272,6 +403,7 @@
     var theme = Object.assign({}, cfg.theme || {}, (vcfg && vcfg.theme) || {});
     Object.keys(theme).forEach(function (v) { b.style.setProperty(v, theme[v]); });
     active = id;
+    dayNightToggle(id, cfg);
     startSuspending();
     watchPosts();
     render();
