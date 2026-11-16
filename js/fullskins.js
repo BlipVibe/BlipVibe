@@ -176,6 +176,14 @@
     name: "Heaven's Light", wip: true, dark: false, ink: '#4a3416', muted: '#8a7350', accent: '#c9962e',
     font: "'Cormorant Garamond', serif", titleFont: "'Cinzel', serif",
     timeline: 3, avatar: 'center', slice: 15, edge: 16,
+    // owner (Nov 16): two renditions — Day (assets/ root, concept-v1-approved.png) and Twilight (assets/twilight/,
+    // concept-twilight*.png), same file names in both folders
+    variants: [
+      { id: 'day', name: 'Day', accent: '#c9962e', swatch: '#fff4dc' },
+      { id: 'twilight', name: 'Twilight', accent: '#e8b74a', swatch: '#2c3456', dark: true, ink: '#f6ecd6', muted: '#c9bda4',
+        theme: { '--dark': '#f6ecd6', '--gray': '#c9bda4', '--light-bg': '#1d2340', '--card': '#3a4260',
+          '--border': 'rgba(232,183,74,.35)', '--nav-bg': '#1d2340' } }
+    ],
     // traced from the approved concept (prototypes/heavens-light-redraw-brief.md → kit/hl → assets/)
     parts: { 'panel-card': 'post-panel', 'panel-card-active': 'post-panel', 'btn-primary': 'follow-btn',
       'btn-secondary': 'action-btn', 'btn-round': 'round-btn', 'header-bar': 'top-bar', 'post-frame': 'post-panel',
@@ -197,7 +205,7 @@
       'round-btn', 'comment-bubble', 'text-area', 'tool-tile', 'post-btn', 'public-pill', 'story-field', 'heart-orb',
       'sun-orb', 'like-orb', 'group-avatar-frame',
       'page-deco-groups', 'page-deco-skins', 'page-deco-network', 'page-deco-notifications', 'page-deco-search',
-      'page-deco-messages', 'page-deco-post', 'title-crest'],
+      'page-deco-messages', 'page-deco-post', 'title-crest', 'avatar-ring', 'toggle-day', 'toggle-twilight', 'laurel-sprig-r'],
     theme: { '--dark': '#4a3416', '--gray': '#8a7350', '--light-bg': '#f7efe0', '--card': '#fffaf0',
       '--border': 'rgba(176,130,50,.35)', '--nav-bg': '#f7efe0' },
     fonts: 'https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap'
@@ -303,6 +311,16 @@
         lm.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); vaporSwap(lm, id, vid(os, !drk), 'lamp'); });
         search.parentNode.insertBefore(lm, search);
       }
+      return;
+    }
+    if (ids.indexOf('day') >= 0 && ids.indexOf('twilight') >= 0) {
+      // Heaven's Light: a winged sun (Day) / winged crescent (Twilight); tap = the sun sets / the moon rises (heavenSwap)
+      var tw = variant === 'twilight', hb = document.createElement('button');
+      hb.id = 'fsDayNight'; hb.type = 'button'; hb.className = 'fs-daynight fs-hl-btn ' + (tw ? 'is-twilight' : 'is-day');
+      hb.setAttribute('aria-label', tw ? 'Switch to Day' : 'Switch to Twilight');
+      hb.innerHTML = '<i></i>';
+      hb.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); heavenSwap(id, tw ? 'day' : 'twilight'); });
+      search.parentNode.insertBefore(hb, search);
       return;
     }
     if (ids.indexOf('day') < 0 || ids.indexOf('night') < 0) {
@@ -1553,7 +1571,98 @@
     });
   }
 
-  var EQUIP_FX = { 'scrapbook': equipScrapbook, 'anime-blaze': equipBlaze, 'witchcraft': equipWitchcraft, 'good-witch': equipGoodWitch, 'vaporwave': equipVaporwave };
+  // Heaven's Light (owner: every skin's animations are its own).
+  // Equip = the GATES OF HEAVEN: two marble-and-gold doors close over the screen, light pours through the seam while the
+  // skin changes behind them, then the doors swing open onto it with god rays, sunrise clouds, feathers and sparkles.
+  function equipHeaven(id, swap) {
+    return Promise.all(['fx-gate-left', 'fx-gate-right', 'fx-light-rays', 'fx-cloud-1', 'fx-cloud-2', 'fx-feather', 'fx-sparkle'].map(function (n) { return fxArt(id, n); })).then(function (r) {
+      var c = fxCanvas('heavens-light'), g = c.g, W = c.W, H = c.H;
+      var gl = r[0], gr = r[1], rays = r[2], clouds = [r[3], r[4]], feather = r[5], spark = r[6], k;
+      var feathers = [], sparks = [];
+      for (k = 0; k < 18; k++) feathers.push({ x: Math.random() * W, y: -60 - Math.random() * H * .8, s: 26 + Math.random() * 26, v: .05 + Math.random() * .06, ph: Math.random() * 6, rot: Math.random() * 6 });
+      for (k = 0; k < 40; k++) sparks.push({ x: W / 2 + (Math.random() - .5) * W * .9, y: Math.random() * H, s: 10 + Math.random() * 16, ph: Math.random() * 6 });
+      function door(im, left, open) {   // open 0 = closed; 1 = swung fully out of view (foreshortened like a hinge)
+        var w = (W / 2) * (1 - open * .92), x = left ? 0 : W - w, sk = open * .18;
+        if (!im) { g.fillStyle = '#f3e3c2'; g.fillRect(x, 0, w, H); g.fillStyle = '#c9962e'; g.fillRect(left ? x + w - 4 : x, 0, 4, H); return; }
+        g.save(); g.globalAlpha = 1 - open * .6;
+        g.translate(left ? 0 : W, 0); g.transform(1, (left ? -1 : 1) * sk * .2, 0, 1, 0, 0);   // hinge on the outer edge
+        g.drawImage(im, left ? 0 : -w, -H * .02, w, H * 1.04); g.restore();
+      }
+      function glow(a) {   // light pouring through the seam
+        if (a <= 0) return;
+        var gg = g.createLinearGradient(W / 2 - 60, 0, W / 2 + 60, 0);
+        gg.addColorStop(0, 'rgba(255,236,180,0)'); gg.addColorStop(.5, 'rgba(255,250,225,' + a + ')'); gg.addColorStop(1, 'rgba(255,236,180,0)');
+        g.fillStyle = gg; g.fillRect(W / 2 - 60, 0, 120, H);
+      }
+      function drift(t, a) {
+        feathers.forEach(function (f) { var y = f.y + t * f.v * 2.2, x = f.x + Math.sin(t / 700 + f.ph) * 30; if (y > H + 60) return;
+          if (feather) drawRot(g, feather, x, y, f.s, f.s * 1.6, f.rot + Math.sin(t / 500 + f.ph) * .5, a); });
+        sparks.forEach(function (s) { var al = a * (.5 + .5 * Math.sin(t / 140 + s.ph)); if (spark) drawRot(g, spark, s.x, s.y, s.s, s.s, 0, al); });
+      }
+      return fxRun(800, function (t, x) {   // doors close
+        var e = ease(x); g.clearRect(0, 0, W, H);
+        g.fillStyle = 'rgba(255,244,220,' + e * .35 + ')'; g.fillRect(0, 0, W, H);
+        door(gl, true, 1 - e); door(gr, false, 1 - e); drift(t, e);
+      }).then(function () {
+        var sw = swap();
+        return Promise.all([sw, fxRun(800, function (t, x) { g.clearRect(0, 0, W, H); door(gl, true, 0); door(gr, false, 0); glow(Math.sin(x * Math.PI / 2)); drift(800 + t, 1); })]);
+      }).then(function () {
+        return fxRun(1500, function (t, x) {   // doors swing open: god rays + clouds + feathers over the new skin
+          var e = ease(x); g.clearRect(0, 0, W, H);
+          if (rays) { g.save(); g.globalAlpha = Math.sin(Math.min(1, x * 1.3) * Math.PI) * .9; var rw = W * 1.5; g.drawImage(rays, W / 2 - rw / 2, -H * .05, rw, rw * rays.height / rays.width); g.restore(); }
+          clouds.forEach(function (cl, i) { if (!cl) return; var w = W * 1.4, h = w * cl.height / cl.width, left = i === 0;
+            g.save(); g.globalAlpha = 1 - e; g.translate(left ? -W * .2 - e * W * .7 : W * 1.2 + e * W * .7, H - h * .35);
+            if (!left) g.scale(-1, 1); g.drawImage(cl, -w / 2, -h / 2, w, h); g.restore(); });
+          glow((1 - e) * .9); door(gl, true, e); door(gr, false, e); drift(1600 + t, 1 - x * .8);
+        });
+      }).then(function () { c.o.remove(); });
+    });
+  }
+  // Day <-> Twilight (Heaven's Light): a celestial dial — the sky turns, the sun sinks behind a cloud bank as the moon
+  // rises out of it (and back), stars come out; the skin changes while the sky covers it, then the sky clears away.
+  function heavenSwap(id, next) {
+    if (swapping) return;
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { if (data().setVariant) data().setVariant(id, next); return; }
+    swapping = true;
+    var toTw = next === 'twilight';
+    Promise.all(['fx-sun-disc', 'fx-moon-disc', 'fx-cloud-bank', 'fx-sparkle'].map(function (n) { return fxArt(id, n); })).then(function (r) {
+      var c = fxCanvas('heavens-light-swap'), g = c.g, W = c.W, H = c.H, sun = r[0], moon = r[1], bank = r[2], spark = r[3];
+      var stars = []; for (var k = 0; k < 60; k++) stars.push({ x: Math.random() * W, y: Math.random() * H * .6, s: 6 + Math.random() * 12, ph: Math.random() * 6 });
+      function sky(k, cover) {   // k = 0 day .. 1 twilight
+        var d = g.createLinearGradient(0, 0, 0, H); d.addColorStop(0, '#ffd99e'); d.addColorStop(.55, '#ffeccb'); d.addColorStop(1, '#fff7e6');
+        var n = g.createLinearGradient(0, 0, 0, H); n.addColorStop(0, '#141a38'); n.addColorStop(.55, '#3b3a6e'); n.addColorStop(1, '#e09a7a');
+        g.globalAlpha = cover * (1 - k); g.fillStyle = d; g.fillRect(0, 0, W, H);
+        g.globalAlpha = cover * k; g.fillStyle = n; g.fillRect(0, 0, W, H); g.globalAlpha = 1;
+        stars.forEach(function (s) { var a = cover * k * (.45 + .55 * Math.sin(Date.now() / 160 + s.ph)); if (a > 0 && spark) drawRot(g, spark, s.x, s.y, s.s, s.s, 0, a); });
+      }
+      function body(im, y, a, glowCol) {
+        if (!im || a <= 0) return; var w = Math.min(W * .62, 300);
+        var gg = g.createRadialGradient(W / 2, y, 0, W / 2, y, w); gg.addColorStop(0, glowCol); gg.addColorStop(1, 'rgba(0,0,0,0)');
+        g.globalAlpha = a; g.fillStyle = gg; g.fillRect(0, y - w, W, w * 2); g.drawImage(im, W / 2 - w / 2, y - w / 2, w, w); g.globalAlpha = 1;
+      }
+      function clouds(a) { if (!bank || a <= 0) return; var w = W * 1.15, h = w * bank.height / bank.width; g.globalAlpha = a; g.drawImage(bank, W / 2 - w / 2, H - h * .82, w, h); g.globalAlpha = 1; }
+      var setter = toTw ? sun : moon, riser = toTw ? moon : sun, sc = toTw ? 'rgba(255,214,120,.55)' : 'rgba(230,230,255,.45)', rc = toTw ? 'rgba(230,230,255,.45)' : 'rgba(255,214,120,.55)';
+      var hi = H * .3, lo = H * .95, swapP = null;
+      return fxRun(1000, function (t, x) {   // sky covers the screen; the current body sinks behind the clouds
+        var e = ease(x); g.clearRect(0, 0, W, H);
+        sky(toTw ? e * .6 : 1 - e * .6, e); body(setter, hi + (lo - hi) * e, 1, sc); clouds(e);
+      }).then(function () {
+        if (data().setVariant) data().setVariant(id, next);
+        swapP = fxArtReady();
+        return Promise.all([swapP, fxRun(1100, function (t, x) {   // the other body rises; the sky finishes turning
+          var e = ease(x); g.clearRect(0, 0, W, H);
+          sky(toTw ? .6 + e * .4 : .4 - e * .4, 1); body(riser, lo + (hi - lo) * e, 1, rc); clouds(1);
+        })]);
+      }).then(function () {
+        return fxRun(700, function (t, x) {   // the sky clears away, revealing the new rendition
+          var e = ease(x); g.clearRect(0, 0, W, H); g.globalAlpha = 1 - e;
+          sky(toTw ? 1 : 0, 1); body(riser, hi - e * 40, 1, rc); clouds(1 - e); g.globalAlpha = 1;
+        });
+      }).then(function () { c.o.remove(); swapping = false; }, function () { c.o.remove(); swapping = false; });
+    });
+  }
+  var EQUIP_FX = { 'scrapbook': equipScrapbook, 'anime-blaze': equipBlaze, 'witchcraft': equipWitchcraft, 'good-witch': equipGoodWitch, 'vaporwave': equipVaporwave, 'heavens-light': equipHeaven };
   // app.js calls this from the Equip buttons: equipTransition(id, function () { ...apply + save... })
   function equipTransition(id, applyFn) {
     var fx = EQUIP_FX[id], reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
