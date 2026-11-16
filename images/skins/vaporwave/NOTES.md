@@ -40,3 +40,9 @@ Status: IN PROGRESS (started Nov 15 2026).
   window → blocks fall away). Chat/messages/notifications/network/search styled. Fixes: 16px fields (iOS zoom), every
   full skin drops body padding while a chat is open (input bar was lost).
   Left: Modern Dark art (in Codex) → convert + register; Skins page, other profile, comments, create post; QA all four.
+- Nov 16: Modern Dark art in → all four renditions live in the engine. Owner: "animations shouldn't borrow other skin
+  animations, they should all be unique and themed by skin" → light/dark (same in Retro and Modern) = VHS tape: tracking
+  band rolls down with "◀◀ REW / PLAY ▶  DAY|NIGHT" on-screen text; Retro↔Modern = loading-bar system update
+  (loadingUpdate: 90s "BlipVibe Setup" window with pink segmented bar / Modern frosted card with glowing cyan bar,
+  uneven installer progress + status lines, then the installer screen dissolves tile by tile into the new OS).
+  Skins page = window cards (name in title bar, same size). Pop-ups: title bar now INSIDE the window (× was untappable).

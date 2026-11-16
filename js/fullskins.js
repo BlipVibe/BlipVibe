@@ -267,7 +267,7 @@
         lm.id = 'fsLamp'; lm.type = 'button'; lm.className = 'fs-daynight fs-lamp-btn ' + (drk ? 'is-night' : 'is-day');
         lm.setAttribute('aria-label', drk ? 'Switch to light' : 'Switch to dark');
         lm.innerHTML = '<i></i>';
-        lm.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); magicSwap(lm, id, vid(os, !drk)); });
+        lm.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); vaporSwap(lm, id, vid(os, !drk), 'lamp'); });
         search.parentNode.insertBefore(lm, search);
       }
       return;
@@ -426,9 +426,10 @@
     });
   }
 
-  // Vaporwave swaps. owner (Nov 15): light <-> dark uses the SAME animation as Good Witch's day/night (magicSwap);
-  // Retro <-> Modern "looks like an update — glitchy pixel look" (pixelUpdate below). The CRT/VHS code paths stay as
-  // fallbacks only.
+  // Vaporwave swaps — owner (Nov 16): every skin's animations are its OWN, never borrowed from another skin.
+  //  'lamp' (light <-> dark, same in Retro and Modern): VHS tape — a tracking band rolls down the screen with the new
+  //         look behind it, "PLAY ▶" on-screen text in the corner.
+  //  'os'   (Retro <-> Modern): a system-update LOADING BAR screen (loadingUpdate below).
   function vaporSwap(btn, id, next, kind) {
     if (swapping) return;
     swapping = true;
@@ -499,6 +500,78 @@
         if (t < END) requestAnimationFrame(draw); else { document.documentElement.style.transform = ''; finish(); }
       })(t0);
     }
+    function loadingUpdate() {
+      document.documentElement.appendChild(o);
+      var up = next.indexOf('modern') === 0, dark = /-dark$/.test(next);
+      var IN = 260, LOAD = 1900, OUT = 520, END = IN + LOAD + OUT, swapped = false, t0 = performance.now();
+      var steps = up ? ['Checking system…', 'Downloading Vaporwave Modern…', 'Installing glass windows…', 'Updating icons…', 'Finishing up…']
+                     : ['Preparing setup…', 'Copying files…', 'Installing classic windows…', 'Restoring Start menu…', 'Finishing up…'];
+      // uneven progress like a real installer (stalls, then jumps)
+      var marks = [[0, 0], [.12, .08], [.3, .31], [.42, .34], [.55, .58], [.7, .63], [.83, .9], [.93, .97], [1, 1]];
+      function prog(x) { for (var i = 1; i < marks.length; i++) if (x <= marks[i][0]) { var a = marks[i - 1], b = marks[i]; return a[1] + (b[1] - a[1]) * (x - a[0]) / (b[0] - a[0]); } return 1; }
+      var T = 28, cols = Math.ceil(W / T), rows = Math.ceil(H / T), n = cols * rows, rank = [], i;
+      for (i = 0; i < n; i++) rank.push(Math.random());
+      function screen(alphaTiles) {   // the installer screen, drawn tile by tile so it can dissolve away at the end
+        g.save();
+        if (alphaTiles < 1) {
+          g.beginPath(); for (var c = 0; c < n; c++) if (rank[c] < alphaTiles) g.rect((c % cols) * T, ((c / cols) | 0) * T, T, T); g.clip();
+        }
+        var bg = g.createLinearGradient(0, 0, 0, H);
+        if (up) { bg.addColorStop(0, dark ? '#04122a' : '#0a2a6c'); bg.addColorStop(1, dark ? '#020812' : '#06183f'); }
+        else { bg.addColorStop(0, dark ? '#120f1c' : '#08127a'); bg.addColorStop(1, dark ? '#0a0810' : '#050b4f'); }
+        g.fillStyle = bg; g.fillRect(0, 0, W, H);
+        g.restore();
+      }
+      function panel(p, step, a) {
+        g.save(); g.globalAlpha = a;
+        var w = Math.min(330, W - 36), h = 150, x = (W - w) / 2, y = H / 2 - h / 2;
+        if (up) {   // modern: frosted rounded card, sleek glowing bar
+          g.fillStyle = 'rgba(255,255,255,.08)'; g.strokeStyle = 'rgba(90,210,255,.55)'; g.lineWidth = 1.5;
+          g.beginPath(); if (g.roundRect) g.roundRect(x, y, w, h, 18); else g.rect(x, y, w, h); g.fill(); g.stroke();
+          g.fillStyle = '#e6f6ff'; g.font = '700 17px Verdana, sans-serif'; g.textBaseline = 'middle'; g.textAlign = 'center';
+          g.fillText('Updating BlipVibe', W / 2, y + 32);
+          g.font = '13px Verdana, sans-serif'; g.fillStyle = '#9dd9ff'; g.fillText(step, W / 2, y + 58);
+          var bx = x + 22, bw = w - 44, by = y + 84;
+          g.fillStyle = 'rgba(255,255,255,.12)'; g.beginPath(); if (g.roundRect) g.roundRect(bx, by, bw, 12, 6); else g.rect(bx, by, bw, 12); g.fill();
+          var gr = g.createLinearGradient(bx, 0, bx + bw, 0); gr.addColorStop(0, '#1c4fd8'); gr.addColorStop(1, '#3fd0ff');
+          g.fillStyle = gr; g.shadowColor = '#3fd0ff'; g.shadowBlur = 14;
+          g.beginPath(); if (g.roundRect) g.roundRect(bx, by, Math.max(12, bw * p), 12, 6); else g.rect(bx, by, bw * p, 12); g.fill();
+          g.shadowBlur = 0; g.fillStyle = '#e6f6ff'; g.font = '700 14px Verdana, sans-serif'; g.fillText(Math.floor(p * 100) + '%', W / 2, y + 122);
+        } else {    // retro: 90s setup window, segmented bar
+          g.fillStyle = '#c8c8d0'; g.fillRect(x, y, w, h);
+          g.fillStyle = '#fff'; g.fillRect(x, y, w, 2); g.fillRect(x, y, 2, h);
+          g.fillStyle = '#555'; g.fillRect(x, y + h - 2, w, 2); g.fillRect(x + w - 2, y, 2, h);
+          var tb = g.createLinearGradient(x, 0, x + w, 0); tb.addColorStop(0, '#0a1a8c'); tb.addColorStop(1, '#1c4fd8');
+          g.fillStyle = tb; g.fillRect(x + 3, y + 3, w - 6, 24);
+          g.fillStyle = '#fff'; g.font = '700 13px Verdana, sans-serif'; g.textBaseline = 'middle'; g.textAlign = 'left';
+          g.fillText('BlipVibe Setup', x + 10, y + 15);
+          g.fillStyle = '#1d1640'; g.font = '13px Verdana, sans-serif'; g.fillText(step, x + 16, y + 52);
+          var bx = x + 16, bw = w - 32, by = y + 72;
+          g.fillStyle = '#fff'; g.fillRect(bx, by, bw, 24); g.fillStyle = '#7a7a86'; g.fillRect(bx, by, bw, 2); g.fillRect(bx, by, 2, 24);
+          var seg = 14, gap = 3, cnt = Math.floor((bw - 6) / (seg + gap)), on = Math.floor(cnt * p);
+          g.fillStyle = '#ff4fc8'; for (var k = 0; k < on; k++) g.fillRect(bx + 4 + k * (seg + gap), by + 4, seg, 16);
+          g.fillStyle = '#1d1640'; g.font = '700 13px Verdana, sans-serif'; g.textAlign = 'center'; g.fillText(Math.floor(p * 100) + '% complete', W / 2, y + 120);
+        }
+        g.restore();
+      }
+      (function draw(now) {
+        var t = now - t0; g.clearRect(0, 0, W, H);
+        if (t < IN) {           // the old look glitches out into the installer
+          screen(1); g.globalAlpha = 1;
+          for (var k = 0; k < 10; k++) { var y = Math.random() * H, hh = 6 + Math.random() * 30; g.clearRect(0, y, W, hh * (1 - t / IN)); }
+          panel(0, steps[0], t / IN);
+        } else if (t < IN + LOAD) {
+          var x = (t - IN) / LOAD, p = prog(x);
+          screen(1); panel(p, steps[Math.min(steps.length - 1, Math.floor(x * steps.length))], 1);
+          if (p >= 1 && !swapped) { swapped = true; if (data().setVariant) data().setVariant(id, next); }
+        } else {                // installed: the screen dissolves away tile by tile to show the new OS
+          if (!swapped) { swapped = true; if (data().setVariant) data().setVariant(id, next); }
+          var q = 1 - (t - IN - LOAD) / OUT;
+          screen(q); panel(1, steps[steps.length - 1], Math.max(0, q * 1.4 - .4));
+        }
+        if (t < END) requestAnimationFrame(draw); else finish();
+      })(t0);
+    }
     function noise(y0, h, a) {
       for (var k = 0; k < 220; k++) { var y = y0 + Math.random() * h; g.fillStyle = 'rgba(255,255,255,' + (Math.random() * a) + ')';
         g.fillRect(Math.random() * W, y, 4 + Math.random() * 60, 1 + Math.random() * 2); }
@@ -506,7 +579,7 @@
     function scan(a) { g.fillStyle = 'rgba(0,0,0,' + a + ')'; for (var y = 0; y < H; y += 3) g.fillRect(0, y, W, 1); }
     Promise.all(pre).then(function () {
       if (reduce) { if (data().setVariant) data().setVariant(id, next); swapping = false; return; }
-      if (kind === 'os') return pixelUpdate();
+      if (kind === 'os') return loadingUpdate();
       if (!document.startViewTransition) { if (data().setVariant) data().setVariant(id, next); swapping = false; return; }
       o.style.viewTransitionName = 'fs-swap-glow';
       var OFF = 380, ON = 620, BAND = 1100, t0;
@@ -550,6 +623,8 @@
             noise(yb - 30, 60, .9);
             g.fillStyle = 'rgba(255,255,255,.75)'; g.fillRect(0, yb - 1, W, 2);
             scan(.12);
+            g.fillStyle = '#fff'; g.font = '26px VT323, monospace'; g.textBaseline = 'top'; g.textAlign = 'left';
+            g.shadowColor = '#000'; g.shadowBlur = 0; g.fillText((q < .5 ? '◀◀ REW' : 'PLAY ▶') + '  ' + (/-dark$/.test(next) ? 'NIGHT' : 'DAY'), 18, 70);
             if (q < 1) requestAnimationFrame(draw); else finish();
           }
         })(t0 = performance.now());

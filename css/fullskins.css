@@ -4165,3 +4165,40 @@ html body.fs.fs-vaporwave:has(.messages-layout.chat-open) .nav-center { display:
 /* every full skin: an open full-screen chat must not keep the body's bottom-bar padding (the page grew taller than the
    screen and the fixed chat's input bar was lost) — Witchcraft and Good Witch had their own copy of this */
 @media (max-width: 768px) { html body.fs:has(.messages-layout.chat-open) { padding-bottom: 0 !important; } }
+
+/* ---------- Skins page (concept skins): every card a small window, name in its title bar, picture, one button; all the
+   same size (the equipped card shows Take off instead of a second Equipped button) ---------- */
+html body.fs.fs-vaporwave .fsk-grid { gap: 10px !important; }
+html body.fs.fs-vaporwave .fsk-card, html body.fs.fs-vaporwave .fsk-card.fsk-is-equipped { position: relative; background: none !important; box-shadow: none !important; border-radius: 0 !important;
+  border: solid transparent !important; border-width: 26px 4px 4px !important; border-image: var(--fs-window) 122 240 14 14 fill / 26px 52px 4px 4px stretch !important; padding: 6px !important; overflow: visible !important; }
+html body.fs.fs-vaporwave[data-fs-variant^="modern"] .fsk-card { border-image-slice: 122 240 30 30 fill !important; border-image-width: 26px 52px 8px 8px !important; border-left-width: 8px !important; border-right-width: 8px !important; border-bottom-width: 8px !important; }
+html body.fs.fs-vaporwave .fsk-thumb { border: 0 !important; border-image: none !important; border-radius: 0 !important; margin: 0 !important; padding: 0 !important; background: none !important; }
+html body.fs.fs-vaporwave .fsk-thumb img { border-radius: 0 !important; border: 2px solid #fff; box-shadow: 1px 1px 0 #444; box-sizing: border-box; }
+html body.fs.fs-vaporwave .fsk-body { position: static !important; padding: 6px 0 0 !important; text-align: center !important; background: none !important; }
+html body.fs.fs-vaporwave .fsk-name { position: absolute; left: 4px; right: 50px; top: -25px; height: 24px; margin: 0 !important; display: flex; align-items: center;
+  color: #fff !important; font: 700 13px var(--fs-font) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left !important; }
+html body.fs.fs-vaporwave .fsk-body .btn.fsk-equipped { display: none !important; }
+html body.fs.fs-vaporwave .fsk-body :is(.btn, .fsk-takeoff) { width: 100% !important; height: 34px !important; margin: 4px 0 0 !important; padding: 0 6px !important; display: flex !important; align-items: center; justify-content: center;
+  background: none !important; border: solid transparent !important; border-width: 4px !important; border-image: var(--fs-btn-pink) 14 fill / 4px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  color: var(--vw-ink) !important; font: 700 14px var(--fs-font) !important; text-decoration: none !important; box-sizing: border-box; }
+html body.fs.fs-vaporwave .fsk-body .fsk-takeoff { border-image-source: var(--fs-btn) !important; }
+html body.fs.fs-vaporwave .fsk-badge { width: 24px !important; height: 24px !important; border-radius: 50% !important; background: var(--fs-badge-count) center / contain no-repeat !important; }
+html body.fs.fs-vaporwave :is(.fsk-soon) { color: var(--vw-soft) !important; font-size: 13px !important; }
+/* coin pill on the Skins page */
+@media (max-width: 768px) {
+  html body.fs.fs-vaporwave:has(#page-shop.active) .navbar .nav-coins { align-self: center; justify-self: end; width: auto !important; min-width: 96px; }
+  html body.fs.fs-vaporwave .navbar .nav-coins > i { display: block !important; flex: 0 0 20px; }
+}
+html body.fs.fs-vaporwave .page-subtitle { color: var(--vw-soft) !important; }
+html body.fs.fs-vaporwave .fsk-grid { align-items: stretch !important; }
+html body.fs.fs-vaporwave .fsk-card { display: flex !important; flex-direction: column; }
+html body.fs.fs-vaporwave .fsk-body { margin-top: auto !important; }
+html body.fs.fs-vaporwave .fsk-body :is(.btn, .fsk-takeoff) { height: 38px !important; border-width: 4px !important; }
+/* pop-ups: the title bar lives INSIDE the window (a scrolling pop-up clips anything drawn in its border, which hid the
+   title and made × untappable). Body = panel art; header = the window art's title strip with the real × over its × */
+html body.fs.fs-vaporwave .modal-content { border-width: 4px !important; border-image: var(--fs-panel) 14 fill / 4px stretch !important; padding-top: 0 !important; }
+html body.fs.fs-vaporwave[data-fs-variant^="modern"] .modal-content { border-image-slice: 30 fill !important; border-image-width: 8px !important; border-width: 8px !important; }
+html body.fs.fs-vaporwave .modal-content .modal-header { position: sticky; top: 0; z-index: 5; margin: 0 0 6px !important; height: 30px; padding: 0 64px 0 10px !important; border: 0 !important;
+  background: none !important; border-image: var(--fs-window) 122 240 776 14 fill / 30px 59px 0 4px stretch !important; display: flex !important; align-items: center; }
+html body.fs.fs-vaporwave .modal-content .modal-header .modal-close { position: absolute !important; right: 2px; top: 0; width: 24px; height: 30px; opacity: 1 !important; background: none !important; border: 0 !important; z-index: 6; }
+html body.fs.fs-vaporwave .modal-content .modal-header .modal-close i { opacity: 0 !important; }
