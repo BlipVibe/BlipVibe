@@ -212,7 +212,7 @@
   };
   FULL_SKINS['blood-moon'] = {
     name: 'Blood Moon', dark: true, ink: '#f4e6e4', muted: '#cfa9a6', accent: '#c4202f', wip: true,
-    font: "'EB Garamond', serif", titleFont: "'Cormorant Garamond', serif",
+    font: "'EB Garamond', serif", titleFont: "'Playfair Display', serif",   // its own type (Cormorant is Witchcraft / Good Witch / Heaven's Light)
     timeline: 3, avatar: 'center', slice: 15, edge: 16,
     // owner (Nov 16): two renditions with different MOONS, each painted on its own (no filters) — Crimson (assets/ root,
     // concept-crimson*.png) and Silver (assets/silver/, concept-silver*.png, no red anywhere), same file names in both
@@ -248,7 +248,7 @@
       'profile-windows', 'profile-windows-mask', 'profile-sky', 'profile-mask-1', 'profile-mask-2', 'profile-mask-3'],
     theme: { '--dark': '#f4e6e4', '--gray': '#cfa9a6', '--light-bg': '#1a0608', '--card': '#2a0c10',
       '--border': 'rgba(200,190,200,.35)', '--nav-bg': '#1a0608' },
-    fonts: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap'
+    fonts: 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap'
   };
   window.FULL_SKINS = FULL_SKINS;
 

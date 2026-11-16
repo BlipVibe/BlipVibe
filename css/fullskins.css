@@ -6768,3 +6768,6 @@ html body.fs.fs-blood-moon .fs-bm-btn.is-silver i { background-image: var(--fs-t
   html body.fs.fs-blood-moon .navbar .nav-user::before { left: -10.3px !important; top: -11.2px !important; width: 64.6px !important; height: 64.6px !important; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; }
 }
 @media (max-width: 768px) { html body.fs.fs-blood-moon .navbar .nav-user { padding: 0 !important; margin: 0 4px 0 6px !important; box-sizing: border-box; } }
+/* Playfair Display (Blood Moon's own title face) runs wider than Cormorant: page titles a step smaller */
+@media (max-width: 768px) { html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { font-size: 30px !important; } }
+html body.fs.fs-blood-moon .quest-panel-header h4 { font-size: 23px !important; }
