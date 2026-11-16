@@ -1713,7 +1713,7 @@
   function placeUserMenu() {
     var m = document.getElementById('userDropdownMenu'), a = document.getElementById('navUserDropdown');
     if (!m || !a) return;
-    var props = ['position', 'left', 'right', 'top', 'bottom', 'width', 'min-width', 'max-width', 'max-height', 'overflow-y', 'transform', 'z-index', '-webkit-overflow-scrolling'];
+    var props = ['position', 'left', 'right', 'top', 'bottom', 'width', 'min-width', 'max-width', 'max-height', 'overflow-y', 'transform', 'z-index', '-webkit-overflow-scrolling', 'transition'];
     function clearIt() { props.forEach(function (p) { m.style.removeProperty(p); }); }
     if (!document.body.classList.contains('fs') || !m.classList.contains('show')) { clearIt(); return; }
     var r = a.getBoundingClientRect(), W = innerWidth, H = innerHeight, gap = 8;
@@ -1724,6 +1724,7 @@
     left = Math.max(gap, Math.min(left, W - gap - w));
     var top = Math.min(Math.max(r.bottom + 6, gap), H * .5);
     var set = function (p, v) { m.style.setProperty(p, v, 'important'); };
+    set('transition', 'none');   // style.css animates "all": a sliding top/left would spoil the measurement below
     set('position', 'fixed'); set('right', 'auto'); set('bottom', 'auto'); set('transform', 'none'); set('z-index', '10060');
     set('width', w + 'px'); set('min-width', '0'); set('max-width', w + 'px');
     set('max-height', Math.max(160, bottomBar - top - gap) + 'px'); set('overflow-y', 'auto'); set('-webkit-overflow-scrolling', 'touch');

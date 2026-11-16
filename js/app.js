@@ -8524,7 +8524,7 @@ function _fskCardHtml(k,mode){
     var equipped=_myActivePremiumSkin()===k.id;
     var actions='';
     if(!k.ready){
-        actions='<span class="fsk-soon">'+(owned?'Owned · ':'')+'Coming soon</span>';
+        actions='<span class="fsk-soon">Coming soon</span>';   // owned shows as a small tag on the picture (owner: the text took too much room)
     } else if(equipped){
         actions='<button class="btn btn-disabled fsk-equipped" disabled><i class="fas fa-check"></i> Equipped</button>'
             +(mode==='shop'?'<button class="fsk-takeoff" data-fsk-id="'+k.id+'">Take off</button>':'<button class="fsk-takeoff apply-premium-btn" data-pid="default">Take off</button>');
@@ -8535,7 +8535,7 @@ function _fskCardHtml(k,mode){
         actions=shopBuy(false,k.price,'fsk-buy','data-fsk-id="'+k.id+'"','premium',k.id);
     }
     return '<div class="fsk-card'+(k.ready?'':' fsk-locked')+(equipped?' fsk-is-equipped':'')+'" data-fsk-cat="'+k.cat+'">'
-        +'<div class="fsk-thumb"><img src="'+k.card+'" alt="" loading="lazy">'+(equipped?'<span class="fsk-badge"><i class="fas fa-check"></i></span>':'')+'</div>'
+        +'<div class="fsk-thumb"><img src="'+k.card+'" alt="" loading="lazy">'+(equipped?'<span class="fsk-badge"><i class="fas fa-check"></i></span>':'')+(owned&&!equipped?'<span class="fsk-owned">Owned</span>':'')+'</div>'
         +'<div class="fsk-body"><h4 class="fsk-name">'+escapeHtml(k.name)+'</h4>'+actions+'</div></div>';
 }
 function _fskSectionHtml(){
@@ -14794,6 +14794,15 @@ async function initLiveUpdates(){
     var U=window.Capacitor.Plugins.CapacitorUpdater;
     if(!U) return;
     try{await U.notifyAppReady();}catch(e){console.warn('[OTA] notifyAppReady:',e);}
+    // Clean up old downloaded versions (Nov 16: every update left another full copy behind; the test simulator held
+    // 397 of them, 21 GB). Keep only the running bundle and the one queued for the next launch.
+    try{
+        var cur0=await U.current(), keep={builtin:1};
+        if(cur0&&cur0.bundle&&cur0.bundle.id) keep[cur0.bundle.id]=1;
+        if(U.getNextBundle){try{var nx=await U.getNextBundle();if(nx&&nx.id) keep[nx.id]=1;}catch(e){}}
+        var lst=await U.list();
+        ((lst&&lst.bundles)||[]).forEach(function(b){ if(b&&b.id&&!keep[b.id]) U.delete({id:b.id}).catch(function(){}); });
+    }catch(e){console.warn('[OTA] cleanup:',e);}
     try{
         var res=await fetch(OTA_MANIFEST_URL+'?t='+Date.now(),{cache:'no-store'});
         if(!res.ok) return;
