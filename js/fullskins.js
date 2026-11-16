@@ -133,6 +133,39 @@
       '--border': 'rgba(176,140,90,.35)', '--nav-bg': '#f3ecff' },
     fonts: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap'
   };
+  FULL_SKINS.vaporwave = {
+    name: 'Vaporwave', dark: false, ink: '#1d1640', muted: '#5d5784', accent: '#ff4fc8',
+    font: "Verdana, 'DejaVu Sans', sans-serif", titleFont: "Verdana, 'DejaVu Sans', sans-serif",
+    timeline: 4, avatar: 'center', slice: 15, edge: 16, wip: true,
+    tlLabels: ['PLAY \u25B6\nPM 08:47\nAPR 21 1995', 'PM 11:02\nAPR 21 1995', 'PM 10:23\nAPR 21 1995', 'PM 05:17\nAPR 21 1995'],
+    // owner (Nov 15): "retro then modern, keeping it semi Windows / OS themed" + a dark mode for both.
+    // Retro = 1995 desktop (assets/ root, concept.png); Modern = blue frosted-glass OS (assets/modern/, concept-modern.png).
+    // Dark renditions (retro-dark / modern-dark) join once their concepts are approved. Top bar: OS switch + sun/moon.
+    variants: [
+      { id: 'retro', name: 'Retro', accent: '#ff4fc8', swatch: '#c8c8d0' },
+      { id: 'modern', name: 'Modern', accent: '#18b8ff', swatch: '#5ad1ff', ink: '#0f2a5c', muted: '#4c6a96' }
+    ],
+    // generic engine slots → the traced pieces (prototypes/vaporwave-redraw-brief.md)
+    parts: { 'panel-card': 'panel', 'panel-card-active': 'window-pink', 'btn-primary': 'btn-pink', 'btn-secondary': 'btn',
+      'btn-round': 'top-btn', 'nav-active': 'nav-tab-active', 'header-bar': 'header-page', 'timeline-frame': 'vhs-window',
+      'avatar-frame': 'avatar-window', 'post-frame': 'panel', 'icon-coin': 'coin', 'quest-0': 'progress-track',
+      'quest-50': 'progress-track', 'quest-100': 'progress-fill', 'thumb': 'featured-banner' },
+    assets: ['add-photo', 'avatar-window', 'badge-count', 'btn-pink', 'btn', 'bubble-in', 'bubble-out', 'camera-badge',
+      'chip-active', 'chip', 'coin-pill', 'coin-stack', 'coin', 'featured-banner', 'field', 'header-home', 'header-page',
+      'header-profile', 'icon-block', 'icon-chat', 'icon-check', 'icon-close', 'icon-compose', 'icon-gif', 'icon-like-on',
+      'icon-mute', 'icon-phone', 'icon-photo', 'icon-poll', 'icon-react', 'icon-reply', 'icon-report', 'icon-schedule',
+      'icon-shop', 'inset-row', 'list-row', 'menu-panel', 'nav-tab-active', 'nav-tab', 'notif-comment', 'notif-follow',
+      'notif-group', 'notif-like', 'notif-mention', 'notif-message', 'notif-purchase', 'panel', 'photo-frame', 'plus-btn',
+      'profile-window', 'progress-fill', 'progress-track', 'quest-icon-like', 'quest-icon-react', 'quest-icon-send',
+      'send-btn', 'start-btn', 'stats-divider', 'story-add', 'story-ring', 'tab-active', 'tab', 'title-btns',
+      'title-comments', 'title-create-post', 'title-groups', 'title-messages', 'title-network', 'title-notifications',
+      'title-post', 'title-profile', 'title-search', 'title-skins', 'tool-tile', 'top-btn', 'trophy', 'unread-dot',
+      'vhs-overlay', 'vhs-window', 'window-pink', 'window', 'wordmark', 'toggle-retro', 'toggle-modern', 'toggle-sun',
+      'toggle-moon'],
+    theme: { '--dark': '#1d1640', '--gray': '#5d5784', '--light-bg': '#ecebf2', '--card': '#d4d4dc',
+      '--border': 'rgba(40,30,90,.35)', '--nav-bg': '#d4d4dc' },
+    fonts: 'https://fonts.googleapis.com/css2?family=VT323&display=swap'
+  };
   window.FULL_SKINS = FULL_SKINS;
 
   // Absolute: a relative url() inside a custom property resolves against the stylesheet that
@@ -204,10 +237,35 @@
   function dayNightToggle(id, cfg) {
     var old = document.getElementById('fsDayNight');
     if (old) old.remove();
+    var oldLamp = document.getElementById('fsLamp');
+    if (oldLamp) oldLamp.remove();
     var ids = (cfg && cfg.variants || []).map(function (x) { return x.id; });
     if (ids.length < 2) return;
     var search = document.getElementById('mobileSearchBtn');
     if (!search || !search.parentNode) return;
+    if (ids.indexOf('retro') >= 0 && ids.indexOf('modern') >= 0) {
+      // Vaporwave: OS switch (Retro <-> Modern, keeps light/dark) + sun/moon (light <-> dark, keeps the OS) when the
+      // dark renditions exist. Variant ids: retro, modern, retro-dark, modern-dark.
+      var cv = variant || ids[0], os = cv.indexOf('modern') === 0 ? 'modern' : 'retro', drk = /-dark$/.test(cv);
+      function vid(o, d) { var v = o + (d ? '-dark' : ''); return ids.indexOf(v) >= 0 ? v : o; }
+      var osBtn = document.createElement('button');
+      osBtn.id = 'fsDayNight'; osBtn.type = 'button';
+      osBtn.className = 'fs-daynight fs-os-btn is-' + os;
+      osBtn.setAttribute('aria-label', os === 'retro' ? 'Switch to Modern' : 'Switch to Retro');
+      osBtn.innerHTML = '<i></i>';
+      osBtn.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation();
+        vaporSwap(osBtn, id, vid(os === 'retro' ? 'modern' : 'retro', drk), 'os'); });
+      search.parentNode.insertBefore(osBtn, search);
+      if (ids.indexOf('retro-dark') >= 0 || ids.indexOf('modern-dark') >= 0) {
+        var lm = document.createElement('button');
+        lm.id = 'fsLamp'; lm.type = 'button'; lm.className = 'fs-daynight fs-lamp-btn ' + (drk ? 'is-night' : 'is-day');
+        lm.setAttribute('aria-label', drk ? 'Switch to light' : 'Switch to dark');
+        lm.innerHTML = '<i></i>';
+        lm.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); vaporSwap(lm, id, vid(os, !drk), 'lamp'); });
+        search.parentNode.insertBefore(lm, search);
+      }
+      return;
+    }
     if (ids.indexOf('day') < 0 || ids.indexOf('night') < 0) {
       // any other skin with options (e.g. Anime Blaze colours): a swatch of the current colour; each tap = next colour
       var cur = variant || ids[0], i = ids.indexOf(cur), nxt = ids[(i + 1) % ids.length];
@@ -362,6 +420,81 @@
     });
   }
 
+  // Vaporwave swaps (owner: its own animation, not the Good Witch reveal).
+  // 'os'   = CRT power cycle: the old screen collapses to a glowing horizontal line (old TV switching off), static
+  //          crackles, then the new OS powers on out of the line with scanlines and an RGB-split flicker.
+  // 'lamp' = VHS tracking: a band of tracking noise rolls down the screen and the new light/dark look is behind it.
+  function vaporSwap(btn, id, next, kind) {
+    if (swapping) return;
+    swapping = true;
+    var vs = FULL_SKINS[id].variants, nv = vs.filter(function (x) { return x.id === next; })[0] || vs[0];
+    var dir = next === vs[0].id ? '' : next + '/', base = BASE + id + '/assets/' + dir;
+    function load(n) { return new Promise(function (ok) { var i = new Image(); i.onload = i.onerror = function () { ok(i); }; i.src = base + n + '.webp'; }); }
+    var pre = ['background', 'header-home', 'header-page', 'window', 'panel', 'nav-bar', 'nav-tab', 'list-row'].map(load);
+    var W = innerWidth, H = innerHeight, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var o = document.createElement('div'); o.className = 'fs-swap fs-swap-vapor';
+    var cv = document.createElement('canvas'); cv.width = W * dpr; cv.height = H * dpr; cv.className = 'fs-swap-canvas';
+    o.appendChild(cv);
+    var g = cv.getContext('2d'); g.scale(dpr, dpr);
+    var tint = nv.id.indexOf('modern') === 0 ? '90,210,255' : '255,79,200';
+    function finish() { o.remove(); swapping = false; }
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function noise(y0, h, a) {
+      for (var k = 0; k < 220; k++) { var y = y0 + Math.random() * h; g.fillStyle = 'rgba(255,255,255,' + (Math.random() * a) + ')';
+        g.fillRect(Math.random() * W, y, 4 + Math.random() * 60, 1 + Math.random() * 2); }
+    }
+    function scan(a) { g.fillStyle = 'rgba(0,0,0,' + a + ')'; for (var y = 0; y < H; y += 3) g.fillRect(0, y, W, 1); }
+    Promise.all(pre).then(function () {
+      if (reduce || !document.startViewTransition) { if (data().setVariant) data().setVariant(id, next); swapping = false; return; }
+      o.style.viewTransitionName = 'fs-swap-glow';
+      var OFF = 380, ON = 620, BAND = 1100, t0;
+      var vt = document.startViewTransition(function () { if (data().setVariant) data().setVariant(id, next); document.documentElement.appendChild(o); });
+      vt.ready.then(function () {
+        var de = document.documentElement;
+        if (kind === 'os') {
+          de.animate([{ transform: 'scale(1,1)', filter: 'brightness(1)' }, { transform: 'scale(1,.004)', filter: 'brightness(4) saturate(0)', offset: .85 },
+            { transform: 'scale(0,.004)', filter: 'brightness(6)' }], { duration: OFF, easing: 'cubic-bezier(.6,0,.9,.4)', fill: 'forwards', pseudoElement: '::view-transition-old(root)' });
+          de.animate([{ transform: 'scale(0,.004)', filter: 'brightness(6)', opacity: 1 }, { transform: 'scale(1,.004)', filter: 'brightness(4)', offset: .25 },
+            { transform: 'scale(1,1.04)', filter: 'brightness(1.6) contrast(1.2)', offset: .7 }, { transform: 'scale(1,1)', filter: 'none' }],
+            { duration: ON, delay: OFF + 90, easing: 'cubic-bezier(.2,.8,.3,1)', fill: 'backwards', pseudoElement: '::view-transition-new(root)' });
+        } else {
+          var steps = []; for (var i = 0; i <= 12; i++) { var p = i / 12; steps.push({ clipPath: 'inset(0 0 ' + (100 - p * 100).toFixed(2) + '% 0)' }); }
+          de.animate(steps, { duration: BAND, easing: 'linear', fill: 'forwards', pseudoElement: '::view-transition-new(root)' });
+        }
+        t0 = performance.now();
+        (function draw(now) {
+          var t = now - t0; g.clearRect(0, 0, W, H);
+          if (kind === 'os') {
+            if (t < OFF + 90) {                       // collapsing to the line, then the glowing dot/line + static
+              var c = Math.min(1, t / OFF), lh = Math.max(2, H * (1 - c));
+              g.fillStyle = 'rgba(255,255,255,' + (c * .9) + ')'; g.fillRect(0, H / 2 - lh / 2, W, lh * (c > .8 ? 1 : 0));
+              var gl = g.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W * .7);
+              gl.addColorStop(0, 'rgba(' + tint + ',' + (.55 * c) + ')'); gl.addColorStop(1, 'rgba(' + tint + ',0)');
+              g.fillStyle = gl; g.fillRect(0, H / 2 - 40, W, 80);
+              noise(0, H, .35 * c);
+            } else {
+              var p = (t - OFF - 90) / ON;                // powering on: scanlines, RGB split edges, fading static
+              if (p < 1) {
+                scan(.28 * (1 - p)); noise(0, H, .3 * (1 - p));
+                var sh = 6 * (1 - p);
+                g.fillStyle = 'rgba(255,0,90,' + (.18 * (1 - p)) + ')'; g.fillRect(-sh, 0, W, H);
+                g.fillStyle = 'rgba(0,220,255,' + (.14 * (1 - p)) + ')'; g.fillRect(sh, 0, W, H);
+              }
+            }
+            if (t < OFF + 90 + ON) requestAnimationFrame(draw); else finish();
+          } else {
+            var q = Math.min(1, t / BAND), yb = H * q;  // tracking band riding the reveal edge
+            g.fillStyle = 'rgba(' + tint + ',.22)'; g.fillRect(0, yb - 26, W, 52);
+            noise(yb - 30, 60, .9);
+            g.fillStyle = 'rgba(255,255,255,.75)'; g.fillRect(0, yb - 1, W, 2);
+            scan(.12);
+            if (q < 1) requestAnimationFrame(draw); else finish();
+          }
+        })(t0 = performance.now());
+      }).catch(function () { finish(); });
+    });
+  }
+
   function magicSwap(btn, id, next) {
     if (id === 'anime-blaze') return blazeSwap(btn, id, next);
     if (swapping) return;
@@ -475,6 +608,8 @@
     if (!b) return;
     var dn = document.getElementById('fsDayNight');
     if (dn) dn.remove();
+    var lamp = document.getElementById('fsLamp');
+    if (lamp) lamp.remove();
     var wasActive = active;
     Object.keys(FULL_SKINS).forEach(function (id) { b.classList.remove('fs-' + id); });
     b.classList.remove('fs', 'fs-dark', 'fs-light');
@@ -605,6 +740,11 @@
         slot.appendChild(img);
       } else {
         slot.className += ' fs-tl-empty';
+      }
+      if (cfg.tlLabels && cfg.tlLabels[i]) {   // Vaporwave: VHS on-screen text over each tape window
+        var lab = document.createElement('span');
+        lab.className = 'fs-tl-vhs'; lab.textContent = cfg.tlLabels[i];
+        slot.appendChild(lab);
       }
       wrap.appendChild(slot);
     });

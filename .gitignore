@@ -60,4 +60,7 @@ images/skins/**
 !images/skins/good-witch/
 !images/skins/good-witch/assets/
 !images/skins/good-witch/assets/**
+!images/skins/vaporwave/
+!images/skins/vaporwave/assets/
+!images/skins/vaporwave/assets/**
 __pycache__/

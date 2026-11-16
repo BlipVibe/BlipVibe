@@ -3772,3 +3772,284 @@ html body.fs.fs-good-witch #cpmPublish { border-width: 9px 12px !important; bord
   white-space: nowrap; overflow: visible !important; text-overflow: clip !important; }
 html body.fs.fs-good-witch .cpm-footer > div[style*="display:flex"] { gap: 6px !important; }
 html body.fs.fs-good-witch #noCommentsMsg { color: var(--gw-soft) !important; }
+
+/* ======================================================================================
+   VAPORWAVE (Nov 15, WIP). Four renditions picked from the top bar: Retro (1995 desktop, assets/ root, concept.png +
+   concept-2.png) and Modern (blue frosted-glass OS, assets/modern/, concept-modern*.png); dark modes join when approved.
+   Art: prototypes/vaporwave-redraw-brief.md (kit/vw) + vaporwave-modern-brief.md (kit/vw-modern). Notes:
+   images/skins/vaporwave/NOTES.md. Every rendition ships the SAME file names, so this CSS only places art; colours of
+   text come from --vw-* so a rendition only swaps variables.
+   9-slices: window = 122 240 14 14 (title bar 110px + controls 240px wide); panels/rows/fields/buttons = ~14px bevels.
+   ====================================================================================== */
+body.fs-vaporwave { --vw-ink: #1d1640; --vw-soft: #5d5784; --vw-title: #ffffff; --vw-accent: #ff4fc8; --vw-press: #ffffff;
+  background: #e9e8ef !important; font-family: var(--fs-font) !important; color: var(--vw-ink); }
+body.fs-vaporwave[data-fs-variant^="modern"] { --vw-ink: #0f2a5c; --vw-soft: #4c6a96; --vw-accent: #18b8ff; }
+body.fs-vaporwave * { border-image-repeat: stretch !important; }
+body.fs-vaporwave #premiumBgLayer { display: block !important; background: var(--fs-background) center / cover no-repeat !important; }
+body.fs-vaporwave :is(.page, .main-container, .center-feed, .page-container) { background: transparent !important; }
+body.fs-vaporwave :is(h1, h2, h3, h4, .profile-name, .post-username, .card-heading, .stat-count, .msg-contact-name, .profile-card-name,
+  .fsk-name, .group-card-body h4) { font-family: var(--fs-title-font) !important; font-weight: 700 !important; color: var(--vw-ink) !important; }
+body.fs-vaporwave :is(p, span, label, small) { color: inherit; }
+body.fs-vaporwave :is(.post-time, .msg-contact-preview, .stat-label, .msg-contact-time, .profile-card-bio, .group-members) { color: var(--vw-soft) !important; }
+
+/* window = navy title bar + bevel body; panel = bevel body without a title bar */
+html body.fs.fs-vaporwave :is(.card:not(.feed-post):not(.profile-card):not(.pv-profile-card), .comment-item, .post-dropdown, .user-dropdown) {
+  background: none !important; box-shadow: none !important; border: solid transparent !important; border-width: 4px !important; border-radius: 0 !important;
+  border-image: var(--fs-panel) 14 fill / 4px stretch !important; }
+html body.fs.fs-vaporwave .modal-content { background: none !important; box-shadow: 0 10px 30px rgba(20,10,60,.35) !important; border: solid transparent !important;
+  border-width: 30px 4px 4px !important; border-radius: 0 !important; border-image: var(--fs-window) 122 240 14 14 fill / 30px 59px 4px 4px stretch !important; }
+html body.fs.fs-vaporwave .modal-content .modal-header { margin-top: -30px !important; height: 30px; padding: 0 64px 0 10px !important; border: 0 !important; display: flex; align-items: center; }
+html body.fs.fs-vaporwave .modal-content .modal-header h3 { color: #fff !important; font: 700 15px var(--fs-font) !important; margin: 0 !important; }
+html body.fs.fs-vaporwave .modal-content .modal-header .modal-close { position: absolute; right: 2px; top: -30px; width: 22px; height: 30px; opacity: 0; }
+
+/* ---------- Home top bar (concept home): sunset banner + chrome BlipVibe, then a row of bevel buttons + avatar window ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-vaporwave .navbar { border: 0 !important; border-image: none !important; box-shadow: none !important; overflow: visible !important;
+    background: var(--fs-header-home) center bottom / cover no-repeat !important;
+    height: calc(118px + env(safe-area-inset-top, 0px)) !important; max-height: none !important; padding: env(safe-area-inset-top, 0px) 0 0 !important; box-sizing: border-box !important; }
+  html body.fs.fs-vaporwave .page.active { padding-top: calc(124px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-vaporwave .nav-container { display: grid !important; grid-template-columns: 44px 44px 44px auto 1fr 58px; grid-template-rows: 54px 50px; align-items: center;
+    column-gap: 6px; padding: 0 10px !important; height: 100%; }
+  html body.fs.fs-vaporwave .navbar :is(.nav-left, .nav-right) { display: contents !important; }
+  html body.fs.fs-vaporwave .navbar .nav-logo { grid-column: 1 / 6; grid-row: 1; justify-self: start; width: 170px; height: 44px; font-size: 0 !important; color: transparent !important;
+    background: var(--fs-wordmark) left center / contain no-repeat !important; padding: 0 !important; text-shadow: none !important; }
+  html body.fs.fs-vaporwave .navbar .search-bar { display: none !important; }
+  html body.fs.fs-vaporwave .navbar .mobile-search-btn { grid-column: 1; grid-row: 2; }
+  html body.fs.fs-vaporwave .navbar .mobile-notif-btn { grid-column: 2; grid-row: 2; position: relative; }
+  html body.fs.fs-vaporwave .navbar .nav-music-wrap { grid-column: 3; grid-row: 2; }
+  html body.fs.fs-vaporwave .navbar .nav-coins { grid-column: 4; grid-row: 2; }
+  html body.fs.fs-vaporwave .navbar .nav-user { grid-column: 6; grid-row: 1 / 3; align-self: end; margin: 0 0 4px !important; }
+  html body.fs.fs-vaporwave .navbar .nav-user::after { display: none !important; }
+  html body.fs.fs-vaporwave .navbar .nav-avatar { width: 58px !important; height: 58px !important; border-radius: 0 !important; -webkit-mask: none !important; mask: none !important; box-shadow: none !important;
+    padding: 13px 3px 3px; box-sizing: border-box; object-fit: cover; background: var(--fs-avatar-window) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-vaporwave .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) { width: 44px !important; height: 34px !important; display: flex !important; align-items: center; justify-content: center;
+    background: var(--fs-top-btn) center / 100% 100% no-repeat !important; border: 0 !important; border-radius: 0 !important; padding: 0 !important; }
+  html body.fs.fs-vaporwave .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) > i { width: 22px !important; height: 22px !important; font-size: 0 !important; background-size: contain !important; background-repeat: no-repeat !important; background-position: center !important; }
+  html body.fs.fs-vaporwave .navbar .mobile-notif-btn .notif-badge { position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; border-radius: 9px; background: var(--fs-badge-count) center / 100% 100% no-repeat !important;
+    color: #fff !important; font: 700 11px/18px var(--fs-font) !important; text-align: center; padding: 0 4px; border: 0 !important; }
+  html body.fs.fs-vaporwave .navbar .nav-coins { height: 34px !important; padding: 0 10px 0 8px !important; display: flex !important; align-items: center; gap: 5px; margin: 0 !important;
+    border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; background: var(--fs-coin-pill) center / 100% 100% no-repeat !important;
+    color: var(--vw-ink) !important; font: 700 15px var(--fs-font) !important; }
+  html body.fs.fs-vaporwave .navbar .nav-coins > i { width: 20px !important; height: 20px !important; font-size: 0 !important; background: var(--fs-coin) center / contain no-repeat !important; }
+  html body.fs.fs-vaporwave .navbar .nav-coins .coin-count { color: var(--vw-ink) !important; }
+  /* the two switches (OS + light/dark) sit with the bevel buttons */
+  html body.fs.fs-vaporwave .navbar .fs-daynight { grid-row: 2; width: 44px; height: 34px; border: 0; padding: 0; background: var(--fs-top-btn) center / 100% 100% no-repeat; display: flex; align-items: center; justify-content: center; }
+  html body.fs.fs-vaporwave .navbar .fs-daynight > i { width: 26px; height: 26px; background: center / contain no-repeat; }
+  html body.fs.fs-vaporwave .navbar .fs-os-btn.is-retro > i { background-image: var(--fs-toggle-retro); }
+  html body.fs.fs-vaporwave .navbar .fs-os-btn.is-modern > i { background-image: var(--fs-toggle-modern); }
+  html body.fs.fs-vaporwave .navbar .fs-lamp-btn.is-day > i { background-image: var(--fs-toggle-sun); }
+  html body.fs.fs-vaporwave .navbar .fs-lamp-btn.is-night > i { background-image: var(--fs-toggle-moon); }
+  html body.fs.fs-vaporwave .nav-container { grid-template-columns: 44px 44px 44px 44px 44px auto 1fr 58px !important; }
+  html body.fs.fs-vaporwave .navbar #fsDayNight { grid-column: 1; }
+  html body.fs.fs-vaporwave .navbar #fsLamp { grid-column: 2; }
+  html body.fs.fs-vaporwave .navbar .mobile-search-btn { grid-column: 3 !important; }
+  html body.fs.fs-vaporwave .navbar .mobile-notif-btn { grid-column: 4 !important; }
+  html body.fs.fs-vaporwave .navbar .nav-music-wrap { grid-column: 5 !important; }
+  html body.fs.fs-vaporwave .navbar .nav-coins { grid-column: 6 !important; }
+  html body.fs.fs-vaporwave .navbar .nav-user { grid-column: 8 !important; }
+  html body.fs.fs-vaporwave .navbar .nav-logo { grid-column: 1 / 8 !important; }
+
+  /* other pages (concept groups/messages/post…): a shorter sunset banner with the page's chrome title; back via the logo slot */
+  html body.fs.fs-vaporwave:not(:has(#page-home.active)) .navbar { height: calc(78px + env(safe-area-inset-top, 0px)) !important; background-image: var(--fs-header-page) !important; }
+  html body.fs.fs-vaporwave:not(:has(#page-home.active)) .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-wrap, .nav-user, .fs-daynight) { display: none !important; }
+  html body.fs.fs-vaporwave:not(:has(#page-home.active)) .navbar .nav-logo { grid-column: 1 / -1 !important; grid-row: 1 / 3 !important; align-self: center; width: 230px; height: 46px;
+    background: var(--vw-page-title, none) left center / contain no-repeat !important; }
+  html body.fs.fs-vaporwave:has(#page-groups.active) { --vw-page-title: var(--fs-title-groups); }
+  html body.fs.fs-vaporwave:has(#page-messages.active) { --vw-page-title: var(--fs-title-messages); }
+  html body.fs.fs-vaporwave:has(#page-shop.active) { --vw-page-title: var(--fs-title-skins); }
+  html body.fs.fs-vaporwave:has(#page-profiles.active) { --vw-page-title: var(--fs-title-network); }
+  html body.fs.fs-vaporwave:has(#page-notifications.active) { --vw-page-title: var(--fs-title-notifications); }
+  html body.fs.fs-vaporwave:has(#page-search.active) { --vw-page-title: var(--fs-title-search); }
+  html body.fs.fs-vaporwave:has(:is(#page-profile-view, #page-group-view).active) { --vw-page-title: var(--fs-title-profile); }
+  html body.fs.fs-vaporwave:not(:has(#page-home.active)):not(:has(#page-shop.active)) .navbar .nav-coins { display: none !important; }
+  html body.fs.fs-vaporwave:has(#page-shop.active) .navbar .nav-coins { grid-column: 8 !important; grid-row: 1 / 3 !important; }
+  html body.fs.fs-vaporwave:not(:has(#page-home.active)) .page.active { padding-top: calc(84px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-vaporwave :is(.page-header, .msg-sidebar-header) > :is(h2, h3) { display: none !important; }
+}
+
+/* ---------- bottom taskbar (concept): grey bar, Start button, five bevel tabs (active = pressed pink) ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-vaporwave .nav-center { display: grid !important; grid-template-columns: 1.25fr repeat(5, 1fr); align-items: center; gap: 3px; border: 0 !important; border-image: none !important;
+    box-shadow: none !important; backdrop-filter: none !important; height: calc(66px + env(safe-area-inset-bottom, 0px)) !important; padding: 6px 4px calc(env(safe-area-inset-bottom, 0px) - 4px) !important; box-sizing: border-box;
+    background: var(--fs-nav-bar) center top / 100% 100% no-repeat !important; }
+  html body.fs.fs-vaporwave .nav-center::before { content: "Start"; display: flex; align-items: center; justify-content: flex-end; height: 46px; padding-right: 9px; box-sizing: border-box;
+    background: var(--fs-start-btn) center / 100% 100% no-repeat; color: var(--vw-ink); font: 700 14px var(--fs-font); order: -1; }
+  html body.fs.fs-vaporwave .nav-center .nav-link { display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 0; height: 52px; padding: 0 !important; min-width: 0;
+    background: var(--fs-nav-tab) center / 100% 100% no-repeat !important; border: 0 !important; border-image: none !important; border-radius: 0 !important;
+    color: var(--vw-ink) !important; font: 600 10px var(--fs-font) !important; transition: none !important; transform: none !important; position: relative; }
+  html body.fs.fs-vaporwave .nav-center .nav-link.active { background-image: var(--fs-nav-tab-active) !important; color: var(--vw-ink) !important; }
+  html body.fs.fs-vaporwave .nav-center .nav-link > i { width: 24px !important; min-width: 24px; height: 24px !important; font-size: 0 !important; background: var(--fs-icon-home) center / contain no-repeat !important; }
+  html body.fs.fs-vaporwave .nav-center .nav-link[data-page="groups"] > i { background-image: var(--fs-icon-groups) !important; }
+  html body.fs.fs-vaporwave .nav-center .nav-link[data-page="shop"] > i { background-image: var(--fs-icon-skins) !important; }
+  html body.fs.fs-vaporwave .nav-center .nav-link[data-page="profiles"] > i { background-image: var(--fs-icon-network) !important; }
+  html body.fs.fs-vaporwave .nav-center .nav-link[data-page="messages"] > i { background-image: var(--fs-icon-messages) !important; }
+  html body.fs.fs-vaporwave .nav-center .nav-link .notif-badge { position: absolute; top: 0; right: 2px; }
+}
+
+/* ---------- Daily Quests window (concept home) ---------- */
+html body.fs.fs-vaporwave .quest-panel { background: none !important; box-shadow: none !important; border: solid transparent !important; border-width: 30px 4px 4px !important; border-radius: 0 !important;
+  border-image: var(--fs-window) 122 240 14 14 fill / 30px 59px 4px 4px stretch !important; padding: 8px !important; }
+html body.fs.fs-vaporwave .quest-panel-header { margin: -38px -4px 8px !important; height: 30px; padding: 0 64px 0 8px !important; border: 0 !important; display: flex !important; align-items: center; justify-content: flex-start !important; gap: 6px; }
+html body.fs.fs-vaporwave .quest-panel-header h4 { color: #fff !important; font: 700 15px var(--fs-font) !important; margin: 0 !important; }
+html body.fs.fs-vaporwave .quest-panel-header > i { font-size: 0 !important; width: 18px; height: 18px; background: var(--fs-trophy) center / contain no-repeat; display: inline-block !important; }
+html body.fs.fs-vaporwave .quest-reset { display: none !important; }
+html body.fs.fs-vaporwave .quest-item { display: grid !important; grid-template-columns: 40px 1fr auto; align-items: center; column-gap: 10px; margin: 0 0 8px !important; padding: 8px 10px !important;
+  background: none !important; border: solid transparent !important; border-width: 4px !important; border-radius: 0 !important; border-image: var(--fs-inset-row) 14 fill / 4px stretch !important; }
+html body.fs.fs-vaporwave .quest-icon { width: 36px !important; height: 36px !important; border-radius: 0 !important; background: var(--fs-quest-icon-react) center / contain no-repeat !important; margin: 0 !important; }
+html body.fs.fs-vaporwave .quest-icon > i { display: none !important; }
+html body.fs.fs-vaporwave .quest-item:nth-child(3) .quest-icon { background-image: var(--fs-quest-icon-send) !important; }
+html body.fs.fs-vaporwave .quest-item:nth-child(4) .quest-icon { background-image: var(--fs-quest-icon-like) !important; }
+html body.fs.fs-vaporwave .quest-info p { color: var(--vw-ink) !important; font: 700 15px var(--fs-font) !important; margin: 0 0 4px !important; }
+html body.fs.fs-vaporwave .quest-bar { height: 16px !important; border-radius: 0 !important; background: var(--fs-progress-track) center / 100% 100% no-repeat !important; border: 0 !important; overflow: hidden; }
+html body.fs.fs-vaporwave .quest-fill { height: 100% !important; border-radius: 0 !important; background: var(--fs-progress-fill) left center / auto 100% no-repeat !important; }
+html body.fs.fs-vaporwave .quest-progress { color: var(--vw-ink) !important; font: 600 13px var(--fs-font) !important; }
+html body.fs.fs-vaporwave :is(.quest-reward, .quest-check) { background: none !important; color: var(--vw-ink) !important; font: 700 16px var(--fs-font) !important; padding: 0 !important; display: inline-flex; align-items: center; gap: 4px; }
+html body.fs.fs-vaporwave .quest-reward > i { font-size: 0 !important; width: 18px; height: 18px; background: var(--fs-coin) center / contain no-repeat; }
+
+/* ---------- tabs, chips, buttons, fields (bevel art; pressed = pink) ---------- */
+html body.fs.fs-vaporwave .search-tab { background: none !important; border: solid transparent !important; border-width: 4px !important; border-radius: 0 !important; box-shadow: none !important;
+  border-image: var(--fs-tab) 14 fill / 4px stretch !important; color: var(--vw-ink) !important; font: 700 14px var(--fs-font) !important; padding: 6px 8px !important; min-height: 0 !important; }
+html body.fs.fs-vaporwave .search-tab.active { border-image-source: var(--fs-tab-active) !important; color: var(--vw-ink) !important; }
+html body.fs.fs-vaporwave .search-tab > i { display: none !important; }
+html body.fs.fs-vaporwave #feedTabs { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 4px; border: 0 !important; background: none !important; padding: 0 !important; }
+html body.fs.fs-vaporwave :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, .fsk-filters) .search-tab, html body.fs.fs-vaporwave .fsk-filter {
+  border-image-source: var(--fs-chip) !important; font-size: 13px !important; padding: 3px 8px !important; }
+html body.fs.fs-vaporwave :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, .fsk-filters) .search-tab.active, html body.fs.fs-vaporwave .fsk-filter.active { border-image-source: var(--fs-chip-active) !important; }
+html body.fs.fs-vaporwave :is(.btn, .join-group-btn, .follow-btn, .suggestion-follow-btn, .profile-follow-btn, .fsk-equip, .fsk-buy) { background: none !important; box-shadow: none !important; border-radius: 0 !important;
+  border: solid transparent !important; border-width: 4px !important; border-image: var(--fs-btn) 14 fill / 4px stretch !important; color: var(--vw-ink) !important; font: 700 14px var(--fs-font) !important; padding: 4px 12px !important; }
+html body.fs.fs-vaporwave :is(.btn-primary, .follow-btn:not(.following), .profile-follow-btn) { border-image-source: var(--fs-btn-pink) !important; }
+html body.fs.fs-vaporwave :is(input[type="text"], input[type="search"], textarea, .post-input, .page-search, .msg-search, .comment-input) { background: none !important; border-radius: 0 !important; box-shadow: none !important;
+  border: solid transparent !important; border-width: 4px !important; border-image: var(--fs-field) 14 fill / 4px stretch !important; color: var(--vw-ink) !important; }
+html body.fs.fs-vaporwave :is(.page-search, .msg-search) input { border: 0 !important; border-image: none !important; background: none !important; }
+
+/* ---------- posts (concept home/post): raised panel, sunken photo frame ---------- */
+html body.fs.fs-vaporwave .feed-post.feed-post.feed-post { background: none !important; box-shadow: none !important; border: solid transparent !important; border-width: 4px !important; border-radius: 0 !important;
+  border-image: var(--fs-panel) 14 fill / 4px stretch !important; padding: 10px !important; }
+html body.fs.fs-vaporwave .post-header .post-avatar { border-radius: 0 !important; -webkit-mask: none !important; mask: none !important; width: 44px !important; height: 44px !important; border: 2px solid #fff; box-shadow: 1px 1px 0 #555 !important; }
+html body.fs.fs-vaporwave .post-user-top { flex-direction: column !important; align-items: flex-start !important; gap: 0 !important; }
+html body.fs.fs-vaporwave .post-username { font-size: 16px !important; }
+html body.fs.fs-vaporwave :is(.post-content-text, .post-text, .post-content p, .post-description) { color: var(--vw-ink) !important; font-size: 15px !important; }
+html body.fs.fs-vaporwave .post-media-grid .pm-thumb { border-radius: 0 !important; border: solid transparent; border-width: 4px; border-image: var(--fs-photo-frame) 20 fill / 4px stretch; }
+html body.fs.fs-vaporwave .post-media-grid .pm-thumb :is(img, video) { border-radius: 0 !important; }
+html body.fs.fs-vaporwave .post-actions { border: 0 !important; justify-content: space-between; }
+html body.fs.fs-vaporwave .action-btn { color: var(--vw-ink) !important; font: 700 15px var(--fs-font) !important; }
+
+/* taskbar: only the five app tabs (the app hides Saved / Notifications on phones) */
+@media (max-width: 768px) {
+  html body.fs.fs-vaporwave .nav-center .nav-link:is(.nav-saved-link, .nav-notif-link, [data-page="saved"], [data-page="notifications"]) { display: none !important; }
+}
+
+/* ---------- Home + profile (concept profile, owner rule: profile always on Home): Avatar.exe window with name, handle,
+   bio and stats beside it, Edit Profile under; then Timeline.exe holding the four VHS photo windows ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-vaporwave #page-home.active { display: flex !important; flex-direction: column; }
+  html body.fs.fs-vaporwave #page-home > .main-container, html body.fs.fs-vaporwave #page-home .left-sidebar { display: contents !important; }
+  html body.fs.fs-vaporwave #page-home #profileCard { order: -2; }
+  html body.fs.fs-vaporwave #page-home #timelineCover { order: -1; }
+  html body.fs.fs-vaporwave :is(#profileCard, .pv-profile-card) { margin: 0 8px 10px !important; padding: 10px !important; }
+  html body.fs.fs-vaporwave :is(#profileCard, .pv-profile-card) .profile-cover { display: none !important; }
+  html body.fs.fs-vaporwave :is(#profileCard, .pv-profile-card) .profile-info { display: grid !important; grid-template-columns: 128px 1fr; column-gap: 12px; row-gap: 2px; align-items: start; text-align: left !important; padding: 0 !important; }
+  html body.fs.fs-vaporwave :is(#profileCard, .pv-profile-card) .profile-avatar-wrap { grid-column: 1; grid-row: 1 / 5; width: 128px !important; height: 104px !important; margin: 0 !important; position: relative;
+    border-radius: 0 !important; background: var(--fs-vhs-window) center / 100% 100% no-repeat !important; overflow: visible !important; }
+  html body.fs.fs-vaporwave :is(#profileCard, .pv-profile-card) .profile-avatar-wrap::before { content: "Avatar.exe"; position: absolute; left: 6px; top: 1px; color: #fff; font: 700 11px/15px var(--fs-font); z-index: 2; }
+  html body.fs.fs-vaporwave :is(#profileAvatarImg, .pv-profile-card .profile-avatar) { position: absolute; left: 2.2%; top: 14.8%; width: 95.4% !important; height: 82.3% !important; border-radius: 0 !important;
+    -webkit-mask: none !important; mask: none !important; border: 0 !important; box-shadow: none !important; object-fit: cover; }
+  html body.fs.fs-vaporwave :is(#profileCard, .pv-profile-card) .avatar-edit-btn { position: absolute; right: 4px !important; bottom: 4px !important; width: 26px !important; height: 26px !important; border: 0 !important; border-radius: 0 !important;
+    background: var(--fs-camera-badge) center / contain no-repeat !important; box-shadow: none !important; z-index: 3; }
+  html body.fs.fs-vaporwave :is(#profileCard, .pv-profile-card) .avatar-edit-btn i { opacity: 0 !important; }
+  html body.fs.fs-vaporwave :is(#profileCard, .pv-profile-card) .profile-name { grid-column: 2; font-size: 22px !important; margin: 0 !important; text-align: left !important; }
+  html body.fs.fs-vaporwave :is(#profileCard, .pv-profile-card) :is(.profile-title, .profile-about) { grid-column: 2; color: var(--vw-ink) !important; font-size: 13px !important; margin: 0 !important; text-align: left !important; }
+  html body.fs.fs-vaporwave :is(#profileCard, .pv-profile-card) .profile-stats { grid-column: 2; display: grid !important; grid-template-columns: 1fr 1fr; margin: 6px 0 0 !important; padding: 0 !important; border: 0 !important; background: none !important; }
+  html body.fs.fs-vaporwave :is(#profileCard, .pv-profile-card) .profile-stats > .stat { padding: 0 !important; border: 0 !important; background: none !important; text-align: center; }
+  html body.fs.fs-vaporwave :is(#profileCard, .pv-profile-card) .profile-stats > .stat + .stat { background: var(--fs-stats-divider) left center / 3px 80% no-repeat !important; }
+  html body.fs.fs-vaporwave :is(#profileCard, .pv-profile-card) .stat-count { font-size: 18px !important; color: var(--vw-ink) !important; }
+  html body.fs.fs-vaporwave :is(#profileCard, .pv-profile-card) .stat-label { font-size: 12px !important; color: var(--vw-ink) !important; font-weight: 700; }
+  html body.fs.fs-vaporwave #profileCard :is(.view-profile-link, .edit-profile-btn), html body.fs.fs-vaporwave #pvEditProfileBtn { grid-column: 1 / -1; display: flex !important; align-items: center; justify-content: center;
+    margin: 8px 0 0 !important; height: 38px; background: none !important; border: solid transparent !important; border-width: 4px !important; border-image: var(--fs-btn) 14 fill / 4px stretch !important;
+    color: var(--vw-ink) !important; font: 700 15px var(--fs-font) !important; text-decoration: none !important; border-radius: 0 !important; box-shadow: none !important; }
+  html body.fs.fs-vaporwave #profileCard :is(.view-profile-link, .edit-profile-btn) i, html body.fs.fs-vaporwave #pvEditProfileBtn i { display: none !important; }
+
+  /* Timeline.exe: the window, its title, four VHS windows (title, photo, VHS overlay, camera) */
+  html body.fs.fs-vaporwave :is(#timelineCover, #pvCoverBanner) { position: relative; height: 340px !important; aspect-ratio: auto !important; border-radius: 0 !important; margin: 0 8px 10px !important; overflow: visible !important;
+    background: none !important; border: solid transparent !important; border-width: 30px 4px 4px !important; border-image: var(--fs-window) 122 240 14 14 fill / 30px 59px 4px 4px stretch !important; box-sizing: border-box; }
+  html body.fs.fs-vaporwave :is(#timelineCover, #pvCoverBanner)::before { content: "Timeline.exe"; position: absolute; left: 4px; top: -28px; color: #fff; font: 700 14px/26px var(--fs-font); z-index: 3; }
+  html body.fs.fs-vaporwave :is(#coverEditBtn, #pvCoverEditBtn) { display: none !important; }
+  html body.fs.fs-vaporwave .fs-timeline { position: absolute; inset: 0; z-index: 2; }
+  html body.fs.fs-vaporwave .fs-tl-slot { position: absolute; width: 56%; aspect-ratio: 760 / 620; height: auto; background: var(--fs-vhs-window) center / 100% 100% no-repeat; }
+  html body.fs.fs-vaporwave .fs-tl-slot img { position: absolute; left: 2.2%; top: 14.8%; width: 95.4% !important; height: 82.3% !important; object-fit: cover; border-radius: 0 !important; }
+  html body.fs.fs-vaporwave .fs-tl-slot::before { content: ""; position: absolute; left: 2.2%; top: 14.8%; width: 95.4%; height: 82.3%; z-index: 2; pointer-events: none; background: var(--fs-vhs-overlay) center / 100% 100% no-repeat; }
+  html body.fs.fs-vaporwave .fs-tl-slot::after { position: absolute; left: 4%; top: 0; height: 14.8%; display: flex !important; align-items: center; z-index: 3; color: #fff; font: 700 11px var(--fs-font); pointer-events: none; }
+  html body.fs.fs-vaporwave .fs-tl-slot-1::after { content: "01_sunset.vhs"; }
+  html body.fs.fs-vaporwave .fs-tl-slot-2::after { content: "02_bust_glitch.vhs"; }
+  html body.fs.fs-vaporwave .fs-tl-slot-3::after { content: "03_drive.vhs"; }
+  html body.fs.fs-vaporwave .fs-tl-slot-4::after { content: "04_pool.vhs"; }
+  html body.fs.fs-vaporwave .fs-tl-slot-1 { left: 1%; top: 4px; z-index: 1; }
+  html body.fs.fs-vaporwave .fs-tl-slot-2 { right: 1%; top: 38px; z-index: 2; }
+  html body.fs.fs-vaporwave .fs-tl-slot-3 { left: 1%; top: 152px; z-index: 3; }
+  html body.fs.fs-vaporwave .fs-tl-slot-4 { right: 1%; top: 172px; z-index: 4; width: 50%; }
+  html body.fs.fs-vaporwave .fs-tl-slot .fs-tl-vhs { position: absolute; left: 6%; bottom: 7%; z-index: 3; color: #fff; font: 15px/1.05 'VT323', monospace; text-shadow: 1px 1px 0 #000; pointer-events: none; }
+  html body.fs.fs-vaporwave .fs-tl-own.fs-tl-slot::after { pointer-events: none; }
+  html body.fs.fs-vaporwave .fs-tl-own .fs-tl-cam { display: none; }
+  html body.fs.fs-vaporwave .fs-tl-slot.fs-tl-empty img { visibility: hidden; }
+  html body.fs.fs-vaporwave .fs-tl-slot.fs-tl-empty { background-color: transparent; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-vaporwave .profile-avatar-wrap::after { display: none !important; }
+  html body.fs.fs-vaporwave :is(#profileCard, .pv-profile-card) .profile-avatar-wrap::before { z-index: 4; }
+  html body.fs.fs-vaporwave .fs-tl-slot::after { right: auto !important; width: auto !important; height: 14.8% !important; background: none !important; }
+  html body.fs.fs-vaporwave .fs-tl-own::before { background: var(--fs-camera-badge) right 4% bottom 5% / 24px no-repeat, var(--fs-vhs-overlay) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-vaporwave .fs-tl-slot .fs-tl-vhs { white-space: pre-line; }
+  html body.fs.fs-vaporwave :is(#timelineCover, #pvCoverBanner) { height: 372px !important; }
+  html body.fs.fs-vaporwave .fs-tl-slot-1 { top: 6px; width: 55%; }
+  html body.fs.fs-vaporwave .fs-tl-slot-2 { top: 44px; width: 52%; }
+  html body.fs.fs-vaporwave .fs-tl-slot-3 { top: 168px; width: 52%; }
+  html body.fs.fs-vaporwave .fs-tl-slot-4 { top: 186px; width: 48%; }
+  html body.fs.fs-vaporwave #profileCard .profile-links { grid-column: 1 / -1; display: grid !important; grid-template-columns: 1fr 46px; gap: 6px; margin: 8px 0 0 !important; }
+  html body.fs.fs-vaporwave #profileCard .profile-links .view-profile-link { margin: 0 !important; }
+  html body.fs.fs-vaporwave #profileCard .profile-links .edit-profile-btn { margin: 0 !important; font-size: 0 !important; background: var(--fs-icon-compose) center / 22px no-repeat !important; }
+}
+html body.fs.fs-vaporwave .quest-bar-fill { height: 100% !important; border-radius: 0 !important; background: var(--fs-progress-fill) left center / auto 100% no-repeat !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-vaporwave #profileCard .profile-links { display: grid !important; grid-template-columns: 1fr 46px !important; grid-auto-flow: column; }
+  html body.fs.fs-vaporwave #profileCard #editProfileBtn { width: 46px !important; height: 38px !important; font-size: 0 !important; color: transparent !important;
+    background: var(--fs-icon-edit) center / 22px no-repeat !important; }
+  html body.fs.fs-vaporwave :is(#profileCard, .pv-profile-card) .profile-avatar-wrap::before { content: "Avatar.exe" !important; display: block !important; }
+  html body.fs.fs-vaporwave .fs-tl-slot .fs-tl-vhs { font-size: 13px !important; bottom: 6%; }
+}
+
+/* ---------- Home middle (concept home-full): pills as bevel buttons, Stories window, composer field, Featured Skin window ---------- */
+html body.fs.fs-vaporwave .mobile-pill { background: none !important; box-shadow: none !important; border-radius: 0 !important; border: solid transparent !important; border-width: 4px !important;
+  border-image: var(--fs-btn) 14 fill / 4px stretch !important; color: var(--vw-ink) !important; font: 700 13px var(--fs-font) !important; }
+html body.fs.fs-vaporwave .mobile-pill i { color: var(--vw-accent) !important; }
+html body.fs.fs-vaporwave .stories-bar { position: relative; background: none !important; box-shadow: none !important; border: solid transparent !important; border-width: 30px 4px 4px !important; border-radius: 0 !important;
+  border-image: var(--fs-window) 122 240 14 14 fill / 30px 59px 4px 4px stretch !important; padding: 8px 6px !important; margin: 0 0 10px !important; overflow: visible !important; }
+html body.fs.fs-vaporwave .stories-bar::before { content: "Stories"; position: absolute; left: 4px; top: -28px; color: #fff; font: 700 14px/26px var(--fs-font); }
+html body.fs.fs-vaporwave .story-ring { background: var(--fs-story-ring) center / contain no-repeat !important; padding: 5px !important; border: 0 !important; }
+html body.fs.fs-vaporwave .story-add .story-ring:not(.story-has) { background-image: var(--fs-story-add) !important; }
+html body.fs.fs-vaporwave :is(.story-name, .story-label) { color: var(--vw-ink) !important; font: 600 12px var(--fs-font) !important; }
+html body.fs.fs-vaporwave .post-create-bar { padding: 8px !important; display: flex !important; align-items: center; gap: 8px; }
+html body.fs.fs-vaporwave .post-create-avatar { border-radius: 0 !important; width: 40px !important; height: 40px !important; border: 2px solid #fff !important; box-shadow: 1px 1px 0 #555 !important; }
+html body.fs.fs-vaporwave .post-input-fake { flex: 1; min-width: 0; background: none !important; border-radius: 0 !important; box-shadow: none !important; border: solid transparent !important; border-width: 4px !important;
+  border-image: var(--fs-field) 14 fill / 4px stretch !important; color: var(--vw-soft) !important; font: 14px var(--fs-font) !important; padding: 8px 10px !important; }
+html body.fs.fs-vaporwave .featured-skin-banner { position: relative; background: none !important; box-shadow: none !important; border-radius: 0 !important; border: solid transparent !important; border-width: 30px 4px 4px !important;
+  border-image: var(--fs-window-pink) 122 240 14 14 fill / 30px 59px 4px 4px stretch !important; padding: 8px 10px !important; overflow: visible !important; }
+html body.fs.fs-vaporwave .featured-skin-banner .featured-header { position: absolute; left: 4px; right: 64px; top: -30px; height: 30px; display: flex !important; align-items: center; justify-content: space-between; margin: 0 !important; }
+html body.fs.fs-vaporwave .featured-skin-banner .featured-header :is(h4, .featured-timer, i) { color: #fff !important; font: 700 13px var(--fs-font) !important; margin: 0 !important; }
+html body.fs.fs-vaporwave .featured-skin-banner .featured-header h4 i { display: none !important; }
+html body.fs.fs-vaporwave .featured-skin-banner h5 { font: 700 18px var(--fs-font) !important; color: var(--vw-ink) !important; margin: 0 !important; }
+html body.fs.fs-vaporwave .featured-skin-banner p { color: var(--vw-soft) !important; font-size: 13px !important; }
+html body.fs.fs-vaporwave .featured-skin-banner .featured-preview { border-radius: 0 !important; border: 2px solid #fff; box-shadow: 1px 1px 0 #444; }
+html body.fs.fs-vaporwave .photos-card .search-tab { border-image-source: var(--fs-chip) !important; font-size: 13px !important; }
+html body.fs.fs-vaporwave .photos-card .search-tab.active { border-image-source: var(--fs-chip-active) !important; }
+html body.fs.fs-vaporwave .photos-preview img, html body.fs.fs-vaporwave .photos-preview .photo-thumb { border-radius: 0 !important; }
+html body.fs.fs-vaporwave .search-tab { text-align: center !important; justify-content: center !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-vaporwave :is(#feedTabs, .feed-post, .post-create-bar, .stories-bar, .featured-skin-banner, .quest-panel, .photos-card, .mobile-pills-bar, .coin-goal-bar) { margin-left: 8px !important; margin-right: 8px !important; }
+}
+html body.fs.fs-vaporwave .post-badges :is(span, .post-badge) { background: none !important; border-radius: 0 !important; border: solid transparent !important; border-width: 4px !important;
+  border-image: var(--fs-chip) 14 fill / 4px stretch !important; color: var(--vw-ink) !important; font: 700 12px var(--fs-font) !important; padding: 1px 6px !important; }
+html body.fs.fs-vaporwave .post-badges :is(span, .post-badge) i { color: var(--vw-accent) !important; }
+html body.fs.fs-vaporwave .share-preview { border-radius: 0 !important; background: none !important; border: solid transparent !important; border-width: 4px !important;
+  border-image: var(--fs-inset-row) 14 fill / 4px stretch !important; }
+html body.fs.fs-vaporwave .share-preview img { border-radius: 0 !important; }
+@media (max-width: 768px) { html body.fs.fs-vaporwave :is(.feed-post, .quest-panel, .featured-skin-banner, .stories-bar, .post-create-bar, .photos-card) { width: auto !important; max-width: none !important; box-sizing: border-box !important; } }
