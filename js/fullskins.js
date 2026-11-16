@@ -101,6 +101,35 @@
       '--border': 'rgba(201,160,110,.28)', '--nav-bg': '#120d13' },
     fonts: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap'
   };
+  FULL_SKINS['good-witch'] = {
+    name: 'Good Witch', wip: true, dark: false, ink: '#4a2c6b', muted: '#8a76a6', accent: '#a77bf0',
+    font: "'Cormorant Garamond', serif", titleFont: "'Cormorant Garamond', serif",
+    timeline: 3, avatar: 'center', slice: 15, edge: 16,
+    // owner (Nov 15): the day art is very bright, so two renditions — Day (assets/ root) and Night (assets/night/)
+    variants: [
+      { id: 'day', name: 'Day', accent: '#a77bf0', swatch: '#efe4ff' },
+      { id: 'night', name: 'Night', accent: '#c9a6ff', swatch: '#2a1b52', dark: true, ink: '#f1e8ff', muted: '#b9a7d9',
+        theme: { '--dark': '#f1e8ff', '--gray': '#b9a7d9', '--light-bg': '#1a1236', '--card': '#241a45',
+          '--border': 'rgba(214,190,140,.32)', '--nav-bg': '#171030' } }
+    ],
+    // traced from the approved concept (prototypes/good-witch-redraw-brief.md → kit/gw + kit/gw-night)
+    assets: ['background', 'top-bar', 'corner-vine', 'nav-bar', 'nav-orb', 'nav-orb-active', 'coin', 'coin-pill',
+      'icon-compose', 'icon-phone', 'icon-close', 'icon-reply', 'icon-react', 'icon-chevron', 'icon-check', 'icon-clear',
+      'icon-photo', 'icon-gif', 'icon-poll', 'icon-schedule', 'icon-globe', 'icon-people-small', 'icon-mute', 'icon-block',
+      'icon-report', 'icon-heart',
+      'notif-like', 'notif-follow', 'notif-comment', 'notif-mention', 'notif-message', 'notif-group', 'notif-purchase',
+      'quests-frame', 'constellation-a-0', 'constellation-a-50', 'constellation-a-100', 'constellation-b-0',
+      'constellation-b-50', 'constellation-b-100', 'constellation-c-0', 'constellation-c-50', 'constellation-c-100',
+      'tab-underline', 'post-panel', 'photo-frame', 'story-ring', 'story-add', 'composer', 'featured-frame', 'arrow-orb',
+      'goal-track', 'goal-fill', 'coin-goal-bar', 'moon-frame', 'photo-bubble', 'avatar-ring', 'camera-badge',
+      'stats-frame', 'edit-btn', 'cat-cloud', 'star-frame', 'follow-btn', 'action-tile', 'menu-panel', 'list-row',
+      'join-btn', 'chip', 'chip-active', 'seg-tab', 'seg-tab-active', 'unread-gem', 'skin-card', 'skin-card-wide',
+      'equipped-tag', 'bubble-in', 'bubble-out', 'input-bar', 'send-orb', 'plus-orb', 'field', 'text-area', 'public-pill',
+      'tool-tile', 'post-btn', 'comment-bubble', 'reply-line', 'story-field', 'heart-orb', 'owl-crystal', 'moon-clouds'],
+    theme: { '--dark': '#4a2c6b', '--gray': '#8a76a6', '--light-bg': '#f3ecff', '--card': '#fbf8ff',
+      '--border': 'rgba(176,140,90,.35)', '--nav-bg': '#f3ecff' },
+    fonts: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap'
+  };
   window.FULL_SKINS = FULL_SKINS;
 
   // Absolute: a relative url() inside a custom property resolves against the stylesheet that
@@ -182,8 +211,10 @@
     if (active && FULL_SKINS[active]) {
       (FULL_SKINS[active].assets || []).forEach(function (a) { b.style.removeProperty('--fs-' + a); });
     }
-    if (active && FULL_SKINS[active] && FULL_SKINS[active].theme) {
-      Object.keys(FULL_SKINS[active].theme).forEach(function (v) { b.style.removeProperty(v); });
+    if (active && FULL_SKINS[active] && (FULL_SKINS[active].theme || FULL_SKINS[active].variants)) {
+      var allTheme = Object.assign({}, FULL_SKINS[active].theme || {});
+      (FULL_SKINS[active].variants || []).forEach(function (x) { Object.assign(allTheme, x.theme || {}); });
+      Object.keys(allTheme).forEach(function (v) { b.style.removeProperty(v); });
     }
     removeRendered();
     active = null;
@@ -217,7 +248,10 @@
     loadFonts(cfg);
     ensureFilters();
     variant = pickVariant(id);
-    b.classList.add('fs', 'fs-' + id, cfg.dark ? 'fs-dark' : 'fs-light');
+    // a variant may change more than the accent (Good Witch Day / Night): dark flag, ink, muted, theme vars
+    var vcfg = cfg.variants && cfg.variants.filter(function (x) { return x.id === (variant || cfg.variants[0].id); })[0];
+    var isDark = vcfg && vcfg.dark !== undefined ? vcfg.dark : cfg.dark;
+    b.classList.add('fs', 'fs-' + id, isDark ? 'fs-dark' : 'fs-light');
     if (cfg.variants) b.setAttribute('data-fs-variant', variant || cfg.variants[0].id);
     var parts = cfg.extras ? PARTS.concat(EXTRAS) : PARTS;
     parts.forEach(function (p) { b.style.setProperty('--fs-' + p, url(id, (cfg.parts && cfg.parts[p]) || p)); });
@@ -225,15 +259,15 @@
       b.style.setProperty('--fs-icon-' + n, url(id, (cfg.parts && cfg.parts['icon-' + n]) || 'icon-' + n));
     });
     (cfg.assets || []).forEach(function (a) { b.style.setProperty('--fs-' + a, url(id, a)); });
-    b.style.setProperty('--fs-ink', cfg.ink);
-    b.style.setProperty('--fs-muted', cfg.muted);
-    var vcfg = cfg.variants && cfg.variants.filter(function (x) { return x.id === (variant || cfg.variants[0].id); })[0];
+    b.style.setProperty('--fs-ink', (vcfg && vcfg.ink) || cfg.ink);
+    b.style.setProperty('--fs-muted', (vcfg && vcfg.muted) || cfg.muted);
     b.style.setProperty('--fs-accent', (vcfg && vcfg.accent) || cfg.accent);
     b.style.setProperty('--fs-font', cfg.font);
     b.style.setProperty('--fs-title-font', cfg.titleFont || cfg.font);
     b.style.setProperty('--fs-slice', String(cfg.slice || 18));
     b.style.setProperty('--fs-edge', (cfg.edge || 16) + 'px');
-    if (cfg.theme) Object.keys(cfg.theme).forEach(function (v) { b.style.setProperty(v, cfg.theme[v]); });
+    var theme = Object.assign({}, cfg.theme || {}, (vcfg && vcfg.theme) || {});
+    Object.keys(theme).forEach(function (v) { b.style.setProperty(v, theme[v]); });
     active = id;
     startSuspending();
     watchPosts();
