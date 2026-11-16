@@ -3678,3 +3678,17 @@ html body.fs.fs-good-witch .fsk-body .btn.fsk-equipped { display: none !importan
 html body.fs.fs-good-witch .fsk-body .fsk-takeoff { width: 100% !important; height: 40px !important; margin: 6px 0 0 !important; padding: 0 10px !important;
   display: flex !important; align-items: center; justify-content: center; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
   background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: var(--gw-title) !important; font: 700 15px var(--fs-font) !important; text-decoration: none !important; }
+/* Good Witch Messages (QA Nov 15): search field the same width as the rows below it, with a gap before the first row */
+html body.fs.fs-good-witch #page-messages .msg-search { margin: 0 7px 12px !important; }
+/* notifications (QA Nov 15): the expand arrow lines up on the right edge of every row, not right after the text */
+html body.fs .notif-text p .notif-expand-chevron { margin-left: auto !important; padding-left: 8px; flex: 0 0 auto; }
+/* Good Witch Search (QA Nov 15): People / Groups / Posts as the same gold chips as Notifications, centred */
+html body.fs.fs-good-witch #page-search .search-tabs { display: flex !important; justify-content: center; gap: 8px; border: 0 !important; background: none !important; padding: 2px 0 !important; }
+html body.fs.fs-good-witch #page-search .search-tab { flex: 0 0 auto; background: none !important; border: solid transparent !important; border-width: 10px 18px !important;
+  border-image: var(--fs-chip) 55 85 fill / 10px 18px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 2px 6px !important; font-size: 15px !important; min-height: 0 !important; color: var(--gw-title) !important; }
+html body.fs.fs-good-witch #page-search .search-tab.active { border-image-source: var(--fs-chip-active) !important; color: var(--gw-deep) !important; font-weight: 700 !important; }
+html body.fs.fs-good-witch #searchResults .search-results-grid { gap: 0 !important; margin-top: 8px; }
+/* Good Witch Groups (QA Nov 15): the phone layout squeezes group buttons into 40px circles, which cut "Joined" to "n" —
+   size the button to its word instead */
+html body.fs.fs-good-witch #groupsSections .group-card-actions .btn { width: auto !important; min-width: 92px !important; height: auto !important; padding: 2px 6px !important; }
