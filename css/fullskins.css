@@ -4053,3 +4053,56 @@ html body.fs.fs-vaporwave .share-preview { border-radius: 0 !important; backgrou
   border-image: var(--fs-inset-row) 14 fill / 4px stretch !important; }
 html body.fs.fs-vaporwave .share-preview img { border-radius: 0 !important; }
 @media (max-width: 768px) { html body.fs.fs-vaporwave :is(.feed-post, .quest-panel, .featured-skin-banner, .stories-bar, .post-create-bar, .photos-card) { width: auto !important; max-width: none !important; box-sizing: border-box !important; } }
+
+/* ---------- lists (concept groups / messages / network / search / notifications): raised grey rows, square thumbs ---------- */
+html body.fs.fs-vaporwave #groupsSections .shop-scroll-row, html body.fs.fs-vaporwave :is(#page-profiles, #page-search) :is(.connections-grid, .shop-scroll-row, .page-grid) {
+  display: flex !important; flex-direction: column; gap: 4px; overflow: visible !important; grid-template-columns: none !important; grid-auto-flow: row !important; }
+html body.fs.fs-vaporwave :is(#groupsSections .group-card, .msg-contact, .notif-item, .profile-card-item, .follow-list-item) {
+  min-width: 0 !important; max-width: none !important; width: 100%; transform: none !important; background: none !important; box-shadow: none !important; border-radius: 0 !important;
+  border: solid transparent !important; border-width: 4px !important; border-image: var(--fs-list-row) 14 fill / 4px stretch !important; color: var(--vw-ink) !important; margin: 0 0 4px !important; box-sizing: border-box; }
+html body.fs.fs-vaporwave #groupsSections .group-card { display: grid !important; grid-template-columns: 50px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 6px 8px !important; }
+html body.fs.fs-vaporwave #groupsSections .group-card-banner { width: 50px; height: 50px !important; border-radius: 0 !important; overflow: hidden; padding: 0; background: none !important; border: 2px solid #fff; box-shadow: 1px 1px 0 #555; box-sizing: border-box; }
+html body.fs.fs-vaporwave #groupsSections .group-card-banner img { width: 100% !important; height: 100% !important; border-radius: 0 !important; border: 0 !important; object-fit: cover; margin: 0 !important; }
+html body.fs.fs-vaporwave #groupsSections :is(.gc-icon-edit-btn, .group-card-actions .view-group-btn, .gc-btn-icon) { display: none !important; }
+html body.fs.fs-vaporwave #groupsSections .group-card-body { padding: 0 !important; min-width: 0; }
+html body.fs.fs-vaporwave #groupsSections .group-card-body h4 { margin: 0; font-size: 15px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html body.fs.fs-vaporwave #groupsSections .group-card-body p:not(.group-members) { display: none; }
+html body.fs.fs-vaporwave #groupsSections .group-members { font-size: 13px !important; }
+html body.fs.fs-vaporwave #groupsSections .group-card-actions { padding: 0 !important; }
+html body.fs.fs-vaporwave #groupsSections .group-card-actions .btn { width: auto !important; min-width: 64px !important; height: auto !important; padding: 3px 10px !important; white-space: nowrap; font-size: 13px !important; }
+html body.fs.fs-vaporwave #groupsSections .group-card-actions .btn .gc-btn-text { display: inline !important; }
+html body.fs.fs-vaporwave :is(.msg-contact > div > img, .profile-card-item .profile-card-avatar, .notif-item img, #newGroupDmBtn > div:first-child) { border-radius: 0 !important; border: 2px solid #fff !important; box-shadow: 1px 1px 0 #555 !important; }
+html body.fs.fs-vaporwave .msg-contact { padding: 6px 8px !important; }
+html body.fs.fs-vaporwave .msg-contact-name { font-size: 15px !important; }
+html body.fs.fs-vaporwave .msg-contact-name > span { background: var(--fs-unread-dot) center / 100% 100% no-repeat !important; color: #fff !important; border-radius: 0 !important; }
+html body.fs.fs-vaporwave :is(#page-messages .msg-search, #page-groups .page-search, #page-search .page-search) { margin: 0 8px 8px !important; }
+html body.fs.fs-vaporwave :is(.page-search, .msg-search) > i { font-size: 0 !important; width: 18px; height: 18px; flex: 0 0 18px; background: var(--fs-icon-search) center / contain no-repeat; }
+html body.fs.fs-vaporwave :is(.page-search, .msg-search) { display: flex !important; align-items: center; gap: 6px; padding: 2px 8px !important; }
+
+/* page backgrounds (owner, Nov 15: "focus on solid backgrounds — the upgrades can be a gradient but nothing crazy"):
+   Retro = one solid colour (light / dark), Modern = a soft two-tone gradient (light / dark). The marble art is not used. */
+body.fs-vaporwave #premiumBgLayer { background: var(--vw-page) !important; }
+body.fs-vaporwave { --vw-page: #ece8f3; }
+body.fs-vaporwave[data-fs-variant="retro-dark"] { --vw-page: #19161f; }
+body.fs-vaporwave[data-fs-variant="modern"] { --vw-page: linear-gradient(180deg, #eef7ff 0%, #cfe3fb 100%); }
+body.fs-vaporwave[data-fs-variant="modern-dark"] { --vw-page: linear-gradient(180deg, #0d1f3d 0%, #07101f 100%); }
+body.fs-vaporwave[data-fs-variant] { background: #ece8f3 !important; }
+body.fs-vaporwave[data-fs-variant="retro-dark"] { background: #19161f !important; }
+body.fs-vaporwave[data-fs-variant="modern"] { background: #dcecfd !important; }
+body.fs-vaporwave[data-fs-variant="modern-dark"] { background: #0a1730 !important; }
+
+/* Modern pieces are rounded (corners ~21px, buttons ~33px): same art layout, bigger corner slices so nothing stretches */
+html body.fs.fs-vaporwave[data-fs-variant^="modern"] :is(.modal-content, .quest-panel, .stories-bar, .featured-skin-banner, #timelineCover, #pvCoverBanner) {
+  border-image-slice: 122 240 30 30 fill !important; border-image-width: 30px 59px 8px 8px !important; border-left-width: 8px !important; border-right-width: 8px !important; border-bottom-width: 8px !important; }
+html body.fs.fs-vaporwave[data-fs-variant^="modern"] :is(.card:not(.feed-post):not(.profile-card):not(.pv-profile-card), .comment-item, .post-dropdown, .user-dropdown, .feed-post, .quest-item,
+  #groupsSections .group-card, .msg-contact, .notif-item, .profile-card-item, .follow-list-item, .share-preview, input[type="text"], input[type="search"], textarea, .post-input, .page-search, .msg-search,
+  .comment-input, .post-input-fake, .search-tab, .post-badges span, .mobile-pill, #profileCard .view-profile-link, #pvEditProfileBtn) {
+  border-image-slice: 30 fill !important; border-image-width: 8px !important; border-width: 8px !important; }
+html body.fs.fs-vaporwave[data-fs-variant^="modern"] :is(.btn, .join-group-btn, .follow-btn, .suggestion-follow-btn, .profile-follow-btn, .fsk-equip, .fsk-buy) {
+  border-image-slice: 40 fill !important; border-image-width: 11px !important; border-width: 6px !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-vaporwave :is(#profileCard, .pv-profile-card) .profile-avatar-wrap::before { font-size: 10px !important; line-height: 14px !important; top: 0 !important; }
+  html body.fs.fs-vaporwave #profileCard .profile-links { display: flex !important; gap: 6px; }
+  html body.fs.fs-vaporwave #profileCard .profile-links .view-profile-link { flex: 1 1 auto; }
+  html body.fs.fs-vaporwave #profileCard .profile-links #editProfileBtn { flex: 0 0 46px; margin-top: 8px !important; }
+}

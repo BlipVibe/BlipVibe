@@ -6,7 +6,8 @@ Status: IN PROGRESS (started Nov 15 2026).
 - Retro (approved concept): `concept.png` (home, skins, profile, groups, post, messages, chat) and `concept-2.png`
   (home-full, network, notifications, search, group page, other profile, comments, create post, story).
   3x crops per screen: `prototypes/reference/vaporwave/`.
-- Modern: `concept-modern.png` / `concept-modern-2.png` — requested from Codex, needs owner approval.
+- Modern (approved Nov 15, blue-led): `concept-modern.png` / `concept-modern-2.png`; crops `prototypes/reference/vaporwave-modern/`.
+- Dark modes (approved Nov 15): `concept-retro-dark*.png`, `concept-modern-dark*.png`; crops `prototypes/reference/vaporwave-{retro,modern}-dark/`.
 
 ## Owner direction
 - Nov 15: "let's do the retro one" → Vaporwave (1995 desktop + 80s synthwave).
@@ -25,3 +26,12 @@ Status: IN PROGRESS (started Nov 15 2026).
 ## Log
 - Nov 15: concept crops made; brief written; Codex Part A (sections 1–2: page, headers, chrome wordmark + page titles,
   taskbar, windows/controls) started; Modern concept requested in parallel.
+- Nov 15: owner asked for more blue in Modern (approved), then a dark mode for both (approved). Four renditions:
+  retro (assets/), modern (assets/modern/), retro-dark (assets/retro-dark/), modern-dark (assets/modern-dark/) — same file
+  names in every folder. Top bar: CRT/flat-monitor switch (Retro↔Modern, CRT power-cycle swap) + sun/moon (light↔dark,
+  VHS tracking swap) once the dark art is in.
+- Nov 15: owner: "focus on solid backgrounds, the upgrades can be a gradient but nothing crazy" → Retro page = solid
+  colour, Modern page = soft two-tone gradient; the marble art is not used.
+- Status: Retro + Modern art done and wired (Home, posts, quests, groups list); Retro Dark + Modern Dark art in Codex.
+  Still to do: remaining pages (messages, chat, network, notifications, search, skins, profile view, comments, create
+  post), dark renditions, QA all four, then remove `wip`.
