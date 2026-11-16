@@ -3865,7 +3865,8 @@ html body.fs.fs-vaporwave .modal-content .modal-header .modal-close { position: 
   html body.fs.fs-vaporwave:has(#page-profiles.active) { --vw-page-title: var(--fs-title-network); }
   html body.fs.fs-vaporwave:has(#page-notifications.active) { --vw-page-title: var(--fs-title-notifications); }
   html body.fs.fs-vaporwave:has(#page-search.active) { --vw-page-title: var(--fs-title-search); }
-  html body.fs.fs-vaporwave:has(:is(#page-profile-view, #page-group-view).active) { --vw-page-title: var(--fs-title-profile); }
+  html body.fs.fs-vaporwave:has(#page-profile-view.active) { --vw-page-title: var(--fs-title-profile); }
+  html body.fs.fs-vaporwave:has(#page-group-view.active) { --vw-page-title: var(--fs-title-groups); }   /* concept: a group page is titled Groups */
   html body.fs.fs-vaporwave:not(:has(#page-home.active)):not(:has(#page-shop.active)) .navbar .nav-coins { display: none !important; }
   html body.fs.fs-vaporwave:has(#page-shop.active) .navbar .nav-coins { grid-column: 8 !important; grid-row: 1 / 3 !important; }
   html body.fs.fs-vaporwave:not(:has(#page-home.active)) .page.active { padding-top: calc(84px + env(safe-area-inset-top, 0px)) !important; }
@@ -5526,3 +5527,21 @@ html body.fs.fs-witchcraft .fsk-body .shop-card-actions .btn { min-width: 0 !imp
 }
 html body.fs:is(.fs-dark, [data-fs-variant="night"], [data-fs-variant="twilight"], [data-fs-variant$="-dark"]) .fs-pv-menu a.fs-pv-danger,
 html body.fs:is(.fs-dark, [data-fs-variant="night"], [data-fs-variant="twilight"], [data-fs-variant$="-dark"]) .fs-pv-menu a.fs-pv-danger i { color: #ff8f80 !important; }
+/* Scrapbook search page: its field matched the old plain strip by id (#searchPageInput beat the torn-paper rule) and came
+   out a thin 28px strip with the icon outside it — same torn field as Network/Groups/Messages search now */
+html body.fs.fs-scrapbook #searchPageInput { background: none !important; border: 14px solid transparent !important;
+  border-image: var(--fs-field9-real) 80 fill / 14px round !important; }
+/* an empty page subtitle (Search before you type) drew a tiny blank paper label under the field */
+html body.fs .page-subtitle:empty { display: none !important; }
+/* Heaven's Light group page: the stats plaque is a two-panel frame; the group's third stat (Group Coins) wrapped onto the
+   frame's bottom edge and the numbers rode up over its top edge. Members · Posts stay in the plaque; Group Coins sits
+   centred just under it. */
+html body.fs.fs-heavens-light #gvProfileCard .profile-stats { flex-wrap: nowrap !important; margin-bottom: 40px !important; }
+html body.fs.fs-heavens-light #gvProfileCard .profile-stats > .stat:nth-child(3) { position: absolute; top: calc(100% + 4px); left: 0; right: 0; }
+html body.fs.fs-heavens-light #gvProfileCard .profile-stats > .stat:nth-child(3) .stat-count { display: inline !important; font-size: 20px !important; margin-right: 6px; }
+html body.fs.fs-heavens-light #gvProfileCard .profile-stats > .stat:nth-child(3) .stat-label { display: inline !important; }
+html body.fs.fs-heavens-light #gvProfileCard .profile-stats > .stat:nth-child(3) { display: flex !important; flex-direction: row !important; justify-content: center; align-items: baseline; gap: 6px; }
+/* Heaven's Light: its bottom bar stacks above the full-screen chat, so it covered the message box (keyboard open or not) */
+html body.fs.fs-heavens-light:has(#page-messages.active .messages-layout.chat-open) .nav-center { display: none !important; }
+/* Heaven's Light chat: the first button was the bare gold ring; the concept has a "+" in it (kit icon-plus over round-btn) */
+html body.fs.fs-heavens-light #msgChat #msgImgBtn i { background: var(--fs-icon-plus) center / 52% no-repeat, var(--fs-round-btn) center / contain no-repeat !important; }
