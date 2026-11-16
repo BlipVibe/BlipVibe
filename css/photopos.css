@@ -27,7 +27,7 @@
 /* each skin's own bar art for the zoom track */
 body.fs-scrapbook .fs-pp-zoom { --pp-track: var(--fs-track-real); --pp-fill: var(--fs-fill-real); }
 body.fs-anime-blaze .fs-pp-zoom { --pp-track: var(--fs-track); --pp-fill: var(--fs-fill); }
-body.fs-witchcraft .fs-pp-zoom, body.fs-good-witch .fs-pp-zoom, body.fs-heavens-light .fs-pp-zoom, body.fs-blood-moon .fs-pp-zoom { --pp-track: var(--fs-goal-track); --pp-fill: var(--fs-goal-fill); }
+body.fs-witchcraft .fs-pp-zoom, body.fs-good-witch .fs-pp-zoom, body.fs-heavens-light .fs-pp-zoom, body.fs-blood-moon .fs-pp-zoom, body.fs-superhero .fs-pp-zoom { --pp-track: var(--fs-goal-track); --pp-fill: var(--fs-goal-fill); }
 body.fs-vaporwave .fs-pp-zoom { --pp-track: var(--fs-progress-track); --pp-fill: var(--fs-progress-fill); }
 
 /* Move & zoom / Change photo menu on your own timeline frames (skins dress .post-dropdown) */

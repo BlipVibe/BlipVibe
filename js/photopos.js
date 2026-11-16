@@ -231,13 +231,16 @@
     return { el: copy, canvas: canvas, tgt: tgt === null ? copy : tgt };
   }
 
+  function modal(h) { (dat().showModal || window.showModal)(h); }
+  function unmodal() { (dat().closeModal || window.closeModal)(); }
+  function toast(t) { var f = dat().toast || window.showToast; if (typeof f === 'function') f(t); }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
   /* opts: { frame: element showing the frame, context: ancestor whose art surrounds it (optional), img: its photo <img>,
    *         src: photo url, key: 'avatar'|'tlN', title } */
   function open(opts) {
     var id = skin();
-    if (!id || !opts.frame || !opts.img || !opts.src || typeof window.showModal !== 'function') return;
+    if (!id || !opts.frame || !opts.img || !opts.src || typeof (dat().showModal || window.showModal) !== 'function') return;
     var rect = opts.frame.getBoundingClientRect();
     if (!(rect.width > 4 && rect.height > 4)) return;
     var ctx = opts.context && opts.context.contains(opts.frame) ? opts.context : opts.frame;
@@ -255,7 +258,7 @@
     var start = posFor(true, opts.key, opts.src) || { x: .5, y: .5, z: 1 };
     var p = { x: start.x, y: start.y, z: start.z };
 
-    window.showModal('<div class="modal-header"><h3>' + esc(opts.title || 'Move & zoom') + '</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>' +
+    modal('<div class="modal-header"><h3>' + esc(opts.title || 'Move & zoom') + '</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>' +
       '<div class="modal-body fs-pp-body"><div class="fs-pp-stage" aria-label="Photo preview — drag to move"><div class="fs-pp-scale"></div></div>' +
       '<p class="fs-pp-hint">Drag to move · pinch or scroll to zoom</p>' +
       '<label class="fs-pp-zoom"><span class="fs-pp-zl">Zoom</span><span class="fs-pp-track"><span class="fs-pp-fill"></span>' +
@@ -363,15 +366,15 @@
     });
 
     mc.querySelector('.fs-pp-reset').addEventListener('click', function () { p = { x: .5, y: .5, z: 1 }; range.value = 1; draw(); });
-    mc.querySelector('.fs-pp-cancel').addEventListener('click', function () { window.closeModal(); });
+    mc.querySelector('.fs-pp-cancel').addEventListener('click', function () { unmodal(); });
     mc.querySelector('.fs-pp-save').addEventListener('click', function () {
       var r = function (v, n) { return Math.round(v * n) / n; };
       var val = (Math.abs(p.z - 1) < .005 && Math.abs(p.x - .5) < .002 && Math.abs(p.y - .5) < .002) ? null :
         { s: base(opts.src), x: r(p.x, 10000), y: r(p.y, 10000), z: r(p.z, 1000) };
       if (dat().setPhotoPos) dat().setPhotoPos(id, opts.key, val);
-      window.closeModal();
+      unmodal();
       if (fs()) fs().render();
-      if (typeof window.showToast === 'function') window.showToast('Photo position saved');
+      toast('Photo position saved');
     });
 
     window.addEventListener('resize', layout);
@@ -380,7 +383,7 @@
     requestAnimationFrame(layout);
     loadSrc(opts.src).then(function (x) {
       im = x;
-      if (!im) { if (typeof window.showToast === 'function') window.showToast('Could not load this photo'); return; }
+      if (!im) { toast('Could not load this photo'); return; }
       draw();
     });
   }
@@ -426,7 +429,7 @@
   function closeMenu() { var m = document.querySelector('.fs-pp-menu'); if (m) m.remove(); }
 
   // the zoom-slider knob, painted per skin (kit/pp → assets/pp-knob.webp, in every colour / rendition folder)
-  ['scrapbook', 'anime-blaze', 'witchcraft', 'good-witch', 'vaporwave', 'heavens-light'].forEach(function (id) {
+  ['scrapbook', 'anime-blaze', 'witchcraft', 'good-witch', 'vaporwave', 'heavens-light', 'blood-moon'].forEach(function (id) {
     var c = window.FULL_SKINS && window.FULL_SKINS[id];
     if (c && c.assets && c.assets.indexOf('pp-knob') < 0) c.assets.push('pp-knob');
   });

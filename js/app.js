@@ -10669,6 +10669,8 @@ window.BlipFullSkinsData={
     chosen:function(){return state.fsTimelinePhotos||[];},          // your picks, by slot
     viewed:function(){return window._fsViewedTimeline||null;},      // the viewed person's picks
     viewedCover:function(){return window._fsViewedCover||null;},
+    // app.js lives inside DOMContentLoaded, so its helpers aren't globals: hand them to photopos.js
+    showModal:function(h){showModal(h);},closeModal:function(){closeModal();},toast:function(t){showToast(t);},
     // photo zoom / position per skin and frame (photopos.js): yours, and the viewed person's
     photoPos:function(){return state.fsPhotoPos||{};},
     viewedPhotoPos:function(){return window._fsViewedPhotoPos||null;},

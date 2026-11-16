@@ -31,3 +31,11 @@ on both light and dark backgrounds (give it its own outline/rim).
 7. heavens-light — open images/skins/heavens-light/assets/sun-orb.webp and goal-fill.webp: a polished gold orb with a
    small halo ring and soft light rays, white-marble-and-gold like the kit.
    Save images/skins/heavens-light/kit/pp/pp-knob.png
+
+8. superhero (Heroes, the default rendition) — open images/skins/superhero/assets/coin.webp, follow-btn.webp and
+   goal-fill.webp: a bold comic-book round shield-style knob matching that kit exactly (same palette, ink outline,
+   halftone shading), with a small star in the middle.
+   Save images/skins/superhero/kit/pp/pp-knob.png
+9. superhero villains — open images/skins/superhero/assets/villains/coin.webp, villains/follow-btn.webp and
+   villains/goal-fill.webp: the same knob shape repainted in the Villains palette/material of that folder.
+   Save images/skins/superhero/kit/pp/pp-knob-villains.png
