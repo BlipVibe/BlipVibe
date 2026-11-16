@@ -3429,3 +3429,25 @@ html body.fs.fs-good-witch .quest-item[data-fs-started="1"]:not([data-fs-q="100"
 html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] .pm-thumb::before { content: ""; position: absolute; left: 50%; top: -20px; width: 90px; height: 36px;
   transform: translateX(-50%); z-index: 3; pointer-events: none; background: var(--fs-photo-crest) center / contain no-repeat; }
 html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] .pm-thumb::after { border-image: var(--fs-photo-frame) 160 210 / 46px 58px stretch !important; }
+/* cute QUEST BOARD (owner): board 9-slice (sign in the top slice), title on the hanging sign, each quest on a pinned note */
+html body.fs.fs-good-witch .quest-panel { background: none !important; border: solid transparent !important; border-width: 40px 46px 30px !important;
+  border-image: var(--fs-quests-frame) 125 150 95 150 fill / 40px 46px 30px stretch !important; padding: 14px 0 6px !important; position: relative; gap: 8px !important; }
+html body.fs.fs-good-witch .quest-panel-header { position: absolute !important; left: 0; right: 0; top: -36px; height: 28px; margin: 0 !important; display: flex !important; align-items: center; justify-content: center; }
+html body.fs.fs-good-witch .quest-panel-header h4 { font-size: 20px !important; line-height: 1 !important; }
+html body.fs.fs-good-witch .quest-item { background: none !important; border: solid transparent !important; border-width: 18px 12px 14px !important;
+  border-image: var(--fs-quest-card) 60 40 45 40 fill / 18px 12px 14px stretch !important; padding: 0 0 2px !important; }
+html body.fs.fs-good-witch .quest-icon { width: 76px !important; height: 64px !important; }
+html body.fs.fs-good-witch .quest-info p { font-size: 15px !important; }
+html body.fs.fs-good-witch :is(.quest-reward, .quest-check) { font-size: 15px !important; }
+/* themed pills keep their end charms: 9-slice instead of whole-image stretch */
+html body.fs.fs-good-witch .post-input-fake { background: none !important; border: solid transparent !important; border-width: 14px 30px !important;
+  border-image: var(--fs-composer) 70 150 fill / 14px 30px stretch !important; padding: 0 !important; }
+html body.fs.fs-good-witch .coin-goal-bar { background: none !important; border: solid transparent !important; border-width: 12px 26px !important;
+  border-image: var(--fs-coin-goal-bar) 60 120 fill / 12px 26px stretch !important; }
+html body.fs.fs-good-witch :is(.page-search, .msg-search) { background: none !important; border: solid transparent !important; border-width: 12px 26px !important;
+  border-image: var(--fs-field) 60 130 fill / 12px 26px stretch !important; padding: 0 4px !important; }
+html body.fs.fs-good-witch .quest-panel-header { top: -30px !important; height: 34px !important; }
+html body.fs.fs-good-witch .quest-panel-header h4 { font-size: 21px !important; transform: translateY(2px); }
+html body.fs.fs-good-witch .quest-panel { border-width: 54px 46px 40px !important; border-image-slice: 160 150 110 150 fill !important; padding: 6px 4px 0 !important; }
+html body.fs.fs-good-witch .quest-panel-header { top: -50px !important; height: 30px !important; }
+html body.fs.fs-good-witch .quest-panel-header h4 { transform: none !important; font-size: 20px !important; }
