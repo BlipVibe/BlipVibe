@@ -3451,3 +3451,18 @@ html body.fs.fs-good-witch .quest-panel-header h4 { font-size: 21px !important; 
 html body.fs.fs-good-witch .quest-panel { border-width: 54px 46px 40px !important; border-image-slice: 160 150 110 150 fill !important; padding: 6px 4px 0 !important; }
 html body.fs.fs-good-witch .quest-panel-header { top: -50px !important; height: 30px !important; }
 html body.fs.fs-good-witch .quest-panel-header h4 { transform: none !important; font-size: 20px !important; }
+/* Daily Quests = painted open SPELL BOOK (owner rejected the flat board + hanging sign). Whole painted image at its own
+   ratio (1290x900); title + three quests written on the pages (page box 161–1136 x, 152–833 y) */
+html body.fs.fs-good-witch .quest-panel { border: 0 !important; border-image: none !important; background: var(--fs-quests-frame) center / 100% 100% no-repeat !important;
+  aspect-ratio: 1290 / 900; height: auto !important; box-sizing: border-box; margin: 0 -6px !important;
+  padding: 14% 13% 14% 13% !important; align-content: start; row-gap: 2px !important; column-gap: 6px !important; }
+html body.fs.fs-good-witch .quest-panel-header { position: static !important; height: auto !important; top: auto !important; margin: 0 0 2px !important; }
+html body.fs.fs-good-witch .quest-panel-header h4 { font-size: 21px !important; }
+html body.fs.fs-good-witch .quest-item { border: 0 !important; border-image: none !important; background: none !important; padding: 0 !important; }
+html body.fs.fs-good-witch .quest-icon { width: 64px !important; height: 52px !important; }
+html body.fs.fs-good-witch .quest-info p { font-size: 14px !important; line-height: 1.05 !important; }
+html body.fs.fs-good-witch .quest-progress { font-size: 14px !important; }
+html body.fs.fs-good-witch :is(.quest-reward, .quest-check) { font-size: 14px !important; }
+html body.fs.fs-good-witch .quest-reward > i { width: 17px; height: 17px; }
+html body.fs.fs-good-witch .quest-panel { align-content: center !important; padding-top: 12% !important; padding-bottom: 17% !important; }
+html body.fs.fs-good-witch .quest-panel-header { margin-bottom: 8px !important; }
