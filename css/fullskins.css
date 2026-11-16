@@ -6469,3 +6469,23 @@ html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .pro
     margin: calc((100vw + 16px) * 1470 / 1290 * -.49 - 68px) auto calc((100vw + 16px) * 1470 / 1290 * .49 - 40px) !important; }
 }
 html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card:has(.fs-tl-own)) .avatar-edit-btn { left: 50% !important; right: auto !important; bottom: -14px !important; transform: translateX(-50%) !important; width: 38px !important; height: 38px !important; }
+/* name: the flourish halves sit BESIDE the name (never behind it), long names shrink a step and wrap; candelabras stay at the edges */
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard { padding: 0 58px !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name { display: flex !important; align-items: center; justify-content: center; gap: 6px;
+  background: none !important; font-size: clamp(24px, 8vw, 34px) !important; line-height: 1.1 !important; overflow-wrap: anywhere; text-align: center; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name::before,
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name::after { content: "" !important; display: block !important; flex: 0 0 34px; height: 22px; position: static !important;
+  background: var(--fs-title-flourish) left center / 260% auto no-repeat !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name::after { background-position: right center !important; }
+/* the cloned per-post charms (moon crests on the frame) landed over content on these thicker frames: the frame art carries the ornament */
+html body.fs.fs-blood-moon .feed-post::after { display: none !important; }
+/* posts: thinner silver frame like the concept, content close to it */
+html body.fs.fs-blood-moon .feed-post.feed-post.feed-post { border-width: 20px !important; border-image-slice: 160 fill !important; border-image-width: 34px !important; border-image-outset: 6px !important; margin: 10px 8px 22px !important; }
+/* Daily Quests (concept): title case, moon phase icon alone on the left, "3 / 5" under the label */
+html body.fs.fs-blood-moon .quest-panel-header h4 { text-transform: none !important; }
+html body.fs.fs-blood-moon .quest-progress { position: static !important; transform: none !important; width: auto !important; grid-column: 2; grid-row: 2; font: 600 14px var(--fs-font) !important; text-align: center; color: var(--bm-soft) !important; }
+html body.fs.fs-blood-moon .quest-item { grid-template-rows: auto auto; }
+html body.fs.fs-blood-moon .quest-icon { grid-row: 1 / span 2; }
+html body.fs.fs-blood-moon :is(.quest-reward, .quest-check) { grid-column: 3; grid-row: 1 / span 2; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name { overflow-wrap: break-word !important; word-break: normal !important; hyphens: none; font-size: clamp(22px, 7.2vw, 32px) !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name::before, html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name::after { flex-basis: 28px; }
