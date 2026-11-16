@@ -2917,3 +2917,12 @@ html body.fs.fs-witchcraft .status-emoji-btn.active { box-shadow: 0 0 0 2px #c94
     left: 9.2% !important; top: 21.6% !important; width: 81.2% !important; height: 69.4% !important; border-radius: 0 !important; object-fit: cover !important; box-shadow: none !important;
     -webkit-mask: var(--fs-avatar-arch-mask) 48.8% 70.6% / 123.2% 144.1% no-repeat !important; mask: var(--fs-avatar-arch-mask) 48.8% 70.6% / 123.2% 144.1% no-repeat !important; }
 }
+/* posts (owner: frames hung below short photos): the app gives single photos min-height 240 — drop it so the arch frame
+   hugs the real photo; shared posts sit on a dark carved plaque instead of the old blue box */
+html body.fs.fs-witchcraft .post-media-grid[class*="pm-count"] .pm-thumb { min-height: 0 !important; max-height: none !important; height: auto !important; width: fit-content !important; margin-left: auto !important; margin-right: auto !important; }
+html body.fs.fs-witchcraft .post-media-grid[class*="pm-count"] .pm-thumb :is(img, video) { min-height: 0 !important; background: transparent !important; }
+html body.fs.fs-witchcraft .share-preview { background: rgba(20, 12, 18, .92) !important; border: 1px solid #7a5634 !important; border-radius: 10px !important; box-shadow: inset 0 0 0 1px rgba(232, 194, 122, .15) !important; margin: 0 4px 12px !important; }
+html body.fs.fs-witchcraft .share-preview :is(.share-preview-name, strong) { color: #ecd3a0 !important; font-family: var(--fs-title-font) !important; }
+html body.fs.fs-witchcraft .share-preview :is(.share-preview-time, .share-preview-text) { color: #cdbba2 !important; }
+html body.fs.fs-witchcraft .share-preview .shared-post-author:is(img) { box-shadow: 0 0 0 2px #c79b55 !important; }
+html body.fs.fs-witchcraft .post-badge, html body.fs.fs-witchcraft [class*="badge-green"] { background: rgba(20, 12, 18, .9) !important; color: #e8c27a !important; border: 1px solid #7a5634 !important; }
