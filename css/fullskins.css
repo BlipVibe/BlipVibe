@@ -4106,3 +4106,62 @@ html body.fs.fs-vaporwave[data-fs-variant^="modern"] :is(.btn, .join-group-btn, 
   html body.fs.fs-vaporwave #profileCard .profile-links .view-profile-link { flex: 1 1 auto; }
   html body.fs.fs-vaporwave #profileCard .profile-links #editProfileBtn { flex: 0 0 46px; margin-top: 8px !important; }
 }
+/* Vaporwave dark renditions: light text on the dark art */
+body.fs-vaporwave[data-fs-variant$="-dark"] { --vw-ink: #f2ecff; --vw-soft: #b9b0cf; }
+body.fs-vaporwave[data-fs-variant="modern-dark"] { --vw-ink: #e6f6ff; --vw-soft: #9dbcd9; --vw-accent: #3fd0ff; }
+/* the pencil sits above the button art (border-image fill paints over a background) */
+@media (max-width: 768px) {
+  html body.fs.fs-vaporwave #profileCard #editProfileBtn { position: relative; }
+  html body.fs.fs-vaporwave #profileCard #editProfileBtn::after { content: ""; position: absolute; inset: 0; background: var(--fs-icon-edit) center / 22px no-repeat; }
+}
+
+/* ---------- chat (concept chat): plain page, white / pink speech bubbles, bevel input row ---------- */
+html body.fs.fs-vaporwave #msgChat { background: var(--vw-page) !important; }
+html body.fs.fs-vaporwave #msgChat .msg-chat-header { background: none !important; border-bottom: 0 !important; }
+html body.fs.fs-vaporwave #msgChat .msg-back-btn { display: flex !important; align-items: center; justify-content: center; width: 40px; height: 34px; padding: 0 !important; background: var(--fs-top-btn) center / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-vaporwave #msgChat .msg-back-btn i { font-size: 0 !important; display: block !important; width: 20px; height: 20px; background: var(--fs-icon-back) center / contain no-repeat !important; }
+html body.fs.fs-vaporwave #msgChat .msg-chat-header img { border-radius: 0 !important; border: 2px solid #fff !important; box-shadow: 1px 1px 0 #555 !important; }
+html body.fs.fs-vaporwave #msgChat .msg-chat-header h4 { font-size: 17px !important; color: var(--vw-ink) !important; }
+html body.fs.fs-vaporwave .msg-bubble { border: 14px solid transparent !important; border-image: var(--fs-bubble-in) 60 fill / 14px stretch !important; background: none !important; color: #1d1640 !important;
+  border-radius: 0 !important; box-shadow: none !important; font: 15px var(--fs-font) !important; }
+html body.fs.fs-vaporwave .msg-bubble.sent { border-image-source: var(--fs-bubble-out) !important; }
+html body.fs.fs-vaporwave[data-fs-variant$="-dark"] .msg-bubble, html body.fs.fs-vaporwave[data-fs-variant$="-dark"] .msg-bubble * { color: #f2ecff !important; }
+html body.fs.fs-vaporwave #msgChat .msg-chat-messages { overflow-x: hidden !important; touch-action: pan-y; }
+html body.fs.fs-vaporwave #msgChat .msg-chat-input { background: var(--fs-nav-bar) center top / 100% 100% no-repeat !important; border-top: 0 !important; gap: 6px; }
+html body.fs.fs-vaporwave #msgChat .msg-media-btn { display: flex !important; align-items: center; justify-content: center; width: 36px !important; height: 36px !important; padding: 0 !important; flex: 0 0 36px; background: none !important; }
+html body.fs.fs-vaporwave #msgChat .msg-media-btn i { font-size: 0 !important; display: block !important; width: 24px; height: 24px; background: center / contain no-repeat !important; }
+html body.fs.fs-vaporwave #msgChat #msgImgBtn i { background-image: var(--fs-plus-btn) !important; width: 32px; height: 32px; }
+html body.fs.fs-vaporwave #msgChat #msgGifBtn i { background-image: var(--fs-icon-gif) !important; }
+html body.fs.fs-vaporwave #msgChat #msgVoiceBtn i { background-image: var(--fs-icon-emoji) !important; }
+html body.fs.fs-vaporwave #msgChat #msgInput { flex: 1 1 auto; min-width: 0; margin: 0 !important; padding: 8px 10px !important; font: 15px var(--fs-font) !important; }
+html body.fs.fs-vaporwave #msgChat #sendMsgBtn { flex: 0 0 40px; width: 40px; height: 40px; padding: 0 !important; border: 0 !important; border-radius: 0 !important; background: var(--fs-send-btn) center / contain no-repeat !important; }
+html body.fs.fs-vaporwave #msgChat #sendMsgBtn i { opacity: 0 !important; }
+html body.fs.fs-vaporwave .msg-contact-name, html body.fs.fs-vaporwave .msg-contact-preview { color: inherit; }
+
+/* ---------- notifications, network, search ---------- */
+html body.fs.fs-vaporwave .notif-item { padding: 6px 8px !important; }
+html body.fs.fs-vaporwave .notif-text p { color: var(--vw-ink) !important; font: 600 14px var(--fs-font) !important; }
+html body.fs.fs-vaporwave .notif-text span { color: var(--vw-soft) !important; font-size: 12px !important; }
+html body.fs.fs-vaporwave .notif-icon { background: none !important; width: 32px !important; height: 32px !important; }
+html body.fs.fs-vaporwave .notif-icon i { font-size: 0 !important; display: block; width: 26px; height: 26px; background: var(--fs-notif-like) center / contain no-repeat; }
+html body.fs.fs-vaporwave .notif-icon:is(.follow, .notif-follow) i, html body.fs.fs-vaporwave .notif-icon i.fa-user-plus { background-image: var(--fs-notif-follow); }
+html body.fs.fs-vaporwave .notif-icon i:is(.fa-comment, .fa-comment-dots, .fa-reply) { background-image: var(--fs-notif-comment); }
+html body.fs.fs-vaporwave .notif-icon i.fa-at { background-image: var(--fs-notif-mention); }
+html body.fs.fs-vaporwave .notif-icon i.fa-envelope { background-image: var(--fs-notif-message); }
+html body.fs.fs-vaporwave .notif-icon i:is(.fa-users, .fa-user-group) { background-image: var(--fs-notif-group); }
+html body.fs.fs-vaporwave .notif-icon i:is(.fa-bag-shopping, .fa-shopping-bag, .fa-cart-shopping, .fa-coins) { background-image: var(--fs-notif-purchase); }
+html body.fs.fs-vaporwave .notif-text p .notif-expand-chevron { color: var(--vw-ink) !important; }
+html body.fs.fs-vaporwave .profile-card-item { padding: 6px 8px !important; }
+html body.fs.fs-vaporwave :is(#page-profiles, #page-search) .profile-card-item { display: grid !important; grid-template-columns: 46px minmax(0, 1fr) auto; column-gap: 10px; align-items: center; text-align: left; }
+html body.fs.fs-vaporwave :is(#page-profiles, #page-search) .profile-card-avatar { width: 46px !important; height: 46px !important; }
+html body.fs.fs-vaporwave .profile-card-name { font-size: 15px !important; }
+html body.fs.fs-vaporwave :is(.section-count, .connections-count, .badge-count) { background: var(--fs-chip) center / 100% 100% no-repeat !important; border: 0 !important; border-radius: 0 !important; color: var(--vw-ink) !important; }
+html body.fs.fs-vaporwave :is(#page-profiles, #page-search, #page-notifications) .page-container { padding-left: 8px !important; padding-right: 8px !important; }
+/* iOS zooms the whole page when a field under 16px gets focus (chat opened zoomed & shifted) */
+html body.fs.fs-vaporwave :is(input, textarea, select), html body.fs.fs-vaporwave #msgChat #msgInput { font-size: 16px !important; }
+html body.fs.fs-vaporwave #msgChat .msg-chat-input { position: relative !important; z-index: 20 !important; padding: 10px 8px calc(10px + env(safe-area-inset-bottom, 0px)) !important; }
+/* the taskbar must not show over an open chat (it covered the message box) */
+html body.fs.fs-vaporwave:has(.messages-layout.chat-open) .nav-center { display: none !important; }
+/* every full skin: an open full-screen chat must not keep the body's bottom-bar padding (the page grew taller than the
+   screen and the fixed chat's input bar was lost) — Witchcraft and Good Witch had their own copy of this */
+@media (max-width: 768px) { html body.fs:has(.messages-layout.chat-open) { padding-bottom: 0 !important; } }

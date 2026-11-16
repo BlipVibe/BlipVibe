@@ -35,3 +35,8 @@ Status: IN PROGRESS (started Nov 15 2026).
 - Status: Retro + Modern art done and wired (Home, posts, quests, groups list); Retro Dark + Modern Dark art in Codex.
   Still to do: remaining pages (messages, chat, network, notifications, search, skins, profile view, comments, create
   post), dark renditions, QA all four, then remove `wip`.
+- Nov 15 (late): Retro Dark art in (assets/retro-dark/). Owner: light↔dark uses the SAME animation as Good Witch
+  (magicSwap); Retro↔Modern = "update, glitchy pixel look" (pixelUpdate: RGB tears → pixel blocks + "System Update"
+  window → blocks fall away). Chat/messages/notifications/network/search styled. Fixes: 16px fields (iOS zoom), every
+  full skin drops body padding while a chat is open (input bar was lost).
+  Left: Modern Dark art (in Codex) → convert + register; Skins page, other profile, comments, create post; QA all four.

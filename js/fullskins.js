@@ -143,7 +143,10 @@
     // Dark renditions (retro-dark / modern-dark) join once their concepts are approved. Top bar: OS switch + sun/moon.
     variants: [
       { id: 'retro', name: 'Retro', accent: '#ff4fc8', swatch: '#c8c8d0' },
-      { id: 'modern', name: 'Modern', accent: '#18b8ff', swatch: '#5ad1ff', ink: '#0f2a5c', muted: '#4c6a96' }
+      { id: 'modern', name: 'Modern', accent: '#18b8ff', swatch: '#5ad1ff', ink: '#0f2a5c', muted: '#4c6a96' },
+      { id: 'retro-dark', name: 'Retro Dark', accent: '#ff4fc8', swatch: '#2a2533', dark: true, ink: '#f2ecff', muted: '#b9b0cf',
+        theme: { '--dark': '#f2ecff', '--gray': '#b9b0cf', '--light-bg': '#19161f', '--card': '#26222e',
+          '--border': 'rgba(255,79,200,.3)', '--nav-bg': '#1d1a24' } }
     ],
     // generic engine slots → the traced pieces (prototypes/vaporwave-redraw-brief.md)
     parts: { 'panel-card': 'panel', 'panel-card-active': 'window-pink', 'btn-primary': 'btn-pink', 'btn-secondary': 'btn',
@@ -261,7 +264,7 @@
         lm.id = 'fsLamp'; lm.type = 'button'; lm.className = 'fs-daynight fs-lamp-btn ' + (drk ? 'is-night' : 'is-day');
         lm.setAttribute('aria-label', drk ? 'Switch to light' : 'Switch to dark');
         lm.innerHTML = '<i></i>';
-        lm.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); vaporSwap(lm, id, vid(os, !drk), 'lamp'); });
+        lm.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); magicSwap(lm, id, vid(os, !drk)); });
         search.parentNode.insertBefore(lm, search);
       }
       return;
@@ -420,10 +423,9 @@
     });
   }
 
-  // Vaporwave swaps (owner: its own animation, not the Good Witch reveal).
-  // 'os'   = CRT power cycle: the old screen collapses to a glowing horizontal line (old TV switching off), static
-  //          crackles, then the new OS powers on out of the line with scanlines and an RGB-split flicker.
-  // 'lamp' = VHS tracking: a band of tracking noise rolls down the screen and the new light/dark look is behind it.
+  // Vaporwave swaps. owner (Nov 15): light <-> dark uses the SAME animation as Good Witch's day/night (magicSwap);
+  // Retro <-> Modern "looks like an update — glitchy pixel look" (pixelUpdate below). The CRT/VHS code paths stay as
+  // fallbacks only.
   function vaporSwap(btn, id, next, kind) {
     if (swapping) return;
     swapping = true;
@@ -439,13 +441,70 @@
     var tint = nv.id.indexOf('modern') === 0 ? '90,210,255' : '255,79,200';
     function finish() { o.remove(); swapping = false; }
     var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // owner (Nov 15): Retro <-> Modern should "look like an update — glitchy pixel look". The screen glitches (RGB-split
+    // slices tearing sideways), breaks into pixel blocks that fill the screen while a little update window installs,
+    // the new OS loads underneath, then the blocks fall away in random order with a last glitch.
+    function pixelUpdate() {
+      document.documentElement.appendChild(o);
+      var T = 26, cols = Math.ceil(W / T), rows = Math.ceil(H / T), n = cols * rows, order = [], i;
+      for (i = 0; i < n; i++) order.push(i);
+      for (i = n - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), tmp = order[i]; order[i] = order[j]; order[j] = tmp; }
+      var rank = new Array(n); order.forEach(function (c, k) { rank[c] = k / n; });
+      var up = next.indexOf('modern') === 0, dark = /-dark$/.test(next);
+      var pal = up ? ['#0a2a6c', '#1c4fd8', '#18b8ff', '#5ad1ff', '#e6f6ff'] : ['#1d1640', '#0a1a8c', '#ff4fc8', '#c8c8d0', '#ffffff'];
+      if (dark) pal = up ? ['#05101f', '#0d1f3d', '#1c4fd8', '#3fd0ff', '#0a2a6c'] : ['#120f18', '#26222e', '#3a1257', '#ff4fc8', '#0a1a8c'];
+      var tileCol = []; for (i = 0; i < n; i++) tileCol.push(pal[(Math.random() * pal.length) | 0]);
+      var GL = 420, FILL = 520, HOLD = 520, DROP = 620, END = GL + FILL + HOLD + DROP, swapped = false, t0 = performance.now();
+      var label = up ? 'Installing update…' : 'Restoring classic mode…';
+      function win(p) {   // little update window with a progress bar (pixel font, 90s chrome for Retro / glass for Modern)
+        var w = Math.min(300, W - 40), h = 92, x = (W - w) / 2, y = H / 2 - h / 2;
+        g.fillStyle = up ? 'rgba(10,30,70,.92)' : '#c8c8d0'; g.fillRect(x, y, w, h);
+        g.fillStyle = up ? '#18b8ff' : '#0a1a8c'; g.fillRect(x, y, w, 22);
+        g.fillStyle = '#fff'; g.font = '700 12px Verdana, sans-serif'; g.textBaseline = 'middle';
+        g.fillText(up ? 'System Update' : 'Setup', x + 8, y + 11);
+        g.fillStyle = up ? '#e6f6ff' : '#1d1640'; g.font = '13px Verdana, sans-serif'; g.fillText(label, x + 12, y + 40);
+        g.fillStyle = up ? '#0d1f3d' : '#fff'; g.fillRect(x + 12, y + 56, w - 24, 20);
+        var segs = Math.floor((w - 28) / 14), on = Math.floor(segs * Math.min(1, p));
+        g.fillStyle = up ? '#3fd0ff' : '#ff4fc8';
+        for (var k = 0; k < on; k++) g.fillRect(x + 14 + k * 14, y + 58, 12, 16);
+        g.fillStyle = up ? '#e6f6ff' : '#1d1640'; g.font = '700 11px Verdana, sans-serif';
+        g.fillText(Math.floor(Math.min(1, p) * 100) + '%', x + w - 44, y + 40);
+      }
+      function slices(a) {   // RGB-split tears
+        for (var k = 0; k < 9; k++) {
+          var y = Math.random() * H, h = 4 + Math.random() * 28, dx = (Math.random() - .5) * 60;
+          g.fillStyle = 'rgba(255,0,110,' + (.35 * a) + ')'; g.fillRect(dx - 4, y, W, h);
+          g.fillStyle = 'rgba(0,220,255,' + (.35 * a) + ')'; g.fillRect(dx + 4, y + 2, W, h);
+          g.fillStyle = 'rgba(255,255,255,' + (.25 * a) + ')'; g.fillRect(0, y + h / 2, W, 1);
+        }
+      }
+      (function draw(now) {
+        var t = now - t0; g.clearRect(0, 0, W, H);
+        if (t < GL) { slices(t / GL); document.documentElement.style.transform = 'translateX(' + ((Math.random() - .5) * 8).toFixed(1) + 'px)'; }
+        else document.documentElement.style.transform = '';
+        var cover;   // share of tiles drawn
+        if (t < GL) cover = 0;
+        else if (t < GL + FILL) cover = (t - GL) / FILL;
+        else if (t < GL + FILL + HOLD) cover = 1;
+        else cover = 1 - (t - GL - FILL - HOLD) / DROP;
+        if (cover >= 1 && !swapped) { swapped = true; if (data().setVariant) data().setVariant(id, next); }
+        if (cover > 0) for (var c = 0; c < n; c++) {
+          if (rank[c] < cover) { g.fillStyle = tileCol[c]; g.fillRect((c % cols) * T, ((c / cols) | 0) * T, T, T); }
+        }
+        if (t > GL + FILL * .4 && t < GL + FILL + HOLD + DROP * .5) win(Math.min(1, (t - GL - FILL * .4) / (FILL * .6 + HOLD)));
+        if (t > GL + FILL + HOLD && t < END) slices(.6 * (1 - (t - GL - FILL - HOLD) / DROP));
+        if (t < END) requestAnimationFrame(draw); else { document.documentElement.style.transform = ''; finish(); }
+      })(t0);
+    }
     function noise(y0, h, a) {
       for (var k = 0; k < 220; k++) { var y = y0 + Math.random() * h; g.fillStyle = 'rgba(255,255,255,' + (Math.random() * a) + ')';
         g.fillRect(Math.random() * W, y, 4 + Math.random() * 60, 1 + Math.random() * 2); }
     }
     function scan(a) { g.fillStyle = 'rgba(0,0,0,' + a + ')'; for (var y = 0; y < H; y += 3) g.fillRect(0, y, W, 1); }
     Promise.all(pre).then(function () {
-      if (reduce || !document.startViewTransition) { if (data().setVariant) data().setVariant(id, next); swapping = false; return; }
+      if (reduce) { if (data().setVariant) data().setVariant(id, next); swapping = false; return; }
+      if (kind === 'os') return pixelUpdate();
+      if (!document.startViewTransition) { if (data().setVariant) data().setVariant(id, next); swapping = false; return; }
       o.style.viewTransitionName = 'fs-swap-glow';
       var OFF = 380, ON = 620, BAND = 1100, t0;
       var vt = document.startViewTransition(function () { if (data().setVariant) data().setVariant(id, next); document.documentElement.appendChild(o); });
@@ -525,10 +584,10 @@
     document.documentElement.appendChild(o);
     requestAnimationFrame(function () { o.classList.add('is-in'); });
     var g = cv.getContext('2d'); g.scale(dpr, dpr);
-    var night = next === 'night';
+    var night = next === 'night' || /-dark$/.test(next);
     var glowA = night ? 'rgba(200,160,255,' : 'rgba(255,224,150,', glowB = night ? 'rgba(255,226,170,' : 'rgba(205,165,255,';
     var nv = (FULL_SKINS[id].variants || []).filter(function (x) { return x.id === next; })[0];
-    if (nv && next !== 'day' && next !== 'night' && /^#[0-9a-f]{6}$/i.test(nv.accent || '')) {
+    if (nv && next !== 'day' && next !== 'night' && !/-dark$/.test(next) && /^#[0-9a-f]{6}$/i.test(nv.accent || '')) {
       var h = nv.accent, rr = parseInt(h.substr(1, 2), 16), gg = parseInt(h.substr(3, 2), 16), bb = parseInt(h.substr(5, 2), 16);
       glowA = 'rgba(' + rr + ',' + gg + ',' + bb + ','; glowB = 'rgba(255,240,200,';
     }
@@ -663,6 +722,8 @@
     var vcfg = cfg.variants && cfg.variants.filter(function (x) { return x.id === (variant || cfg.variants[0].id); })[0];
     var isDark = vcfg && vcfg.dark !== undefined ? vcfg.dark : cfg.dark;
     b.classList.add('fs', 'fs-' + id, isDark ? 'fs-dark' : 'fs-light');
+    // status-bar text follows the rendition (Good Witch Night, Vaporwave dark): light text on dark art
+    if (typeof window._updateStatusBarStyle === 'function') window._updateStatusBarStyle(!isDark);
     if (cfg.variants) b.setAttribute('data-fs-variant', variant || cfg.variants[0].id);
     var parts = cfg.extras ? PARTS.concat(EXTRAS) : PARTS;
     parts.forEach(function (p) { b.style.setProperty('--fs-' + p, url(id, (cfg.parts && cfg.parts[p]) || p)); });
