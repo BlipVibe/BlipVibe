@@ -144,3 +144,6 @@ New pieces, Day + Night: page-deco-groups/skins/network/notifications/search/pos
 good-witch props on clouds — crystals, crystal ball, pastel potions, spell book, owl, white cat, wand, little cauldron
 with pink sparkles, flowers, candles, fairy lights; each page different), corner-vine-right (360x300), title-crest
 (420x120, gold crescent with sparkle bursts above page titles), sparkle-trail (1290x160).
+Owner (Nov 15): "even the posts on Witchcraft have a border" — post-panel = ornate gold filigree border on all sides
+(corner scrollwork, crescent + sparkle burst top centre, pearl beads/stars along the edges); photo-frame = ornate gold
+frame per photo (filigree corners, crescent + star cluster top centre, beaded inner rim). Done FIRST.
