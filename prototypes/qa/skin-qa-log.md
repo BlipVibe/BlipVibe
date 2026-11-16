@@ -33,18 +33,58 @@ rendition toggle + swap animation · equip transition
 
 ## Results
 
-_The capture pass is in progress; rows fill in as each rendition is checked._
+Columns: SB Scrapbook · AB Anime Blaze (Red, Blue, Purple, Green, pinK) · WC Witchcraft · GW Good Witch (Day, Night) ·
+VW Vaporwave (Retro, Modern, Retro Dark, Modern Dark) · HL Heaven's Light (Day, Twilight).
 
-| Skin | Rendition | Screen | P | T | D | B | A | R | M | Result | Notes |
-|---|---|---|---|---|---|---|---|---|---|---|---|
+Pass 1 (Nov 16): every screen captured in all 15 renditions on a dedicated simulator ("BlipVibe Skin QA"), compared with
+the concept crops. Fixes were re-checked in the rendition where the defect showed plus one other; CSS-only fixes that
+apply to every rendition (selects, ⋯ menu colours) were spot-checked, not re-captured in all 15.
+Commits: 7d78031, 88f1231, 94e8360.
+
+| Screen | SB | AB-R | AB-B | AB-P | AB-G | AB-K | WC | GW-D | GW-N | VW-R | VW-M | VW-RD | VW-MD | HL-D | HL-T | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Home: top bar, profile card, timeline | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | profile card/cover/photo shown everywhere; photos in frames |
+| Home: stories, composer | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass |  |
+| Home: featured skin, quests, coin goal | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | coin goal hidden by design with ∞ coins |
+| Home: feed posts | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass |  |
+| Liked / disliked | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | every skin fills or swaps the icon |
+| Groups list | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass |  |
+| Group page | open | open | open | open | open | open | fixed · open | open | open | fixed · open | fixed · open | fixed · open | fixed · open | fixed · open | fixed · open | fixed: Witchcraft stats/buttons, HL stats, Vaporwave title. **Open (every skin):** concept is a compact header (banner, picture, name, members, Join, ⋯) + Feed/Chat/Group Shop tabs; ours is the big profile-style card with stacked buttons — needs a group-page rework per skin |
+| Messages | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass |  |
+| Chat (keyboard open) | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | fixed | fixed | HL bottom bar covered the message box; HL + button art |
+| Network | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass |  |
+| Notifications | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass |  |
+| Search | fixed | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | Scrapbook field was a thin strip + stray blank label |
+| Skins store (cards, Owned, Equip/Take off) | pass | pass | pass | pass | pass | pass | fixed | pass | pass | pass | pass | pass | pass | pass | pass | Witchcraft Owned tag hidden by the arch; Try On/Buy overflow |
+| Someone else's profile (buttons) | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | Mute/Block/Report → ⋯ menu (concept); Anime Blaze Follow label; checkerboard behind bars when the viewed person uses Heaven's Light |
+| Someone else's profile (⋯ menu) | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | new; readable in every rendition; Vaporwave puts it in the button row |
+| My profile (pop-up) | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed | "Active Skin" showed Default; photo missing in VW/HL, shards in AB |
+| Comments | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | fixed | pass | fixed | pass | pass | Vaporwave Modern pop-ups were see-through |
+| Create post | pass | pass | pass | pass | pass | pass | fixed | pass | pass | pass | fixed | pass | fixed | pass | pass | Witchcraft tool icons were empty boxes |
+| Story viewer | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | matches the concepts (full-bleed media, header, reply field) |
+| Account menu | pass | pass | pass | pass | pass | pass | fixed | pass | pass | pass | pass | pass | pass | pass | pass | all items on screen, Log out reachable (pinned by placeUserMenu); Witchcraft menu art had painted divider bars |
+| Settings + pop-ups | pass | fixed | fixed | fixed | fixed | fixed | fixed | pass | fixed | pass | pass | fixed | fixed | pass | fixed | selects were white-on-white on dark renditions; Witchcraft pop-up panel scattered dots |
+| Bottom bar / Start bar | pass | pass | pass | pass | pass | pass | pass | pass | pass | fixed | fixed | fixed | fixed | pass | pass | Vaporwave Start bar vanished on every page after leaving a chat any way but Back |
+| Rendition toggle + swap | n/a | pass | pass | pass | pass | pass | n/a | pass | pass | pass | pass | pass | pass | pass | pass | AB lightning, GW day→night sweep, VW "Updating BlipVibe" pixel swap, HL sun→moon (one white flash frame at the start — by design?) |
+| Equip transition | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | Scrapbook paper collage, AB comic burst, WC moon ring + smoke, GW owl + constellations, VW BIOS boot, HL temple gates |
 
 ## Cross-skin fixes
 
 | Fix | Commit | Skins |
 |---|---|---|
-| Someone else's profile: Mute / Block / Report moved into a ⋯ menu at the cover's top right, as in every concept (`wrapPvMore` in `js/fullskins.js`) | pending | all |
+| Someone else's profile: Mute / Block / Report moved into a ⋯ menu at the cover's top right, as in every concept (`wrapPvMore` in `js/fullskins.js`) | 7d78031, 88f1231 | all |
+| Old Heaven's Light premium texture (`images/skin-textures/clouds.png`, fake checkerboard painted in) switched off under full skins | 7d78031 | all |
+| Chat-open rules scoped to the Messages page (Vaporwave's Start bar vanished after leaving a chat) | 7d78031 | all |
+| Selects use the skin's card colour + ink | 7d78031 | all dark renditions |
+| My Profile pop-up: real active skin name; photo shown where the skin has no avatar mask | 7d78031 | all |
 
 ## Simulator-only quirks (not app bugs)
 
 - Emoji show as `[?]` boxes in the iOS 26 simulator, on any font.
-- The chat input bar is only drawn while the keyboard is open.
+
+## Open
+
+| Item | Skins | Next step |
+|---|---|---|
+| Group page layout doesn't match the concept (compact header + Feed / Chat / Group Shop tabs) | all | rework per skin, keeping Edit / Leave / Rules / Invite in the ⋯ menu; needs the owner's OK on where those go |
+| Heaven's Light rendition swap starts with one plain white frame | HL | confirm with the owner whether the flash is intended |
