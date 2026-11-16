@@ -6787,3 +6787,9 @@ html body.fs.fs-blood-moon #groupsSections .group-card-body h4 { white-space: no
 html body.fs.fs-blood-moon #gvProfileCard :is(.profile-name, h2, h3) { font-size: clamp(24px, 7vw, 30px) !important; line-height: 1.1 !important; }
 html body.fs.fs-blood-moon #gvProfileCard .pv-actions .btn:is([id*="leave" i], [class*="leave" i]) { border-image-source: var(--fs-action-btn) !important; }
 html body.fs.fs-blood-moon #gvProfileCard i.fa-coins { color: var(--bm-gold) !important; }
+/* the stats frame's centre divider is drawn for two stats: three-stat rows (group page) go without it */
+html body.fs.fs-blood-moon .profile-stats:has(> .stat:nth-child(3)) { background: none !important; border-image: none !important; }
+html body.fs.fs-blood-moon .profile-stats:has(> .stat:nth-child(3))::before, html body.fs.fs-blood-moon .profile-stats:has(> .stat:nth-child(3))::after { display: none !important; }
+/* people-row avatars (Network / Search / suggestions): the thin silver ring, on the rendition's own dark */
+html body.fs.fs-blood-moon .profile-card-item img.profile-card-avatar { background: var(--fs-avatar-ring-small) center / 100% 100% no-repeat, #1a0608 !important; padding: 3px !important; border: 0 !important; box-shadow: none !important; box-sizing: border-box !important; border-radius: 50% !important; }
+html body.fs.fs-blood-moon[data-fs-variant="silver"] .profile-card-item img.profile-card-avatar { background-color: #0b1426 !important; }
