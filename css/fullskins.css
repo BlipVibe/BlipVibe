@@ -2682,7 +2682,7 @@ html body.fs.fs-witchcraft :is(.msg-search, .page-search) input { padding-left: 
 /* full-screen chat: the base mobile body padding (72px + safe area, for the bottom bar) made the page 106pt taller than the
    screen once the chat opened, so the window scrolled and the fixed chat's input bar fell off the bottom */
 @media (max-width: 768px) {
-  html body.fs.fs-witchcraft:has(.messages-layout.chat-open) { padding-bottom: 0 !important; }
+  html body.fs.fs-witchcraft:has(#page-messages.active .messages-layout.chat-open) { padding-bottom: 0 !important; }
 }
 /* owner: the big header (moon · logo · icon bar) is HOME ONLY — every other concept page has just its gold title,
    cobwebs in both top corners, and the bottom bar */
@@ -3291,7 +3291,7 @@ html body.fs.fs-good-witch #msgChat #msgVoiceBtn i { background-image: var(--fs-
 html body.fs.fs-good-witch #msgChat #msgInput { flex: 1 1 auto; min-width: 0; margin: 0 !important; border: 0 !important; border-radius: 0 !important; background: var(--fs-field) center / 100% 100% no-repeat !important; padding: 11px 16px !important; color: var(--gw-ink) !important; font: 500 16px var(--fs-font) !important; }
 html body.fs.fs-good-witch #msgChat #sendMsgBtn { flex: 0 0 44px; width: 44px; height: 44px; padding: 0 !important; border: 0 !important; background: var(--fs-send-orb) center / contain no-repeat !important; }
 html body.fs.fs-good-witch #msgChat #sendMsgBtn i { opacity: 0 !important; }
-@media (max-width: 768px) { html body.fs.fs-good-witch:has(.messages-layout.chat-open) { padding-bottom: 0 !important; } }
+@media (max-width: 768px) { html body.fs.fs-good-witch:has(#page-messages.active .messages-layout.chat-open) { padding-bottom: 0 !important; } }
 
 /* ---------- page decorations (concept): owl on crystal under the post, moon in clouds under messages ---------- */
 html body.fs.fs-good-witch #page-messages .msg-sidebar::after { content: ""; display: block; width: calc(100% + 16px); margin: 8px -8px 0; aspect-ratio: 1290 / 500; background: var(--fs-moon-clouds) center bottom / 100% 100% no-repeat; pointer-events: none; }
@@ -4171,10 +4171,10 @@ html body.fs.fs-vaporwave :is(#page-profiles, #page-search, #page-notifications)
 html body.fs.fs-vaporwave :is(input, textarea, select), html body.fs.fs-vaporwave #msgChat #msgInput { font-size: 16px !important; }
 html body.fs.fs-vaporwave #msgChat .msg-chat-input { position: relative !important; z-index: 20 !important; padding: 10px 8px calc(10px + env(safe-area-inset-bottom, 0px)) !important; }
 /* the taskbar must not show over an open chat (it covered the message box) */
-html body.fs.fs-vaporwave:has(.messages-layout.chat-open) .nav-center { display: none !important; }
+html body.fs.fs-vaporwave:has(#page-messages.active .messages-layout.chat-open) .nav-center { display: none !important; }
 /* every full skin: an open full-screen chat must not keep the body's bottom-bar padding (the page grew taller than the
    screen and the fixed chat's input bar was lost) — Witchcraft and Good Witch had their own copy of this */
-@media (max-width: 768px) { html body.fs:has(.messages-layout.chat-open) { padding-bottom: 0 !important; } }
+@media (max-width: 768px) { html body.fs:has(#page-messages.active .messages-layout.chat-open) { padding-bottom: 0 !important; } }
 
 /* ---------- Skins page (concept skins): every card a small window, name in its title bar, picture, one button; all the
    same size (the equipped card shows Take off instead of a second Equipped button) ---------- */
@@ -4692,7 +4692,7 @@ html body.fs.fs-heavens-light #msgChat #msgVoiceBtn i { background-image: var(--
 html body.fs.fs-heavens-light #msgChat #msgInput { flex: 1 1 auto; min-width: 0; margin: 0 !important; border: 0 !important; border-radius: 0 !important; background: var(--fs-field) center / 100% 100% no-repeat !important; padding: 11px 16px !important; color: var(--hl-ink) !important; font: 500 16px var(--fs-font) !important; }
 html body.fs.fs-heavens-light #msgChat #sendMsgBtn { flex: 0 0 44px; width: 44px; height: 44px; padding: 0 !important; border: 0 !important; background: var(--fs-send-btn) center / contain no-repeat !important; }
 html body.fs.fs-heavens-light #msgChat #sendMsgBtn i { opacity: 0 !important; }
-@media (max-width: 768px) { html body.fs.fs-heavens-light:has(.messages-layout.chat-open) { padding-bottom: 0 !important; } }
+@media (max-width: 768px) { html body.fs.fs-heavens-light:has(#page-messages.active .messages-layout.chat-open) { padding-bottom: 0 !important; } }
 
 /* ---------- page decorations (concept): owl on crystal under the post, moon in clouds under messages ---------- */
 html body.fs.fs-heavens-light #page-messages .msg-sidebar::after { content: ""; display: block; width: calc(100% + 16px); margin: 8px -8px 0; aspect-ratio: 1290 / 500; background: var(--fs-page-deco-messages) center bottom / 100% 100% no-repeat; pointer-events: none; }
@@ -5450,3 +5450,53 @@ html body.fs.fs-good-witch[data-fs-variant="night"] #userDropdownMenu.user-dropd
 html body.fs.fs-vaporwave[data-fs-variant="modern"] #userDropdownMenu.user-dropdown { background: #e3f3ff !important; background-clip: border-box !important; border-radius: 14px !important; }   /* owner: Vaporwave = windows, so solid */
 html body.fs.fs-vaporwave[data-fs-variant="modern-dark"] #userDropdownMenu.user-dropdown { background: #0e2140 !important; background-clip: border-box !important; border-radius: 14px !important; }
 html body.fs.fs-good-witch[data-fs-variant="night"] #userDropdownMenu a:not(#dropdownAdmin), html body.fs.fs-good-witch[data-fs-variant="night"] #userDropdownMenu a:not(#dropdownAdmin) i { color: #f1e8ff !important; }
+
+/* someone else's profile: Mute / Block / Report live in a ⋯ menu at the cover's top right, as in every concept
+   (fullskins.js wrapPvMore). The menu is the skin's own post menu (.post-dropdown); the button is the skin's round
+   button art with its painted "more" icon. Outside full skins the app's buttons show as before. */
+.fs-pv-more { display: none; }
+html body.fs #page-profile-view .pv-actions .fs-pv-hidden.fs-pv-hidden { display: none !important; }
+body.fs #pvCoverBanner .fs-pv-more { display: block; position: absolute; top: 10px; right: 10px; z-index: 30; }
+body.fs .fs-pv-more-btn { width: 40px; height: 40px; padding: 0; border: 0; cursor: pointer;
+  background: var(--fs-icon-more) center / 58% auto no-repeat, var(--fs-btn-round) center / contain no-repeat; }
+body.fs .fs-pv-menu { top: 46px !important; right: 0 !important; left: auto !important; min-width: 170px; z-index: 31; }
+body.fs .fs-pv-menu a { font-size: 16px !important; }
+body.fs .fs-pv-menu a.fs-pv-danger, body.fs .fs-pv-menu a.fs-pv-danger i { color: #d23b2f !important; }
+
+/* ================= QA pass (skin-qa session, Nov 16) — fixes found on the full screen × skin × rendition sweep ================= */
+/* ⋯ menu on someone else's profile: items in the skin's own ink (they were dark-on-dark in Good Witch Night / HL Twilight) */
+html body.fs .fs-pv-menu a:not(.fs-pv-danger), html body.fs .fs-pv-menu a:not(.fs-pv-danger) i { color: var(--fs-ink) !important; }
+/* Vaporwave: the concept puts ⋯ in the button row, as one more window button (fullskins.js puts it in .pv-actions) */
+html body.fs.fs-vaporwave .pv-actions .fs-pv-more { display: block; position: relative; }
+html body.fs.fs-vaporwave .pv-actions .fs-pv-more-btn { width: 100%; height: 100%; min-height: 36px; background: none; }
+html body.fs.fs-vaporwave .pv-actions .fs-pv-menu { top: calc(100% + 4px) !important; }
+/* selects (Settings → Comment order, Who can message me) were white with the skin's light ink on dark skins */
+html body.fs select { background-color: var(--card) !important; color: var(--fs-ink) !important; font-size: 16px !important; }
+/* My Profile pop-up: skins without an avatar mask (Vaporwave, Heaven's Light) lost the photo (the mask URL 404s → nothing
+   drawn), and Anime Blaze's cut-in mask left light shards around it. Those three show the photo as a plain circle. */
+html body.fs:is(.fs-vaporwave, .fs-heavens-light, .fs-anime-blaze) .modal-profile-top img { -webkit-mask: none !important; mask: none !important;
+  border-radius: 50% !important; width: min(180px, 60%) !important; }
+/* Witchcraft: store-card "Owned" tag sat under the arch's rounded corner (only "NED" showed) — drop it into the open window */
+html body.fs.fs-witchcraft .fsk-owned { top: 26%; left: 50%; transform: translateX(-50%); }
+/* Witchcraft: create-post tool buttons were empty squares (glyph hidden, no art assigned) */
+html body.fs.fs-witchcraft #cpmCameraBtn i { background-image: var(--fs-icon-camera) !important; }
+html body.fs.fs-witchcraft #cpmGifBtn i { background-image: var(--fs-icon-gif) !important; }
+html body.fs.fs-witchcraft #cpmPollBtn i { background-image: var(--fs-icon-poll) !important; }
+html body.fs.fs-witchcraft #cpmScheduleBtn i { background-image: var(--fs-icon-schedule) !important; }
+html body.fs.fs-witchcraft #cpmEmojiBtn i { background-image: var(--fs-icon-emoji) !important; }
+/* Witchcraft: pop-ups used the generic panel slot tiled with "round", which scattered bits of its ornament across the
+   middle as little dots — use the post panel art, stretched, like every other Witchcraft panel */
+html body.fs.fs-witchcraft .modal-content:not(:has(.story-create-wrap, .story-canvas-full, .story-content, .story-progress)) {
+  border: 24px solid transparent !important; border-image: var(--fs-post-panel) 160 fill / 24px stretch !important; background: none !important; }
+/* Vaporwave Modern: pop-ups are see-through glass and the page showed through the text — real frosted glass, like its menu */
+html body.fs.fs-vaporwave[data-fs-variant="modern"] :is(.modal-content, .post-dropdown) { background-color: rgba(227, 243, 255, .82) !important;
+  background-clip: padding-box !important; -webkit-backdrop-filter: blur(16px) saturate(1.2); backdrop-filter: blur(16px) saturate(1.2); }
+html body.fs.fs-vaporwave[data-fs-variant="modern-dark"] :is(.modal-content, .post-dropdown) { background-color: rgba(14, 33, 64, .86) !important;
+  background-clip: padding-box !important; -webkit-backdrop-filter: blur(16px) saturate(1.2); backdrop-filter: blur(16px) saturate(1.2); }
+/* the old (pre-full-skin) Heaven's Light premium styles in style.css draw images/skin-textures/clouds.png — a cloud strip
+   with a fake grey checkerboard painted in — over the nav bars and profile cover. When that class is on the body under a
+   full skin (e.g. viewing a Heaven's Light user's profile), the checkerboard showed through see-through bar art
+   (owner, Nov 16, on Anime Blaze). Full skins never use it. */
+html body.fs.premium-heavens-light:not(.fs-vaporwave) :is(.navbar, .nav-center)::before,
+html body.fs.premium-heavens-light:not(.fs-vaporwave) :is(.navbar, .nav-center)::after,
+html body.fs.premium-heavens-light .profile-card .profile-cover::after { background: none !important; content: none !important; }

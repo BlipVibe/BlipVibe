@@ -1118,13 +1118,46 @@
       });
     });
   }
+  // Someone else's profile: every concept shows Follow · Message · Close Friend · Invite to Group, with Mute / Block /
+  // Report in a ⋯ menu at the top right. The app's own buttons stay (they carry the handlers) but are hidden; the
+  // menu items click them, and are rebuilt on each open so Mute/Unmute and Block/Unblock read right.
+  var PV_MENU = ['pvMuteBtn', 'pvBlockBtn', 'pvReportUserBtn'];
+  function wrapPvMore() {
+    var page = document.getElementById('page-profile-view'), follow = document.getElementById('pvFollowBtn');
+    // most concepts put ⋯ at the cover's top right; Vaporwave's puts it in the button row
+    var inRow = active === 'vaporwave', acts = follow && follow.closest('.pv-actions');
+    var host = inRow ? acts : document.getElementById('pvCoverBanner');
+    if (!page || !follow || !host || !page.contains(follow) || page.querySelector('.fs-pv-more')) return;
+    var wrap = document.createElement('div'), btn = document.createElement('button'), menu = document.createElement('div');
+    wrap.className = 'fs-pv-more';
+    btn.type = 'button'; btn.className = 'fs-pv-more-btn' + (inRow ? ' btn btn-outline' : ''); btn.setAttribute('aria-label', 'More: mute, block, report');
+    if (inRow) btn.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
+    menu.className = 'post-dropdown fs-pv-menu';
+    wrap.appendChild(btn); wrap.appendChild(menu); host.appendChild(wrap);
+    PV_MENU.forEach(function (id) { var b = document.getElementById(id); if (b) b.classList.add('fs-pv-hidden'); });
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (menu.classList.contains('show')) { menu.classList.remove('show'); return; }
+      menu.innerHTML = '';
+      PV_MENU.forEach(function (id) {
+        var b = document.getElementById(id);
+        if (!b) return;
+        var a = document.createElement('a');
+        a.href = '#'; a.innerHTML = b.innerHTML; if (id !== 'pvMuteBtn') a.className = 'fs-pv-danger';
+        a.addEventListener('click', function (ev) { ev.preventDefault(); ev.stopPropagation(); menu.classList.remove('show'); b.click(); });
+        menu.appendChild(a);
+      });
+      menu.classList.add('show');
+    });
+  }
   function watchPosts() {
     tagPosts();
     wrapNameCards();
+    wrapPvMore();
     if (postObserver || !window.MutationObserver) return;
     postObserver = new MutationObserver(function (muts) {
       if (!active) return;
-      for (var i = 0; i < muts.length; i++) if (muts[i].addedNodes.length) { tagPosts(); wrapNameCards(); break; }
+      for (var i = 0; i < muts.length; i++) if (muts[i].addedNodes.length) { tagPosts(); wrapNameCards(); wrapPvMore(); break; }
     });
     postObserver.observe(document.body, { childList: true, subtree: true });
   }

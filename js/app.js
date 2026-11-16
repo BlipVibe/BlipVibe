@@ -3558,7 +3558,8 @@ function showMyProfileModal(){
     var html='<div class="modal-header"><h3>My Profile</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>';
     html+='<div class="modal-body"><div class="modal-profile-top"><img src="'+getMyAvatar()+'" alt="'+_mn+'"><h3>'+_mn+'</h3><p>'+_mb+'</p></div>';
     html+='<div class="modal-profile-stats"><div class="stat"><span class="stat-count">'+state.following+'</span><span class="stat-label">Following</span></div><div class="stat"><span class="stat-count">'+state.followers+'</span><span class="stat-label">Followers</span></div></div>';
-    html+='<div style="text-align:center;"><p style="color:#777;font-size:13px;">Active Skin: '+(state.activeSkin?skins.find(function(s){return s.id===state.activeSkin;}).name:'Default')+'</p></div>';
+    var _ms=state.activePremiumSkin&&(premiumSkins.find(function(s){return s.id===state.activePremiumSkin;})||(window.BlipFullSkins&&BlipFullSkins.meta(state.activePremiumSkin)))||(state.activeSkin&&skins.find(function(s){return s.id===state.activeSkin;}));
+    html+='<div style="text-align:center;"><p style="color:var(--gray);font-size:13px;">Active Skin: '+escapeHtml((_ms&&_ms.name)||'Default')+'</p></div>';
     html+='<div class="modal-actions" style="margin-top:16px;"><button class="btn btn-outline" id="modalViewMyProfileBtn"><i class="fas fa-user"></i> View Profile</button></div></div>';
     showModal(html);
     document.getElementById('modalViewMyProfileBtn').addEventListener('click',function(){
