@@ -43,3 +43,10 @@
   in front. Stats frame redrawn (old one pinched into two lobes).
   Not yet checked: Night in the simulator (needs the Day/Night option picked — the look-only switch only shows Day),
   Skins / Network / Notifications / Search / chat / other-profile pages with the ornate art.
+- Nov 15 (late): owner REJECTED the flat quest board + hanging title sign ("looks like CSS", "don't like the banner
+  thing on top"). Replacement: a fully PAINTED open spell book on clouds (quests-frame 1290x900), title written on the
+  page itself, quests on the pages — no sign, no pinned cards. Lesson: flat frames read as CSS; quest/feature pieces
+  must be painted illustrations like page-deco-* and cat-cloud.
+- Owner: posts "boring" — the card glass was the same pale lavender as the page, so nothing popped (gold is liked).
+  Fix requested: post-panel v3 = pearlescent iridescent card (moon-phase watermark, constellation corners, lilac
+  vignette, painted drop shadow) + background v2 = deeper, more saturated sky. Rule: card and page must contrast.
