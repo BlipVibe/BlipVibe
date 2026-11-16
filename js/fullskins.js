@@ -146,7 +146,10 @@
       { id: 'modern', name: 'Modern', accent: '#18b8ff', swatch: '#5ad1ff', ink: '#0f2a5c', muted: '#4c6a96' },
       { id: 'retro-dark', name: 'Retro Dark', accent: '#ff4fc8', swatch: '#2a2533', dark: true, ink: '#f2ecff', muted: '#b9b0cf',
         theme: { '--dark': '#f2ecff', '--gray': '#b9b0cf', '--light-bg': '#19161f', '--card': '#26222e',
-          '--border': 'rgba(255,79,200,.3)', '--nav-bg': '#1d1a24' } }
+          '--border': 'rgba(255,79,200,.3)', '--nav-bg': '#1d1a24' } },
+      { id: 'modern-dark', name: 'Modern Dark', accent: '#3fd0ff', swatch: '#0d1f3d', dark: true, ink: '#e6f6ff', muted: '#9dbcd9',
+        theme: { '--dark': '#e6f6ff', '--gray': '#9dbcd9', '--light-bg': '#0a1730', '--card': '#10264a',
+          '--border': 'rgba(63,208,255,.3)', '--nav-bg': '#0b1a35' } }
     ],
     // generic engine slots → the traced pieces (prototypes/vaporwave-redraw-brief.md)
     parts: { 'panel-card': 'panel', 'panel-card-active': 'window-pink', 'btn-primary': 'btn-pink', 'btn-secondary': 'btn',
