@@ -1637,7 +1637,9 @@
         if (!im) { g.fillStyle = '#f3e3c2'; g.fillRect(x, 0, w, H); g.fillStyle = '#c9962e'; g.fillRect(left ? x + w - 4 : x, 0, 4, H); return; }
         g.save(); g.globalAlpha = 1 - open * .6;
         g.translate(left ? 0 : W, 0); g.transform(1, (left ? -1 : 1) * sk * .2, 0, 1, 0, 0);   // hinge on the outer edge
-        g.drawImage(im, left ? 0 : -w, -H * .02, w, H * 1.04); g.restore();
+        // the right door is the LEFT door mirrored (owner: "mirror the wings") so both sides match
+        if (!left) g.scale(-1, 1);
+        g.drawImage(gl || im, 0, -H * .02, w, H * 1.04); g.restore();
       }
       function glow(a) {   // light pouring through the seam
         if (a <= 0) return;
@@ -1873,6 +1875,41 @@
     var guard = setTimeout(done, 12000);   // never leave the screen covered
     fx(id, swap).then(function () { clearTimeout(guard); done(); }, function (e) { console.error(e); clearTimeout(guard); done(); });
   }
+
+  /* ---------- account menu placement (owner, Nov 16: "some of them you can pull up the logout menu, they're out of
+     screen"): every full skin moves the avatar somewhere else, so the dropdown (anchored under it) could open off the side
+     or run under the bottom bar. While a full skin is on, the open menu is pinned to the viewport: on the avatar's side,
+     inside the screen edges, above the bottom bar, scrolling if it is still too tall. Stays inside .nav-user so the app's
+     click handlers keep working. ---------- */
+  function placeUserMenu() {
+    var m = document.getElementById('userDropdownMenu'), a = document.getElementById('navUserDropdown');
+    if (!m || !a) return;
+    var props = ['position', 'left', 'right', 'top', 'bottom', 'width', 'min-width', 'max-width', 'max-height', 'overflow-y', 'transform', 'z-index', '-webkit-overflow-scrolling', 'transition'];
+    function clearIt() { props.forEach(function (p) { m.style.removeProperty(p); }); }
+    if (!document.body.classList.contains('fs') || !m.classList.contains('show')) { clearIt(); return; }
+    var r = a.getBoundingClientRect(), W = innerWidth, H = innerHeight, gap = 8;
+    var bottomBar = H, nav = document.querySelector('.nav-center');
+    if (nav) { var nr = nav.getBoundingClientRect(); if (nr.height && nr.top > H / 2) bottomBar = nr.top; }
+    var w = Math.min(260, W - gap * 2);
+    var left = (r.left + r.width / 2) < W / 2 ? Math.max(gap, r.left) : Math.min(W - gap, r.right) - w;
+    left = Math.max(gap, Math.min(left, W - gap - w));
+    var top = Math.min(Math.max(r.bottom + 6, gap), H * .5);
+    var set = function (p, v) { m.style.setProperty(p, v, 'important'); };
+    set('transition', 'none');   // style.css animates "all": a sliding top/left would spoil the measurement below
+    set('position', 'fixed'); set('right', 'auto'); set('bottom', 'auto'); set('transform', 'none'); set('z-index', '10060');
+    set('width', w + 'px'); set('min-width', '0'); set('max-width', w + 'px');
+    set('max-height', Math.max(160, bottomBar - top - gap) + 'px'); set('overflow-y', 'auto'); set('-webkit-overflow-scrolling', 'touch');
+    set('left', left + 'px'); set('top', top + 'px');
+    // a skin may give an ancestor a transform/filter, which makes "fixed" relative to it: measure and correct
+    var got = m.getBoundingClientRect();
+    if (Math.abs(got.left - left) > 1 || Math.abs(got.top - top) > 1) { set('left', (2 * left - got.left) + 'px'); set('top', (2 * top - got.top) + 'px'); }
+  }
+  (function watchUserMenu() {
+    var m = document.getElementById('userDropdownMenu');
+    if (!m) { document.addEventListener('DOMContentLoaded', watchUserMenu); return; }
+    new MutationObserver(placeUserMenu).observe(m, { attributes: true, attributeFilter: ['class'] });
+    addEventListener('resize', placeUserMenu);
+  })();
 
   window.BlipFullSkins = { onSkin: onSkin, apply: apply, clear: clear, render: render, meta: meta,
     catalog: catalog, categories: function () { return CATEGORIES.slice(); },
