@@ -1,6 +1,6 @@
 # Witchcraft — build notes
 
-**Status (Nov 15 2026): building** (`wip: true` → shows "Coming soon"). Owner asked for "the witch one" while away;
+**Status (Nov 15 2026): SHIPPED** (owner: "make this skin available and push it"; `wip` removed, assets whitelisted in `.gitignore`). Owner asked for "the witch one" while away;
 of the two witch skins (Good Witch = pastel/cute, Witchcraft = dark gothic purple) this is Witchcraft.
 Process and owner rules: `../README.md`, `../scrapbook/NOTES.md`, and `../anime-blaze/NOTES.md` (sections D–E list
 the rules and gotchas learned there — they all apply here).
@@ -58,3 +58,6 @@ violet/magenta glow, candlelight; gold serif type (Cormorant Garamond); cobwebs 
   Done on device: Home (tarot fan, header, quests, tabs, posts in the arch frame, witch hat), Groups, Skins, Network,
   Messages, Chat, other profile. Still to QA: Notifications (icons wired, not seen), Search, Comments, Create post,
   Story, Group page, own profile page, the shelf-rail behind chips, and Part C post-card/quests-shelf swaps.
+- Nov 15 (evening): shipped. Moons redrawn crisp at 1140x360 (lossless webp, drawn at 126.67x40pt = 1:1 on 3x).
+  App change shipped alongside: nicknames capped at 20 characters (Edit Profile `maxlength` + counter + save check,
+  `NICKNAME_MAX` in js/app.js) so names fit ribbons/banners in every skin. Existing longer names still trim with "…".
