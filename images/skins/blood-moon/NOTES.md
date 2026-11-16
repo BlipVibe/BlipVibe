@@ -48,6 +48,9 @@ Process and owner rules for every skin: `../README.md`, `../scrapbook/NOTES.md`,
 
 ## QA (simulator, look-only hook, nothing saved)
 Checked Crimson: Home (profile block, quests, tabs, posts, composer, featured), Profile, Skins, Groups, Messages, chat,
-Network, Notifications, Search, someone else's profile. Silver: Home, posts/tabs. Swap animation checked in the harness.
-Not yet checked: comments, create post, story viewer, group page; every page in Silver; equip animation on device.
+Network, Notifications, Search, someone else's profile, comments, create post, group page. Silver: Home, Skins, Groups,
+Messages, Network. Swap + equip animations checked in the harness (equip: night falls, the moon swells to fill the screen).
+Own QA simulator "BlipVibe Blood Moon" (owner rule: one per session, deleted when done). Title face = Playfair Display
+(Cormorant is Witchcraft / Good Witch / Heaven's Light; owner: every skin must look different).
+Not yet checked: story viewer; equip/swap on a real phone.
 Ship = remove `wip`, whitelist `images/skins/blood-moon/assets/` in `.gitignore`, merge to main (owner OK first).
