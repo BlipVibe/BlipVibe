@@ -1,6 +1,6 @@
 # Good Witch — build notes
 
-**Status (Nov 15 2026): building** (`wip: true` → "Coming soon").
+**Status (Nov 15 2026): SHIPPED** (owner: "make the good witch available on the skin store"; `wip` removed, assets whitelisted).
 
 ## Targets
 - `concept-v1-approved.png` (sheet 1: Home, Skins, Profile, Groups, Post, Messages, Chat) and `concept-2.png` (sheet 2:

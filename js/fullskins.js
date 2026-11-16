@@ -102,7 +102,7 @@
     fonts: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap'
   };
   FULL_SKINS['good-witch'] = {
-    name: 'Good Witch', wip: true, dark: false, ink: '#4a2c6b', muted: '#8a76a6', accent: '#a77bf0',
+    name: 'Good Witch', dark: false, ink: '#4a2c6b', muted: '#8a76a6', accent: '#a77bf0',
     font: "'Cormorant Garamond', serif", titleFont: "'Cormorant Garamond', serif",
     timeline: 3, avatar: 'center', slice: 15, edge: 16,
     // owner (Nov 15): the day art is very bright, so two renditions — Day (assets/ root) and Night (assets/night/)
