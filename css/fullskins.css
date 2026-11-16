@@ -6709,3 +6709,8 @@ html body.fs.fs-blood-moon .msg-contact img { width: 56px !important; height: 56
 html body.fs.fs-blood-moon .msg-contact-name { font-size: 20px !important; color: var(--bm-title) !important; }
 html body.fs.fs-blood-moon .msg-contact-preview { font-size: 16px !important; color: var(--bm-soft) !important; }
 html body.fs.fs-blood-moon :is(.msg-contact-time, .msg-time) { font-size: 14px !important; color: var(--bm-soft) !important; }
+@media (max-width: 768px) {
+  /* active tab: the velvet arch fills the whole arched cell (arch top ≈ 30 % to the bottom rail ≈ 91 % of the bar art) — drawn whole, never clipped */
+  html body.fs.fs-blood-moon .nav-center .nav-link { height: calc(100vw * 300 / 1290 * .61) !important; margin-bottom: calc(100vw * 300 / 1290 * .085) !important; padding-bottom: 4px !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active { background-size: 100% 100% !important; background-position: center !important; }
+}
