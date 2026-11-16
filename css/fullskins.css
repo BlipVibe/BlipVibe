@@ -6721,3 +6721,10 @@ html body.fs.fs-blood-moon #profilesTabs .search-tab { font-size: 14px !importan
 html body.fs.fs-blood-moon .profile-card-item .profile-card-avatar { width: 58px !important; height: 58px !important; }
 html body.fs.fs-blood-moon .profile-card-item :is(.profile-card-name, h4) { font-size: 19px !important; color: var(--bm-title) !important; }
 html body.fs.fs-blood-moon .profile-card-item :is(p, small, .profile-card-meta) { color: var(--bm-soft) !important; font-size: 15px !important; }
+/* Notifications has 8 filters: a scrolling row of separate pills (chip art, 9-slice), not one joined bar */
+html body.fs.fs-blood-moon #notifTabs { border: 0 !important; border-image: none !important; background: none !important; overflow-x: auto !important; overflow-y: hidden !important;
+  gap: 6px !important; padding: 2px 8px !important; margin: 4px 0 8px !important; scrollbar-width: none; min-height: 0 !important; }
+html body.fs.fs-blood-moon #notifTabs::-webkit-scrollbar { display: none; }
+html body.fs.fs-blood-moon #notifTabs .search-tab, html body.fs.fs-blood-moon #notifTabs .search-tab.active { flex: 0 0 auto !important; white-space: nowrap !important; margin: 0 !important; padding: 6px 6px !important; box-shadow: none !important;
+  border-style: solid !important; border-color: transparent !important; border-width: 0 14px !important; border-image: var(--fs-chip) 0 70 fill / 0 14px stretch !important; font-size: 15px !important; }
+html body.fs.fs-blood-moon #notifTabs .search-tab.active { border-image-source: var(--fs-chip-active) !important; color: #fff !important; }
