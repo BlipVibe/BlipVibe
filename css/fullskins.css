@@ -2713,3 +2713,98 @@ html body.fs.fs-witchcraft #msgChat #sendMsgBtn i { color: #ff5cf0 !important; f
 html body.fs.fs-witchcraft #msgChat #msgInput { font-family: var(--fs-font) !important; font-size: 17px !important; }
 html body.fs.fs-witchcraft .msg-bubble .msg-time, html body.fs.fs-witchcraft .msg-bubble small { color: #cdbba2 !important; }
 html body.fs.fs-witchcraft .search-tab { display: flex !important; align-items: center; justify-content: center; text-align: center !important; }
+/* owner: bottom bar a little bigger, icons bigger */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft .nav-center { height: calc(100vw * 330 / 1290 * 1.22 + env(safe-area-inset-bottom, 0px) + 4px) !important; padding-top: 50px !important; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 10px) !important; }
+  html body.fs.fs-witchcraft .nav-center .nav-link > i { width: 40px !important; min-width: 40px; height: 40px !important; background-size: contain !important; }
+  html body.fs.fs-witchcraft .nav-center .nav-link { font-size: 15px !important; gap: 4px; }
+  html body.fs.fs-witchcraft .nav-center .nav-link.active { background-size: 100% 80% !important; background-position: center 10% !important; }
+}
+/* bottom shelf v3: the art's solid wood is rows 56–283 / cols 21–1268 of 1290x330 — scale it so that solid part fills the
+   whole bar (no see-through at the bottom, owner), then centre icon + label in the recessed panel (17%–94% of the bar) */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft .nav-center { --wc-nav-h: calc(100vw * 228 / 1290 * 1.4 + env(safe-area-inset-bottom, 0px));
+    height: var(--wc-nav-h) !important; align-items: center !important;
+    padding: calc(var(--wc-nav-h) * .17) 7% calc(var(--wc-nav-h) * .08 + env(safe-area-inset-bottom, 0px) * .6) 7.4% !important;
+    background: var(--fs-nav-bar) 50% 55% / 103.4% 144.7% no-repeat, #160d11 !important; }
+  html body.fs.fs-witchcraft .nav-center .nav-link { height: auto !important; align-self: center; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft .nav-center { padding-top: calc(var(--wc-nav-h) * .22) !important; }
+  html body.fs.fs-witchcraft .nav-center .nav-link { transition: none !important; transform: none !important; }
+}
+
+/* ================= WITCHCRAFT · Part C wired (owner: "look how much is not being implemented") ================= */
+/* gold line icons for every icon the concept shows (FA glyph hidden, art drawn instead) */
+html body.fs.fs-witchcraft :is(.page-header .btn i, .msg-media-btn i, #sendMsgBtn i, .page-search > i, .msg-search > i, .msg-back-btn i,
+  .post-menu-btn i, .comment-actions i, .cpm-tool i, #cpmCameraBtn i, #cpmEmojiBtn i, #cpmGifBtn i, #cpmPollBtn i, #cpmScheduleBtn i, #cpmMediaZone i) {
+  font-size: 0 !important; width: 24px; height: 24px; display: inline-block; background: center / contain no-repeat; vertical-align: middle; color: transparent !important; }
+html body.fs.fs-witchcraft :is(.page-header .btn i, .msg-media-btn i, #sendMsgBtn i, .page-search > i, .msg-search > i, .msg-back-btn i, .post-menu-btn i)::before { content: "" !important; }
+html body.fs.fs-witchcraft i.fa-plus { background-image: var(--fs-icon-plus) !important; }
+html body.fs.fs-witchcraft :is(.page-search, .msg-search) > i { background-image: var(--fs-icon-search) !important; width: 22px !important; height: 22px !important; }
+html body.fs.fs-witchcraft .msg-back-btn i { background-image: var(--fs-icon-back) !important; width: 26px !important; height: 26px !important; }
+html body.fs.fs-witchcraft .post-menu-btn i { background-image: var(--fs-icon-more) !important; width: 26px !important; height: 26px !important; }
+html body.fs.fs-witchcraft #msgImgBtn i { background-image: var(--fs-icon-photo) !important; }
+html body.fs.fs-witchcraft #msgGifBtn i { background-image: var(--fs-icon-gif) !important; }
+html body.fs.fs-witchcraft #msgVoiceBtn i { background-image: var(--fs-icon-add-circle) !important; }
+html body.fs.fs-witchcraft #sendMsgBtn i { background-image: var(--fs-icon-send) !important; width: 30px !important; height: 30px !important; }
+html body.fs.fs-witchcraft #msgChat #sendMsgBtn { filter: none !important; }
+/* square bronze icon buttons (groups +, messages search / compose) */
+html body.fs.fs-witchcraft .page-header .btn:not(.page-search) { background: var(--fs-icon-btn) center / 100% 100% no-repeat !important; width: 50px !important; height: 50px !important; }
+html body.fs.fs-witchcraft .page-header .btn:not(.page-search) i { width: 24px !important; height: 24px !important; }
+/* top bar: real top-bar art, coin pill art, painted coin */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft .nav-container::before { background: var(--fs-top-bar) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-witchcraft .navbar .nav-coins { background: var(--fs-coin-pill) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-witchcraft .navbar .nav-coins > i { background-image: var(--fs-coin) !important; width: 24px !important; height: 24px !important; background-size: contain !important; }
+}
+/* each page's bottom shelf of props (concept), sitting at the end of the page's content */
+html body.fs.fs-witchcraft :is(#page-groups, #page-profiles, #page-messages, #page-notifications, #page-search, #page-shop, #page-group-view) .page-container::after,
+html body.fs.fs-witchcraft #page-messages .msg-sidebar::after {
+  content: ""; display: block; width: calc(100% + 16px); margin: 10px -8px 0; aspect-ratio: 1290 / 520; background: center bottom / 100% 100% no-repeat; pointer-events: none; }
+html body.fs.fs-witchcraft #page-groups .page-container::after { background-image: var(--fs-shelf-groups); }
+html body.fs.fs-witchcraft #page-profiles .page-container::after { background-image: var(--fs-shelf-network); aspect-ratio: 1290 / 500; }
+html body.fs.fs-witchcraft #page-notifications .page-container::after { background-image: var(--fs-shelf-notifications); }
+html body.fs.fs-witchcraft #page-search .page-container::after { background-image: var(--fs-shelf-search); aspect-ratio: 1290 / 260; }
+html body.fs.fs-witchcraft #page-shop .page-container::after { background-image: var(--fs-shelf-skull); }
+html body.fs.fs-witchcraft #page-group-view .page-container::after { background-image: var(--fs-ledge-candles); aspect-ratio: 1290 / 200; }
+html body.fs.fs-witchcraft #page-messages .page-container::after { display: none; }
+html body.fs.fs-witchcraft #page-messages .msg-sidebar::after { background-image: var(--fs-shelf-messages); }
+html body.fs.fs-witchcraft #msgChat .msg-chat-messages::after { content: ""; display: block; flex-shrink: 0; width: calc(100% + 24px); margin: auto -12px -12px; aspect-ratio: 1290 / 560;
+  background: var(--fs-shelf-chat) center bottom / 100% 100% no-repeat; pointer-events: none; }
+html body.fs.fs-witchcraft #msgChat .msg-chat-messages { position: relative; }
+html body.fs.fs-witchcraft #msgChat .msg-chat-messages::before { content: ""; position: absolute; right: 10px; bottom: 32%; width: 62px; height: 62px; background: var(--fs-pentagram-sigil) center / contain no-repeat; pointer-events: none; }
+/* Skins page (concept skins): no subtitle, three gold moons above the centred title */
+html body.fs.fs-witchcraft #page-shop .page-subtitle { display: none !important; }
+html body.fs.fs-witchcraft #page-shop .page-header h2 { text-align: center; position: relative; padding-top: 30px !important; }
+html body.fs.fs-witchcraft #page-shop .page-header h2::before { content: ""; position: absolute; left: 50%; top: 0; width: 96px; height: 30px; transform: translateX(-50%); background: var(--fs-triple-moon) center / contain no-repeat; }
+/* home: witch hat tipped over the first post's corner, sconce candles beside the stories (concept) */
+html body.fs.fs-witchcraft #page-home .feed-post:first-of-type { position: relative; }
+html body.fs.fs-witchcraft #page-home .feed-post:first-of-type::after { content: ""; position: absolute; left: -26px; bottom: -14px; width: 92px; height: 79px; background: var(--fs-witch-hat) center / contain no-repeat; pointer-events: none; z-index: 3; }
+/* segmented tabs + action buttons + stat boxes now have their own art */
+html body.fs.fs-witchcraft :is(#profilesTabs, #searchTabs) .search-tab { background-image: var(--fs-seg-tab) !important; }
+html body.fs.fs-witchcraft :is(#profilesTabs, #searchTabs) .search-tab.active { background-image: var(--fs-seg-tab-active) !important; }
+/* owner: every page except Home gets the concept Skins top — back arrow left, three moons over a CENTRED gold title,
+   coin pill right. The back arrow is the app's own logo link (data-page="home"), the pill is the app's coin counter. */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .navbar .nav-logo { display: block !important; position: fixed !important; z-index: 60;
+    top: calc(env(safe-area-inset-top, 0px) + 40px); left: 12px; width: 40px; height: 40px; padding: 0 !important; font-size: 0 !important; color: transparent !important; text-shadow: none !important;
+    background: var(--fs-icon-back) center / 30px no-repeat !important; }
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .navbar .nav-coins { display: flex !important; position: fixed !important; z-index: 60;
+    top: calc(env(safe-area-inset-top, 0px) + 42px); right: 12px; height: 36px !important; margin: 0 !important; padding: 0 14px 0 10px !important; gap: 6px; }
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) :is(.page-header, .msg-sidebar-header) { justify-content: center !important; text-align: center; }
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { flex: 1 1 100% !important; order: -1; text-align: center !important;
+    position: relative; padding: 32px 0 0 !important; margin: 0 !important; font-size: 32px !important; line-height: 1.1 !important; }
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::before { content: ""; position: absolute; left: 50%; top: 2px; width: 92px; height: 28px; transform: translateX(-50%);
+    background: var(--fs-triple-moon) center / contain no-repeat; display: block !important; }
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) > i { display: none !important; }
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .page-header .page-search { flex: 1 1 auto !important; order: 5; }
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .page-header .btn:not(.page-search) { order: 6; }
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .page.active { padding-top: calc(env(safe-area-inset-top, 0px) + 4px) !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { display: block !important; width: 100% !important; justify-content: center !important; padding-left: 0 !important; padding-right: 0 !important; }
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) :is(.page-header, .msg-sidebar-header) { padding-left: 56px !important; padding-right: 56px !important; }
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .page-header :is(.page-search, .btn) { margin-left: -44px !important; }
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .page-header .btn:not(.page-search) { margin-left: 0 !important; margin-right: -44px !important; }
+}

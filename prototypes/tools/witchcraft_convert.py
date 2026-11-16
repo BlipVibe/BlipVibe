@@ -1,5 +1,5 @@
 """Witchcraft: kit/redraw-a + redraw-b PNGs -> assets/*.webp, plus photo masks for the framed pieces.
-usage: witchcraft_convert.py <skin_dir>
+usage: witchcraft_convert.py <skin_dir> [parts, default abc]
 For each frame with a transparent window (tarot-card, photo-arch, skin-card, avatar-arch, featured-frame) it writes
 <name>-mask.webp (the window grown 6px, so the photo runs just under the frame line) and prints the window's box as
 percentages of the art (left top right bottom) for the CSS."""
@@ -9,13 +9,14 @@ from scipy import ndimage as ndi
 
 skin = sys.argv[1]
 out = os.path.join(skin, 'assets')
-WINDOWED = ['tarot-card', 'photo-arch', 'skin-card', 'avatar-arch', 'featured-frame']
-for f in sorted(glob.glob(os.path.join(skin, 'kit/redraw-[ab]/*.png'))):
+WINDOWED = ['tarot-card', 'photo-arch', 'skin-card', 'avatar-arch', 'featured-frame', 'avatar-arch-small']
+parts = sys.argv[2] if len(sys.argv) > 2 else 'abc'
+for f in sorted(glob.glob(os.path.join(skin, 'kit/redraw-[' + parts + ']/*.png'))):
     name = os.path.splitext(os.path.basename(f))[0]
     im = Image.open(f).convert('RGBA')
     if name == 'background':
         im = im.convert('RGB')
-    im.save(os.path.join(out, name + '.webp'), 'WEBP', quality=86, method=6)
+    im.save(os.path.join(out, name + '.webp'), 'WEBP', quality=86, method=4)
     if name in WINDOWED:
         a = np.array(im)[..., 3] > 60
         lab, _ = ndi.label(~a)
