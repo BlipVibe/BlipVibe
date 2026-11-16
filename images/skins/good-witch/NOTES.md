@@ -54,3 +54,10 @@
   final Day = bright daytime lavender-periwinkle in the banner's palette, a step deeper than the banner so the ivory
   cards pop (owner approved). Night = deep indigo with stars. Post card v3 (iridescent + gold rim) and thicker photo
   frame in. Quests: spell book, title on the left page, quests listed on the right page (nothing on the spine).
+- Nov 15 (night): Day/Night sun-moon toggle in the Home top bar (js/fullskins.js dayNightToggle + magicSwap: the new skin
+  is revealed behind a glowing gold-lilac pulse from the button via View Transitions; canvas burn fallback). Themed
+  toggle-sun / toggle-moon art. Post rim drawn thicker (border-image-width 62px + outset, same square card). Per-post
+  charms from Good Witch's own art on each post's look (data-fs-v 1-6): owl on crystal ball, crescent crest,
+  moon, constellations, sun/moon sparkle. Charms must sit on the frame edge, never over content (corner vines reached
+  over the avatar — replaced). Spell book pages always use dark ink (light parchment in both modes).
+  Pending: ornate gold ring for the round profile photos (photo-bubble-ornate, Codex drawing).

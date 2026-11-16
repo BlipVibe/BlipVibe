@@ -3591,3 +3591,24 @@ html body.fs.fs-good-witch .fs-daynight { width: 40px; height: 40px; }
 html body.fs.fs-good-witch .fs-daynight i { font-size: 0 !important; width: 36px; height: 36px; display: block; filter: none !important; background: center / contain no-repeat; }
 html body.fs.fs-good-witch .fs-daynight.is-day i { background-image: var(--fs-toggle-sun); filter: drop-shadow(0 0 5px rgba(255, 210, 120, .8)) !important; }
 html body.fs.fs-good-witch .fs-daynight.is-night i { background-image: var(--fs-toggle-moon); filter: drop-shadow(0 0 5px rgba(200, 165, 255, .8)) !important; }
+/* enchanted charms around posts (owner: "like the scrapbook, place unused assets around the posts"): each post gets one of
+   six looks (data-fs-v 1-6, stable per post) — a charm perched on a corner of the gold frame, never over the content */
+html body.fs.fs-good-witch .feed-post { position: relative; overflow: visible !important; }
+html body.fs.fs-good-witch .feed-post::after { content: ""; position: absolute; pointer-events: none; z-index: 4; background: center / contain no-repeat; }
+html body.fs.fs-good-witch .feed-post[data-fs-v="1"]::after { right: -26px; bottom: -40px; width: 104px; height: 90px; background-image: var(--fs-owl-crystal); }
+html body.fs.fs-good-witch .feed-post[data-fs-v="2"]::after { left: -30px; top: -34px; width: 100px; height: 84px; background-image: var(--fs-corner-vine); }
+html body.fs.fs-good-witch .feed-post[data-fs-v="3"]::after { right: -14px; top: -26px; width: 56px; height: 56px; background-image: var(--fs-toggle-moon); transform: rotate(12deg); }
+html body.fs.fs-good-witch .feed-post[data-fs-v="4"]::after { right: -30px; top: -34px; width: 100px; height: 84px; background-image: var(--fs-corner-vine-right); }
+html body.fs.fs-good-witch .feed-post[data-fs-v="5"]::after { left: -18px; bottom: -30px; width: 84px; height: 72px; background-image: var(--fs-constellation-c-100); transform: rotate(-10deg); }
+html body.fs.fs-good-witch .feed-post[data-fs-v="6"]::after { left: 50%; bottom: -32px; width: 150px; height: 44px; margin-left: -75px; background-image: var(--fs-title-crest); }
+/* a second, smaller sparkle on alternate looks */
+html body.fs.fs-good-witch .feed-post:is([data-fs-v="1"], [data-fs-v="4"]) .post-header { position: relative; }
+html body.fs.fs-good-witch .feed-post:is([data-fs-v="1"], [data-fs-v="4"]) .post-header::before { content: ""; position: absolute; left: -32px; top: -30px; width: 46px; height: 46px; pointer-events: none;
+  background: var(--fs-toggle-sun) center / contain no-repeat; opacity: .9; }
+html body.fs.fs-good-witch[data-fs-variant="night"] .feed-post:is([data-fs-v="1"], [data-fs-v="4"]) .post-header::before { background-image: var(--fs-toggle-moon); }
+/* keep posts far enough apart that the charms never collide */
+html body.fs.fs-good-witch .feed-post.feed-post.feed-post { margin-bottom: 40px !important; }
+/* vines reached into the post (over the avatar) — use edge-sitting charms instead */
+html body.fs.fs-good-witch .feed-post[data-fs-v="2"]::after { left: 50%; top: -30px; right: auto; bottom: auto; width: 120px; height: 48px; margin-left: -60px; background-image: var(--fs-photo-crest); transform: none; }
+html body.fs.fs-good-witch .feed-post[data-fs-v="4"]::after { right: -20px; top: -30px; left: auto; bottom: auto; width: 82px; height: 70px; background-image: var(--fs-constellation-a-100); transform: rotate(14deg); }
+html body.fs.fs-good-witch .feed-post:is([data-fs-v="1"], [data-fs-v="4"]) .post-header::before { left: -44px !important; top: -42px !important; width: 40px !important; height: 40px !important; }
