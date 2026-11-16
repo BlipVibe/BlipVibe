@@ -83,7 +83,8 @@
       'featured-frame', 'story-ring', 'story-add', 'avatar-ring', 'tarot-card', 'cover-arches', 'stats-arch',
       'plaque-btn', 'shelf-cat', 'shelf-cauldron', 'shelf-skull', 'candle', 'list-row', 'join-btn', 'gem', 'skin-card',
       'price-pill', 'equipped-pill', 'bubble-in', 'bubble-out', 'chat-window', 'field', 'input-bar', 'menu-panel',
-      'name-ribbon', 'avatar-arch', 'tile', 'post-btn', 'tab-bar'],
+      'name-ribbon', 'avatar-arch', 'tile', 'post-btn', 'tab-bar',
+      'tarot-card-mask', 'photo-arch-mask', 'skin-card-mask', 'avatar-arch-mask', 'featured-frame-mask'],
     theme: { '--dark': '#efe4d6', '--gray': '#bfae9c', '--light-bg': '#140f16', '--card': '#1b141d',
       '--border': 'rgba(201,160,110,.28)', '--nav-bg': '#120d13' },
     fonts: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap'
