@@ -2934,3 +2934,24 @@ html body.fs.fs-witchcraft .quest-icon::after { content: ""; position: absolute;
   clip-path: inset(calc((86.4% - var(--fs-q, 0) * 64.7%) ) 0 0 0); opacity: calc(var(--fs-q, 0) * 100); }
 html body.fs.fs-witchcraft .quest-item[data-fs-q="100"] .quest-icon::after { clip-path: none; }
 html body.fs.fs-witchcraft .quest-item[data-fs-q] .quest-icon { background-image: var(--fs-potion-0) !important; }
+/* chat fixes (owner): an earlier `background: none` on #msgChat buttons wiped the gold icons (back arrow, photo, GIF, +),
+   so the input sat off to the right; the shelf under the messages was wider than the list, so it dragged sideways */
+html body.fs.fs-witchcraft #msgChat .msg-back-btn { display: flex !important; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0 !important; }
+html body.fs.fs-witchcraft #msgChat .msg-back-btn i { background: var(--fs-icon-back) center / contain no-repeat !important; width: 26px !important; height: 26px !important; display: block !important; }
+html body.fs.fs-witchcraft #msgChat .msg-media-btn { display: flex !important; align-items: center; justify-content: center; width: 38px !important; height: 38px !important; padding: 0 !important; flex: 0 0 38px; }
+html body.fs.fs-witchcraft #msgChat .msg-media-btn i { display: block !important; width: 26px !important; height: 26px !important; background: center / contain no-repeat !important; }
+html body.fs.fs-witchcraft #msgChat #msgImgBtn i { background-image: var(--fs-icon-photo) !important; }
+html body.fs.fs-witchcraft #msgChat #msgGifBtn i { background-image: var(--fs-icon-gif) !important; }
+html body.fs.fs-witchcraft #msgChat #msgVoiceBtn i { background-image: var(--fs-icon-add-circle) !important; }
+html body.fs.fs-witchcraft #msgChat .msg-chat-input { justify-content: center !important; align-items: center !important; gap: 6px !important; padding-left: 12px !important; padding-right: 12px !important; }
+html body.fs.fs-witchcraft #msgChat #msgInput { flex: 1 1 auto; min-width: 0; margin: 0 !important; }
+html body.fs.fs-witchcraft #msgChat #sendMsgBtn { flex: 0 0 40px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; padding: 0 !important; }
+/* messages scroll up/down only */
+html body.fs.fs-witchcraft #msgChat .msg-chat-messages { overflow-x: hidden !important; overscroll-behavior-x: none; touch-action: pan-y; }
+html body.fs.fs-witchcraft #msgChat .msg-chat-messages::after { width: 100% !important; margin: auto 0 -12px !important; }
+html body.fs.fs-witchcraft #msgChat .msg-chat-messages::before { right: 6px !important; }
+/* several photos in a row (owner: second frame hung empty below a shorter photo): each frame sizes to its own photo,
+   rows centre vertically instead of stretching every frame to the tallest */
+html body.fs.fs-witchcraft .post-media-grid[class*="pm-count"]:not(.pm-count-1) { align-items: center !important; grid-auto-rows: auto !important; }
+html body.fs.fs-witchcraft .post-media-grid[class*="pm-count"]:not(.pm-count-1) .pm-thumb { align-self: center !important; height: auto !important; min-height: 0 !important; }
+html body.fs.fs-witchcraft .post-media-grid[class*="pm-count"] .pm-thumb :is(img, video) { height: auto !important; }

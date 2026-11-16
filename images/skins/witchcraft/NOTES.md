@@ -61,3 +61,14 @@ violet/magenta glow, candlelight; gold serif type (Cormorant Garamond); cobwebs 
 - Nov 15 (evening): shipped. Moons redrawn crisp at 1140x360 (lossless webp, drawn at 126.67x40pt = 1:1 on 3x).
   App change shipped alongside: nicknames capped at 20 characters (Edit Profile `maxlength` + counter + save check,
   `NICKNAME_MAX` in js/app.js) so names fit ribbons/banners in every skin. Existing longer names still trim with "…".
+- Nov 15 (night, owner on device after ship): other-profile photo clipped to the arch window's own mask (fills it, never
+  over the gold); the little ring at the bottom of avatar-arch painted out (original kept as
+  kit/redraw-b/avatar-arch.with-ring.png); single photos lost the app's 240px min-height (frame hung below short photos);
+  multi-photo rows centre each frame on its own photo instead of stretching to the tallest; shared posts on a dark
+  plaque (not the app's blue box); quest potions fill proportionally (`--fs-q` 0–1 set by tagQuests; full bottle laid over
+  the empty one and cut from the top between art rows 311→78); chat: an earlier `#msgChat … background:none` had wiped
+  the gold icons (back, photo, GIF, +) so the input sat off-centre — restored; messages scroll up/down only
+  (overflow-x hidden, touch-action pan-y; the chat shelf was 24px wider than the list).
+  Open: Messages page's right cobweb is clipped by the sidebar (shows as two stubs); Notifications/Search/Comments/
+  Create post/Story/Group page still unchecked on device. Simulator gotcha: taps during scroll momentum only stop the
+  scroll — wait ~3s after a swipe before tapping the bottom bar.
