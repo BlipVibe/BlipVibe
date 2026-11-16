@@ -5450,3 +5450,474 @@ html body.fs.fs-good-witch[data-fs-variant="night"] #userDropdownMenu.user-dropd
 html body.fs.fs-vaporwave[data-fs-variant="modern"] #userDropdownMenu.user-dropdown { background: #e3f3ff !important; background-clip: border-box !important; border-radius: 14px !important; }   /* owner: Vaporwave = windows, so solid */
 html body.fs.fs-vaporwave[data-fs-variant="modern-dark"] #userDropdownMenu.user-dropdown { background: #0e2140 !important; background-clip: border-box !important; border-radius: 14px !important; }
 html body.fs.fs-good-witch[data-fs-variant="night"] #userDropdownMenu a:not(#dropdownAdmin), html body.fs.fs-good-witch[data-fs-variant="night"] #userDropdownMenu a:not(#dropdownAdmin) i { color: #f1e8ff !important; }
+
+/* ======================================================================================
+   SUPERHERO (Nov 16, WIP). Two renditions, each its own painted kit from its own approved concept (match almost 1:1):
+   Heroes   = images/skins/superhero/concept-heroes.png + -2   (assets/ root)      crops prototypes/reference/superhero-heroes/
+   Villains = images/skins/superhero/concept-villains.png + -2 (assets/villains/)  crops prototypes/reference/superhero-villains/
+   Same file names in both folders (prototypes/superhero-kit-brief.md); CSS only places the art. Text colours: --sh-*.
+   Notes: images/skins/superhero/NOTES.md.
+   ====================================================================================== */
+body.fs-superhero { --sh-title: #111; --sh-ink: #17171a; --sh-soft: #4a4a52; --sh-accent: #d81f1a; --sh-on: #111; --sh-pagefill: #fbf3dc;
+  --sh-tfont: 'Bangers', cursive; --sh-bfont: 'Comic Neue', sans-serif; --sh-tspace: .04em;
+  background: #fbf3dc !important; font-family: var(--sh-bfont) !important; font-size: 16px; color: var(--sh-ink); }
+body.fs-superhero[data-fs-variant="villains"] { --sh-title: #eef2ea; --sh-ink: #e9ece6; --sh-soft: #aab0bb; --sh-accent: #7dff3a; --sh-on: #0b1a05; --sh-pagefill: #15141b;
+  --sh-tfont: 'Black Ops One', sans-serif; --sh-bfont: 'Exo 2', sans-serif; --sh-tspace: .03em; background: #15141b !important; }
+body.fs-superhero * { border-image-repeat: stretch !important; }
+body.fs-superhero :is(h1, h2, h3, h4, h5, .profile-name, .post-username, .card-heading, .nav-logo, .stat-count, .msg-contact-name,
+  .profile-card-name, .fsk-name, .group-card-body h4) { font-family: var(--sh-tfont) !important; font-weight: 400 !important; letter-spacing: var(--sh-tspace); color: var(--sh-title) !important; }
+html body.fs.fs-superhero :is(p, span, a, div, li, label, input, textarea, button, small) { font-family: var(--sh-bfont); }
+html body.fs.fs-superhero :is(p, span, a, li, label, input, textarea, button, small, .action-btn, .msg-bubble, .post-description, .msg-contact-preview, .notif-text, .comment-text) { font-weight: 700; }
+html body.fs.fs-superhero :is(.post-description, .post-description *, .share-preview-text, .post-tags, .comment-text, .notif-text, .msg-contact-preview, .post-content-text) { color: var(--sh-ink) !important; opacity: 1 !important; }
+html body.fs.fs-superhero :is(.post-time, .share-preview-time, .msg-contact-time, .group-members, .profile-card-bio, .post-meta) { color: var(--sh-soft) !important; opacity: 1 !important; }
+html body.fs.fs-superhero :is(input, textarea)::placeholder { color: var(--sh-soft) !important; opacity: .9; }
+body.fs-superhero #premiumBgLayer { display: block !important; background: var(--fs-background) center / cover no-repeat !important; }
+body.fs-superhero :is(.page, .main-container, .center-feed, .page-container) { background: transparent !important; }
+html body.fs.fs-superhero :is(.navbar, .nav-center) { animation: none !important; box-shadow: none !important; }
+html body.fs :is(.nav-center, .navbar, .mobile-pills-bar, .search-tabs) { -webkit-user-select: none !important; user-select: none !important; -webkit-touch-callout: none !important; }
+
+/* ---------- Home top bar (concept home): avatar in its frame · BLIPVIBE on the title banner · search · bell · music · coin · BV badge ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-superhero .navbar { border: 0 !important; border-image: none !important; overflow: visible !important;
+    background: var(--fs-header) center bottom / cover no-repeat !important;
+    height: calc(118px + env(safe-area-inset-top, 0px)) !important; max-height: none !important; padding: env(safe-area-inset-top, 0px) 0 8px !important; box-sizing: border-box !important; }
+  html body.fs.fs-superhero .nav-container { display: grid !important; grid-template-columns: 58px minmax(0, 1fr) 34px 34px 34px; grid-template-rows: 1fr 1fr; align-items: center;
+    column-gap: 4px; row-gap: 2px; padding: 4px 10px 0 !important; height: 100%; box-sizing: border-box; }
+  html body.fs.fs-superhero .navbar :is(.nav-left, .nav-right) { display: contents !important; }
+  html body.fs.fs-superhero .navbar .search-bar { display: none !important; }
+  /* avatar: photo inside the painted frame (frame window measured in QA) */
+  html body.fs.fs-superhero .navbar .nav-user { grid-column: 1; grid-row: 1 / span 2; display: block !important; position: relative !important; width: 52px !important; height: 52px !important; padding: 0 !important; margin: 0 !important; }
+  html body.fs.fs-superhero .navbar .nav-user :is(.nav-username, > i) { display: none !important; }
+  html body.fs.fs-superhero .navbar .nav-user::after { display: none !important; }
+  html body.fs.fs-superhero .navbar .nav-avatar { position: absolute !important; left: 0; top: 0; width: 52px !important; height: 52px !important; margin: 0 !important; padding: 0 !important; border-radius: 50% !important;
+    -webkit-mask: none !important; mask: none !important; box-shadow: none !important; border: 0 !important; object-fit: cover; }
+  html body.fs.fs-superhero .navbar .nav-user::before { content: ""; display: block !important; position: absolute; z-index: 2; pointer-events: none; left: -8px; top: -8px; width: 68px; height: 68px;
+    background: var(--fs-avatar-frame) center / 100% 100% no-repeat; }
+  html body.fs.fs-superhero .navbar .nav-logo { grid-column: 2 / span 4; grid-row: 1; justify-self: center; font-size: 26px !important; line-height: 1 !important; color: #fff !important;
+    text-transform: uppercase; padding: 9px 46px 11px !important; background: var(--fs-title-banner) center / 100% 100% no-repeat !important; text-shadow: 2px 2px 0 #111, -1px -1px 0 #111, 1px -1px 0 #111, -1px 1px 0 #111 !important;
+    -webkit-text-fill-color: currentColor !important; white-space: nowrap; }
+  html body.fs.fs-superhero .navbar .fs-daynight { grid-column: 5; grid-row: 2; }
+  html body.fs.fs-superhero .navbar .mobile-search-btn { grid-column: 2; grid-row: 2; justify-self: end; }
+  html body.fs.fs-superhero .navbar .mobile-notif-btn { grid-column: 3; grid-row: 2; position: relative; }
+  html body.fs.fs-superhero .navbar .nav-music-wrap { grid-column: 4; grid-row: 2; }
+  html body.fs.fs-superhero .navbar .nav-coins { grid-column: 2; grid-row: 2; justify-self: start; }
+  html body.fs.fs-superhero .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) { width: 34px !important; height: 34px !important; display: flex !important; align-items: center; justify-content: center;
+    background: var(--fs-round-btn) center / contain no-repeat !important; border: 0 !important; padding: 0 !important; border-radius: 50% !important; }
+  html body.fs.fs-superhero .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) > i { width: 20px !important; height: 20px !important; font-size: 0 !important; background-size: contain !important; background-repeat: no-repeat !important; background-position: center !important; }
+  html body.fs.fs-superhero .navbar .mobile-notif-btn .notif-badge { position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; border-radius: 9px; padding: 0 4px;
+    background: var(--fs-badge-count) center / 100% 100% no-repeat !important; color: #fff !important; font: 700 11px/18px var(--sh-bfont) !important; text-align: center; }
+  html body.fs.fs-superhero[data-fs-variant="villains"] .navbar .mobile-notif-btn .notif-badge { color: var(--sh-on) !important; }
+  html body.fs.fs-superhero .navbar .nav-coins { height: 34px !important; padding: 0 14px 0 8px !important; display: flex !important; align-items: center; gap: 5px; margin: 0 !important;
+    border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; background: var(--fs-coin-pill) center / 100% 100% no-repeat !important;
+    color: var(--sh-title) !important; font: 700 16px var(--sh-bfont) !important; }
+  html body.fs.fs-superhero .navbar .nav-coins > i { width: 20px !important; height: 20px !important; font-size: 0 !important; background: var(--fs-coin) center / contain no-repeat !important; }
+  html body.fs.fs-superhero .navbar .nav-coins .coin-count { color: var(--sh-title) !important; }
+  html body.fs.fs-superhero .page.active { position: relative; padding-top: calc(124px + env(safe-area-inset-top, 0px)) !important; }
+  /* other pages: thin top-bar strip with a round back button; the page title sits on the title banner (concept groups/skins/…) */
+  html body.fs.fs-superhero:not(:has(#page-home.active)) .navbar { display: block !important; height: calc(10px + env(safe-area-inset-top, 0px)) !important; min-height: 0 !important; padding: 0 !important;
+    background: var(--fs-top-bar) center bottom / 100% 100% no-repeat !important; overflow: visible !important; z-index: 300 !important; }
+  html body.fs.fs-superhero:not(:has(#page-home.active)) .navbar .nav-container { display: block !important; height: 0 !important; }
+  html body.fs.fs-superhero:not(:has(#page-home.active)) .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-wrap, .nav-user, .fs-daynight) { display: none !important; }
+  html body.fs.fs-superhero:not(:has(#page-home.active)) .navbar .nav-logo { display: block !important; position: fixed !important; z-index: 301 !important; top: calc(env(safe-area-inset-top, 0px) + 14px); left: 8px;
+    width: 40px; height: 40px; padding: 0 !important; font-size: 0 !important; color: transparent !important; text-shadow: none !important;
+    background: var(--fs-icon-back) center / 22px no-repeat, var(--fs-round-btn) center / 40px no-repeat !important; }
+  html body.fs.fs-superhero:not(:has(#page-home.active)):not(:has(#page-shop.active)) .navbar .nav-coins { display: none !important; }
+  html body.fs.fs-superhero:has(#page-shop.active) .navbar .nav-coins { position: fixed !important; z-index: 301; top: calc(env(safe-area-inset-top, 0px) + 17px); right: 10px; }
+  html body.fs.fs-superhero:not(:has(#page-home.active)) .page.active { padding-top: calc(env(safe-area-inset-top, 0px) + 12px) !important; }
+}
+html body.fs.fs-superhero .fs-sh-btn { width: 36px; height: 36px; padding: 0; border: 0; background: none; display: flex; align-items: center; justify-content: center; }
+html body.fs.fs-superhero .fs-sh-btn i { display: block; width: 36px; height: 36px; background: var(--fs-toggle-heroes) center / contain no-repeat; transition: transform .15s; }
+html body.fs.fs-superhero .fs-sh-btn.is-villains i { background-image: var(--fs-toggle-villains); filter: drop-shadow(0 0 5px rgba(125, 255, 58, .7)); }
+html body.fs.fs-superhero .fs-sh-btn:active i { transform: scale(.82) rotate(-8deg); }
+
+/* account menu: under the avatar, solid comic panel / steel panel, Log out always reachable (scrolls) */
+@media (max-width: 768px) {
+  html body.fs.fs-superhero .navbar .user-dropdown { left: 4px !important; right: auto !important; top: calc(100% + 6px) !important; min-width: 236px !important; max-width: calc(100vw - 16px);
+    max-height: calc(100vh - 200px - env(safe-area-inset-top, 0px)); overflow-y: auto !important; z-index: 400 !important; -webkit-overflow-scrolling: touch; padding: 0 !important; border-radius: 0 !important; }
+}
+html body.fs.fs-superhero #userDropdownMenu.user-dropdown { background: var(--sh-pagefill) !important; background-clip: padding-box !important; border: 22px solid transparent !important;
+  border-image: var(--fs-menu-panel) 80 fill / 22px stretch !important; box-shadow: 0 10px 30px rgba(0, 0, 0, .4) !important; }
+html body.fs.fs-superhero .user-dropdown a { color: var(--sh-title) !important; font: 700 17px var(--sh-bfont) !important; padding: 11px 10px !important; border-bottom: 1px solid color-mix(in srgb, var(--sh-title) 25%, transparent); background: none !important; }
+html body.fs.fs-superhero .user-dropdown a:last-child { border-bottom: 0; }
+html body.fs.fs-superhero .user-dropdown a i { color: var(--sh-accent) !important; width: 20px !important; }
+html body.fs.fs-superhero .user-dropdown #logoutBtn, html body.fs.fs-superhero .user-dropdown #logoutBtn i { color: #c4161c !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .user-dropdown #logoutBtn, html body.fs.fs-superhero[data-fs-variant="villains"] .user-dropdown #logoutBtn i { color: #ff6b8a !important; }
+
+/* ---------- bottom bar (concept): painted bar, line icons; the active tab = the lit tile with the "-on" icon ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-superhero .nav-center { display: grid !important; grid-template-columns: repeat(5, 1fr); align-items: start; border: 0 !important; border-image: none !important; backdrop-filter: none !important;
+    height: calc(84px + env(safe-area-inset-bottom, 0px)) !important; padding: 12px 6px calc(env(safe-area-inset-bottom, 0px) - 6px) !important; box-sizing: border-box;
+    background: var(--fs-nav-bar) center top / 100% 100% no-repeat, linear-gradient(var(--sh-pagefill), var(--sh-pagefill)) bottom / 100% calc(100% - 10px) no-repeat !important; }
+  html body.fs.fs-superhero .nav-center :is(.nav-saved-link, .nav-notif-link) { display: none !important; }
+  html body.fs.fs-superhero .nav-center .nav-link { position: relative; display: flex !important; flex-direction: column; align-items: center; justify-content: flex-start; gap: 0; height: 66px; padding: 5px 0 0 !important; min-width: 0;
+    background: none !important; border: 0 !important; border-image: none !important; color: var(--sh-title) !important; font: 400 12px var(--sh-tfont) !important; letter-spacing: .03em; text-transform: uppercase;
+    transition: none !important; transform: none !important; overflow: visible !important; }
+  html body.fs.fs-superhero .nav-center .nav-link span { font: inherit !important; white-space: nowrap; overflow: visible; }
+  html body.fs.fs-superhero .nav-center .nav-link > i { width: 40px !important; min-width: 40px; height: 36px !important; background-position: center !important; background-size: 34px !important; filter: none !important; }
+  html body.fs.fs-superhero .nav-center .nav-link.active { background: var(--fs-nav-active) center top / 64px 62px no-repeat !important; }
+  html body.fs.fs-superhero .nav-center .nav-link.active > i { background-image: var(--fs-icon-home-on) !important; }
+  html body.fs.fs-superhero .nav-center .nav-link.active[data-page="groups"] > i { background-image: var(--fs-icon-groups-on) !important; }
+  html body.fs.fs-superhero .nav-center .nav-link.active[data-page="shop"] > i { background-image: var(--fs-icon-skins-on) !important; }
+  html body.fs.fs-superhero .nav-center .nav-link.active[data-page="profiles"] > i { background-image: var(--fs-icon-network-on) !important; }
+  html body.fs.fs-superhero .nav-center .nav-link.active[data-page="messages"] > i { background-image: var(--fs-icon-messages-on) !important; }
+  html body.fs.fs-superhero .nav-center .nav-link.active { color: var(--sh-on) !important; }
+  html body.fs.fs-superhero .nav-center .nav-link .notif-badge { position: absolute; top: 0; right: 14%; }
+}
+
+/* ---------- page titles: every title on the painted title banner (red ribbon / steel plate), back button left ---------- */
+html body.fs.fs-superhero .page-header, html body.fs.fs-superhero .msg-sidebar-header { display: flex !important; flex-wrap: wrap; justify-content: center; align-items: center; column-gap: 8px; row-gap: 8px;
+  padding: 0 4px !important; border: 0 !important; background: none !important; position: relative; z-index: 1; }
+html body.fs.fs-superhero :is(.page-header h2, .msg-sidebar-header h3) { flex: 0 0 auto !important; display: inline-block !important; margin: 0 auto !important; text-align: center; text-transform: uppercase;
+  font-size: 28px !important; line-height: 1 !important; color: #fff !important; padding: 10px 50px 12px !important; border: 0 !important;
+  background: var(--fs-title-banner) center / 100% 100% no-repeat !important; text-shadow: 2px 2px 0 #111, -1px -1px 0 #111, 1px -1px 0 #111, -1px 1px 0 #111; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(.page-header h2, .msg-sidebar-header h3, .navbar .nav-logo) { color: #e8ffe0 !important; text-shadow: 0 0 8px rgba(125, 255, 58, .55), 1px 1px 0 #000 !important; }
+html body.fs.fs-superhero .page-header h2 > i { display: none !important; }
+html body.fs.fs-superhero .page-header .page-subtitle { display: none !important; }
+html body.fs.fs-superhero .page-header .page-actions { display: contents !important; }
+html body.fs.fs-superhero .page-header::after { content: ""; order: 2; flex: 0 0 100%; height: 0; }
+html body.fs.fs-superhero .page-header .page-search { order: 5; flex: 1 1 0 !important; min-width: 0; margin: 0 !important; }
+html body.fs.fs-superhero .page-header .btn:not(.page-search) { order: 6; flex: 0 0 46px; width: 46px !important; height: 46px !important; min-width: 0; padding: 0 !important; font-size: 0 !important;
+  border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; background: var(--fs-plus-btn) center / contain no-repeat !important; position: static !important; }
+html body.fs.fs-superhero .page-header .btn:not(.page-search) i { display: none !important; }
+html body.fs.fs-superhero #page-messages .msg-sidebar-header .btn, html body.fs.fs-superhero #newMsgBtn { background: var(--fs-plus-btn) center / contain no-repeat !important; border: 0 !important; }
+
+/* ---------- fields (16px, text clears the magnifier) ---------- */
+html body.fs.fs-superhero :is(.msg-search, .page-search) { display: flex !important; align-items: center; min-height: 48px; box-sizing: border-box; box-shadow: none !important; border-radius: 0 !important;
+  background: none !important; border: solid transparent !important; border-width: 12px 24px !important; border-image: var(--fs-field) 85 fill / 12px 24px stretch !important; padding: 0 2px !important; }
+html body.fs.fs-superhero :is(.msg-search, .page-search) > i { font-size: 0 !important; width: 20px; height: 20px; flex: 0 0 20px; background: var(--fs-icon-search) center / contain no-repeat; position: static !important; transform: none !important; }
+html body.fs.fs-superhero :is(.msg-search, .page-search) > i::before { content: "" !important; }
+html body.fs.fs-superhero :is(.msg-search, .page-search) input { background: none !important; border: 0 !important; color: var(--sh-ink) !important; font: 700 16px var(--sh-bfont) !important; padding: 4px 8px !important; height: auto !important; flex: 1; min-width: 0; }
+html body.fs.fs-superhero #page-messages .msg-search { margin: 0 6px 10px !important; }
+
+/* ---------- posts: comic panel / steel plate on all four sides, three looks; photo in its own frame ---------- */
+html body.fs.fs-superhero .feed-post.feed-post.feed-post { position: relative; overflow: visible !important; background: none !important; box-shadow: none !important; color: var(--sh-ink) !important;
+  border: 26px solid transparent !important; border-image: var(--fs-post-panel) 150 fill / 36px stretch !important; border-image-outset: 6px !important;
+  padding: 2px 4px 0 !important; margin: 10px 6px 22px !important; }
+html body.fs.fs-superhero .feed-post.feed-post.feed-post:is([data-fs-v="2"], [data-fs-v="5"]) { border-image-source: var(--fs-post-panel-b) !important; }
+html body.fs.fs-superhero .feed-post.feed-post.feed-post:is([data-fs-v="3"], [data-fs-v="6"]) { border-image-source: var(--fs-post-panel-c) !important; }
+html body.fs.fs-superhero :is(.card:not(.feed-post):not(.profile-card):not(.pv-profile-card):not(.photos-card), .post-dropdown) {
+  border: 24px solid transparent !important; border-image: var(--fs-comment-bubble) 90 fill / 24px stretch !important; background: none !important; box-shadow: none !important; color: var(--sh-ink) !important; }
+html body.fs.fs-superhero .post-header { align-items: center !important; }
+html body.fs.fs-superhero .post-user-top { flex-direction: column !important; align-items: flex-start !important; gap: 0 !important; }
+html body.fs.fs-superhero .post-username { font-size: 21px !important; }
+html body.fs.fs-superhero :is(.post-time, .post-meta) { font-size: 14px !important; }
+html body.fs.fs-superhero :is(.post-content-text, .post-text, .post-content p, .post-description) { font-size: 17px !important; line-height: 1.3; }
+html body.fs.fs-superhero .post-menu-btn, html body.fs.fs-superhero .post-menu-btn i { color: var(--sh-title) !important; }
+/* every small avatar: round, in the story ring (yellow ink ring / green neon ring) */
+html body.fs.fs-superhero :is(.post-header .post-avatar, .post-create-avatar, .msg-contact > div > img, .profile-card-item .profile-card-avatar, .notif-item img, #msgChat .msg-chat-header img, .comment-item img, .follow-list-item img) {
+  -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; border: 0 !important; padding: 3px !important; box-sizing: border-box; object-fit: cover;
+  background: var(--fs-story-ring) center / 100% 100% no-repeat, var(--sh-pagefill) !important; }
+html body.fs.fs-superhero .post-header .post-avatar { width: 48px !important; height: 48px !important; }
+/* action row: one row, never wraps; liked = the painted ON thumb with its own comic POW pop */
+html body.fs.fs-superhero .post-actions { border: 0 !important; display: flex !important; flex-wrap: nowrap !important; justify-content: space-between; gap: 2px !important; padding: 6px 2px 2px !important;
+  background: var(--fs-action-strip) center top / 100% 100% no-repeat !important; }
+html body.fs.fs-superhero .post-actions .action-btn { white-space: nowrap !important; color: var(--sh-ink) !important; font: 700 16px var(--sh-bfont) !important; gap: 4px !important; padding: 4px 2px !important; min-width: 0; }
+html body.fs.fs-superhero .post-actions .action-btn > i { width: 26px !important; height: 26px !important; }
+html body.fs.fs-superhero :is(.like-btn.liked, .like-btn:has(> i.fas)) > i { width: 34px !important; height: 34px !important; margin: -4px 0; animation: shPow .42s cubic-bezier(.3, 1.7, .5, 1) !important; }
+html body.fs.fs-superhero :is(.dislike-btn.disliked, .dislike-btn:has(> i.fas)) > i { animation: shPow .42s cubic-bezier(.3, 1.7, .5, 1) !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(.like-btn.liked, .like-btn:has(> i.fas)) > i { filter: drop-shadow(0 0 6px rgba(125, 255, 58, .8)); }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(.dislike-btn.disliked, .dislike-btn:has(> i.fas)) > i { filter: drop-shadow(0 0 6px rgba(180, 92, 255, .85)); }
+html body.fs.fs-superhero .like-btn.liked .like-count { color: var(--sh-accent) !important; }
+@keyframes shPow { 0% { transform: scale(.4) rotate(-25deg); } 55% { transform: scale(1.4) rotate(10deg); } 80% { transform: scale(.92) rotate(-3deg); } 100% { transform: scale(1) rotate(0); } }
+/* photos: whole, never cropped, inside the comic / steel photo frame (9-slice, hugs the photo) */
+html body.fs.fs-superhero .post-media-grid[class*="pm-count"] { display: flex !important; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px;
+  height: auto !important; max-height: none !important; aspect-ratio: auto !important; overflow: visible !important; background: none !important; margin: 10px 0 6px !important; }
+html body.fs.fs-superhero .post-media-grid[class*="pm-count"] .pm-thumb { position: relative; flex: 0 1 auto; width: fit-content !important; height: auto !important; min-height: 0 !important; max-height: none !important;
+  max-width: 100%; border: 0 !important; background: none !important; border-radius: 0 !important; overflow: visible !important; line-height: 0; margin: 4px !important; }
+html body.fs.fs-superhero .post-media-grid[class*="pm-count"] .pm-thumb::after { content: ""; position: absolute; inset: -6px; z-index: 2; pointer-events: none; background: none !important;
+  border: solid transparent !important; border-width: 14px !important; border-image: var(--fs-photo-frame) 60 / 14px stretch !important; }
+html body.fs.fs-superhero .post-media-grid[class*="pm-count"] .pm-thumb :is(img, video) { display: block; width: auto !important; height: auto !important; min-height: 0 !important; max-width: 100% !important; max-height: 460px !important;
+  object-fit: contain !important; border-radius: 0 !important; background: transparent !important; }
+html body.fs.fs-superhero .post-media-grid[class*="pm-count"]:not(.pm-count-1) .pm-thumb { max-width: calc(50% - 14px); }
+html body.fs.fs-superhero .post-media-grid[class*="pm-count"]:not(.pm-count-1) .pm-thumb :is(img, video) { max-height: 230px !important; }
+html body.fs.fs-superhero .share-preview { border: 20px solid transparent !important; border-image: var(--fs-comment-bubble) 90 fill / 20px stretch !important; background: none !important; border-radius: 0 !important; color: var(--sh-ink) !important; padding: 2px 0 !important; }
+html body.fs.fs-superhero .post-badges :is(span, .post-badge) { background: none !important; border: solid transparent !important; border-width: 7px 12px !important; border-image: var(--fs-chip) 60 fill / 7px 12px stretch !important;
+  border-radius: 0 !important; padding: 0 2px !important; font-size: 13px !important; line-height: 1.2 !important; color: var(--sh-title) !important; }
+
+/* ---------- Home profile block (owner rule: always on Home). Concept home: the cover in a comic panel / steel frame,
+   the round photo in its frame at the left over the cover's bottom edge, name · bio · following|followers on the card ---------- */
+body.fs-superhero :is(.pv-profile-card, #profileCard) { background: transparent !important; border: 0 !important; border-image: none !important; box-shadow: none !important; }
+body.fs-superhero :is(.pv-profile-card, #profileCard) .profile-cover { display: none !important; }
+body.fs-superhero :is(#coverEditBtn, #pvCoverEditBtn) { display: none !important; }
+html body.fs.fs-superhero .pv-back-link { display: none !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-superhero #timelineCover { position: relative; height: 150px !important; aspect-ratio: auto !important; border-radius: 0 !important; background: none !important; margin: 0 4px !important; overflow: visible !important; }
+}
+html body.fs.fs-superhero #timelineCover .fs-timeline { position: absolute; inset: 0; z-index: 1; }
+html body.fs.fs-superhero #timelineCover .fs-tl-slot { position: absolute; inset: 8px; }
+html body.fs.fs-superhero #timelineCover :is(.fs-tl-slot-2, .fs-tl-slot-3) { display: none !important; }
+html body.fs.fs-superhero #timelineCover .fs-tl-slot img { position: absolute; inset: 0; width: 100% !important; height: 100% !important; object-fit: cover; }
+html body.fs.fs-superhero #timelineCover .fs-tl-slot.fs-tl-empty { background: var(--fs-header) center bottom / cover no-repeat; }
+html body.fs.fs-superhero #timelineCover .fs-timeline::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; border: solid transparent; border-width: 14px;
+  border-image: var(--fs-cover-frame) 60 / 14px stretch; }
+html body.fs.fs-superhero #timelineCover .fs-tl-own.fs-tl-slot-1::after { content: ""; position: absolute; right: 6px; top: 6px; width: 32px; height: 32px; z-index: 4; background: var(--fs-camera-badge) center / contain no-repeat; }
+html body.fs.fs-superhero #profileCard { position: relative; z-index: 2; margin: -30px 4px 8px !important; }
+html body.fs.fs-superhero #profileCard .profile-info { display: grid !important; grid-template-columns: 112px minmax(0, 1fr); align-items: center; column-gap: 8px; position: relative;
+  border: solid transparent !important; border-width: 22px 22px 18px !important; border-image: var(--fs-profile-card) 90 fill / 22px 22px 18px stretch !important; padding: 0 2px !important; text-align: left !important; }
+html body.fs.fs-superhero #profileCard .profile-avatar-wrap { grid-column: 1; grid-row: 1 / span 3; width: 104px !important; height: 104px !important; margin: -40px 0 0 !important; position: relative; z-index: 3; border-radius: 50% !important; overflow: visible !important; }
+html body.fs.fs-superhero :is(.pv-profile-card, #profileCard) .profile-avatar { width: 100% !important; height: 100% !important; -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; border: 0 !important; box-shadow: none !important; object-fit: cover; }
+html body.fs.fs-superhero #profileCard .profile-avatar-wrap::after { display: block !important; content: ""; position: absolute; inset: -13%; z-index: 2; pointer-events: none; background: var(--fs-avatar-frame) center / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-superhero :is(.pv-profile-card, #profileCard) .avatar-edit-btn { z-index: 4 !important; width: 32px !important; height: 32px !important; right: -4% !important; bottom: -2% !important; border: 0 !important; box-shadow: none !important;
+  background: var(--fs-camera-badge) center / contain no-repeat !important; }
+html body.fs.fs-superhero :is(.pv-profile-card, #profileCard) .avatar-edit-btn i { opacity: 0 !important; }
+html body.fs.fs-superhero #profileCard :is(.fs-namecard, .profile-stats, .profile-links) { grid-column: 2; }
+html body.fs.fs-superhero .fs-namecard { border: 0 !important; border-image: none !important; background: none !important; transform: none !important; width: auto !important; padding: 0 !important; margin: 0 !important; }
+html body.fs.fs-superhero .fs-namecard::before { display: none !important; }
+html body.fs.fs-superhero #profileCard .profile-name { font-size: 26px !important; line-height: 1.05 !important; margin: 0 !important; text-transform: uppercase; text-align: left !important; }
+html body.fs.fs-superhero #profileCard :is(.profile-title, .profile-about) { color: var(--sh-ink) !important; font-style: italic; font-size: 15px !important; margin: 1px 0 0 !important; text-align: left !important;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+html body.fs.fs-superhero :is(.pv-profile-card, #profileCard) :is(.profile-title, .profile-about):empty { display: none !important; }
+html body.fs.fs-superhero #profileCard .profile-stats { display: flex !important; align-items: center; margin: 6px 0 0 !important; border: 0 !important; background: none !important; padding: 0 !important; }
+html body.fs.fs-superhero :is(.pv-profile-card, #profileCard) .profile-stats > .stat { flex: 1 1 0; border: 0 !important; border-image: none !important; background: none !important; padding: 0 !important; text-align: center; }
+html body.fs.fs-superhero :is(.pv-profile-card, #profileCard) .profile-stats > .stat + .stat { border-left: 0 !important; background: var(--fs-stats-divider) left center / 3px 80% no-repeat !important; }
+html body.fs.fs-superhero :is(.pv-profile-card, #profileCard) .profile-stats > .stat + .stat::before { display: none !important; }
+html body.fs.fs-superhero :is(.pv-profile-card, #profileCard) .stat-count { font-size: 22px !important; line-height: 1 !important; display: block; }
+html body.fs.fs-superhero :is(.pv-profile-card, #profileCard) .stat-label { color: var(--sh-title) !important; font-size: 12px !important; text-transform: uppercase; }
+html body.fs.fs-superhero #profileCard .profile-links { display: none !important; }
+html body.fs.fs-superhero .photos-card { border: 24px solid transparent !important; border-image: var(--fs-comment-bubble) 90 fill / 24px stretch !important; background: none !important; box-shadow: none !important; margin: 0 0 8px !important; }
+
+/* ---------- Profile page (concept profile / other-profile): three tilted comic panels / three cracked monitors hold the
+   timeline photos over the scene, the big round photo in the winged gold ring / spiked neon ring, name on the banner ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-superhero #pvCoverBanner { position: relative; height: calc((100vw + 16px) * 860 / 1290) !important; aspect-ratio: auto !important; border-radius: 0 !important;
+    background: var(--fs-profile-scene) center top / cover no-repeat !important; width: calc(100vw + 16px) !important; max-width: none !important;
+    margin-left: calc(50% - 50vw - 8px) !important; margin-right: calc(50% - 50vw - 8px) !important; overflow: visible !important; z-index: 0 !important; }
+}
+html body.fs.fs-superhero #pvCoverBanner .fs-timeline { position: absolute; inset: 0; z-index: 2; }
+html body.fs.fs-superhero #pvCoverBanner .fs-timeline::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: var(--fs-timeline-frame) center / 100% 100% no-repeat; }
+/* slot boxes = each window's bounding box +1% (measured from timeline-mask in QA); the photo is cut by the mask itself */
+html body.fs.fs-superhero #pvCoverBanner .fs-tl-slot { position: absolute; top: var(--sh-t); left: var(--sh-l); width: var(--sh-w); height: var(--sh-h); }
+html body.fs.fs-superhero #pvCoverBanner .fs-tl-slot :is(img), html body.fs.fs-superhero #pvCoverBanner .fs-tl-slot.fs-tl-empty::after {
+  content: ""; position: absolute; inset: 0; width: 100% !important; height: 100% !important; object-fit: cover; display: block;
+  -webkit-mask: var(--fs-timeline-mask) var(--sh-mx) var(--sh-my) / var(--sh-msx) var(--sh-msy) no-repeat; mask: var(--fs-timeline-mask) var(--sh-mx) var(--sh-my) / var(--sh-msx) var(--sh-msy) no-repeat; }
+html body.fs.fs-superhero #pvCoverBanner .fs-tl-slot.fs-tl-empty::after { background: var(--fs-header) center / cover no-repeat; }
+html body.fs.fs-superhero #pvCoverBanner .fs-tl-own.fs-tl-slot-3::before { content: ""; position: absolute; right: 4%; top: 6%; width: 32px; height: 32px; z-index: 4; background: var(--fs-camera-badge) center / contain no-repeat; }
+html body.fs.fs-superhero .pv-profile-card { position: relative; z-index: 3; }
+html body.fs.fs-superhero .pv-profile-card .profile-info { text-align: center !important; }
+html body.fs.fs-superhero .pv-profile-card .profile-avatar-wrap { width: 150px !important; height: 150px !important; margin: -120px auto 0 !important; border-radius: 50% !important; overflow: visible !important; z-index: 3; position: relative; }
+html body.fs.fs-superhero .pv-profile-card .profile-avatar-wrap::after { display: block !important; content: ""; position: absolute; inset: -40% -60%; z-index: 2; pointer-events: none;
+  background: var(--fs-cameo) center / contain no-repeat !important; border: 0 !important; }
+html body.fs.fs-superhero .pv-profile-card .profile-name { display: inline-block; font-size: 30px !important; line-height: 1 !important; margin: 18px auto 0 !important; padding: 12px 54px 14px !important;
+  color: #fff !important; text-transform: uppercase; background: var(--fs-name-banner) center / 100% 100% no-repeat !important; text-shadow: 2px 2px 0 #111, -1px -1px 0 #111, 1px -1px 0 #111, -1px 1px 0 #111; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .profile-name { color: #e8ffe0 !important; text-shadow: 0 0 8px rgba(125, 255, 58, .55), 1px 1px 0 #000; }
+html body.fs.fs-superhero .pv-profile-card :is(.profile-title, .profile-about) { color: var(--sh-ink) !important; font-size: 16px !important; text-transform: uppercase; margin: 6px 0 0 !important; padding: 2px 40px !important;
+  background: var(--fs-laurel-sprig) left center / 30px auto no-repeat !important; position: relative; }
+html body.fs.fs-superhero .pv-profile-card .profile-about::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 30px; background: var(--fs-laurel-sprig) center / 30px auto no-repeat; transform: scaleX(-1); }
+html body.fs.fs-superhero .pv-profile-card .profile-title { background: none !important; padding: 0 12px !important; }
+html body.fs.fs-superhero .pv-profile-card .profile-stats { display: flex !important; justify-content: center; align-items: center; width: 92% !important; margin: 10px auto 0 !important; box-sizing: border-box;
+  border: solid transparent !important; border-width: 16px 22px !important; border-image: var(--fs-stats-frame) 90 fill / 16px 22px stretch !important; background: none !important; padding: 2px 0 !important; }
+html body.fs.fs-superhero .pv-profile-card .stat-count { font-size: 28px !important; }
+html body.fs.fs-superhero .pv-profile-card .stat-label { font-size: 14px !important; }
+html body.fs.fs-superhero #pvEditProfileBtn { border: solid transparent !important; border-width: 12px 28px !important; border-image: var(--fs-edit-btn) 85 fill / 12px 28px stretch !important; border-radius: 0 !important;
+  background: none !important; box-shadow: none !important; width: 80% !important; margin: 12px auto 8px !important; padding: 2px 0 !important; display: flex !important; justify-content: center;
+  color: var(--sh-on) !important; font: 400 23px var(--sh-tfont) !important; letter-spacing: var(--sh-tspace); text-transform: uppercase; }
+html body.fs.fs-superhero #pvEditProfileBtn i { display: none !important; }
+html body.fs.fs-superhero #page-profile-view .pv-actions { display: grid !important; grid-template-columns: 1fr 1fr; gap: 8px !important; margin: 12px 6px 0 !important; }
+html body.fs.fs-superhero #page-profile-view .pv-actions .btn:not(#pvEditProfileBtn) { width: auto !important; min-width: 0; height: auto !important; margin: 0 !important; padding: 2px 4px !important; white-space: nowrap;
+  background: none !important; border: solid transparent !important; border-width: 10px 18px !important; border-image: var(--fs-action-btn) 75 fill / 10px 18px stretch !important;
+  border-radius: 0 !important; box-shadow: none !important; color: var(--sh-title) !important; font: 400 17px var(--sh-tfont) !important; letter-spacing: var(--sh-tspace); text-transform: uppercase; opacity: 1 !important; }
+html body.fs.fs-superhero #page-profile-view .pv-actions .btn:not(#pvEditProfileBtn):first-child { border-image-source: var(--fs-follow-btn) !important; color: var(--sh-on) !important; }
+html body.fs.fs-superhero #page-profile-view .pv-actions .btn i { color: inherit !important; margin-right: 4px; font-size: 14px !important; }
+html body.fs.fs-superhero :is(#pvAdminSuspend, #pvAdminDelete) { width: auto !important; height: auto !important; background: none !important; border: solid transparent !important; border-width: 8px 14px !important;
+  border-image: var(--fs-action-btn) 75 fill / 8px 14px stretch !important; border-radius: 0 !important; box-shadow: none !important; padding: 1px 4px !important; color: var(--sh-title) !important; font: 700 13px var(--sh-bfont) !important; }
+html body.fs.fs-superhero #pvAdminDelete, html body.fs.fs-superhero #pvAdminDelete i { color: #c4161c !important; }
+/* the ⋯ menu (Mute / Block / Report) */
+html body.fs.fs-superhero :is(.pv-menu, .pv-more-menu, .post-dropdown, .dropdown-menu) { background: var(--sh-pagefill) !important; background-clip: padding-box !important; border: 20px solid transparent !important;
+  border-image: var(--fs-menu-panel) 80 fill / 20px stretch !important; border-radius: 0 !important; box-shadow: 0 8px 24px rgba(0, 0, 0, .35) !important; color: var(--sh-title) !important; }
+
+/* ---------- Daily Missions (concept home): the comic panel / steel plate with its title tab; each quest = star / power cell
+   with the count on it, label + bar, coin reward ---------- */
+html body.fs.fs-superhero .quest-panel { display: flex !important; flex-direction: column; gap: 4px; position: relative; box-shadow: none !important; margin: 6px 0 !important;
+  background: none !important; border: solid transparent !important; border-width: 46px 26px 24px !important; border-image: var(--fs-quests-frame) 140 fill / 46px 26px 24px stretch !important; padding: 4px 2px 0 !important; }
+html body.fs.fs-superhero #questPanel[style*="none"] { display: none !important; }
+html body.fs.fs-superhero .quest-panel-header { position: absolute !important; left: 0; right: 0; top: -40px; height: 30px; justify-content: center !important; border: 0 !important; margin: 0 !important; display: flex !important; align-items: center; }
+html body.fs.fs-superhero .quest-panel-header h4 { font-size: 22px !important; text-transform: uppercase; margin: 0 !important; color: #fff !important; text-shadow: 2px 2px 0 #111, -1px -1px 0 #111, 1px -1px 0 #111, -1px 1px 0 #111; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .quest-panel-header h4 { color: #e8ffe0 !important; text-shadow: 0 0 8px rgba(125, 255, 58, .55), 1px 1px 0 #000; }
+html body.fs.fs-superhero .quest-panel-header i, html body.fs.fs-superhero .quest-reset { display: none !important; }
+html body.fs.fs-superhero .quest-item { position: relative; display: grid !important; grid-template-columns: 52px minmax(0, 1fr) auto; align-items: center; column-gap: 8px; text-align: left;
+  border: 0 !important; border-image: none !important; background: none !important; padding: 2px 4px !important; margin: 0 !important; min-height: 54px; }
+html body.fs.fs-superhero .quest-icon { width: 52px !important; height: 52px !important; margin: 0 !important; border-radius: 0 !important; background: var(--fs-quest-0) center / contain no-repeat !important; }
+html body.fs.fs-superhero .quest-item[data-fs-q="50"] .quest-icon, html body.fs.fs-superhero .quest-item[data-fs-started="1"]:not([data-fs-q="100"]) .quest-icon { background-image: var(--fs-quest-50) !important; }
+html body.fs.fs-superhero .quest-item[data-fs-q="100"] .quest-icon { background-image: var(--fs-quest-100) !important; }
+html body.fs.fs-superhero .quest-icon > i { display: none !important; }
+html body.fs.fs-superhero .quest-progress { position: absolute; left: 4px; top: 50%; width: 52px; transform: translateY(-50%); text-align: center; color: var(--sh-title) !important;
+  font: 400 15px var(--sh-tfont) !important; white-space: nowrap; word-spacing: -3px; text-shadow: 0 0 3px #fff, 0 0 3px #fff; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .quest-progress { text-shadow: 0 0 4px #000, 0 0 3px #000; }
+html body.fs.fs-superhero .quest-info { display: flex; flex-direction: column; align-items: stretch !important; min-width: 0; }
+html body.fs.fs-superhero .quest-info p { color: var(--sh-title) !important; font-size: 15px !important; text-transform: uppercase; line-height: 1.1; margin: 0 !important; text-align: left; }
+html body.fs.fs-superhero .quest-bar { display: block !important; height: 12px !important; margin-top: 5px; border-radius: 0 !important; background: var(--fs-goal-track) center / 100% 100% no-repeat !important; overflow: hidden; }
+html body.fs.fs-superhero .quest-bar-fill { height: 100% !important; border-radius: 0 !important; background: var(--fs-goal-fill) left center / auto 100% no-repeat !important; }
+html body.fs.fs-superhero :is(.quest-reward, .quest-check) { background: none !important; color: var(--sh-title) !important; font: 700 16px var(--sh-bfont) !important; padding: 0 !important; display: inline-flex; align-items: center; gap: 4px; }
+html body.fs.fs-superhero .quest-reward > i { font-size: 0 !important; width: 20px; height: 20px; background: var(--fs-reward-coin) center / contain no-repeat; }
+
+/* ---------- feed tabs + chips + segmented tabs ---------- */
+html body.fs.fs-superhero #feedTabs { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 0 !important; border: 0 !important; background: none !important; margin: 6px 0 !important; }
+html body.fs.fs-superhero #feedTabs .search-tab { border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; background: var(--fs-tab) center / 100% 100% no-repeat !important;
+  color: var(--sh-title) !important; font: 400 16px var(--sh-tfont) !important; letter-spacing: var(--sh-tspace); text-transform: uppercase; padding: 9px 4px !important; white-space: nowrap; display: flex !important; align-items: center; justify-content: center; }
+html body.fs.fs-superhero #feedTabs .search-tab.active { background-image: var(--fs-tab-active) !important; color: var(--sh-on) !important; }
+html body.fs.fs-superhero .search-tab > i { display: none !important; }
+html body.fs.fs-superhero :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, .fsk-filters, .comment-sort-tabs) { display: flex !important; flex-wrap: wrap; gap: 6px; padding: 2px 0 !important; margin: 6px 0 !important; border: 0 !important; background: none !important; justify-content: center; }
+html body.fs.fs-superhero :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #page-search .search-tabs, .photos-card .search-tabs) .search-tab, html body.fs.fs-superhero :is(.fsk-filter, .comment-sort-tab) {
+  flex: 0 0 auto; min-height: 0 !important; background: none !important; border: solid transparent !important; border-width: 9px 18px !important; border-image: var(--fs-chip) 60 fill / 9px 18px stretch !important;
+  border-radius: 0 !important; box-shadow: none !important; padding: 1px 6px !important; color: var(--sh-title) !important; font: 400 15px var(--sh-tfont) !important; letter-spacing: var(--sh-tspace); text-transform: uppercase; }
+html body.fs.fs-superhero :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #page-search .search-tabs, .photos-card .search-tabs) .search-tab.active, html body.fs.fs-superhero :is(.fsk-filter, .comment-sort-tab).active {
+  border-image-source: var(--fs-chip-active) !important; color: var(--sh-on) !important; }
+html body.fs.fs-superhero #groupsTabs .search-tab, html body.fs.fs-superhero .fsk-filter { flex: 1 1 40%; }
+html body.fs.fs-superhero :is(#profilesTabs, #searchTabs) { flex-wrap: nowrap; }
+html body.fs.fs-superhero :is(#profilesTabs, #searchTabs) .search-tab { flex: 1 1 0; min-height: 44px; padding: 0 2px !important; font: 400 13px var(--sh-tfont) !important; letter-spacing: .02em; line-height: 1.05 !important;
+  text-transform: uppercase; white-space: normal; text-align: center; background: none !important; border: solid transparent !important; border-width: 9px 16px !important;
+  border-image: var(--fs-seg-tab) 60 fill / 9px 16px stretch !important; border-radius: 0 !important; color: var(--sh-title) !important; box-shadow: none !important; }
+html body.fs.fs-superhero :is(#profilesTabs, #searchTabs) .search-tab.active { border-image-source: var(--fs-seg-tab-active) !important; color: var(--sh-on) !important; }
+
+/* ---------- Home extras (concept home-full): stories, composer, Featured Skin, coin goal ---------- */
+html body.fs.fs-superhero .story-ring { background: var(--fs-story-ring) center / contain no-repeat !important; padding: 4px !important; }
+html body.fs.fs-superhero .story-add .story-ring:not(.story-has) { background-image: var(--fs-story-add) !important; }
+html body.fs.fs-superhero :is(.story-name, .story-label) { color: var(--sh-title) !important; font-weight: 700; }
+html body.fs.fs-superhero #openPostModal { border: 0 !important; border-image: none !important; background: none !important; padding: 0 !important; margin: 6px 0 !important; display: flex; align-items: center; gap: 8px; box-shadow: none !important; }
+html body.fs.fs-superhero .post-create-avatar { width: 46px !important; height: 46px !important; flex: 0 0 46px; }
+html body.fs.fs-superhero .post-input-fake { flex: 1; min-width: 0; border-radius: 0 !important; background: none !important; border: solid transparent !important; border-width: 12px 24px !important;
+  border-image: var(--fs-composer) 90 fill / 12px 24px stretch !important; padding: 2px 0 !important; min-height: 0 !important; color: var(--sh-soft) !important; font: 700 16px var(--sh-bfont) !important; }
+html body.fs.fs-superhero .featured-skin-banner { box-shadow: none !important; background: none !important; border: solid transparent !important; border-width: 22px 26px !important;
+  border-image: var(--fs-featured-frame) 90 fill / 22px 26px stretch !important; padding: 2px 0 !important; color: var(--sh-title) !important; }
+html body.fs.fs-superhero .featured-skin-banner :is(h4, h5, .featured-timer) { color: var(--sh-title) !important; font-family: var(--sh-tfont) !important; letter-spacing: var(--sh-tspace); }
+html body.fs.fs-superhero .featured-skin-banner p { color: var(--sh-ink) !important; }
+html body.fs.fs-superhero .featured-skin-banner :is(h4 i, .featured-timer i) { font-family: "Font Awesome 6 Free" !important; font-weight: 900 !important; color: var(--sh-accent) !important; }
+html body.fs.fs-superhero .featured-skin-banner .btn { border: solid transparent !important; border-width: 9px 16px !important; border-image: var(--fs-follow-btn) 75 fill / 9px 16px stretch !important; border-radius: 0 !important;
+  background: none !important; box-shadow: none !important; color: var(--sh-on) !important; font: 400 16px var(--sh-tfont) !important; text-transform: uppercase; padding: 2px 4px !important; }
+html body.fs.fs-superhero .coin-goal-bar { box-shadow: none !important; background: none !important; border: solid transparent !important; border-width: 20px 22px !important;
+  border-image: var(--fs-coin-goal-frame) 90 fill / 20px 22px stretch !important; padding: 2px 0 !important; color: var(--sh-title) !important; }
+html body.fs.fs-superhero .coin-goal-track { background: var(--fs-goal-track) center / 100% 100% no-repeat !important; border-radius: 0 !important; border: 0 !important; }
+html body.fs.fs-superhero .coin-goal-fill { background: var(--fs-goal-fill) left center / auto 100% no-repeat !important; border-radius: 0 !important; }
+
+/* ---------- buttons ---------- */
+html body.fs.fs-superhero :is(.join-group-btn, .suggestion-follow-btn, .follow-btn, .profile-follow-btn, #groupsSections .group-card-actions .btn, #gvProfileCard .pv-actions .btn, .fsk-body .btn, .fsk-takeoff) {
+  background: none !important; border: solid transparent !important; border-width: 9px 16px !important; border-image: var(--fs-join-btn) 60 fill / 9px 16px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  height: auto !important; min-width: 0; padding: 2px 4px !important; color: var(--sh-on) !important; font: 400 16px var(--sh-tfont) !important; letter-spacing: var(--sh-tspace); text-transform: uppercase; white-space: nowrap; opacity: 1 !important; }
+html body.fs.fs-superhero :is(.btn-outline, .btn-secondary, #trendingHashtagsBtn) { background: none !important; border: solid transparent !important; border-width: 10px 18px !important;
+  border-image: var(--fs-action-btn) 75 fill / 10px 18px stretch !important; border-radius: 0 !important; box-shadow: none !important; color: var(--sh-title) !important; }
+html body.fs.fs-superhero .btn-primary:not(.page-search) { border-image: var(--fs-follow-btn) 75 fill / 10px 18px stretch !important; border-width: 10px 18px !important; color: var(--sh-on) !important; }
+html body.fs.fs-superhero :is(.card-heading, .section-title, h3, h4) > i { color: var(--sh-accent) !important; }
+html body.fs.fs-superhero :is(.view-more-link, .view-all-link, #clearAllHistory) { color: var(--sh-accent) !important; font-weight: 700 !important; }
+
+/* ---------- list rows (groups, network, messages, notifications, search) ---------- */
+html body.fs.fs-superhero :is(.msg-contact, .notif-item, .profile-card-item, .follow-list-item, #groupsSections .group-card) {
+  background: none !important; box-shadow: none !important; border: solid transparent !important; border-width: 14px 20px !important; border-image: var(--fs-list-row) 70 fill / 14px 20px stretch !important;
+  padding: 0 !important; margin: 0 0 6px !important; color: var(--sh-ink) !important; border-radius: 0 !important; }
+html body.fs.fs-superhero .msg-contact-name > span { font-size: 0 !important; width: 22px; height: 22px; padding: 0 !important; display: inline-block; vertical-align: middle; background: var(--fs-unread-dot) center / contain no-repeat !important; border-radius: 0 !important; }
+html body.fs.fs-superhero .msg-contact-name { font-size: 19px !important; }
+html body.fs.fs-superhero #groupsSections .shop-scroll-row, html body.fs.fs-superhero :is(#page-profiles, #page-search) :is(.connections-grid, .shop-scroll-row, .page-grid) {
+  display: flex !important; flex-direction: column; gap: 0; overflow: visible !important; grid-template-columns: none !important; grid-auto-flow: row !important; }
+html body.fs.fs-superhero #groupsSections .group-card { min-width: 0 !important; max-width: none !important; width: 100%; transform: none !important; display: grid !important; grid-template-columns: 62px minmax(0, 1fr) auto; align-items: center; gap: 10px; }
+html body.fs.fs-superhero #groupsSections .group-card-banner { width: 62px; height: 62px !important; overflow: hidden; padding: 3px; box-sizing: border-box; border-radius: 0 !important; background: var(--fs-group-avatar-frame) center / 100% 100% no-repeat !important; }
+html body.fs.fs-superhero #groupsSections .group-card-banner img { width: 100% !important; height: 100% !important; border-radius: 4px !important; border: 0 !important; object-fit: cover; margin: 0 !important; }
+html body.fs.fs-superhero #groupsSections :is(.gc-icon-edit-btn, .group-card-actions .view-group-btn, .gc-btn-icon) { display: none !important; }
+html body.fs.fs-superhero #groupsSections .group-card-body { padding: 0 !important; min-width: 0; }
+html body.fs.fs-superhero #groupsSections .group-card-body h4 { margin: 0; font-size: 19px !important; text-transform: uppercase; line-height: 1.05; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+html body.fs.fs-superhero #groupsSections .group-card-body p:not(.group-members) { display: none; }
+html body.fs.fs-superhero #groupsSections .group-members { font-size: 14px !important; }
+html body.fs.fs-superhero #groupsSections .group-card-actions { padding: 0 !important; }
+html body.fs.fs-superhero #groupsSections .group-card-actions .btn { width: auto !important; min-width: 84px !important; }
+html body.fs.fs-superhero #groupsSections .group-card-actions .btn .gc-btn-text { display: inline !important; font: inherit !important; color: inherit !important; }
+html body.fs.fs-superhero :is(#page-profiles, #page-search) .profile-card-item { display: grid !important; grid-template-columns: 52px minmax(0, 1fr) auto; column-gap: 10px; align-items: center; text-align: left;
+  min-width: 0 !important; max-width: none !important; width: 100%; transform: none !important; min-height: 0 !important; }
+html body.fs.fs-superhero :is(#page-profiles, #page-search) .profile-card-item > * { grid-column: 2; margin: 0 !important; min-width: 0; text-align: left !important; }
+html body.fs.fs-superhero :is(#page-profiles, #page-search) .profile-card-avatar { grid-column: 1; grid-row: 1 / span 3; width: 52px !important; height: 52px !important; }
+html body.fs.fs-superhero :is(#page-profiles, #page-search) .profile-follow-btn { grid-column: 3; grid-row: 1 / span 3; width: auto !important; min-width: 88px; }
+html body.fs.fs-superhero :is(#page-profiles, #page-search) .profile-card-name { font-size: 19px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html body.fs.fs-superhero :is(#page-profiles, #page-search) .profile-card-bio { font-size: 13px !important; }
+html body.fs.fs-superhero :is(#page-profiles, #page-search) .profile-card-item:not(:has(.profile-card-bio)) .profile-card-name { grid-row: 1 / span 3; }
+html body.fs.fs-superhero :is(#page-profiles, #page-search) :is(h3, .section-title) { font-size: 18px !important; text-transform: uppercase; }
+html body.fs.fs-superhero :is(.section-count, .connections-count, .badge-count) { background: var(--sh-pagefill) !important; border: 1px solid var(--sh-title) !important; color: var(--sh-title) !important; }
+html body.fs.fs-superhero #searchResults .search-results-grid { gap: 0 !important; margin-top: 8px; }
+/* notifications: the painted icon per type */
+html body.fs.fs-superhero .notif-icon { background: none !important; width: 38px !important; height: 38px !important; flex-shrink: 0; box-shadow: none !important; }
+html body.fs.fs-superhero .notif-icon i { font-size: 0 !important; width: 30px; height: 30px; display: block; margin: auto; background: var(--fs-notif-like) center / contain no-repeat; }
+html body.fs.fs-superhero .notif-icon i::before { content: "" !important; }
+html body.fs.fs-superhero .notif-icon i.fa-user-plus { background-image: var(--fs-notif-follow); }
+html body.fs.fs-superhero .notif-icon i:is(.fa-comment, .fa-reply) { background-image: var(--fs-notif-comment); }
+html body.fs.fs-superhero .notif-icon i.fa-at { background-image: var(--fs-notif-mention); }
+html body.fs.fs-superhero .notif-icon i.fa-envelope { background-image: var(--fs-notif-message); }
+html body.fs.fs-superhero .notif-icon i:is(.fa-users, .fa-envelope-open-text) { background-image: var(--fs-notif-group); }
+html body.fs.fs-superhero .notif-icon i:is(.fa-palette, .fa-coins) { background-image: var(--fs-notif-purchase); }
+html body.fs.fs-superhero .notif-item :is(.notif-text, p) { font-size: 15px !important; }
+html body.fs .notif-text p .notif-expand-chevron { margin-left: auto !important; padding-left: 8px; flex: 0 0 auto; }
+/* page bottom scene (concept network / notifications / search / create post): skyline / lair wall */
+html body.fs.fs-superhero :is(#page-groups, #page-profiles, #page-notifications, #page-search, #page-shop, #page-group-view) .page-container::after,
+html body.fs.fs-superhero #page-messages .msg-sidebar::after {
+  content: ""; display: block; width: calc(100% + 16px); margin: 12px -8px 0; aspect-ratio: 1290 / 520; background: var(--fs-skyline-deco) center bottom / 100% 100% no-repeat; pointer-events: none; }
+
+/* ---------- skins shop (concept skins): the card frame around each picture, name on the picture, price pill on the band ---------- */
+html body.fs.fs-superhero .fsk-grid { gap: 10px !important; }
+html body.fs.fs-superhero .fsk-card.fsk-card { position: relative; aspect-ratio: 640 / 760; padding: 0 !important; overflow: visible !important; background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; }
+html body.fs.fs-superhero .fsk-thumb { position: absolute !important; left: var(--sh-cl, 5%); top: var(--sh-ct, 4%); width: var(--sh-cw, 90%) !important; height: var(--sh-ch, 76%) !important; margin: 0 !important; aspect-ratio: auto !important;
+  border: 0 !important; border-radius: 0 !important; overflow: hidden; z-index: 0; }
+html body.fs.fs-superhero .fsk-thumb img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+html body.fs.fs-superhero .fsk-card::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: var(--fs-skin-card) center / 100% 100% no-repeat; }
+html body.fs.fs-superhero .fsk-body { position: absolute !important; inset: 0; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 8% 7% 3.5% !important; pointer-events: none; background: none !important; }
+html body.fs.fs-superhero .fsk-body > * { pointer-events: auto; }
+html body.fs.fs-superhero .fsk-name { text-align: center !important; text-transform: uppercase; font-size: 19px !important; line-height: 1; margin: 0 !important; color: #fff !important; max-width: 94%;
+  text-shadow: 2px 2px 0 #111, -1px -1px 0 #111, 1px -1px 0 #111, -1px 1px 0 #111; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .fsk-name { color: #e8ffe0 !important; text-shadow: 0 0 6px rgba(125, 255, 58, .6), 1px 1px 0 #000, -1px -1px 0 #000; }
+html body.fs.fs-superhero .fsk-body .btn { width: 80% !important; height: 32px !important; margin: 0 !important; border-image-source: var(--fs-price-pill) !important; color: var(--sh-title) !important; font-size: 15px !important; display: flex !important; align-items: center; justify-content: center; gap: 4px; }
+html body.fs.fs-superhero .fsk-body .btn.fsk-equipped { display: none !important; }
+html body.fs.fs-superhero .fsk-body .fsk-takeoff { width: 80% !important; height: 32px !important; display: flex !important; align-items: center; justify-content: center; text-decoration: none !important; }
+html body.fs.fs-superhero .fsk-badge { position: absolute; top: auto !important; bottom: 3.5% !important; left: 50%; right: auto !important; transform: translateX(-50%); z-index: 3; width: 80% !important; height: 30px !important;
+  padding: 0 !important; border-radius: 0 !important; background: var(--fs-equipped-tag) center / 100% 100% no-repeat !important; box-shadow: none !important; color: var(--sh-on) !important;
+  font: 400 15px var(--sh-tfont) !important; letter-spacing: var(--sh-tspace); text-transform: uppercase; display: inline-flex !important; align-items: center; justify-content: center; }
+html body.fs.fs-superhero .fsk-badge i { display: none !important; }
+html body.fs.fs-superhero .fsk-card:has(.fsk-badge) .fsk-body .fsk-takeoff { margin-bottom: 36px !important; }
+html body.fs.fs-superhero :is(.fsk-soon, .fsk-takeoff) { color: var(--sh-title) !important; font-size: 14px !important; text-align: center !important; }
+html body.fs.fs-superhero .fsk-soon { display: block !important; width: 100%; background: var(--sh-pagefill); padding: 2px 0; }
+
+/* ---------- chat (concept chat): speech balloons / glowing glass bubbles, input bar with + and send ---------- */
+html body.fs.fs-superhero #msgChat { background: var(--fs-background) center / cover no-repeat !important; }
+html body.fs.fs-superhero #msgChat .msg-chat-header { background: var(--fs-top-bar) center bottom / 100% 100% no-repeat !important; border-bottom: 0 !important; position: relative; }
+html body.fs.fs-superhero #msgChat .msg-back-btn { display: flex !important; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0 !important; background: var(--fs-round-btn) center / 40px no-repeat !important; }
+html body.fs.fs-superhero #msgChat .msg-back-btn i { font-size: 0 !important; display: block !important; width: 22px; height: 22px; background: var(--fs-icon-back) center / contain no-repeat !important; }
+html body.fs.fs-superhero #msgChat .msg-chat-header img { width: 44px !important; height: 44px !important; }
+html body.fs.fs-superhero #msgChat .msg-chat-header h4 { font-size: 22px !important; text-transform: uppercase; }
+html body.fs.fs-superhero #msgChat .msg-chat-header :is(button, .btn) i { color: var(--sh-accent) !important; }
+html body.fs.fs-superhero .msg-bubble { background: none !important; border: solid transparent !important; border-width: 14px 20px 22px !important; border-image: var(--fs-bubble-in) 100 fill / 14px 20px 22px stretch !important;
+  border-radius: 0 !important; box-shadow: none !important; padding: 0 2px !important; color: var(--sh-ink) !important; font-size: 17px !important; line-height: 1.3 !important; }
+html body.fs.fs-superhero .msg-bubble.sent { border-image-source: var(--fs-bubble-out) !important; }
+html body.fs.fs-superhero .msg-bubble, html body.fs.fs-superhero .msg-bubble * { color: #111 !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .msg-bubble, html body.fs.fs-superhero[data-fs-variant="villains"] .msg-bubble * { color: #eef2ea !important; }
+html body.fs.fs-superhero :is(.msg-read-receipt, .msg-time) { color: var(--sh-soft) !important; }
+html body.fs.fs-superhero #msgChat .msg-chat-messages { overflow-x: hidden !important; touch-action: pan-y; }
+html body.fs.fs-superhero #msgChat .msg-chat-input { position: relative !important; z-index: 3; background: var(--fs-input-bar) center / 100% 100% no-repeat !important; border-top: 0 !important;
+  align-items: center !important; gap: 6px !important; padding-left: 10px !important; padding-right: 10px !important; }
+html body.fs.fs-superhero #msgChat .msg-media-btn { display: flex !important; align-items: center; justify-content: center; width: 36px !important; height: 36px !important; padding: 0 !important; flex: 0 0 36px; background: none !important; }
+html body.fs.fs-superhero #msgChat .msg-media-btn i { font-size: 0 !important; display: block !important; width: 26px; height: 26px; background: center / contain no-repeat !important; }
+html body.fs.fs-superhero #msgChat #msgImgBtn i { background-image: var(--fs-icon-plus), var(--fs-round-btn) !important; background-size: 60%, contain !important; width: 36px; height: 36px; }
+html body.fs.fs-superhero #msgChat #msgGifBtn i { background-image: var(--fs-icon-gif) !important; }
+html body.fs.fs-superhero #msgChat #msgVoiceBtn i { background-image: var(--fs-icon-emoji) !important; }
+html body.fs.fs-superhero #msgChat #msgInput { flex: 1 1 auto; min-width: 0; margin: 0 !important; border-radius: 0 !important; background: none !important; border: solid transparent !important; border-width: 10px 20px !important;
+  border-image: var(--fs-field) 85 fill / 10px 20px stretch !important; padding: 2px 0 !important; color: var(--sh-ink) !important; font: 700 16px var(--sh-bfont) !important; }
+html body.fs.fs-superhero #msgChat #sendMsgBtn { flex: 0 0 44px; width: 44px; height: 44px; padding: 0 !important; border: 0 !important; background: var(--fs-send-btn) center / contain no-repeat !important; }
+html body.fs.fs-superhero #msgChat #sendMsgBtn i { opacity: 0 !important; }
+@media (max-width: 768px) { html body.fs.fs-superhero:has(.messages-layout.chat-open) { padding-bottom: 0 !important; } }
+
+/* ---------- pop-ups: comments, create post, story ---------- */
+html body.fs.fs-superhero .modal-content { background: var(--sh-pagefill) !important; background-clip: padding-box !important; border: 26px solid transparent !important;
+  border-image: var(--fs-post-panel) 150 fill / 36px stretch !important; border-radius: 0 !important; box-shadow: 0 10px 40px rgba(0, 0, 0, .45) !important; color: var(--sh-ink) !important; }
+html body.fs.fs-superhero .modal-header h3 { text-transform: uppercase; }
+html body.fs.fs-superhero .modal-header h3 i { color: var(--sh-accent) !important; }
+html body.fs.fs-superhero .comment-item { background: none !important; box-shadow: none !important; border: solid transparent !important; border-width: 18px 22px !important; border-image: var(--fs-comment-bubble) 90 fill / 18px 22px stretch !important; color: var(--sh-ink) !important; }
+html body.fs.fs-superhero #commentInput { background: none !important; border: solid transparent !important; border-width: 10px 20px !important; border-image: var(--fs-field) 85 fill / 10px 20px stretch !important;
+  border-radius: 0 !important; box-shadow: none !important; padding: 2px 2px !important; min-height: 0 !important; color: var(--sh-ink) !important; font: 700 16px var(--sh-bfont) !important; }
+html body.fs.fs-superhero #commentGifBtn { background: none !important; border: solid transparent !important; border-width: 8px 12px !important; border-image: var(--fs-chip) 60 fill / 8px 12px stretch !important;
+  border-radius: 0 !important; box-shadow: none !important; padding: 0 2px !important; color: var(--sh-title) !important; font: 700 13px var(--sh-bfont) !important; }
+html body.fs.fs-superhero :is(#postCommentBtn, #cpmPublish) { flex: 0 0 auto; width: auto !important; height: auto !important; background: none !important; border: solid transparent !important; border-width: 10px 20px !important;
+  border-image: var(--fs-post-btn) 85 fill / 10px 20px stretch !important; border-radius: 0 !important; box-shadow: none !important; padding: 2px 8px !important; color: var(--sh-on) !important;
+  font: 400 18px var(--sh-tfont) !important; letter-spacing: var(--sh-tspace); text-transform: uppercase; white-space: nowrap; }
+html body.fs.fs-superhero .cpm-textarea { background: none !important; border: solid transparent !important; border-width: 16px 20px !important; border-image: var(--fs-text-area) 90 fill / 16px 20px stretch !important;
+  border-radius: 0 !important; margin: 4px 0 !important; padding: 4px 4px !important; color: var(--sh-ink) !important; font: 700 17px var(--sh-bfont) !important; }
+html body.fs.fs-superhero :is(#cpmCameraBtn, #cpmGifBtn, #cpmPollBtn, #cpmScheduleBtn) { width: 46px !important; height: 46px !important; flex: 0 0 46px; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+  background: var(--fs-tool-tile) center / 100% 100% no-repeat !important; color: var(--sh-accent) !important; }
+html body.fs.fs-superhero #noCommentsMsg { color: var(--sh-soft) !important; }
+/* group page (concept group-page): cover in its frame, the group picture in the rounded frame, readable stats + buttons */
+html body.fs.fs-superhero #gvProfileCard .profile-name { font-size: 28px !important; margin: 30px 12px 0 !important; overflow-wrap: anywhere; position: relative; z-index: 2; text-transform: uppercase; }
+html body.fs.fs-superhero #gvProfileCard .profile-stats { border: solid transparent !important; border-width: 14px 20px !important; border-image: var(--fs-stats-frame) 90 fill / 14px 20px stretch !important; background: none !important; width: 96% !important; padding: 2px 0 !important; }
+html body.fs.fs-superhero #gvProfileCard .stat-count { font-size: 22px !important; }
+html body.fs.fs-superhero #gvProfileCard .stat-label { font-size: 13px !important; white-space: nowrap; }
+html body.fs.fs-superhero #gvProfileCard .pv-actions { display: flex !important; flex-wrap: wrap; justify-content: center; gap: 8px !important; margin-top: 12px !important; }

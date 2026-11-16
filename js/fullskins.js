@@ -210,6 +210,44 @@
       '--border': 'rgba(176,130,50,.35)', '--nav-bg': '#f7efe0' },
     fonts: 'https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap'
   };
+  FULL_SKINS.superhero = {
+    name: 'Superhero', dark: false, ink: '#1a1a1a', muted: '#4a4a52', accent: '#e8261c', wip: true,
+    font: "'Comic Neue', 'Bangers', sans-serif", titleFont: "'Bangers', cursive",
+    timeline: 3, avatar: 'center', slice: 15, edge: 16,
+    // owner (Nov 16): "do heroes and villains … heroes should look much different than villains". Two renditions, each
+    // its own painted kit from its own approved concept: Heroes (assets/ root, concept-heroes*.png) = sunny golden-age
+    // comic city; Villains (assets/villains/, concept-villains*.png) = storm lair, gunmetal, neon green/purple. Same file
+    // names in both folders (prototypes/superhero-kit-brief.md).
+    variants: [
+      { id: 'heroes', name: 'Heroes', accent: '#e8261c', swatch: '#ffd23a' },
+      { id: 'villains', name: 'Villains', accent: '#7dff3a', swatch: '#2a1f3a', dark: true, ink: '#eef2ea', muted: '#b4b9c4',
+        theme: { '--dark': '#eef2ea', '--gray': '#b4b9c4', '--light-bg': '#15141b', '--card': '#24232c',
+          '--border': 'rgba(125,255,58,.35)', '--nav-bg': '#15141b' } }
+    ],
+    parts: { 'panel-card': 'post-panel', 'panel-card-active': 'post-panel', 'btn-primary': 'follow-btn',
+      'btn-secondary': 'action-btn', 'btn-round': 'round-btn', 'header-bar': 'top-bar', 'post-frame': 'post-panel',
+      'icon-coin': 'coin', 'avatar-frame': 'avatar-frame', 'timeline-frame': 'timeline-frame' },
+    assets: ['background', 'header', 'top-bar', 'title-banner', 'nav-bar', 'nav-active',
+      'icon-home-on', 'icon-groups-on', 'icon-skins-on', 'icon-network-on', 'icon-messages-on', 'coin', 'coin-pill',
+      'toggle-heroes', 'toggle-villains',
+      'icon-compose', 'icon-phone', 'icon-close', 'icon-like-on', 'icon-dislike-on', 'icon-reply', 'icon-react',
+      'icon-chevron', 'icon-check', 'icon-clear', 'icon-photo', 'icon-gif', 'icon-poll', 'icon-schedule', 'icon-globe',
+      'icon-mute', 'icon-block', 'icon-report', 'icon-heart', 'icon-star', 'icon-gift', 'icon-shop',
+      'notif-like', 'notif-follow', 'notif-comment', 'notif-mention', 'notif-message', 'notif-group', 'notif-purchase',
+      'badge-count', 'unread-dot',
+      'cover-frame', 'profile-card', 'stats-divider', 'quests-frame', 'goal-track', 'goal-fill', 'reward-coin',
+      'tab', 'tab-active', 'story-ring', 'story-add', 'composer', 'featured-frame', 'coin-goal-frame', 'coin-stack',
+      'post-panel', 'post-panel-b', 'post-panel-c', 'photo-frame', 'action-strip',
+      'timeline-mask', 'cameo', 'cameo-mask', 'camera-badge', 'name-banner', 'laurel-sprig', 'stats-frame', 'edit-btn',
+      'follow-btn', 'action-btn', 'menu-panel', 'profile-scene', 'skyline-deco',
+      'list-row', 'join-btn', 'chip', 'chip-active', 'seg-tab', 'seg-tab-active', 'plus-btn', 'field',
+      'skin-card', 'skin-card-mask', 'price-pill', 'equipped-tag', 'bubble-in', 'bubble-out', 'input-bar', 'send-btn',
+      'round-btn', 'comment-bubble', 'text-area', 'tool-tile', 'post-btn', 'public-pill', 'story-field', 'heart-orb',
+      'like-orb', 'react-orb', 'group-avatar-frame', 'group-cover-frame'],
+    theme: { '--dark': '#1a1a1a', '--gray': '#4a4a52', '--light-bg': '#fbf3dc', '--card': '#fffaf0',
+      '--border': 'rgba(0,0,0,.6)', '--nav-bg': '#fbf3dc' },
+    fonts: 'https://fonts.googleapis.com/css2?family=Bangers&family=Black+Ops+One&family=Comic+Neue:ital,wght@0,700;1,700&family=Exo+2:wght@600;700&display=swap'
+  };
   window.FULL_SKINS = FULL_SKINS;
 
   // Absolute: a relative url() inside a custom property resolves against the stylesheet that
@@ -321,6 +359,16 @@
       hb.innerHTML = '<i></i>';
       hb.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); heavenSwap(id, tw ? 'day' : 'twilight'); });
       search.parentNode.insertBefore(hb, search);
+      return;
+    }
+    if (ids.indexOf('heroes') >= 0 && ids.indexOf('villains') >= 0) {
+      // Superhero: the gold winged BV badge (Heroes) / the green skull-circuit sigil (Villains); tap = heroSwap
+      var vil = variant === 'villains', sb = document.createElement('button');
+      sb.id = 'fsDayNight'; sb.type = 'button'; sb.className = 'fs-daynight fs-sh-btn ' + (vil ? 'is-villains' : 'is-heroes');
+      sb.setAttribute('aria-label', vil ? 'Switch to Heroes' : 'Switch to Villains');
+      sb.innerHTML = '<i></i>';
+      sb.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); heroSwap(id, vil ? 'heroes' : 'villains'); });
+      search.parentNode.insertBefore(sb, search);
       return;
     }
     if (ids.indexOf('day') < 0 || ids.indexOf('night') < 0) {
@@ -1174,10 +1222,11 @@
     ['neon-wave', 'Neon Wave', 'neon'], ['vaporwave', 'Vaporwave', 'neon'], ['matrix', 'Matrix', 'neon'],
     ['toxic-green', 'Toxic Green', 'neon'], ['geo-prism', 'Geo Prism', 'neon'], ['anime-blaze', 'Anime Blaze', 'neon'],
     ['autumn-leaves', 'Autumn Leaves', 'nature'], ['ocean-tide', 'Ocean Tide', 'nature'], ['deep-wave', 'Deep Wave', 'nature'],
-    ['molten-gold', 'Molten Gold', 'nature']
+    ['molten-gold', 'Molten Gold', 'nature'],
+    ['superhero', 'Superhero', 'comic']
   ];
   var CATEGORIES = [['all', 'All'], ['aesthetic', 'Aesthetic'], ['cute', 'Cute'], ['mystic', 'Mystic'],
-    ['neon', 'Neon'], ['nature', 'Nature']];
+    ['neon', 'Neon'], ['nature', 'Nature'], ['comic', 'Comic']];
   var PRICE = 300;
 
   function catalog() {
@@ -1687,7 +1736,219 @@
       }).then(function () { c.o.remove(); swapping = false; }, function () { c.o.remove(); swapping = false; });
     });
   }
-  var EQUIP_FX = { 'scrapbook': equipScrapbook, 'anime-blaze': equipBlaze, 'witchcraft': equipWitchcraft, 'good-witch': equipGoodWitch, 'vaporwave': equipVaporwave, 'heavens-light': equipHeaven };
+  // SUPERHERO (owner: every skin's animations are its own). Art per rendition: assets/fx-*.webp (Heroes) and
+  // assets/villains/fx-*.webp (Villains), painted in each rendition's style.
+  function shArt(id, v, names) {
+    var dir = BASE + id + '/assets/' + (v === 'villains' ? 'villains/' : '');
+    return Promise.all(names.map(function (n) { return fxImg(dir + n + '.webp'); }));
+  }
+  function shShake(a) {   // comic impact: the whole page jolts
+    var x = (Math.random() - .5) * a, y = (Math.random() - .5) * a;
+    document.documentElement.style.transform = a > .3 ? 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)' : '';
+  }
+  function shCover(g, im, x, y, w, h) {   // draw im covering the box (like background-size: cover)
+    if (!im) return;
+    var s = Math.max(w / im.width, h / im.height), iw = im.width * s, ih = im.height * s;
+    g.save(); g.beginPath(); g.rect(x, y, w, h); g.clip(); g.drawImage(im, x + (w - iw) / 2, y + (h - ih) / 2, iw, ih); g.restore();
+  }
+  function shBounce(x) {   // overshoot then settle (a panel slamming down)
+    if (x >= 1) return 1;
+    var c = 1.9; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2);
+  }
+  // Equip = the COMIC BOOK: the four panels of a comic page SLAM down one after another (each one jolts the screen),
+  // action lines rush in and the sound-effect burst pops in the middle (POW! for Heroes, KRAKK! for Villains); the skin
+  // is applied under the page, then the page TURNS like a comic-book page onto the new look.
+  function equipSuperhero(id, swap) {
+    var v = (data().variant && data().variant(id)) === 'villains' ? 'villains' : 'heroes';
+    return shArt(id, v, ['fx-page', 'fx-sfx', 'fx-speedlines', 'fx-spark']).then(function (r) {
+      var c = fxCanvas('superhero'), g = c.g, W = c.W, H = c.H, page = r[0], sfx = r[1], lines = r[2], spark = r[3];
+      var paper = v === 'villains' ? '#121117' : '#fbf3dc', ink = v === 'villains' ? '#7dff3a' : '#111';
+      // the page's four panels (2x2 with gutters), each lands from a different side with a slight tilt
+      var gut = 10, pw = (W - gut * 3) / 2, ph = (H - gut * 3) / 2;
+      var panels = [[gut, gut, -1, 0, -.06], [gut * 2 + pw, gut, 0, -1, .05], [gut, gut * 2 + ph, 0, 1, .04], [gut * 2 + pw, gut * 2 + ph, 1, 0, -.05]];
+      var sparks = []; for (var k = 0; k < 26; k++) sparks.push({ a: Math.random() * 6.3, d: .2 + Math.random() * .8, s: 14 + Math.random() * 22 });
+      function panel(i, t) {   // t 0..1: flying in; 1 = landed
+        var p = panels[i], e = shBounce(clamp01(t)), x = p[0] + p[2] * W * (1 - e), y = p[1] + p[3] * H * (1 - e);
+        if (t <= 0) return;
+        g.save(); g.translate(x + pw / 2, y + ph / 2); g.rotate(p[4] * (1 - clamp01(t)));
+        g.fillStyle = ink; g.fillRect(-pw / 2 - 4, -ph / 2 - 4, pw + 8, ph + 8);
+        if (page) { var sx = (i % 2) * page.width / 2, sy = Math.floor(i / 2) * page.height / 2;
+          g.drawImage(page, sx, sy, page.width / 2, page.height / 2, -pw / 2, -ph / 2, pw, ph); }
+        else { g.fillStyle = paper; g.fillRect(-pw / 2, -ph / 2, pw, ph); }
+        g.restore();
+      }
+      function burst(a, sc) {   // action lines + the sound effect
+        if (a <= 0) return;
+        if (lines) { g.save(); g.globalAlpha = a; var s = Math.max(W, H) * 1.5; g.drawImage(lines, W / 2 - s / 2, H / 2 - s / 2, s, s); g.restore(); }
+        if (spark) sparks.forEach(function (p) { var d = p.d * Math.min(W, H) * .55 * sc; drawRot(g, spark, W / 2 + Math.cos(p.a) * d, H / 2 + Math.sin(p.a) * d, p.s, p.s, p.a, a); });
+        if (sfx) { var w = Math.min(W * .9, 420) * sc, h = w * sfx.height / sfx.width; drawRot(g, sfx, W / 2, H / 2, w, h, -.08, a); }
+      }
+      var last = -1;
+      return fxRun(1250, function (t) {   // four panels slam down, 220ms apart; each landing jolts the screen
+        g.clearRect(0, 0, W, H);
+        g.fillStyle = 'rgba(0,0,0,' + Math.min(.55, t / 900) + ')'; g.fillRect(0, 0, W, H);
+        for (var i = 0; i < 4; i++) panel(i, (t - i * 220) / 360);
+        var landed = Math.floor((t - 360) / 220); if (landed > last && landed >= 0 && landed < 4) { last = landed; shShake(14); } else shShake(0);
+      }).then(function () {
+        var sw = swap();
+        return Promise.all([sw, fxRun(900, function (t, x) {   // POW!/KRAKK! over the finished page
+          g.clearRect(0, 0, W, H); for (var i = 0; i < 4; i++) panel(i, 1);
+          burst(Math.min(1, x * 4), .4 + shBounce(Math.min(1, x * 2.5)) * .6); shShake(x < .2 ? 18 * (1 - x * 5) : 0);
+        })]);
+      }).then(function () {
+        shShake(0);
+        return fxRun(950, function (t, x) {   // the page turns: hinged on the left edge, it folds away with a shadow
+          var e = ease(x), w = W * (1 - e);
+          g.clearRect(0, 0, W, H);
+          g.save(); g.beginPath(); g.rect(0, 0, w, H); g.clip();
+          g.scale(Math.max(.001, 1 - e), 1);
+          for (var i = 0; i < 4; i++) panel(i, 1);
+          burst(1 - x * 2, 1);
+          g.restore();
+          var sh = g.createLinearGradient(w, 0, w + 60, 0); sh.addColorStop(0, 'rgba(0,0,0,' + (.45 * (1 - e)) + ')'); sh.addColorStop(1, 'rgba(0,0,0,0)');
+          g.fillStyle = sh; g.fillRect(w, 0, 60, H);
+        });
+      }).then(function () { shShake(0); c.o.remove(); });
+    });
+  }
+  // Heroes <-> Villains (the top-bar badge). Two different moves, each in the style of where you're going:
+  // - to VILLAINS = "the villains take over": the screen goes dark in a storm flicker, a green lightning bolt strikes down
+  //   the middle with a flash, the glass CRACKS out from the strike; the skin switches behind the cracked dark glass, which
+  //   then SHATTERS and falls away in shards onto the lair.
+  // - to HEROES = "hero to the rescue": a yellow SUNBURST explodes out of the badge with action lines and POW!, a comic page
+  //   covers the screen; the skin switches under it and the page's panels fly apart to the four corners onto the city.
+  function heroSwap(id, next) {
+    if (swapping) return;
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { if (data().setVariant) data().setVariant(id, next); return; }
+    swapping = true;
+    var toV = next === 'villains', dir = BASE + id + '/assets/' + (toV ? 'villains/' : '');
+    var main = ['background', 'header', 'top-bar', 'nav-bar', 'nav-active', 'post-panel', 'post-panel-b', 'post-panel-c',
+      'cover-frame', 'profile-card', 'quests-frame', 'list-row', 'tab', 'tab-active', 'chip', 'chip-active', 'field',
+      'coin-pill', 'photo-frame', 'title-banner', 'avatar-frame', 'toggle-heroes', 'toggle-villains'];
+    var preload = Promise.race([Promise.all(main.map(function (n) { return fxImg(dir + n + '.webp'); })), fxWait(4000)]);
+    var btn = document.getElementById('fsDayNight'), br = btn ? btn.getBoundingClientRect() : { left: innerWidth / 2, top: 60, width: 0, height: 0 };
+    var bx = br.left + br.width / 2, by = br.top + br.height / 2;
+    function done(c) { shShake(0); if (c) c.o.remove(); swapping = false; }
+    function switchUnder() {   // switch while covered; resolves once the new art is in
+      return new Promise(function (ok) { requestAnimationFrame(function () {
+        if (data().setVariant) data().setVariant(id, next);
+        Promise.race([fxArtReady(), fxWait(5000)]).then(ok);
+      }); });
+    }
+    if (toV) {
+      shArt(id, 'villains', ['fx-bolt', 'fx-crack', 'fx-shard', 'fx-cloud']).then(function (r) {
+        var c = fxCanvas('superhero-swap'), g = c.g, W = c.W, H = c.H, bolt = r[0], crack = r[1], shardIm = r[2], smoke = r[3];
+        // shards: a jittered grid over the screen, each falls with its own spin once the glass breaks
+        var cols = 5, rows = 9, pts = [], shards = [], i, j;
+        for (j = 0; j <= rows; j++) { pts.push([]); for (i = 0; i <= cols; i++) {
+          var edge = i === 0 || j === 0 || i === cols || j === rows;
+          pts[j].push([i * W / cols + (edge ? 0 : (Math.random() - .5) * W / cols * .7), j * H / rows + (edge ? 0 : (Math.random() - .5) * H / rows * .7)]); } }
+        for (j = 0; j < rows; j++) for (i = 0; i < cols; i++) {
+          var a = pts[j][i], b = pts[j][i + 1], cc = pts[j + 1][i + 1], d = pts[j + 1][i];
+          [[a, b, cc], [a, cc, d]].forEach(function (tri) {
+            var cx = (tri[0][0] + tri[1][0] + tri[2][0]) / 3, cy = (tri[0][1] + tri[1][1] + tri[2][1]) / 3;
+            var dist = Math.hypot(cx - W / 2, cy - H * .35);
+            shards.push({ p: tri, cx: cx, cy: cy, delay: dist / Math.hypot(W, H) * 500 + Math.random() * 120, vx: (cx - W / 2) * .002 + (Math.random() - .5) * .3, rot: (Math.random() - .5) * .012 });
+          });
+        }
+        function glass(alpha) {   // the dark storm glass: near-black + purple smoke + the glowing cracks
+          g.fillStyle = 'rgba(14,10,22,' + alpha + ')'; g.fillRect(0, 0, W, H);
+          if (smoke) { g.save(); g.globalAlpha = alpha * .8; var sw = W * 1.6, sh = sw * smoke.height / smoke.width; g.drawImage(smoke, W / 2 - sw / 2, H - sh * .8, sw, sh); g.restore(); }
+        }
+        function crackLayer(a) { if (crack && a > 0) { g.save(); g.globalAlpha = a; g.globalCompositeOperation = 'lighter'; shCover(g, crack, 0, 0, W, H); g.restore(); } }
+        function strike(a, len) {   // the bolt grows down from the top
+          if (!bolt || a <= 0) return;
+          var bw = Math.min(W * .55, 260), bh = H; g.save(); g.globalAlpha = a; g.beginPath(); g.rect(0, 0, W, bh * len); g.clip();
+          g.drawImage(bolt, W / 2 - bw / 2, 0, bw, bh); g.restore();
+        }
+        return preload.then(function () {
+          return fxRun(700, function (t, x) {   // storm rolls in: darkening with lightning flicker
+            g.clearRect(0, 0, W, H); glass(Math.min(.92, x * 1.2));
+            if (Math.sin(t / 37) > .93) { g.fillStyle = 'rgba(190,255,150,.18)'; g.fillRect(0, 0, W, H); }
+          });
+        }).then(function () {
+          return fxRun(650, function (t, x) {   // STRIKE: the bolt hits, white-green flash, cracks race out
+            g.clearRect(0, 0, W, H); glass(.92);
+            strike(1 - Math.max(0, x - .6) * 2.5, Math.min(1, x * 3));
+            if (x > .25 && x < .45) { g.fillStyle = 'rgba(220,255,200,' + (1 - Math.abs(x - .35) * 10) * .8 + ')'; g.fillRect(0, 0, W, H); }
+            crackLayer(clamp01((x - .3) * 2)); shShake(x > .3 && x < .6 ? 16 : 0);
+          });
+        }).then(function () {
+          shShake(0);
+          var still = true;
+          (function hold(now) { if (!still) return; g.clearRect(0, 0, W, H); glass(.92); crackLayer(.85 + .15 * Math.sin(now / 90)); requestAnimationFrame(hold); })(performance.now());
+          return switchUnder().then(function () { still = false; });
+        }).then(function () {
+          return fxRun(1300, function (t) {   // the glass SHATTERS: shards fall away onto the lair
+            g.clearRect(0, 0, W, H);
+            shards.forEach(function (s) {
+              var u = Math.max(0, t - s.delay), dy = .0016 * u * u, dx = s.vx * u, rot = s.rot * u;
+              if (s.cy + dy - 200 > H) return;
+              g.save(); g.translate(s.cx + dx, s.cy + dy); g.rotate(rot); g.translate(-s.cx, -s.cy);
+              g.beginPath(); g.moveTo(s.p[0][0], s.p[0][1]); g.lineTo(s.p[1][0], s.p[1][1]); g.lineTo(s.p[2][0], s.p[2][1]); g.closePath();
+              g.save(); g.clip(); glass(.92); crackLayer(.85); if (u > 0 && shardIm) { g.globalAlpha = .35; g.drawImage(shardIm, s.cx - 40, s.cy - 40, 80, 80); } g.restore();
+              g.strokeStyle = 'rgba(125,255,58,' + (u > 0 ? .9 : .4) + ')'; g.lineWidth = 1.5; g.stroke();
+              g.restore();
+            });
+          });
+        }).then(function () { done(c); }, function () { done(c); });
+      });
+      return;
+    }
+    shArt(id, 'heroes', ['fx-burst', 'fx-speedlines', 'fx-sfx', 'fx-page', 'fx-spark']).then(function (r) {
+      var c = fxCanvas('superhero-swap'), g = c.g, W = c.W, H = c.H, sun = r[0], lines = r[1], sfx = r[2], page = r[3], spark = r[4];
+      var maxR = Math.hypot(Math.max(bx, W - bx), Math.max(by, H - by)) * 1.15;
+      var stars = []; for (var k = 0; k < 30; k++) stars.push({ a: Math.random() * 6.3, d: .3 + Math.random() * .9, s: 16 + Math.random() * 24, sp: Math.random() * .01 });
+      var gut = 10, pw = (W - gut * 3) / 2, ph = (H - gut * 3) / 2;
+      function pageAt(open) {   // the comic page; open 0 = whole, 1 = its four panels flown out to the corners
+        for (var i = 0; i < 4; i++) {
+          var col = i % 2, row = Math.floor(i / 2), x = gut + col * (pw + gut), y = gut + row * (ph + gut);
+          var e = open * open, dx = (col ? 1 : -1) * W * .8 * e, dy = (row ? 1 : -1) * H * .6 * e;
+          g.save(); g.translate(x + pw / 2 + dx, y + ph / 2 + dy); g.rotate((col ? 1 : -1) * (row ? -1 : 1) * .5 * e);
+          g.fillStyle = '#111'; g.fillRect(-pw / 2 - 4, -ph / 2 - 4, pw + 8, ph + 8);
+          if (page) g.drawImage(page, col * page.width / 2, row * page.height / 2, page.width / 2, page.height / 2, -pw / 2, -ph / 2, pw, ph);
+          else { g.fillStyle = '#fbf3dc'; g.fillRect(-pw / 2, -ph / 2, pw, ph); }
+          g.restore();
+        }
+      }
+      function rays(a, R, t) {
+        if (!sun || a <= 0) return;
+        g.save(); g.globalAlpha = a; g.translate(bx, by); g.rotate(t / 2400); g.drawImage(sun, -R, -R, R * 2, R * 2); g.restore();
+      }
+      function hit(a, sc, t) {
+        if (a <= 0) return;
+        if (lines) { g.save(); g.globalAlpha = a; var s = Math.max(W, H) * 1.5; g.drawImage(lines, W / 2 - s / 2, H / 2 - s / 2, s, s); g.restore(); }
+        if (spark) stars.forEach(function (p) { var d = p.d * Math.min(W, H) * .6 * sc; drawRot(g, spark, W / 2 + Math.cos(p.a) * d, H / 2 + Math.sin(p.a) * d, p.s, p.s, p.a + t * p.sp, a); });
+        if (sfx) { var w = Math.min(W * .9, 440) * sc, h = w * sfx.height / sfx.width; drawRot(g, sfx, W / 2, H / 2, w, h, .07, a); }
+      }
+      return preload.then(function () {
+        return fxRun(650, function (t, x) {   // the sunburst explodes out of the badge and floods the screen
+          var e = ease(x); g.clearRect(0, 0, W, H);
+          g.save(); g.beginPath(); g.arc(bx, by, Math.max(1, e * maxR), 0, 6.3); g.clip();
+          g.fillStyle = '#ffd23a'; g.fillRect(0, 0, W, H); rays(1, maxR, t); g.restore();
+        });
+      }).then(function () {
+        return fxRun(700, function (t, x) {   // POW! — the comic page slams over the sunburst
+          g.clearRect(0, 0, W, H); g.fillStyle = '#ffd23a'; g.fillRect(0, 0, W, H); rays(1, maxR, 650 + t);
+          var s = shBounce(Math.min(1, x * 1.6)); g.save(); g.translate(W / 2, H / 2); g.scale(1.3 - .3 * s, 1.3 - .3 * s); g.globalAlpha = Math.min(1, x * 3); g.translate(-W / 2, -H / 2); pageAt(0); g.restore();
+          hit(Math.min(1, x * 3), .5 + s * .5, t); shShake(x > .3 && x < .55 ? 16 : 0);
+        });
+      }).then(function () {
+        shShake(0);
+        var still = true;
+        (function hold(now) { if (!still) return; g.clearRect(0, 0, W, H); g.fillStyle = '#ffd23a'; g.fillRect(0, 0, W, H); pageAt(0); hit(1, 1, now); requestAnimationFrame(hold); })(performance.now());
+        return switchUnder().then(function () { still = false; });
+      }).then(function () {
+        return fxRun(900, function (t, x) {   // the panels fly apart to the corners onto the sunny city
+          var e = ease(x); g.clearRect(0, 0, W, H);
+          g.save(); g.globalAlpha = 1 - e; g.fillStyle = '#ffd23a'; g.fillRect(0, 0, W, H); rays(1, maxR, 2000 + t); g.restore();
+          pageAt(e); hit(1 - x * 1.6, 1 + e * .6, 2000 + t);
+        });
+      }).then(function () { done(c); }, function () { done(c); });
+    });
+  }
+  var EQUIP_FX = { 'scrapbook': equipScrapbook, 'anime-blaze': equipBlaze, 'witchcraft': equipWitchcraft, 'good-witch': equipGoodWitch, 'vaporwave': equipVaporwave, 'heavens-light': equipHeaven, 'superhero': equipSuperhero };
   // app.js calls this from the Equip buttons: equipTransition(id, function () { ...apply + save... })
   function equipTransition(id, applyFn) {
     var fx = EQUIP_FX[id], reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
