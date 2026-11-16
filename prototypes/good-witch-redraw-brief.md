@@ -124,3 +124,17 @@ ornaments, gold filigree and composition — only the lighting changes:
 - pieces that are pure gold (coin, constellations, tab-underline, photo-frame, photo-bubble, camera-badge) can be copied
   unchanged if they already read well on dark — then just copy them into kit/gw-night/ so the set is complete.
 Show a second contact sheet: day piece | night piece side by side.
+
+## 7. ORNATE PASS (owner, Nov 15: "this whole good witch stuff is too plain", "needs to be more themed", "the gold bleeds into the white")
+The first drawings are too plain/flat next to the concept. Redraw every frame/pill/panel below, Day (kit/gw) and Night
+(kit/gw-night), SAME names and sizes, at the concept's richness:
+- RICH warm gold (deeper, more saturated, with highlights and a thin dark edge so it never melts into the pale glass),
+  doubled/tripled filigree rims, curling gold vines with tiny leaves at the corners/ends, clusters of 4-point sparkles
+  and star glints, small crescent moons, pearl beads, a soft lavender inner glow and glass sheen.
+- Pills/buttons: glowing gradient glass with a sparkle trail; Edit Profile pill with the wand + a burst of sparkles and
+  vine curls at both ends; Follow / active chips glowing lavender with gold rim.
+- Keep each piece's centre calm and readable (text sits there), ornament on the rims/ends/corners.
+Pieces: stats-frame, edit-btn, name-banner, list-row, post-panel, top-bar, nav-bar, field, composer, coin-pill,
+join-btn, follow-btn, chip, chip-active, seg-tab, seg-tab-active, bubble-in, bubble-out, comment-bubble, skin-card,
+skin-card-wide, featured-frame, coin-goal-bar, input-bar, tool-tile, text-area, action-tile, menu-panel, public-pill,
+quests-frame, post-btn, equipped-tag.
