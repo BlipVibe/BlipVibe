@@ -8715,7 +8715,10 @@ function renderShop(){
     _bindBuyBtn('.fsk-buy','data-fsk-id','premium',state.ownedPremiumSkins,_fskCatalog(),'name');
     $$('.fsk-filter').forEach(function(btn){btn.addEventListener('click',function(){_fskFilter=btn.dataset.fskFilter;renderShop();});});
     $$('.fsk-equip').forEach(function(btn){btn.addEventListener('click',function(){
-        revertTryOn();applyPremiumSkin(btn.dataset.fskId);saveState();syncSkinDataToSupabase(true);renderShop();
+        var fid=btn.dataset.fskId;revertTryOn();
+        // themed equip animation (js/fullskins.js): the skin is applied while the animation covers the screen
+        var go=function(){applyPremiumSkin(fid);saveState();syncSkinDataToSupabase(true);renderShop();};
+        if(window.BlipFullSkins&&BlipFullSkins.equipTransition) BlipFullSkins.equipTransition(fid,go); else go();
     });});
     $$('.fsk-takeoff').forEach(function(btn){btn.addEventListener('click',function(){
         revertTryOn();applyPremiumSkin(null);saveState();syncSkinDataToSupabase(true);renderShop();
@@ -9679,7 +9682,7 @@ function renderMySkins(){
     $$('#mySkinsGrid .apply-icon-btn').forEach(function(btn){btn.addEventListener('click',function(){_applyAndSync(function(){applyIconSet(btn.dataset.iid==='default'?null:btn.dataset.iid);});});});
     $$('#mySkinsGrid .apply-coin-btn').forEach(function(btn){btn.addEventListener('click',function(){_applyAndSync(function(){applyCoinSkin(btn.dataset.cid==='default'?null:btn.dataset.cid);});});});
     $$('#mySkinsGrid .apply-tpl-btn').forEach(function(btn){btn.addEventListener('click',function(){_applyAndSync(function(){applyTemplate(btn.dataset.tid==='default'?null:btn.dataset.tid);});});});
-    $$('#mySkinsGrid .apply-premium-btn').forEach(function(btn){btn.addEventListener('click',function(){_applyAndSync(function(){applyPremiumSkin(btn.dataset.pid==='default'?null:btn.dataset.pid);});});});
+    $$('#mySkinsGrid .apply-premium-btn').forEach(function(btn){btn.addEventListener('click',function(){var pid=btn.dataset.pid==='default'?null:btn.dataset.pid;var go=function(){_applyAndSync(function(){applyPremiumSkin(pid);});};if(pid&&window.BlipFullSkins&&BlipFullSkins.equipTransition)BlipFullSkins.equipTransition(pid,go);else go();});});
     $$('#mySkinsGrid .apply-nav-btn').forEach(function(btn){btn.addEventListener('click',function(){_applyAndSync(function(){applyNavStyle(btn.dataset.nid==='default'?null:btn.dataset.nid);});});});
     // Song set + preview in My Skins
     $$('#mySkinsGrid .open-playlist-btn').forEach(function(btn){btn.addEventListener('click',function(){closeModal();showPlaylistManager();});});
