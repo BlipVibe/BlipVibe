@@ -245,7 +245,7 @@
       'group-avatar-frame', 'group-banner',
       'page-deco-groups', 'page-deco-skins', 'page-deco-network', 'page-deco-notifications', 'page-deco-search',
       'page-deco-messages', 'page-deco-post', 'moon-crest', 'toggle-crimson', 'toggle-silver',
-      'profile-windows', 'profile-windows-mask', 'profile-sky'],
+      'profile-windows', 'profile-windows-mask', 'profile-sky', 'profile-mask-1', 'profile-mask-2', 'profile-mask-3'],
     theme: { '--dark': '#f4e6e4', '--gray': '#cfa9a6', '--light-bg': '#1a0608', '--card': '#2a0c10',
       '--border': 'rgba(200,190,200,.35)', '--nav-bg': '#1a0608' },
     fonts: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap'
