@@ -2968,3 +2968,342 @@ html body.fs.fs-witchcraft #msgChat .msg-chat-input::after { content: ""; positi
 html body.fs.fs-witchcraft #msgChat .msg-chat-input::after { width: 46px !important; height: 46px !important; right: 6px !important; bottom: calc(100% + 100vw * 560 / 1290 * .74) !important; opacity: .9; }
 /* owner: the pentagram sigil covered your own messages — removed from chat */
 html body.fs.fs-witchcraft #msgChat .msg-chat-input::after { display: none !important; content: none !important; }
+
+/* ======================================================================================
+   GOOD WITCH (Nov 15). Built FROM the approved concepts (owner: match almost 1:1):
+   Day = images/skins/good-witch/concept-v1-approved.png + concept-2.png (art kit/gw → assets/)
+   Night = concept-night.png + concept-night-2.png (art kit/gw-night → assets/night/), picked via the Day/Night option.
+   Crops: prototypes/reference/good-witch{,-night}/<screen>.png. Notes: images/skins/good-witch/NOTES.md.
+   Text colours come from --gw-* so Night only swaps variables.
+   ====================================================================================== */
+body.fs-good-witch { --gw-title: #4b1f5e; --gw-ink: #4a2c6b; --gw-soft: #7b6596; --gw-accent: #8a5fd6; --gw-gold: #c9a35c;
+  background: #efe6fb !important; font-family: var(--fs-font) !important; font-size: 16px; color: var(--gw-ink); }
+body.fs-good-witch[data-fs-variant="night"] { --gw-title: #f4ecff; --gw-ink: #ece2ff; --gw-soft: #b9a7d9; --gw-accent: #c9a6ff; --gw-gold: #e3c27e;
+  background: #1a1236 !important; }
+body.fs-good-witch * { border-image-repeat: stretch !important; }
+body.fs-good-witch :is(h1, h2, h3, h4, .profile-name, .post-username, .card-heading, .nav-logo, .stat-count, .msg-contact-name,
+  .profile-card-name, .fsk-name, .group-card-body h4) { font-family: var(--fs-title-font) !important; font-weight: 700 !important; color: var(--gw-title) !important; }
+body.fs-good-witch :is(p, span, label, small, .post-time, .msg-contact-preview, .stat-label) { color: inherit; }
+body.fs-good-witch #premiumBgLayer { display: block !important; background: var(--fs-background) center / cover no-repeat !important; }
+body.fs-good-witch :is(.page, .main-container, .center-feed, .page-container) { background: transparent !important; }
+
+/* ---------- Home top bar (concept home): avatar · BlipVibe · search · bell · music · coin pill, one row ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-good-witch .navbar { border: 0 !important; border-image: none !important; box-shadow: none !important; overflow: visible !important;
+    background: var(--fs-top-bar) center bottom / 100% 100% no-repeat !important;
+    height: calc(64px + env(safe-area-inset-top, 0px)) !important; max-height: none !important; padding: env(safe-area-inset-top, 0px) 0 0 !important; box-sizing: border-box !important; }
+  html body.fs.fs-good-witch .page.active { padding-top: calc(70px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-good-witch .nav-container { display: grid !important; grid-template-columns: 50px 1fr 40px 40px 40px auto; align-items: center; column-gap: 4px; padding: 0 10px !important; height: 100%; }
+  html body.fs.fs-good-witch .navbar :is(.nav-left, .nav-right) { display: contents !important; }
+  html body.fs.fs-good-witch .navbar .nav-user { grid-column: 1; grid-row: 1; margin: 0 !important; }
+  html body.fs.fs-good-witch .navbar .nav-user::after { display: none !important; }
+  html body.fs.fs-good-witch .navbar .nav-avatar { width: 44px !important; height: 44px !important; border-radius: 50% !important; padding: 3px; box-sizing: border-box;
+    -webkit-mask: none !important; mask: none !important; box-shadow: none !important; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; object-fit: cover; }
+  html body.fs.fs-good-witch .navbar .nav-logo { grid-column: 2; grid-row: 1; justify-self: start; font-size: 27px !important; color: var(--gw-title) !important; background: none !important; padding: 0 0 0 4px !important; text-shadow: none !important; }
+  html body.fs.fs-good-witch .navbar .search-bar { display: none !important; }
+  html body.fs.fs-good-witch .navbar .mobile-search-btn { grid-column: 3; grid-row: 1; }
+  html body.fs.fs-good-witch .navbar .mobile-notif-btn { grid-column: 4; grid-row: 1; position: relative; }
+  html body.fs.fs-good-witch .navbar .nav-music-wrap { grid-column: 5; grid-row: 1; }
+  html body.fs.fs-good-witch .navbar .nav-coins { grid-column: 6; grid-row: 1; }
+  html body.fs.fs-good-witch .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) { width: 38px !important; height: 38px !important; display: flex !important; align-items: center; justify-content: center;
+    background: none !important; border: 0 !important; padding: 0 !important; }
+  html body.fs.fs-good-witch .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) > i { width: 25px !important; height: 25px !important; font-size: 0 !important; background-size: contain !important; background-repeat: no-repeat !important; background-position: center !important; }
+  html body.fs.fs-good-witch .navbar .mobile-notif-btn .notif-badge { position: absolute; top: 0; right: 0; min-width: 17px; height: 17px; border-radius: 9px; background: #b77cf0 !important; color: #fff !important; font: 700 11px/17px system-ui !important; text-align: center; padding: 0 4px; }
+  html body.fs.fs-good-witch .navbar .nav-coins { height: 36px !important; padding: 0 12px 0 8px !important; display: flex !important; align-items: center; gap: 5px; margin: 0 !important;
+    border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; background: var(--fs-coin-pill) center / 100% 100% no-repeat !important;
+    color: var(--gw-title) !important; font: 600 17px var(--fs-font) !important; }
+  html body.fs.fs-good-witch .navbar .nav-coins > i { width: 22px !important; height: 22px !important; font-size: 0 !important; background: var(--fs-coin) center / contain no-repeat !important; }
+  html body.fs.fs-good-witch .navbar .nav-coins .coin-count { color: var(--gw-title) !important; }
+  /* other pages: no app header (concept); back arrow · centred title (· coin pill on Skins only) */
+  html body.fs.fs-good-witch:not(:has(#page-home.active)) .navbar { height: 0 !important; min-height: 0 !important; padding: 0 !important; background: none !important; }
+  html body.fs.fs-good-witch:not(:has(#page-home.active)) .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-wrap, .nav-user) { display: none !important; }
+  html body.fs.fs-good-witch:not(:has(#page-home.active)) .navbar .nav-logo { display: block !important; position: fixed !important; z-index: 60; top: calc(env(safe-area-inset-top, 0px) + 10px); left: 10px;
+    width: 40px; height: 40px; padding: 0 !important; font-size: 0 !important; color: transparent !important; background: var(--fs-icon-back) center / 28px no-repeat !important; }
+  html body.fs.fs-good-witch:not(:has(#page-home.active)):not(:has(#page-shop.active)) .navbar .nav-coins { display: none !important; }
+  html body.fs.fs-good-witch:has(#page-shop.active) .navbar .nav-coins { position: fixed !important; z-index: 60; top: calc(env(safe-area-inset-top, 0px) + 12px); right: 12px; }
+  html body.fs.fs-good-witch:not(:has(#page-home.active)) .page.active { padding-top: calc(env(safe-area-inset-top, 0px) + 6px) !important; }
+  html body.fs.fs-good-witch:not(:has(#page-home.active)) .page.active::before { content: ""; position: absolute; left: 0; top: 0; width: 120px; height: 100px; pointer-events: none;
+    background: var(--fs-corner-vine) left top / contain no-repeat; z-index: 0; }
+  html body.fs.fs-good-witch .page.active { position: relative; }
+}
+
+/* ---------- bottom bar (concept): frosted glass bar, each tab a pearly ORB with its icon, label under; active orb glows ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-good-witch .nav-center { display: grid !important; grid-template-columns: repeat(5, 1fr); align-items: start; border: 0 !important; border-image: none !important; box-shadow: none !important; backdrop-filter: none !important;
+    height: calc(96px + env(safe-area-inset-bottom, 0px)) !important; padding: 6px 6px calc(env(safe-area-inset-bottom, 0px)) !important; box-sizing: border-box;
+    background: var(--fs-nav-bar) center top / 100% 100% no-repeat, linear-gradient(transparent 40%, var(--gw-navfill, #efe6fb) 40%) !important; }
+  html body.fs.fs-good-witch[data-fs-variant="night"] .nav-center { --gw-navfill: #1d1438; }
+  html body.fs.fs-good-witch .nav-center .nav-link { display: flex !important; flex-direction: column; align-items: center; gap: 1px; padding: 0 !important; min-width: 0; background: none !important; border: 0 !important; border-image: none !important;
+    color: var(--gw-soft) !important; font: 600 14px var(--fs-font) !important; transition: none !important; transform: none !important; }
+  html body.fs.fs-good-witch .nav-center .nav-link > i { width: 58px !important; min-width: 58px; height: 58px !important; font-size: 0 !important;
+    background: var(--fs-icon-home) center / 30px no-repeat, var(--fs-nav-orb) center / contain no-repeat !important; }
+  html body.fs.fs-good-witch .nav-center .nav-link[data-page="groups"] > i { background-image: var(--fs-icon-groups), var(--fs-nav-orb) !important; }
+  html body.fs.fs-good-witch .nav-center .nav-link[data-page="shop"] > i { background-image: var(--fs-icon-skins), var(--fs-nav-orb) !important; }
+  html body.fs.fs-good-witch .nav-center .nav-link[data-page="profiles"] > i { background-image: var(--fs-icon-network), var(--fs-nav-orb) !important; }
+  html body.fs.fs-good-witch .nav-center .nav-link[data-page="messages"] > i { background-image: var(--fs-icon-messages), var(--fs-nav-orb) !important; }
+  html body.fs.fs-good-witch .nav-center .nav-link.active > i { background-image: var(--fs-icon-home), var(--fs-nav-orb-active) !important; filter: drop-shadow(0 0 8px rgba(167, 123, 240, .55)); }
+  html body.fs.fs-good-witch .nav-center .nav-link.active[data-page="groups"] > i { background-image: var(--fs-icon-groups), var(--fs-nav-orb-active) !important; }
+  html body.fs.fs-good-witch .nav-center .nav-link.active[data-page="shop"] > i { background-image: var(--fs-icon-skins), var(--fs-nav-orb-active) !important; }
+  html body.fs.fs-good-witch .nav-center .nav-link.active[data-page="profiles"] > i { background-image: var(--fs-icon-network), var(--fs-nav-orb-active) !important; }
+  html body.fs.fs-good-witch .nav-center .nav-link.active[data-page="messages"] > i { background-image: var(--fs-icon-messages), var(--fs-nav-orb-active) !important; }
+  html body.fs.fs-good-witch .nav-center .nav-link.active { color: var(--gw-accent) !important; font-weight: 700 !important; }
+  html body.fs.fs-good-witch .nav-center .nav-link .notif-badge { position: absolute; top: 2px; right: 18%; }
+  html body.fs.fs-good-witch .nav-center .nav-link { position: relative; }
+}
+
+/* ---------- glass panels + posts ---------- */
+html body.fs.fs-good-witch :is(.card:not(.feed-post):not(.profile-card):not(.pv-profile-card), .comment-item, .post-dropdown) {
+  border: 24px solid transparent !important; border-image: var(--fs-post-panel) 90 fill / 24px stretch !important; background: none !important; box-shadow: none !important; padding: 0 2px !important; color: var(--gw-ink) !important; }
+html body.fs.fs-good-witch .feed-post.feed-post.feed-post { background: none !important; box-shadow: none !important; border: 24px solid transparent !important;
+  border-image: var(--fs-post-panel) 90 fill / 24px stretch !important; padding: 0 2px !important; color: var(--gw-ink) !important; }
+html body.fs.fs-good-witch .post-header { align-items: center !important; }
+html body.fs.fs-good-witch .post-header .post-avatar { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; width: 48px !important; height: 48px !important;
+  padding: 3px; box-sizing: border-box; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-good-witch .post-user-top { flex-direction: column !important; align-items: flex-start !important; gap: 0 !important; }
+html body.fs.fs-good-witch .post-username { font-size: 19px !important; }
+html body.fs.fs-good-witch :is(.post-time, .post-meta) { color: var(--gw-soft) !important; font-size: 15px !important; }
+html body.fs.fs-good-witch :is(.post-content-text, .post-text, .post-content p) { color: var(--gw-ink) !important; font-size: 17px !important; }
+html body.fs.fs-good-witch .post-menu-btn, html body.fs.fs-good-witch .post-menu-btn i { color: var(--gw-title) !important; }
+html body.fs.fs-good-witch .post-actions { border: 0 !important; justify-content: space-around; }
+html body.fs.fs-good-witch .action-btn { color: var(--gw-ink) !important; font: 600 17px var(--fs-font) !important; }
+/* photos: whole, never cropped, rounded, thin gold frame hugging each one */
+html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] { display: flex !important; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px;
+  height: auto !important; max-height: none !important; aspect-ratio: auto !important; overflow: visible !important; background: none !important; margin: 4px 0 !important; }
+html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] .pm-thumb { position: relative; flex: 0 1 auto; width: fit-content !important; height: auto !important; min-height: 0 !important; max-height: none !important;
+  max-width: 100%; border: 0 !important; background: none !important; border-radius: 14px !important; overflow: visible !important; line-height: 0; }
+html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] .pm-thumb::after { content: ""; position: absolute; inset: -3px; z-index: 2; pointer-events: none; background: var(--fs-photo-frame) center / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] .pm-thumb :is(img, video) { display: block; width: auto !important; height: auto !important; min-height: 0 !important; max-width: 100% !important; max-height: 460px !important;
+  object-fit: contain !important; border-radius: 14px !important; background: transparent !important; }
+html body.fs.fs-good-witch .post-media-grid[class*="pm-count"]:not(.pm-count-1) .pm-thumb { max-width: calc(50% - 4px); align-self: center !important; }
+html body.fs.fs-good-witch .post-media-grid[class*="pm-count"]:not(.pm-count-1) .pm-thumb :is(img, video) { max-height: 230px !important; }
+html body.fs.fs-good-witch .share-preview { border: 16px solid transparent !important; border-image: var(--fs-comment-bubble) 60 fill / 16px stretch !important; background: none !important; border-radius: 0 !important; color: var(--gw-ink) !important; }
+
+/* ---------- Home: profile block (owner rule: always on Home) built like the concept profile ---------- */
+body.fs-good-witch :is(.pv-profile-card, #profileCard) { background: transparent !important; border: 0 !important; border-image: none !important; box-shadow: none !important; }
+body.fs-good-witch :is(.pv-profile-card, #profileCard) .profile-cover { display: none !important; }
+body.fs-good-witch :is(#coverEditBtn, #pvCoverEditBtn) { display: none !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-good-witch :is(#timelineCover, #pvCoverBanner) { position: relative; height: 250px !important; aspect-ratio: auto !important; border-radius: 0 !important; background: none !important;
+    width: calc(100vw + 16px) !important; max-width: none !important; margin-left: calc(50% - 50vw - 8px) !important; margin-right: calc(50% - 50vw - 8px) !important; overflow: visible !important; }
+  /* the two gold crescents cradling the side bubbles (moon-frame = left crescent; right one mirrored) */
+  html body.fs.fs-good-witch :is(#timelineCover, #pvCoverBanner)::before,
+  html body.fs.fs-good-witch :is(#timelineCover, #pvCoverBanner)::after { content: ""; position: absolute; top: 14px; width: 270px; height: 189px; pointer-events: none; z-index: 1;
+    background: var(--fs-moon-frame) left top / 100% 100% no-repeat; }
+  html body.fs.fs-good-witch :is(#timelineCover, #pvCoverBanner)::before { left: -3px; }
+  html body.fs.fs-good-witch :is(#timelineCover, #pvCoverBanner)::after { right: -3px; transform: scaleX(-1); }
+}
+html body.fs.fs-good-witch .fs-timeline { position: absolute; inset: 0; z-index: 2; }
+html body.fs.fs-good-witch .fs-tl-slot { position: absolute; border-radius: 50%; aspect-ratio: 1; height: auto; }
+html body.fs.fs-good-witch .fs-tl-slot img { position: absolute; inset: 3.5%; width: 93% !important; height: 93% !important; object-fit: cover; border-radius: 50%; }
+html body.fs.fs-good-witch .fs-tl-slot::before { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: var(--fs-photo-bubble) center / 100% 100% no-repeat; }
+html body.fs.fs-good-witch .fs-tl-slot.fs-tl-empty::after { content: ""; position: absolute; inset: 3.5%; border-radius: 50%; background: radial-gradient(circle at 50% 40%, #fff 0%, #e7dbff 70%, #d5c3f5 100%); z-index: 1; display: block !important; }
+html body.fs.fs-good-witch[data-fs-variant="night"] .fs-tl-slot.fs-tl-empty::after { background: radial-gradient(circle at 50% 40%, #5a3d8f 0%, #2c1d55 70%, #1d1438 100%); }
+html body.fs.fs-good-witch .fs-tl-own::after { display: none !important; }
+html body.fs.fs-good-witch .fs-tl-own.fs-tl-slot-3::after { display: block !important; content: ""; position: absolute; right: -2%; bottom: 2%; left: auto; top: auto; width: 34px; height: 34px; z-index: 4;
+  background: var(--fs-camera-badge) center / contain no-repeat !important; border-radius: 50%; }
+html body.fs.fs-good-witch .fs-tl-slot-1 { left: 5.5%; top: 42px; width: 33.5%; }
+html body.fs.fs-good-witch .fs-tl-slot-2 { left: 30%; top: 4px; width: 40%; z-index: 2; }
+html body.fs.fs-good-witch .fs-tl-slot-3 { right: 5.5%; top: 42px; width: 33.5%; }
+html body.fs.fs-good-witch :is(#profileAvatarImg, .pv-profile-card .profile-avatar) { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; border: 0 !important; box-shadow: none !important; object-fit: cover; }
+html body.fs.fs-good-witch :is(.pv-profile-card, #profileCard) .profile-avatar-wrap { width: 150px !important; height: 150px !important; margin: -112px auto 0 !important; border-radius: 50% !important; overflow: visible !important; z-index: 3; position: relative; }
+html body.fs.fs-good-witch :is(.pv-profile-card, #profileCard) .profile-avatar-wrap .profile-avatar { width: 100% !important; height: 100% !important; }
+html body.fs.fs-good-witch :is(.pv-profile-card, #profileCard) .profile-avatar-wrap::after { display: block !important; content: ""; position: absolute; inset: -4%; z-index: 2; pointer-events: none;
+  background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-good-witch :is(.pv-profile-card, #profileCard) .avatar-edit-btn { z-index: 4 !important; width: 36px !important; height: 36px !important; right: 2% !important; bottom: 2% !important; border: 0 !important; box-shadow: none !important;
+  background: var(--fs-camera-badge) center / contain no-repeat !important; }
+html body.fs.fs-good-witch :is(.pv-profile-card, #profileCard) .avatar-edit-btn i { opacity: 0 !important; }
+html body.fs.fs-good-witch .fs-namecard { border: 0 !important; border-image: none !important; background: none !important; transform: none !important; width: auto !important; padding: 0 !important; margin: 6px auto 0 !important; }
+html body.fs.fs-good-witch .fs-namecard::before { display: none !important; }
+html body.fs.fs-good-witch :is(.pv-profile-card, #profileCard) .profile-name { font-size: 40px !important; line-height: 1.05 !important; border: 0 !important; background: none !important; margin: 0 !important; }
+html body.fs.fs-good-witch :is(.pv-profile-card, #profileCard) :is(.profile-title, .profile-about) { color: var(--gw-title) !important; font-style: italic; font-weight: 600; font-size: 18px !important; margin: 2px 0 0 !important; }
+html body.fs.fs-good-witch :is(.pv-profile-card, #profileCard) :is(.profile-title, .profile-about):empty { display: none !important; }
+html body.fs.fs-good-witch :is(.pv-profile-card, #profileCard) .profile-stats { display: flex !important; justify-content: center; align-items: center; position: relative; width: 92% !important; margin: 12px auto 0 !important;
+  aspect-ratio: 1100 / 260; border: 0 !important; border-image: none !important; background: var(--fs-stats-frame) center / 100% 100% no-repeat !important; padding: 0 12% !important; box-sizing: border-box; }
+html body.fs.fs-good-witch :is(.pv-profile-card, #profileCard) .profile-stats > .stat { flex: 1 1 0; border: 0 !important; border-image: none !important; background: none !important; padding: 0 !important; text-align: center; }
+html body.fs.fs-good-witch :is(.pv-profile-card, #profileCard) .profile-stats > .stat + .stat { border-left: 1.5px solid color-mix(in srgb, var(--gw-gold) 70%, transparent) !important; }
+html body.fs.fs-good-witch :is(.pv-profile-card, #profileCard) .profile-stats > .stat + .stat::before { display: none !important; }
+html body.fs.fs-good-witch :is(.pv-profile-card, #profileCard) .stat-count { font-size: 30px !important; line-height: 1 !important; }
+html body.fs.fs-good-witch :is(.pv-profile-card, #profileCard) .stat-label { color: var(--gw-title) !important; font-size: 18px !important; font-weight: 600; }
+html body.fs.fs-good-witch #pvEditProfileBtn,
+html body.fs.fs-good-witch #profileCard .profile-links { border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important;
+  background: var(--fs-edit-btn) center / 100% 100% no-repeat !important; width: 72% !important; height: 56px; min-height: 0; margin: 14px auto 6px !important; padding: 0 16% 0 0 !important;
+  display: flex !important; align-items: center; justify-content: center; gap: 8px; box-sizing: border-box; }
+html body.fs.fs-good-witch #profileCard :is(.view-profile-link, .edit-profile-btn) , html body.fs.fs-good-witch #pvEditProfileBtn { color: var(--gw-title) !important; font: 700 22px var(--fs-title-font) !important; }
+html body.fs.fs-good-witch #profileCard .edit-profile-btn i, html body.fs.fs-good-witch #pvEditProfileBtn i { display: none !important; }
+html body.fs.fs-good-witch :is(#profileCard, .pv-profile-card)::after { content: ""; display: block; height: 0; padding-bottom: 40%; margin: 0 -8px; background: var(--fs-cat-cloud) center bottom / 100% auto no-repeat; }
+html body.fs.fs-good-witch .pv-back-link { display: none !important; }
+
+/* ---------- Daily Quests (concept): frosted frame with gold crescent, each quest a CONSTELLATION that lights up ---------- */
+html body.fs.fs-good-witch .quest-panel { border: 0 !important; border-image: none !important; box-shadow: none !important; position: relative;
+  background: var(--fs-quests-frame) center / 100% 100% no-repeat !important; padding: 46px 18px 26px !important;
+  display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 4px 0 !important; }
+html body.fs.fs-good-witch #questPanel[style*="none"] { display: none !important; }
+html body.fs.fs-good-witch .quest-panel-header { grid-column: 1 / -1; justify-content: center !important; border: 0 !important; margin: 0 !important; }
+html body.fs.fs-good-witch .quest-panel-header h4 { font-size: 26px !important; }
+html body.fs.fs-good-witch .quest-panel-header i, html body.fs.fs-good-witch .quest-reset { display: none !important; }
+html body.fs.fs-good-witch .quest-item { display: flex !important; flex-direction: column; align-items: center; text-align: center; gap: 0; border: 0 !important; border-image: none !important;
+  background: none !important; padding: 0 !important; margin: 0 !important; min-width: 0; }
+html body.fs.fs-good-witch .quest-icon { width: 92px !important; height: 80px !important; margin: 0 0 2px !important; border-radius: 0 !important; background: var(--fs-constellation-a-0) center / contain no-repeat !important; }
+html body.fs.fs-good-witch .quest-item[data-fs-q="50"] .quest-icon { background-image: var(--fs-constellation-a-50) !important; }
+html body.fs.fs-good-witch .quest-item[data-fs-q="100"] .quest-icon { background-image: var(--fs-constellation-a-100) !important; }
+html body.fs.fs-good-witch .quest-item:nth-child(3) .quest-icon { background-image: var(--fs-constellation-b-0) !important; }
+html body.fs.fs-good-witch .quest-item:nth-child(3)[data-fs-q="50"] .quest-icon { background-image: var(--fs-constellation-b-50) !important; }
+html body.fs.fs-good-witch .quest-item:nth-child(3)[data-fs-q="100"] .quest-icon { background-image: var(--fs-constellation-b-100) !important; }
+html body.fs.fs-good-witch .quest-item:nth-child(4) .quest-icon { background-image: var(--fs-constellation-c-0) !important; }
+html body.fs.fs-good-witch .quest-item:nth-child(4)[data-fs-q="50"] .quest-icon { background-image: var(--fs-constellation-c-50) !important; }
+html body.fs.fs-good-witch .quest-item:nth-child(4)[data-fs-q="100"] .quest-icon { background-image: var(--fs-constellation-c-100) !important; }
+html body.fs.fs-good-witch .quest-icon > i { display: none !important; }
+html body.fs.fs-good-witch .quest-info { display: flex; flex-direction: column; align-items: center; }
+html body.fs.fs-good-witch .quest-info p { color: var(--gw-title) !important; font-size: 16px !important; font-weight: 700; line-height: 1.1; margin: 0 !important; }
+html body.fs.fs-good-witch .quest-bar { display: none !important; }
+html body.fs.fs-good-witch .quest-progress { color: var(--gw-title) !important; font-size: 16px !important; font-weight: 600; }
+html body.fs.fs-good-witch :is(.quest-reward, .quest-check) { background: none !important; color: var(--gw-title) !important; font: 700 17px var(--fs-font) !important; padding: 0 !important; display: inline-flex; align-items: center; gap: 4px; }
+html body.fs.fs-good-witch .quest-reward > i { font-size: 0 !important; width: 20px; height: 20px; background: var(--fs-coin) center / contain no-repeat; }
+
+/* ---------- feed tabs: plain words, the active one on a soft glow with the constellation underline ---------- */
+html body.fs.fs-good-witch #feedTabs { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 0 !important; border: 0 !important; background: none !important; margin: 6px 0 !important; }
+html body.fs.fs-good-witch .search-tab { border: 0 !important; border-image: none !important; border-radius: 22px !important; box-shadow: none !important; background: none !important;
+  color: var(--gw-title) !important; font: 600 18px var(--fs-font) !important; padding: 8px 6px 14px !important; white-space: nowrap; display: flex !important; align-items: center; justify-content: center; }
+html body.fs.fs-good-witch .search-tab > i { display: none !important; }
+html body.fs.fs-good-witch #feedTabs .search-tab.active { background: radial-gradient(ellipse at 50% 45%, rgba(214, 190, 255, .75), transparent 70%), var(--fs-tab-underline) center bottom / 86% 16px no-repeat !important; color: var(--gw-accent) !important; font-weight: 700 !important; }
+/* filter chips + segmented tabs */
+html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, .fsk-filters) { display: flex !important; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding: 2px 0 !important; border: 0 !important; background: none !important; scrollbar-width: none; }
+html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab, html body.fs.fs-good-witch .fsk-filter {
+  flex: 0 0 auto; padding: 6px 14px !important; font-size: 15px !important; border-radius: 0 !important; background: var(--fs-chip) center / 100% 100% no-repeat !important; color: var(--gw-title) !important; }
+html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.active, html body.fs.fs-good-witch .fsk-filter.active { background-image: var(--fs-chip-active) !important; color: #fff !important; }
+html body.fs.fs-good-witch :is(#profilesTabs, #searchTabs) .search-tab { flex: 1 1 0; min-height: 46px; padding: 4px 6px !important; font-size: 15px !important; line-height: 1.1; white-space: normal; text-align: center;
+  background: var(--fs-seg-tab) center / 100% 100% no-repeat !important; }
+html body.fs.fs-good-witch :is(#profilesTabs, #searchTabs) .search-tab.active { background-image: var(--fs-seg-tab-active) !important; color: #fff !important; }
+
+/* ---------- Home extras (concept home-full): stories, composer, Featured Skin, coin goal ---------- */
+html body.fs.fs-good-witch .story-ring { background: var(--fs-story-ring) center / contain no-repeat !important; padding: 4px !important; }
+html body.fs.fs-good-witch .story-add .story-ring:not(.story-has) { background-image: var(--fs-story-add) !important; }
+html body.fs.fs-good-witch :is(.story-name, .story-label) { color: var(--gw-title) !important; }
+html body.fs.fs-good-witch #openPostModal { border: 0 !important; border-image: none !important; background: none !important; padding: 0 2px !important; display: flex; align-items: center; gap: 8px; }
+html body.fs.fs-good-witch .post-create-avatar { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; width: 46px !important; height: 46px !important; padding: 3px; box-sizing: border-box;
+  background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; }
+html body.fs.fs-good-witch .post-input-fake { flex: 1; border: 0 !important; border-image: none !important; border-radius: 0 !important; background: var(--fs-composer) center / 100% 100% no-repeat !important;
+  padding: 12px 18px !important; min-height: 0 !important; color: var(--gw-soft) !important; font: 500 16px var(--fs-font) !important; }
+html body.fs.fs-good-witch .featured-skin-banner { border: 0 !important; border-image: none !important; box-shadow: none !important; background: var(--fs-featured-frame) center / 100% 100% no-repeat !important; padding: 14px 18px !important; color: var(--gw-title) !important; }
+html body.fs.fs-good-witch .coin-goal-bar { border: 0 !important; border-image: none !important; box-shadow: none !important; background: var(--fs-coin-goal-bar) center / 100% 100% no-repeat !important; padding: 10px 16px !important; color: var(--gw-title) !important; }
+html body.fs.fs-good-witch .coin-goal-track { background: var(--fs-goal-track) center / 100% 100% no-repeat !important; border-radius: 0 !important; border: 0 !important; }
+html body.fs.fs-good-witch .coin-goal-fill { background: var(--fs-goal-fill) left center / auto 100% no-repeat !important; border-radius: 0 !important; }
+
+/* ---------- page headers (concept groups/messages/skins/...): centred title, round icon buttons right ---------- */
+html body.fs.fs-good-witch .page-header, html body.fs.fs-good-witch .msg-sidebar-header { display: flex !important; flex-wrap: wrap; align-items: center; gap: 8px; padding: 6px 4px 0 52px !important; border: 0 !important; background: none !important; position: relative; z-index: 1; }
+html body.fs.fs-good-witch :is(.page-header h2, .msg-sidebar-header h3) { flex: 1 1 auto; margin: 0 !important; text-align: center; font-size: 30px !important; background: none !important; border: 0 !important; padding: 0 !important; }
+html body.fs.fs-good-witch .page-header h2 > i { display: none !important; }
+html body.fs.fs-good-witch .page-header .page-subtitle { display: none !important; }
+html body.fs.fs-good-witch .page-header .page-actions { display: contents !important; }
+html body.fs.fs-good-witch .page-header .page-search { order: 5; flex: 1 1 100%; margin: 0 0 0 -44px !important; }
+html body.fs.fs-good-witch .page-header .btn:not(.page-search) { width: 42px !important; height: 42px !important; min-width: 0; padding: 0 !important; font-size: 0 !important; border: 0 !important; border-image: none !important; border-radius: 50% !important; box-shadow: none !important; background: none !important; }
+html body.fs.fs-good-witch .page-header .btn:not(.page-search) i { font-size: 0 !important; width: 26px; height: 26px; display: inline-block; background: var(--fs-icon-plus) center / contain no-repeat; margin: 0 !important; }
+html body.fs.fs-good-witch .page-header .btn:not(.page-search) i::before { content: "" !important; }
+/* fields */
+html body.fs.fs-good-witch :is(.msg-search, .page-search, .comment-input) { border: 0 !important; border-image: none !important; border-radius: 0 !important; background: var(--fs-field) center / 100% 100% no-repeat !important; padding: 0 10px !important; min-height: 46px; display: flex; align-items: center; box-shadow: none !important; }
+html body.fs.fs-good-witch :is(.msg-search, .page-search) > i { font-size: 0 !important; width: 20px; height: 20px; flex: 0 0 20px; background: var(--fs-icon-search) center / contain no-repeat; position: static !important; transform: none !important; }
+html body.fs.fs-good-witch :is(.msg-search, .page-search) > i::before { content: "" !important; }
+html body.fs.fs-good-witch :is(.msg-search, .page-search) input { background: none !important; border: 0 !important; color: var(--gw-ink) !important; font: 500 17px var(--fs-font) !important; padding: 8px !important; height: auto !important; flex: 1; }
+
+/* ---------- list rows (groups, network, messages, notifications, search) ---------- */
+html body.fs.fs-good-witch :is(.msg-contact, .notif-item, .profile-card-item, .follow-list-item) {
+  border: 16px solid transparent !important; border-image: var(--fs-list-row) 70 fill / 16px stretch !important; background: none !important; box-shadow: none !important; color: var(--gw-ink) !important; margin-bottom: 6px !important; }
+html body.fs.fs-good-witch :is(.join-group-btn, .suggestion-follow-btn, .follow-btn, .profile-follow-btn) { border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important;
+  background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: var(--gw-title) !important; font: 700 16px var(--fs-font) !important; }
+html body.fs.fs-good-witch :is(.msg-contact > div > img, .profile-card-item .profile-card-avatar, .notif-item img, #newGroupDmBtn > div:first-child) {
+  -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; border: 0 !important; padding: 3px !important; box-sizing: border-box; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; object-fit: cover; }
+html body.fs.fs-good-witch .msg-contact-name > span { font-size: 0 !important; width: 20px; height: 20px; padding: 0 !important; display: inline-block; vertical-align: middle; background: var(--fs-unread-gem) center / contain no-repeat !important; border-radius: 0 !important; }
+html body.fs.fs-good-witch :is(.msg-contact-preview, .msg-contact-time, .profile-card-bio) { color: var(--gw-soft) !important; }
+html body.fs.fs-good-witch #groupsSections .shop-scroll-row, html body.fs.fs-good-witch :is(#page-profiles, #page-search) :is(.connections-grid, .shop-scroll-row, .page-grid) {
+  display: flex !important; flex-direction: column; gap: 6px; overflow: visible !important; grid-template-columns: none !important; grid-auto-flow: row !important; }
+html body.fs.fs-good-witch #groupsSections .group-card { min-width: 0 !important; max-width: none !important; width: 100%; transform: none !important; display: grid !important; grid-template-columns: 64px minmax(0, 1fr) auto; align-items: center; gap: 12px;
+  background: none !important; box-shadow: none !important; border: 16px solid transparent !important; border-image: var(--fs-list-row) 70 fill / 16px stretch !important; padding: 0 2px !important; }
+html body.fs.fs-good-witch #groupsSections .group-card-banner { width: 64px; height: 64px !important; border-radius: 50%; overflow: hidden; padding: 3px; box-sizing: border-box; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; }
+html body.fs.fs-good-witch #groupsSections .group-card-banner img { width: 100% !important; height: 100% !important; border-radius: 50% !important; border: 0 !important; object-fit: cover; margin: 0 !important; }
+html body.fs.fs-good-witch #groupsSections .gc-icon-edit-btn, html body.fs.fs-good-witch #groupsSections .group-card-actions .view-group-btn, html body.fs.fs-good-witch #groupsSections .gc-btn-icon { display: none !important; }
+html body.fs.fs-good-witch #groupsSections .group-card-body { padding: 0 !important; min-width: 0; }
+html body.fs.fs-good-witch #groupsSections .group-card-body h4 { margin: 0; font-size: 20px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html body.fs.fs-good-witch #groupsSections .group-card-body p:not(.group-members) { display: none; }
+html body.fs.fs-good-witch #groupsSections .group-members { color: var(--gw-soft) !important; font-size: 15px !important; }
+html body.fs.fs-good-witch #groupsSections .group-card-actions { padding: 0 !important; }
+html body.fs.fs-good-witch #groupsSections .group-card-actions .btn { min-width: 84px; height: 40px; padding: 0 12px !important; white-space: nowrap; border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important;
+  background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: var(--gw-title) !important; font: 700 16px var(--fs-font) !important; }
+html body.fs.fs-good-witch :is(#page-profiles, #page-search) .profile-card-item { display: grid !important; grid-template-columns: 58px minmax(0, 1fr) auto; column-gap: 12px; align-items: center; text-align: left;
+  min-width: 0 !important; max-width: none !important; width: 100%; transform: none !important; padding: 0 2px !important; }
+html body.fs.fs-good-witch :is(#page-profiles, #page-search) .profile-card-item > * { grid-column: 2; margin: 0 !important; min-width: 0; text-align: left !important; }
+html body.fs.fs-good-witch :is(#page-profiles, #page-search) .profile-card-avatar { grid-column: 1; grid-row: 1 / span 3; width: 58px !important; height: 58px !important; }
+html body.fs.fs-good-witch :is(#page-profiles, #page-search) .profile-follow-btn { grid-column: 3; grid-row: 1 / span 3; width: auto !important; min-width: 90px; height: 40px; padding: 0 12px !important; }
+html body.fs.fs-good-witch :is(#page-profiles, #page-search) .profile-card-name { font-size: 19px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html body.fs.fs-good-witch :is(#page-profiles, #page-search) .profile-card-item:not(:has(.profile-card-bio)) .profile-card-name { grid-row: 1 / span 3; }
+/* notifications: lavender icon per type (concept), no coloured disc */
+html body.fs.fs-good-witch .notif-icon { background: none !important; width: 40px !important; height: 40px !important; flex-shrink: 0; box-shadow: none !important; }
+html body.fs.fs-good-witch .notif-icon i { font-size: 0 !important; width: 30px; height: 30px; display: block; margin: auto; background: var(--fs-notif-like) center / contain no-repeat; }
+html body.fs.fs-good-witch .notif-icon i::before { content: "" !important; }
+html body.fs.fs-good-witch .notif-icon i.fa-user-plus { background-image: var(--fs-notif-follow); }
+html body.fs.fs-good-witch .notif-icon i:is(.fa-comment, .fa-reply) { background-image: var(--fs-notif-comment); }
+html body.fs.fs-good-witch .notif-icon i.fa-at { background-image: var(--fs-notif-mention); }
+html body.fs.fs-good-witch .notif-icon i.fa-envelope { background-image: var(--fs-notif-message); }
+html body.fs.fs-good-witch .notif-icon i:is(.fa-users, .fa-envelope-open-text) { background-image: var(--fs-notif-group); }
+html body.fs.fs-good-witch .notif-icon i:is(.fa-palette, .fa-coins) { background-image: var(--fs-notif-purchase); }
+html body.fs.fs-good-witch .notif-item :is(.notif-text, p) { color: var(--gw-ink) !important; font-size: 16px !important; }
+
+/* ---------- skins shop (concept skins): frosted cards, art on top, name + coin price below, Equipped tag ---------- */
+html body.fs.fs-good-witch .fsk-grid { gap: 10px !important; }
+html body.fs.fs-good-witch .fsk-card { position: relative; background: var(--fs-skin-card) center / 100% 100% no-repeat !important; border: 0 !important; border-image: none !important; box-shadow: none !important; padding: 0 0 8px !important; overflow: visible !important; }
+html body.fs.fs-good-witch .fsk-thumb { margin: 2% 2.5% 0 2.3% !important; aspect-ratio: 1.6; height: auto !important; border: 0 !important; border-radius: 12px 12px 0 0 !important; overflow: hidden; }
+html body.fs.fs-good-witch .fsk-thumb img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+html body.fs.fs-good-witch .fsk-body { padding: 4px 12px 0 !important; text-align: left !important; background: none !important; }
+html body.fs.fs-good-witch .fsk-name { font-size: 18px !important; margin: 0 !important; text-align: left !important; }
+html body.fs.fs-good-witch .fsk-badge { position: absolute; top: 4px; right: 4px; width: auto !important; height: 24px !important; padding: 0 12px !important; border-radius: 0 !important;
+  background: var(--fs-equipped-tag) center / 100% 100% no-repeat !important; color: #fff !important; font: 700 13px var(--fs-font) !important; display: inline-flex !important; align-items: center; }
+html body.fs.fs-good-witch .fsk-badge i { display: none !important; }
+html body.fs.fs-good-witch .fsk-badge::after { content: "Equipped"; }
+html body.fs.fs-good-witch .fsk-body .btn { width: 100% !important; height: 38px; margin: 6px 0 0 !important; padding: 0 10px !important; display: flex !important; align-items: center; justify-content: center; gap: 5px;
+  border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: var(--gw-title) !important; font: 700 16px var(--fs-font) !important; }
+html body.fs.fs-good-witch .fsk-body .btn.fsk-equipped { background-image: var(--fs-chip-active) !important; color: #fff !important; opacity: 1 !important; }
+html body.fs.fs-good-witch :is(.fsk-soon, .fsk-takeoff) { color: var(--gw-soft) !important; }
+
+/* ---------- chat (concept chat): frosted bubbles, + orb, field, send orb; moon-in-clouds pinned above the input ---------- */
+html body.fs.fs-good-witch #msgChat { background: var(--fs-background) center / cover no-repeat !important; }
+html body.fs.fs-good-witch #msgChat .msg-chat-header { background: none !important; border-bottom: 0 !important; position: relative; }
+html body.fs.fs-good-witch #msgChat .msg-chat-header::before { content: ""; position: absolute; left: 0; top: 0; width: 110px; height: 100%; background: var(--fs-corner-vine) left top / contain no-repeat; pointer-events: none; }
+html body.fs.fs-good-witch #msgChat .msg-back-btn { display: flex !important; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0 !important; background: none !important; position: relative; z-index: 1; }
+html body.fs.fs-good-witch #msgChat .msg-back-btn i { font-size: 0 !important; display: block !important; width: 26px; height: 26px; background: var(--fs-icon-back) center / contain no-repeat !important; }
+html body.fs.fs-good-witch #msgChat .msg-chat-header img { width: 46px !important; height: 46px !important; padding: 3px; box-sizing: border-box; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; position: relative; z-index: 1; }
+html body.fs.fs-good-witch #msgChat .msg-chat-header h4 { font-size: 21px !important; position: relative; z-index: 1; }
+html body.fs.fs-good-witch .msg-bubble { border: 16px solid transparent !important; border-image: var(--fs-bubble-in) 70 fill / 16px stretch !important; background: none !important; color: var(--gw-ink) !important; border-radius: 0 !important; box-shadow: none !important; padding: 0 4px !important; }
+html body.fs.fs-good-witch .msg-bubble.sent { border-image-source: var(--fs-bubble-out) !important; color: #fff !important; }
+html body.fs.fs-good-witch #msgChat .msg-chat-messages { overflow-x: hidden !important; touch-action: pan-y; }
+html body.fs.fs-good-witch #msgChat .msg-chat-messages::after { content: ""; display: block; flex: 0 0 auto; height: calc(100vw * 500 / 1290 - 30px); }
+html body.fs.fs-good-witch #msgChat .msg-chat-input { position: relative !important; z-index: 3; background: var(--fs-input-bar) center / 100% 100% no-repeat !important; border-top: 0 !important;
+  justify-content: center !important; align-items: center !important; gap: 6px !important; padding-left: 10px !important; padding-right: 10px !important; }
+html body.fs.fs-good-witch #msgChat .msg-chat-input::before { content: ""; position: absolute; left: 0; right: 0; bottom: calc(100% - 4px); aspect-ratio: 1290 / 500; background: var(--fs-moon-clouds) center bottom / 100% 100% no-repeat; pointer-events: none; z-index: -1; }
+html body.fs.fs-good-witch #msgChat .msg-media-btn { display: flex !important; align-items: center; justify-content: center; width: 36px !important; height: 36px !important; padding: 0 !important; flex: 0 0 36px; background: none !important; }
+html body.fs.fs-good-witch #msgChat .msg-media-btn i { font-size: 0 !important; display: block !important; width: 26px; height: 26px; background: center / contain no-repeat !important; }
+html body.fs.fs-good-witch #msgChat #msgImgBtn i { background-image: var(--fs-plus-orb) !important; width: 34px; height: 34px; }
+html body.fs.fs-good-witch #msgChat #msgGifBtn i { background-image: var(--fs-icon-gif) !important; }
+html body.fs.fs-good-witch #msgChat #msgVoiceBtn i { background-image: var(--fs-icon-emoji) !important; }
+html body.fs.fs-good-witch #msgChat #msgInput { flex: 1 1 auto; min-width: 0; margin: 0 !important; border: 0 !important; border-radius: 0 !important; background: var(--fs-field) center / 100% 100% no-repeat !important; padding: 11px 16px !important; color: var(--gw-ink) !important; font: 500 16px var(--fs-font) !important; }
+html body.fs.fs-good-witch #msgChat #sendMsgBtn { flex: 0 0 44px; width: 44px; height: 44px; padding: 0 !important; border: 0 !important; background: var(--fs-send-orb) center / contain no-repeat !important; }
+html body.fs.fs-good-witch #msgChat #sendMsgBtn i { opacity: 0 !important; }
+@media (max-width: 768px) { html body.fs.fs-good-witch:has(.messages-layout.chat-open) { padding-bottom: 0 !important; } }
+
+/* ---------- page decorations (concept): owl on crystal under the post, moon in clouds under messages ---------- */
+html body.fs.fs-good-witch #page-messages .msg-sidebar::after { content: ""; display: block; width: calc(100% + 16px); margin: 8px -8px 0; aspect-ratio: 1290 / 500; background: var(--fs-moon-clouds) center bottom / 100% 100% no-repeat; pointer-events: none; }
+@media (max-width: 768px) {
+  html body.fs.fs-good-witch .nav-center :is(.nav-saved-link, .nav-notif-link) { display: none !important; }
+  /* concept: the bubbles start right under the top bar */
+  html body.fs.fs-good-witch #timelineCover { margin-top: -34px !important; }
+}
+/* stats: the art draws its own centre divider — no second CSS line */
+html body.fs.fs-good-witch :is(.pv-profile-card, #profileCard) .profile-stats > .stat + .stat { border-left: 0 !important; }
+/* Featured Skin + composer (QA vs concept home-full) */
+html body.fs.fs-good-witch .featured-skin-banner :is(h4, h5, .featured-timer, .featured-timer i, h4 i) { color: var(--gw-title) !important; font-family: var(--fs-title-font) !important; }
+html body.fs.fs-good-witch .featured-skin-banner h5 { font-size: 22px !important; font-weight: 700 !important; margin: 0 !important; }
+html body.fs.fs-good-witch .featured-skin-banner p { color: var(--gw-soft) !important; }
+html body.fs.fs-good-witch .featured-skin-banner .featured-preview { border-radius: 14px !important; }
+html body.fs.fs-good-witch .featured-skin-banner .btn { border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; min-width: 84px; height: 40px;
+  background: var(--fs-follow-btn) center / 100% 100% no-repeat !important; color: #fff !important; font: 700 16px var(--fs-font) !important; }
+html body.fs.fs-good-witch #openPostModal { margin: 6px 0 !important; padding: 0 !important; box-sizing: border-box; width: 100% !important; }
+html body.fs.fs-good-witch .post-create-avatar { flex: 0 0 46px; }
+html body.fs.fs-good-witch .post-input-fake { min-width: 0; }
