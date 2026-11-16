@@ -6548,3 +6548,24 @@ html body.fs.fs-blood-moon .feed-post.feed-post.feed-post, html body.fs.fs-blood
 html body.fs.fs-blood-moon .feed-post .post-header { padding: 0 !important; margin-bottom: 6px !important; }
 html body.fs.fs-blood-moon .feed-post .post-header .post-avatar { width: 44px !important; height: 44px !important; background: var(--fs-avatar-ring-small) center / 100% 100% no-repeat !important; }
 html body.fs.fs-blood-moon .post-username { font-size: 18px !important; }
+/* ---------- other pages (concept skins / groups / messages): the moon + spires header art behind a big plain title ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page.active { background: var(--fs-top-bar) center top / 100% auto no-repeat !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page.active::before { display: none !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { padding: 8px 0 !important; font-size: 34px !important; text-shadow: 0 2px 8px rgba(0, 0, 0, .8) !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::before,
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::after { display: none !important; }
+}
+/* chips / tabs: title case like the concept */
+html body.fs.fs-blood-moon :is(.search-tab, .fsk-filter, .chip, .comment-sort-tab) { text-transform: none !important; letter-spacing: 0 !important; font-size: 15px !important; }
+/* skin cards: the name over the bottom of the art (no slate tag), title case */
+html body.fs.fs-blood-moon .fsk-name { background: linear-gradient(transparent, rgba(20, 3, 6, .85)) !important; text-transform: none !important; border-radius: 0 !important;
+  font-size: 18px !important; color: #fff3ee !important; text-shadow: 0 1px 3px #000 !important; border: 0 !important; box-shadow: none !important; }
+body.fs-blood-moon[data-fs-variant="silver"] .fsk-name { background: linear-gradient(transparent, rgba(6, 12, 28, .85)) !important; }
+/* skin card window (skin-card.png 640x760): 5.5 / 4.3 / 5.6 / 25.4 % (l t r b) */
+html body.fs.fs-blood-moon .fsk-thumb { left: 5.5% !important; top: 4.3% !important; width: 88.9% !important; height: 70.3% !important; border-radius: 6px 6px 0 0 !important;
+  -webkit-mask: var(--fs-skin-card-mask) 49.5% 14.5% / 112.5% 142.2% no-repeat !important; mask: var(--fs-skin-card-mask) 49.5% 14.5% / 112.5% 142.2% no-repeat !important; }
+html body.fs.fs-blood-moon .fsk-body { justify-content: flex-end !important; gap: 0; padding: 0 7% 5.5% !important; }
+html body.fs.fs-blood-moon .fsk-name { align-self: stretch !important; margin: 0 0 9% !important; padding: 18px 4px 4px !important; max-width: none !important; border-radius: 0 !important; }
+html body.fs.fs-blood-moon .fsk-body .btn { height: 32px !important; width: 78% !important; color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon .fsk-badge { top: 7% !important; bottom: auto !important; right: 50% !important; transform: translateX(50%) !important; text-transform: none !important; }
