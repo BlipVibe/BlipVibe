@@ -6714,3 +6714,10 @@ html body.fs.fs-blood-moon :is(.msg-contact-time, .msg-time) { font-size: 14px !
   html body.fs.fs-blood-moon .nav-center .nav-link { height: calc(100vw * 300 / 1290 * .61) !important; margin-bottom: calc(100vw * 300 / 1290 * .085) !important; padding-bottom: 4px !important; }
   html body.fs.fs-blood-moon .nav-center .nav-link.active { background-size: 100% 100% !important; background-position: center !important; }
 }
+/* tab labels may take two lines when long (Network: Not Following Back / People You May Know), never overlap */
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs) .search-tab { white-space: normal !important; line-height: 1.1 !important; text-align: center; overflow-wrap: normal; }
+html body.fs.fs-blood-moon #profilesTabs .search-tab { font-size: 14px !important; padding: 4px 2px !important; }
+/* people rows (concept network / search): bigger silver-ringed avatar and name */
+html body.fs.fs-blood-moon .profile-card-item .profile-card-avatar { width: 58px !important; height: 58px !important; }
+html body.fs.fs-blood-moon .profile-card-item :is(.profile-card-name, h4) { font-size: 19px !important; color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon .profile-card-item :is(p, small, .profile-card-meta) { color: var(--bm-soft) !important; font-size: 15px !important; }
