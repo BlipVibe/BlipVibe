@@ -69,5 +69,12 @@
   The choice saves per account (fsVariants via set_skin_look) — verified it survives an app relaunch.
   QA pass: Messages search lined up with the rows, notification arrows right-aligned, Search tabs as gold chips,
   group list buttons fit "Joined", group page (name clear of the cover, stats fit, readable buttons in Day + Night).
-  Not yet re-checked this pass: someone else's profile, comments, create post, and Night for Messages/Search.
+  QA pass 2 (Day + Night): comments (sort chips, field-art comment box, GIF chip, gold Post), create post (text-area
+  art, tool tiles, gold Publish), post badges as chips, someone else's profile (their photo in front of the timeline
+  circles; all action buttons the gold button; Photos/Albums chips; admin buttons themed), Messages/Search/Skins in
+  Night. Night fixes: the night folder's panel-card / btn-primary / btn-secondary are still pale Day art, so Night
+  points them at the dark menu-panel / join-btn / chip (pop-ups were pale with light text); pop-up panel stretched as
+  one piece; the moon-in-clouds art over the chat input had a pasted square patch — edges blended
+  (kit/gw-night/moon-clouds.png, x 322-697, y 0-385).
+  Note: someone else's profile shows THEIR Day/Night choice, not yours.
   Emoji show as "?" boxes in the simulator in every skin (app-wide, not a skin issue) — check on a real phone.

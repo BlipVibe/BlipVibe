@@ -3705,3 +3705,70 @@ html body.fs.fs-good-witch #gvProfileCard .pv-actions .btn { flex: 0 0 auto; wid
   background: none !important; border: solid transparent !important; border-width: 9px 16px !important; border-image: var(--fs-join-btn) 60 95 fill / 9px 16px stretch !important;
   border-radius: 0 !important; box-shadow: none !important; color: var(--gw-title) !important; font: 700 15px var(--fs-font) !important; opacity: 1 !important; }
 html body.fs.fs-good-witch #gvProfileCard .pv-actions .btn i { color: inherit !important; margin-right: 4px; }
+/* Good Witch comments (QA Nov 15): sort tabs as the gold chips, the comment box on the field art, GIF a small chip,
+   Post the same button as everywhere else */
+html body.fs.fs-good-witch .comment-sort-tab { flex: 0 0 auto; background: none !important; border: solid transparent !important; border-width: 9px 16px !important;
+  border-image: var(--fs-chip) 55 85 fill / 9px 16px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 1px 4px !important; font-size: 15px !important; min-height: 0 !important; color: var(--gw-title) !important; margin-right: 6px; }
+html body.fs.fs-good-witch .comment-sort-tab.active { border-image-source: var(--fs-chip-active) !important; color: var(--gw-deep) !important; font-weight: 700 !important; }
+html body.fs.fs-good-witch #commentInput { background: none !important; border: solid transparent !important; border-width: 10px 20px !important;
+  border-image: var(--fs-field) 60 130 fill / 10px 20px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 2px 2px !important; min-height: 0 !important; color: var(--gw-ink) !important; font: 600 16px var(--fs-font) !important; }
+html body.fs.fs-good-witch #commentGifBtn { background: none !important; border: solid transparent !important; border-width: 8px 12px !important;
+  border-image: var(--fs-chip) 55 85 fill / 8px 12px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 0 2px !important; color: var(--gw-title) !important; font: 700 13px var(--fs-font) !important; }
+html body.fs.fs-good-witch #postCommentBtn { flex: 0 0 auto; width: auto !important; height: auto !important; background: none !important; border: solid transparent !important;
+  border-width: 9px 16px !important; border-image: var(--fs-join-btn) 60 95 fill / 9px 16px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 2px 6px !important; color: var(--gw-title) !important; font: 700 15px var(--fs-font) !important; }
+/* Good Witch post badges (Shared, location…): the small gold chip, like the other pills (QA Nov 15) */
+html body.fs.fs-good-witch .post-badges :is(span, .post-badge) { background: none !important; border: solid transparent !important; border-width: 7px 12px !important;
+  border-image: var(--fs-chip) 55 85 fill / 7px 12px stretch !important; border-radius: 0 !important; padding: 0 2px !important; font-size: 13px !important; line-height: 1.2 !important; }
+html body.fs.fs-good-witch[data-fs-variant="night"] .post-badges :is(span, .post-badge) { background: none !important; }
+/* Good Witch create post (QA Nov 15): the writing area on the text-area art, the four tools as the tool tiles, Publish
+   the same button as everywhere else (the stretched pearl panel showed a seam) */
+html body.fs.fs-good-witch .cpm-textarea { background: none !important; border: solid transparent !important; border-width: 14px 20px !important;
+  border-image: var(--fs-text-area) 60 110 fill / 14px 20px stretch !important; border-radius: 0 !important; margin: 4px 0 !important; padding: 4px 6px !important;
+  color: var(--gw-ink) !important; font: 600 17px var(--fs-font) !important; }
+html body.fs.fs-good-witch :is(#cpmCameraBtn, #cpmGifBtn, #cpmPollBtn, #cpmScheduleBtn) { width: 46px !important; height: 46px !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+  background: var(--fs-tool-tile) center / 100% 100% no-repeat !important; color: var(--gw-accent) !important; }
+html body.fs.fs-good-witch #cpmPublish { width: auto !important; min-width: 120px; height: auto !important; background: none !important; border: solid transparent !important;
+  border-width: 10px 18px !important; border-image: var(--fs-join-btn) 60 95 fill / 10px 18px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 3px 8px !important; color: var(--gw-title) !important; font: 700 17px var(--fs-font) !important; }
+/* Good Witch: someone else's profile (QA Nov 15) — their photo sits fully in front of the timeline circles (it was
+   tucked behind the middle one), and Follow / Message / Mute / Block / Report / Close Friend / Invite are the same
+   readable gold buttons as the group page (they were pale stretched panels of mixed sizes) */
+html body.fs.fs-good-witch #page-profile-view .pv-profile-card { position: relative; z-index: 3; }
+html body.fs.fs-good-witch #page-profile-view .pv-profile-card .profile-avatar-wrap { margin-top: -40px !important; }
+html body.fs.fs-good-witch #page-profile-view .pv-actions { display: flex !important; flex-wrap: wrap; justify-content: center; gap: 8px !important; margin-top: 12px !important; }
+html body.fs.fs-good-witch #page-profile-view .pv-actions .btn:not(#pvEditProfileBtn) { flex: 0 0 auto; width: auto !important; min-width: 0; height: auto !important; margin: 0 !important; padding: 2px 6px !important;
+  background: none !important; border: solid transparent !important; border-width: 9px 16px !important; border-image: var(--fs-join-btn) 60 95 fill / 9px 16px stretch !important;
+  border-radius: 0 !important; box-shadow: none !important; color: var(--gw-title) !important; font: 700 15px var(--fs-font) !important; opacity: 1 !important; font-size: 15px !important; }
+html body.fs.fs-good-witch #page-profile-view .pv-actions .btn:not(#pvEditProfileBtn) i { color: inherit !important; margin-right: 4px; font-size: 14px !important; }
+html body.fs.fs-good-witch #pvCoverBanner { z-index: 0 !important; }
+/* Good Witch (QA Nov 15): Photos / Albums tabs as gold chips; admin Suspend / Delete as the gold button (Delete keeps red
+   lettering so it still reads as the dangerous one) */
+html body.fs.fs-good-witch .photos-card .search-tabs { display: flex !important; gap: 8px; border: 0 !important; background: none !important; }
+html body.fs.fs-good-witch .photos-card .search-tab { flex: 0 0 auto; background: none !important; border: solid transparent !important; border-width: 9px 16px !important;
+  border-image: var(--fs-chip) 55 85 fill / 9px 16px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 1px 4px !important; font-size: 15px !important; min-height: 0 !important; color: var(--gw-title) !important; }
+html body.fs.fs-good-witch .photos-card .search-tab.active { border-image-source: var(--fs-chip-active) !important; color: var(--gw-deep) !important; font-weight: 700 !important; }
+html body.fs.fs-good-witch .photos-card .search-tab > i { display: none !important; }
+html body.fs.fs-good-witch :is(#pvAdminSuspend, #pvAdminDelete) { width: auto !important; height: auto !important; background: none !important; border: solid transparent !important;
+  border-width: 8px 14px !important; border-image: var(--fs-join-btn) 60 95 fill / 8px 14px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 1px 4px !important; color: var(--gw-title) !important; font: 700 13px var(--fs-font) !important; }
+html body.fs.fs-good-witch #pvAdminDelete, html body.fs.fs-good-witch #pvAdminDelete i { color: #c0392b !important; }
+/* Good Witch Night (QA Nov 15): the night folder's general panel and button pieces (panel-card, btn-primary,
+   btn-secondary) are still the pale Day art, so pop-ups (create post, comments, menus) stayed pale while Night text
+   turned light and unreadable. In Night they use the dark Night menu panel, join button and chip instead. */
+html body.fs.fs-good-witch[data-fs-variant="night"] {
+  --fs-panel-card: var(--fs-menu-panel) !important; --fs-panel-card-active: var(--fs-menu-panel) !important;
+  --fs-btn-primary: var(--fs-join-btn) !important; --fs-btn-secondary: var(--fs-chip) !important; }
+/* Night pop-ups: the dark panel stretched as one piece (round-repeat tiled its middle into a grid) on a solid backing */
+html body.fs.fs-good-witch[data-fs-variant="night"] .modal-content { border-width: 28px !important; border-image-slice: 80 fill !important;
+  border-image-width: 28px !important; border-image-repeat: stretch !important; background: #2e2150 !important; background-clip: padding-box !important; }
+html body.fs.fs-good-witch :is(#cpmCameraBtn, #cpmGifBtn, #cpmPollBtn, #cpmScheduleBtn) { width: 42px !important; height: 42px !important; flex: 0 0 42px; }
+html body.fs.fs-good-witch #cpmPublish { min-width: 0 !important; flex: 1 1 auto; max-width: 140px; }
+html body.fs.fs-good-witch #cpmPublish { border-width: 9px 12px !important; border-image-width: 9px 12px !important; padding: 2px 0 !important; font-size: 16px !important;
+  white-space: nowrap; overflow: visible !important; text-overflow: clip !important; }
+html body.fs.fs-good-witch .cpm-footer > div[style*="display:flex"] { gap: 6px !important; }
+html body.fs.fs-good-witch #noCommentsMsg { color: var(--gw-soft) !important; }
