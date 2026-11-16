@@ -41,6 +41,9 @@ jobs:
           rm -rf otabuild && mkdir -p otabuild
           cp index.html dmca.html changelog.json manifest.json otabuild/
           cp -r js css images otabuild/
+          # skin art loads from blipvibe.com in the app (js/fullskins.js BASE); keeping it out keeps the zip
+          # under Supabase Storage's 50 MB object limit (it hit 54 MB on Nov 16 and the upload failed with HTTP 400)
+          rm -rf otabuild/images/skins
           cd otabuild && zip -qr ../bundle.zip . && cd ..
           ls -lh bundle.zip
 
@@ -57,7 +60,9 @@ jobs:
             -H "apikey: $KEY" -H "Authorization: Bearer $KEY" \
             -H "Content-Type: application/zip" -H "x-upsert: true" \
             --data-binary @bundle.zip \
-            -o /dev/null -w "bundle upload -> HTTP %{http_code}\n"
+            -o /dev/null -w "%{http_code}" > upload_code.txt
+          echo "bundle upload -> HTTP $(cat upload_code.txt)"
+          if [ "$(cat upload_code.txt)" != "200" ]; then echo "Bundle upload failed — NOT updating the manifest"; exit 1; fi
 
           # The manifest is the pointer installed apps poll on launch.
           printf '{"version":"%s","url":"%s/storage/v1/object/public/ota/bundles/%s.zip"}' \

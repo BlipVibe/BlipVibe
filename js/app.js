@@ -15179,7 +15179,7 @@ function renderFeaturedSkin(){
     var owned=state.ownedPremiumSkins&&state.ownedPremiumSkins[skin.id];
     var canBuy=_hasInfinity()||state.coins>=skin.price;
     container.innerHTML='<div class="featured-header"><h4><i class="fas fa-fire"></i> Featured Skin</h4><span class="featured-timer"><i class="far fa-clock"></i> '+hoursLeft+'h '+minsLeft+'m left</span></div>'
-        +'<div class="featured-body"><div class="featured-preview" style="background:url(images/skins/'+skin.id+'/card.webp) center/cover no-repeat,'+skin.preview+';"></div>'
+        +'<div class="featured-body"><div class="featured-preview" style="background:url('+((window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform())?'https://blipvibe.com/':'')+'images/skins/'+skin.id+'/card.webp) center/cover no-repeat,'+skin.preview+';"></div>'
         +'<div class="featured-info"><h5>'+escapeHtml(skin.name)+'</h5><p>'+escapeHtml(skin.desc||'')+'</p></div>'
         +(owned?'<button class="btn btn-disabled" style="padding:6px 14px;font-size:12px;">Owned</button>':'<button class="btn '+(canBuy?'btn-primary':'btn-disabled')+' featured-buy-btn" data-pid="'+skin.id+'" style="padding:6px 14px;font-size:12px;"'+(canBuy?'':' data-cant-afford="1"')+'>'+(_hasInfinity()?'Free':''+skin.price+' <i class="fas fa-coins"></i>')+'</button>')
         +'</div>';

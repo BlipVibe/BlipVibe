@@ -176,7 +176,10 @@
 
   // Absolute: a relative url() inside a custom property resolves against the stylesheet that
   // uses it (css/), not the page, so 'images/...' would become css/images/... and 404.
-  var BASE = new URL(window.FS_BASE || 'images/skins/', document.baseURI).href;
+  // In the installed app the skin art is NOT in the update bundle (the OTA zip has a 50 MB limit and the art alone is
+  // ~53 MB, which made the Nov 16 update fail to upload) — it loads from the website instead and the web view caches it.
+  var NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+  var BASE = new URL(window.FS_BASE || (NATIVE ? 'https://blipvibe.com/images/skins/' : 'images/skins/'), document.baseURI).href;
   var active = null;
   var loadedFonts = {};
 
