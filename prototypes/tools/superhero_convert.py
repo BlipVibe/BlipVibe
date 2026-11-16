@@ -12,6 +12,8 @@ WINDOWED = ['avatar-frame', 'cover-frame', 'photo-frame', 'featured-frame', 'ski
 LOSSLESS_PREFIX = ('icon-', 'notif-', 'quest-', 'toggle-')
 LOSSLESS = {'coin', 'reward-coin', 'send-btn', 'round-btn', 'plus-btn', 'heart-orb', 'like-orb', 'react-orb', 'camera-badge', 'unread-dot',
             'badge-count', 'story-ring', 'story-add', 'avatar-frame', 'laurel-sprig', 'stats-divider', 'fx-spark'}
+# painted for the first animation draft (too close to Anime Blaze's slam/shatter) — not shipped
+SKIP = {'fx-sfx', 'fx-speedlines', 'fx-bolt', 'fx-crack', 'fx-shard', 'fx-spark'}
 OPAQUE = {'background', 'header', 'fx-page'}
 def checker(a):
     """True if the corners look like a painted grey/white transparency checkerboard."""
@@ -29,7 +31,7 @@ def convert(src, out):
     os.makedirs(out, exist_ok=True)
     for f in sorted(glob.glob(os.path.join(src, '*.png'))):
         name = os.path.splitext(os.path.basename(f))[0]
-        if name.startswith('_'): continue
+        if name.startswith('_') or name in SKIP: continue
         im = Image.open(f).convert('RGBA'); a = np.array(im); dst = os.path.join(out, name + '.webp')
         if name == 'card':
             if out.endswith('assets'): im.convert('RGB').resize((256, 256), Image.LANCZOS).save(os.path.join(skin, 'card.webp'), 'WEBP', quality=88)

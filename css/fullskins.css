@@ -5459,7 +5459,7 @@ html body.fs.fs-good-witch[data-fs-variant="night"] #userDropdownMenu a:not(#dro
    Notes: images/skins/superhero/NOTES.md.
    ====================================================================================== */
 body.fs-superhero { --sh-title: #111; --sh-ink: #17171a; --sh-soft: #4a4a52; --sh-accent: #d81f1a; --sh-on: #111; --sh-pagefill: #fbf3dc;
-  --sh-tfont: 'Bangers', cursive; --sh-bfont: 'Comic Neue', sans-serif; --sh-tspace: .04em;
+  --sh-tfont: 'Luckiest Guy', cursive; --sh-bfont: 'Comic Neue', sans-serif; --sh-tspace: .04em;
   background: #fbf3dc !important; font-family: var(--sh-bfont) !important; font-size: 16px; color: var(--sh-ink); }
 body.fs-superhero[data-fs-variant="villains"] { --sh-title: #eef2ea; --sh-ink: #e9ece6; --sh-soft: #aab0bb; --sh-accent: #7dff3a; --sh-on: #0b1a05; --sh-pagefill: #15141b;
   --sh-tfont: 'Black Ops One', sans-serif; --sh-bfont: 'Exo 2', sans-serif; --sh-tspace: .03em; background: #15141b !important; }

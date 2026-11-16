@@ -37,14 +37,21 @@ Process and owner rules for every skin: `../README.md`, `../scrapbook/NOTES.md`,
   → `assets/` (Heroes), `assets/villains/` (Villains); `card.webp` from the Heroes kit's card.png.
 
 ## Animations (own, never borrowed)
-- Equip (`equipSuperhero`): the COMIC BOOK — four panels of a comic page slam down one after another (each jolts the
-  screen), action lines + the sound-effect burst (POW! Heroes / KRAKK! Villains), skin applied under the page, then the
-  page turns away. Art from the rendition being equipped (fx-page, fx-sfx, fx-speedlines, fx-spark).
-- Heroes → Villains (`heroSwap`): storm flicker, green lightning strikes down the middle, the glass cracks, the skin
-  switches behind it, the cracked glass shatters into falling shards.
-- Villains → Heroes (`heroSwap`): a yellow sunburst explodes out of the BV badge, POW! + a comic page slam over it, the
-  skin switches under it, the page's panels fly apart to the corners.
+Owner (Nov 16): every skin must look and move WAY different from the others — Anime Blaze is the other comic skin and
+owns "slanted manga panels slam + burst + shake + shatter" (equip) and "speed lines + lightning slash + split" (swap),
+Good Witch owns the circle reveal from the button. So Superhero uses none of those (a first draft did and was replaced).
+- Equip (`equipSuperhero`): the COMIC BOOK — a comic book with the rendition's cover art (card) floats up, its cover
+  swings open on the spine, zoom into the printed page (fx-page) until it fills the screen, the skin is applied under it,
+  then the page dissolves in HALFTONE print dots from the middle outward.
+- Heroes → Villains (`heroSwap`): the villain's SMOKE — purple smoke (fx-cloud) billows up, the green skull sigil
+  (toggle-villains) glows out of it with rising sparks, skin switches behind the smoke, the sigil shrinks back into the
+  badge as the smoke sinks.
+- Villains → Heroes (`heroSwap`): the HERO SIGNAL — a searchlight sweeps up and projects the gold BV emblem
+  (toggle-heroes) on the sky, dawn rises up the screen with turning sun rays (fx-burst) and clouds (fx-cloud), skin
+  switches under the sky, the emblem soars off the top and the clouds drift apart.
 - Like / dislike: own comic POW pop (`shPow`) on the painted ON thumbs.
+- Unused first-draft fx art (fx-sfx, fx-speedlines, fx-bolt, fx-crack, fx-shard, fx-spark) stays in kit/, not shipped.
+- Fonts: Luckiest Guy (Heroes titles, Western comic masthead) — not Bangers, which Anime Blaze loads.
 
 ## Wiring
 - `FULL_SKINS.superhero` in `js/fullskins.js` (variants heroes / villains; fsVariants is generic, so no SQL change);
