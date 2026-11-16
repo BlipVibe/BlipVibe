@@ -6605,3 +6605,13 @@ html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTa
 html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) { overflow: visible !important; }
 html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) .search-tab.active,
 html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) .search-tab.active:is(:first-child, :last-child) { margin: 0 -10px !important; border-width: 0 15px !important; border-image-width: 0 15px !important; position: relative; z-index: 1; }
+/* small avatars everywhere: the thin silver ring on dark, not a cream disc */
+html body.fs.fs-blood-moon :is(.post-header .post-avatar, .post-create-avatar, .msg-contact > div > img, .msg-contact img, .profile-card-item .profile-card-avatar, .notif-item img, #msgChat .msg-chat-header img, .comment-item img, .story-avatar) {
+  background: var(--fs-avatar-ring-small) center / 100% 100% no-repeat, #1a0608 !important; padding: 3px !important; box-sizing: border-box !important; border: 0 !important; box-shadow: none !important; }
+body.fs-blood-moon[data-fs-variant="silver"] :is(.post-header .post-avatar, .post-create-avatar, .msg-contact img, .profile-card-item .profile-card-avatar, .notif-item img, .comment-item img) { background-color: #0b1426 !important; }
+/* Messages list (concept): big name + preview, time top right, round unread badge */
+html body.fs.fs-blood-moon .msg-contact { min-height: 76px; }
+html body.fs.fs-blood-moon .msg-contact img { width: 56px !important; height: 56px !important; }
+html body.fs.fs-blood-moon .msg-contact-name { font-size: 20px !important; color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon .msg-contact-preview { font-size: 16px !important; color: var(--bm-soft) !important; }
+html body.fs.fs-blood-moon :is(.msg-contact-time, .msg-time) { font-size: 14px !important; color: var(--bm-soft) !important; }
