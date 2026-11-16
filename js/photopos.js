@@ -429,7 +429,7 @@
   function closeMenu() { var m = document.querySelector('.fs-pp-menu'); if (m) m.remove(); }
 
   // the zoom-slider knob, painted per skin (kit/pp → assets/pp-knob.webp, in every colour / rendition folder)
-  ['scrapbook', 'anime-blaze', 'witchcraft', 'good-witch', 'vaporwave', 'heavens-light', 'blood-moon'].forEach(function (id) {
+  ['scrapbook', 'anime-blaze', 'witchcraft', 'good-witch', 'vaporwave', 'heavens-light', 'blood-moon', 'superhero'].forEach(function (id) {
     var c = window.FULL_SKINS && window.FULL_SKINS[id];
     if (c && c.assets && c.assets.indexOf('pp-knob') < 0) c.assets.push('pp-knob');
   });
