@@ -125,7 +125,10 @@
       'stats-frame', 'edit-btn', 'cat-cloud', 'star-frame', 'follow-btn', 'action-tile', 'menu-panel', 'list-row',
       'join-btn', 'chip', 'chip-active', 'seg-tab', 'seg-tab-active', 'unread-gem', 'skin-card', 'skin-card-wide',
       'equipped-tag', 'bubble-in', 'bubble-out', 'input-bar', 'send-orb', 'plus-orb', 'field', 'text-area', 'public-pill',
-      'tool-tile', 'post-btn', 'comment-bubble', 'reply-line', 'story-field', 'heart-orb', 'owl-crystal', 'moon-clouds'],
+      'tool-tile', 'post-btn', 'comment-bubble', 'reply-line', 'story-field', 'heart-orb', 'owl-crystal', 'moon-clouds',
+      // enchantment pass (owner: more elaborate): per-page prop scenes, crest, vines, sparkle trail, name banner
+      'page-deco-groups', 'page-deco-skins', 'page-deco-network', 'page-deco-notifications', 'page-deco-search',
+      'page-deco-post', 'page-deco-messages', 'corner-vine-right', 'title-crest', 'sparkle-trail', 'name-banner', 'star-frame-mask'],
     theme: { '--dark': '#4a2c6b', '--gray': '#8a76a6', '--light-bg': '#f3ecff', '--card': '#fbf8ff',
       '--border': 'rgba(176,140,90,.35)', '--nav-bg': '#f3ecff' },
     fonts: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap'

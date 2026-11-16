@@ -3358,3 +3358,44 @@ html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageTo
 html body.fs.fs-good-witch .fsk-filter.active { color: var(--gw-deep) !important; font-weight: 700 !important; }
 html body.fs.fs-good-witch #groupsSections .group-card-actions .btn .gc-btn-text { display: inline !important; font-size: 16px !important; color: var(--gw-title) !important; }
 html body.fs.fs-good-witch .page-header .page-search { margin-top: 6px !important; }
+/* enchantment pass (owner: "more elaborate like the others"): title crest, gold vines in both top corners, sparkle trail,
+   and a different props-on-clouds scene at the bottom of each page */
+@media (max-width: 768px) {
+  html body.fs.fs-good-witch:not(:has(#page-home.active)) .page.active::after { content: ""; position: absolute; right: 0; top: 0; width: 120px; height: 100px; pointer-events: none;
+    background: var(--fs-corner-vine-right) right top / contain no-repeat; z-index: 0; }
+  html body.fs.fs-good-witch:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { position: relative; padding-top: 30px !important; }
+  html body.fs.fs-good-witch:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::before { content: ""; position: absolute; left: 50%; top: 0; width: 140px; height: 40px;
+    transform: translateX(-50%); background: var(--fs-title-crest) center / contain no-repeat; }
+  html body.fs.fs-good-witch:not(:has(#page-home.active)) :is(.page-header, .msg-sidebar-header)::after { content: ""; position: absolute; left: -8px; right: -8px; bottom: -34px; height: 34px; pointer-events: none;
+    background: var(--fs-sparkle-trail) center / 100% 100% no-repeat; z-index: 0; }
+  html body.fs.fs-good-witch .page-header .btn:not(.page-search) { order: 6; }
+}
+html body.fs.fs-good-witch :is(#page-groups, #page-profiles, #page-notifications, #page-search, #page-shop, #page-group-view) .page-container::after,
+html body.fs.fs-good-witch #page-messages .msg-sidebar::after {
+  content: ""; display: block; width: calc(100% + 16px); margin: 12px -8px 0; aspect-ratio: 1290 / 520; background: center bottom / 100% 100% no-repeat; pointer-events: none; }
+html body.fs.fs-good-witch #page-groups .page-container::after { background-image: var(--fs-page-deco-groups); }
+html body.fs.fs-good-witch #page-profiles .page-container::after { background-image: var(--fs-page-deco-network); }
+html body.fs.fs-good-witch #page-notifications .page-container::after { background-image: var(--fs-page-deco-notifications); }
+html body.fs.fs-good-witch #page-search .page-container::after { background-image: var(--fs-page-deco-search); }
+html body.fs.fs-good-witch #page-shop .page-container::after { background-image: var(--fs-page-deco-skins); }
+html body.fs.fs-good-witch #page-group-view .page-container::after { background-image: var(--fs-page-deco-post); }
+html body.fs.fs-good-witch #page-messages .page-container::after { display: none; }
+html body.fs.fs-good-witch #page-messages .msg-sidebar::after { background-image: var(--fs-page-deco-messages) !important; }
+/* posts: the new art has a four-sided ornate border — give it room (wider edge slice) */
+html body.fs.fs-good-witch .feed-post.feed-post.feed-post { border-width: 34px !important; border-image: var(--fs-post-panel) 140 fill / 34px stretch !important; padding: 0 !important; }
+html body.fs.fs-good-witch :is(.card:not(.feed-post):not(.profile-card):not(.pv-profile-card), .comment-item, .post-dropdown) { border-width: 30px !important; border-image: var(--fs-post-panel) 140 fill / 30px stretch !important; }
+html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] .pm-thumb { margin: 8px 6px !important; }
+html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] .pm-thumb::after { inset: -10px !important; }
+html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] .pm-thumb :is(img, video) { border-radius: 8px !important; }
+/* page header layout: crest · centred title · sparkle trail under it; + / compose top-right; search full width */
+@media (max-width: 768px) {
+  html body.fs.fs-good-witch:not(:has(#page-home.active)) :is(.page-header, .msg-sidebar-header) { display: block !important; position: relative; padding: 4px 4px 0 !important; text-align: center; }
+  html body.fs.fs-good-witch:not(:has(#page-home.active)) :is(.page-header, .msg-sidebar-header)::after { display: none !important; }
+  html body.fs.fs-good-witch:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { display: block !important; width: auto !important; margin: 0 auto !important; padding: 34px 0 26px !important; text-align: center !important; }
+  html body.fs.fs-good-witch:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::after { content: ""; position: absolute; left: 6%; right: 6%; bottom: 0; height: 26px;
+    background: var(--fs-sparkle-trail) center / 100% 100% no-repeat; pointer-events: none; }
+  html body.fs.fs-good-witch:not(:has(#page-home.active)) .page-header .page-actions { display: block !important; }
+  html body.fs.fs-good-witch:not(:has(#page-home.active)) .page-header .btn:not(.page-search) { position: absolute !important; top: 42px; right: 4px; z-index: 2; }
+  html body.fs.fs-good-witch:not(:has(#page-home.active)) .page-header .page-search { margin: 8px 0 0 !important; width: 100% !important; box-sizing: border-box; }
+}
+html body.fs.fs-good-witch :is(.msg-search, .page-search) { padding: 0 22px 0 30px !important; min-height: 54px; }

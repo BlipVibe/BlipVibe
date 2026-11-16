@@ -33,3 +33,13 @@
 
 ## Log
 - Nov 15: crops made, full brief (day + night) sent to Codex, registry entry with Day/Night variants added.
+- Nov 15 (evening, owner live QA): night concepts approved (concept-night*.png, crops prototypes/reference/good-witch-night/),
+  night set drawn from them (kit/gw-night → assets/night). Owner: first pass "too plain", gold "bleeds into the white",
+  "even the posts on Witchcraft have a border", "needs to be more elaborate like the others" → ornate pass (deep gold,
+  filigree rims, vines, sparkles, pearls; four-sided post border; ornate photo frame) + enchantment pass (per-page props
+  scenes page-deco-*, title-crest, corner vines both sides, sparkle-trail). Readability: Cormorant is hairline at 400/500
+  → all text 600+, bubbles deep plum (white on the lavender bubble was 2.6:1). Contrast scan (local QA overlay) used on
+  each page. Bars made solid (content showed through). Nav orbs lifted with shadow/rim, icons centred. Middle cover photo
+  in front. Stats frame redrawn (old one pinched into two lobes).
+  Not yet checked: Night in the simulator (needs the Day/Night option picked — the look-only switch only shows Day),
+  Skins / Network / Notifications / Search / chat / other-profile pages with the ornate art.
