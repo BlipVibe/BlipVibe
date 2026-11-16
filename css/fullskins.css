@@ -2886,3 +2886,22 @@ html body.fs.fs-witchcraft .fs-tl-slot.fs-tl-empty::after { content: ""; display
   html body.fs.fs-witchcraft:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::before { width: 126.667px !important; height: 40px !important; top: -8px !important; background-size: 100% 100% !important; }
   html body.fs.fs-witchcraft:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { padding-top: 34px !important; }
 }
+/* name ribbon: the ribbon's readable panel is the middle ~64%; keep the name inside it (owner: name was out of bounds) */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-name { display: block !important; width: 94% !important; max-width: none; margin: 8px auto 0 !important;
+    padding: 16px 18% 18px !important; font-size: min(28px, 6.6vw) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-sizing: border-box; }
+}
+/* notifications (concept): glowing magenta neon line icon on the left of each row, no coloured disc */
+html body.fs.fs-witchcraft .notif-icon { background: none !important; width: 44px !important; height: 44px !important; flex-shrink: 0; box-shadow: none !important; }
+html body.fs.fs-witchcraft .notif-icon i { font-size: 0 !important; width: 36px; height: 36px; display: block; margin: auto; background: var(--fs-notif-like) center / contain no-repeat; }
+html body.fs.fs-witchcraft .notif-icon i::before { content: "" !important; }
+html body.fs.fs-witchcraft .notif-icon i.fa-user-plus { background-image: var(--fs-notif-follow); }
+html body.fs.fs-witchcraft .notif-icon i:is(.fa-comment, .fa-reply) { background-image: var(--fs-notif-comment); }
+html body.fs.fs-witchcraft .notif-icon i.fa-at { background-image: var(--fs-notif-mention); }
+html body.fs.fs-witchcraft .notif-icon i.fa-envelope { background-image: var(--fs-notif-message); }
+html body.fs.fs-witchcraft .notif-icon i:is(.fa-users, .fa-envelope-open-text) { background-image: var(--fs-notif-group); }
+html body.fs.fs-witchcraft .notif-icon i:is(.fa-palette, .fa-coins) { background-image: var(--fs-notif-purchase); }
+html body.fs.fs-witchcraft .notif-item { gap: 10px; align-items: center; }
+html body.fs.fs-witchcraft .notif-item :is(.notif-text, p) { color: #efe2c8 !important; font-size: 17px !important; }
+html body.fs.fs-witchcraft .notif-item :is(.notif-time, small) { color: #cdb894 !important; }
+html body.fs.fs-witchcraft .notif-item .fa-chevron-down { color: #e8c27a !important; }
