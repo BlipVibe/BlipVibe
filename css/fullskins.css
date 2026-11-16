@@ -2955,3 +2955,14 @@ html body.fs.fs-witchcraft #msgChat .msg-chat-messages::before { right: 6px !imp
 html body.fs.fs-witchcraft .post-media-grid[class*="pm-count"]:not(.pm-count-1) { align-items: center !important; grid-auto-rows: auto !important; }
 html body.fs.fs-witchcraft .post-media-grid[class*="pm-count"]:not(.pm-count-1) .pm-thumb { align-self: center !important; height: auto !important; min-height: 0 !important; }
 html body.fs.fs-witchcraft .post-media-grid[class*="pm-count"] .pm-thumb :is(img, video) { height: auto !important; }
+/* chat (owner: the shelf shouldn't move): shelf + pentagram sigil anchored to the input bar, so they stay put while the
+   messages scroll up/down behind them; the list gets room underneath so the last message clears the shelf */
+html body.fs.fs-witchcraft #msgChat .msg-chat-messages::after { content: ""; display: block; flex: 0 0 auto; width: 100% !important; margin: 0 !important;
+  aspect-ratio: auto !important; height: calc(100vw * 560 / 1290 - 24px) !important; background: none !important; }
+html body.fs.fs-witchcraft #msgChat .msg-chat-messages::before { display: none !important; }
+html body.fs.fs-witchcraft #msgChat .msg-chat-input { position: relative !important; z-index: 3; }
+html body.fs.fs-witchcraft #msgChat .msg-chat-input::before { content: ""; position: absolute; left: 0; right: 0; bottom: calc(100% - 6px); aspect-ratio: 1290 / 560;
+  background: var(--fs-shelf-chat) center bottom / 100% 100% no-repeat; pointer-events: none; z-index: -1; }
+html body.fs.fs-witchcraft #msgChat .msg-chat-input::after { content: ""; position: absolute; right: 12px; bottom: calc(100% + 100vw * 560 / 1290 - 8px); width: 58px; height: 58px;
+  background: var(--fs-pentagram-sigil) center / contain no-repeat; pointer-events: none; }
+html body.fs.fs-witchcraft #msgChat .msg-chat-input::after { width: 46px !important; height: 46px !important; right: 6px !important; bottom: calc(100% + 100vw * 560 / 1290 * .74) !important; opacity: .9; }
