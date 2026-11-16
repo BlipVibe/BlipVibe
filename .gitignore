@@ -57,4 +57,7 @@ images/skins/**
 !images/skins/witchcraft/
 !images/skins/witchcraft/assets/
 !images/skins/witchcraft/assets/**
+!images/skins/good-witch/
+!images/skins/good-witch/assets/
+!images/skins/good-witch/assets/**
 __pycache__/

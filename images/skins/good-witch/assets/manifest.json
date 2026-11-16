@@ -1,0 +1,231 @@
+{
+  "skin": "good-witch",
+  "assets": {
+    "background": {
+      "file": "background.webp",
+      "w": 1080,
+      "h": 1920
+    },
+    "icon-home": {
+      "file": "icon-home.webp",
+      "w": 192,
+      "h": 170
+    },
+    "icon-groups": {
+      "file": "icon-groups.webp",
+      "w": 192,
+      "h": 140
+    },
+    "icon-skins": {
+      "file": "icon-skins.webp",
+      "w": 192,
+      "h": 188
+    },
+    "icon-network": {
+      "file": "icon-network.webp",
+      "w": 192,
+      "h": 181
+    },
+    "icon-messages": {
+      "file": "icon-messages.webp",
+      "w": 192,
+      "h": 137
+    },
+    "icon-like": {
+      "file": "icon-like.webp",
+      "w": 192,
+      "h": 183
+    },
+    "icon-dislike": {
+      "file": "icon-dislike.webp",
+      "w": 192,
+      "h": 183
+    },
+    "icon-comment": {
+      "file": "icon-comment.webp",
+      "w": 192,
+      "h": 173
+    },
+    "icon-share": {
+      "file": "icon-share.webp",
+      "w": 192,
+      "h": 157
+    },
+    "icon-search": {
+      "file": "icon-search.webp",
+      "w": 188,
+      "h": 192
+    },
+    "icon-bell": {
+      "file": "icon-bell.webp",
+      "w": 180,
+      "h": 192
+    },
+    "icon-music": {
+      "file": "icon-music.webp",
+      "w": 180,
+      "h": 192
+    },
+    "icon-coin": {
+      "file": "icon-coin.webp",
+      "w": 192,
+      "h": 192
+    },
+    "icon-camera": {
+      "file": "icon-camera.webp",
+      "w": 192,
+      "h": 159
+    },
+    "icon-back": {
+      "file": "icon-back.webp",
+      "w": 192,
+      "h": 151
+    },
+    "icon-plus": {
+      "file": "icon-plus.webp",
+      "w": 192,
+      "h": 183
+    },
+    "icon-send": {
+      "file": "icon-send.webp",
+      "w": 192,
+      "h": 157
+    },
+    "icon-emoji": {
+      "file": "icon-emoji.webp",
+      "w": 192,
+      "h": 191
+    },
+    "icon-edit": {
+      "file": "icon-edit.webp",
+      "w": 185,
+      "h": 192
+    },
+    "icon-more": {
+      "file": "icon-more.webp",
+      "w": 192,
+      "h": 62
+    },
+    "panel-card": {
+      "file": "panel-card.webp",
+      "w": 539,
+      "h": 844
+    },
+    "panel-card-active": {
+      "file": "panel-card-active.webp",
+      "w": 551,
+      "h": 864
+    },
+    "chip": {
+      "file": "chip.webp",
+      "w": 543,
+      "h": 165
+    },
+    "chip-active": {
+      "file": "chip-active.webp",
+      "w": 550,
+      "h": 187
+    },
+    "btn-primary": {
+      "file": "btn-primary.webp",
+      "w": 700,
+      "h": 305
+    },
+    "btn-secondary": {
+      "file": "btn-secondary.webp",
+      "w": 700,
+      "h": 272
+    },
+    "btn-round": {
+      "file": "btn-round.webp",
+      "w": 443,
+      "h": 446
+    },
+    "nav-active": {
+      "file": "nav-active.webp",
+      "w": 656,
+      "h": 657
+    },
+    "nav-bar": {
+      "file": "nav-bar.webp",
+      "w": 1400,
+      "h": 238
+    },
+    "header-bar": {
+      "file": "header-bar.webp",
+      "w": 1400,
+      "h": 193
+    },
+    "timeline-frame": {
+      "file": "timeline-frame.webp",
+      "w": 865,
+      "h": 588
+    },
+    "avatar-frame": {
+      "file": "avatar-frame.webp",
+      "w": 814,
+      "h": 812
+    },
+    "avatar-mask": {
+      "file": "avatar-mask.webp",
+      "w": 556,
+      "h": 523
+    },
+    "post-frame": {
+      "file": "post-frame.webp",
+      "w": 872,
+      "h": 469
+    },
+    "quest-0": {
+      "file": "quest-0.webp",
+      "w": 420,
+      "h": 397
+    },
+    "quest-50": {
+      "file": "quest-50.webp",
+      "w": 420,
+      "h": 385
+    },
+    "quest-100": {
+      "file": "quest-100.webp",
+      "w": 420,
+      "h": 397
+    },
+    "deco-1": {
+      "file": "deco-1.webp",
+      "w": 520,
+      "h": 519
+    },
+    "deco-2": {
+      "file": "deco-2.webp",
+      "w": 432,
+      "h": 520
+    },
+    "deco-3": {
+      "file": "deco-3.webp",
+      "w": 444,
+      "h": 520
+    },
+    "deco-4": {
+      "file": "deco-4.webp",
+      "w": 458,
+      "h": 520
+    },
+    "deco-5": {
+      "file": "deco-5.webp",
+      "w": 496,
+      "h": 520
+    },
+    "deco-6": {
+      "file": "deco-6.webp",
+      "w": 490,
+      "h": 520
+    },
+    "thumb": {
+      "file": "thumb.webp",
+      "w": 512,
+      "h": 512
+    }
+  },
+  "warnings": []
+}

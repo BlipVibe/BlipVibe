@@ -3612,3 +3612,7 @@ html body.fs.fs-good-witch .feed-post.feed-post.feed-post { margin-bottom: 40px 
 html body.fs.fs-good-witch .feed-post[data-fs-v="2"]::after { left: 50%; top: -30px; right: auto; bottom: auto; width: 120px; height: 48px; margin-left: -60px; background-image: var(--fs-photo-crest); transform: none; }
 html body.fs.fs-good-witch .feed-post[data-fs-v="4"]::after { right: -20px; top: -30px; left: auto; bottom: auto; width: 82px; height: 70px; background-image: var(--fs-constellation-a-100); transform: rotate(14deg); }
 html body.fs.fs-good-witch .feed-post:is([data-fs-v="1"], [data-fs-v="4"]) .post-header::before { left: -44px !important; top: -42px !important; width: 40px !important; height: 40px !important; }
+/* owner: golden ornaments around the round pictures — ornate gold ring (window 84%, inset 8%) on the cover bubbles + avatar */
+html body.fs.fs-good-witch .fs-tl-slot::before { inset: -4% !important; background-image: var(--fs-photo-bubble-ornate) !important; }
+html body.fs.fs-good-witch .fs-tl-slot img { inset: 4% !important; width: 92% !important; height: 92% !important; }
+html body.fs.fs-good-witch :is(.pv-profile-card, #profileCard) .profile-avatar-wrap::after { inset: -9% !important; background-image: var(--fs-photo-bubble-ornate) !important; }
