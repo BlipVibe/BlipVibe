@@ -3658,3 +3658,23 @@ html body.fs.fs-good-witch :is(#profilesTabs, #searchTabs) .search-tab.active { 
 /* section headers + count badge */
 html body.fs.fs-good-witch :is(#page-profiles, #page-search) :is(h3, .section-title) { font-size: 17px !important; }
 html body.fs.fs-good-witch :is(.section-count, .connections-count, .badge-count) { background: rgba(255,255,255,.18) !important; border: 1px solid rgba(201,163,92,.7) !important; color: var(--gw-title) !important; }
+/* skin-option toggle for colour skins (Anime Blaze): current colour as a jewel; tap = next colour */
+html body.fs .fs-swatch-btn { width: 34px; height: 34px; margin: 0 2px; flex: 0 0 auto; }
+html body.fs .fs-swatch-btn i { display: block; width: 22px; height: 22px; border-radius: 50%; font-size: 0;
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.75), transparent 45%), var(--sw);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #111, 0 0 10px var(--sw); }
+/* Anime Blaze colour swap button press */
+html body.fs-anime-blaze .fs-swatch-btn:active i { transform: scale(.85); }
+/* Anime Blaze skin cards (owner, Nov 15: all previews the same size, no colour dots): name on top, one compact
+   button under it, both inside the dark band so the button never covers the name */
+html body.fs.fs-anime-blaze .fsk-body { top: 65.5% !important; height: 25% !important; justify-content: flex-start !important; gap: 4px !important; }
+html body.fs.fs-anime-blaze .fsk-name { flex: 0 0 auto; line-height: 1.2 !important; padding-top: 1px; }
+html body.fs.fs-anime-blaze .fsk-body .btn:not(.fsk-equipped) { flex: 0 0 auto; height: 30px !important; line-height: 1 !important; margin: 0 !important; padding: 0 18px !important;
+  border-width: 0 !important; overflow: visible !important;
+  font-size: 13px !important; transform: none !important; display: inline-flex !important; align-items: center; }
+/* Good Witch skin cards all the same size (owner, Nov 15): the picture's "Equipped" tag already says it, so the
+   equipped card shows one button — Take off — in the place the other cards show Equip/Buy */
+html body.fs.fs-good-witch .fsk-body .btn.fsk-equipped { display: none !important; }
+html body.fs.fs-good-witch .fsk-body .fsk-takeoff { width: 100% !important; height: 40px !important; margin: 6px 0 0 !important; padding: 0 10px !important;
+  display: flex !important; align-items: center; justify-content: center; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+  background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: var(--gw-title) !important; font: 700 15px var(--fs-font) !important; text-decoration: none !important; }

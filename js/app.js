@@ -8501,21 +8501,8 @@ function doTryOn(type,id){
 // ---- Skins section (full skins: js/fullskins.js) ----
 var _fskFilter='all';
 function _fskCatalog(){return window.BlipFullSkins?BlipFullSkins.catalog():[];}
-// colour options (e.g. Anime Blaze red/blue/purple/green/pink): dots on the card once you own it
-function _fskColorsHtml(k,owned){
-    if(!k.variants||!k.ready||!owned) return '';
-    var cur=(window.BlipFullSkinsData&&BlipFullSkinsData.variant(k.id))||k.variants[0].id;
-    return '<div class="fsk-colors" role="group" aria-label="Colour">'+k.variants.map(function(v){
-        return '<button class="fsk-color'+(v.id===cur?' is-on':'')+'" data-fsk-id="'+k.id+'" data-variant="'+v.id+'" title="'+escapeHtml(v.name)+'" aria-label="'+escapeHtml(v.name)+'" style="--sw:'+v.swatch+'"></button>';
-    }).join('')+'</div>';
-}
-document.addEventListener('click',function(e){
-    var b=e.target.closest&&e.target.closest('.fsk-color');
-    if(!b||!window.BlipFullSkinsData) return;
-    e.preventDefault();e.stopPropagation();
-    BlipFullSkinsData.setVariant(b.dataset.fskId,b.dataset.variant);
-    $$('.fsk-color[data-fsk-id="'+b.dataset.fskId+'"]').forEach(function(x){x.classList.toggle('is-on',x.dataset.variant===b.dataset.variant);});
-});
+// a skin's options (Anime Blaze colours, Good Witch Day/Night) are switched from the toggle in the top bar, not the
+// store (owner, Nov 15), so every skin card is the same size
 function _fskCardHtml(k,mode){
     // mode 'shop' (buy / try on / equip) or 'mine' (equip only, uses My Skins' apply binding)
     var owned=!!state.ownedPremiumSkins[k.id];
@@ -8534,7 +8521,7 @@ function _fskCardHtml(k,mode){
     }
     return '<div class="fsk-card'+(k.ready?'':' fsk-locked')+(equipped?' fsk-is-equipped':'')+'" data-fsk-cat="'+k.cat+'">'
         +'<div class="fsk-thumb"><img src="'+k.card+'" alt="" loading="lazy">'+(equipped?'<span class="fsk-badge"><i class="fas fa-check"></i></span>':'')+'</div>'
-        +'<div class="fsk-body"><h4 class="fsk-name">'+escapeHtml(k.name)+'</h4>'+_fskColorsHtml(k,owned)+actions+'</div></div>';
+        +'<div class="fsk-body"><h4 class="fsk-name">'+escapeHtml(k.name)+'</h4>'+actions+'</div></div>';
 }
 function _fskSectionHtml(){
     var chips='<div class="fsk-filters">';

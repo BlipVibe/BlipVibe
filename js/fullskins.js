@@ -205,9 +205,25 @@
     var old = document.getElementById('fsDayNight');
     if (old) old.remove();
     var ids = (cfg && cfg.variants || []).map(function (x) { return x.id; });
-    if (ids.indexOf('day') < 0 || ids.indexOf('night') < 0) return;
+    if (ids.length < 2) return;
     var search = document.getElementById('mobileSearchBtn');
     if (!search || !search.parentNode) return;
+    if (ids.indexOf('day') < 0 || ids.indexOf('night') < 0) {
+      // any other skin with options (e.g. Anime Blaze colours): a swatch of the current colour; each tap = next colour
+      var cur = variant || ids[0], i = ids.indexOf(cur), nxt = ids[(i + 1) % ids.length];
+      var vc = cfg.variants[i] || cfg.variants[0], vn = cfg.variants[(i + 1) % ids.length];
+      var sw = document.createElement('button');
+      sw.id = 'fsDayNight';
+      sw.type = 'button';
+      sw.className = 'fs-daynight fs-swatch-btn';
+      sw.style.setProperty('--sw', vc.swatch || vc.accent);
+      sw.style.setProperty('--sw2', vn.swatch || vn.accent);
+      sw.setAttribute('aria-label', 'Colour: ' + vc.name + '. Switch to ' + vn.name);
+      sw.innerHTML = '<i></i>';
+      sw.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); magicSwap(sw, id, nxt); });
+      search.parentNode.insertBefore(sw, search);
+      return;
+    }
     var isNight = variant === 'night';
     var btn = document.createElement('button');
     btn.id = 'fsDayNight';
@@ -226,7 +242,128 @@
   // of the new sky sweeping out over the screen; the skin switches underneath once the new art has loaded, then the sky
   // dissolves away in a shimmer.
   var swapping = false;
+  // Anime Blaze colour swap (owner, Nov 15: "super crazy", not the Good Witch reveal): manga power-up.
+  // charge (speed lines rush in, screen shakes) -> IMPACT (white flash, comic burst, lightning bolt across the screen in
+  // the new colour) -> the screen splits open along the bolt as a jagged band and the new colour floods out, with
+  // shockwaves, halftone dots, embers and speed lines bursting outward.
+  function blazeSwap(btn, id, next) {
+    if (swapping) return;
+    swapping = true;
+    var vs = FULL_SKINS[id].variants, nv = vs.filter(function (x) { return x.id === next; })[0] || vs[0];
+    var dir = next === vs[0].id ? '' : next + '/', base = BASE + id + '/assets/' + dir;
+    function load(n) { return new Promise(function (ok) { var i = new Image(); i.onload = i.onerror = function () { ok(i); }; i.src = base + n + '.webp'; }); }
+    var pre = ['background', 'header', 'panel9', 'navbar', 'nav-bar', 'post-panel', 'stat-box', 'cover-frame'].map(load);
+    var br = btn.getBoundingClientRect(), cx = br.left + br.width / 2, cy = br.top + br.height / 2;
+    var W = innerWidth, H = innerHeight, dpr = Math.min(window.devicePixelRatio || 1, 2), D = Math.hypot(W, H);
+    var hex = /^#[0-9a-f]{6}$/i.test(nv.accent || '') ? nv.accent : '#e8321e';
+    var R = parseInt(hex.substr(1, 2), 16), G = parseInt(hex.substr(3, 2), 16), B = parseInt(hex.substr(5, 2), 16);
+    function col(a) { return 'rgba(' + R + ',' + G + ',' + B + ',' + a + ')'; }
+    var o = document.createElement('div');
+    o.className = 'fs-swap fs-swap-blaze';
+    var cv = document.createElement('canvas');
+    cv.width = W * dpr; cv.height = H * dpr; cv.className = 'fs-swap-canvas';
+    o.appendChild(cv);
+    var g = cv.getContext('2d'); g.scale(dpr, dpr);
+    // the slash: from the button corner diagonally to the opposite corner, zig-zagging (same points every frame)
+    var ex = cx < W / 2 ? W + 40 : -40, ey = H + 40, sx = cx, sy = cy;
+    var ux = ex - sx, uy = ey - sy, L = Math.hypot(ux, uy); ux /= L; uy /= L;
+    var px = -uy, py = ux, N = 14, zig = [];
+    for (var i = 0; i <= N; i++) { var f = i / N, j = (i % 2 ? 1 : -1) * (i && i < N ? 18 + Math.random() * 26 : 0); zig.push([sx + ux * L * f + px * j, sy + uy * L * f + py * j]); }
+    // extend the line off-screen both ways so the band covers everything when open
+    zig.unshift([sx - ux * D, sy - uy * D]); zig.push([ex + ux * D, ey + uy * D]);
+    function band(d) {   // polygon around the zig line, half-width d (same point count -> smooth animation)
+      var up = zig.map(function (q) { return (q[0] + px * d).toFixed(1) + 'px ' + (q[1] + py * d).toFixed(1) + 'px'; });
+      var dn = zig.slice().reverse().map(function (q) { return (q[0] - px * d).toFixed(1) + 'px ' + (q[1] - py * d).toFixed(1) + 'px'; });
+      return 'polygon(' + up.concat(dn).join(',') + ')';
+    }
+    var lines = [], embers = [], k;
+    for (k = 0; k < 90; k++) lines.push({ a: Math.random() * Math.PI * 2, w: 1 + Math.random() * 5, r0: .35 + Math.random() * .4, l: .2 + Math.random() * .5 });
+    for (k = 0; k < 70; k++) { var an = Math.random() * Math.PI * 2, v = 4 + Math.random() * 16; embers.push({ x: cx, y: cy, vx: Math.cos(an) * v, vy: Math.sin(an) * v, s: 2 + Math.random() * 5, hot: Math.random() < .4 }); }
+    function burst(x, y, r, spikes, rot) {
+      g.beginPath();
+      for (var i = 0; i < spikes * 2; i++) { var aa = rot + i / (spikes * 2) * Math.PI * 2, rr = i % 2 ? r * .55 : r * (0.85 + ((i * 37) % 10) / 30); g.lineTo(x + Math.cos(aa) * rr, y + Math.sin(aa) * rr); }
+      g.closePath();
+    }
+    function bolt(w, a) {   // the lightning slash itself
+      g.save(); g.lineJoin = 'miter'; g.lineCap = 'round';
+      var path = function () { g.beginPath(); for (var i = 1; i < zig.length - 1; i++) g.lineTo(zig[i][0], zig[i][1]); };
+      g.globalAlpha = a; g.strokeStyle = col(.9); g.lineWidth = w * 3.2; g.shadowColor = col(1); g.shadowBlur = 30; path(); g.stroke();
+      g.shadowBlur = 0; g.strokeStyle = '#111'; g.lineWidth = w * 1.7; path(); g.stroke();
+      g.strokeStyle = '#fff'; g.lineWidth = w; path(); g.stroke();
+      g.restore();
+    }
+    var CH = 300, IMP = CH, OPEN = 900, END = CH + 1500, t0;
+    function draw(now) {
+      var t = now - t0; g.clearRect(0, 0, W, H);
+      if (t < CH) {          // charge: lines rush INTO the button, a growing glow
+        var c = t / CH;
+        g.strokeStyle = 'rgba(255,255,255,.85)';
+        lines.forEach(function (q) { var r1 = D * (1.1 - c * q.r0), r2 = r1 - D * q.l * .5; g.lineWidth = q.w; g.beginPath(); g.moveTo(cx + Math.cos(q.a) * r1, cy + Math.sin(q.a) * r1); g.lineTo(cx + Math.cos(q.a) * r2, cy + Math.sin(q.a) * r2); g.stroke(); });
+        var rg = g.createRadialGradient(cx, cy, 0, cx, cy, 30 + 90 * c); rg.addColorStop(0, 'rgba(255,255,255,' + c + ')'); rg.addColorStop(.4, col(.8 * c)); rg.addColorStop(1, col(0));
+        g.fillStyle = rg; g.fillRect(0, 0, W, H);
+      } else {
+        var p = t - IMP;
+        // impact flash (white, then a frame of the new colour)
+        if (p < 90) { g.fillStyle = 'rgba(255,255,255,' + (1 - p / 90 * .4) + ')'; g.fillRect(0, 0, W, H); }
+        else if (p < 170) { g.fillStyle = col(.55 * (1 - (p - 90) / 80)); g.fillRect(0, 0, W, H); }
+        // speed lines bursting OUT
+        var q1 = Math.min(1, p / 700);
+        if (q1 < 1) {
+          g.strokeStyle = 'rgba(255,255,255,' + (1 - q1) + ')';
+          lines.forEach(function (q) { var r1 = 40 + D * q1 * (q.r0 + .4), r2 = r1 + D * q.l * (1 - q1 * .5); g.lineWidth = q.w * (1.4 - q1); g.beginPath(); g.moveTo(cx + Math.cos(q.a) * r1, cy + Math.sin(q.a) * r1); g.lineTo(cx + Math.cos(q.a) * r2, cy + Math.sin(q.a) * r2); g.stroke(); });
+        }
+        // jagged shockwaves
+        [0, 140, 280].forEach(function (dl, n) {
+          var s = (p - dl) / 650; if (s <= 0 || s >= 1) return;
+          burst(cx, cy, 30 + s * D * .9, 16, n + s); g.lineWidth = 10 * (1 - s) + 1; g.strokeStyle = n === 1 ? 'rgba(255,255,255,' + (1 - s) + ')' : col(1 - s); g.stroke();
+        });
+        // comic impact burst + halftone at the button
+        var bs = Math.min(1, p / 120), bf = p < 420 ? 1 : Math.max(0, 1 - (p - 420) / 260);
+        if (bf > 0) {
+          g.save(); g.globalAlpha = bf;
+          burst(cx, cy, 30 + 120 * bs, 12, .3); g.fillStyle = col(1); g.fill(); g.lineWidth = 5; g.strokeStyle = '#111'; g.stroke();
+          burst(cx, cy, 18 + 70 * bs, 10, .1); g.fillStyle = '#fff8d8'; g.fill();
+          g.fillStyle = 'rgba(17,17,17,.55)';
+          for (var yy = -150; yy <= 150; yy += 11) for (var xx = -150; xx <= 150; xx += 11) { var dd = Math.hypot(xx, yy); if (dd > 60 * bs && dd < 150 * bs) { g.beginPath(); g.arc(cx + xx, cy + yy, 2.6 * (1 - dd / 160), 0, 6.283); g.fill(); } }
+          g.restore();
+        }
+        // the lightning slash, sparking while the band opens
+        var bp = Math.min(1, p / 160), ba = p < 600 ? 1 : Math.max(0, 1 - (p - 600) / 500);
+        if (ba > 0) bolt(6 * bp + (p < 600 ? Math.random() * 3 : 0), ba);
+        // band edges glow in the new colour while it opens
+        var o2 = Math.min(1, p / OPEN);
+        if (o2 < .7) { g.save(); g.globalAlpha = 1 - o2 / .7; var dd2 = D * openEase(o2); [-1, 1].forEach(function (sg) { g.beginPath(); zig.forEach(function (q) { g.lineTo(q[0] + px * dd2 * sg, q[1] + py * dd2 * sg); }); g.strokeStyle = col(1); g.lineWidth = 10; g.shadowColor = col(1); g.shadowBlur = 16; g.stroke(); g.strokeStyle = '#fff'; g.lineWidth = 3; g.shadowBlur = 0; g.stroke(); }); g.restore(); }
+        // embers
+        embers.forEach(function (e) { e.x += e.vx; e.y += e.vy; e.vy += .25; e.vx *= .985; var fa = Math.max(0, 1 - p / 1300); if (!fa) return; g.fillStyle = e.hot ? 'rgba(255,250,220,' + fa + ')' : col(fa); g.fillRect(e.x, e.y, e.s, e.s * 2.4); });
+      }
+      if (t < END) requestAnimationFrame(draw); else finish();
+    }
+    function openEase(x) { return x < .12 ? x * .5 : .06 + Math.pow((x - .12) / .88, 2.2) * .94; }
+    function finish() { o.remove(); swapping = false; }
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    Promise.all(pre).then(function () {
+      if (reduce) { if (data().setVariant) data().setVariant(id, next); swapping = false; return; }
+      document.documentElement.appendChild(o);
+      t0 = performance.now(); requestAnimationFrame(draw);
+      setTimeout(function () {   // IMPACT: swap colour behind the flash
+        if (!document.startViewTransition) { if (data().setVariant) data().setVariant(id, next); return; }
+        o.remove(); o.style.viewTransitionName = 'fs-swap-glow';
+        var vt = document.startViewTransition(function () { if (data().setVariant) data().setVariant(id, next); document.documentElement.appendChild(o); });
+        vt.ready.then(function () {
+          var steps = [], n = 12;
+          for (var i = 0; i <= n; i++) steps.push(band(D * openEase(i / n)));
+          document.documentElement.animate({ clipPath: steps }, { duration: OPEN, easing: 'linear', fill: 'forwards', pseudoElement: '::view-transition-new(root)' });
+          var sh = []; for (var s2 = 0; s2 < 10; s2++) { var m = 14 * (1 - s2 / 10); sh.push({ transform: 'translate(' + ((Math.random() - .5) * m).toFixed(1) + 'px,' + ((Math.random() - .5) * m).toFixed(1) + 'px) scale(' + (1 + .03 * (1 - s2 / 10)) + ')' }); }
+          sh.push({ transform: 'none' });
+          document.documentElement.animate(sh, { duration: 520, easing: 'linear', pseudoElement: '::view-transition-old(root)' });
+          document.documentElement.animate(sh, { duration: 620, easing: 'linear', pseudoElement: '::view-transition-new(root)' });
+        }).catch(function () {});
+      }, CH);
+    });
+  }
+
   function magicSwap(btn, id, next) {
+    if (id === 'anime-blaze') return blazeSwap(btn, id, next);
     if (swapping) return;
     swapping = true;
     var dir = next === (FULL_SKINS[id].variants[0].id) ? '' : next + '/';
@@ -257,6 +394,11 @@
     var g = cv.getContext('2d'); g.scale(dpr, dpr);
     var night = next === 'night';
     var glowA = night ? 'rgba(200,160,255,' : 'rgba(255,224,150,', glowB = night ? 'rgba(255,226,170,' : 'rgba(205,165,255,';
+    var nv = (FULL_SKINS[id].variants || []).filter(function (x) { return x.id === next; })[0];
+    if (nv && next !== 'day' && next !== 'night' && /^#[0-9a-f]{6}$/i.test(nv.accent || '')) {
+      var h = nv.accent, rr = parseInt(h.substr(1, 2), 16), gg = parseInt(h.substr(3, 2), 16), bb = parseInt(h.substr(5, 2), 16);
+      glowA = 'rgba(' + rr + ',' + gg + ',' + bb + ','; glowB = 'rgba(255,240,200,';
+    }
     function cover(img) { var s = Math.max(W / img.width, H / img.height), w = img.width * s, h = img.height * s; g.drawImage(img, (W - w) / 2, (H - h) / 2, w, h); }
     function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
     function ring(r, a) {   // the burning edge: soft gold + lilac glow band at radius r
