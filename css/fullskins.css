@@ -3478,3 +3478,31 @@ html body.fs.fs-good-witch .quest-panel-header { margin-bottom: 8px !important; 
   html body.fs .mobile-pill i { font-size: 13px !important; }
 }
 @media (max-width: 768px) { html body.fs .mobile-pill { font-size: 12.5px !important; padding-left: 26px !important; padding-right: 26px !important; gap: 5px !important; } }
+/* spell book layout (owner: nothing should sit on the spine): LEFT page = title, RIGHT page = the three quests listed
+   like spellbook entries (constellation · label + progress · coin) */
+html body.fs.fs-good-witch .quest-panel { grid-template-columns: 1fr 1fr !important; grid-auto-flow: row; column-gap: 9% !important; row-gap: 6px !important;
+  padding: 13% 12% 15% 12.5% !important; align-content: center !important; align-items: center; }
+html body.fs.fs-good-witch .quest-panel-header { grid-column: 1 !important; grid-row: 1 / span 3 !important; align-self: center; justify-content: center !important; text-align: center; }
+html body.fs.fs-good-witch .quest-panel-header h4 { font-size: 26px !important; line-height: 1.05 !important; text-align: center; white-space: normal; max-width: 6em; margin: 0 auto !important; }
+html body.fs.fs-good-witch .quest-item { grid-column: 2 !important; display: grid !important; grid-template-columns: 34px minmax(0, 1fr); column-gap: 6px; align-items: center; text-align: left !important; }
+html body.fs.fs-good-witch .quest-icon { grid-column: 1; grid-row: 1 / span 2; width: 34px !important; height: 30px !important; margin: 0 !important; }
+html body.fs.fs-good-witch .quest-info { grid-column: 2; align-items: flex-start !important; text-align: left; }
+html body.fs.fs-good-witch .quest-info p { font-size: 13px !important; text-align: left !important; }
+html body.fs.fs-good-witch .quest-progress { font-size: 12px !important; }
+html body.fs.fs-good-witch :is(.quest-reward, .quest-check) { grid-column: 2; justify-self: start; font-size: 12px !important; }
+html body.fs.fs-good-witch .quest-reward > i { width: 14px; height: 14px; }
+/* post action row: counts never wrap (view count broke into two lines) */
+html body.fs.fs-good-witch .post-actions { flex-wrap: nowrap !important; gap: 2px !important; padding: 0 2px !important; }
+html body.fs.fs-good-witch .post-actions .action-btn { white-space: nowrap !important; font-size: 15px !important; gap: 4px !important; padding: 4px 2px !important; min-width: 0; }
+html body.fs.fs-good-witch .post-actions .action-btn > i { width: 22px !important; height: 22px !important; }
+/* owner: thicker gold around post photos — draw the frame art larger (corners + rims scale up together) */
+html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] .pm-thumb::after { inset: -12px !important; border-width: 64px 80px !important; }
+html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] .pm-thumb { margin: 14px 10px !important; }
+html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] .pm-thumb::before { top: -28px !important; width: 110px !important; height: 44px !important; }
+/* bar labels/icons are buttons, never selectable text (a long-press popped the iOS copy menu) */
+html body.fs :is(.nav-center, .navbar, .mobile-pills-bar, .search-tabs) { -webkit-user-select: none !important; user-select: none !important; -webkit-touch-callout: none !important; }
+/* Photos card fit inside the screen */
+html body.fs.fs-good-witch .photos-card { margin-left: 0 !important; margin-right: 0 !important; width: auto !important; max-width: 100% !important; box-sizing: border-box; }
+/* post card v3 (iridescent + ornate gold, 140px corners) and thicker photo frame (210x160 corners) */
+html body.fs.fs-good-witch .feed-post.feed-post.feed-post { border-width: 34px !important; border-image: var(--fs-post-panel) 140 fill / 34px stretch !important; }
+html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] .pm-thumb::after { border-image: var(--fs-photo-frame) 160 210 / 50px 64px stretch !important; border-width: 50px 64px !important; inset: -10px !important; }
