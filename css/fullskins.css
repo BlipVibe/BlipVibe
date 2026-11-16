@@ -5456,7 +5456,8 @@ html body.fs.fs-good-witch[data-fs-variant="night"] #userDropdownMenu a:not(#dro
    button art with its painted "more" icon. Outside full skins the app's buttons show as before. */
 .fs-pv-more { display: none; }
 html body.fs #page-profile-view .pv-actions .fs-pv-hidden.fs-pv-hidden { display: none !important; }
-body.fs #pvCoverBanner .fs-pv-more { display: block; position: absolute; top: 10px; right: 10px; z-index: 30; }
+html body.fs #page-profile-view:has(> .fs-pv-more) { position: relative; }
+html body.fs #page-profile-view > .fs-pv-more { display: block; position: absolute; top: 10px; right: 10px; z-index: 70; }
 body.fs .fs-pv-more-btn { width: 40px; height: 40px; padding: 0; border: 0; cursor: pointer;
   background: var(--fs-icon-more) center / 58% auto no-repeat, var(--fs-btn-round) center / contain no-repeat; }
 body.fs .fs-pv-menu { top: 46px !important; right: 0 !important; left: auto !important; min-width: 170px; z-index: 31; }
@@ -5500,3 +5501,28 @@ html body.fs.fs-vaporwave[data-fs-variant="modern-dark"] :is(.modal-content, .po
 html body.fs.premium-heavens-light:not(.fs-vaporwave) :is(.navbar, .nav-center)::before,
 html body.fs.premium-heavens-light:not(.fs-vaporwave) :is(.navbar, .nav-center)::after,
 html body.fs.premium-heavens-light .profile-card .profile-cover::after { background: none !important; content: none !important; }
+/* Anime Blaze: style.css shrinks Follow to a 40px icon-only circle on phones; the concept's Follow is a labelled flash button */
+html body.fs.fs-anime-blaze #pvFollowBtn { width: auto !important; height: auto !important; min-height: 36px; padding: 8px 14px !important;
+  font-size: 13px !important; border-radius: 0 !important; gap: 6px; }
+/* Witchcraft: its menu-panel art has two divider lines painted in (made for a 3-row menu); stretched over the account
+   menu they cut across items. Menus use the clean post-panel art instead. */
+html body.fs.fs-witchcraft :is(#userDropdownMenu.user-dropdown, .post-dropdown) { border-width: 22px !important;
+  border-image: var(--fs-post-panel) 160 fill / 22px stretch !important; }
+/* Witchcraft: on cards you don't own, Try On + Buy sit side by side and each kept the 120px pill minimum, so Buy ran into
+   the next card. They share the row instead (each half the card). */
+html body.fs.fs-witchcraft .fsk-body .shop-card-actions { display: flex !important; gap: 4px; justify-content: center; }
+html body.fs.fs-witchcraft .fsk-body .shop-card-actions .btn { min-width: 0 !important; flex: 1 1 0; max-width: 50%; padding: 0 6px !important; font-size: 15px !important; margin: 4px 0 0 !important; }
+/* Witchcraft group page: it reuses the profile card, whose stats grid is built for two stats around the pentagram — the
+   group's third stat (Posts) got squeezed into a 30px fourth column. Three equal stat boxes there, no medallion. */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft #page-group-view .pv-profile-card:not(#_) .profile-stats { grid-template-columns: repeat(3, 1fr); }
+  html body.fs.fs-witchcraft #page-group-view .pv-profile-card:not(#_) .profile-stats::before { display: none; }
+  html body.fs.fs-witchcraft #page-group-view .pv-profile-card:not(#_) .profile-stats > .stat:nth-child(2) { grid-column: 2; }
+  html body.fs.fs-witchcraft #page-group-view .pv-profile-card:not(#_) .profile-stats > .stat:last-child { grid-column: 3; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft #page-group-view .pv-profile-card:not(#_) .pv-actions { grid-template-columns: repeat(3, 1fr); }
+  html body.fs.fs-witchcraft #page-group-view .pv-profile-card:not(#_) .pv-actions .btn { white-space: nowrap; font-size: 15px !important; }
+}
+html body.fs:is(.fs-dark, [data-fs-variant="night"], [data-fs-variant="twilight"], [data-fs-variant$="-dark"]) .fs-pv-menu a.fs-pv-danger,
+html body.fs:is(.fs-dark, [data-fs-variant="night"], [data-fs-variant="twilight"], [data-fs-variant$="-dark"]) .fs-pv-menu a.fs-pv-danger i { color: #ff8f80 !important; }

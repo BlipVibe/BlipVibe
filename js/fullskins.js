@@ -1126,17 +1126,26 @@
     var page = document.getElementById('page-profile-view'), follow = document.getElementById('pvFollowBtn');
     // most concepts put ⋯ at the cover's top right; Vaporwave's puts it in the button row
     var inRow = active === 'vaporwave', acts = follow && follow.closest('.pv-actions');
-    var host = inRow ? acts : document.getElementById('pvCoverBanner');
-    if (!page || !follow || !host || !page.contains(follow) || page.querySelector('.fs-pv-more')) return;
+    // (cover mode: the ⋯ hangs off the page at the cover's top right, so it stacks above the profile picture too)
+    var cover = document.getElementById('pvCoverBanner'), host = inRow ? acts : (cover && page);
+    if (page && (!follow || !page.contains(follow))) {   // your own profile (or a stale one): no ⋯
+      var old = page.querySelector('.fs-pv-more'); if (old) old.remove();
+    }
+    if (!page || !follow || !host || !page.contains(follow)) return;
+    // the app redraws the buttons (follow/unfollow, mute…): re-hide each time, build the ⋯ once per render
+    PV_MENU.forEach(function (id) { var b = document.getElementById(id); if (b) b.classList.add('fs-pv-hidden'); });
+    if (page.querySelector('.fs-pv-more')) return;
     var wrap = document.createElement('div'), btn = document.createElement('button'), menu = document.createElement('div');
     wrap.className = 'fs-pv-more';
     btn.type = 'button'; btn.className = 'fs-pv-more-btn' + (inRow ? ' btn btn-outline' : ''); btn.setAttribute('aria-label', 'More: mute, block, report');
     if (inRow) btn.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
     menu.className = 'post-dropdown fs-pv-menu';
     wrap.appendChild(btn); wrap.appendChild(menu); host.appendChild(wrap);
-    PV_MENU.forEach(function (id) { var b = document.getElementById(id); if (b) b.classList.add('fs-pv-hidden'); });
+    function place() { if (!inRow && cover) wrap.style.top = (cover.offsetTop + 10) + 'px'; }
+    place();
     btn.addEventListener('click', function (e) {
       e.stopPropagation();
+      place();
       if (menu.classList.contains('show')) { menu.classList.remove('show'); return; }
       menu.innerHTML = '';
       PV_MENU.forEach(function (id) {
@@ -1147,7 +1156,8 @@
         a.addEventListener('click', function (ev) { ev.preventDefault(); ev.stopPropagation(); menu.classList.remove('show'); b.click(); });
         menu.appendChild(a);
       });
-      menu.classList.add('show');
+      // after this tap has finished bubbling: the app closes every open post menu on any document tap
+      setTimeout(function () { menu.classList.add('show'); }, 0);
     });
   }
   function watchPosts() {
