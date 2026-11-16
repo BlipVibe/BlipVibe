@@ -69,4 +69,7 @@ images/skins/**
 !images/skins/superhero/
 !images/skins/superhero/assets/
 !images/skins/superhero/assets/**
+!images/skins/blood-moon/
+!images/skins/blood-moon/assets/
+!images/skins/blood-moon/assets/**
 __pycache__/

@@ -2682,7 +2682,7 @@ html body.fs.fs-witchcraft :is(.msg-search, .page-search) input { padding-left: 
 /* full-screen chat: the base mobile body padding (72px + safe area, for the bottom bar) made the page 106pt taller than the
    screen once the chat opened, so the window scrolled and the fixed chat's input bar fell off the bottom */
 @media (max-width: 768px) {
-  html body.fs.fs-witchcraft:has(.messages-layout.chat-open) { padding-bottom: 0 !important; }
+  html body.fs.fs-witchcraft:has(#page-messages.active .messages-layout.chat-open) { padding-bottom: 0 !important; }
 }
 /* owner: the big header (moon · logo · icon bar) is HOME ONLY — every other concept page has just its gold title,
    cobwebs in both top corners, and the bottom bar */
@@ -3291,7 +3291,7 @@ html body.fs.fs-good-witch #msgChat #msgVoiceBtn i { background-image: var(--fs-
 html body.fs.fs-good-witch #msgChat #msgInput { flex: 1 1 auto; min-width: 0; margin: 0 !important; border: 0 !important; border-radius: 0 !important; background: var(--fs-field) center / 100% 100% no-repeat !important; padding: 11px 16px !important; color: var(--gw-ink) !important; font: 500 16px var(--fs-font) !important; }
 html body.fs.fs-good-witch #msgChat #sendMsgBtn { flex: 0 0 44px; width: 44px; height: 44px; padding: 0 !important; border: 0 !important; background: var(--fs-send-orb) center / contain no-repeat !important; }
 html body.fs.fs-good-witch #msgChat #sendMsgBtn i { opacity: 0 !important; }
-@media (max-width: 768px) { html body.fs.fs-good-witch:has(.messages-layout.chat-open) { padding-bottom: 0 !important; } }
+@media (max-width: 768px) { html body.fs.fs-good-witch:has(#page-messages.active .messages-layout.chat-open) { padding-bottom: 0 !important; } }
 
 /* ---------- page decorations (concept): owl on crystal under the post, moon in clouds under messages ---------- */
 html body.fs.fs-good-witch #page-messages .msg-sidebar::after { content: ""; display: block; width: calc(100% + 16px); margin: 8px -8px 0; aspect-ratio: 1290 / 500; background: var(--fs-moon-clouds) center bottom / 100% 100% no-repeat; pointer-events: none; }
@@ -3865,7 +3865,8 @@ html body.fs.fs-vaporwave .modal-content .modal-header .modal-close { position: 
   html body.fs.fs-vaporwave:has(#page-profiles.active) { --vw-page-title: var(--fs-title-network); }
   html body.fs.fs-vaporwave:has(#page-notifications.active) { --vw-page-title: var(--fs-title-notifications); }
   html body.fs.fs-vaporwave:has(#page-search.active) { --vw-page-title: var(--fs-title-search); }
-  html body.fs.fs-vaporwave:has(:is(#page-profile-view, #page-group-view).active) { --vw-page-title: var(--fs-title-profile); }
+  html body.fs.fs-vaporwave:has(#page-profile-view.active) { --vw-page-title: var(--fs-title-profile); }
+  html body.fs.fs-vaporwave:has(#page-group-view.active) { --vw-page-title: var(--fs-title-groups); }   /* concept: a group page is titled Groups */
   html body.fs.fs-vaporwave:not(:has(#page-home.active)):not(:has(#page-shop.active)) .navbar .nav-coins { display: none !important; }
   html body.fs.fs-vaporwave:has(#page-shop.active) .navbar .nav-coins { grid-column: 8 !important; grid-row: 1 / 3 !important; }
   html body.fs.fs-vaporwave:not(:has(#page-home.active)) .page.active { padding-top: calc(84px + env(safe-area-inset-top, 0px)) !important; }
@@ -4171,10 +4172,10 @@ html body.fs.fs-vaporwave :is(#page-profiles, #page-search, #page-notifications)
 html body.fs.fs-vaporwave :is(input, textarea, select), html body.fs.fs-vaporwave #msgChat #msgInput { font-size: 16px !important; }
 html body.fs.fs-vaporwave #msgChat .msg-chat-input { position: relative !important; z-index: 20 !important; padding: 10px 8px calc(10px + env(safe-area-inset-bottom, 0px)) !important; }
 /* the taskbar must not show over an open chat (it covered the message box) */
-html body.fs.fs-vaporwave:has(.messages-layout.chat-open) .nav-center { display: none !important; }
+html body.fs.fs-vaporwave:has(#page-messages.active .messages-layout.chat-open) .nav-center { display: none !important; }
 /* every full skin: an open full-screen chat must not keep the body's bottom-bar padding (the page grew taller than the
    screen and the fixed chat's input bar was lost) — Witchcraft and Good Witch had their own copy of this */
-@media (max-width: 768px) { html body.fs:has(.messages-layout.chat-open) { padding-bottom: 0 !important; } }
+@media (max-width: 768px) { html body.fs:has(#page-messages.active .messages-layout.chat-open) { padding-bottom: 0 !important; } }
 
 /* ---------- Skins page (concept skins): every card a small window, name in its title bar, picture, one button; all the
    same size (the equipped card shows Take off instead of a second Equipped button) ---------- */
@@ -4692,7 +4693,7 @@ html body.fs.fs-heavens-light #msgChat #msgVoiceBtn i { background-image: var(--
 html body.fs.fs-heavens-light #msgChat #msgInput { flex: 1 1 auto; min-width: 0; margin: 0 !important; border: 0 !important; border-radius: 0 !important; background: var(--fs-field) center / 100% 100% no-repeat !important; padding: 11px 16px !important; color: var(--hl-ink) !important; font: 500 16px var(--fs-font) !important; }
 html body.fs.fs-heavens-light #msgChat #sendMsgBtn { flex: 0 0 44px; width: 44px; height: 44px; padding: 0 !important; border: 0 !important; background: var(--fs-send-btn) center / contain no-repeat !important; }
 html body.fs.fs-heavens-light #msgChat #sendMsgBtn i { opacity: 0 !important; }
-@media (max-width: 768px) { html body.fs.fs-heavens-light:has(.messages-layout.chat-open) { padding-bottom: 0 !important; } }
+@media (max-width: 768px) { html body.fs.fs-heavens-light:has(#page-messages.active .messages-layout.chat-open) { padding-bottom: 0 !important; } }
 
 /* ---------- page decorations (concept): owl on crystal under the post, moon in clouds under messages ---------- */
 html body.fs.fs-heavens-light #page-messages .msg-sidebar::after { content: ""; display: block; width: calc(100% + 16px); margin: 8px -8px 0; aspect-ratio: 1290 / 500; background: var(--fs-page-deco-messages) center bottom / 100% 100% no-repeat; pointer-events: none; }
@@ -5996,3 +5997,1456 @@ html body.fs.fs-superhero #gvProfileCard .profile-avatar { border-radius: 6px !i
 html body.fs.fs-superhero #gvProfileCard .profile-name { margin-top: 12px !important; }
 html body.fs.fs-superhero #gvProfileCard .profile-stats > .stat + .stat { background: none !important; }
 html body.fs.fs-superhero[data-fs-variant="villains"] #cpmPublish { font-size: 13px !important; letter-spacing: 0 !important; }
+/* someone else's profile: Mute / Block / Report live in a ⋯ menu at the cover's top right, as in every concept
+   (fullskins.js wrapPvMore). The menu is the skin's own post menu (.post-dropdown); the button is the skin's round
+   button art with its painted "more" icon. Outside full skins the app's buttons show as before. */
+.fs-pv-more { display: none; }
+html body.fs #page-profile-view .pv-actions .fs-pv-hidden.fs-pv-hidden { display: none !important; }
+html body.fs #page-profile-view:has(> .fs-pv-more) { position: relative; }
+html body.fs #page-profile-view > .fs-pv-more { display: block; position: absolute; top: 10px; right: 10px; z-index: 70; }
+body.fs .fs-pv-more-btn { width: 40px; height: 40px; padding: 0; border: 0; cursor: pointer;
+  background: var(--fs-icon-more) center / 58% auto no-repeat, var(--fs-btn-round) center / contain no-repeat; }
+body.fs .fs-pv-menu { top: 46px !important; right: 0 !important; left: auto !important; min-width: 170px; z-index: 31; }
+body.fs .fs-pv-menu a { font-size: 16px !important; }
+body.fs .fs-pv-menu a.fs-pv-danger, body.fs .fs-pv-menu a.fs-pv-danger i { color: #d23b2f !important; }
+
+/* ================= QA pass (skin-qa session, Nov 16) — fixes found on the full screen × skin × rendition sweep ================= */
+/* ⋯ menu on someone else's profile: items in the skin's own ink (they were dark-on-dark in Good Witch Night / HL Twilight) */
+html body.fs .fs-pv-menu a:not(.fs-pv-danger), html body.fs .fs-pv-menu a:not(.fs-pv-danger) i { color: var(--fs-ink) !important; }
+/* Vaporwave: the concept puts ⋯ in the button row, as one more window button (fullskins.js puts it in .pv-actions) */
+html body.fs.fs-vaporwave .pv-actions .fs-pv-more { display: block; position: relative; }
+html body.fs.fs-vaporwave .pv-actions .fs-pv-more-btn { width: 100%; height: 100%; min-height: 36px; background: none; }
+html body.fs.fs-vaporwave .pv-actions .fs-pv-menu { top: calc(100% + 4px) !important; }
+/* selects (Settings → Comment order, Who can message me) were white with the skin's light ink on dark skins */
+html body.fs select { background-color: var(--card) !important; color: var(--fs-ink) !important; font-size: 16px !important; }
+/* My Profile pop-up: skins without an avatar mask (Vaporwave, Heaven's Light) lost the photo (the mask URL 404s → nothing
+   drawn), and Anime Blaze's cut-in mask left light shards around it. Those three show the photo as a plain circle. */
+html body.fs:is(.fs-vaporwave, .fs-heavens-light, .fs-anime-blaze) .modal-profile-top img { -webkit-mask: none !important; mask: none !important;
+  border-radius: 50% !important; width: min(180px, 60%) !important; }
+/* Witchcraft: store-card "Owned" tag sat under the arch's rounded corner (only "NED" showed) — drop it into the open window */
+html body.fs.fs-witchcraft .fsk-owned { top: 26%; left: 50%; transform: translateX(-50%); }
+/* Witchcraft: create-post tool buttons were empty squares (glyph hidden, no art assigned) */
+html body.fs.fs-witchcraft #cpmCameraBtn i { background-image: var(--fs-icon-camera) !important; }
+html body.fs.fs-witchcraft #cpmGifBtn i { background-image: var(--fs-icon-gif) !important; }
+html body.fs.fs-witchcraft #cpmPollBtn i { background-image: var(--fs-icon-poll) !important; }
+html body.fs.fs-witchcraft #cpmScheduleBtn i { background-image: var(--fs-icon-schedule) !important; }
+html body.fs.fs-witchcraft #cpmEmojiBtn i { background-image: var(--fs-icon-emoji) !important; }
+/* Witchcraft: pop-ups used the generic panel slot tiled with "round", which scattered bits of its ornament across the
+   middle as little dots — use the post panel art, stretched, like every other Witchcraft panel */
+html body.fs.fs-witchcraft .modal-content:not(:has(.story-create-wrap, .story-canvas-full, .story-content, .story-progress)) {
+  border: 24px solid transparent !important; border-image: var(--fs-post-panel) 160 fill / 24px stretch !important; background: none !important; }
+/* Vaporwave Modern: pop-ups are see-through glass and the page showed through the text — real frosted glass, like its menu */
+html body.fs.fs-vaporwave[data-fs-variant="modern"] :is(.modal-content, .post-dropdown) { background-color: rgba(227, 243, 255, .82) !important;
+  background-clip: padding-box !important; -webkit-backdrop-filter: blur(16px) saturate(1.2); backdrop-filter: blur(16px) saturate(1.2); }
+html body.fs.fs-vaporwave[data-fs-variant="modern-dark"] :is(.modal-content, .post-dropdown) { background-color: rgba(14, 33, 64, .86) !important;
+  background-clip: padding-box !important; -webkit-backdrop-filter: blur(16px) saturate(1.2); backdrop-filter: blur(16px) saturate(1.2); }
+/* the old (pre-full-skin) Heaven's Light premium styles in style.css draw images/skin-textures/clouds.png — a cloud strip
+   with a fake grey checkerboard painted in — over the nav bars and profile cover. When that class is on the body under a
+   full skin (e.g. viewing a Heaven's Light user's profile), the checkerboard showed through see-through bar art
+   (owner, Nov 16, on Anime Blaze). Full skins never use it. */
+html body.fs.premium-heavens-light:not(.fs-vaporwave) :is(.navbar, .nav-center)::before,
+html body.fs.premium-heavens-light:not(.fs-vaporwave) :is(.navbar, .nav-center)::after,
+html body.fs.premium-heavens-light .profile-card .profile-cover::after { background: none !important; content: none !important; }
+/* Anime Blaze: style.css shrinks Follow to a 40px icon-only circle on phones; the concept's Follow is a labelled flash button */
+html body.fs.fs-anime-blaze #pvFollowBtn { width: auto !important; height: auto !important; min-height: 36px; padding: 8px 14px !important;
+  font-size: 13px !important; border-radius: 0 !important; gap: 6px; }
+/* Witchcraft: its menu-panel art has two divider lines painted in (made for a 3-row menu); stretched over the account
+   menu they cut across items. Menus use the clean post-panel art instead. */
+html body.fs.fs-witchcraft :is(#userDropdownMenu.user-dropdown, .post-dropdown) { border-width: 22px !important;
+  border-image: var(--fs-post-panel) 160 fill / 22px stretch !important; }
+/* Witchcraft: on cards you don't own, Try On + Buy sit side by side and each kept the 120px pill minimum, so Buy ran into
+   the next card. They share the row instead (each half the card). */
+html body.fs.fs-witchcraft .fsk-body .shop-card-actions { display: flex !important; gap: 4px; justify-content: center; }
+html body.fs.fs-witchcraft .fsk-body .shop-card-actions .btn { min-width: 0 !important; flex: 1 1 0; max-width: 50%; padding: 0 6px !important; font-size: 15px !important; margin: 4px 0 0 !important; }
+/* Witchcraft group page: it reuses the profile card, whose stats grid is built for two stats around the pentagram — the
+   group's third stat (Posts) got squeezed into a 30px fourth column. Three equal stat boxes there, no medallion. */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft #page-group-view .pv-profile-card:not(#_) .profile-stats { grid-template-columns: repeat(3, 1fr); }
+  html body.fs.fs-witchcraft #page-group-view .pv-profile-card:not(#_) .profile-stats::before { display: none; }
+  html body.fs.fs-witchcraft #page-group-view .pv-profile-card:not(#_) .profile-stats > .stat:nth-child(2) { grid-column: 2; }
+  html body.fs.fs-witchcraft #page-group-view .pv-profile-card:not(#_) .profile-stats > .stat:last-child { grid-column: 3; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft #page-group-view .pv-profile-card:not(#_) .pv-actions { grid-template-columns: repeat(3, 1fr); }
+  html body.fs.fs-witchcraft #page-group-view .pv-profile-card:not(#_) .pv-actions .btn { white-space: nowrap; font-size: 15px !important; }
+}
+html body.fs:is(.fs-dark, [data-fs-variant="night"], [data-fs-variant="twilight"], [data-fs-variant$="-dark"]) .fs-pv-menu a.fs-pv-danger,
+html body.fs:is(.fs-dark, [data-fs-variant="night"], [data-fs-variant="twilight"], [data-fs-variant$="-dark"]) .fs-pv-menu a.fs-pv-danger i { color: #ff8f80 !important; }
+/* Scrapbook search page: its field matched the old plain strip by id (#searchPageInput beat the torn-paper rule) and came
+   out a thin 28px strip with the icon outside it — same torn field as Network/Groups/Messages search now */
+html body.fs.fs-scrapbook #searchPageInput { background: none !important; border: 14px solid transparent !important;
+  border-image: var(--fs-field9-real) 80 fill / 14px round !important; }
+/* an empty page subtitle (Search before you type) drew a tiny blank paper label under the field */
+html body.fs .page-subtitle:empty { display: none !important; }
+/* Heaven's Light group page: the stats plaque is a two-panel frame; the group's third stat (Group Coins) wrapped onto the
+   frame's bottom edge and the numbers rode up over its top edge. Members · Posts stay in the plaque; Group Coins sits
+   centred just under it. */
+html body.fs.fs-heavens-light #gvProfileCard .profile-stats { flex-wrap: nowrap !important; margin-bottom: 40px !important; }
+html body.fs.fs-heavens-light #gvProfileCard .profile-stats > .stat:nth-child(3) { position: absolute; top: calc(100% + 4px); left: 0; right: 0; }
+html body.fs.fs-heavens-light #gvProfileCard .profile-stats > .stat:nth-child(3) .stat-count { display: inline !important; font-size: 20px !important; margin-right: 6px; }
+html body.fs.fs-heavens-light #gvProfileCard .profile-stats > .stat:nth-child(3) .stat-label { display: inline !important; }
+html body.fs.fs-heavens-light #gvProfileCard .profile-stats > .stat:nth-child(3) { display: flex !important; flex-direction: row !important; justify-content: center; align-items: baseline; gap: 6px; }
+/* Heaven's Light: its bottom bar stacks above the full-screen chat, so it covered the message box (keyboard open or not) */
+html body.fs.fs-heavens-light:has(#page-messages.active .messages-layout.chat-open) .nav-center { display: none !important; }
+/* Heaven's Light chat: the first button was the bare gold ring; the concept has a "+" in it (kit icon-plus over round-btn) */
+html body.fs.fs-heavens-light #msgChat #msgImgBtn i { background: var(--fs-icon-plus) center / 52% no-repeat, var(--fs-round-btn) center / contain no-repeat !important; }
+
+
+/* ======================================================================================
+   BLOOD MOON (cloned from Heaven's Light) (Nov 16, WIP). Cloned from the Good Witch block as a base, then rebuilt FROM the approved concepts (owner: match almost 1:1):
+   images/skins/blood-moon/concept-v1-approved.png + concept-2.png (art prototypes/blood-moon-redraw-brief.md → kit/hl → assets/).
+   Crops: prototypes/reference/blood-moon/<screen>.png. Notes: images/skins/blood-moon/NOTES.md.
+   Text colours come from --bm-*.
+   ====================================================================================== */
+body.fs-blood-moon { --bm-title: #5a3a0e; --bm-ink: #4a3416; --bm-soft: #7a6240; --bm-accent: #a8771c; --bm-gold: #c9962e;
+  background: #f7efe0 !important; font-family: var(--fs-font) !important; font-size: 16px; color: var(--bm-ink); }
+body.fs-blood-moon * { border-image-repeat: stretch !important; }
+body.fs-blood-moon :is(h1, h2, h3, h4, .profile-name, .post-username, .card-heading, .nav-logo, .stat-count, .msg-contact-name,
+  .profile-card-name, .fsk-name, .group-card-body h4) { font-family: var(--fs-title-font) !important; font-weight: 700 !important; color: var(--bm-title) !important; }
+body.fs-blood-moon :is(p, span, label, small, .post-time, .msg-contact-preview, .stat-label) { color: inherit; }
+body.fs-blood-moon #premiumBgLayer { display: block !important; background: var(--fs-background) center / cover no-repeat !important; }
+body.fs-blood-moon :is(.page, .main-container, .center-feed, .page-container) { background: transparent !important; }
+
+/* ---------- Home top bar (concept home): avatar · BlipVibe · search · bell · music · coin pill, one row ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .navbar { border: 0 !important; border-image: none !important; box-shadow: none !important; overflow: visible !important;
+    background: var(--fs-top-bar) center bottom / 100% 100% no-repeat !important;
+    height: calc(64px + env(safe-area-inset-top, 0px)) !important; max-height: none !important; padding: env(safe-area-inset-top, 0px) 0 0 !important; box-sizing: border-box !important; }
+  html body.fs.fs-blood-moon .page.active { padding-top: calc(70px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-blood-moon .nav-container { display: grid !important; grid-template-columns: 50px 1fr 40px 40px 40px auto; align-items: center; column-gap: 4px; padding: 0 10px !important; height: 100%; }
+  html body.fs.fs-blood-moon .navbar :is(.nav-left, .nav-right) { display: contents !important; }
+  html body.fs.fs-blood-moon .navbar .nav-user { grid-column: 1; grid-row: 1; margin: 0 !important; }
+  html body.fs.fs-blood-moon .navbar .nav-user::after { display: none !important; }
+  html body.fs.fs-blood-moon .navbar .nav-avatar { width: 44px !important; height: 44px !important; border-radius: 50% !important; padding: 3px; box-sizing: border-box;
+    -webkit-mask: none !important; mask: none !important; box-shadow: none !important; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; object-fit: cover; }
+  html body.fs.fs-blood-moon .navbar .nav-logo { grid-column: 2; grid-row: 1; justify-self: start; font-size: 27px !important; color: var(--bm-title) !important; background: none !important; padding: 0 0 0 4px !important; text-shadow: none !important; }
+  html body.fs.fs-blood-moon .navbar .search-bar { display: none !important; }
+  html body.fs.fs-blood-moon .navbar .mobile-search-btn { grid-column: 3; grid-row: 1; }
+  html body.fs.fs-blood-moon .navbar .mobile-notif-btn { grid-column: 4; grid-row: 1; position: relative; }
+  html body.fs.fs-blood-moon .navbar .nav-music-wrap { grid-column: 5; grid-row: 1; }
+  html body.fs.fs-blood-moon .navbar .nav-coins { grid-column: 6; grid-row: 1; }
+  html body.fs.fs-blood-moon .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) { width: 38px !important; height: 38px !important; display: flex !important; align-items: center; justify-content: center;
+    background: none !important; border: 0 !important; padding: 0 !important; }
+  html body.fs.fs-blood-moon .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) > i { width: 25px !important; height: 25px !important; font-size: 0 !important; background-size: contain !important; background-repeat: no-repeat !important; background-position: center !important; }
+  html body.fs.fs-blood-moon .navbar .mobile-notif-btn .notif-badge { position: absolute; top: 0; right: 0; min-width: 17px; height: 17px; border-radius: 9px; background: #c9962e !important; color: #fff !important; font: 700 11px/17px system-ui !important; text-align: center; padding: 0 4px; }
+  html body.fs.fs-blood-moon .navbar .nav-coins { height: 36px !important; padding: 0 12px 0 8px !important; display: flex !important; align-items: center; gap: 5px; margin: 0 !important;
+    border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; background: var(--fs-coin-pill) center / 100% 100% no-repeat !important;
+    color: var(--bm-title) !important; font: 600 17px var(--fs-font) !important; }
+  html body.fs.fs-blood-moon .navbar .nav-coins > i { width: 22px !important; height: 22px !important; font-size: 0 !important; background: var(--fs-coin) center / contain no-repeat !important; }
+  html body.fs.fs-blood-moon .navbar .nav-coins .coin-count { color: var(--bm-title) !important; }
+  /* other pages: no app header (concept); back arrow · centred title (· coin pill on Skins only) */
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .navbar { height: 0 !important; min-height: 0 !important; padding: 0 !important; background: none !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-wrap, .nav-user) { display: none !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .navbar .nav-logo { display: block !important; position: fixed !important; z-index: 60; top: calc(env(safe-area-inset-top, 0px) + 10px); left: 10px;
+    width: 40px; height: 40px; padding: 0 !important; font-size: 0 !important; color: transparent !important; background: var(--fs-icon-back) center / 28px no-repeat !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)):not(:has(#page-shop.active)) .navbar .nav-coins { display: none !important; }
+  html body.fs.fs-blood-moon:has(#page-shop.active) .navbar .nav-coins { position: fixed !important; z-index: 60; top: calc(env(safe-area-inset-top, 0px) + 12px); right: 12px; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page.active { padding-top: calc(env(safe-area-inset-top, 0px) + 6px) !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page.active::before { content: ""; position: absolute; left: 0; top: 0; width: 120px; height: 100px; pointer-events: none;
+    background: var(--fs-curtain-left) left top / contain no-repeat; z-index: 0; }
+  html body.fs.fs-blood-moon .page.active { position: relative; }
+}
+
+/* ---------- bottom bar (concept): frosted glass bar, each tab a pearly ORB with its icon, label under; active orb glows ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .nav-center { display: grid !important; grid-template-columns: repeat(5, 1fr); align-items: start; border: 0 !important; border-image: none !important; box-shadow: none !important; backdrop-filter: none !important;
+    height: calc(96px + env(safe-area-inset-bottom, 0px)) !important; padding: 6px 6px calc(env(safe-area-inset-bottom, 0px)) !important; box-sizing: border-box;
+    background: var(--fs-nav-bar) center top / 100% 100% no-repeat, linear-gradient(transparent 40%, var(--bm-navfill, #f7efe0) 40%) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link { display: flex !important; flex-direction: column; align-items: center; gap: 1px; padding: 0 !important; min-width: 0; background: none !important; border: 0 !important; border-image: none !important;
+    color: var(--bm-soft) !important; font: 600 14px var(--fs-font) !important; transition: none !important; transform: none !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link > i { width: 58px !important; min-width: 58px; height: 58px !important; font-size: 0 !important;
+    background: var(--fs-icon-home) center / 30px no-repeat, var(--fs-nav-active) center / contain no-repeat !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link[data-page="groups"] > i { background-image: var(--fs-icon-groups), var(--fs-nav-active) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link[data-page="shop"] > i { background-image: var(--fs-icon-skins), var(--fs-nav-active) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link[data-page="profiles"] > i { background-image: var(--fs-icon-network), var(--fs-nav-active) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link[data-page="messages"] > i { background-image: var(--fs-icon-messages), var(--fs-nav-active) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active > i { background-image: var(--fs-icon-home), var(--fs-nav-active) !important; filter: drop-shadow(0 0 8px rgba(214, 170, 80, .55)); }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active[data-page="groups"] > i { background-image: var(--fs-icon-groups), var(--fs-nav-active) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active[data-page="shop"] > i { background-image: var(--fs-icon-skins), var(--fs-nav-active) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active[data-page="profiles"] > i { background-image: var(--fs-icon-network), var(--fs-nav-active) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active[data-page="messages"] > i { background-image: var(--fs-icon-messages), var(--fs-nav-active) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active { color: var(--bm-accent) !important; font-weight: 700 !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link .notif-badge { position: absolute; top: 2px; right: 18%; }
+  html body.fs.fs-blood-moon .nav-center .nav-link { position: relative; }
+}
+
+/* ---------- glass panels + posts ---------- */
+html body.fs.fs-blood-moon :is(.card:not(.feed-post):not(.profile-card):not(.pv-profile-card), .comment-item, .post-dropdown) {
+  border: 24px solid transparent !important; border-image: var(--fs-post-panel) 90 fill / 24px stretch !important; background: none !important; box-shadow: none !important; padding: 0 2px !important; color: var(--bm-ink) !important; }
+html body.fs.fs-blood-moon .feed-post.feed-post.feed-post { background: none !important; box-shadow: none !important; border: 24px solid transparent !important;
+  border-image: var(--fs-post-panel) 90 fill / 24px stretch !important; padding: 0 2px !important; color: var(--bm-ink) !important; }
+html body.fs.fs-blood-moon .post-header { align-items: center !important; }
+html body.fs.fs-blood-moon .post-header .post-avatar { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; width: 48px !important; height: 48px !important;
+  padding: 3px; box-sizing: border-box; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-blood-moon .post-user-top { flex-direction: column !important; align-items: flex-start !important; gap: 0 !important; }
+html body.fs.fs-blood-moon .post-username { font-size: 19px !important; }
+html body.fs.fs-blood-moon :is(.post-time, .post-meta) { color: var(--bm-soft) !important; font-size: 15px !important; }
+html body.fs.fs-blood-moon :is(.post-content-text, .post-text, .post-content p) { color: var(--bm-ink) !important; font-size: 17px !important; }
+html body.fs.fs-blood-moon .post-menu-btn, html body.fs.fs-blood-moon .post-menu-btn i { color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon .post-actions { border: 0 !important; justify-content: space-around; }
+html body.fs.fs-blood-moon .action-btn { color: var(--bm-ink) !important; font: 600 17px var(--fs-font) !important; }
+/* photos: whole, never cropped, rounded, thin gold frame hugging each one */
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] { display: flex !important; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px;
+  height: auto !important; max-height: none !important; aspect-ratio: auto !important; overflow: visible !important; background: none !important; margin: 4px 0 !important; }
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] .pm-thumb { position: relative; flex: 0 1 auto; width: fit-content !important; height: auto !important; min-height: 0 !important; max-height: none !important;
+  max-width: 100%; border: 0 !important; background: none !important; border-radius: 14px !important; overflow: visible !important; line-height: 0; }
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] .pm-thumb::after { content: ""; position: absolute; inset: -3px; z-index: 2; pointer-events: none; background: var(--fs-photo-frame) center / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] .pm-thumb :is(img, video) { display: block; width: auto !important; height: auto !important; min-height: 0 !important; max-width: 100% !important; max-height: 460px !important;
+  object-fit: contain !important; border-radius: 14px !important; background: transparent !important; }
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"]:not(.pm-count-1) .pm-thumb { max-width: calc(50% - 4px); align-self: center !important; }
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"]:not(.pm-count-1) .pm-thumb :is(img, video) { max-height: 230px !important; }
+html body.fs.fs-blood-moon .share-preview { border: 16px solid transparent !important; border-image: var(--fs-comment-bubble) 60 fill / 16px stretch !important; background: none !important; border-radius: 0 !important; color: var(--bm-ink) !important; }
+
+/* ---------- Home: profile block (owner rule: always on Home) built like the concept profile ---------- */
+body.fs-blood-moon :is(.pv-profile-card, #profileCard) { background: transparent !important; border: 0 !important; border-image: none !important; box-shadow: none !important; }
+body.fs-blood-moon :is(.pv-profile-card, #profileCard) .profile-cover { display: none !important; }
+body.fs-blood-moon :is(#coverEditBtn, #pvCoverEditBtn) { display: none !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon :is(#timelineCover, #pvCoverBanner) { position: relative; height: 250px !important; aspect-ratio: auto !important; border-radius: 0 !important; background: none !important;
+    width: calc(100vw + 16px) !important; max-width: none !important; margin-left: calc(50% - 50vw - 8px) !important; margin-right: calc(50% - 50vw - 8px) !important; overflow: visible !important; }
+  /* the two gold crescents cradling the side bubbles (moon-frame = left crescent; right one mirrored) */
+  html body.fs.fs-blood-moon :is(#timelineCover, #pvCoverBanner)::before,
+  html body.fs.fs-blood-moon :is(#timelineCover, #pvCoverBanner)::after { content: ""; position: absolute; top: 14px; width: 270px; height: 189px; pointer-events: none; z-index: 1;
+    background: var(--fs-gothic-windows) left top / 100% 100% no-repeat; }
+  html body.fs.fs-blood-moon :is(#timelineCover, #pvCoverBanner)::before { left: -3px; }
+  html body.fs.fs-blood-moon :is(#timelineCover, #pvCoverBanner)::after { right: -3px; transform: scaleX(-1); }
+}
+html body.fs.fs-blood-moon .fs-timeline { position: absolute; inset: 0; z-index: 2; }
+html body.fs.fs-blood-moon .fs-tl-slot { position: absolute; border-radius: 50%; aspect-ratio: 1; height: auto; }
+html body.fs.fs-blood-moon .fs-tl-slot img { position: absolute; inset: 3.5%; width: 93% !important; height: 93% !important; object-fit: cover; border-radius: 50%; }
+html body.fs.fs-blood-moon .fs-tl-slot::before { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: var(--fs-photo-frame) center / 100% 100% no-repeat; }
+html body.fs.fs-blood-moon .fs-tl-slot.fs-tl-empty::after { content: ""; position: absolute; inset: 3.5%; border-radius: 50%; background: radial-gradient(circle at 50% 40%, #fff 0%, #f3e6c8 70%, #e6d2a6 100%); z-index: 1; display: block !important; }
+html body.fs.fs-blood-moon .fs-tl-own::after { display: none !important; }
+html body.fs.fs-blood-moon .fs-tl-own.fs-tl-slot-3::after { display: block !important; content: ""; position: absolute; right: -2%; bottom: 2%; left: auto; top: auto; width: 34px; height: 34px; z-index: 4;
+  background: var(--fs-camera-badge) center / contain no-repeat !important; border-radius: 50%; }
+html body.fs.fs-blood-moon .fs-tl-slot-1 { left: 5.5%; top: 42px; width: 33.5%; }
+html body.fs.fs-blood-moon .fs-tl-slot-2 { left: 30%; top: 4px; width: 40%; z-index: 2; }
+html body.fs.fs-blood-moon .fs-tl-slot-3 { right: 5.5%; top: 42px; width: 33.5%; }
+html body.fs.fs-blood-moon :is(#profileAvatarImg, .pv-profile-card .profile-avatar) { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; border: 0 !important; box-shadow: none !important; object-fit: cover; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .profile-avatar-wrap { width: 150px !important; height: 150px !important; margin: -112px auto 0 !important; border-radius: 50% !important; overflow: visible !important; z-index: 3; position: relative; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .profile-avatar-wrap .profile-avatar { width: 100% !important; height: 100% !important; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .profile-avatar-wrap::after { display: block !important; content: ""; position: absolute; inset: -4%; z-index: 2; pointer-events: none;
+  background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .avatar-edit-btn { z-index: 4 !important; width: 36px !important; height: 36px !important; right: 2% !important; bottom: 2% !important; border: 0 !important; box-shadow: none !important;
+  background: var(--fs-camera-badge) center / contain no-repeat !important; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .avatar-edit-btn i { opacity: 0 !important; }
+html body.fs.fs-blood-moon .fs-namecard { border: 0 !important; border-image: none !important; background: none !important; transform: none !important; width: auto !important; padding: 0 !important; margin: 6px auto 0 !important; }
+html body.fs.fs-blood-moon .fs-namecard::before { display: none !important; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .profile-name { font-size: 40px !important; line-height: 1.05 !important; border: 0 !important; background: none !important; margin: 0 !important; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) :is(.profile-title, .profile-about) { color: var(--bm-title) !important; font-style: italic; font-weight: 600; font-size: 18px !important; margin: 2px 0 0 !important; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) :is(.profile-title, .profile-about):empty { display: none !important; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .profile-stats { display: flex !important; justify-content: center; align-items: center; position: relative; width: 92% !important; margin: 12px auto 0 !important;
+  aspect-ratio: 1100 / 260; border: 0 !important; border-image: none !important; background: var(--fs-stats-frame) center / 100% 100% no-repeat !important; padding: 0 12% !important; box-sizing: border-box; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .profile-stats > .stat { flex: 1 1 0; border: 0 !important; border-image: none !important; background: none !important; padding: 0 !important; text-align: center; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .profile-stats > .stat + .stat { border-left: 1.5px solid color-mix(in srgb, var(--bm-gold) 70%, transparent) !important; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .profile-stats > .stat + .stat::before { display: none !important; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .stat-count { font-size: 30px !important; line-height: 1 !important; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .stat-label { color: var(--bm-title) !important; font-size: 18px !important; font-weight: 600; }
+html body.fs.fs-blood-moon #pvEditProfileBtn,
+html body.fs.fs-blood-moon #profileCard .profile-links { border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important;
+  background: var(--fs-edit-btn) center / 100% 100% no-repeat !important; width: 72% !important; height: 56px; min-height: 0; margin: 14px auto 6px !important; padding: 0 16% 0 0 !important;
+  display: flex !important; align-items: center; justify-content: center; gap: 8px; box-sizing: border-box; }
+html body.fs.fs-blood-moon #profileCard :is(.view-profile-link, .edit-profile-btn) , html body.fs.fs-blood-moon #pvEditProfileBtn { color: var(--bm-title) !important; font: 700 22px var(--fs-title-font) !important; }
+html body.fs.fs-blood-moon #profileCard .edit-profile-btn i, html body.fs.fs-blood-moon #pvEditProfileBtn i { display: none !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card)::after { content: ""; display: block; height: 0; padding-bottom: 40%; margin: 0 -8px; background: var(--fs-rose-ledge) center bottom / 100% auto no-repeat; }
+html body.fs.fs-blood-moon .pv-back-link { display: none !important; }
+
+/* ---------- Daily Quests (concept): frosted frame with gold crescent, each quest a CONSTELLATION that lights up ---------- */
+html body.fs.fs-blood-moon .quest-panel { border: 0 !important; border-image: none !important; box-shadow: none !important; position: relative;
+  background: var(--fs-quests-frame) center / 100% 100% no-repeat !important; padding: 46px 18px 26px !important;
+  display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 4px 0 !important; }
+html body.fs.fs-blood-moon #questPanel[style*="none"] { display: none !important; }
+html body.fs.fs-blood-moon .quest-panel-header { grid-column: 1 / -1; justify-content: center !important; border: 0 !important; margin: 0 !important; }
+html body.fs.fs-blood-moon .quest-panel-header h4 { font-size: 26px !important; }
+html body.fs.fs-blood-moon .quest-panel-header i, html body.fs.fs-blood-moon .quest-reset { display: none !important; }
+html body.fs.fs-blood-moon .quest-item { display: flex !important; flex-direction: column; align-items: center; text-align: center; gap: 0; border: 0 !important; border-image: none !important;
+  background: none !important; padding: 0 !important; margin: 0 !important; min-width: 0; }
+html body.fs.fs-blood-moon .quest-icon { width: 92px !important; height: 80px !important; margin: 0 0 2px !important; border-radius: 0 !important; background: var(--fs-moon-0) center / contain no-repeat !important; }
+html body.fs.fs-blood-moon .quest-item[data-fs-q="50"] .quest-icon { background-image: var(--fs-moon-50) !important; }
+html body.fs.fs-blood-moon .quest-item[data-fs-q="100"] .quest-icon { background-image: var(--fs-moon-100) !important; }
+html body.fs.fs-blood-moon .quest-item:nth-child(3) .quest-icon { background-image: var(--fs-moon-0) !important; }
+html body.fs.fs-blood-moon .quest-item:nth-child(3)[data-fs-q="50"] .quest-icon { background-image: var(--fs-moon-50) !important; }
+html body.fs.fs-blood-moon .quest-item:nth-child(3)[data-fs-q="100"] .quest-icon { background-image: var(--fs-moon-100) !important; }
+html body.fs.fs-blood-moon .quest-item:nth-child(4) .quest-icon { background-image: var(--fs-moon-0) !important; }
+html body.fs.fs-blood-moon .quest-item:nth-child(4)[data-fs-q="50"] .quest-icon { background-image: var(--fs-moon-50) !important; }
+html body.fs.fs-blood-moon .quest-item:nth-child(4)[data-fs-q="100"] .quest-icon { background-image: var(--fs-moon-100) !important; }
+html body.fs.fs-blood-moon .quest-icon > i { display: none !important; }
+html body.fs.fs-blood-moon .quest-info { display: flex; flex-direction: column; align-items: center; }
+html body.fs.fs-blood-moon .quest-info p { color: var(--bm-title) !important; font-size: 16px !important; font-weight: 700; line-height: 1.1; margin: 0 !important; }
+html body.fs.fs-blood-moon .quest-bar { display: none !important; }
+html body.fs.fs-blood-moon .quest-progress { color: var(--bm-title) !important; font-size: 16px !important; font-weight: 600; }
+html body.fs.fs-blood-moon :is(.quest-reward, .quest-check) { background: none !important; color: var(--bm-title) !important; font: 700 17px var(--fs-font) !important; padding: 0 !important; display: inline-flex; align-items: center; gap: 4px; }
+html body.fs.fs-blood-moon .quest-reward > i { font-size: 0 !important; width: 20px; height: 20px; background: var(--fs-coin) center / contain no-repeat; }
+
+/* ---------- feed tabs: plain words, the active one on a soft glow with the constellation underline ---------- */
+html body.fs.fs-blood-moon #feedTabs { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 0 !important; border: 0 !important; background: none !important; margin: 6px 0 !important; }
+html body.fs.fs-blood-moon .search-tab { border: 0 !important; border-image: none !important; border-radius: 22px !important; box-shadow: none !important; background: none !important;
+  color: var(--bm-title) !important; font: 600 18px var(--fs-font) !important; padding: 8px 6px 14px !important; white-space: nowrap; display: flex !important; align-items: center; justify-content: center; }
+html body.fs.fs-blood-moon .search-tab > i { display: none !important; }
+html body.fs.fs-blood-moon #feedTabs .search-tab.active { background: radial-gradient(ellipse at 50% 45%, rgba(255, 226, 160, .75), transparent 70%), var(--fs-tab-active) center bottom / 86% 16px no-repeat !important; color: var(--bm-accent) !important; font-weight: 700 !important; }
+/* filter chips + segmented tabs */
+html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, .fsk-filters) { display: flex !important; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding: 2px 0 !important; border: 0 !important; background: none !important; scrollbar-width: none; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab, html body.fs.fs-blood-moon .fsk-filter {
+  flex: 0 0 auto; padding: 6px 14px !important; font-size: 15px !important; border-radius: 0 !important; background: var(--fs-chip) center / 100% 100% no-repeat !important; color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.active, html body.fs.fs-blood-moon .fsk-filter.active { background-image: var(--fs-chip-active) !important; color: #fff !important; }
+html body.fs.fs-blood-moon :is(#profilesTabs, #searchTabs) .search-tab { flex: 1 1 0; min-height: 46px; padding: 4px 6px !important; font-size: 15px !important; line-height: 1.1; white-space: normal; text-align: center;
+  background: var(--fs-seg-tab) center / 100% 100% no-repeat !important; }
+html body.fs.fs-blood-moon :is(#profilesTabs, #searchTabs) .search-tab.active { background-image: var(--fs-seg-tab-active) !important; color: #fff !important; }
+
+/* ---------- Home extras (concept home-full): stories, composer, Featured Skin, coin goal ---------- */
+html body.fs.fs-blood-moon .story-ring { background: var(--fs-story-ring) center / contain no-repeat !important; padding: 4px !important; }
+html body.fs.fs-blood-moon .story-add .story-ring:not(.story-has) { background-image: var(--fs-story-add) !important; }
+html body.fs.fs-blood-moon :is(.story-name, .story-label) { color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon #openPostModal { border: 0 !important; border-image: none !important; background: none !important; padding: 0 2px !important; display: flex; align-items: center; gap: 8px; }
+html body.fs.fs-blood-moon .post-create-avatar { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; width: 46px !important; height: 46px !important; padding: 3px; box-sizing: border-box;
+  background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; }
+html body.fs.fs-blood-moon .post-input-fake { flex: 1; border: 0 !important; border-image: none !important; border-radius: 0 !important; background: var(--fs-composer) center / 100% 100% no-repeat !important;
+  padding: 12px 18px !important; min-height: 0 !important; color: var(--bm-soft) !important; font: 500 16px var(--fs-font) !important; }
+html body.fs.fs-blood-moon .featured-skin-banner { border: 0 !important; border-image: none !important; box-shadow: none !important; background: var(--fs-featured-frame) center / 100% 100% no-repeat !important; padding: 14px 18px !important; color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon .coin-goal-bar { border: 0 !important; border-image: none !important; box-shadow: none !important; background: var(--fs-coin-goal-frame) center / 100% 100% no-repeat !important; padding: 10px 16px !important; color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon .coin-goal-track { background: var(--fs-goal-track) center / 100% 100% no-repeat !important; border-radius: 0 !important; border: 0 !important; }
+html body.fs.fs-blood-moon .coin-goal-fill { background: var(--fs-goal-fill) left center / auto 100% no-repeat !important; border-radius: 0 !important; }
+
+/* ---------- page headers (concept groups/messages/skins/...): centred title, round icon buttons right ---------- */
+html body.fs.fs-blood-moon .page-header, html body.fs.fs-blood-moon .msg-sidebar-header { display: flex !important; flex-wrap: wrap; align-items: center; gap: 8px; padding: 6px 4px 0 52px !important; border: 0 !important; background: none !important; position: relative; z-index: 1; }
+html body.fs.fs-blood-moon :is(.page-header h2, .msg-sidebar-header h3) { flex: 1 1 auto; margin: 0 !important; text-align: center; font-size: 30px !important; background: none !important; border: 0 !important; padding: 0 !important; }
+html body.fs.fs-blood-moon .page-header h2 > i { display: none !important; }
+html body.fs.fs-blood-moon .page-header .page-subtitle { display: none !important; }
+html body.fs.fs-blood-moon .page-header .page-actions { display: contents !important; }
+html body.fs.fs-blood-moon .page-header .page-search { order: 5; flex: 1 1 100%; margin: 0 0 0 -44px !important; }
+html body.fs.fs-blood-moon .page-header .btn:not(.page-search) { width: 42px !important; height: 42px !important; min-width: 0; padding: 0 !important; font-size: 0 !important; border: 0 !important; border-image: none !important; border-radius: 50% !important; box-shadow: none !important; background: none !important; }
+html body.fs.fs-blood-moon .page-header .btn:not(.page-search) i { font-size: 0 !important; width: 26px; height: 26px; display: inline-block; background: var(--fs-icon-plus) center / contain no-repeat; margin: 0 !important; }
+html body.fs.fs-blood-moon .page-header .btn:not(.page-search) i::before { content: "" !important; }
+/* fields */
+html body.fs.fs-blood-moon :is(.msg-search, .page-search, .comment-input) { border: 0 !important; border-image: none !important; border-radius: 0 !important; background: var(--fs-field) center / 100% 100% no-repeat !important; padding: 0 10px !important; min-height: 46px; display: flex; align-items: center; box-shadow: none !important; }
+html body.fs.fs-blood-moon :is(.msg-search, .page-search) > i { font-size: 0 !important; width: 20px; height: 20px; flex: 0 0 20px; background: var(--fs-icon-search) center / contain no-repeat; position: static !important; transform: none !important; }
+html body.fs.fs-blood-moon :is(.msg-search, .page-search) > i::before { content: "" !important; }
+html body.fs.fs-blood-moon :is(.msg-search, .page-search) input { background: none !important; border: 0 !important; color: var(--bm-ink) !important; font: 500 17px var(--fs-font) !important; padding: 8px !important; height: auto !important; flex: 1; }
+
+/* ---------- list rows (groups, network, messages, notifications, search) ---------- */
+html body.fs.fs-blood-moon :is(.msg-contact, .notif-item, .profile-card-item, .follow-list-item) {
+  border: 16px solid transparent !important; border-image: var(--fs-list-row) 70 fill / 16px stretch !important; background: none !important; box-shadow: none !important; color: var(--bm-ink) !important; margin-bottom: 6px !important; }
+html body.fs.fs-blood-moon :is(.join-group-btn, .suggestion-follow-btn, .follow-btn, .profile-follow-btn) { border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important;
+  background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: var(--bm-title) !important; font: 700 16px var(--fs-font) !important; }
+html body.fs.fs-blood-moon :is(.msg-contact > div > img, .profile-card-item .profile-card-avatar, .notif-item img, #newGroupDmBtn > div:first-child) {
+  -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; border: 0 !important; padding: 3px !important; box-sizing: border-box; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; object-fit: cover; }
+html body.fs.fs-blood-moon .msg-contact-name > span { font-size: 0 !important; width: 20px; height: 20px; padding: 0 !important; display: inline-block; vertical-align: middle; background: var(--fs-unread-dot) center / contain no-repeat !important; border-radius: 0 !important; }
+html body.fs.fs-blood-moon :is(.msg-contact-preview, .msg-contact-time, .profile-card-bio) { color: var(--bm-soft) !important; }
+html body.fs.fs-blood-moon #groupsSections .shop-scroll-row, html body.fs.fs-blood-moon :is(#page-profiles, #page-search) :is(.connections-grid, .shop-scroll-row, .page-grid) {
+  display: flex !important; flex-direction: column; gap: 6px; overflow: visible !important; grid-template-columns: none !important; grid-auto-flow: row !important; }
+html body.fs.fs-blood-moon #groupsSections .group-card { min-width: 0 !important; max-width: none !important; width: 100%; transform: none !important; display: grid !important; grid-template-columns: 64px minmax(0, 1fr) auto; align-items: center; gap: 12px;
+  background: none !important; box-shadow: none !important; border: 16px solid transparent !important; border-image: var(--fs-list-row) 70 fill / 16px stretch !important; padding: 0 2px !important; }
+html body.fs.fs-blood-moon #groupsSections .group-card-banner { width: 64px; height: 64px !important; border-radius: 50%; overflow: hidden; padding: 3px; box-sizing: border-box; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; }
+html body.fs.fs-blood-moon #groupsSections .group-card-banner img { width: 100% !important; height: 100% !important; border-radius: 50% !important; border: 0 !important; object-fit: cover; margin: 0 !important; }
+html body.fs.fs-blood-moon #groupsSections .gc-icon-edit-btn, html body.fs.fs-blood-moon #groupsSections .group-card-actions .view-group-btn, html body.fs.fs-blood-moon #groupsSections .gc-btn-icon { display: none !important; }
+html body.fs.fs-blood-moon #groupsSections .group-card-body { padding: 0 !important; min-width: 0; }
+html body.fs.fs-blood-moon #groupsSections .group-card-body h4 { margin: 0; font-size: 20px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html body.fs.fs-blood-moon #groupsSections .group-card-body p:not(.group-members) { display: none; }
+html body.fs.fs-blood-moon #groupsSections .group-members { color: var(--bm-soft) !important; font-size: 15px !important; }
+html body.fs.fs-blood-moon #groupsSections .group-card-actions { padding: 0 !important; }
+html body.fs.fs-blood-moon #groupsSections .group-card-actions .btn { min-width: 84px; height: 40px; padding: 0 12px !important; white-space: nowrap; border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important;
+  background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: var(--bm-title) !important; font: 700 16px var(--fs-font) !important; }
+html body.fs.fs-blood-moon :is(#page-profiles, #page-search) .profile-card-item { display: grid !important; grid-template-columns: 58px minmax(0, 1fr) auto; column-gap: 12px; align-items: center; text-align: left;
+  min-width: 0 !important; max-width: none !important; width: 100%; transform: none !important; padding: 0 2px !important; }
+html body.fs.fs-blood-moon :is(#page-profiles, #page-search) .profile-card-item > * { grid-column: 2; margin: 0 !important; min-width: 0; text-align: left !important; }
+html body.fs.fs-blood-moon :is(#page-profiles, #page-search) .profile-card-avatar { grid-column: 1; grid-row: 1 / span 3; width: 58px !important; height: 58px !important; }
+html body.fs.fs-blood-moon :is(#page-profiles, #page-search) .profile-follow-btn { grid-column: 3; grid-row: 1 / span 3; width: auto !important; min-width: 90px; height: 40px; padding: 0 12px !important; }
+html body.fs.fs-blood-moon :is(#page-profiles, #page-search) .profile-card-name { font-size: 19px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html body.fs.fs-blood-moon :is(#page-profiles, #page-search) .profile-card-item:not(:has(.profile-card-bio)) .profile-card-name { grid-row: 1 / span 3; }
+/* notifications: lavender icon per type (concept), no coloured disc */
+html body.fs.fs-blood-moon .notif-icon { background: none !important; width: 40px !important; height: 40px !important; flex-shrink: 0; box-shadow: none !important; }
+html body.fs.fs-blood-moon .notif-icon i { font-size: 0 !important; width: 30px; height: 30px; display: block; margin: auto; background: var(--fs-notif-like) center / contain no-repeat; }
+html body.fs.fs-blood-moon .notif-icon i::before { content: "" !important; }
+html body.fs.fs-blood-moon .notif-icon i.fa-user-plus { background-image: var(--fs-notif-follow); }
+html body.fs.fs-blood-moon .notif-icon i:is(.fa-comment, .fa-reply) { background-image: var(--fs-notif-comment); }
+html body.fs.fs-blood-moon .notif-icon i.fa-at { background-image: var(--fs-notif-mention); }
+html body.fs.fs-blood-moon .notif-icon i.fa-envelope { background-image: var(--fs-notif-message); }
+html body.fs.fs-blood-moon .notif-icon i:is(.fa-users, .fa-envelope-open-text) { background-image: var(--fs-notif-group); }
+html body.fs.fs-blood-moon .notif-icon i:is(.fa-palette, .fa-coins) { background-image: var(--fs-notif-purchase); }
+html body.fs.fs-blood-moon .notif-item :is(.notif-text, p) { color: var(--bm-ink) !important; font-size: 16px !important; }
+
+/* ---------- skins shop (concept skins): frosted cards, art on top, name + coin price below, Equipped tag ---------- */
+html body.fs.fs-blood-moon .fsk-grid { gap: 10px !important; }
+html body.fs.fs-blood-moon .fsk-card { position: relative; background: var(--fs-skin-card) center / 100% 100% no-repeat !important; border: 0 !important; border-image: none !important; box-shadow: none !important; padding: 0 0 8px !important; overflow: visible !important; }
+html body.fs.fs-blood-moon .fsk-thumb { margin: 2% 2.5% 0 2.3% !important; aspect-ratio: 1.6; height: auto !important; border: 0 !important; border-radius: 12px 12px 0 0 !important; overflow: hidden; }
+html body.fs.fs-blood-moon .fsk-thumb img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+html body.fs.fs-blood-moon .fsk-body { padding: 4px 12px 0 !important; text-align: left !important; background: none !important; }
+html body.fs.fs-blood-moon .fsk-name { font-size: 18px !important; margin: 0 !important; text-align: left !important; }
+html body.fs.fs-blood-moon .fsk-badge { position: absolute; top: 4px; right: 4px; width: auto !important; height: 24px !important; padding: 0 12px !important; border-radius: 0 !important;
+  background: var(--fs-equipped-tag) center / 100% 100% no-repeat !important; color: #fff !important; font: 700 13px var(--fs-font) !important; display: inline-flex !important; align-items: center; }
+html body.fs.fs-blood-moon .fsk-badge i { display: none !important; }
+html body.fs.fs-blood-moon .fsk-badge::after { content: "Equipped"; }
+html body.fs.fs-blood-moon .fsk-body .btn { width: 100% !important; height: 38px; margin: 6px 0 0 !important; padding: 0 10px !important; display: flex !important; align-items: center; justify-content: center; gap: 5px;
+  border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: var(--bm-title) !important; font: 700 16px var(--fs-font) !important; }
+html body.fs.fs-blood-moon .fsk-body .btn.fsk-equipped { background-image: var(--fs-chip-active) !important; color: #fff !important; opacity: 1 !important; }
+html body.fs.fs-blood-moon :is(.fsk-soon, .fsk-takeoff) { color: var(--bm-soft) !important; }
+
+/* ---------- chat (concept chat): frosted bubbles, + orb, field, send orb; moon-in-clouds pinned above the input ---------- */
+html body.fs.fs-blood-moon #msgChat { background: var(--fs-background) center / cover no-repeat !important; }
+html body.fs.fs-blood-moon #msgChat .msg-chat-header { background: none !important; border-bottom: 0 !important; position: relative; }
+html body.fs.fs-blood-moon #msgChat .msg-chat-header::before { content: ""; position: absolute; left: 0; top: 0; width: 110px; height: 100%; background: var(--fs-curtain-left) left top / contain no-repeat; pointer-events: none; }
+html body.fs.fs-blood-moon #msgChat .msg-back-btn { display: flex !important; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0 !important; background: none !important; position: relative; z-index: 1; }
+html body.fs.fs-blood-moon #msgChat .msg-back-btn i { font-size: 0 !important; display: block !important; width: 26px; height: 26px; background: var(--fs-icon-back) center / contain no-repeat !important; }
+html body.fs.fs-blood-moon #msgChat .msg-chat-header img { width: 46px !important; height: 46px !important; padding: 3px; box-sizing: border-box; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; position: relative; z-index: 1; }
+html body.fs.fs-blood-moon #msgChat .msg-chat-header h4 { font-size: 21px !important; position: relative; z-index: 1; }
+html body.fs.fs-blood-moon .msg-bubble { border: 16px solid transparent !important; border-image: var(--fs-bubble-in) 70 fill / 16px stretch !important; background: none !important; color: var(--bm-ink) !important; border-radius: 0 !important; box-shadow: none !important; padding: 0 4px !important; }
+html body.fs.fs-blood-moon .msg-bubble.sent { border-image-source: var(--fs-bubble-out) !important; color: #fff !important; }
+html body.fs.fs-blood-moon #msgChat .msg-chat-messages { overflow-x: hidden !important; touch-action: pan-y; }
+html body.fs.fs-blood-moon #msgChat .msg-chat-messages::after { content: ""; display: block; flex: 0 0 auto; height: calc(100vw * 500 / 1290 - 30px); }
+html body.fs.fs-blood-moon #msgChat .msg-chat-input { position: relative !important; z-index: 3; background: var(--fs-input-bar) center / 100% 100% no-repeat !important; border-top: 0 !important;
+  justify-content: center !important; align-items: center !important; gap: 6px !important; padding-left: 10px !important; padding-right: 10px !important; }
+html body.fs.fs-blood-moon #msgChat .msg-chat-input::before { content: ""; position: absolute; left: 0; right: 0; bottom: calc(100% - 4px); aspect-ratio: 1290 / 500; background: var(--fs-page-deco-messages) center bottom / 100% 100% no-repeat; pointer-events: none; z-index: -1; }
+html body.fs.fs-blood-moon #msgChat .msg-media-btn { display: flex !important; align-items: center; justify-content: center; width: 36px !important; height: 36px !important; padding: 0 !important; flex: 0 0 36px; background: none !important; }
+html body.fs.fs-blood-moon #msgChat .msg-media-btn i { font-size: 0 !important; display: block !important; width: 26px; height: 26px; background: center / contain no-repeat !important; }
+html body.fs.fs-blood-moon #msgChat #msgImgBtn i { background-image: var(--fs-round-btn) !important; width: 34px; height: 34px; }
+html body.fs.fs-blood-moon #msgChat #msgGifBtn i { background-image: var(--fs-icon-gif) !important; }
+html body.fs.fs-blood-moon #msgChat #msgVoiceBtn i { background-image: var(--fs-icon-emoji) !important; }
+html body.fs.fs-blood-moon #msgChat #msgInput { flex: 1 1 auto; min-width: 0; margin: 0 !important; border: 0 !important; border-radius: 0 !important; background: var(--fs-field) center / 100% 100% no-repeat !important; padding: 11px 16px !important; color: var(--bm-ink) !important; font: 500 16px var(--fs-font) !important; }
+html body.fs.fs-blood-moon #msgChat #sendMsgBtn { flex: 0 0 44px; width: 44px; height: 44px; padding: 0 !important; border: 0 !important; background: var(--fs-send-btn) center / contain no-repeat !important; }
+html body.fs.fs-blood-moon #msgChat #sendMsgBtn i { opacity: 0 !important; }
+@media (max-width: 768px) { html body.fs.fs-blood-moon:has(.messages-layout.chat-open) { padding-bottom: 0 !important; } }
+
+/* ---------- page decorations (concept): owl on crystal under the post, moon in clouds under messages ---------- */
+html body.fs.fs-blood-moon #page-messages .msg-sidebar::after { content: ""; display: block; width: calc(100% + 16px); margin: 8px -8px 0; aspect-ratio: 1290 / 500; background: var(--fs-page-deco-messages) center bottom / 100% 100% no-repeat; pointer-events: none; }
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .nav-center :is(.nav-saved-link, .nav-notif-link) { display: none !important; }
+  /* concept: the bubbles start right under the top bar */
+  html body.fs.fs-blood-moon #timelineCover { margin-top: -34px !important; }
+}
+/* stats: the art draws its own centre divider — no second CSS line */
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .profile-stats > .stat + .stat { border-left: 0 !important; }
+/* Featured Skin + composer (QA vs concept home-full) */
+html body.fs.fs-blood-moon .featured-skin-banner :is(h4, h5, .featured-timer, .featured-timer i, h4 i) { color: var(--bm-title) !important; font-family: var(--fs-title-font) !important; }
+html body.fs.fs-blood-moon .featured-skin-banner h5 { font-size: 22px !important; font-weight: 700 !important; margin: 0 !important; }
+html body.fs.fs-blood-moon .featured-skin-banner p { color: var(--bm-soft) !important; }
+html body.fs.fs-blood-moon .featured-skin-banner .featured-preview { border-radius: 14px !important; }
+html body.fs.fs-blood-moon .featured-skin-banner .btn { border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; min-width: 84px; height: 40px;
+  background: var(--fs-follow-btn) center / 100% 100% no-repeat !important; color: #fff !important; font: 700 16px var(--fs-font) !important; }
+html body.fs.fs-blood-moon #openPostModal { margin: 6px 0 !important; padding: 0 !important; box-sizing: border-box; width: 100% !important; }
+html body.fs.fs-blood-moon .post-create-avatar { flex: 0 0 46px; }
+html body.fs.fs-blood-moon .post-input-fake { min-width: 0; }
+/* cat-on-cloud: tucked up under the Edit Profile pill like the concept, not a big gap */
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card)::after { padding-bottom: 30% !important; margin: -26px -8px 0 !important; background-size: 92% auto !important; }
+html body.fs.fs-blood-moon .share-preview :is(.share-preview-name, strong, .shared-post-author:not(img)) { color: var(--bm-title) !important; font-family: var(--fs-title-font) !important; font-weight: 700 !important; opacity: 1 !important; }
+html body.fs.fs-blood-moon .share-preview .share-preview-time { color: var(--bm-soft) !important; }
+/* readability (owner: text too light): body text plum on the light glass, never the app's pale primary */
+html body.fs.fs-blood-moon :is(.post-description, .post-description *, .share-preview-text, .share-preview-text *, .post-tags, .comment-text, .notif-text, .msg-contact-preview) { color: var(--bm-ink) !important; opacity: 1 !important; }
+html body.fs.fs-blood-moon .share-preview .share-preview-name, html body.fs.fs-blood-moon .share-preview strong.shared-post-author { color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon :is(.post-time, .share-preview-time, .msg-contact-time, .group-members, .profile-card-bio, .post-meta) { color: var(--bm-soft) !important; opacity: 1 !important; }
+html body.fs.fs-blood-moon .post-badges :is(span, .post-badge) { background: rgba(255,255,255,.7) !important; color: var(--bm-title) !important; border: 1px solid rgba(201,163,92,.6) !important; }
+html body.fs.fs-blood-moon .post-badges :is(span, .post-badge) i { color: var(--bm-accent) !important; }
+html body.fs.fs-blood-moon .msg-bubble.sent, html body.fs.fs-blood-moon .msg-bubble.sent * { color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon #newGroupDmBtn > div:first-child i { color: var(--bm-accent) !important; }
+/* readability pass 2 (owner: "still too hard to read — thicker font?"): Cormorant is hairline at 400/500, so every
+   Good Witch text is 600+ and a touch larger; sent bubble = deep plum (6.6:1 on its lavender art, white was 2.6:1) */
+body.fs-blood-moon { --bm-deep: #4a2a08; }
+html body.fs.fs-blood-moon :is(p, span, a, div, li, label, input, textarea, button, small, .action-btn, .msg-bubble, .msg-bubble *, .post-description, .msg-contact-preview, .notif-text, .comment-text) { font-weight: 600; }
+html body.fs.fs-blood-moon :is(h1, h2, h3, h4, h5, .profile-name, .post-username, .msg-contact-name, .stat-count, .fsk-name, .card-heading) { font-weight: 700 !important; }
+html body.fs.fs-blood-moon .msg-bubble { font-size: 18px !important; }
+html body.fs.fs-blood-moon .msg-bubble, html body.fs.fs-blood-moon .msg-bubble * { color: var(--bm-deep) !important; }
+html body.fs.fs-blood-moon .msg-bubble.sent, html body.fs.fs-blood-moon .msg-bubble.sent * { color: var(--bm-deep) !important; }
+html body.fs.fs-blood-moon .msg-read-receipt, html body.fs.fs-blood-moon .msg-read-receipt * { color: var(--bm-deep) !important; opacity: .85; }
+html body.fs.fs-blood-moon :is(.view-more-link, .view-all-link, a.view-more-link) { color: var(--bm-accent) !important; font-weight: 700 !important; }
+html body.fs.fs-blood-moon .featured-skin-banner :is(h4 i, .featured-timer i) { font-family: "Font Awesome 6 Free", "Font Awesome 6 Pro", "FontAwesome" !important; font-weight: 900 !important; color: var(--bm-accent) !important; }
+html body.fs.fs-blood-moon .featured-skin-banner .featured-timer i.far { font-weight: 400 !important; }
+html body.fs.fs-blood-moon .featured-skin-banner .btn { color: var(--bm-deep) !important; }
+/* the middle timeline photo sits in FRONT of the two side ones (owner) */
+html body.fs.fs-blood-moon :is(.fs-tl-slot-1, .fs-tl-slot-3) { z-index: 1 !important; }
+html body.fs.fs-blood-moon .fs-tl-slot-2 { z-index: 3 !important; }
+@media (max-width: 768px) { html body.fs.fs-blood-moon .nav-center .nav-link { color: var(--bm-title) !important; font-weight: 700 !important; } html body.fs.fs-blood-moon .nav-center .nav-link.active { color: var(--bm-accent) !important; } }
+/* nav orbs (owner: icons not centred, orbs bleeding into the bar): icon optically centred in the glass (above the gold
+   arc), bigger; each orb lifted off the pale bar with a soft violet shadow + rim */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .nav-center .nav-link > i { background-position: 50% 47%, center !important; background-size: 34px, contain !important; border-radius: 50%;
+    box-shadow: 0 3px 8px rgba(80, 40, 130, .35), 0 0 0 1.5px rgba(176, 130, 220, .55) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active > i { box-shadow: 0 0 14px rgba(167, 110, 240, .7), 0 0 0 2px rgba(201, 163, 92, .8) !important; filter: none !important; }
+}
+@media (max-width: 768px) { html body.fs.fs-blood-moon .nav-center { padding-top: 16px !important; padding-bottom: calc(env(safe-area-inset-bottom, 0px) - 10px) !important; align-content: center; } }
+/* bars were see-through (content mixed with the icons): solid backing under the glass art */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .navbar { background: var(--fs-top-bar) center bottom / 100% 100% no-repeat, linear-gradient(var(--bm-barfill, #f4ecfd), var(--bm-barfill, #f4ecfd)) top / 100% calc(100% - 6px) no-repeat !important; }
+  html body.fs.fs-blood-moon .nav-center { background: var(--fs-nav-bar) center top / 100% 100% no-repeat, linear-gradient(var(--bm-barfill, #f4ecfd), var(--bm-barfill, #f4ecfd)) bottom / 100% calc(100% - 8px) no-repeat !important; }
+}
+html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs) .search-tab.active,
+html body.fs.fs-blood-moon .fsk-filter.active { color: var(--bm-deep) !important; font-weight: 700 !important; }
+html body.fs.fs-blood-moon #groupsSections .group-card-actions .btn .gc-btn-text { display: inline !important; font-size: 16px !important; color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon .page-header .page-search { margin-top: 6px !important; }
+/* enchantment pass (owner: "more elaborate like the others"): title crest, gold vines in both top corners, sparkle trail,
+   and a different props-on-clouds scene at the bottom of each page */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page.active::after { content: ""; position: absolute; right: 0; top: 0; width: 120px; height: 100px; pointer-events: none;
+    background: var(--fs-curtain-right) right top / contain no-repeat; z-index: 0; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { position: relative; padding-top: 30px !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::before { content: ""; position: absolute; left: 50%; top: 0; width: 140px; height: 40px;
+    transform: translateX(-50%); background: var(--fs-moon-crest) center / contain no-repeat; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header, .msg-sidebar-header)::after { content: ""; position: absolute; left: -8px; right: -8px; bottom: -34px; height: 34px; pointer-events: none;
+    background: var(--fs-title-flourish) center / 100% 100% no-repeat; z-index: 0; }
+  html body.fs.fs-blood-moon .page-header .btn:not(.page-search) { order: 6; }
+}
+html body.fs.fs-blood-moon :is(#page-groups, #page-profiles, #page-notifications, #page-search, #page-shop, #page-group-view) .page-container::after,
+html body.fs.fs-blood-moon #page-messages .msg-sidebar::after {
+  content: ""; display: block; width: calc(100% + 16px); margin: 12px -8px 0; aspect-ratio: 1290 / 520; background: center bottom / 100% 100% no-repeat; pointer-events: none; }
+html body.fs.fs-blood-moon #page-groups .page-container::after { background-image: var(--fs-page-deco-groups); }
+html body.fs.fs-blood-moon #page-profiles .page-container::after { background-image: var(--fs-page-deco-network); }
+html body.fs.fs-blood-moon #page-notifications .page-container::after { background-image: var(--fs-page-deco-notifications); }
+html body.fs.fs-blood-moon #page-search .page-container::after { background-image: var(--fs-page-deco-search); }
+html body.fs.fs-blood-moon #page-shop .page-container::after { background-image: var(--fs-page-deco-skins); }
+html body.fs.fs-blood-moon #page-group-view .page-container::after { background-image: var(--fs-page-deco-post); }
+html body.fs.fs-blood-moon #page-messages .page-container::after { display: none; }
+html body.fs.fs-blood-moon #page-messages .msg-sidebar::after { background-image: var(--fs-page-deco-messages) !important; }
+/* posts: the new art has a four-sided ornate border — give it room (wider edge slice) */
+html body.fs.fs-blood-moon .feed-post.feed-post.feed-post { border-width: 34px !important; border-image: var(--fs-post-panel) 140 fill / 34px stretch !important; padding: 0 !important; }
+html body.fs.fs-blood-moon :is(.card:not(.feed-post):not(.profile-card):not(.pv-profile-card), .comment-item, .post-dropdown) { border-width: 30px !important; border-image: var(--fs-post-panel) 140 fill / 30px stretch !important; }
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] .pm-thumb { margin: 8px 6px !important; }
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] .pm-thumb::after { inset: -10px !important; }
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] .pm-thumb :is(img, video) { border-radius: 8px !important; }
+/* page header layout: crest · centred title · sparkle trail under it; + / compose top-right; search full width */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header, .msg-sidebar-header) { display: block !important; position: relative; padding: 4px 4px 0 !important; text-align: center; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header, .msg-sidebar-header)::after { display: none !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { display: block !important; width: auto !important; margin: 0 auto !important; padding: 34px 0 26px !important; text-align: center !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::after { content: ""; position: absolute; left: 6%; right: 6%; bottom: 0; height: 26px;
+    background: var(--fs-title-flourish) center / 100% 100% no-repeat; pointer-events: none; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page-header .page-actions { display: block !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page-header .btn:not(.page-search) { position: absolute !important; top: 42px; right: 4px; z-index: 2; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page-header .page-search { margin: 8px 0 0 !important; width: 100% !important; box-sizing: border-box; }
+}
+html body.fs.fs-blood-moon :is(.msg-search, .page-search) { padding: 0 22px 0 30px !important; min-height: 54px; }
+/* photo frame (owner: corners stretched): 9-slice — corner ornaments keep their shape at any photo size, only the plain
+   rims stretch; the gold still curls over the photo corners */
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] .pm-thumb::after { inset: -6px !important; background: none !important;
+  border: solid transparent !important; border-width: 46px 58px !important; border-image: var(--fs-photo-frame) 160 210 / 46px 58px stretch !important; }
+/* Featured Skin (owner: not fitted right): 9-slice so the corner ornaments keep their shape, text kept inside the rim */
+html body.fs.fs-blood-moon .featured-skin-banner { background: none !important; border: solid transparent !important; border-width: 30px 40px !important;
+  border-image: var(--fs-featured-frame) 110 150 fill / 30px 40px stretch !important; padding: 2px 0 !important; box-sizing: border-box; }
+html body.fs.fs-blood-moon .featured-skin-banner .featured-header { display: flex !important; justify-content: space-between; align-items: center; gap: 8px; margin: 0 0 6px !important; }
+html body.fs.fs-blood-moon .featured-skin-banner .featured-header h4 { font-size: 17px !important; margin: 0 !important; white-space: nowrap; }
+html body.fs.fs-blood-moon .featured-skin-banner .featured-timer { font-size: 14px !important; white-space: nowrap; }
+html body.fs.fs-blood-moon .featured-skin-banner .featured-body { display: grid !important; grid-template-columns: 70px minmax(0, 1fr) auto; align-items: center; gap: 10px; }
+html body.fs.fs-blood-moon .featured-skin-banner .featured-preview { width: 70px !important; height: 70px !important; }
+html body.fs.fs-blood-moon .featured-skin-banner .featured-info p { font-size: 14px !important; line-height: 1.25; margin: 2px 0 0 !important; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+html body.fs.fs-blood-moon .featured-skin-banner .btn { min-width: 76px !important; }
+/* any progress (1/3) lights the constellation halfway, not only from 40% */
+html body.fs.fs-blood-moon .quest-item[data-fs-started="1"]:not([data-fs-q="100"]):nth-child(2) .quest-icon { background-image: var(--fs-moon-50) !important; }
+html body.fs.fs-blood-moon .quest-item[data-fs-started="1"]:not([data-fs-q="100"]):nth-child(3) .quest-icon { background-image: var(--fs-moon-50) !important; }
+html body.fs.fs-blood-moon .quest-item[data-fs-started="1"]:not([data-fs-q="100"]):nth-child(4) .quest-icon { background-image: var(--fs-moon-50) !important; }
+/* themed Home banner (owner): sky + crescent + owl above, calm band for the bar (art rows 262–442), scalloped gold edge */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .navbar { height: calc(100vw * 520 / 1290) !important; min-height: calc(env(safe-area-inset-top, 0px) + 96px) !important;
+    padding: calc(100vw * 262 / 1290) 0 calc(100vw * 78 / 1290) !important; background: var(--fs-header) center top / 100% 100% no-repeat !important; }
+  html body.fs.fs-blood-moon .nav-container { height: 100% !important; }
+  html body.fs.fs-blood-moon .page.active { padding-top: calc(100vw * 500 / 1290 + 4px) !important; }
+  html body.fs.fs-blood-moon #timelineCover { margin-top: -10px !important; }
+}
+/* enchanted photo frame: 9-slice corners (210x160) + the crescent crest centred on the top rim */
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] .pm-thumb::before { content: ""; position: absolute; left: 50%; top: -20px; width: 90px; height: 36px;
+  transform: translateX(-50%); z-index: 3; pointer-events: none; background: var(--fs-moon-crest) center / contain no-repeat; }
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] .pm-thumb::after { border-image: var(--fs-photo-frame) 160 210 / 46px 58px stretch !important; }
+/* cute QUEST BOARD (owner): board 9-slice (sign in the top slice), title on the hanging sign, each quest on a pinned note */
+html body.fs.fs-blood-moon .quest-panel { background: none !important; border: solid transparent !important; border-width: 40px 46px 30px !important;
+  border-image: var(--fs-quests-frame) 125 150 95 150 fill / 40px 46px 30px stretch !important; padding: 14px 0 6px !important; position: relative; gap: 8px !important; }
+html body.fs.fs-blood-moon .quest-panel-header { position: absolute !important; left: 0; right: 0; top: -36px; height: 28px; margin: 0 !important; display: flex !important; align-items: center; justify-content: center; }
+html body.fs.fs-blood-moon .quest-panel-header h4 { font-size: 20px !important; line-height: 1 !important; }
+html body.fs.fs-blood-moon .quest-item { background: none !important; border: solid transparent !important; border-width: 18px 12px 14px !important;
+  border-image: var(--fs-quest-row) 60 40 45 40 fill / 18px 12px 14px stretch !important; padding: 0 0 2px !important; }
+html body.fs.fs-blood-moon .quest-icon { width: 76px !important; height: 64px !important; }
+html body.fs.fs-blood-moon .quest-info p { font-size: 15px !important; }
+html body.fs.fs-blood-moon :is(.quest-reward, .quest-check) { font-size: 15px !important; }
+/* themed pills keep their end charms: 9-slice instead of whole-image stretch */
+html body.fs.fs-blood-moon .post-input-fake { background: none !important; border: solid transparent !important; border-width: 14px 30px !important;
+  border-image: var(--fs-composer) 70 150 fill / 14px 30px stretch !important; padding: 0 !important; }
+html body.fs.fs-blood-moon .coin-goal-bar { background: none !important; border: solid transparent !important; border-width: 12px 26px !important;
+  border-image: var(--fs-coin-goal-frame) 60 120 fill / 12px 26px stretch !important; }
+html body.fs.fs-blood-moon :is(.page-search, .msg-search) { background: none !important; border: solid transparent !important; border-width: 12px 26px !important;
+  border-image: var(--fs-field) 60 130 fill / 12px 26px stretch !important; padding: 0 4px !important; }
+html body.fs.fs-blood-moon .quest-panel-header { top: -30px !important; height: 34px !important; }
+html body.fs.fs-blood-moon .quest-panel-header h4 { font-size: 21px !important; transform: translateY(2px); }
+html body.fs.fs-blood-moon .quest-panel { border-width: 54px 46px 40px !important; border-image-slice: 160 150 110 150 fill !important; padding: 6px 4px 0 !important; }
+html body.fs.fs-blood-moon .quest-panel-header { top: -50px !important; height: 30px !important; }
+html body.fs.fs-blood-moon .quest-panel-header h4 { transform: none !important; font-size: 20px !important; }
+/* Daily Quests = painted open SPELL BOOK (owner rejected the flat board + hanging sign). Whole painted image at its own
+   ratio (1290x900); title + three quests written on the pages (page box 161–1136 x, 152–833 y) */
+html body.fs.fs-blood-moon .quest-panel { border: 0 !important; border-image: none !important; background: var(--fs-quests-frame) center / 100% 100% no-repeat !important;
+  aspect-ratio: 1290 / 900; height: auto !important; box-sizing: border-box; margin: 0 -6px !important;
+  padding: 14% 13% 14% 13% !important; align-content: start; row-gap: 2px !important; column-gap: 6px !important; }
+html body.fs.fs-blood-moon .quest-panel-header { position: static !important; height: auto !important; top: auto !important; margin: 0 0 2px !important; }
+html body.fs.fs-blood-moon .quest-panel-header h4 { font-size: 21px !important; }
+html body.fs.fs-blood-moon .quest-item { border: 0 !important; border-image: none !important; background: none !important; padding: 0 !important; }
+html body.fs.fs-blood-moon .quest-icon { width: 64px !important; height: 52px !important; }
+html body.fs.fs-blood-moon .quest-info p { font-size: 14px !important; line-height: 1.05 !important; }
+html body.fs.fs-blood-moon .quest-progress { font-size: 14px !important; }
+html body.fs.fs-blood-moon :is(.quest-reward, .quest-check) { font-size: 14px !important; }
+html body.fs.fs-blood-moon .quest-reward > i { width: 17px; height: 17px; }
+html body.fs.fs-blood-moon .quest-panel { align-content: center !important; padding-top: 12% !important; padding-bottom: 17% !important; }
+html body.fs.fs-blood-moon .quest-panel-header { margin-bottom: 8px !important; }
+/* spell book layout (owner: nothing should sit on the spine): LEFT page = title, RIGHT page = the three quests listed
+   like spellbook entries (constellation · label + progress · coin) */
+html body.fs.fs-blood-moon .quest-panel { grid-template-columns: 1fr 1fr !important; grid-auto-flow: row; column-gap: 9% !important; row-gap: 6px !important;
+  padding: 13% 12% 15% 12.5% !important; align-content: center !important; align-items: center; }
+html body.fs.fs-blood-moon .quest-panel-header { grid-column: 1 !important; grid-row: 1 / span 3 !important; align-self: center; justify-content: center !important; text-align: center; }
+html body.fs.fs-blood-moon .quest-panel-header h4 { font-size: 26px !important; line-height: 1.05 !important; text-align: center; white-space: normal; max-width: 6em; margin: 0 auto !important; }
+html body.fs.fs-blood-moon .quest-item { grid-column: 2 !important; display: grid !important; grid-template-columns: 34px minmax(0, 1fr); column-gap: 6px; align-items: center; text-align: left !important; }
+html body.fs.fs-blood-moon .quest-icon { grid-column: 1; grid-row: 1 / span 2; width: 34px !important; height: 30px !important; margin: 0 !important; }
+html body.fs.fs-blood-moon .quest-info { grid-column: 2; align-items: flex-start !important; text-align: left; }
+html body.fs.fs-blood-moon .quest-info p { font-size: 13px !important; text-align: left !important; }
+html body.fs.fs-blood-moon .quest-progress { font-size: 12px !important; }
+html body.fs.fs-blood-moon :is(.quest-reward, .quest-check) { grid-column: 2; justify-self: start; font-size: 12px !important; }
+html body.fs.fs-blood-moon .quest-reward > i { width: 14px; height: 14px; }
+/* post action row: counts never wrap (view count broke into two lines) */
+html body.fs.fs-blood-moon .post-actions { flex-wrap: nowrap !important; gap: 2px !important; padding: 0 2px !important; }
+html body.fs.fs-blood-moon .post-actions .action-btn { white-space: nowrap !important; font-size: 15px !important; gap: 4px !important; padding: 4px 2px !important; min-width: 0; }
+html body.fs.fs-blood-moon .post-actions .action-btn > i { width: 22px !important; height: 22px !important; }
+/* owner: thicker gold around post photos — draw the frame art larger (corners + rims scale up together) */
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] .pm-thumb::after { inset: -12px !important; border-width: 64px 80px !important; }
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] .pm-thumb { margin: 14px 10px !important; }
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] .pm-thumb::before { top: -28px !important; width: 110px !important; height: 44px !important; }
+/* bar labels/icons are buttons, never selectable text (a long-press popped the iOS copy menu) */
+html body.fs :is(.nav-center, .navbar, .mobile-pills-bar, .search-tabs) { -webkit-user-select: none !important; user-select: none !important; -webkit-touch-callout: none !important; }
+/* Photos card fit inside the screen */
+html body.fs.fs-blood-moon .photos-card { margin-left: 0 !important; margin-right: 0 !important; width: auto !important; max-width: 100% !important; box-sizing: border-box; }
+/* post card v3 (iridescent + ornate gold, 140px corners) and thicker photo frame (210x160 corners) */
+html body.fs.fs-blood-moon .feed-post.feed-post.feed-post { border-width: 34px !important; border-image: var(--fs-post-panel) 140 fill / 34px stretch !important; }
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] .pm-thumb::after { border-image: var(--fs-photo-frame) 160 210 / 50px 64px stretch !important; border-width: 50px 64px !important; inset: -10px !important; }
+/* owner: same square card, gold rim as thick as Witchcraft's — draw the frame art larger (rim ~1.8x) and push it
+   outward with an outset so the post content keeps its room */
+html body.fs.fs-blood-moon .feed-post.feed-post.feed-post { border-width: 34px !important; border-image-source: var(--fs-post-panel) !important;
+  border-image-slice: 140 fill !important; border-image-width: 62px !important; border-image-outset: 12px !important; border-image-repeat: stretch !important;
+  margin-left: 12px !important; margin-right: 12px !important; margin-bottom: 26px !important; }
+/* shared-post box: slice must contain the whole corner ornament (art corners ~175x110) or the vines smear down the sides */
+html body.fs.fs-blood-moon .share-preview { border-width: 24px 34px !important; border-image: var(--fs-comment-bubble) 115 180 fill / 24px 34px stretch !important; padding: 2px 0 !important; }
+html body.fs.fs-blood-moon .comment-item { border-width: 24px 34px !important; border-image: var(--fs-comment-bubble) 115 180 fill / 24px 34px stretch !important; }
+/* cat-on-cloud: never tucked under the button (its ear and the crystal tips were cut off) */
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card)::after { margin: 10px -8px 0 !important; padding-bottom: 34% !important; background-size: 92% auto !important; background-position: center top !important; position: relative; z-index: 0; }
+/* themed sun / moon art on the Day/Night toggle (Good Witch) */
+/* enchanted charms around posts (owner: "like the scrapbook, place unused assets around the posts"): each post gets one of
+   six looks (data-fs-v 1-6, stable per post) — a charm perched on a corner of the gold frame, never over the content */
+html body.fs.fs-blood-moon .feed-post { position: relative; overflow: visible !important; }
+html body.fs.fs-blood-moon .feed-post::after { content: ""; position: absolute; pointer-events: none; z-index: 4; background: center / contain no-repeat; }
+html body.fs.fs-blood-moon .feed-post[data-fs-v="1"]::after { right: -26px; bottom: -40px; width: 104px; height: 90px; background-image: var(--fs-page-deco-post); }
+html body.fs.fs-blood-moon .feed-post[data-fs-v="2"]::after { left: -30px; top: -34px; width: 100px; height: 84px; background-image: var(--fs-curtain-left); }
+html body.fs.fs-blood-moon .feed-post[data-fs-v="3"]::after { right: -14px; top: -26px; width: 56px; height: 56px; background-image: var(--fs-moon-crest); transform: rotate(12deg); }
+html body.fs.fs-blood-moon .feed-post[data-fs-v="4"]::after { right: -30px; top: -34px; width: 100px; height: 84px; background-image: var(--fs-curtain-right); }
+html body.fs.fs-blood-moon .feed-post[data-fs-v="5"]::after { left: -18px; bottom: -30px; width: 84px; height: 72px; background-image: var(--fs-moon-100); transform: rotate(-10deg); }
+html body.fs.fs-blood-moon .feed-post[data-fs-v="6"]::after { left: 50%; bottom: -32px; width: 150px; height: 44px; margin-left: -75px; background-image: var(--fs-moon-crest); }
+/* a second, smaller sparkle on alternate looks */
+html body.fs.fs-blood-moon .feed-post:is([data-fs-v="1"], [data-fs-v="4"]) .post-header { position: relative; }
+html body.fs.fs-blood-moon .feed-post:is([data-fs-v="1"], [data-fs-v="4"]) .post-header::before { content: ""; position: absolute; left: -32px; top: -30px; width: 46px; height: 46px; pointer-events: none;
+  background: var(--fs-moon-crest) center / contain no-repeat; opacity: .9; }
+/* keep posts far enough apart that the charms never collide */
+html body.fs.fs-blood-moon .feed-post.feed-post.feed-post { margin-bottom: 40px !important; }
+/* vines reached into the post (over the avatar) — use edge-sitting charms instead */
+html body.fs.fs-blood-moon .feed-post[data-fs-v="2"]::after { left: 50%; top: -30px; right: auto; bottom: auto; width: 120px; height: 48px; margin-left: -60px; background-image: var(--fs-moon-crest); transform: none; }
+html body.fs.fs-blood-moon .feed-post[data-fs-v="4"]::after { right: -20px; top: -30px; left: auto; bottom: auto; width: 82px; height: 70px; background-image: var(--fs-moon-100); transform: rotate(14deg); }
+html body.fs.fs-blood-moon .feed-post:is([data-fs-v="1"], [data-fs-v="4"]) .post-header::before { left: -44px !important; top: -42px !important; width: 40px !important; height: 40px !important; }
+/* owner: golden ornaments around the round pictures — ornate gold ring (window 84%, inset 8%) on the cover bubbles + avatar */
+html body.fs.fs-blood-moon .fs-tl-slot::before { inset: -4% !important; background-image: var(--fs-photo-frame) !important; }
+html body.fs.fs-blood-moon .fs-tl-slot img { inset: 4% !important; width: 92% !important; height: 92% !important; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .profile-avatar-wrap::after { inset: -9% !important; background-image: var(--fs-photo-frame) !important; }
+/* ===== QA pass (owner: "not all sized correctly") ===== */
+/* skin cards: ornate frame as a 9-slice around the whole card (whole-image stretch put the window in the wrong place
+   and the art spilled past the frame); the card art sits inside with rounded corners */
+html body.fs.fs-blood-moon .fsk-card { background: none !important; border: solid transparent !important; border-width: 22px 26px !important;
+  border-image: var(--fs-comment-bubble) 115 180 fill / 22px 26px stretch !important; padding: 0 0 4px !important; overflow: hidden !important; box-sizing: border-box; }
+html body.fs.fs-blood-moon .fsk-thumb { margin: 0 !important; width: 100% !important; aspect-ratio: 4 / 3 !important; border-radius: 10px !important; overflow: hidden !important;
+  box-shadow: 0 0 0 2px rgba(201, 163, 92, .85) !important; }
+html body.fs.fs-blood-moon .fsk-body { padding: 6px 2px 0 !important; }
+html body.fs.fs-blood-moon .fsk-name { font-size: 17px !important; text-align: center !important; }
+html body.fs.fs-blood-moon .fsk-badge { top: 6px !important; right: 6px !important; }
+html body.fs.fs-blood-moon .fsk-color { outline: none !important; box-shadow: 0 0 0 2px rgba(201, 163, 92, .7) !important; }
+html body.fs.fs-blood-moon .fsk-color.is-on { box-shadow: 0 0 0 2px #fff, 0 0 0 4px #c9a35c !important; }
+html body.fs.fs-blood-moon .fsk-body .btn { height: 40px !important; font-size: 15px !important; }
+html body.fs.fs-blood-moon :is(.fsk-soon, .fsk-takeoff) { font-size: 14px !important; }
+/* chips / filter buttons: 9-slice so the end curls keep their shape on long labels */
+html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab, html body.fs.fs-blood-moon .fsk-filter {
+  background: none !important; border: solid transparent !important; border-width: 10px 18px !important; border-image: var(--fs-chip) 55 85 fill / 10px 18px stretch !important;
+  padding: 2px 4px !important; font-size: 15px !important; min-height: 0 !important; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.active, html body.fs.fs-blood-moon .fsk-filter.active { border-image-source: var(--fs-chip-active) !important; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.search-tab, html body.fs.fs-blood-moon .fsk-filter.fsk-filter {
+  background-image: none !important; background-color: transparent !important; box-shadow: none !important; border-width: 7px 14px !important; font-size: 14px !important; padding: 1px 2px !important; line-height: 1.2 !important; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) { gap: 6px !important; margin: 4px 0 !important; }
+html body.fs.fs-blood-moon .fsk-badge { background-color: transparent !important; box-shadow: none !important; }
+/* list rows (network/search/groups/messages/notifications): 9-slice matched to the art's corners, compact sizes */
+html body.fs.fs-blood-moon :is(.msg-contact, .notif-item, .profile-card-item, .follow-list-item, #groupsSections .group-card) {
+  border-width: 16px 24px !important; border-image: var(--fs-list-row) 95 150 fill / 16px 24px stretch !important; padding: 0 !important; margin: 0 0 8px !important; }
+html body.fs.fs-blood-moon :is(#page-profiles, #page-search) .profile-card-item { grid-template-columns: 50px minmax(0, 1fr) auto !important; column-gap: 10px !important; }
+html body.fs.fs-blood-moon :is(#page-profiles, #page-search) .profile-card-avatar { width: 50px !important; height: 50px !important; }
+html body.fs.fs-blood-moon :is(#page-profiles, #page-search) .profile-card-name { font-size: 17px !important; }
+html body.fs.fs-blood-moon :is(#page-profiles, #page-search) .profile-card-bio { font-size: 13px !important; }
+/* Join / Follow plaques: 9-slice so the heart + sparkle ends keep their size, words stay in the middle */
+html body.fs.fs-blood-moon :is(.join-group-btn, .suggestion-follow-btn, .follow-btn, .profile-follow-btn, #groupsSections .group-card-actions .btn) {
+  background: none !important; border: solid transparent !important; border-width: 9px 16px !important; border-image: var(--fs-join-btn) 60 95 fill / 9px 16px stretch !important;
+  height: auto !important; min-width: 0 !important; padding: 2px 2px !important; font-size: 14px !important; line-height: 1.2 !important; white-space: nowrap; }
+html body.fs.fs-blood-moon #groupsSections .group-card-actions .btn .gc-btn-text { font-size: 14px !important; }
+/* segmented tabs: smaller labels so two-line tabs fit */
+html body.fs.fs-blood-moon :is(#profilesTabs, #searchTabs) .search-tab { font-size: 13px !important; min-height: 40px !important; padding: 2px 6px !important; background: none !important;
+  border: solid transparent !important; border-width: 8px 16px !important; border-image: var(--fs-seg-tab) 55 90 fill / 8px 16px stretch !important; }
+html body.fs.fs-blood-moon :is(#profilesTabs, #searchTabs) .search-tab.active { border-image-source: var(--fs-seg-tab-active) !important; }
+/* section headers + count badge */
+html body.fs.fs-blood-moon :is(#page-profiles, #page-search) :is(h3, .section-title) { font-size: 17px !important; }
+html body.fs.fs-blood-moon :is(.section-count, .connections-count, .badge-count) { background: rgba(255,255,255,.18) !important; border: 1px solid rgba(201,163,92,.7) !important; color: var(--bm-title) !important; }
+/* skin-option toggle for colour skins (Anime Blaze): current colour as a jewel; tap = next colour */
+html body.fs .fs-swatch-btn { width: 34px; height: 34px; margin: 0 2px; flex: 0 0 auto; }
+html body.fs .fs-swatch-btn i { display: block; width: 22px; height: 22px; border-radius: 50%; font-size: 0;
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.75), transparent 45%), var(--sw);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #111, 0 0 10px var(--sw); }
+/* Anime Blaze colour swap button press */
+html body.fs-anime-blaze .fs-swatch-btn:active i { transform: scale(.85); }
+/* Anime Blaze skin cards (owner, Nov 15: all previews the same size, no colour dots): name on top, one compact
+   button under it, both inside the dark band so the button never covers the name */
+html body.fs.fs-anime-blaze .fsk-body { top: 65.5% !important; height: 25% !important; justify-content: flex-start !important; gap: 4px !important; }
+html body.fs.fs-anime-blaze .fsk-name { flex: 0 0 auto; line-height: 1.2 !important; padding-top: 1px; }
+html body.fs.fs-anime-blaze .fsk-body .btn:not(.fsk-equipped) { flex: 0 0 auto; height: 30px !important; line-height: 1 !important; margin: 0 !important; padding: 0 18px !important;
+  border-width: 0 !important; overflow: visible !important;
+  font-size: 13px !important; transform: none !important; display: inline-flex !important; align-items: center; }
+/* Good Witch skin cards all the same size (owner, Nov 15): the picture's "Equipped" tag already says it, so the
+   equipped card shows one button — Take off — in the place the other cards show Equip/Buy */
+html body.fs.fs-blood-moon .fsk-body .btn.fsk-equipped { display: none !important; }
+html body.fs.fs-blood-moon .fsk-body .fsk-takeoff { width: 100% !important; height: 40px !important; margin: 6px 0 0 !important; padding: 0 10px !important;
+  display: flex !important; align-items: center; justify-content: center; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+  background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: var(--bm-title) !important; font: 700 15px var(--fs-font) !important; text-decoration: none !important; }
+/* Good Witch Messages (QA Nov 15): search field the same width as the rows below it, with a gap before the first row */
+html body.fs.fs-blood-moon #page-messages .msg-search { margin: 0 7px 12px !important; }
+/* notifications (QA Nov 15): the expand arrow lines up on the right edge of every row, not right after the text */
+html body.fs .notif-text p .notif-expand-chevron { margin-left: auto !important; padding-left: 8px; flex: 0 0 auto; }
+/* Good Witch Search (QA Nov 15): People / Groups / Posts as the same gold chips as Notifications, centred */
+html body.fs.fs-blood-moon #page-search .search-tabs { display: flex !important; justify-content: center; gap: 8px; border: 0 !important; background: none !important; padding: 2px 0 !important; }
+html body.fs.fs-blood-moon #page-search .search-tab { flex: 0 0 auto; background: none !important; border: solid transparent !important; border-width: 10px 18px !important;
+  border-image: var(--fs-chip) 55 85 fill / 10px 18px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 2px 6px !important; font-size: 15px !important; min-height: 0 !important; color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon #page-search .search-tab.active { border-image-source: var(--fs-chip-active) !important; color: var(--bm-deep) !important; font-weight: 700 !important; }
+html body.fs.fs-blood-moon #searchResults .search-results-grid { gap: 0 !important; margin-top: 8px; }
+/* Good Witch Groups (QA Nov 15): the phone layout squeezes group buttons into 40px circles, which cut "Joined" to "n" —
+   size the button to its word instead */
+html body.fs.fs-blood-moon #groupsSections .group-card-actions .btn { width: auto !important; min-width: 92px !important; height: auto !important; padding: 2px 6px !important; }
+/* Good Witch group page (QA Nov 15): name clear of the cover and sized to fit; three stats that fit the frame
+   ("Members" no longer splits); Edit / Joined / Leave as the same readable buttons as the group list, in Day and Night */
+html body.fs.fs-blood-moon #gvProfileCard .profile-name { font-size: 30px !important; margin: 34px 12px 0 !important; overflow-wrap: anywhere; position: relative; z-index: 2; }
+html body.fs.fs-blood-moon #gvProfileCard .profile-stats { padding: 6px 22px !important; width: 96% !important; }
+html body.fs.fs-blood-moon #gvProfileCard .stat-count { font-size: 24px !important; }
+html body.fs.fs-blood-moon #gvProfileCard .stat-label { font-size: 14px !important; white-space: nowrap; line-height: 1.2 !important; display: block; }
+html body.fs.fs-blood-moon #gvProfileCard .stat-label i { margin-right: 3px; font-size: 11px !important; }
+html body.fs.fs-blood-moon #gvProfileCard .stat-label { font-size: 13px !important; }
+html body.fs.fs-blood-moon #gvProfileCard .pv-actions { display: flex !important; flex-wrap: wrap; justify-content: center; gap: 8px !important; margin-top: 12px !important; }
+html body.fs.fs-blood-moon #gvProfileCard .pv-actions .btn { flex: 0 0 auto; width: auto !important; min-width: 110px; height: auto !important; margin: 0 !important; padding: 2px 6px !important;
+  background: none !important; border: solid transparent !important; border-width: 9px 16px !important; border-image: var(--fs-join-btn) 60 95 fill / 9px 16px stretch !important;
+  border-radius: 0 !important; box-shadow: none !important; color: var(--bm-title) !important; font: 700 15px var(--fs-font) !important; opacity: 1 !important; }
+html body.fs.fs-blood-moon #gvProfileCard .pv-actions .btn i { color: inherit !important; margin-right: 4px; }
+/* Good Witch comments (QA Nov 15): sort tabs as the gold chips, the comment box on the field art, GIF a small chip,
+   Post the same button as everywhere else */
+html body.fs.fs-blood-moon .comment-sort-tab { flex: 0 0 auto; background: none !important; border: solid transparent !important; border-width: 9px 16px !important;
+  border-image: var(--fs-chip) 55 85 fill / 9px 16px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 1px 4px !important; font-size: 15px !important; min-height: 0 !important; color: var(--bm-title) !important; margin-right: 6px; }
+html body.fs.fs-blood-moon .comment-sort-tab.active { border-image-source: var(--fs-chip-active) !important; color: var(--bm-deep) !important; font-weight: 700 !important; }
+html body.fs.fs-blood-moon #commentInput { background: none !important; border: solid transparent !important; border-width: 10px 20px !important;
+  border-image: var(--fs-field) 60 130 fill / 10px 20px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 2px 2px !important; min-height: 0 !important; color: var(--bm-ink) !important; font: 600 16px var(--fs-font) !important; }
+html body.fs.fs-blood-moon #commentGifBtn { background: none !important; border: solid transparent !important; border-width: 8px 12px !important;
+  border-image: var(--fs-chip) 55 85 fill / 8px 12px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 0 2px !important; color: var(--bm-title) !important; font: 700 13px var(--fs-font) !important; }
+html body.fs.fs-blood-moon #postCommentBtn { flex: 0 0 auto; width: auto !important; height: auto !important; background: none !important; border: solid transparent !important;
+  border-width: 9px 16px !important; border-image: var(--fs-join-btn) 60 95 fill / 9px 16px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 2px 6px !important; color: var(--bm-title) !important; font: 700 15px var(--fs-font) !important; }
+/* Good Witch post badges (Shared, location…): the small gold chip, like the other pills (QA Nov 15) */
+html body.fs.fs-blood-moon .post-badges :is(span, .post-badge) { background: none !important; border: solid transparent !important; border-width: 7px 12px !important;
+  border-image: var(--fs-chip) 55 85 fill / 7px 12px stretch !important; border-radius: 0 !important; padding: 0 2px !important; font-size: 13px !important; line-height: 1.2 !important; }
+/* Good Witch create post (QA Nov 15): the writing area on the text-area art, the four tools as the tool tiles, Publish
+   the same button as everywhere else (the stretched pearl panel showed a seam) */
+html body.fs.fs-blood-moon .cpm-textarea { background: none !important; border: solid transparent !important; border-width: 14px 20px !important;
+  border-image: var(--fs-text-area) 60 110 fill / 14px 20px stretch !important; border-radius: 0 !important; margin: 4px 0 !important; padding: 4px 6px !important;
+  color: var(--bm-ink) !important; font: 600 17px var(--fs-font) !important; }
+html body.fs.fs-blood-moon :is(#cpmCameraBtn, #cpmGifBtn, #cpmPollBtn, #cpmScheduleBtn) { width: 46px !important; height: 46px !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+  background: var(--fs-tool-tile) center / 100% 100% no-repeat !important; color: var(--bm-accent) !important; }
+html body.fs.fs-blood-moon #cpmPublish { width: auto !important; min-width: 120px; height: auto !important; background: none !important; border: solid transparent !important;
+  border-width: 10px 18px !important; border-image: var(--fs-join-btn) 60 95 fill / 10px 18px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 3px 8px !important; color: var(--bm-title) !important; font: 700 17px var(--fs-font) !important; }
+/* Good Witch: someone else's profile (QA Nov 15) — their photo sits fully in front of the timeline circles (it was
+   tucked behind the middle one), and Follow / Message / Mute / Block / Report / Close Friend / Invite are the same
+   readable gold buttons as the group page (they were pale stretched panels of mixed sizes) */
+html body.fs.fs-blood-moon #page-profile-view .pv-profile-card { position: relative; z-index: 3; }
+html body.fs.fs-blood-moon #page-profile-view .pv-profile-card .profile-avatar-wrap { margin-top: -40px !important; }
+html body.fs.fs-blood-moon #page-profile-view .pv-actions { display: flex !important; flex-wrap: wrap; justify-content: center; gap: 8px !important; margin-top: 12px !important; }
+html body.fs.fs-blood-moon #page-profile-view .pv-actions .btn:not(#pvEditProfileBtn) { flex: 0 0 auto; width: auto !important; min-width: 0; height: auto !important; margin: 0 !important; padding: 2px 6px !important;
+  background: none !important; border: solid transparent !important; border-width: 9px 16px !important; border-image: var(--fs-join-btn) 60 95 fill / 9px 16px stretch !important;
+  border-radius: 0 !important; box-shadow: none !important; color: var(--bm-title) !important; font: 700 15px var(--fs-font) !important; opacity: 1 !important; font-size: 15px !important; }
+html body.fs.fs-blood-moon #page-profile-view .pv-actions .btn:not(#pvEditProfileBtn) i { color: inherit !important; margin-right: 4px; font-size: 14px !important; }
+html body.fs.fs-blood-moon #pvCoverBanner { z-index: 0 !important; }
+/* Good Witch (QA Nov 15): Photos / Albums tabs as gold chips; admin Suspend / Delete as the gold button (Delete keeps red
+   lettering so it still reads as the dangerous one) */
+html body.fs.fs-blood-moon .photos-card .search-tabs { display: flex !important; gap: 8px; border: 0 !important; background: none !important; }
+html body.fs.fs-blood-moon .photos-card .search-tab { flex: 0 0 auto; background: none !important; border: solid transparent !important; border-width: 9px 16px !important;
+  border-image: var(--fs-chip) 55 85 fill / 9px 16px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 1px 4px !important; font-size: 15px !important; min-height: 0 !important; color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon .photos-card .search-tab.active { border-image-source: var(--fs-chip-active) !important; color: var(--bm-deep) !important; font-weight: 700 !important; }
+html body.fs.fs-blood-moon .photos-card .search-tab > i { display: none !important; }
+html body.fs.fs-blood-moon :is(#pvAdminSuspend, #pvAdminDelete) { width: auto !important; height: auto !important; background: none !important; border: solid transparent !important;
+  border-width: 8px 14px !important; border-image: var(--fs-join-btn) 60 95 fill / 8px 14px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 1px 4px !important; color: var(--bm-title) !important; font: 700 13px var(--fs-font) !important; }
+html body.fs.fs-blood-moon #pvAdminDelete, html body.fs.fs-blood-moon #pvAdminDelete i { color: #c0392b !important; }
+html body.fs.fs-blood-moon :is(#cpmCameraBtn, #cpmGifBtn, #cpmPollBtn, #cpmScheduleBtn) { width: 42px !important; height: 42px !important; flex: 0 0 42px; }
+html body.fs.fs-blood-moon #cpmPublish { min-width: 0 !important; flex: 1 1 auto; max-width: 140px; }
+html body.fs.fs-blood-moon #cpmPublish { border-width: 9px 12px !important; border-image-width: 9px 12px !important; padding: 2px 0 !important; font-size: 16px !important;
+  white-space: nowrap; overflow: visible !important; text-overflow: clip !important; }
+html body.fs.fs-blood-moon .cpm-footer > div[style*="display:flex"] { gap: 6px !important; }
+html body.fs.fs-blood-moon #noCommentsMsg { color: var(--bm-soft) !important; }
+
+
+
+/* ===== BLOOD MOON (cloned from Heaven's Light) — rebuilt to its own concept (crops: prototypes/reference/blood-moon and blood-moon-twilight) ===== */
+body.fs-blood-moon.bm-unused { --bm-title: #f8e7bf; --bm-ink: #f6ecd6; --bm-soft: #d2c4a6; --bm-accent: #f0c35a; --bm-gold: #e8b74a;
+  background: #1d2340 !important; }
+body.fs-blood-moon :is(h1, h2, h3, h4, .nav-logo, .profile-name, .page-header h2, .msg-sidebar-header h3, .quest-panel-header h4) { letter-spacing: .02em; }
+/* every small avatar: thin gold laurel ring (concept) */
+html body.fs.fs-blood-moon :is(.post-header .post-avatar, .post-create-avatar, .msg-contact > div > img, .profile-card-item .profile-card-avatar, .notif-item img, #msgChat .msg-chat-header img, .comment-item img) {
+  background: var(--fs-avatar-ring) center / 100% 100% no-repeat, #f3e6c8 !important; }
+/* top bar: the painted banner (sunrise, columns, laurel garland); the avatar sits in the winged laurel wreath */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon:has(#page-home.active) .navbar { background: var(--fs-header) center bottom / 100% 100% no-repeat !important;
+    height: calc(84px + env(safe-area-inset-top, 0px)) !important; padding-bottom: 20px !important; }
+  html body.fs.fs-blood-moon:has(#page-home.active) .page.active { padding-top: calc(92px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-blood-moon .navbar .nav-avatar { width: 46px !important; height: 46px !important; padding: 0 !important; overflow: visible; }
+  html body.fs.fs-blood-moon .navbar .nav-user { position: relative; }
+  html body.fs.fs-blood-moon .navbar .nav-user::before { content: ""; position: absolute; z-index: 2; pointer-events: none; left: -9px; top: -6px; width: 64px; height: 64px;
+    background: var(--fs-avatar-ring) center / contain no-repeat; display: block !important; }
+  html body.fs.fs-blood-moon .navbar .nav-logo { font-size: 25px !important; text-transform: uppercase; }
+  /* other pages: title between gold laurels (concept), back arrow left */
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page.active::before { width: 46px; height: 260px; top: 70px; background: var(--fs-curtain-left) left top / contain no-repeat; opacity: .9; }
+}
+html body.fs.fs-blood-moon :is(.page-header h2, .msg-sidebar-header h3) { text-transform: uppercase; font-size: 27px !important;
+  background: var(--fs-title-flourish) center / auto 100% no-repeat !important; padding: 6px 0 !important; }
+
+/* bottom bar: marble slab, plain gold icons; the active tab = glowing gold tile with a white icon (concept) */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .nav-center { background: var(--fs-nav-bar) center top / 100% 100% no-repeat, linear-gradient(transparent 40%, var(--bm-navfill, #f7efe0) 40%) !important; padding-top: 14px !important; }
+  html body.fs.fs-blood-moon .nav-center { --bm-navfill: #2a3150; }
+  html body.fs.fs-blood-moon .nav-center .nav-link { color: var(--bm-title) !important; font: 600 12px var(--fs-title-font) !important; text-transform: uppercase; letter-spacing: .02em; }
+  html body.fs.fs-blood-moon .nav-center .nav-link > i { width: 54px !important; min-width: 54px; height: 50px !important; background: var(--fs-icon-home) center / 32px no-repeat !important; filter: none !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link[data-page="groups"] > i { background-image: var(--fs-icon-groups) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link[data-page="shop"] > i { background-image: var(--fs-icon-skins) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link[data-page="profiles"] > i { background-image: var(--fs-icon-network) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link[data-page="messages"] > i { background-image: var(--fs-icon-messages) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active { background: var(--fs-nav-active) center top / 66px 72px no-repeat !important; color: #fff !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active > i { background-image: var(--fs-icon-home-on) !important; background-size: 30px !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active[data-page="groups"] > i { background-image: var(--fs-icon-groups-on) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active[data-page="shop"] > i { background-image: var(--fs-icon-skins-on) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active[data-page="profiles"] > i { background-image: var(--fs-icon-network-on) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active[data-page="messages"] > i { background-image: var(--fs-icon-messages-on) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active span, html body.fs.fs-blood-moon .nav-center .nav-link.active { text-shadow: 0 1px 2px rgba(90, 58, 14, .6); }
+}
+
+/* profile (concept): three ARCHED TEMPLE WINDOWS between columns hold the 3 timeline photos; the arches art sits on top */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon :is(#timelineCover, #pvCoverBanner) { height: calc((100vw + 16px) * 1000 / 1290) !important; }
+  html body.fs.fs-blood-moon #timelineCover { margin-top: -10px !important; }
+}
+html body.fs.fs-blood-moon :is(#timelineCover, #pvCoverBanner)::before, html body.fs.fs-blood-moon :is(#timelineCover, #pvCoverBanner)::after { display: none !important; }
+html body.fs.fs-blood-moon .fs-timeline { position: absolute; inset: 0; z-index: 2; }
+html body.fs.fs-blood-moon .fs-timeline::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: var(--fs-gothic-windows) center / 100% 100% no-repeat; }
+html body.fs.fs-blood-moon .fs-tl-slot { position: absolute; z-index: auto !important; aspect-ratio: auto !important; top: 17.4%; height: 67.1%; width: 22.8%;
+  border-radius: 50% 50% 0 0 / 21% 21% 0 0 !important; overflow: visible; }
+html body.fs.fs-blood-moon .fs-tl-slot-1 { left: 9.5%; }
+html body.fs.fs-blood-moon .fs-tl-slot-2 { left: 38.2%; }
+html body.fs.fs-blood-moon .fs-tl-slot-3 { left: 66.9%; right: auto; }
+html body.fs.fs-blood-moon .fs-tl-slot img { position: absolute; inset: 0; width: 100% !important; height: 100% !important; object-fit: cover; border-radius: inherit !important; z-index: 0; }
+html body.fs.fs-blood-moon .fs-tl-slot::before { display: none !important; }
+html body.fs.fs-blood-moon .fs-tl-slot.fs-tl-empty::after { inset: 0; border-radius: inherit; background: linear-gradient(#ffe9c2, #fbd7a4 55%, #fff5e2) !important; z-index: 0; }
+html body.fs.fs-blood-moon .fs-tl-slot.fs-tl-empty::after { background: linear-gradient(#2b2f63, #6b4f86 60%, #e6a37c) !important; }
+html body.fs.fs-blood-moon .fs-tl-own.fs-tl-slot-3::after { z-index: 2 !important; right: -4% !important; top: 4% !important; bottom: auto !important; width: 36px !important; height: 36px !important; }
+/* the profile photo in the OVAL gold cameo with laurel crown + wings (cameo window 22.4% 9.1% / 54.1% x 68.2%) */
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .profile-avatar-wrap { width: 138px !important; height: 188px !important; margin: -150px auto 64px !important; border-radius: 50% !important; }
+html body.fs.fs-blood-moon :is(#profileAvatarImg, .pv-profile-card .profile-avatar) { border-radius: 50% / 50% !important; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .profile-avatar-wrap::after { inset: auto !important; left: -58.5px !important; top: -25px !important; width: 255px !important; height: 276px !important;
+  background: var(--fs-cameo-frame) center / 100% 100% no-repeat !important; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .avatar-edit-btn { right: -2% !important; bottom: 4% !important; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .profile-name { text-transform: uppercase; font-size: 34px !important; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) :is(.profile-title, .profile-about) { font-style: normal !important; text-transform: uppercase; letter-spacing: .06em; font-size: 15px !important;
+  padding: 0 46px; background: var(--fs-candelabra) left center / 34px auto no-repeat; position: relative; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .stat-label { text-transform: uppercase; font-size: 14px !important; letter-spacing: .05em; }
+html body.fs.fs-blood-moon #profileCard :is(.view-profile-link, .edit-profile-btn), html body.fs.fs-blood-moon #pvEditProfileBtn { text-transform: uppercase; font-size: 19px !important; }
+html body.fs.fs-blood-moon #pvEditProfileBtn, html body.fs.fs-blood-moon #profileCard .profile-links { padding: 0 !important; }
+
+/* Daily Quests (concept): marble temple tablet, each quest a marble row — golden HALO holding "3/5", label + gold bar, coin reward */
+html body.fs.fs-blood-moon .quest-panel { display: flex !important; flex-direction: column; gap: 4px; padding: 52px 26px 34px !important; }
+html body.fs.fs-blood-moon .quest-panel-header h4 { text-transform: uppercase; font-size: 23px !important; padding: 0 44px !important; background: var(--fs-title-flourish) center / auto 100% no-repeat; }
+html body.fs.fs-blood-moon .quest-item { position: relative; display: grid !important; grid-template-columns: 54px minmax(0, 1fr) auto; align-items: center; column-gap: 10px; text-align: left;
+  min-height: 62px; padding: 4px 12px 4px 6px !important; background: var(--fs-quest-row) center / 100% 100% no-repeat !important; }
+html body.fs.fs-blood-moon .quest-icon { width: 54px !important; height: 54px !important; margin: 0 !important; background: var(--fs-moon-0) center / contain no-repeat !important; }
+html body.fs.fs-blood-moon .quest-item[data-fs-q="50"] .quest-icon { background-image: var(--fs-moon-50) !important; }
+html body.fs.fs-blood-moon .quest-item[data-fs-q="100"] .quest-icon { background-image: var(--fs-moon-100) !important; }
+html body.fs.fs-blood-moon .quest-info { align-items: stretch !important; min-width: 0; }
+html body.fs.fs-blood-moon .quest-info p { font-size: 16px !important; text-align: left; }
+html body.fs.fs-blood-moon .quest-bar { display: block !important; height: 9px !important; margin-top: 5px; border-radius: 0 !important; background: var(--fs-goal-track) center / 100% 100% no-repeat !important; overflow: hidden; }
+html body.fs.fs-blood-moon .quest-bar-fill { height: 100% !important; border-radius: 0 !important; background: var(--fs-goal-fill) left center / auto 100% no-repeat !important; }
+html body.fs.fs-blood-moon .quest-progress { position: absolute; left: 6px; top: 50%; width: 54px; transform: translateY(-50%); text-align: center; font: 700 15px var(--fs-title-font) !important; letter-spacing: -.02em; white-space: nowrap; word-spacing: -3px; }
+html body.fs.fs-blood-moon :is(.quest-reward, .quest-check) { font-size: 16px !important; }
+
+/* feed tabs: marble pills / glowing gold active pill (concept) */
+html body.fs.fs-blood-moon #feedTabs .search-tab { background: var(--fs-tab) center / 100% 100% no-repeat !important; padding: 8px 4px !important; font: 600 14px var(--fs-title-font) !important; text-transform: uppercase; }
+html body.fs.fs-blood-moon #feedTabs .search-tab.active { background: var(--fs-tab-active) center / 100% 100% no-repeat !important; color: #fff !important; text-shadow: 0 1px 2px rgba(90, 58, 14, .6); }
+html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs) .search-tab, html body.fs.fs-blood-moon .fsk-filter { font-family: var(--fs-title-font) !important; text-transform: uppercase; font-size: 13px !important; }
+html body.fs.fs-blood-moon :is(.search-tab.active, .fsk-filter.active) { text-shadow: 0 1px 2px rgba(90, 58, 14, .6); }
+
+/* posts (owner: "make the posts have something around them"): ornate gold frame on all four sides, three looks */
+html body.fs.fs-blood-moon .feed-post.feed-post.feed-post { border-width: 30px !important; border-image-source: var(--fs-post-panel) !important; border-image-slice: 180 fill !important;
+  border-image-width: 54px !important; border-image-outset: 10px !important; border-image-repeat: stretch !important; margin: 14px 10px 30px !important; }
+html body.fs.fs-blood-moon .feed-post.feed-post.feed-post:is([data-fs-v="2"], [data-fs-v="5"]) { border-image-source: var(--fs-post-panel-b) !important; }
+html body.fs.fs-blood-moon .feed-post.feed-post.feed-post:is([data-fs-v="3"], [data-fs-v="6"]) { border-image-source: var(--fs-post-panel-c) !important; }
+html body.fs.fs-blood-moon .feed-post::after, html body.fs.fs-blood-moon .feed-post .post-header::before { display: none !important; }
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] .pm-thumb::after { inset: -8px !important; border: 0 !important; background: none !important;
+  border-style: solid !important; border-color: transparent !important; border-width: 12px !important; border-image: var(--fs-photo-frame) 140 / 16px stretch !important; }
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] .pm-thumb :is(img, video) { border-radius: 4px !important; }
+/* Day / Twilight button in the Home top bar: winged sun (Day) / winged crescent (Twilight) art */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .nav-container { grid-template-columns: 50px 1fr 34px 34px 34px 34px auto !important; }
+  html body.fs.fs-blood-moon .navbar .fs-daynight { grid-column: 3; grid-row: 1; }
+  html body.fs.fs-blood-moon .navbar .mobile-search-btn { grid-column: 4 !important; }
+  html body.fs.fs-blood-moon .navbar .mobile-notif-btn { grid-column: 5 !important; }
+  html body.fs.fs-blood-moon .navbar .nav-music-wrap { grid-column: 6 !important; }
+  html body.fs.fs-blood-moon .navbar .nav-coins { grid-column: 7 !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .navbar .fs-daynight { display: none !important; }
+  html body.fs.fs-blood-moon .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) { width: 34px !important; }
+}
+html body.fs.fs-blood-moon .fs-bm-btn { width: 38px; height: 38px; padding: 0; border: 0; background: none; display: flex; align-items: center; justify-content: center; }
+html body.fs.fs-blood-moon .fs-bm-btn i { display: block; width: 36px; height: 36px; background: var(--fs-toggle-crimson) center / contain no-repeat; filter: drop-shadow(0 0 5px rgba(255, 210, 120, .8)); }
+html body.fs.fs-blood-moon .fs-bm-btn.is-silver i { background-image: var(--fs-toggle-silver); filter: drop-shadow(0 0 5px rgba(230, 220, 255, .7)); }
+/* QA 1 (Home): no orb rings in the nav, top bar fits the coin pill, compact ledge, gold heading icons */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .nav-center .nav-link > i, html body.fs.fs-blood-moon .nav-center .nav-link.active > i { box-shadow: none !important; border-radius: 0 !important; background-position: center !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active { background-size: 64px 70px !important; background-position: center 0 !important; }
+  html body.fs.fs-blood-moon .nav-container { grid-template-columns: 50px minmax(0, 1fr) 32px 32px 32px 32px auto !important; column-gap: 2px !important; padding: 0 8px !important; }
+  html body.fs.fs-blood-moon .navbar .nav-logo { font-size: 21px !important; overflow: hidden; white-space: nowrap; }
+  html body.fs.fs-blood-moon .navbar .nav-coins { padding: 0 10px 0 6px !important; height: 34px !important; font-size: 16px !important; }
+  html body.fs.fs-blood-moon .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) { width: 32px !important; }
+  html body.fs.fs-blood-moon .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) > i { width: 23px !important; height: 23px !important; }
+}
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card)::after { padding-bottom: 22% !important; margin-top: 4px !important; background-size: 100% auto !important; }
+html body.fs.fs-blood-moon :is(.card-heading, .section-title, h3, h4) > i { color: var(--bm-gold) !important; }
+html body.fs.fs-blood-moon .quest-panel { aspect-ratio: auto !important; align-items: stretch !important; align-content: stretch !important; margin: 4px -4px !important; padding: 56px 30px 40px !important; }
+html body.fs.fs-blood-moon .quest-panel-header { max-width: none !important; margin: 0 0 4px !important; }
+html body.fs.fs-blood-moon .quest-panel-header h4 { max-width: none !important; white-space: nowrap !important; display: inline-block; }
+html body.fs.fs-blood-moon .quest-item { grid-column: auto !important; width: auto !important; }
+html body.fs.fs-blood-moon .quest-icon { grid-row: auto !important; }
+html body.fs.fs-blood-moon .quest-info { grid-column: auto !important; }
+html body.fs.fs-blood-moon :is(.quest-reward, .quest-check) { grid-column: auto !important; justify-self: end !important; }
+/* laurel branches sit either side of the title, never across it */
+html body.fs.fs-blood-moon :is(.quest-panel-header h4, .page-header h2, .msg-sidebar-header h3) { background: var(--fs-title-flourish) center / 100% 100% no-repeat !important; padding: 4px 58px !important; display: inline-block; flex: 0 0 auto !important; }
+html body.fs.fs-blood-moon :is(.page-header, .msg-sidebar-header) { justify-content: center !important; }
+/* other pages (concept groups/messages/skins…): marble strip bar with the back arrow; title between small laurels; no big banner */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .navbar { display: block !important; background: var(--fs-top-bar) center bottom / 100% 100% no-repeat !important;
+    height: calc(58px + env(safe-area-inset-top, 0px)) !important; min-height: 0 !important; padding: env(safe-area-inset-top, 0px) 0 12px !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .navbar .nav-logo { top: calc(env(safe-area-inset-top, 0px) + 4px) !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page.active { padding-top: calc(66px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header, .msg-sidebar-header)::after,
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::before { display: none !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { padding: 2px 56px !important; height: 42px; line-height: 38px !important; }
+  html body.fs.fs-blood-moon .page-header { padding: 0 4px !important; }
+}
+/* QA 2 (groups vs concept): no empty bar — title right under the status bar with the back arrow beside it; search + gold "+" on one row */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .navbar { height: 0 !important; padding: 0 !important; background: none !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .navbar .nav-logo { top: calc(env(safe-area-inset-top, 0px) + 6px) !important; left: 6px !important; width: 44px !important; height: 44px !important; background-size: 32px !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page.active { padding-top: calc(env(safe-area-inset-top, 0px) + 4px) !important; }
+  html body.fs.fs-blood-moon .page-header .page-search { order: 5; flex: 1 1 0 !important; margin: 4px 0 0 !important; min-width: 0; }
+  html body.fs.fs-blood-moon .page-header .btn:not(.page-search) { order: 6 !important; flex: 0 0 46px; width: 46px !important; height: 46px !important; margin-top: 4px !important; border-radius: 0 !important;
+    background: var(--fs-plus-btn) center / contain no-repeat !important; }
+  html body.fs.fs-blood-moon .page-header .btn:not(.page-search) i { background: none !important; width: 0 !important; }
+}
+html body.fs.fs-blood-moon :is(.msg-search, .page-search) input::placeholder, html body.fs.fs-blood-moon input::placeholder, html body.fs.fs-blood-moon textarea::placeholder { color: var(--bm-soft) !important; opacity: .85; }
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .page-header .btn:not(.page-search) { position: static !important; transform: none !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .navbar { overflow: visible !important; z-index: 300 !important; display: block !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .navbar .nav-container { display: block !important; height: 0 !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .navbar .nav-logo { position: fixed !important; z-index: 301 !important; display: block !important; visibility: visible !important; opacity: 1 !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page-header { display: flex !important; flex-wrap: wrap; justify-content: center; align-items: center; column-gap: 8px; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page-header h2 { flex: 0 0 auto !important; display: inline-block !important; padding: 2px 56px !important; margin: 0 auto !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header, .msg-sidebar-header) :is(h2, h3)::after { display: none !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page-header .page-actions { display: contents !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page-header .btn:not(.page-search) { position: static !important; top: auto; right: auto; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page-header .page-search { width: auto !important; flex: 1 1 0 !important; margin: 6px 0 0 !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page-header h2 { flex-basis: 100% !important; max-width: max-content; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page-header h2 { flex-basis: auto !important; max-width: none; order: 0; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page-header::after { content: "" !important; display: block !important; order: 2; flex: 0 0 100% !important; height: 0 !important;
+    position: static !important; background: none !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .navbar .nav-logo { background: var(--fs-icon-back) center / 24px no-repeat, var(--fs-round-btn) center / 40px no-repeat !important; }
+}
+/* skins shop (concept): the skin's picture fills the ornate gold card window; name across the top of the picture; price / equip pill on the marble band */
+html body.fs.fs-blood-moon .fsk-card { aspect-ratio: 640 / 760; padding: 0 !important; overflow: visible !important; }
+html body.fs.fs-blood-moon .fsk-thumb { position: absolute !important; left: 3.1%; top: 2.9%; width: 93.5% !important; height: 75.5% !important; margin: 0 !important; aspect-ratio: auto !important;
+  border-radius: 8px 8px 0 0 !important; z-index: 0; -webkit-mask: var(--fs-skin-card-mask) -3.3% -3.8% / 107% 132% no-repeat; mask: var(--fs-skin-card-mask) -3.3% -3.8% / 107% 132% no-repeat; }
+html body.fs.fs-blood-moon .fsk-card::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: var(--fs-skin-card) center / 100% 100% no-repeat; }
+html body.fs.fs-blood-moon .fsk-card { background: none !important; }
+html body.fs.fs-blood-moon .fsk-body { position: absolute !important; inset: 0; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; padding: 7% 6% 4% !important; pointer-events: none; }
+html body.fs.fs-blood-moon .fsk-body > * { pointer-events: auto; }
+html body.fs.fs-blood-moon .fsk-name { text-align: center !important; text-transform: uppercase; font-size: 17px !important; line-height: 1.05; color: #fff8e6 !important;
+  text-shadow: 0 1px 2px rgba(60, 35, 5, .9), 0 0 8px rgba(60, 35, 5, .6); }
+html body.fs.fs-blood-moon .fsk-body .btn { height: 34px !important; width: 82% !important; margin: 0 auto !important; background-image: var(--fs-price-pill) !important; font-size: 15px !important; }
+html body.fs.fs-blood-moon .fsk-body .btn.fsk-equipped { background-image: var(--fs-equipped-tag) !important; color: #fff !important; text-transform: uppercase; }
+html body.fs.fs-blood-moon .fsk-badge { top: 8%; right: 7%; z-index: 3; text-transform: uppercase; }
+html body.fs.fs-blood-moon .fsk-card.fsk-card { border: 0 !important; border-image: none !important; box-shadow: none !important; }
+html body.fs.fs-blood-moon .fsk-name { align-self: center; color: var(--bm-title) !important; text-shadow: none !important; font-size: 15px !important; padding: 3px 12px !important; margin-top: 4% !important;
+  background: rgba(255, 248, 232, .88) !important; border-radius: 12px; box-shadow: 0 0 0 1px rgba(201, 150, 46, .6); max-width: 92%; }
+html body.fs.fs-blood-moon .fsk-name { background: rgba(40, 46, 78, .88) !important; }
+html body.fs.fs-blood-moon .fsk-badge { top: auto !important; bottom: 25% !important; right: 50% !important; transform: translateX(50%); }
+/* Network / Search segmented tabs (concept): compact marble pills, ends keep their shape (9-slice), two-line labels */
+html body.fs.fs-blood-moon :is(#profilesTabs, #searchTabs) .search-tab { min-height: 44px !important; padding: 0 2px !important; font-size: 11.5px !important; line-height: 1.05 !important;
+  background: none !important; border: solid transparent !important; border-width: 9px 20px !important; border-image: var(--fs-seg-tab) 45 100 fill / 9px 20px stretch !important; }
+html body.fs.fs-blood-moon :is(#profilesTabs, #searchTabs) .search-tab.active { border-image-source: var(--fs-seg-tab-active) !important; color: #fff !important; }
+html body.fs.fs-blood-moon :is(.msg-contact, .notif-item, .profile-card-item, .follow-list-item) { margin-bottom: 4px !important; }
+html body.fs.fs-blood-moon :is(#page-profiles, #page-search) .profile-card-item { padding: 0 !important; min-height: 0 !important; }
+/* Twilight: slate marble pieces carry light text; gold pieces (sent bubble, active pills) keep the dark ink */
+html body.fs.fs-blood-moon .quest-panel :is(h4, p, span, .quest-progress, .quest-reward, .quest-check) { color: var(--bm-title) !important; text-shadow: 0 1px 2px rgba(0, 0, 0, .45); }
+html body.fs.fs-blood-moon .msg-bubble:not(.sent), html body.fs.fs-blood-moon .msg-bubble:not(.sent) * { color: var(--bm-ink) !important; }
+html body.fs.fs-blood-moon .post-badges :is(span, .post-badge) { background: rgba(40, 46, 78, .8) !important; color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon .fs-tl-slot.fs-tl-empty::after { background: linear-gradient(#2b2f63, #6b4f86 60%, #e6a37c) !important; }
+html body.fs.fs-blood-moon .post-badges :is(span, .post-badge) { background-color: transparent !important; }
+html body.fs.fs-blood-moon .msg-bubble { font-size: 17px !important; line-height: 1.3 !important; }
+html body.fs.fs-blood-moon .msg-bubble { border-width: 12px 16px !important; border-image-width: 12px 16px !important; }
+/* title laurels: each branch in its own slot beside the word (long titles like NOTIFICATIONS never collide) */
+html body.fs.fs-blood-moon :is(.quest-panel-header h4, .page-header h2, .msg-sidebar-header h3) { background: none !important; position: relative !important; padding: 2px 50px !important; }
+html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { padding: 2px 50px !important; }
+html body.fs.fs-blood-moon :is(.quest-panel-header h4, .page-header h2, .msg-sidebar-header h3)::before,
+html body.fs.fs-blood-moon :is(.quest-panel-header h4, .page-header h2, .msg-sidebar-header h3)::after,
+html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::before,
+html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::after {
+  content: "" !important; display: block !important; position: absolute !important; top: 50% !important; bottom: auto !important; width: 46px !important; height: 36px !important; margin-top: -18px;
+  transform: none !important; background: var(--fs-title-flourish) left center / auto 100% no-repeat !important; pointer-events: none; }
+html body.fs.fs-blood-moon :is(.quest-panel-header h4, .page-header h2, .msg-sidebar-header h3)::before,
+html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::before { left: 0 !important; right: auto !important; }
+html body.fs.fs-blood-moon :is(.quest-panel-header h4, .page-header h2, .msg-sidebar-header h3)::after,
+html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::after { right: 0 !important; left: auto !important; background-position: right center !important; }
+@media (max-width: 768px) { html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { font-size: 24px !important; } }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .profile-title { background: none !important; padding: 0 12px !important; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .profile-about { background: var(--fs-candelabra) left center / 30px auto no-repeat, var(--fs-candelabra) right center / 30px auto no-repeat !important; padding: 2px 40px !important; }
+/* pop-ups (comments, create post, menus): one stretched marble + gold panel, no tiling seams */
+html body.fs.fs-blood-moon .modal-content { background: #fbf4e6 !important; background-clip: padding-box !important; border: 30px solid transparent !important;
+  border-image: var(--fs-post-panel) 180 fill / 46px stretch !important; border-radius: 0 !important; box-shadow: 0 10px 40px rgba(60, 35, 5, .35) !important; }
+html body.fs.fs-blood-moon .modal-content { background: #3a4260 !important; background-clip: padding-box !important; }
+html body.fs.fs-blood-moon :is(#postCommentBtn, #cpmPublish) { background: none !important; border: solid transparent !important; border-width: 9px 16px !important;
+  border-image: var(--fs-follow-btn) 50 90 fill / 9px 16px stretch !important; color: #fff !important; text-shadow: 0 1px 2px rgba(90, 58, 14, .6); }
+html body.fs.fs-blood-moon .share-preview { border-width: 26px !important; border-image: var(--fs-post-panel-c) 180 fill / 40px stretch !important; padding: 2px 0 !important; }
+html body.fs.fs-blood-moon .comment-item { border-width: 20px 26px !important; border-image: var(--fs-comment-bubble) 90 150 fill / 20px 26px stretch !important; }
+/* spacing (owner, Nov 16): content clears each post frame's ornament — top crests (c = winged laurel crest), side columns (b) */
+html body.fs.fs-blood-moon .feed-post.feed-post.feed-post { padding: 22px 12px 8px !important; }
+html body.fs.fs-blood-moon .feed-post.feed-post.feed-post:is([data-fs-v="3"], [data-fs-v="6"]) { padding-top: 40px !important; }
+html body.fs.fs-blood-moon .feed-post.feed-post.feed-post:is([data-fs-v="2"], [data-fs-v="5"]) { padding-left: 22px !important; padding-right: 22px !important; }
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] { margin-top: 22px !important; }
+html body.fs.fs-blood-moon :is(.post-content-text, .post-text, .post-content p) { margin-top: 6px !important; }
+/* bottom bar (owner, Nov 16): bigger icons; the active gold tile drawn whole (it was cut off at the bottom) */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .nav-center { height: calc(104px + env(safe-area-inset-bottom, 0px)) !important; padding-top: 16px !important; align-items: start !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link { height: 80px !important; justify-content: flex-start !important; padding-top: 4px !important; gap: 0 !important; overflow: visible !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link > i { width: 58px !important; min-width: 58px; height: 52px !important; background-size: 44px !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active { background-size: 72px 80px !important; background-position: center 0 !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active > i { background-size: 40px !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link span { font-size: 12px !important; line-height: 1.1 !important; margin-top: 2px; }
+}
+html body.fs.fs-blood-moon :is(.btn-outline, .btn-secondary, #trendingHashtagsBtn) { background: none !important; border: solid transparent !important; border-width: 10px 22px !important;
+  border-image: var(--fs-action-btn) 50 100 fill / 10px 22px stretch !important; border-radius: 0 !important; box-shadow: none !important; color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon #trendingHashtagsBtn i, html body.fs.fs-blood-moon .card-heading i, html body.fs.fs-blood-moon .modal-header h3 i { color: var(--bm-gold) !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .nav-center .nav-link, html body.fs.fs-blood-moon .nav-center .nav-link span { font-size: 11px !important; letter-spacing: 0 !important;
+    overflow: visible !important; text-overflow: clip !important; white-space: nowrap !important; max-width: none !important; }
+}
+/* bottom bar (owner, Nov 16): bigger icons; the active gold tile drawn whole (it was cut off at the bottom) */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .nav-center { height: calc(104px + env(safe-area-inset-bottom, 0px)) !important; padding-top: 16px !important; align-items: start !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link { height: 80px !important; justify-content: flex-start !important; padding-top: 4px !important; gap: 0 !important; overflow: visible !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link > i { width: 58px !important; min-width: 58px; height: 52px !important; background-size: 44px !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active { background-size: 72px 80px !important; background-position: center 0 !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active > i { background-size: 40px !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link span { font-size: 12px !important; line-height: 1.1 !important; margin-top: 2px; }
+}
+html body.fs.fs-blood-moon :is(.btn-outline, .btn-secondary, #trendingHashtagsBtn) { background: none !important; border: solid transparent !important; border-width: 10px 22px !important;
+  border-image: var(--fs-action-btn) 50 100 fill / 10px 22px stretch !important; border-radius: 0 !important; box-shadow: none !important; color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon #trendingHashtagsBtn i, html body.fs.fs-blood-moon .card-heading i, html body.fs.fs-blood-moon .modal-header h3 i { color: var(--bm-gold) !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .nav-center .nav-link, html body.fs.fs-blood-moon .nav-center .nav-link span { font-size: 11px !important; letter-spacing: 0 !important;
+    overflow: visible !important; text-overflow: clip !important; white-space: nowrap !important; max-width: none !important; }
+}
+
+/* ======================================================================================
+   BLOOD MOON — its own look on top of the cloned base. Two renditions, both dark:
+   Crimson (data-fs-variant crimson, art at assets/) and Silver (assets/silver/, no red anywhere).
+   Concepts: images/skins/blood-moon/concept-crimson*.png, concept-silver*.png; crops prototypes/reference/blood-moon-crimson and -silver.
+   Light text on the dark velvet panels; dark ink on the parchment post cards / bubbles / comment cards.
+   ====================================================================================== */
+body.fs-blood-moon { --bm-title: #f6e4dc; --bm-ink: #f2e2de; --bm-soft: #d0aca6; --bm-accent: #ff6b6b; --bm-gold: #d8c3b0;
+  --bm-paper-ink: #2a1012; --bm-paper-soft: #6b4a44; --bm-glow: 255, 60, 60; --bm-navfill: #1a0608;
+  background: #12040a !important; color: var(--bm-ink); }
+body.fs-blood-moon[data-fs-variant="silver"] { --bm-title: #f1f6fd; --bm-ink: #e9f0fa; --bm-soft: #aebdd2; --bm-accent: #9cc8f2; --bm-gold: #dfe8f3;
+  --bm-paper-ink: #182338; --bm-paper-soft: #4c5c76; --bm-glow: 170, 205, 245; --bm-navfill: #0b1426;
+  background: #08101f !important; }
+
+/* ---------- bottom bar (concept): black-lacquer bar with silver arches + moon crest; each tab sits in its arched cell,
+   the active cell = crimson velvet arch (nav-active) with a white icon. Cells measured from nav-bar.png (1290x300):
+   3.5-23.8 / 23.8-41.2 / 41.2-58.7 / 58.7-76.1 / 76.1-94.7 % across; slab from 35% down ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .nav-center { display: grid !important; grid-template-columns: 3.5% 20.3% 17.4% 17.5% 17.4% 18.6% 1fr !important; align-items: end;
+    height: calc(100vw * 300 / 1290 + env(safe-area-inset-bottom, 0px) - 4px) !important; padding: 0 0 calc(env(safe-area-inset-bottom, 0px) - 2px) !important;
+    background: var(--fs-nav-bar) center top / 100% auto no-repeat, linear-gradient(transparent calc(100vw * 280 / 1290), var(--bm-navfill) 0) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link:nth-child(1) { grid-column: 2; }
+  html body.fs.fs-blood-moon .nav-center .nav-link { height: calc(100vw * 300 / 1290 * .6); justify-content: center; gap: 0 !important; padding: 0 0 6px !important;
+    color: var(--bm-soft) !important; font: 600 11px var(--fs-title-font) !important; letter-spacing: .01em; text-transform: none !important; border-radius: 0 !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link > i { width: 30px !important; min-width: 30px; height: 28px !important; background-size: contain !important; background-position: center !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active { background: var(--fs-nav-active) center bottom / 100% 100% no-repeat !important; color: #fff !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active > i { background-size: contain !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link span { white-space: nowrap; }
+}
+
+/* ---------- parchment cards (posts, side cards, comments, menus): dark ink on the pale paper (concept) ---------- */
+html body.fs.fs-blood-moon :is(.feed-post, .card:not(.profile-card):not(.pv-profile-card), .comment-item, .post-dropdown, .share-preview),
+html body.fs.fs-blood-moon :is(.feed-post, .card:not(.profile-card):not(.pv-profile-card), .comment-item, .post-dropdown, .share-preview) :is(p, span, a, h3, h4, label, small, div, i:not([class*="fa-heart"])) {
+  color: var(--bm-paper-ink) !important; text-shadow: none !important; }
+html body.fs.fs-blood-moon :is(.feed-post, .card, .comment-item) :is(.post-time, .post-meta, small, .stat-label, .card-subtitle) { color: var(--bm-paper-soft) !important; }
+html body.fs.fs-blood-moon :is(.feed-post, .card, .comment-item) :is(.post-username, .card-heading, h3, h4) { color: var(--bm-paper-ink) !important; }
+html body.fs.fs-blood-moon .card :is(a.view-all, .see-all, .card-link) { color: #8b1420 !important; }
+body.fs-blood-moon[data-fs-variant="silver"] .card :is(a.view-all, .see-all, .card-link) { color: #2f5b8f !important; }
+/* the app's coloured FA icons (purple / pink accents) follow the skin */
+html body.fs.fs-blood-moon :is(.btn, button, .action-btn, .search-tab) > i.fas:not(.fa-heart) { color: var(--bm-gold) !important; }
+html body.fs.fs-blood-moon :is(.btn, button) { color: var(--bm-title) !important; }
+
+/* ---------- profile block (Home + Profile): the moon scene behind the three gothic windows (concept profile) ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon :is(#timelineCover, #pvCoverBanner) { height: calc((100vw + 16px) * 1100 / 1290) !important;
+    background: var(--fs-header) center 35% / cover no-repeat !important; }
+}
+html body.fs.fs-blood-moon .fs-timeline::after { background-image: var(--fs-gothic-windows) !important; }
+/* the 3 timeline photos in the three pointed-arch windows (gothic-windows-mask: 8.8/33.3 21.9x47.9 · 36.3/23.6 27.4x57.5 · 69.3/33.3 21.8x47.9 %) */
+html body.fs.fs-blood-moon .fs-tl-slot { top: 33.3%; height: 47.9%; width: 21.9%; border-radius: 50% 50% 0 0 / 26% 26% 0 0 !important; }
+html body.fs.fs-blood-moon .fs-tl-slot-1 { left: 8.8%; }
+html body.fs.fs-blood-moon .fs-tl-slot-2 { left: 36.3%; top: 23.6%; height: 57.5%; width: 27.4%; }
+html body.fs.fs-blood-moon .fs-tl-slot-3 { left: 69.3%; }
+html body.fs.fs-blood-moon .fs-tl-slot.fs-tl-empty::after { background: linear-gradient(#2a0408, #6a0f18 60%, #1a0204) !important; }
+body.fs-blood-moon[data-fs-variant="silver"] .fs-tl-slot.fs-tl-empty::after { background: linear-gradient(#0c1730, #2c4a78 60%, #0a1222) !important; }
+/* the profile picture in the round silver cameo with roses (cameo-mask window 12.7/19.3 %, 73.4 x 67.1 % of 700) */
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .profile-avatar-wrap { width: 150px !important; height: 137px !important; margin: -128px auto 40px !important; }
+html body.fs.fs-blood-moon :is(.pv-profile-card, #profileCard) .profile-avatar-wrap::after { left: -26px !important; top: -39.4px !important; width: 204.4px !important; height: 204.4px !important;
+  background: var(--fs-cameo-frame) center / 100% 100% no-repeat !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .nav-center { --bm-navfill: #12040a; align-items: end !important; }
+  html body.fs.fs-blood-moon[data-fs-variant="silver"] .nav-center { --bm-navfill: #08101f; }
+  html body.fs.fs-blood-moon .nav-center .nav-link { align-self: end !important; height: calc(100vw * 300 / 1290 * .6) !important; min-height: 0 !important; max-height: none !important; margin: 0 !important; }
+  html body.fs.fs-blood-moon :is(#timelineCover, #pvCoverBanner) { background-position: center top !important; background-size: 100% 100% !important; }
+}
+/* the profile block is on the dark page, not parchment: light text */
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card), html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) :is(p, span, a, h3, h4, label, small, div, .profile-name, .stat-count, .stat-label) {
+  color: var(--bm-title) !important; text-shadow: 0 1px 3px rgba(0, 0, 0, .7) !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) :is(.profile-title, .profile-about, .stat-label) { color: var(--bm-soft) !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .nav-center .nav-link { justify-content: flex-end !important; padding: 0 0 9px !important; gap: 1px !important; }
+}
+@media (max-width: 768px) {
+  /* icon + label INSIDE each arched cell (cell interior ≈ 40–91 % of the bar art's height) */
+  html body.fs.fs-blood-moon .nav-center .nav-link { height: calc(100vw * 300 / 1290 * .5) !important; margin: 0 0 calc(100vw * 300 / 1290 * .085) !important; padding: 0 0 2px !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link > i { width: 24px !important; min-width: 24px; height: 22px !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active { background-size: 100% 118% !important; background-position: center bottom !important; }
+}
+@media (max-width: 768px) { html body.fs.fs-blood-moon .nav-center .nav-link { transform: translateY(17px) !important; } }
+@media (max-width: 768px) { html body.fs.fs-blood-moon .nav-center .nav-link:not(.active) { color: var(--bm-gold) !important; } }
+
+/* ---------- OWN profile + Home (owner: "Profile page" — concept profile): the moon sky, two tall side arches and a wide
+   bottom arch hold the 3 cover photos (each photo masked to its opening), the round cameo between them. Others keep the
+   three-arch layout (concept other-profile). Openings measured from profile-windows-mask.png per rendition. ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon :is(#timelineCover, #pvCoverBanner) { height: calc((100vw + 16px) * 1470 / 1290) !important;
+    background: var(--fs-profile-sky) center top / 100% 100% no-repeat !important; }
+}
+html body.fs.fs-blood-moon .fs-timeline::after { background-image: var(--fs-profile-windows) !important; z-index: 3 !important; }
+html body.fs.fs-blood-moon .fs-timeline .fs-tl-slot { border-radius: 0 !important; overflow: hidden !important; -webkit-mask-image: var(--fs-profile-windows-mask) !important; mask-image: var(--fs-profile-windows-mask) !important; -webkit-mask-repeat: no-repeat !important; mask-repeat: no-repeat !important; }
+html body.fs.fs-blood-moon:not([data-fs-variant="silver"]) .fs-tl-slot.fs-tl-slot-1 { left: 0.31%; top: 26.33%; width: 33.72%; height: 49.46%; right: auto; -webkit-mask-image: var(--fs-profile-mask-1) !important; mask-image: var(--fs-profile-mask-1) !important; -webkit-mask-size: 296.56% 202.18% !important; mask-size: 296.56% 202.18% !important; -webkit-mask-position: 0.47% 52.10% !important; mask-position: 0.47% 52.10% !important; }
+html body.fs.fs-blood-moon:not([data-fs-variant="silver"]) .fs-tl-slot.fs-tl-slot-2 { left: 2.09%; top: 59.32%; width: 95.27%; height: 39.18%; right: auto; -webkit-mask-image: var(--fs-profile-mask-2) !important; mask-image: var(--fs-profile-mask-2) !important; -webkit-mask-size: 104.96% 255.23% !important; mask-size: 104.96% 255.23% !important; -webkit-mask-position: 44.19% 97.53% !important; mask-position: 44.19% 97.53% !important; }
+html body.fs.fs-blood-moon:not([data-fs-variant="silver"]) .fs-tl-slot.fs-tl-slot-3 { left: 65.74%; top: 26.39%; width: 33.72%; height: 49.8%; right: auto; -webkit-mask-image: var(--fs-profile-mask-3) !important; mask-image: var(--fs-profile-mask-3) !important; -webkit-mask-size: 296.56% 200.80% !important; mask-size: 296.56% 200.80% !important; -webkit-mask-position: 99.19% 52.57% !important; mask-position: 99.19% 52.57% !important; }
+html body.fs.fs-blood-moon[data-fs-variant="silver"] .fs-tl-slot.fs-tl-slot-1 { left: 0.54%; top: 24.9%; width: 36.2%; height: 49.73%; right: auto; -webkit-mask-image: var(--fs-profile-mask-1) !important; mask-image: var(--fs-profile-mask-1) !important; -webkit-mask-size: 276.24% 201.09% !important; mask-size: 276.24% 201.09% !important; -webkit-mask-position: 0.85% 49.53% !important; mask-position: 0.85% 49.53% !important; }
+html body.fs.fs-blood-moon[data-fs-variant="silver"] .fs-tl-slot.fs-tl-slot-2 { left: 0.54%; top: 50.41%; width: 98.84%; height: 49.12%; right: auto; -webkit-mask-image: var(--fs-profile-mask-2) !important; mask-image: var(--fs-profile-mask-2) !important; -webkit-mask-size: 101.17% 203.58% !important; mask-size: 101.17% 203.58% !important; -webkit-mask-position: 46.55% 99.08% !important; mask-position: 46.55% 99.08% !important; }
+html body.fs.fs-blood-moon[data-fs-variant="silver"] .fs-tl-slot.fs-tl-slot-3 { left: 63.33%; top: 24.76%; width: 36.12%; height: 49.73%; right: auto; -webkit-mask-image: var(--fs-profile-mask-3) !important; mask-image: var(--fs-profile-mask-3) !important; -webkit-mask-size: 276.85% 201.09% !important; mask-size: 276.85% 201.09% !important; -webkit-mask-position: 99.14% 49.25% !important; mask-position: 99.14% 49.25% !important; }
+/* camera badge for the cover photos: on the right arch, like the concept */
+html body.fs.fs-blood-moon .fs-tl-own.fs-tl-slot-3::after { -webkit-mask: none; }
+/* the cameo: avatar 122 x 112 (cameo window 73.4 x 67.1 %), centred between the side arches, its bottom over the bottom arch */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .profile-avatar-wrap { width: 122px !important; height: 112px !important;
+    margin: calc((100vw + 16px) * 1470 / 1290 * -.52 - 56px) auto calc((100vw + 16px) * 1470 / 1290 * .52 - 50px) !important; z-index: 4 !important; }
+  html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .profile-avatar-wrap::after { left: -21.1px !important; top: -32.1px !important; width: 166.2px !important; height: 166.2px !important; }
+}
+@media (max-width: 768px) {
+  /* bigger cameo (concept ≈ 38 % of the width), centred at 55 % of the composition, over the bottom arch's dip */
+  html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .profile-avatar-wrap { width: 150px !important; height: 137px !important;
+    margin: calc((100vw + 16px) * 1470 / 1290 * -.45 - 68px) auto calc((100vw + 16px) * 1470 / 1290 * .45 - 66px) !important; }
+  html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .profile-avatar-wrap::after { left: -26px !important; top: -39.4px !important; width: 204.4px !important; height: 204.4px !important; }
+}
+/* candelabras either side of the name + bio (concept), not tiny sprigs */
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard { position: relative; padding: 0 64px !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard::before,
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard::after { content: ""; position: absolute; top: -18px; width: 54px; height: 126px; pointer-events: none;
+  background: var(--fs-candelabra) center / contain no-repeat; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard::before { left: 4px; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard::after { right: 4px; transform: scaleX(-1); }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) :is(.profile-title, .profile-about) { background: none !important; padding: 0 !important; text-transform: none !important; font-style: italic !important; letter-spacing: 0 !important; font-size: 17px !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .profile-name { text-transform: none !important; font-size: 34px !important; background: var(--fs-title-flourish) center / 100% auto no-repeat; }
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .profile-avatar-wrap {
+    margin: calc((100vw + 16px) * 1470 / 1290 * -.49 - 68px) auto calc((100vw + 16px) * 1470 / 1290 * .49 - 60px) !important; }
+}
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard::before,
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard::after { display: block !important; content: "" !important; top: -6px !important; width: 58px !important; height: 136px !important;
+  background: var(--fs-candelabra) center / contain no-repeat !important; border: 0 !important; opacity: 1 !important; z-index: 1; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard::before { left: 0 !important; right: auto !important; transform: none !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard::after { right: 0 !important; left: auto !important; transform: scaleX(-1) !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name { background: var(--fs-title-flourish) center / min(100%, 300px) auto no-repeat !important; padding: 2px 0 !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .profile-avatar-wrap {
+    margin: calc((100vw + 16px) * 1470 / 1290 * -.49 - 68px) auto calc((100vw + 16px) * 1470 / 1290 * .49 - 40px) !important; }
+}
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .avatar-edit-btn { left: 50% !important; right: auto !important; bottom: -14px !important; transform: translateX(-50%) !important; width: 38px !important; height: 38px !important; }
+/* name: the flourish halves sit BESIDE the name (never behind it), long names shrink a step and wrap; candelabras stay at the edges */
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard { padding: 0 58px !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name { display: flex !important; align-items: center; justify-content: center; gap: 6px;
+  background: none !important; font-size: clamp(24px, 8vw, 34px) !important; line-height: 1.1 !important; overflow-wrap: anywhere; text-align: center; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name::before,
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name::after { content: "" !important; display: block !important; flex: 0 0 34px; height: 22px; position: static !important;
+  background: var(--fs-title-flourish) left center / 260% auto no-repeat !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name::after { background-position: right center !important; }
+/* the cloned per-post charms (moon crests on the frame) landed over content on these thicker frames: the frame art carries the ornament */
+html body.fs.fs-blood-moon .feed-post::after { display: none !important; }
+/* posts: thinner silver frame like the concept, content close to it */
+html body.fs.fs-blood-moon .feed-post.feed-post.feed-post { border-width: 20px !important; border-image-slice: 160 fill !important; border-image-width: 34px !important; border-image-outset: 6px !important; margin: 10px 8px 22px !important; }
+/* Daily Quests (concept): title case, moon phase icon alone on the left, "3 / 5" under the label */
+html body.fs.fs-blood-moon .quest-panel-header h4 { text-transform: none !important; }
+html body.fs.fs-blood-moon .quest-progress { position: static !important; transform: none !important; width: auto !important; grid-column: 2; grid-row: 2; font: 600 14px var(--fs-font) !important; text-align: center; color: var(--bm-soft) !important; }
+html body.fs.fs-blood-moon .quest-item { grid-template-rows: auto auto; }
+html body.fs.fs-blood-moon .quest-icon { grid-row: 1 / span 2; }
+html body.fs.fs-blood-moon :is(.quest-reward, .quest-check) { grid-column: 3; grid-row: 1 / span 2; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name { overflow-wrap: break-word !important; word-break: normal !important; hyphens: none; font-size: clamp(22px, 7.2vw, 32px) !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name::before, html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name::after { flex-basis: 28px; }
+/* Daily Quests INSIDE the painted frame (owner: "not in the box"): 9-slice so the crest + silver sides keep their size and
+   every row sits in the velvet panel (quests-frame.png 1200x900: crest to y 200, sides ~80, bottom rail from y 800) */
+html body.fs.fs-blood-moon .quest-panel { display: flex !important; flex-direction: column !important; gap: 6px !important; aspect-ratio: auto !important;
+  background: none !important; border-style: solid !important; border-color: transparent !important; border-width: 62px 24px 34px !important;
+  border-image: var(--fs-quests-frame) 200 80 100 80 fill / 62px 24px 34px stretch !important; padding: 0 6px 6px !important; margin: 6px 4px 10px !important; }
+html body.fs.fs-blood-moon .quest-panel-header { margin: -30px 0 2px !important; padding: 0 !important; background: none !important; }
+html body.fs.fs-blood-moon .quest-panel-header h4 { font-size: 26px !important; padding: 0 !important; background: none !important; text-align: center; }
+/* quest row: moon icon | label, bar, "3 / 5" under the bar | reward (the progress text is inside .quest-info in the app markup) */
+html body.fs.fs-blood-moon .quest-item { grid-template-columns: 50px minmax(0, 1fr) auto !important; grid-template-rows: auto !important; min-height: 64px; padding: 6px 12px 6px 8px !important; }
+html body.fs.fs-blood-moon .quest-icon { grid-row: auto !important; width: 48px !important; height: 48px !important; }
+html body.fs.fs-blood-moon .quest-icon i { display: none !important; }
+html body.fs.fs-blood-moon .quest-info { display: flex !important; flex-direction: column; align-items: stretch !important; }
+html body.fs.fs-blood-moon .quest-progress { order: 3; grid-column: auto !important; grid-row: auto !important; margin-top: 2px; font-size: 13px !important; }
+html body.fs.fs-blood-moon :is(.quest-reward, .quest-check) { grid-column: 3 !important; grid-row: auto !important; align-self: center; padding: 4px 10px !important;
+  background: var(--fs-reward-pill) center / 100% 100% no-repeat !important; white-space: nowrap; }
+html body.fs.fs-blood-moon .quest-reward i { color: transparent !important; display: inline-block; width: 18px; height: 18px; background: var(--fs-coin) center / contain no-repeat; vertical-align: -3px; }
+/* composer placeholder + the featured skin's Free/buy button: readable on the dark art */
+html body.fs.fs-blood-moon :is(input, textarea)::placeholder { color: var(--bm-soft) !important; opacity: 1 !important; }
+html body.fs.fs-blood-moon .featured-buy-btn, html body.fs.fs-blood-moon .featured-buy-btn * { color: #fff !important; }
+html body.fs.fs-blood-moon .quest-panel-header { margin: 6px 0 4px !important; }
+html body.fs.fs-blood-moon .quest-panel { border-width: 70px 24px 34px !important; border-image-width: 70px 24px 34px !important; }
+/* title flourishes: each slot shows exactly one half of title-flourish.png (900x140 → two 450x140 halves), beside the word */
+html body.fs.fs-blood-moon :is(.quest-panel-header h4, .page-header h2, .msg-sidebar-header h3),
+html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { display: inline-block !important; padding: 2px 82px !important; text-transform: none !important; }
+html body.fs.fs-blood-moon .quest-panel-header { text-align: center !important; }
+html body.fs.fs-blood-moon :is(.quest-panel-header h4, .page-header h2, .msg-sidebar-header h3)::before,
+html body.fs.fs-blood-moon :is(.quest-panel-header h4, .page-header h2, .msg-sidebar-header h3)::after,
+html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::before,
+html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::after { width: 76px !important; height: 24px !important; margin-top: -12px !important; background-size: 200% 100% !important; }
+/* quest row: label, "3 / 5" centred under it, then the bar (concept) */
+html body.fs.fs-blood-moon .quest-info p { order: 1; }
+html body.fs.fs-blood-moon .quest-progress { order: 2 !important; margin: 0 0 3px !important; }
+html body.fs.fs-blood-moon .quest-bar { order: 3; }
+/* feed tabs = one joined dark bar, the active one a crimson pill (concept) */
+html body.fs.fs-blood-moon #feedTabs { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 0 !important; padding: 4px !important; margin: 4px 8px 10px !important;
+  background: var(--fs-tab) center / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-blood-moon #feedTabs .search-tab { background: none !important; text-transform: none !important; font-size: 16px !important; color: var(--bm-soft) !important; }
+html body.fs.fs-blood-moon #feedTabs .search-tab + .search-tab { box-shadow: -1px 0 0 rgba(216, 195, 176, .35); }
+html body.fs.fs-blood-moon #feedTabs .search-tab.active { background: var(--fs-tab-active) center / 100% 100% no-repeat !important; color: #fff !important; box-shadow: none !important; }
+/* text on the crimson / ice-blue velvet pieces (active chips, buttons, sent bubbles) = white; on parchment = dark ink */
+body.fs-blood-moon { --bm-deep: #fff6f2; --bm-barfill: #c4202f; }
+body.fs-blood-moon[data-fs-variant="silver"] { --bm-deep: #ffffff; --bm-barfill: #8fb8e6; }
+html body.fs.fs-blood-moon .msg-bubble:not(.sent), html body.fs.fs-blood-moon .msg-bubble:not(.sent) * { color: var(--bm-paper-ink) !important; }
+/* pop-ups (create post, comments, menus, settings) are parchment: dark ink, never the cloned slate background */
+html body.fs.fs-blood-moon .modal-content { background: none !important; border: 30px solid transparent !important; border-image: var(--fs-post-panel) 160 fill / 40px stretch !important; }
+html body.fs.fs-blood-moon .modal-content :is(h2, h3, h4, p, span, label, small, div, a, .modal-close, .modal-close i, .post-username):not(.btn):not(.btn *) { color: var(--bm-paper-ink) !important; text-shadow: none !important; }
+html body.fs.fs-blood-moon .modal-content :is(small, .char-count, .post-time) { color: var(--bm-paper-soft) !important; }
+html body.fs.fs-blood-moon .modal-content :is(hr, .modal-header, .modal-footer) { border-color: rgba(60, 30, 25, .25) !important; }
+html body.fs.fs-blood-moon .modal-content :is(textarea, input)::placeholder { color: var(--bm-paper-soft) !important; }
+html body.fs.fs-blood-moon .modal-content :is(textarea, input) { color: var(--bm-paper-ink) !important; font-size: 16px !important; }
+html body.fs.fs-blood-moon .post-input-fake { color: var(--bm-soft) !important; font-size: 16px !important; }
+html body.fs.fs-blood-moon :is(.post-create-avatar, .create-post-avatar, .post-input-avatar) { background: var(--fs-avatar-ring-small) center / 100% 100% no-repeat, #2a0c10 !important; border: 0 !important; box-shadow: none !important; padding: 3px !important; box-sizing: border-box; }
+html body.fs.fs-blood-moon .card.post-create-bar .post-input-fake.post-input-fake { color: var(--bm-title) !important; opacity: .82 !important; }
+/* concept posts: plain silver photo frame (no crest charms), author row close to the top of the frame */
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] .pm-thumb::before, html body.fs.fs-blood-moon .feed-post .post-header::before { display: none !important; }
+html body.fs.fs-blood-moon .feed-post.feed-post.feed-post, html body.fs.fs-blood-moon .feed-post.feed-post.feed-post:is([data-fs-v]) { padding: 2px 4px 2px !important; }
+html body.fs.fs-blood-moon .feed-post .post-header { padding: 0 !important; margin-bottom: 6px !important; }
+html body.fs.fs-blood-moon .feed-post .post-header .post-avatar { width: 44px !important; height: 44px !important; background: var(--fs-avatar-ring-small) center / 100% 100% no-repeat !important; }
+html body.fs.fs-blood-moon .post-username { font-size: 18px !important; }
+/* ---------- other pages (concept skins / groups / messages): the moon + spires header art behind a big plain title ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page.active { background: var(--fs-top-bar) center top / 100% auto no-repeat !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) .page.active::before { display: none !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { padding: 8px 0 !important; font-size: 34px !important; text-shadow: 0 2px 8px rgba(0, 0, 0, .8) !important; }
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::before,
+  html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::after { display: none !important; }
+}
+/* chips / tabs: title case like the concept */
+html body.fs.fs-blood-moon :is(.search-tab, .fsk-filter, .chip, .comment-sort-tab) { text-transform: none !important; letter-spacing: 0 !important; font-size: 15px !important; }
+/* skin cards: the name over the bottom of the art (no slate tag), title case */
+html body.fs.fs-blood-moon .fsk-name { background: linear-gradient(transparent, rgba(20, 3, 6, .85)) !important; text-transform: none !important; border-radius: 0 !important;
+  font-size: 18px !important; color: #fff3ee !important; text-shadow: 0 1px 3px #000 !important; border: 0 !important; box-shadow: none !important; }
+body.fs-blood-moon[data-fs-variant="silver"] .fsk-name { background: linear-gradient(transparent, rgba(6, 12, 28, .85)) !important; }
+/* skin card window (skin-card.png 640x760): 5.5 / 4.3 / 5.6 / 25.4 % (l t r b) */
+html body.fs.fs-blood-moon .fsk-thumb { left: 5.5% !important; top: 4.3% !important; width: 88.9% !important; height: 70.3% !important; border-radius: 6px 6px 0 0 !important;
+  -webkit-mask: var(--fs-skin-card-mask) 49.5% 14.5% / 112.5% 142.2% no-repeat !important; mask: var(--fs-skin-card-mask) 49.5% 14.5% / 112.5% 142.2% no-repeat !important; }
+html body.fs.fs-blood-moon .fsk-body { justify-content: flex-end !important; gap: 0; padding: 0 7% 5.5% !important; }
+html body.fs.fs-blood-moon .fsk-name { align-self: stretch !important; margin: 0 0 9% !important; padding: 18px 4px 4px !important; max-width: none !important; border-radius: 0 !important; }
+html body.fs.fs-blood-moon .fsk-body .btn { height: 32px !important; width: 78% !important; color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon .fsk-badge { top: 7% !important; bottom: auto !important; right: 50% !important; transform: translateX(50%) !important; text-transform: none !important; }
+/* page props sit at the bottom of the screen above the nav (concept skins), not wherever the content ends */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon :is(#page-groups, #page-profiles, #page-notifications, #page-search, #page-shop, #page-group-view) .page-container::after,
+  html body.fs.fs-blood-moon #page-messages .msg-sidebar::after { position: fixed; left: 0; right: 0; width: 100% !important; margin: 0 !important; z-index: -1;
+    bottom: calc(100vw * 300 / 1290 + env(safe-area-inset-bottom, 0px) - 34px); }
+  html body.fs.fs-blood-moon .page.active { z-index: 0; }
+}
+/* tab rows = one joined dark bar with a crimson active pill (concept groups / network / search / group page / notifications) */
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs) { display: flex !important; gap: 0 !important; padding: 4px !important;
+  background: var(--fs-seg-tab) center / 100% 100% no-repeat !important; border: 0 !important; flex-wrap: nowrap !important; overflow: hidden; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs) .search-tab { flex: 1 1 0; min-width: 0; background: none !important; border: 0 !important; color: var(--bm-soft) !important; white-space: nowrap; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs) .search-tab + .search-tab { box-shadow: -1px 0 0 rgba(216, 195, 176, .3); }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs) .search-tab.active { background: var(--fs-seg-tab-active) center / 100% 100% no-repeat !important; color: #fff !important; box-shadow: none !important; }
+body.fs-blood-moon[data-fs-variant="silver"] :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs) .search-tab + .search-tab { box-shadow: -1px 0 0 rgba(200, 215, 235, .3); }
+/* group pictures: rounded squares in a thin silver frame (concept), compact Join so names fit */
+html body.fs.fs-blood-moon .group-card-banner :is(img, .group-avatar, .gc-avatar) { border-radius: 8px !important; border: 3px solid transparent !important; border-image: var(--fs-photo-frame) 40 / 4px stretch !important; }
+html body.fs.fs-blood-moon .group-card .join-group-btn { padding: 4px 12px !important; min-width: 0 !important; width: auto !important; font-size: 15px !important; }
+html body.fs.fs-blood-moon .group-card .group-card-banner img { border-radius: 8px !important; border: 3px solid transparent !important; border-image: var(--fs-photo-frame) 40 / 4px stretch !important; width: 60px !important; height: 60px !important; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs) { min-height: 46px; align-items: stretch; padding: 5px 6px !important; background-size: 100% 100% !important; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs) .search-tab { font-size: 16px !important; padding: 6px 4px !important; display: flex !important; align-items: center; justify-content: center; }
+/* group pictures: rounded square in a thin silver frame (concept), not the round ring */
+html body.fs.fs-blood-moon #groupsSections .group-card-banner { border-radius: 8px !important; padding: 0 !important; background: none !important; overflow: visible !important; width: 62px !important; height: 62px !important; }
+html body.fs.fs-blood-moon #groupsSections .group-card-banner img { border-radius: 7px !important; border: 3px solid transparent !important; border-image: var(--fs-photo-frame) 40 / 4px stretch !important; box-sizing: border-box; }
+/* joined tab bars fit the screen: both rounded ends visible */
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs) { width: auto !important; max-width: calc(100% - 4px) !important; margin: 4px 2px 8px !important; box-sizing: border-box !important; overflow: hidden !important; }
+/* joined bars + their active pill: 9-slice so the rounded scroll ends keep their shape at any width */
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) { background: none !important;
+  border-style: solid !important; border-color: transparent !important; border-width: 0 22px !important; border-image: var(--fs-seg-tab) 0 80 fill / 0 22px stretch !important;
+  padding: 5px 0 !important; margin: 4px 6px 8px !important; max-width: none !important; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) .search-tab.active { background: none !important;
+  border-style: solid !important; border-color: transparent !important; border-width: 0 16px !important; border-image: var(--fs-seg-tab-active) 0 80 fill / 0 16px stretch !important; margin: 0 -16px; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) .search-tab.active:first-child { margin-left: -18px; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) .search-tab.active:last-child { margin-right: -18px; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) { overflow: visible !important; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) .search-tab.active,
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) .search-tab.active:is(:first-child, :last-child) { margin: 0 -10px !important; border-width: 0 15px !important; border-image-width: 0 15px !important; position: relative; z-index: 1; }
+/* small avatars everywhere: the thin silver ring on dark, not a cream disc */
+html body.fs.fs-blood-moon :is(.post-header .post-avatar, .post-create-avatar, .msg-contact > div > img, .msg-contact img, .profile-card-item .profile-card-avatar, .notif-item img, #msgChat .msg-chat-header img, .comment-item img, .story-avatar) {
+  background: var(--fs-avatar-ring-small) center / 100% 100% no-repeat, #1a0608 !important; padding: 3px !important; box-sizing: border-box !important; border: 0 !important; box-shadow: none !important; }
+body.fs-blood-moon[data-fs-variant="silver"] :is(.post-header .post-avatar, .post-create-avatar, .msg-contact img, .profile-card-item .profile-card-avatar, .notif-item img, .comment-item img) { background-color: #0b1426 !important; }
+/* Messages list (concept): big name + preview, time top right, round unread badge */
+html body.fs.fs-blood-moon .msg-contact { min-height: 76px; }
+html body.fs.fs-blood-moon .msg-contact img { width: 56px !important; height: 56px !important; }
+html body.fs.fs-blood-moon .msg-contact-name { font-size: 20px !important; color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon .msg-contact-preview { font-size: 16px !important; color: var(--bm-soft) !important; }
+html body.fs.fs-blood-moon :is(.msg-contact-time, .msg-time) { font-size: 14px !important; color: var(--bm-soft) !important; }
+@media (max-width: 768px) {
+  /* active tab: the velvet arch fills the whole arched cell (arch top ≈ 30 % to the bottom rail ≈ 91 % of the bar art) — drawn whole, never clipped */
+  html body.fs.fs-blood-moon .nav-center .nav-link { height: calc(100vw * 300 / 1290 * .61) !important; margin-bottom: calc(100vw * 300 / 1290 * .085) !important; padding-bottom: 4px !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link.active { background-size: 100% 100% !important; background-position: center !important; }
+}
+/* tab labels may take two lines when long (Network: Not Following Back / People You May Know), never overlap */
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs) .search-tab { white-space: normal !important; line-height: 1.1 !important; text-align: center; overflow-wrap: normal; }
+html body.fs.fs-blood-moon #profilesTabs .search-tab { font-size: 14px !important; padding: 4px 2px !important; }
+/* people rows (concept network / search): bigger silver-ringed avatar and name */
+html body.fs.fs-blood-moon .profile-card-item .profile-card-avatar { width: 58px !important; height: 58px !important; }
+html body.fs.fs-blood-moon .profile-card-item :is(.profile-card-name, h4) { font-size: 19px !important; color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon .profile-card-item :is(p, small, .profile-card-meta) { color: var(--bm-soft) !important; font-size: 15px !important; }
+/* Notifications has 8 filters: a scrolling row of separate pills (chip art, 9-slice), not one joined bar */
+html body.fs.fs-blood-moon #notifTabs { border: 0 !important; border-image: none !important; background: none !important; overflow-x: auto !important; overflow-y: hidden !important;
+  gap: 6px !important; padding: 2px 8px !important; margin: 4px 0 8px !important; scrollbar-width: none; min-height: 0 !important; }
+html body.fs.fs-blood-moon #notifTabs::-webkit-scrollbar { display: none; }
+html body.fs.fs-blood-moon #notifTabs .search-tab, html body.fs.fs-blood-moon #notifTabs .search-tab.active { flex: 0 0 auto !important; white-space: nowrap !important; margin: 0 !important; padding: 6px 6px !important; box-shadow: none !important;
+  border-style: solid !important; border-color: transparent !important; border-width: 0 14px !important; border-image: var(--fs-chip) 0 70 fill / 0 14px stretch !important; font-size: 15px !important; }
+html body.fs.fs-blood-moon #notifTabs .search-tab.active { border-image-source: var(--fs-chip-active) !important; color: #fff !important; }
+/* fields inside pop-ups are the dark field art: light typed text + placeholder */
+html body.fs.fs-blood-moon .modal-content :is(input, textarea, select) { color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon .modal-content :is(input, textarea)::placeholder { color: var(--bm-soft) !important; opacity: 1 !important; }
+html body.fs.fs-blood-moon .modal-content .btn { font-size: 16px !important; min-height: 40px; padding-left: 18px !important; padding-right: 18px !important; }
+html body.fs.fs-blood-moon .msg-bubble { font-size: 18px !important; line-height: 1.25 !important; }
+html body.fs.fs-blood-moon:has(#msgChat.active, .msg-chat.active, .msg-chat-open) #page-messages .msg-sidebar::after,
+html body.fs.fs-blood-moon:has(.messages-layout.chat-open) #page-messages .msg-sidebar::after { display: none !important; }
+html body.fs.fs-blood-moon #msgChat .msg-chat-header :is(h3, h4, .msg-chat-name) { font-size: 21px !important; color: var(--bm-title) !important; }
+/* name block: candelabras hug the edges, smaller flourish slots, so a normal two-word name stays on one line */
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard { padding: 0 46px !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard::before, html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard::after { width: 44px !important; height: 112px !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name { gap: 4px; font-size: clamp(22px, 6.8vw, 30px) !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name::before, html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name::after { flex-basis: 22px !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .stat-label { text-transform: none !important; letter-spacing: 0 !important; font-size: 16px !important; }
+/* someone else's profile (concept): Follow is the crimson button; Message / Close Friend / Invite / Mute / Block / Report are the dark silver-rimmed one */
+html body.fs.fs-blood-moon #page-profile-view .pv-actions .btn:not(#pvEditProfileBtn):not(#pvFollowBtn) { border-image-source: var(--fs-action-btn) !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon #page-profile-view .pv-profile-card .profile-avatar-wrap { margin: calc((100vw + 16px) * 1470 / 1290 * -.42 - 40px) auto calc((100vw + 16px) * 1470 / 1290 * .36) !important; }
+}
+/* the composer sits on dark velvet: beats the parchment-card ink rule (its :is() carries .card:not():not() specificity) */
+html body.fs.fs-blood-moon #page-home .card.post-create-bar .post-input-fake { color: var(--bm-title) !important; -webkit-text-fill-color: var(--bm-title) !important; opacity: .85 !important; }
+/* Home top bar (concept): search / bell / music each in a dark round silver-rimmed button so they read on the bright moon art;
+   the wordmark gets a dark halo (Silver's sky is bright) */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) { width: 36px !important; height: 36px !important;
+    background: var(--fs-round-btn) center / 100% 100% no-repeat !important; border-radius: 50% !important; }
+  html body.fs.fs-blood-moon .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) > i { width: 19px !important; height: 19px !important; }
+  html body.fs.fs-blood-moon .navbar .nav-logo { text-shadow: 0 0 6px rgba(0, 0, 0, .95), 0 0 14px rgba(0, 0, 0, .85), 0 2px 3px #000 !important; }
+  html body.fs.fs-blood-moon .navbar .fs-bm-btn { filter: drop-shadow(0 0 4px rgba(0, 0, 0, .8)); }
+}
+html body.fs.fs-blood-moon .fs-bm-btn { width: 38px; height: 38px; padding: 0; border: 0; background: none; display: flex; align-items: center; justify-content: center; }
+html body.fs.fs-blood-moon .fs-bm-btn i { display: block; width: 36px; height: 36px; background: var(--fs-toggle-crimson) center / contain no-repeat; }
+html body.fs.fs-blood-moon .fs-bm-btn.is-silver i { background-image: var(--fs-toggle-silver); }
+/* top-bar avatar centred in the rose ring (avatar-ring window 16 / 17.3 / 15.7 / 14.3 %): photo 44px → ring 64.6px at -10.3 / -11.2 */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .navbar .nav-avatar { width: 44px !important; height: 44px !important; padding: 0 !important; background: none !important; border-radius: 50% !important; }
+  html body.fs.fs-blood-moon .navbar .nav-user { position: relative; width: 44px; height: 44px; }
+  html body.fs.fs-blood-moon .navbar .nav-user::before { left: -10.3px !important; top: -11.2px !important; width: 64.6px !important; height: 64.6px !important; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; }
+}
+@media (max-width: 768px) { html body.fs.fs-blood-moon .navbar .nav-user { padding: 0 !important; margin: 0 4px 0 6px !important; box-sizing: border-box; } }
+/* Playfair Display (Blood Moon's own title face) runs wider than Cormorant: page titles a step smaller */
+@media (max-width: 768px) { html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { font-size: 30px !important; } }
+html body.fs.fs-blood-moon .quest-panel-header h4 { font-size: 23px !important; }
+/* inline greys from the app (e.g. "No comments yet") follow the dark theme's light pink: on parchment pop-ups use the paper ink */
+html body.fs.fs-blood-moon .modal-content :is(p, span, div)[style*="color"]:not(.btn):not(.btn *), html body.fs.fs-blood-moon #noCommentsMsg { color: var(--bm-paper-soft) !important; }
+/* pop-up TEXT AREAS sit on the light parchment text-area art: dark ink + placeholder (single-line fields stay light-on-dark) */
+html body.fs.fs-blood-moon .modal-content textarea { color: var(--bm-paper-ink) !important; }
+html body.fs.fs-blood-moon .modal-content textarea::placeholder { color: var(--bm-paper-soft) !important; opacity: 1 !important; }
+/* group names wrap to two lines instead of truncating (concept shows full names) */
+html body.fs.fs-blood-moon #groupsSections .group-card-body h4 { white-space: normal !important; overflow: visible !important; text-overflow: clip !important; display: -webkit-box !important; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.1 !important; font-size: 19px !important; }
+/* group page (concept group-page): the group picture overlaps the bottom of the banner (not the profile composition's offset),
+   a normal-size title, Leave Group on the dark button */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon #gvProfileCard .profile-avatar-wrap { width: 112px !important; height: 103px !important; margin: -64px auto 8px !important; }
+  html body.fs.fs-blood-moon #gvProfileCard .profile-avatar-wrap::after { left: -19.4px !important; top: -29.5px !important; width: 152.6px !important; height: 152.6px !important; }
+}
+html body.fs.fs-blood-moon #gvProfileCard :is(.profile-name, h2, h3) { font-size: clamp(24px, 7vw, 30px) !important; line-height: 1.1 !important; }
+html body.fs.fs-blood-moon #gvProfileCard .pv-actions .btn:is([id*="leave" i], [class*="leave" i]) { border-image-source: var(--fs-action-btn) !important; }
+html body.fs.fs-blood-moon #gvProfileCard i.fa-coins { color: var(--bm-gold) !important; }
+/* the stats frame's centre divider is drawn for two stats: three-stat rows (group page) go without it */
+html body.fs.fs-blood-moon .profile-stats:has(> .stat:nth-child(3)) { background: none !important; border-image: none !important; }
+html body.fs.fs-blood-moon .profile-stats:has(> .stat:nth-child(3))::before, html body.fs.fs-blood-moon .profile-stats:has(> .stat:nth-child(3))::after { display: none !important; }
+/* people-row avatars (Network / Search / suggestions): the thin silver ring, on the rendition's own dark */
+html body.fs.fs-blood-moon .profile-card-item img.profile-card-avatar { background: var(--fs-avatar-ring-small) center / 100% 100% no-repeat, #1a0608 !important; padding: 3px !important; border: 0 !important; box-shadow: none !important; box-sizing: border-box !important; border-radius: 50% !important; }
+html body.fs.fs-blood-moon[data-fs-variant="silver"] .profile-card-item img.profile-card-avatar { background-color: #0b1426 !important; }
+/* bottom bar, final (owner: labels were clipped, "there is space at the bottom that can be used"): the bar art is drawn
+   taller (--bmh = 1.2x its natural height) and sits lower, into the empty band above the home indicator; each tab fills
+   its arched cell (arch top ≈ 30 % → bottom rail ≈ 90 % of the art), icon + full label inside */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .nav-center { --bmh: calc(100vw * 300 / 1290 * 1.2);
+    height: calc(var(--bmh) + env(safe-area-inset-bottom, 0px) - 16px) !important; padding: 0 0 calc(env(safe-area-inset-bottom, 0px) - 16px) !important;
+    background: var(--fs-nav-bar) center top / 100% var(--bmh) no-repeat, linear-gradient(transparent calc(var(--bmh) - 6px), var(--bm-navfill) 0) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link { transform: none !important; height: calc(var(--bmh) * .6) !important; margin: 0 0 calc(var(--bmh) * .1) !important;
+    padding: 0 0 3px !important; justify-content: flex-end !important; gap: 2px !important; line-height: 1.15 !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link span { font-size: 12px !important; line-height: 1.15 !important; padding-bottom: 1px; overflow: visible !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link > i { width: 26px !important; min-width: 26px; height: 24px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon .nav-center { height: calc(var(--bmh) + env(safe-area-inset-bottom, 0px) - 30px) !important; padding-bottom: calc(env(safe-area-inset-bottom, 0px) - 30px) !important;
+    background: var(--fs-nav-bar) center top / 100% var(--bmh) no-repeat, linear-gradient(transparent calc(var(--bmh) - 8px), var(--bm-navfill) 0) !important; }
+  html body.fs.fs-blood-moon .nav-center .nav-link { transform: translateY(15px) !important; }
+}

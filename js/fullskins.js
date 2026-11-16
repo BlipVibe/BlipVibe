@@ -210,6 +210,46 @@
       '--border': 'rgba(176,130,50,.35)', '--nav-bg': '#f7efe0' },
     fonts: 'https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap'
   };
+  FULL_SKINS['blood-moon'] = {
+    name: 'Blood Moon', dark: true, ink: '#f4e6e4', muted: '#cfa9a6', accent: '#c4202f',
+    font: "'EB Garamond', serif", titleFont: "'Playfair Display', serif",   // its own type (Cormorant is Witchcraft / Good Witch / Heaven's Light)
+    timeline: 3, avatar: 'center', slice: 15, edge: 16,
+    // owner (Nov 16): two renditions with different MOONS, each painted on its own (no filters) — Crimson (assets/ root,
+    // concept-crimson*.png) and Silver (assets/silver/, concept-silver*.png, no red anywhere), same file names in both
+    variants: [
+      { id: 'crimson', name: 'Crimson', accent: '#c4202f', swatch: '#5a0a12' },
+      { id: 'silver', name: 'Silver', accent: '#8fb8e6', swatch: '#1b2a48', dark: true, ink: '#eef3fa', muted: '#aebdd2',
+        theme: { '--dark': '#eef3fa', '--gray': '#aebdd2', '--light-bg': '#0f1a30', '--card': '#1d2b48',
+          '--border': 'rgba(190,210,235,.35)', '--nav-bg': '#0f1a30' } }
+    ],
+    // traced from the approved concepts (prototypes/blood-moon-crimson-brief.md / -silver-brief.md → kit/ → assets/)
+    parts: { 'panel-card': 'post-panel', 'panel-card-active': 'post-panel', 'btn-primary': 'follow-btn',
+      'btn-secondary': 'action-btn', 'btn-round': 'round-btn', 'header-bar': 'top-bar', 'post-frame': 'post-panel',
+      'icon-coin': 'coin', 'icon-edit': 'icon-compose', 'icon-send': 'send-btn',
+      'quest-0': 'moon-0', 'quest-50': 'moon-50', 'quest-100': 'moon-100' },
+    assets: ['background', 'header', 'top-bar', 'title-flourish', 'nav-bar', 'nav-active',
+      'icon-home-on', 'icon-groups-on', 'icon-skins-on', 'icon-network-on', 'icon-messages-on', 'coin', 'coin-pill',
+      'curtain-left', 'curtain-right',
+      'icon-compose', 'icon-phone', 'icon-close', 'icon-like-on', 'icon-dislike-on', 'icon-reply', 'icon-react', 'icon-chevron',
+      'icon-check', 'icon-clear', 'icon-photo', 'icon-gif', 'icon-poll', 'icon-schedule', 'icon-globe', 'icon-mute', 'icon-block',
+      'icon-report', 'icon-heart', 'icon-star', 'icon-gift', 'icon-settings', 'badge-count',
+      'notif-like', 'notif-follow', 'notif-comment', 'notif-mention', 'notif-message', 'notif-group', 'notif-purchase',
+      'avatar-ring', 'avatar-ring-small', 'profile-card', 'quests-frame', 'quest-row', 'moon-0', 'moon-50', 'moon-100',
+      'goal-track', 'goal-fill', 'reward-pill', 'tab', 'tab-active', 'story-ring', 'story-add', 'composer', 'featured-frame',
+      'coin-goal-frame', 'post-panel', 'post-panel-b', 'post-panel-c', 'photo-frame', 'action-strip',
+      'gothic-windows', 'gothic-windows-mask', 'cameo-frame', 'cameo-mask', 'camera-badge', 'candelabra', 'stats-frame',
+      'edit-btn', 'follow-btn', 'action-btn', 'menu-panel', 'rose-ledge',
+      'list-row', 'join-btn', 'chip', 'chip-active', 'seg-tab', 'seg-tab-active', 'unread-dot', 'plus-btn', 'field',
+      'skin-card', 'skin-card-mask', 'price-pill', 'equipped-tag', 'bubble-in', 'bubble-out', 'input-bar', 'send-btn',
+      'round-btn', 'comment-bubble', 'text-area', 'tool-tile', 'post-btn', 'story-field', 'heart-orb', 'mask-orb', 'rose-orb',
+      'group-avatar-frame', 'group-banner',
+      'page-deco-groups', 'page-deco-skins', 'page-deco-network', 'page-deco-notifications', 'page-deco-search',
+      'page-deco-messages', 'page-deco-post', 'moon-crest', 'toggle-crimson', 'toggle-silver',
+      'profile-windows', 'profile-windows-mask', 'profile-sky', 'profile-mask-1', 'profile-mask-2', 'profile-mask-3'],
+    theme: { '--dark': '#f4e6e4', '--gray': '#cfa9a6', '--light-bg': '#1a0608', '--card': '#2a0c10',
+      '--border': 'rgba(200,190,200,.35)', '--nav-bg': '#1a0608' },
+    fonts: 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap'
+  };
   FULL_SKINS.superhero = {
     name: 'Superhero', dark: false, ink: '#1a1a1a', muted: '#4a4a52', accent: '#e8261c',
     font: "'Comic Neue', sans-serif", titleFont: "'Luckiest Guy', cursive",
@@ -349,6 +389,17 @@
         lm.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); vaporSwap(lm, id, vid(os, !drk), 'lamp'); });
         search.parentNode.insertBefore(lm, search);
       }
+      return;
+    }
+    if (ids.indexOf('crimson') >= 0 && ids.indexOf('silver') >= 0) {
+      // Blood Moon: a little moon in a filigree bezel — blood-red (Crimson) / silver-white (Silver); tap = an eclipse
+      // passes over the giant moon and leaves the other moon behind (bloodSwap)
+      var sv = variant === 'silver', mb = document.createElement('button');
+      mb.id = 'fsDayNight'; mb.type = 'button'; mb.className = 'fs-daynight fs-bm-btn ' + (sv ? 'is-silver' : 'is-crimson');
+      mb.setAttribute('aria-label', sv ? 'Switch to the Crimson moon' : 'Switch to the Silver moon');
+      mb.innerHTML = '<i></i>';
+      mb.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); bloodSwap(id, sv ? 'crimson' : 'silver'); });
+      search.parentNode.insertBefore(mb, search);
       return;
     }
     if (ids.indexOf('day') >= 0 && ids.indexOf('twilight') >= 0) {
@@ -992,6 +1043,7 @@
     }
     removeRendered();
     active = null;
+    if (window.BlipPhotoPos) window.BlipPhotoPos.render();   // avatars back to the plain (uncropped) photo
     unwatchPosts();
     if (wasActive) restoreExtras();
   }
@@ -1062,16 +1114,19 @@
   // falling back to the cover again (spec: "Profile timeline photos").
   function timelinePhotos(coverEl, count) {
     var urls = [];
-    // the CSS hides the original cover with !important, so read the inline style the app set
-    var bg = coverEl && coverEl.style.backgroundImage;
-    var m = bg && bg.match(/url\(["']?(.*?)["']?\)/);
-    if (m) urls.push(m[1]);
-    else if (coverEl && coverEl.id === 'timelineCover' && data().cover()) urls.push(data().cover());
     // own photos only on your own timeline: home cover, or the profile view when it's you
     // (app.js shows #pvCoverEditBtn only on your own profile)
     var editBtn = document.getElementById('pvCoverEditBtn');
     var own = coverEl && (coverEl.id === 'timelineCover' ||
       (coverEl.id === 'pvCoverBanner' && editBtn && editBtn.style.display !== 'none'));
+    // the cover in frame 1: the same crop on every device (the 4:3 one when there is one), so a saved zoom / position
+    // looks the same on a phone and a desktop and to everyone viewing
+    var same = own ? data().cover() : (coverEl && coverEl.id === 'pvCoverBanner' && data().viewedCover ? data().viewedCover() : null);
+    // otherwise the CSS hides the original cover with !important, so read the inline style the app set
+    var bg = coverEl && coverEl.style.backgroundImage;
+    var m = bg && bg.match(/url\(["']?(.*?)["']?\)/);
+    if (m) urls.push(same || m[1]);
+    else if (coverEl && coverEl.id === 'timelineCover' && data().cover()) urls.push(data().cover());
     if (own) {
       (data().photos() || []).filter(function (p) { return p && p.src && !p.isVideo; })
         .forEach(function (p) { if (urls.length < count && urls.indexOf(p.src) < 0) urls.push(p.src); });
@@ -1091,6 +1146,7 @@
     if (!coverEl || !cfg) return;
     var wrap = document.createElement('div');
     wrap.className = 'fs-rendered fs-timeline fs-tl-' + cfg.timeline;
+    var placed = [];
     timelinePhotos(coverEl, cfg.timeline).forEach(function (src, i) {
       var slot = document.createElement('div');
       slot.className = 'fs-tl-slot fs-tl-slot-' + (i + 1);
@@ -1098,11 +1154,15 @@
         slot.className += ' fs-tl-own';
         slot.setAttribute('role', 'button');
         slot.setAttribute('aria-label', 'Choose photo ' + (i + 1));
-        (function (n) { slot.addEventListener('click', function (e) { e.stopPropagation(); data().pick(n); }); })(i);
+        (function (n, sl) { sl.addEventListener('click', function (e) {
+          e.stopPropagation();
+          if (window.BlipPhotoPos) window.BlipPhotoPos.slotMenu(sl, n, e); else data().pick(n);   // Move & zoom / Change photo
+        }); })(i, slot);
       }
       if (src) {
         var img = document.createElement('img');
-        img.src = src; img.alt = ''; img.loading = 'lazy';
+        img.alt = ''; img.loading = 'lazy';
+        if (window.BlipPhotoPos) placed.push([slot, img, src, i]); else img.src = src;   // src set once the frame is on the page
         slot.appendChild(img);
       } else {
         slot.className += ' fs-tl-empty';
@@ -1115,6 +1175,8 @@
       wrap.appendChild(slot);
     });
     coverEl.appendChild(wrap);
+    // saved zoom / position (photopos.js): crops each photo to exactly what its frame should show
+    placed.forEach(function (q) { window.BlipPhotoPos.timelineSlot(q[0], q[1], q[2], q[3], coverEl); });
   }
 
   // Quest graphic state: 0 / 50 / 100 from the bar width the app already renders.
@@ -1166,13 +1228,56 @@
       });
     });
   }
+  // Someone else's profile: every concept shows Follow · Message · Close Friend · Invite to Group, with Mute / Block /
+  // Report in a ⋯ menu at the top right. The app's own buttons stay (they carry the handlers) but are hidden; the
+  // menu items click them, and are rebuilt on each open so Mute/Unmute and Block/Unblock read right.
+  var PV_MENU = ['pvMuteBtn', 'pvBlockBtn', 'pvReportUserBtn'];
+  function wrapPvMore() {
+    var page = document.getElementById('page-profile-view'), follow = document.getElementById('pvFollowBtn');
+    // most concepts put ⋯ at the cover's top right; Vaporwave's puts it in the button row
+    var inRow = active === 'vaporwave', acts = follow && follow.closest('.pv-actions');
+    // (cover mode: the ⋯ hangs off the page at the cover's top right, so it stacks above the profile picture too)
+    var cover = document.getElementById('pvCoverBanner'), host = inRow ? acts : (cover && page);
+    if (page && (!follow || !page.contains(follow))) {   // your own profile (or a stale one): no ⋯
+      var old = page.querySelector('.fs-pv-more'); if (old) old.remove();
+    }
+    if (!page || !follow || !host || !page.contains(follow)) return;
+    // the app redraws the buttons (follow/unfollow, mute…): re-hide each time, build the ⋯ once per render
+    PV_MENU.forEach(function (id) { var b = document.getElementById(id); if (b) b.classList.add('fs-pv-hidden'); });
+    if (page.querySelector('.fs-pv-more')) return;
+    var wrap = document.createElement('div'), btn = document.createElement('button'), menu = document.createElement('div');
+    wrap.className = 'fs-pv-more';
+    btn.type = 'button'; btn.className = 'fs-pv-more-btn' + (inRow ? ' btn btn-outline' : ''); btn.setAttribute('aria-label', 'More: mute, block, report');
+    if (inRow) btn.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
+    menu.className = 'post-dropdown fs-pv-menu';
+    wrap.appendChild(btn); wrap.appendChild(menu); host.appendChild(wrap);
+    function place() { if (!inRow && cover) wrap.style.top = (cover.offsetTop + 10) + 'px'; }
+    place();
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      place();
+      if (menu.classList.contains('show')) { menu.classList.remove('show'); return; }
+      menu.innerHTML = '';
+      PV_MENU.forEach(function (id) {
+        var b = document.getElementById(id);
+        if (!b) return;
+        var a = document.createElement('a');
+        a.href = '#'; a.innerHTML = b.innerHTML; if (id !== 'pvMuteBtn') a.className = 'fs-pv-danger';
+        a.addEventListener('click', function (ev) { ev.preventDefault(); ev.stopPropagation(); menu.classList.remove('show'); b.click(); });
+        menu.appendChild(a);
+      });
+      // after this tap has finished bubbling: the app closes every open post menu on any document tap
+      setTimeout(function () { menu.classList.add('show'); }, 0);
+    });
+  }
   function watchPosts() {
     tagPosts();
     wrapNameCards();
+    wrapPvMore();
     if (postObserver || !window.MutationObserver) return;
     postObserver = new MutationObserver(function (muts) {
       if (!active) return;
-      for (var i = 0; i < muts.length; i++) if (muts[i].addedNodes.length) { tagPosts(); wrapNameCards(); break; }
+      for (var i = 0; i < muts.length; i++) if (muts[i].addedNodes.length) { tagPosts(); wrapNameCards(); wrapPvMore(); break; }
     });
     postObserver.observe(document.body, { childList: true, subtree: true });
   }
@@ -1186,6 +1291,7 @@
     renderTimeline(document.getElementById('timelineCover'));
     renderTimeline(document.getElementById('pvCoverBanner'));
     tagQuests();
+    if (window.BlipPhotoPos) window.BlipPhotoPos.render();   // saved zoom / position of the avatar in its frame
   }
 
   /* ---------- called from app.js ---------- */
@@ -1736,6 +1842,129 @@
       }).then(function () { c.o.remove(); swapping = false; }, function () { c.o.remove(); swapping = false; });
     });
   }
+  // Blood Moon art set for a rendition: the giant moon, its rose petals and the night sky colours
+  function bmSet(silver) {
+    return silver ? { moon: 'fx-moon-silver', petals: ['fx-petal-white-1', 'fx-petal-white-2'], sky: ['#050a18', '#13234a', '#3b5684'], glow: '200,220,255' }
+      : { moon: 'fx-moon-crimson', petals: ['fx-petal-red-1', 'fx-petal-red-2'], sky: ['#0b0103', '#3a0610', '#7a1420'], glow: '255,60,60' };
+  }
+  function bmSky(g, H, cols) {
+    var s = g.createLinearGradient(0, 0, 0, H); s.addColorStop(0, cols[0]); s.addColorStop(.6, cols[1]); s.addColorStop(1, cols[2]); return s;
+  }
+  // Equip (Blood Moon's own): MOONRISE — night falls over the screen, the opera spires rise, the giant moon climbs over
+  // them and swells until it fills the screen (the skin is applied behind it), then the moon bursts into a whirl of rose
+  // petals that blow outward and away, revealing the new skin. Uses the rendition you'll see (Crimson / Silver).
+  function equipBloodMoon(id, swap) {
+    var silver = pickVariant(id) === 'silver', set = bmSet(silver);
+    return Promise.all([set.moon, set.petals[0], set.petals[1], 'fx-spires', 'fx-mist', 'fx-star'].map(function (n) { return fxArt(id, n); })).then(function (r) {
+      var c = fxCanvas('blood-moon'), g = c.g, W = c.W, H = c.H, moon = r[0], petals = [r[1], r[2]], spires = r[3], mist = r[4], star = r[5], k;
+      var sky = bmSky(g, H, set.sky), stars = [], burst = [];
+      for (k = 0; k < 46; k++) stars.push({ x: Math.random() * W, y: Math.random() * H * .65, s: 6 + Math.random() * 12, ph: Math.random() * 6 });
+      for (k = 0; k < 130; k++) { var a = Math.random() * Math.PI * 2, d = .15 + Math.random() * .5;
+        burst.push({ a: a, d: d, v: .6 + Math.random() * 1.1, s: 22 + Math.random() * 34, rot: Math.random() * 6, spin: (Math.random() - .5) * 8, p: k % 2 }); }
+      var m0 = Math.min(W, H) * .5, cx = W / 2, diag = Math.sqrt(W * W + H * H);
+      function night(a, t) {
+        g.globalAlpha = a; g.fillStyle = sky; g.fillRect(0, 0, W, H);
+        if (star) stars.forEach(function (s) { var al = a * (.4 + .6 * Math.sin(t / 240 + s.ph)); if (al > .02) drawRot(g, star, s.x, s.y, s.s, s.s, 0, al); });
+        g.globalAlpha = 1;
+      }
+      function drawMoon(y, size, a) {
+        if (!moon) { g.globalAlpha = a; g.fillStyle = silver ? '#dfe8f5' : '#b3202c'; g.beginPath(); g.arc(cx, y, size * .4, 0, 7); g.fill(); g.globalAlpha = 1; return; }
+        g.globalAlpha = a; g.drawImage(moon, cx - size / 2, y - size / 2, size, size); g.globalAlpha = 1;
+      }
+      function skyline(rise, a) {
+        if (spires) { var w = W * 1.1, h = w * spires.height / spires.width; g.globalAlpha = a; g.drawImage(spires, cx - w / 2, H - h * rise, w, h); }
+        if (mist) { var mw = W * 1.6, mh = mw * mist.height / mist.width; g.globalAlpha = a * .7; g.drawImage(mist, -W * .3, H - mh * .7 * rise, mw, mh); }
+        g.globalAlpha = 1;
+      }
+      return fxRun(1000, function (t, x) {   // night falls, spires rise, the moon climbs over them
+        var e = ease(x); g.clearRect(0, 0, W, H); night(e, t);
+        drawMoon(H * 1.05 - (H * 1.05 - H * .42) * e, m0, Math.min(1, x * 2)); skyline(e, e);
+      }).then(function () {
+        return fxRun(700, function (t, x) {   // the moon swells until it fills the screen
+          var e = x * x; g.clearRect(0, 0, W, H); night(1, 1000 + t);
+          drawMoon(H * .42 + (H * .5 - H * .42) * e, m0 + (diag * 1.5 - m0) * e, 1); skyline(1 - e * .4, 1 - e);
+        });
+      }).then(function () {
+        var sw = swap();
+        return Promise.all([sw, fxRun(500, function (t, x) { g.clearRect(0, 0, W, H); night(1, 1700 + t); drawMoon(H * .5, diag * 1.5 * (1 + .02 * Math.sin(t / 90)), 1); })]);
+      }).then(function () {
+        return fxRun(1500, function (t, x) {   // the moon bursts into rose petals that blow away
+          var e = ease(x); g.clearRect(0, 0, W, H);
+          drawMoon(H * .5, diag * 1.5 * (1 + e * .3), Math.max(0, 1 - x * 2.2));
+          burst.forEach(function (b) {
+            var im = petals[b.p]; if (!im) return; var dist = (b.d + e * b.v * 1.3) * diag * .6;
+            var px = cx + Math.cos(b.a) * dist, py = H * .5 + Math.sin(b.a) * dist + e * e * 120;
+            drawRot(g, im, px, py, b.s, b.s, b.rot + b.spin * e, Math.min(1, x * 5) * (1 - Math.max(0, (x - .6) / .4)));
+          });
+        });
+      }).then(function () { c.o.remove(); });
+    });
+  }
+  // Crimson <-> Silver (Blood Moon's own): an ECLIPSE — the night sky covers the screen with the giant current moon over
+  // the spires; the earth's shadow slides across it, the moon goes dark at totality (the skin switches underneath), and as
+  // the shadow passes it leaves the OTHER moon behind; the sky turns with it, then clears onto the new rendition.
+  function bloodSwap(id, next) {
+    if (swapping) return;
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { if (data().setVariant) data().setVariant(id, next); return; }
+    swapping = true;
+    var toSilver = next === 'silver', from = bmSet(!toSilver), to = bmSet(toSilver);
+    // smooth (owner, Nov 16): the other moon's main art is fetched AND decoded before anything moves, so nothing pops in
+    var dir = BASE + id + '/assets/' + (toSilver ? 'silver/' : '');
+    var main = ['background', 'header', 'top-bar', 'nav-bar', 'nav-active', 'post-panel', 'post-panel-b', 'post-panel-c',
+      'profile-sky', 'profile-windows', 'profile-mask-1', 'profile-mask-2', 'profile-mask-3', 'cameo-frame', 'avatar-ring',
+      'quests-frame', 'quest-row', 'list-row', 'tab', 'tab-active', 'seg-tab', 'seg-tab-active', 'chip', 'chip-active', 'field',
+      'coin-pill', 'photo-frame', 'round-btn', 'candelabra', 'title-flourish', 'toggle-crimson', 'toggle-silver', 'rose-ledge'];
+    function decoded(src) { return fxImg(src).then(function (im) { return im && im.decode ? im.decode().catch(function () {}).then(function () { return im; }) : im; }); }
+    var preload = Promise.race([Promise.all(main.map(function (n) { return decoded(dir + n + '.webp'); })), fxWait(4500)]);
+    Promise.all([from.moon, to.moon, 'fx-umbra', 'fx-spires', 'fx-star', to.petals[0], to.petals[1]].map(function (n) { return fxArt(id, n); })).then(function (r) {
+      var c = fxCanvas('blood-moon-swap'), g = c.g, W = c.W, H = c.H, m1 = r[0], m2 = r[1], umbra = r[2], spires = r[3], star = r[4], petals = [r[5], r[6]];
+      // the two night skies pre-rendered once (no gradient work per frame)
+      function skyCanvas(cols) { var cv = document.createElement('canvas'); cv.width = W; cv.height = H; var x = cv.getContext('2d'); x.fillStyle = bmSky(x, H, cols); x.fillRect(0, 0, W, H); return cv; }
+      var sky1 = skyCanvas(from.sky), sky2 = skyCanvas(to.sky), stars = [], fall = [], k;
+      for (k = 0; k < 50; k++) stars.push({ x: Math.random() * W, y: Math.random() * H * .6, s: 6 + Math.random() * 12, ph: Math.random() * 6 });
+      for (k = 0; k < 28; k++) fall.push({ x: Math.random() * W, y: -40 - Math.random() * H * .7, s: 18 + Math.random() * 22, v: .1 + Math.random() * .08, ph: Math.random() * 6, p: k % 2 });
+      var ms = Math.min(W * .86, H * .5), cx = W / 2, cy = H * .38, ur = ms * .62;
+      function sstep(a, b, x) { x = Math.max(0, Math.min(1, (x - a) / (b - a))); return x * x * (3 - 2 * x); }
+      function inout(x) { return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+      // one continuous picture: p = the shadow's path (0 = left of the moon, .5 = totality, 1 = gone right), cover = sky opacity
+      function frame(t, p, cover, petalT) {
+        var e = inout(p), ux = cx - ms * 1.3 + ms * 2.6 * e, k2 = sstep(.38, .62, p);
+        g.clearRect(0, 0, W, H);
+        g.globalAlpha = cover; g.drawImage(sky1, 0, 0);
+        if (k2 > 0) { g.globalAlpha = cover * k2; g.drawImage(sky2, 0, 0); }
+        if (star) stars.forEach(function (s) { var a = cover * (.4 + .6 * Math.sin(t / 300 + s.ph)); if (a > .02) drawRot(g, star, s.x, s.y, s.s, s.s, 0, a); });
+        g.globalAlpha = cover;
+        if (m1) g.drawImage(m1, cx - ms / 2, cy - ms / 2, ms, ms);
+        // the shadow leaves the other moon behind it: the new moon is drawn only where the shadow has already passed
+        if (m2 && ux > cx - ms / 2) { g.save(); g.beginPath(); g.rect(0, 0, ux, H); g.clip(); g.drawImage(m2, cx - ms / 2, cy - ms / 2, ms, ms); g.restore(); }
+        if (umbra) { g.globalAlpha = cover * .94; g.drawImage(umbra, ux - ur, cy - ur, ur * 2, ur * 2); }
+        if (spires) { var w = W * 1.1, h = w * spires.height / spires.width; g.globalAlpha = cover; g.drawImage(spires, cx - w / 2, H - h, w, h); }
+        if (petalT > 0) fall.forEach(function (f) { var im = petals[f.p]; if (!im) return; var y = f.y + petalT * f.v; if (y > H + 40) return;
+          drawRot(g, im, f.x + Math.sin(t / 650 + f.ph) * 24, y, f.s, f.s, t / 900 + f.ph, cover * Math.min(1, petalT / 500)); });
+        g.globalAlpha = 1;
+      }
+      var IN = 650, PASS = 2600, OUT = 800, switched = false, ready = false, tSwitch = 0, outStart = 0;
+      return preload.then(function () {
+        return new Promise(function (ok) {
+          var t0 = performance.now();
+          (function loop(now) {
+            var t = now - t0;
+            var p = Math.min(1, t / PASS);
+            var cover = sstep(0, 1, t / IN);
+            if (!switched && p >= .5) {   // totality: the moon is dark, swap the skin underneath (motion keeps going)
+              switched = true; tSwitch = t;
+              setTimeout(function () { if (data().setVariant) data().setVariant(id, next); fxArtReady().then(function () { ready = true; }); }, 0);
+            }
+            var petalT = switched ? t - tSwitch : 0;
+            if (p >= 1 && (ready || t > PASS + 4000)) { if (!outStart) outStart = t; cover = 1 - sstep(0, 1, (t - outStart) / OUT); }
+            frame(t, p, cover, petalT);
+            if (outStart && t - outStart >= OUT) ok(); else requestAnimationFrame(loop);
+          })(t0);
+        });
+      }).then(function () { c.o.remove(); swapping = false; }, function () { c.o.remove(); swapping = false; });
+    });
+  }
   // SUPERHERO (owner: every skin's animations are its own). Art per rendition: assets/fx-*.webp (Heroes) and
   // assets/villains/fx-*.webp (Villains), painted in each rendition's style.
   function shArt(id, v, names) {
@@ -1929,7 +2158,7 @@
       }).then(function () { done(c); }, function () { done(c); });
     });
   }
-  var EQUIP_FX = { 'scrapbook': equipScrapbook, 'anime-blaze': equipBlaze, 'witchcraft': equipWitchcraft, 'good-witch': equipGoodWitch, 'vaporwave': equipVaporwave, 'heavens-light': equipHeaven, 'superhero': equipSuperhero };
+  var EQUIP_FX = { 'scrapbook': equipScrapbook, 'anime-blaze': equipBlaze, 'witchcraft': equipWitchcraft, 'good-witch': equipGoodWitch, 'vaporwave': equipVaporwave, 'heavens-light': equipHeaven, 'blood-moon': equipBloodMoon, 'superhero': equipSuperhero };
   // app.js calls this from the Equip buttons: equipTransition(id, function () { ...apply + save... })
   function equipTransition(id, applyFn) {
     var fx = EQUIP_FX[id], reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;

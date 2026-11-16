@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skin Engine Harness</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- the app's REAL stylesheet, then the engine -->
+<link rel="stylesheet" href="../../css/style.css">
+<link rel="stylesheet" href="../../css/fullskins.css"><link rel="stylesheet" href="../../css/photopos.css">
+<style>
+  /* harness chrome only */
+  #hx{position:fixed;right:8px;top:70px;z-index:99999;background:#111c;color:#fff;font:12px system-ui;padding:6px 8px;border-radius:8px}
+  #hx select{font:12px system-ui}
+</style>
+</head>
+<body>
+<div id="premiumBgLayer"><div id="premiumBgDarkness"></div><div id="premiumBgOverlay"></div></div>
+<div id="hx">skin <select id="hxSkin"><option value="">(none)</option></select> <select id="hxVar"></select></div>
+<div class="modal-overlay" id="modalOverlay"><div class="modal-content" id="modalContent"></div></div>
+
+<!-- ===== markup mirrored from index.html (navbar, home page) ===== -->
+<div class="app-shell active" id="appShell">
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-left">
+      <a href="#" class="nav-logo" data-page="home">BlipVibe</a>
+      <div class="search-bar"><i class="fas fa-search"></i><input type="text" placeholder="Search..." id="globalSearch"></div>
+    </div>
+    <div class="nav-center">
+      <a href="#" class="nav-link active" data-page="home"><i class="fas fa-home"></i><span>Home</span></a>
+      <a href="#" class="nav-link" data-page="groups"><i class="fas fa-users-rectangle"></i><span>Groups</span></a>
+      <a href="#" class="nav-link" data-page="shop"><i class="fas fa-palette"></i><span>Skins</span></a>
+      <a href="#" class="nav-link" data-page="profiles"><i class="fas fa-user-group"></i><span>Network</span></a>
+      <a href="#" class="nav-link nav-saved-link" data-page="saved"><i class="fas fa-bookmark"></i><span>Saved</span></a>
+      <a href="#" class="nav-link" data-page="messages"><i class="fas fa-envelope"></i><span>Messages</span><span class="notif-badge" id="msgBadge">2</span></a>
+      <a href="#" class="nav-link nav-notif-link" data-page="notifications"><i class="fas fa-bell"></i><span>Notification</span></a>
+    </div>
+    <div class="nav-right">
+      <a href="#" class="mobile-search-btn" id="mobileSearchBtn"><i class="fas fa-search"></i></a>
+      <a href="#" class="mobile-notif-btn" id="mobileNotifBtn"><i class="fas fa-bell"></i><span class="notif-badge" id="mobileNotifBadge">1</span></a>
+      <div class="nav-music-wrap" id="navMusicWrap" style="position:relative;"><button id="navMusicBtn" class="nav-music-btn"><i class="fas fa-music"></i></button></div>
+      <div class="nav-coins" id="navCoins"><i class="fas fa-coins"></i><span class="coin-count" id="navCoinCount">3209</span></div>
+      <div class="nav-user" id="navUserDropdown"><img src="../sample/avatar.png" alt="User" class="nav-avatar"><span class="nav-username">Rion</span><i class="fas fa-chevron-down"></i></div>
+    </div>
+  </div>
+</nav>
+
+<div class="page active" id="page-home">
+  <div class="timeline-cover" id="timelineCover" style="background-image:url('../sample/cover-1.png')">
+    <button class="timeline-cover-btn" id="coverEditBtn"><i class="fas fa-camera"></i> Add Cover Photo</button>
+  </div>
+  <div class="main-container">
+    <aside class="left-sidebar">
+      <div class="card profile-card" id="profileCard">
+        <div class="profile-cover" id="profileCover"></div>
+        <div class="profile-info">
+          <div class="profile-avatar-wrap">
+            <img src="../sample/avatar.png" alt="User" class="profile-avatar" id="profileAvatarImg">
+            <button class="avatar-edit-btn" id="avatarEditBtn"><i class="fas fa-camera"></i></button>
+          </div>
+          <h3 class="profile-name">Rion</h3>
+          <p class="profile-title">I'm cool . . . .</p>
+          <div class="profile-stats">
+            <div class="stat stat-clickable"><span class="stat-count">35</span><span class="stat-label">Following</span></div>
+            <div class="stat stat-clickable"><span class="stat-count">21</span><span class="stat-label">Followers</span></div>
+          </div>
+          <div class="profile-links"><a href="#" class="view-profile-link">View Profile</a><a href="#" class="edit-profile-btn"><i class="fas fa-pen"></i></a></div>
+        </div>
+      </div>
+    </aside>
+    <main class="center-feed">
+      <div class="stories-bar" id="storiesBar">
+        <div class="story-item story-add"><div class="story-ring"><img src="../sample/avatar.png"><span class="story-plus">+</span></div><span class="story-name">Your story</span></div>
+        <div class="story-item"><div class="story-ring story-has"><img src="../sample/cover-1.png"></div><span class="story-name">LunaMae</span></div>
+        <div class="story-item"><div class="story-ring story-has"><img src="../sample/cover-2.png"></div><span class="story-name">PixelJay</span></div>
+      </div>
+      <div class="card post-create-bar" id="openPostModal">
+        <img src="../sample/avatar.png" alt="User" class="post-create-avatar">
+        <div class="post-input-fake">What are we posting today?</div>
+      </div>
+      <div id="questPanel" class="quest-panel">
+        <div class="quest-panel-header"><h4><i class="fas fa-scroll" style="color:var(--primary);"></i> Daily Quests</h4><span class="quest-reset">Resets daily</span></div>
+        <div class="quest-item"><div class="quest-icon" style="background:#f59e0b20;color:#f59e0b;"><i class="fas fa-thumbs-up"></i></div><div class="quest-info"><p>React to 5 posts</p><div class="quest-bar"><div class="quest-bar-fill" style="width:20%;background:#f59e0b;"></div></div><span class="quest-progress">1 / 5</span></div><span class="quest-reward"><i class="fas fa-coins"></i> +5</span></div>
+        <div class="quest-item"><div class="quest-icon" style="background:#ec489920;color:#ec4899;"><i class="fas fa-paper-plane"></i></div><div class="quest-info"><p>Send 3 messages</p><div class="quest-bar"><div class="quest-bar-fill" style="width:67%;background:#ec4899;"></div></div><span class="quest-progress">2 / 3</span></div><span class="quest-reward"><i class="fas fa-coins"></i> +10</span></div>
+        <div class="quest-item"><div class="quest-icon" style="background:#ef444420;color:#ef4444;"><i class="fas fa-heart"></i></div><div class="quest-info"><p>Like 5 posts</p><div class="quest-bar"><div class="quest-bar-fill" style="width:100%;background:#ef4444;"></div></div><span class="quest-progress">5 / 5</span></div><span class="quest-check"><i class="fas fa-check-circle"></i></span></div>
+      </div>
+      <div id="coinGoalBar" class="coin-goal-bar"><p><span>3209 / 300 coins</span><strong>Witchcraft</strong></p><div class="coin-goal-track"><div class="coin-goal-fill" style="width:100%;"></div></div></div>
+      <div class="search-tabs" id="feedTabs">
+        <button class="search-tab active"><i class="fas fa-user-group"></i> Following</button>
+        <button class="search-tab"><i class="fas fa-compass"></i> Discover</button>
+        <button class="search-tab"><i class="fas fa-user"></i> My Posts</button>
+      </div>
+      <div id="feedContainer">
+        <div class="card feed-post">
+          <div class="post-header">
+            <img src="../sample/cover-2.png" class="post-avatar">
+            <div class="post-user-info"><div class="post-user-top"><h4 class="post-username">Crystals Blip</h4><span class="post-time">2 hrs ago</span></div></div>
+            <button class="post-menu-btn"><i class="fas fa-ellipsis-h"></i></button>
+          </div>
+          <div class="post-description"><p>Morning at the lake 🌸</p></div>
+          <div class="post-media-grid pm-count-1"><div class="pm-thumb"><img src="../sample/cover-1.png"></div></div>
+          <div class="post-actions"><div class="action-left">
+            <button class="action-btn like-btn"><i class="far fa-thumbs-up"></i><span class="like-count">48</span></button>
+            <button class="action-btn dislike-btn"><i class="far fa-thumbs-down"></i><span class="dislike-count">12</span></button>
+            <button class="action-btn react-btn"><i class="far fa-face-smile"></i></button>
+            <button class="action-btn comment-btn"><i class="far fa-comment"></i><span>6</span></button>
+            <button class="action-btn share-btn"><i class="fas fa-share-from-square"></i><span>3</span></button>
+            <button class="action-btn view-count-btn" style="cursor:default;opacity:.6;"><i class="far fa-eye"></i><span>183</span></button>
+          </div><div class="action-right"><div class="liked-avatars"></div></div></div>
+        </div>
+        <!-- a reshare with a tall photo, liked, with likers (owner review Nov 15) -->
+        <div class="card feed-post">
+          <div class="post-header">
+            <img src="../sample/cover-2.png" class="post-avatar">
+            <div class="post-user-info"><div class="post-user-top"><h4 class="post-username">Crystals Blip</h4><span class="post-time">8/29/2026</span></div><div class="post-badges"><span class="badge badge-green"><i class="fas fa-share"></i> Shared</span></div></div>
+            <button class="post-menu-btn"><i class="fas fa-ellipsis-h"></i></button>
+          </div>
+          <div class="post-description"><p>Get your crystals charged!!</p></div>
+          <div class="post-tags"></div>
+          <div class="share-preview" style="margin:0 20px 14px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><img src="../sample/cover-2.png" class="shared-post-author" style="width:28px;height:28px;border-radius:50%;object-fit:cover;"><strong class="share-preview-name" style="font-size:13px;">Crystals Blip</strong><span class="share-preview-time" style="font-size:12px;">8/4/2026</span></div>
+            <div class="share-preview-text" style="font-size:13px;"></div>
+            <div class="post-media-grid pm-count-1"><div class="pm-thumb"><img src="../sample/avatar.png" style="aspect-ratio:3/5;object-fit:contain"></div></div>
+          </div>
+          <div class="post-actions"><div class="action-left">
+            <button class="action-btn like-btn liked"><i class="fas fa-thumbs-up"></i><span class="like-count">2</span></button>
+            <button class="action-btn dislike-btn"><i class="far fa-thumbs-down"></i><span class="dislike-count">0</span></button>
+            <button class="action-btn react-btn"><i class="far fa-face-smile"></i></button>
+            <button class="action-btn comment-btn"><i class="far fa-comment"></i><span>0</span></button>
+            <button class="action-btn share-btn"><i class="fas fa-share-from-square"></i><span>0</span></button>
+            <button class="action-btn view-count-btn" style="cursor:default;opacity:.6;"><i class="far fa-eye"></i><span>1283</span></button>
+          </div><div class="action-right"><div class="liked-avatars"><img src="../sample/avatar.png"><img src="../sample/cover-2.png"></div></div></div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ===== profile view (own profile), markup as built by app.js ~3630 ===== -->
+<div class="page" id="page-profile-view">
+  <div class="pv-cover-banner" id="pvCoverBanner" style="background-image:url('../sample/cover-1.png')">
+    <button class="timeline-cover-btn" id="pvCoverEditBtn" style="display:flex;"><i class="fas fa-camera"></i> Change Cover Photo</button>
+  </div>
+  <div class="pv-layout">
+    <div class="pv-col-left">
+      <div class="card profile-card pv-profile-card" id="pvProfileCard"><div class="profile-cover" style="background:linear-gradient(135deg,var(--primary),var(--primary-hover));"></div><div class="profile-info"><div class="profile-avatar-wrap"><img src="../sample/avatar.png" alt="Rion" class="profile-avatar"></div><h3 class="profile-name">Rion</h3><p class="profile-title">I'm cool . . . .</p><div class="profile-stats"><div class="stat stat-clickable pv-stat-following"><span class="stat-count">35</span><span class="stat-label">Following</span></div><div class="stat stat-clickable pv-stat-followers"><span class="stat-count">21</span><span class="stat-label">Followers</span></div></div><div class="pv-actions"><button class="btn btn-primary" id="pvEditProfileBtn"><i class="fas fa-pen"></i> Edit Profile</button></div><div class="profile-links"><a href="#" class="pv-back-link" id="pvBack"><i class="fas fa-arrow-left"></i> Back to Home</a></div></div></div>
+    </div>
+    <div id="pvPhotosCard" class="pv-col-photos"></div>
+    <main class="pv-col-feed"><div id="pvPostsFeed"></div></main>
+    <aside class="pv-col-skin"><div id="pvSkinCard" class="pv-skin-box"></div></aside>
+  </div>
+</div>
+</div>
+
+<script>
+  // Minimal stand-ins for the app globals the engine touches.
+  window.FS_BASE = '../../images/skins/';
+  // what app.js exposes
+  var PP = JSON.parse(localStorage.getItem('ppHarness') || '{}'), VARS = {};
+  window.BlipFullSkinsData = {
+    photos: function () { return [{ src: '../sample/cover-1.png' }, { src: '../sample/cover-2.png' }, { src: '../sample/avatar.png' }]; },
+    cover: function () { return '../sample/cover-1.png'; },
+    chosen: function () { return []; },
+    variant: function (id) { return VARS[id] || null; },
+    photoPos: function () { return PP; },
+    viewedPhotoPos: function () { return null; },
+    setPhotoPos: function (skin, key, pos) { PP[skin] = PP[skin] || {}; if (pos) PP[skin][key] = pos; else delete PP[skin][key]; localStorage.setItem('ppHarness', JSON.stringify(PP)); },
+    pick: function (n) { alert('pick ' + n); }
+  };
+  function $(q) { return document.querySelector(q); }
+  window.showModal = function (h) { $('#modalContent').innerHTML = h; $('#modalOverlay').classList.add('show'); document.body.classList.add('modal-open');
+    var c = $('#modalContent .modal-close'); if (c) c.onclick = closeModal; };
+  window.closeModal = function () { $('#modalOverlay').classList.remove('show'); document.body.classList.remove('modal-open'); };
+  window.showToast = function (t) { console.log('toast', t); };
+  // stand-in for app.js applyPremiumSkin (which ends by calling BlipFullSkins.onSkin)
+  window.applyPremiumSkin = function (id) {
+    [].slice.call(document.body.classList).forEach(function (c) { if (c.indexOf('premium-') === 0) document.body.classList.remove(c); });
+    if (id) document.body.classList.add('premium-' + id);
+    BlipFullSkins.onSkin(id || null);
+  };
+</script>
+<script src="../../js/fullskins.js"></script>
+<script src="../../js/photopos.js"></script>
+<script>
+  var sel = document.getElementById('hxSkin');
+  Object.keys(window.FULL_SKINS).forEach(function (id) {
+    var o = document.createElement('option'); o.value = id; o.textContent = id; sel.appendChild(o);
+  });
+  var vs = document.getElementById('hxVar');
+  function fillVars() { vs.innerHTML = ''; (BlipFullSkins.variants(sel.value) || []).forEach(function (v) { var o = document.createElement('option'); o.value = v.id; o.textContent = v.id; vs.appendChild(o); }); vs.value = VARS[sel.value] || (vs.options[0] && vs.options[0].value); }
+  vs.onchange = function () { VARS[sel.value] = vs.value; applyPremiumSkin(sel.value); };
+  sel.onchange = function () { applyPremiumSkin(sel.value || null); fillVars(); };
+  var pg = new URLSearchParams(location.search).get('page');
+  if (pg) {
+    document.querySelectorAll('.page').forEach(function (p) { p.classList.toggle('active', p.id === 'page-' + pg); });
+  }
+  var q = new URLSearchParams(location.search).get('skin');
+  var qv = new URLSearchParams(location.search).get('v');
+  if (q) { sel.value = q; if (qv) VARS[q] = qv; applyPremiumSkin(q); fillVars(); }
+</script>
+</body>
+</html>
+<style>.modal-overlay.show{background:rgba(0,0,0,.55)}</style>
