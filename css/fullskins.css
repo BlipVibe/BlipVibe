@@ -2808,3 +2808,18 @@ html body.fs.fs-witchcraft :is(#profilesTabs, #searchTabs) .search-tab.active { 
   html body.fs.fs-witchcraft:not(:has(#page-home.active)) .page-header :is(.page-search, .btn) { margin-left: -44px !important; }
   html body.fs.fs-witchcraft:not(:has(#page-home.active)) .page-header .btn:not(.page-search) { margin-left: 0 !important; margin-right: -44px !important; }
 }
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .page-header .page-search:only-child,
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .page-header > .page-search { margin-right: -44px !important; }
+}
+html body.fs.fs-witchcraft :is(#page-profiles, #page-search) .profile-card-item { grid-auto-rows: min-content; align-content: center; min-height: 0; }
+html body.fs.fs-witchcraft :is(.page-search, .msg-search) input { padding-left: 50px !important; }
+@media (max-width: 768px) {
+  /* owner: coin amount only on Home and the Skins (store) page */
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)):not(:has(#page-shop.active)) .navbar .nav-coins { display: none !important; }
+  /* owner: the corner graphics looked stretched/blurry — both cobwebs at the art's own square ratio, smaller, same size */
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .page.active::before { width: 104px !important; height: 104px !important; background-size: 104px 104px !important; background-position: left top !important; }
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) :is(.page-header, .msg-sidebar-header)::after { width: 104px !important; height: 104px !important; top: calc(-1 * env(safe-area-inset-top, 0px) - 4px) !important; right: -8px !important;
+    background-size: 104px 104px !important; background-position: right top !important; }
+}
+html body.fs.fs-witchcraft :is(#page-profiles, #page-search) .profile-card-item:not(:has(.profile-card-bio)) .profile-card-name { grid-row: 1 / span 3; align-self: center; }
