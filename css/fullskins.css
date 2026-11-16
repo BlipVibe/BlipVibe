@@ -3616,3 +3616,45 @@ html body.fs.fs-good-witch .feed-post:is([data-fs-v="1"], [data-fs-v="4"]) .post
 html body.fs.fs-good-witch .fs-tl-slot::before { inset: -4% !important; background-image: var(--fs-photo-bubble-ornate) !important; }
 html body.fs.fs-good-witch .fs-tl-slot img { inset: 4% !important; width: 92% !important; height: 92% !important; }
 html body.fs.fs-good-witch :is(.pv-profile-card, #profileCard) .profile-avatar-wrap::after { inset: -9% !important; background-image: var(--fs-photo-bubble-ornate) !important; }
+/* ===== QA pass (owner: "not all sized correctly") ===== */
+/* skin cards: ornate frame as a 9-slice around the whole card (whole-image stretch put the window in the wrong place
+   and the art spilled past the frame); the card art sits inside with rounded corners */
+html body.fs.fs-good-witch .fsk-card { background: none !important; border: solid transparent !important; border-width: 22px 26px !important;
+  border-image: var(--fs-comment-bubble) 115 180 fill / 22px 26px stretch !important; padding: 0 0 4px !important; overflow: hidden !important; box-sizing: border-box; }
+html body.fs.fs-good-witch .fsk-thumb { margin: 0 !important; width: 100% !important; aspect-ratio: 4 / 3 !important; border-radius: 10px !important; overflow: hidden !important;
+  box-shadow: 0 0 0 2px rgba(201, 163, 92, .85) !important; }
+html body.fs.fs-good-witch .fsk-body { padding: 6px 2px 0 !important; }
+html body.fs.fs-good-witch .fsk-name { font-size: 17px !important; text-align: center !important; }
+html body.fs.fs-good-witch .fsk-badge { top: 6px !important; right: 6px !important; }
+html body.fs.fs-good-witch .fsk-color { outline: none !important; box-shadow: 0 0 0 2px rgba(201, 163, 92, .7) !important; }
+html body.fs.fs-good-witch .fsk-color.is-on { box-shadow: 0 0 0 2px #fff, 0 0 0 4px #c9a35c !important; }
+html body.fs.fs-good-witch .fsk-body .btn { height: 40px !important; font-size: 15px !important; }
+html body.fs.fs-good-witch :is(.fsk-soon, .fsk-takeoff) { font-size: 14px !important; }
+/* chips / filter buttons: 9-slice so the end curls keep their shape on long labels */
+html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab, html body.fs.fs-good-witch .fsk-filter {
+  background: none !important; border: solid transparent !important; border-width: 10px 18px !important; border-image: var(--fs-chip) 55 85 fill / 10px 18px stretch !important;
+  padding: 2px 4px !important; font-size: 15px !important; min-height: 0 !important; }
+html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.active, html body.fs.fs-good-witch .fsk-filter.active { border-image-source: var(--fs-chip-active) !important; }
+html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.search-tab, html body.fs.fs-good-witch .fsk-filter.fsk-filter {
+  background-image: none !important; background-color: transparent !important; box-shadow: none !important; border-width: 7px 14px !important; font-size: 14px !important; padding: 1px 2px !important; line-height: 1.2 !important; }
+html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) { gap: 6px !important; margin: 4px 0 !important; }
+html body.fs.fs-good-witch .fsk-badge { background-color: transparent !important; box-shadow: none !important; }
+/* list rows (network/search/groups/messages/notifications): 9-slice matched to the art's corners, compact sizes */
+html body.fs.fs-good-witch :is(.msg-contact, .notif-item, .profile-card-item, .follow-list-item, #groupsSections .group-card) {
+  border-width: 16px 24px !important; border-image: var(--fs-list-row) 95 150 fill / 16px 24px stretch !important; padding: 0 !important; margin: 0 0 8px !important; }
+html body.fs.fs-good-witch :is(#page-profiles, #page-search) .profile-card-item { grid-template-columns: 50px minmax(0, 1fr) auto !important; column-gap: 10px !important; }
+html body.fs.fs-good-witch :is(#page-profiles, #page-search) .profile-card-avatar { width: 50px !important; height: 50px !important; }
+html body.fs.fs-good-witch :is(#page-profiles, #page-search) .profile-card-name { font-size: 17px !important; }
+html body.fs.fs-good-witch :is(#page-profiles, #page-search) .profile-card-bio { font-size: 13px !important; }
+/* Join / Follow plaques: 9-slice so the heart + sparkle ends keep their size, words stay in the middle */
+html body.fs.fs-good-witch :is(.join-group-btn, .suggestion-follow-btn, .follow-btn, .profile-follow-btn, #groupsSections .group-card-actions .btn) {
+  background: none !important; border: solid transparent !important; border-width: 9px 16px !important; border-image: var(--fs-join-btn) 60 95 fill / 9px 16px stretch !important;
+  height: auto !important; min-width: 0 !important; padding: 2px 2px !important; font-size: 14px !important; line-height: 1.2 !important; white-space: nowrap; }
+html body.fs.fs-good-witch #groupsSections .group-card-actions .btn .gc-btn-text { font-size: 14px !important; }
+/* segmented tabs: smaller labels so two-line tabs fit */
+html body.fs.fs-good-witch :is(#profilesTabs, #searchTabs) .search-tab { font-size: 13px !important; min-height: 40px !important; padding: 2px 6px !important; background: none !important;
+  border: solid transparent !important; border-width: 8px 16px !important; border-image: var(--fs-seg-tab) 55 90 fill / 8px 16px stretch !important; }
+html body.fs.fs-good-witch :is(#profilesTabs, #searchTabs) .search-tab.active { border-image-source: var(--fs-seg-tab-active) !important; }
+/* section headers + count badge */
+html body.fs.fs-good-witch :is(#page-profiles, #page-search) :is(h3, .section-title) { font-size: 17px !important; }
+html body.fs.fs-good-witch :is(.section-count, .connections-count, .badge-count) { background: rgba(255,255,255,.18) !important; border: 1px solid rgba(201,163,92,.7) !important; color: var(--gw-title) !important; }
