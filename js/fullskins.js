@@ -305,7 +305,10 @@
     document.querySelectorAll('#questPanel .quest-item').forEach(function (it) {
       var f = it.querySelector('.quest-bar-fill');
       var pct = f ? parseFloat(f.style.width) || 0 : 0;
-      it.setAttribute('data-fs-q', pct >= 100 || it.querySelector('.quest-check') ? '100' : pct >= 40 ? '50' : '0');
+      var done = pct >= 100 || !!it.querySelector('.quest-check');
+      it.setAttribute('data-fs-q', done ? '100' : pct >= 40 ? '50' : '0');
+      // exact progress (0–1) for skins that fill a graphic proportionally (Witchcraft's potions)
+      it.style.setProperty('--fs-q', String(done ? 1 : Math.max(0, Math.min(1, pct / 100))));
     });
   }
 

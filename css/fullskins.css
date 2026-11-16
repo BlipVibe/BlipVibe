@@ -2926,3 +2926,11 @@ html body.fs.fs-witchcraft .share-preview :is(.share-preview-name, strong) { col
 html body.fs.fs-witchcraft .share-preview :is(.share-preview-time, .share-preview-text) { color: #cdbba2 !important; }
 html body.fs.fs-witchcraft .share-preview .shared-post-author:is(img) { box-shadow: 0 0 0 2px #c79b55 !important; }
 html body.fs.fs-witchcraft .post-badge, html body.fs.fs-witchcraft [class*="badge-green"] { background: rgba(20, 12, 18, .9) !important; color: #e8c27a !important; border: 1px solid #7a5634 !important; }
+/* potions fill with real progress (owner: 1/3 stayed empty): the empty bottle, with the FULL bottle laid over it and cut
+   from the top so its liquid rises from the bottle's base (art row 311/360) to the brim (row 78) as --fs-q goes 0→1 */
+html body.fs.fs-witchcraft .quest-icon { position: relative; background-image: var(--fs-potion-0) !important; }
+html body.fs.fs-witchcraft .quest-icon::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: var(--fs-potion-100) center / contain no-repeat;
+  clip-path: inset(calc((86.4% - var(--fs-q, 0) * 64.7%) ) 0 0 0); opacity: calc(var(--fs-q, 0) * 100); }
+html body.fs.fs-witchcraft .quest-item[data-fs-q="100"] .quest-icon::after { clip-path: none; }
+html body.fs.fs-witchcraft .quest-item[data-fs-q] .quest-icon { background-image: var(--fs-potion-0) !important; }
