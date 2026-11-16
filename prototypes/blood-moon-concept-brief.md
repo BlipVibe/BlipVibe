@@ -23,14 +23,18 @@ hanging low over gothic spires and the opera house dome. Red-lit night sky, thin
 a few stars. Materials: crimson velvet, black lacquered wood, antique SILVER filigree, ruby glass, red roses, red candle
 light. Palette: blood red, wine, black, antique silver, warm candle-gold highlights.
 
-## Rendition B — ECLIPSE ("Black Moon")
-A total SOLAR eclipse: the moon is a perfectly BLACK disc ringed by a blazing CORONA — a ring of molten gold-orange fire
-with crimson flares and long streamers of light, a bright diamond-ring flash at one edge. Smoky obsidian night with
-drifting ash and glowing embers; the light comes from the corona (warm gold rim-light on everything). Materials:
-obsidian / black glass, smoked onyx, burnished BRONZE-GOLD filigree, ember-orange and deep crimson glass, black roses
-with red-tipped petals. Palette: jet black, molten gold, ember orange, deep crimson.
-Same app layout as A, but its own painted world-look — different moon, different light, different metal (bronze-gold not
-silver), different flowers. It must read as a different moon at a glance.
+## Rendition B — SILVER ("Silver Moon")
+OWNER: the second moon must NOT be red ("they're both red… that would defeat the purpose of a second type of moon").
+An earlier black-moon eclipse version was rejected because it was red. Rendition B has NO RED ANYWHERE — no red velvet,
+no red roses, no red buttons, no red glass, no red progress bars, no red badges.
+The moon: a HUGE pale SILVER-WHITE full moon, bright and luminous with crisp blue-grey craters and a wide cold halo,
+hanging over the same gothic spires and opera house dome. Icy midnight-blue sky, silver-lit mist and thin clouds,
+many stars, frost. Materials: black iron and polished SILVER filigree, frosted moonlit glass, pale blue-grey
+velvet, ice-blue stained glass, WHITE roses with frost, pearls, cool white candle light. Palette: midnight blue,
+slate, silver, white, ice blue — accents in pale moonlight blue / silver (active tabs, buttons, progress fills,
+badges, liked heart = silver-white / ice blue, never red).
+Same app layout as A, but its own painted world-look — it must read as a cold silver moon at a glance, the
+opposite of A's blood moon.
 
 ## The sheets (paint FOUR images)
 Save to `images/skins/blood-moon/` (repo-relative):
@@ -39,13 +43,13 @@ Save to `images/skins/blood-moon/` (repo-relative):
 - `concept-crimson-2.png` — sheet 2, rendition A, ~1180x1330, 9 phones: Home full (stories, composer, Featured Skin,
   Daily Quests, Coin Goal, tabs, a post), Network, Notifications, Search, Group page, someone else's Profile (with a ⋯ menu
   open: Mute / Block / Report), Comments, Create Post, Story viewer.
-- `concept-eclipse.png` — sheet 1, rendition B (title "BlipVibe — Eclipse").
-- `concept-eclipse-2.png` — sheet 2, rendition B.
+- `concept-silver.png` — sheet 1, rendition B (title "BlipVibe — Silver Moon").
+- `concept-silver-2.png` — sheet 2, rendition B.
 Also `_concepts_sheet.png`: all four side by side, small.
 
 ## Real app features every concept must show (the app keeps these, the art restyles them)
 - Top bar on EVERY page. Home top bar: small round profile photo, "BlipVibe" wordmark, search, bell with count, music
-  note, coin pill "2,450 +", and a small MOON BUTTON (the rendition switch: crimson moon in A, black eclipse ring in B).
+  note, coin pill "2,450 +", and a small MOON BUTTON (the rendition switch: crimson moon in A, silver moon in B).
 - Home ALWAYS shows the cover picture area + the profile picture + the profile card (name, bio, following/followers).
 - Profile: 3 cover/timeline photos shown in a painted frame (e.g. three gothic stained-glass windows or panes arranged
   around the moon), a framed round profile picture in front, name, bio, stats, Edit Profile button.
