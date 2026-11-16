@@ -3348,3 +3348,13 @@ html body.fs.fs-good-witch .fs-tl-slot-2 { z-index: 3 !important; }
   html body.fs.fs-good-witch .nav-center .nav-link.active > i { box-shadow: 0 0 14px rgba(167, 110, 240, .7), 0 0 0 2px rgba(201, 163, 92, .8) !important; filter: none !important; }
 }
 @media (max-width: 768px) { html body.fs.fs-good-witch .nav-center { padding-top: 16px !important; padding-bottom: calc(env(safe-area-inset-bottom, 0px) - 10px) !important; align-content: center; } }
+/* bars were see-through (content mixed with the icons): solid backing under the glass art */
+@media (max-width: 768px) {
+  html body.fs.fs-good-witch .navbar { background: var(--fs-top-bar) center bottom / 100% 100% no-repeat, linear-gradient(var(--gw-barfill, #f4ecfd), var(--gw-barfill, #f4ecfd)) top / 100% calc(100% - 6px) no-repeat !important; }
+  html body.fs.fs-good-witch .nav-center { background: var(--fs-nav-bar) center top / 100% 100% no-repeat, linear-gradient(var(--gw-barfill, #f4ecfd), var(--gw-barfill, #f4ecfd)) bottom / 100% calc(100% - 8px) no-repeat !important; }
+  html body.fs.fs-good-witch[data-fs-variant="night"] { --gw-barfill: #1d1438; }
+}
+html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs) .search-tab.active,
+html body.fs.fs-good-witch .fsk-filter.active { color: var(--gw-deep) !important; font-weight: 700 !important; }
+html body.fs.fs-good-witch #groupsSections .group-card-actions .btn .gc-btn-text { display: inline !important; font-size: 16px !important; color: var(--gw-title) !important; }
+html body.fs.fs-good-witch .page-header .page-search { margin-top: 6px !important; }

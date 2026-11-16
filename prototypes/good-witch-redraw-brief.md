@@ -138,3 +138,9 @@ Pieces: stats-frame, edit-btn, name-banner, list-row, post-panel, top-bar, nav-b
 join-btn, follow-btn, chip, chip-active, seg-tab, seg-tab-active, bubble-in, bubble-out, comment-bubble, skin-card,
 skin-card-wide, featured-frame, coin-goal-bar, input-bar, tool-tile, text-area, action-tile, menu-panel, public-pill,
 quests-frame, post-btn, equipped-tag.
+
+## 8. ENCHANTMENT PASS (owner: "needs to be more elaborate like the others, representing the good witch side")
+New pieces, Day + Night: page-deco-groups/skins/network/notifications/search/post/messages (1290x520 bottom scenes of
+good-witch props on clouds — crystals, crystal ball, pastel potions, spell book, owl, white cat, wand, little cauldron
+with pink sparkles, flowers, candles, fairy lights; each page different), corner-vine-right (360x300), title-crest
+(420x120, gold crescent with sparkle bursts above page titles), sparkle-trail (1290x160).
