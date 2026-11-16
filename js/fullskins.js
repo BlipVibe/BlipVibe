@@ -66,7 +66,7 @@
       { id: 'green', name: 'Green', accent: '#20c447', swatch: '#20c447' },
       { id: 'pink', name: 'Pink', accent: '#ff3f9b', swatch: '#ff3f9b' }
     ],
-    assets: ['panel9', 'panel9-alt', 'row9', 'row9-hot', 'bubble9-dark', 'bubble9-red', 'label9', 'button9-red',
+    assets: ['icon-like-on', 'icon-dislike-on', 'panel9', 'panel9-alt', 'row9', 'row9-hot', 'bubble9-dark', 'bubble9-red', 'label9', 'button9-red',
       'button9-dark', 'chip9', 'chip9-active', 'field9', 'banner', 'navbar', 'cover-frame', 'avatar-ring',
       'track', 'fill', 'coin-pill', 'burst', 'cover-cut', 'cover-top', 'stat9', 'avatar-rim', 'header', 'title-plate9', 'quest-row9', 'quest-tile', 'quest-track', 'quest-fill', 'reward-pill9', 'post-frame', 'action-strip9', 'nav-divider', 'stat-box', 'button-slant', 'cover-mask', 'cover-frame', 'tab', 'tab-active', 'post-panel', 'photo-frame', 'action-strip', 'quests-plate', 'quest-row', 'quest-tile', 'quest-track', 'quest-fill', 'reward-pill', 'title-plate', 'nav-bar', 'list-row', 'list-row-gold', 'join-btn', 'skin-card', 'equipped-tag', 'filter-chip', 'filter-chip-active', 'bubble-in', 'bubble-out', 'input-bar', 'field', 'round-btn', 'send-btn', 'composer', 'featured-frame', 'coin-goal-bar', 'story-ring', 'tile', 'post-btn', 'menu-panel', 'name-tag', 'photo-mask', 'skin-card-mask'],
     theme: { '--dark': '#f5f1ea', '--gray': '#b9b1a6', '--light-bg': '#1b1b1d', '--card': '#151517',
@@ -78,7 +78,7 @@
     font: "'Cormorant Garamond', serif", titleFont: "'Cormorant Garamond', serif",
     timeline: 4, avatar: 'center', slice: 15, edge: 16,
     // traced from the approved concept (prototypes/witchcraft-redraw-brief.md → kit/redraw-a + redraw-b)
-    assets: ['header', 'cobweb-corner', 'nav-glow', 'tab', 'tab-active', 'post-panel', 'photo-arch', 'quests-frame',
+    assets: ['icon-like-on', 'icon-dislike-on', 'header', 'cobweb-corner', 'nav-glow', 'tab', 'tab-active', 'post-panel', 'photo-arch', 'quests-frame',
       'quest-card', 'potion-0', 'potion-50', 'potion-100', 'coin-goal-bar', 'goal-track', 'goal-fill', 'composer',
       'featured-frame', 'story-ring', 'story-add', 'avatar-ring', 'tarot-card', 'cover-arches', 'stats-arch',
       'plaque-btn', 'shelf-cat', 'shelf-cauldron', 'shelf-skull', 'candle', 'list-row', 'join-btn', 'gem', 'skin-card',
@@ -113,7 +113,7 @@
           '--border': 'rgba(214,190,140,.32)', '--nav-bg': '#171030' } }
     ],
     // traced from the approved concept (prototypes/good-witch-redraw-brief.md → kit/gw + kit/gw-night)
-    assets: ['background', 'top-bar', 'corner-vine', 'nav-bar', 'nav-orb', 'nav-orb-active', 'coin', 'coin-pill',
+    assets: ['icon-like-on', 'icon-dislike-on', 'background', 'top-bar', 'corner-vine', 'nav-bar', 'nav-orb', 'nav-orb-active', 'coin', 'coin-pill',
       'icon-compose', 'icon-phone', 'icon-close', 'icon-reply', 'icon-react', 'icon-chevron', 'icon-check', 'icon-clear',
       'icon-photo', 'icon-gif', 'icon-poll', 'icon-schedule', 'icon-globe', 'icon-people-small', 'icon-mute', 'icon-block',
       'icon-report', 'icon-heart',
@@ -156,7 +156,7 @@
       'btn-round': 'top-btn', 'nav-active': 'nav-tab-active', 'header-bar': 'header-page', 'timeline-frame': 'vhs-window',
       'avatar-frame': 'avatar-window', 'post-frame': 'panel', 'icon-coin': 'coin', 'quest-0': 'progress-track',
       'quest-50': 'progress-track', 'quest-100': 'progress-fill', 'thumb': 'featured-banner' },
-    assets: ['add-photo', 'avatar-window', 'badge-count', 'btn-pink', 'btn', 'bubble-in', 'bubble-out', 'camera-badge',
+    assets: ['icon-dislike-on', 'add-photo', 'avatar-window', 'badge-count', 'btn-pink', 'btn', 'bubble-in', 'bubble-out', 'camera-badge',
       'chip-active', 'chip', 'coin-pill', 'coin-stack', 'coin', 'featured-banner', 'field', 'header-home', 'header-page',
       'header-profile', 'icon-block', 'icon-chat', 'icon-check', 'icon-close', 'icon-compose', 'icon-gif', 'icon-like-on',
       'icon-mute', 'icon-phone', 'icon-photo', 'icon-poll', 'icon-react', 'icon-reply', 'icon-report', 'icon-schedule',
@@ -188,7 +188,7 @@
     parts: { 'panel-card': 'post-panel', 'panel-card-active': 'post-panel', 'btn-primary': 'follow-btn',
       'btn-secondary': 'action-btn', 'btn-round': 'round-btn', 'header-bar': 'top-bar', 'post-frame': 'post-panel',
       'icon-coin': 'coin', 'quest-0': 'halo-0', 'quest-50': 'halo-50', 'quest-100': 'halo-100' },
-    assets: ['background', 'header', 'top-bar', 'title-laurel', 'wings-crest', 'nav-bar', 'nav-active',
+    assets: ['icon-dislike-on', 'background', 'header', 'top-bar', 'title-laurel', 'wings-crest', 'nav-bar', 'nav-active',
       'icon-home-on', 'icon-groups-on', 'icon-skins-on', 'icon-network-on', 'icon-messages-on', 'coin', 'coin-pill',
       'corner-column-left', 'corner-column-right',
       'icon-compose', 'icon-phone', 'icon-close', 'icon-like-on', 'icon-reply', 'icon-react', 'icon-chevron', 'icon-check',

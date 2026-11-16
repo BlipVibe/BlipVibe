@@ -174,7 +174,12 @@ body.fs .action-btn > i { color: var(--fs-ink); }
 body.fs .avatar-edit-btn > i,
 body.fs .timeline-cover-btn > i { background-image: var(--fs-icon-camera); }
 body.fs .action-btn { color: var(--fs-ink) !important; }
-body.fs .like-btn.liked > i { filter: drop-shadow(0 0 3px var(--fs-accent)); }
+/* liked / disliked (owner audit, Nov 16: "if you liked or disliked it, it should fill or change"): every full skin swaps
+   in its painted ON icon. Feeds mark it two ways (.liked/.disliked on the button, or only a solid .fas icon), so catch
+   both. Skins without ON art fall back to their OFF icon with a glow. A quick pop plays when it turns on. */
+body.fs :is(.like-btn.liked, .like-btn:has(> i.fas)) > i { background-image: var(--fs-icon-like-on, var(--fs-icon-like)); animation: fsLikePop .32s cubic-bezier(.3,1.6,.5,1); }
+body.fs :is(.dislike-btn.disliked, .dislike-btn:has(> i.fas)) > i { background-image: var(--fs-icon-dislike-on, var(--fs-icon-dislike)); animation: fsLikePop .32s cubic-bezier(.3,1.6,.5,1); }
+@keyframes fsLikePop { 0% { transform: scale(.7); } 60% { transform: scale(1.25); } 100% { transform: scale(1); } }
 
 /* ---------- bottom nav (mobile) ---------- */
 @media (max-width: 768px) {
