@@ -2966,3 +2966,5 @@ html body.fs.fs-witchcraft #msgChat .msg-chat-input::before { content: ""; posit
 html body.fs.fs-witchcraft #msgChat .msg-chat-input::after { content: ""; position: absolute; right: 12px; bottom: calc(100% + 100vw * 560 / 1290 - 8px); width: 58px; height: 58px;
   background: var(--fs-pentagram-sigil) center / contain no-repeat; pointer-events: none; }
 html body.fs.fs-witchcraft #msgChat .msg-chat-input::after { width: 46px !important; height: 46px !important; right: 6px !important; bottom: calc(100% + 100vw * 560 / 1290 * .74) !important; opacity: .9; }
+/* owner: the pentagram sigil covered your own messages — removed from chat */
+html body.fs.fs-witchcraft #msgChat .msg-chat-input::after { display: none !important; content: none !important; }
