@@ -6489,3 +6489,54 @@ html body.fs.fs-blood-moon .quest-icon { grid-row: 1 / span 2; }
 html body.fs.fs-blood-moon :is(.quest-reward, .quest-check) { grid-column: 3; grid-row: 1 / span 2; }
 html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name { overflow-wrap: break-word !important; word-break: normal !important; hyphens: none; font-size: clamp(22px, 7.2vw, 32px) !important; }
 html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name::before, html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name::after { flex-basis: 28px; }
+/* Daily Quests INSIDE the painted frame (owner: "not in the box"): 9-slice so the crest + silver sides keep their size and
+   every row sits in the velvet panel (quests-frame.png 1200x900: crest to y 200, sides ~80, bottom rail from y 800) */
+html body.fs.fs-blood-moon .quest-panel { display: flex !important; flex-direction: column !important; gap: 6px !important; aspect-ratio: auto !important;
+  background: none !important; border-style: solid !important; border-color: transparent !important; border-width: 62px 24px 34px !important;
+  border-image: var(--fs-quests-frame) 200 80 100 80 fill / 62px 24px 34px stretch !important; padding: 0 6px 6px !important; margin: 6px 4px 10px !important; }
+html body.fs.fs-blood-moon .quest-panel-header { margin: -30px 0 2px !important; padding: 0 !important; background: none !important; }
+html body.fs.fs-blood-moon .quest-panel-header h4 { font-size: 26px !important; padding: 0 !important; background: none !important; text-align: center; }
+/* quest row: moon icon | label, bar, "3 / 5" under the bar | reward (the progress text is inside .quest-info in the app markup) */
+html body.fs.fs-blood-moon .quest-item { grid-template-columns: 50px minmax(0, 1fr) auto !important; grid-template-rows: auto !important; min-height: 64px; padding: 6px 12px 6px 8px !important; }
+html body.fs.fs-blood-moon .quest-icon { grid-row: auto !important; width: 48px !important; height: 48px !important; }
+html body.fs.fs-blood-moon .quest-icon i { display: none !important; }
+html body.fs.fs-blood-moon .quest-info { display: flex !important; flex-direction: column; align-items: stretch !important; }
+html body.fs.fs-blood-moon .quest-progress { order: 3; grid-column: auto !important; grid-row: auto !important; margin-top: 2px; font-size: 13px !important; }
+html body.fs.fs-blood-moon :is(.quest-reward, .quest-check) { grid-column: 3 !important; grid-row: auto !important; align-self: center; padding: 4px 10px !important;
+  background: var(--fs-reward-pill) center / 100% 100% no-repeat !important; white-space: nowrap; }
+html body.fs.fs-blood-moon .quest-reward i { color: transparent !important; display: inline-block; width: 18px; height: 18px; background: var(--fs-coin) center / contain no-repeat; vertical-align: -3px; }
+/* composer placeholder + the featured skin's Free/buy button: readable on the dark art */
+html body.fs.fs-blood-moon :is(input, textarea)::placeholder { color: var(--bm-soft) !important; opacity: 1 !important; }
+html body.fs.fs-blood-moon .featured-buy-btn, html body.fs.fs-blood-moon .featured-buy-btn * { color: #fff !important; }
+html body.fs.fs-blood-moon .quest-panel-header { margin: 6px 0 4px !important; }
+html body.fs.fs-blood-moon .quest-panel { border-width: 70px 24px 34px !important; border-image-width: 70px 24px 34px !important; }
+/* title flourishes: each slot shows exactly one half of title-flourish.png (900x140 → two 450x140 halves), beside the word */
+html body.fs.fs-blood-moon :is(.quest-panel-header h4, .page-header h2, .msg-sidebar-header h3),
+html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { display: inline-block !important; padding: 2px 82px !important; text-transform: none !important; }
+html body.fs.fs-blood-moon .quest-panel-header { text-align: center !important; }
+html body.fs.fs-blood-moon :is(.quest-panel-header h4, .page-header h2, .msg-sidebar-header h3)::before,
+html body.fs.fs-blood-moon :is(.quest-panel-header h4, .page-header h2, .msg-sidebar-header h3)::after,
+html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::before,
+html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::after { width: 76px !important; height: 24px !important; margin-top: -12px !important; background-size: 200% 100% !important; }
+/* quest row: label, "3 / 5" centred under it, then the bar (concept) */
+html body.fs.fs-blood-moon .quest-info p { order: 1; }
+html body.fs.fs-blood-moon .quest-progress { order: 2 !important; margin: 0 0 3px !important; }
+html body.fs.fs-blood-moon .quest-bar { order: 3; }
+/* feed tabs = one joined dark bar, the active one a crimson pill (concept) */
+html body.fs.fs-blood-moon #feedTabs { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 0 !important; padding: 4px !important; margin: 4px 8px 10px !important;
+  background: var(--fs-tab) center / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-blood-moon #feedTabs .search-tab { background: none !important; text-transform: none !important; font-size: 16px !important; color: var(--bm-soft) !important; }
+html body.fs.fs-blood-moon #feedTabs .search-tab + .search-tab { box-shadow: -1px 0 0 rgba(216, 195, 176, .35); }
+html body.fs.fs-blood-moon #feedTabs .search-tab.active { background: var(--fs-tab-active) center / 100% 100% no-repeat !important; color: #fff !important; box-shadow: none !important; }
+/* text on the crimson / ice-blue velvet pieces (active chips, buttons, sent bubbles) = white; on parchment = dark ink */
+body.fs-blood-moon { --bm-deep: #fff6f2; --bm-barfill: #c4202f; }
+body.fs-blood-moon[data-fs-variant="silver"] { --bm-deep: #ffffff; --bm-barfill: #8fb8e6; }
+html body.fs.fs-blood-moon .msg-bubble:not(.sent), html body.fs.fs-blood-moon .msg-bubble:not(.sent) * { color: var(--bm-paper-ink) !important; }
+/* pop-ups (create post, comments, menus, settings) are parchment: dark ink, never the cloned slate background */
+html body.fs.fs-blood-moon .modal-content { background: none !important; border: 30px solid transparent !important; border-image: var(--fs-post-panel) 160 fill / 40px stretch !important; }
+html body.fs.fs-blood-moon .modal-content :is(h2, h3, h4, p, span, label, small, div, a, .modal-close, .modal-close i, .post-username):not(.btn):not(.btn *) { color: var(--bm-paper-ink) !important; text-shadow: none !important; }
+html body.fs.fs-blood-moon .modal-content :is(small, .char-count, .post-time) { color: var(--bm-paper-soft) !important; }
+html body.fs.fs-blood-moon .modal-content :is(hr, .modal-header, .modal-footer) { border-color: rgba(60, 30, 25, .25) !important; }
+html body.fs.fs-blood-moon .modal-content :is(textarea, input)::placeholder { color: var(--bm-paper-soft) !important; }
+html body.fs.fs-blood-moon .modal-content :is(textarea, input) { color: var(--bm-paper-ink) !important; font-size: 16px !important; }
+html body.fs.fs-blood-moon .post-input-fake { color: var(--bm-soft) !important; font-size: 16px !important; }
