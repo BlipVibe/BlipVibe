@@ -34,5 +34,10 @@ body.fs-vaporwave .fs-pp-zoom { --pp-track: var(--fs-progress-track); --pp-fill:
 .fs-pp-menu { position: absolute !important; z-index: 10050 !important; min-width: 180px; right: auto !important; bottom: auto !important; }
 .fs-pp-menu a { display: flex !important; align-items: center; gap: 10px; font-size: 16px !important; }
 /* the copied skin art around the frame fades out at the stage edges instead of ending in a hard rectangle */
-.fs-pp-stage { -webkit-mask-image: radial-gradient(ellipse 72% 68% at 50% 50%, #000 62%, transparent 100%);
-  mask-image: radial-gradient(ellipse 72% 68% at 50% 50%, #000 62%, transparent 100%); }
+.fs-pp-stage { --pp-f: 26px;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--pp-f), #000 calc(100% - var(--pp-f)), transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 var(--pp-f), #000 calc(100% - var(--pp-f)), transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent 0, #000 var(--pp-f), #000 calc(100% - var(--pp-f)), transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 var(--pp-f), #000 calc(100% - var(--pp-f)), transparent 100%);
+  mask-composite: intersect; }
