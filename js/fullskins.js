@@ -944,6 +944,7 @@
     }
     removeRendered();
     active = null;
+    if (window.BlipPhotoPos) window.BlipPhotoPos.render();   // avatars back to the plain (uncropped) photo
     unwatchPosts();
     if (wasActive) restoreExtras();
   }
@@ -1014,16 +1015,19 @@
   // falling back to the cover again (spec: "Profile timeline photos").
   function timelinePhotos(coverEl, count) {
     var urls = [];
-    // the CSS hides the original cover with !important, so read the inline style the app set
-    var bg = coverEl && coverEl.style.backgroundImage;
-    var m = bg && bg.match(/url\(["']?(.*?)["']?\)/);
-    if (m) urls.push(m[1]);
-    else if (coverEl && coverEl.id === 'timelineCover' && data().cover()) urls.push(data().cover());
     // own photos only on your own timeline: home cover, or the profile view when it's you
     // (app.js shows #pvCoverEditBtn only on your own profile)
     var editBtn = document.getElementById('pvCoverEditBtn');
     var own = coverEl && (coverEl.id === 'timelineCover' ||
       (coverEl.id === 'pvCoverBanner' && editBtn && editBtn.style.display !== 'none'));
+    // the cover in frame 1: the same crop on every device (the 4:3 one when there is one), so a saved zoom / position
+    // looks the same on a phone and a desktop and to everyone viewing
+    var same = own ? data().cover() : (coverEl && coverEl.id === 'pvCoverBanner' && data().viewedCover ? data().viewedCover() : null);
+    // otherwise the CSS hides the original cover with !important, so read the inline style the app set
+    var bg = coverEl && coverEl.style.backgroundImage;
+    var m = bg && bg.match(/url\(["']?(.*?)["']?\)/);
+    if (m) urls.push(same || m[1]);
+    else if (coverEl && coverEl.id === 'timelineCover' && data().cover()) urls.push(data().cover());
     if (own) {
       (data().photos() || []).filter(function (p) { return p && p.src && !p.isVideo; })
         .forEach(function (p) { if (urls.length < count && urls.indexOf(p.src) < 0) urls.push(p.src); });
@@ -1043,6 +1047,7 @@
     if (!coverEl || !cfg) return;
     var wrap = document.createElement('div');
     wrap.className = 'fs-rendered fs-timeline fs-tl-' + cfg.timeline;
+    var placed = [];
     timelinePhotos(coverEl, cfg.timeline).forEach(function (src, i) {
       var slot = document.createElement('div');
       slot.className = 'fs-tl-slot fs-tl-slot-' + (i + 1);
@@ -1050,11 +1055,15 @@
         slot.className += ' fs-tl-own';
         slot.setAttribute('role', 'button');
         slot.setAttribute('aria-label', 'Choose photo ' + (i + 1));
-        (function (n) { slot.addEventListener('click', function (e) { e.stopPropagation(); data().pick(n); }); })(i);
+        (function (n, sl) { sl.addEventListener('click', function (e) {
+          e.stopPropagation();
+          if (window.BlipPhotoPos) window.BlipPhotoPos.slotMenu(sl, n, e); else data().pick(n);   // Move & zoom / Change photo
+        }); })(i, slot);
       }
       if (src) {
         var img = document.createElement('img');
-        img.src = src; img.alt = ''; img.loading = 'lazy';
+        img.alt = ''; img.loading = 'lazy';
+        if (window.BlipPhotoPos) placed.push([slot, img, src, i]); else img.src = src;   // src set once the frame is on the page
         slot.appendChild(img);
       } else {
         slot.className += ' fs-tl-empty';
@@ -1067,6 +1076,8 @@
       wrap.appendChild(slot);
     });
     coverEl.appendChild(wrap);
+    // saved zoom / position (photopos.js): crops each photo to exactly what its frame should show
+    placed.forEach(function (q) { window.BlipPhotoPos.timelineSlot(q[0], q[1], q[2], q[3], coverEl); });
   }
 
   // Quest graphic state: 0 / 50 / 100 from the bar width the app already renders.
@@ -1181,6 +1192,7 @@
     renderTimeline(document.getElementById('timelineCover'));
     renderTimeline(document.getElementById('pvCoverBanner'));
     tagQuests();
+    if (window.BlipPhotoPos) window.BlipPhotoPos.render();   // saved zoom / position of the avatar in its frame
   }
 
   /* ---------- called from app.js ---------- */
