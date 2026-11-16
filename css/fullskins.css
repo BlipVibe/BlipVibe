@@ -2823,3 +2823,66 @@ html body.fs.fs-witchcraft :is(.page-search, .msg-search) input { padding-left: 
     background-size: 104px 104px !important; background-position: right top !important; }
 }
 html body.fs.fs-witchcraft :is(#page-profiles, #page-search) .profile-card-item:not(:has(.profile-card-bio)) .profile-card-name { grid-row: 1 / span 3; align-self: center; }
+/* witch hat: tucked into the post's bottom-left corner, clear of the like button */
+html body.fs.fs-witchcraft #page-home .feed-post:first-of-type::after { left: -30px !important; bottom: -34px !important; width: 74px !important; height: 64px !important; }
+html body.fs.fs-witchcraft #page-home .feed-post:first-of-type .post-actions { padding-left: 34px !important; }
+/* someone else's profile (concept other-profile): tall gold ARCH around the photo over the tarot fan, bronze ribbon behind
+   the name, two stat plaques with the pentagram medallion between, plaque buttons (Follow glows magenta) */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-avatar-wrap { width: 150px !important; height: 196px !important; border-radius: 0 !important; margin: -230px auto 0 !important; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-avatar-wrap .profile-avatar { position: absolute; left: 9.2%; top: 21.6%; width: 81.2% !important; height: 69.4% !important;
+    border-radius: 50% 50% 4px 4px / 34% 34% 4px 4px !important; object-fit: cover; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-avatar-wrap::after { inset: 0 !important; background: var(--fs-avatar-arch) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-name { display: inline-block; margin: 8px auto 0 !important; padding: 12px 56px 14px !important; font-size: 30px !important;
+    background: var(--fs-name-ribbon) center / 100% 100% no-repeat !important; max-width: 96%; box-sizing: border-box; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-info { text-align: center; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) :is(.profile-title, .profile-about) { font-size: 16px !important; line-height: 1.35 !important; margin: 6px 14px 0 !important; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-about::before, html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-about::after { content: none !important; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-stats { display: grid !important; grid-template-columns: 1fr 58px 1fr; align-items: center; gap: 6px;
+    aspect-ratio: auto !important; background: none !important; padding: 0 !important; width: 94% !important; margin: 12px auto 0 !important; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-stats::before { content: ""; grid-column: 2; grid-row: 1; width: 58px; height: 58px; background: var(--fs-pentagram-medallion) center / contain no-repeat; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-stats > .stat { grid-row: 1; height: 70px; display: flex !important; flex-direction: column; align-items: center; justify-content: center;
+    background: var(--fs-stat-box) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-stats > .stat:first-child { grid-column: 1; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-stats > .stat:last-child { grid-column: 3; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .stat-count { font-size: 26px !important; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .stat-label { font-size: 15px !important; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .pv-actions { display: grid !important; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 12px 4px 0 !important; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .pv-actions .btn { min-width: 0 !important; width: 100% !important; height: 50px; padding: 0 4px !important; margin: 0 !important;
+    border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; white-space: normal; line-height: 1.05;
+    background: var(--fs-action-btn) center / 100% 100% no-repeat !important; color: #efe2c8 !important; font-family: var(--fs-title-font) !important; font-size: 15px !important; font-weight: 600; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .pv-actions .btn i { display: none !important; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) #pvFollowBtn { order: 1; background-image: var(--fs-action-btn-active) !important; color: #ffe3fb !important; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) #pvMsgBtn { order: 2; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) #pvCloseFriendBtn { order: 3; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) #pvInviteGroupBtn { order: 4; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) :is(#pvMuteBtn, #pvBlockBtn, #pvReportUserBtn) { order: 5; height: 40px; font-size: 14px !important; opacity: .85; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) #pvMuteBtn { grid-column: 1 / span 1; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) #pvMutualFollowers { color: #cdbba2 !important; font-size: 14px; margin-top: 6px; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_)::after { background-image: var(--fs-ledge-candles) !important; padding-bottom: 15.5% !important; }
+}
+/* other profile: name on the bronze ribbon, status + bio on a dark carved plaque so they read over the arches (owner) */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-info { position: relative; z-index: 2; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) :is(.profile-title, .profile-about) { position: relative; z-index: 2; margin: 0 6px !important; padding: 2px 18px !important;
+    background: rgba(20, 12, 18, .92) !important; font-style: italic; color: #efe2c8 !important; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-title { margin-top: 8px !important; padding-top: 12px !important; border-radius: 10px 10px 0 0; box-shadow: 0 -1px 0 #7a5634; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-about { padding-bottom: 12px !important; border-radius: 0 0 10px 10px; box-shadow: 0 1px 0 #7a5634; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-title + .profile-about { padding-top: 4px !important; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-about:not(.profile-title + .profile-about) { margin-top: 8px !important; padding-top: 12px !important; border-radius: 10px; box-shadow: 0 0 0 1px #7a5634; }
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-name { position: relative; z-index: 3; }
+}
+@media (max-width: 768px) {
+  /* the back arrow stays put while the page scrolls under it: give it the concept's round dark badge so it reads over anything */
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .navbar .nav-logo { width: 44px !important; height: 44px !important; top: calc(env(safe-area-inset-top, 0px) + 38px) !important;
+    background: var(--fs-icon-back) center / 24px no-repeat, var(--fs-back-badge) center / contain no-repeat !important; }
+}
+
+/* empty tarot slot (person without timeline photos): dark night-purple card face inside the gold frame, not an empty hole */
+html body.fs.fs-witchcraft .fs-tl-slot.fs-tl-empty::after { content: ""; display: block !important; position: absolute; left: 7.7%; top: 11.9%; width: 84.2%; height: 78.1%; z-index: 1;
+  background: radial-gradient(circle at 50% 40%, #4a2a6a 0%, #24142f 55%, #140b1a 100%) !important; border-radius: 2px; }
+/* owner: moons looked blurry — lossless art drawn at exactly 1/3 of its pixel size (380x120 → 126.67x40pt) so it maps 1:1 on a 3x screen */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::before { width: 126.667px !important; height: 40px !important; top: -8px !important; background-size: 100% 100% !important; }
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { padding-top: 34px !important; }
+}
