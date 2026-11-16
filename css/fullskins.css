@@ -2667,3 +2667,49 @@ html body.fs.fs-witchcraft :is(.msg-search, .page-search) input { padding-left: 
   html body.fs.fs-witchcraft .navbar .nav-user { align-self: center !important; }
 }
 @media (max-width: 768px) { html body.fs.fs-witchcraft .nav-container::before { transform: translateY(-5px); } }
+/* the field art's top 25% is transparent (visible rows 51–194 of 200): crop it so the drawn bar fills the box exactly
+   and the icons/coin pill centre inside it (owner: "they should all fit in there") */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft .nav-container::before { transform: none !important; height: 48px !important;
+    background: var(--fs-top-bar, var(--fs-field)) center 97% / 100% 140% no-repeat !important; }
+  html body.fs.fs-witchcraft .navbar .nav-coins { height: 32px !important; margin-right: 12px !important; }
+}
+/* full-screen chat: the base mobile body padding (72px + safe area, for the bottom bar) made the page 106pt taller than the
+   screen once the chat opened, so the window scrolled and the fixed chat's input bar fell off the bottom */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft:has(.messages-layout.chat-open) { padding-bottom: 0 !important; }
+}
+/* owner: the big header (moon · logo · icon bar) is HOME ONLY — every other concept page has just its gold title,
+   cobwebs in both top corners, and the bottom bar */
+@media (max-width: 768px) {
+  /* the bottom bar lives inside .navbar: keep it, hide only the header parts */
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .navbar { height: 0 !important; min-height: 0 !important; padding: 0 !important; background: none !important; overflow: visible !important; }
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .navbar::before,
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .nav-container::before,
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .navbar :is(.nav-logo, .mobile-search-btn, .mobile-notif-btn, .nav-music-wrap, .nav-coins, .nav-user) { display: none !important; }
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .page.active { padding-top: calc(env(safe-area-inset-top, 0px) + 6px) !important; }
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .page.active::before { content: ""; position: absolute; left: 0; top: 0; width: 130px; height: 130px; z-index: 0; pointer-events: none;
+    background: var(--fs-cobweb-corner) right top / contain no-repeat; transform: scaleX(-1); opacity: .85; }
+  html body.fs.fs-witchcraft .page.active { position: relative; }
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .page-header { padding-top: 8px !important; }
+  html body.fs.fs-witchcraft:not(:has(#page-home.active)) .page-header h2 { text-align: center; padding-left: 44px !important; }
+}
+/* bottom bar: solid all the way down (owner: no see-through parts, flush with the bottom) */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft .nav-center { background: var(--fs-nav-bar) center top / 100% 100% no-repeat, linear-gradient(#1a1014, #120a0e) left 0 bottom 0 / 100% 72% no-repeat !important; bottom: 0 !important; }
+}
+/* chat (concept chat): gold back arrow, ringed avatar, carved input bar, gold media icons, magenta send */
+html body.fs.fs-witchcraft #msgChat .msg-chat-header { background: linear-gradient(#150d12, #150d12) !important; border-bottom: 2px solid #5a3a2a !important; position: relative; }
+html body.fs.fs-witchcraft #msgChat .msg-chat-header::after { content: ""; position: absolute; right: 0; top: 0; width: 120px; height: 100%; background: var(--fs-cobweb-corner) right top / contain no-repeat; pointer-events: none; }
+html body.fs.fs-witchcraft #msgChat .msg-chat-header::before { content: ""; position: absolute; left: 0; top: 0; width: 120px; height: 100%; background: var(--fs-cobweb-corner) right top / contain no-repeat; transform: scaleX(-1); pointer-events: none; }
+html body.fs.fs-witchcraft #msgChat .msg-back-btn, html body.fs.fs-witchcraft #msgChat .msg-back-btn i { color: #e8c27a !important; background: none !important; position: relative; z-index: 1; }
+html body.fs.fs-witchcraft #msgChat .msg-chat-header img { width: 48px !important; height: 48px !important; padding: 3px; box-sizing: border-box; background: var(--fs-story-ring) center / 100% 100% no-repeat !important; position: relative; z-index: 1; }
+html body.fs.fs-witchcraft #msgChat .msg-chat-header h4 { font-size: 22px !important; position: relative; z-index: 1; }
+html body.fs.fs-witchcraft #msgChat .msg-chat-messages { background: var(--fs-chat-window) center top / 100% auto no-repeat !important; padding-top: calc(100vw * 700 / 1290 * .62) !important; }
+html body.fs.fs-witchcraft #msgChat .msg-chat-input { background: var(--fs-input-bar) center / 100% 100% no-repeat !important; border-top: 0 !important; }
+html body.fs.fs-witchcraft #msgChat .msg-media-btn, html body.fs.fs-witchcraft #msgChat .msg-media-btn i { color: #e8c27a !important; background: none !important; }
+html body.fs.fs-witchcraft #msgChat #sendMsgBtn { background: none !important; border: 0 !important; color: #ff5cf0 !important; filter: drop-shadow(0 0 6px #d23cff); }
+html body.fs.fs-witchcraft #msgChat #sendMsgBtn i { color: #ff5cf0 !important; font-size: 22px; }
+html body.fs.fs-witchcraft #msgChat #msgInput { font-family: var(--fs-font) !important; font-size: 17px !important; }
+html body.fs.fs-witchcraft .msg-bubble .msg-time, html body.fs.fs-witchcraft .msg-bubble small { color: #cdbba2 !important; }
+html body.fs.fs-witchcraft .search-tab { display: flex !important; align-items: center; justify-content: center; text-align: center !important; }
