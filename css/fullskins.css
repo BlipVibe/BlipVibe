@@ -5965,3 +5965,34 @@ html body.fs.fs-superhero[data-fs-variant="villains"] :is(.search-tab.active, .f
 html body.fs.fs-superhero[data-fs-variant="villains"] .featured-skin-banner :is(.btn, .featured-buy-btn, button) { -webkit-text-fill-color: #f4ffee !important; }
 html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .profile-name { margin-top: 40px !important; }
 html body.fs.fs-superhero .fsk-body .btn { border-image: var(--fs-price-pill) 45 60 fill / 9px 16px stretch !important; }
+/* QA 4 (Network/Search rows): the Follow plaque sized to its word so names have room (Black Ops One runs wide) */
+html body.fs.fs-superhero :is(#page-profiles, #page-search) .profile-follow-btn { min-width: 0 !important; font-size: 14px !important; padding: 2px 0 !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(.join-group-btn, .suggestion-follow-btn, .follow-btn, .profile-follow-btn, #groupsSections .group-card-actions .btn, .fsk-body .btn, .fsk-takeoff) { font-size: 13px !important; letter-spacing: 0 !important; }
+/* story viewer (concept story): name + time in the header, reply on the story field, reactions in the rendition's orbs, send button */
+html body.fs.fs-superhero .story-header { padding: 14px 16px 10px !important; gap: 12px; }
+html body.fs.fs-superhero .story-header-avatar { width: 52px !important; height: 52px !important; padding: 7px; box-sizing: border-box; background: var(--fs-story-ring) center / 100% 100% no-repeat; border-radius: 50%; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .story-header-avatar { padding: 4px; }
+html body.fs.fs-superhero .story-header strong { font: 400 21px var(--sh-tfont) !important; letter-spacing: var(--sh-tspace); color: #fff !important; text-shadow: 1px 1px 0 #000, 0 0 4px #000; }
+html body.fs.fs-superhero .story-header strong + span { display: block; color: #eee !important; text-shadow: 0 0 3px #000; }
+html body.fs.fs-superhero .story-input-bar { flex-wrap: wrap; padding: 10px 14px calc(12px + env(safe-area-inset-bottom, 0px)) !important; gap: 8px; align-items: center; }
+html body.fs.fs-superhero .story-reactions-row { order: -1; width: 100%; justify-content: center; gap: 12px; margin: 0 0 4px !important; }
+html body.fs.fs-superhero .story-react-btn { width: 46px; height: 46px; font-size: 22px !important; border: 0 !important; border-radius: 50% !important; background: var(--fs-round-btn) center / contain no-repeat !important; }
+html body.fs.fs-superhero .story-comment-input { flex: 1 1 0; min-width: 0; height: 50px; border: solid transparent !important; border-width: 12px 24px !important; border-image: var(--fs-story-field) 55 75 fill / 12px 24px stretch !important;
+  border-radius: 0 !important; background: none !important; font: 700 16px var(--sh-bfont) !important; color: var(--sh-ink) !important; padding: 0 2px !important; box-sizing: border-box; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .story-comment-input { color: #eef2ea !important; }
+html body.fs.fs-superhero .story-send-btn { width: 48px; height: 48px; flex: 0 0 48px; border: 0 !important; background: var(--fs-send-btn) center / contain no-repeat !important; color: transparent !important; }
+/* create post: Publish fits its word */
+html body.fs.fs-superhero #cpmPublish { flex: 0 0 auto !important; min-width: 0 !important; max-width: none !important; font-size: 16px !important; padding: 2px 4px !important; }
+html body.fs.fs-superhero .cpm-footer :is(button, .btn) { flex-shrink: 0; }
+/* group page (concept group-page): the cover in the group cover frame, the group picture in the rounded-square frame
+   (not the profile's winged ring), name on the banner, stats panel, Join / Leave plaques */
+@media (max-width: 768px) {
+  html body.fs.fs-superhero #gvCoverBanner { position: relative; height: 170px !important; border-radius: 0 !important; margin: 0 4px !important; overflow: visible !important; background-size: cover !important; background-position: center !important; }
+  html body.fs.fs-superhero #gvCoverBanner::after { content: ""; position: absolute; inset: -6px; pointer-events: none; z-index: 1; border: solid transparent; border-width: 16px; border-image: var(--fs-group-cover-frame) 60 / 16px stretch; }
+}
+html body.fs.fs-superhero #gvProfileCard .profile-avatar-wrap { width: 112px !important; height: 112px !important; margin: -70px auto 0 !important; border-radius: 8px !important; }
+html body.fs.fs-superhero #gvProfileCard .profile-avatar-wrap::after { inset: -9% !important; background: var(--fs-group-avatar-frame) center / 100% 100% no-repeat !important; }
+html body.fs.fs-superhero #gvProfileCard .profile-avatar { border-radius: 6px !important; }
+html body.fs.fs-superhero #gvProfileCard .profile-name { margin-top: 12px !important; }
+html body.fs.fs-superhero #gvProfileCard .profile-stats > .stat + .stat { background: none !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #cpmPublish { font-size: 13px !important; letter-spacing: 0 !important; }

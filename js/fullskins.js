@@ -211,7 +211,7 @@
     fonts: 'https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap'
   };
   FULL_SKINS.superhero = {
-    name: 'Superhero', dark: false, ink: '#1a1a1a', muted: '#4a4a52', accent: '#e8261c', wip: true,
+    name: 'Superhero', dark: false, ink: '#1a1a1a', muted: '#4a4a52', accent: '#e8261c',
     font: "'Comic Neue', sans-serif", titleFont: "'Luckiest Guy', cursive",
     timeline: 3, avatar: 'center', slice: 15, edge: 16,
     // owner (Nov 16): "do heroes and villains … heroes should look much different than villains". Two renditions, each

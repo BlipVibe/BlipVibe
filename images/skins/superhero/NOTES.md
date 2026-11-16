@@ -1,6 +1,6 @@
 # Superhero — build notes
 
-**Status (Nov 16 2026): WIP** on branch `claude/superhero-skin-8cfc5b` (`wip: true`, assets not whitelisted yet).
+**Status (Nov 16 2026): SHIPPED** (owner: "when done ship everything"; `wip` removed, assets whitelisted in `.gitignore`).
 Process and owner rules for every skin: `../README.md`, `../scrapbook/NOTES.md`, `../good-witch/NOTES.md`.
 
 ## Owner direction
@@ -62,3 +62,13 @@ Good Witch owns the circle reveal from the button. So Superhero uses none of tho
 ## Log
 - Nov 16: concepts painted + approved; crops; kit brief → Codex (4 parallel jobs: heroes A/B, villains A/B); engine entry,
   toggle, animations and CSS written ahead of the art.
+- Nov 16: both kits painted (kit/heroes, kit/villains) and converted; CSS fitted to the art with measured windows
+  (`prototypes/tools/superhero_windows.py`). Simulator QA, both renditions: Home, post (liked / disliked ON art), Groups,
+  Skins, Profile, other profile, Network, Notifications, Search, Messages, chat, account menu (Logout reachable), comments
+  (Heroes), create post, story viewer, group page; swap both ways + equip animation. Fixes along the way: 9-slices whose
+  top + bottom slices met in the middle (blank Edit Profile / Follow), `content:""` on the timeline <img> blanked the
+  photos in WebKit, light lettering on Villains' deep-green pieces, nav labels never truncate, Saved/Notifications tabs
+  hidden from the bar. Shipped.
+- Leftovers / ideas: Villains `profile-scene` came out as an empty frame (the lair wall reads fine behind it);
+  Villains `react-orb` has no disc (unused — story reactions use round-btn); group cover frame not visible on a group
+  with no cover photo; Villains comments modal not screenshotted (same CSS as Heroes).

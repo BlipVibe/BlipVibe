@@ -66,4 +66,7 @@ images/skins/**
 !images/skins/heavens-light/
 !images/skins/heavens-light/assets/
 !images/skins/heavens-light/assets/**
+!images/skins/superhero/
+!images/skins/superhero/assets/
+!images/skins/superhero/assets/**
 __pycache__/
