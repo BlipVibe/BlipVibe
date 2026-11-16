@@ -6540,3 +6540,11 @@ html body.fs.fs-blood-moon .modal-content :is(hr, .modal-header, .modal-footer) 
 html body.fs.fs-blood-moon .modal-content :is(textarea, input)::placeholder { color: var(--bm-paper-soft) !important; }
 html body.fs.fs-blood-moon .modal-content :is(textarea, input) { color: var(--bm-paper-ink) !important; font-size: 16px !important; }
 html body.fs.fs-blood-moon .post-input-fake { color: var(--bm-soft) !important; font-size: 16px !important; }
+html body.fs.fs-blood-moon :is(.post-create-avatar, .create-post-avatar, .post-input-avatar) { background: var(--fs-avatar-ring-small) center / 100% 100% no-repeat, #2a0c10 !important; border: 0 !important; box-shadow: none !important; padding: 3px !important; box-sizing: border-box; }
+html body.fs.fs-blood-moon .card.post-create-bar .post-input-fake.post-input-fake { color: var(--bm-title) !important; opacity: .82 !important; }
+/* concept posts: plain silver photo frame (no crest charms), author row close to the top of the frame */
+html body.fs.fs-blood-moon .post-media-grid[class*="pm-count"] .pm-thumb::before, html body.fs.fs-blood-moon .feed-post .post-header::before { display: none !important; }
+html body.fs.fs-blood-moon .feed-post.feed-post.feed-post, html body.fs.fs-blood-moon .feed-post.feed-post.feed-post:is([data-fs-v]) { padding: 2px 4px 2px !important; }
+html body.fs.fs-blood-moon .feed-post .post-header { padding: 0 !important; margin-bottom: 6px !important; }
+html body.fs.fs-blood-moon .feed-post .post-header .post-avatar { width: 44px !important; height: 44px !important; background: var(--fs-avatar-ring-small) center / 100% 100% no-repeat !important; }
+html body.fs.fs-blood-moon .post-username { font-size: 18px !important; }
