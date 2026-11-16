@@ -9,10 +9,39 @@ gentle linen-curtain shadows. Minimal, airy, tidy, quietly luxe. Lots of breathi
 It must still be PAINTED, REAL MATERIAL — not flat, not generic app UI, not CSS-looking. Every row, card, pill, button,
 bubble and bar is an object of that world: soft cream linen or bouclé fabric with a fine weave, honed travertine or
 limestone tiles with subtle pits and veins, a thin brushed-gold edge, ribbed ceramic, frosted glass. Soft realistic
-contact shadows. Calm centres where text sits. Text = deep espresso-brown ink on cream, readable. Typography:
-an elegant thin serif (like a boutique café or skincare brand) for titles and the wordmark, a clean sans for small text.
+contact shadows. Calm centres where text sits. Text = deep espresso-brown ink on cream, readable.
 NO hot pink, NO neon, NO marble-and-rosé meme clutter, NO "Live Laugh Love" signs. Hashtag "#" is the brand mark
-(the Home tab icon and the wordmark "#BlipVibe").
+(the Home tab icon and the wordmark "#blipvibe").
+
+## MUST LOOK COMPLETELY DIFFERENT FROM THE OTHER BLIPVIBE SKINS (owner rule)
+Existing skins (do not resemble any of them in layout, shapes, nav, icons, type or photo framing):
+Scrapbook (torn paper collage, tape, handwriting), Anime Blaze (black/red comic panels), Witchcraft (dark purple gothic
+arches, potion bottles), Good Witch (lilac clouds, constellations), Vaporwave (90s OS windows, Start taskbar),
+Heaven's Light (ivory marble, ORNATE GOLD laurels/wings, temple COLUMNS and ARCHES, ALL-CAPS Roman serif, gold pills),
+Blood Moon (gothic red/silver filigree), Superhero (comic city). #Basic is the closest in colour to Heaven's Light, so:
+- NO arches, NO columns, NO laurels, NO wings, NO ornate gold filigree, NO all-caps titles, NO Roman serif. Gold only
+  as a hairline on a cup rim or an earring in the flat-lay.
+- TYPE: everything lowercase. Titles and wordmark in a soft, rounded, modern geometric sans in lowercase (like a
+  minimalist skincare / iced-coffee brand), with small italic-serif accents for a word here and there ("hey, *you*").
+- ICONS: thin single-weight espresso LINE icons, rounded ends, minimalist (like a skincare label), no fills except the
+  liked/disliked ON states and the active tab.
+- PANELS: soft rounded SQUIRCLE cards of cream bouclé / oat linen fabric with a tiny stitched seam, resting on light
+  OAK wood trays or honed travertine slabs — no frames-with-ornament, no bevels, no paper.
+- HOME / PROFILE LAYOUT — the "SHELFIE": the cover area is a light-oak floating SHELF on a warm white limewash wall.
+  The 3 timeline/cover photos are prints in thin light-oak frames with wide white mats, of DIFFERENT sizes (one tall,
+  one square, one small landscape), LEANING casually on the shelf, overlapping a little, with a ribbed vase of dried
+  pampas and a candle among them. The profile picture sits in a round, thick ribbed-CERAMIC dish/ring frame on the
+  shelf's left end. The name/bio/stats card is a folded tent "PLACE CARD" (like a café table card) standing on the
+  shelf / just under it, name in lowercase with an italic accent.
+- DAILY QUESTS = a "daily routine" checklist on a linen notepad with round tick circles and the little latte-cup
+  progress icons; rewards as tiny ceramic coin chips.
+- BOTTOM NAV: a FLOATING rounded oak TRAY (not a full-width bar) hovering above the bottom edge, holding 5 thin line
+  icons; the active tab sits in a little round ceramic saucer with a soft shadow, and only the active tab shows its
+  lowercase label.
+- POSTS: photo with soft rounded corners inset on a cream linen card with generous margins; actions as thin line icons
+  in a row; captions lowercase. Chat bubbles = soft rounded linen pebbles (received oat, sent blush/caramel).
+- Overall: airy negative space, soft daylight shadows from a window, nothing ornate — the opposite of the busy,
+  ornamented skins.
 
 Layout reference (copy the PHONE LAYOUT and the SCREEN LIST, not the look): the old #Basic sheets
 `/Users/danemuller/Developer/BlipVibe/images/skins/basic/concept.png` (sheet 1, 7 phones) and
@@ -60,11 +89,11 @@ Save to `images/skins/basic/` (repo-relative, in the current repo `-C` folder):
 Also `_concepts_sheet.png`: all six small, side by side.
 
 ## Real app features every concept must show (the app keeps these, the art restyles them)
-- Top bar on EVERY page. Home top bar: small round profile photo, "#BlipVibe" wordmark, search, bell with count, music
+- Top bar on EVERY page. Home top bar: small round profile photo, "#blipvibe" wordmark, search, bell with count, music
   note, coin pill "2,450 +", the Barista Bar cup button and the small MUG BUTTON (rendition switch).
 - Home ALWAYS shows the cover picture area + the profile picture + the profile card (name, bio, following/followers).
-- Profile: 3 cover/timeline photos in a painted frame (e.g. arched travertine niches or linen-matted gallery frames with
-  thin gold edges), a framed round profile picture in front, name, bio, stats, Edit Profile button.
+- Profile: the same "shelfie" — 3 timeline photos in thin oak frames with white mats leaning on the oak shelf (no arches);
+  the round ribbed-ceramic profile picture in front, the place-card with name, bio, stats, and an Edit Profile button.
 - Home: Daily Quests panel with 3 quests (React to 5 posts 3/5 +5, Send 3 messages 1/3 +10, Like 5 posts 4/5 +5) each with
   a little latte-cup progress icon that fills up (empty glass → half → full latte), tabs Following / Discover / My Posts,
   post cards.
