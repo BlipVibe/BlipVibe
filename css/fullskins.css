@@ -3311,3 +3311,32 @@ html body.fs.fs-good-witch .post-input-fake { min-width: 0; }
 html body.fs.fs-good-witch :is(#profileCard, .pv-profile-card)::after { padding-bottom: 30% !important; margin: -26px -8px 0 !important; background-size: 92% auto !important; }
 html body.fs.fs-good-witch .share-preview :is(.share-preview-name, strong, .shared-post-author:not(img)) { color: var(--gw-title) !important; font-family: var(--fs-title-font) !important; font-weight: 700 !important; opacity: 1 !important; }
 html body.fs.fs-good-witch .share-preview .share-preview-time { color: var(--gw-soft) !important; }
+/* readability (owner: text too light): body text plum on the light glass, never the app's pale primary */
+html body.fs.fs-good-witch :is(.post-description, .post-description *, .share-preview-text, .share-preview-text *, .post-tags, .comment-text, .notif-text, .msg-contact-preview) { color: var(--gw-ink) !important; opacity: 1 !important; }
+html body.fs.fs-good-witch .share-preview .share-preview-name, html body.fs.fs-good-witch .share-preview strong.shared-post-author { color: var(--gw-title) !important; }
+html body.fs.fs-good-witch :is(.post-time, .share-preview-time, .msg-contact-time, .group-members, .profile-card-bio, .post-meta) { color: var(--gw-soft) !important; opacity: 1 !important; }
+html body.fs.fs-good-witch .post-badges :is(span, .post-badge) { background: rgba(255,255,255,.7) !important; color: var(--gw-title) !important; border: 1px solid rgba(201,163,92,.6) !important; }
+html body.fs.fs-good-witch .post-badges :is(span, .post-badge) i { color: var(--gw-accent) !important; }
+html body.fs.fs-good-witch .msg-bubble.sent, html body.fs.fs-good-witch .msg-bubble.sent * { color: var(--gw-title) !important; }
+html body.fs.fs-good-witch[data-fs-variant="night"] .msg-bubble.sent, html body.fs.fs-good-witch[data-fs-variant="night"] .msg-bubble.sent * { color: #fff !important; }
+body.fs-good-witch:not([data-fs-variant="night"]) { --gw-soft: #654c80; }
+html body.fs.fs-good-witch #newGroupDmBtn > div:first-child i { color: var(--gw-accent) !important; }
+/* readability pass 2 (owner: "still too hard to read — thicker font?"): Cormorant is hairline at 400/500, so every
+   Good Witch text is 600+ and a touch larger; sent bubble = deep plum (6.6:1 on its lavender art, white was 2.6:1) */
+body.fs-good-witch { --gw-deep: #2e0f3d; }
+body.fs-good-witch[data-fs-variant="night"] { --gw-deep: #ffffff; }
+html body.fs.fs-good-witch :is(p, span, a, div, li, label, input, textarea, button, small, .action-btn, .msg-bubble, .msg-bubble *, .post-description, .msg-contact-preview, .notif-text, .comment-text) { font-weight: 600; }
+html body.fs.fs-good-witch :is(h1, h2, h3, h4, h5, .profile-name, .post-username, .msg-contact-name, .stat-count, .fsk-name, .card-heading) { font-weight: 700 !important; }
+html body.fs.fs-good-witch .msg-bubble { font-size: 18px !important; }
+html body.fs.fs-good-witch .msg-bubble, html body.fs.fs-good-witch .msg-bubble * { color: var(--gw-deep) !important; }
+html body.fs.fs-good-witch .msg-bubble.sent, html body.fs.fs-good-witch .msg-bubble.sent * { color: var(--gw-deep) !important; }
+html body.fs.fs-good-witch .msg-read-receipt, html body.fs.fs-good-witch .msg-read-receipt * { color: var(--gw-deep) !important; opacity: .85; }
+html body.fs.fs-good-witch :is(.view-more-link, .view-all-link, a.view-more-link) { color: var(--gw-accent) !important; font-weight: 700 !important; }
+body.fs-good-witch:not([data-fs-variant="night"]) { --gw-accent: #6d3fc0; }
+html body.fs.fs-good-witch .featured-skin-banner :is(h4 i, .featured-timer i) { font-family: "Font Awesome 6 Free", "Font Awesome 6 Pro", "FontAwesome" !important; font-weight: 900 !important; color: var(--gw-accent) !important; }
+html body.fs.fs-good-witch .featured-skin-banner .featured-timer i.far { font-weight: 400 !important; }
+html body.fs.fs-good-witch .featured-skin-banner .btn { color: var(--gw-deep) !important; }
+/* the middle timeline photo sits in FRONT of the two side ones (owner) */
+html body.fs.fs-good-witch :is(.fs-tl-slot-1, .fs-tl-slot-3) { z-index: 1 !important; }
+html body.fs.fs-good-witch .fs-tl-slot-2 { z-index: 3 !important; }
+@media (max-width: 768px) { html body.fs.fs-good-witch .nav-center .nav-link { color: var(--gw-title) !important; font-weight: 700 !important; } html body.fs.fs-good-witch .nav-center .nav-link.active { color: var(--gw-accent) !important; } }
