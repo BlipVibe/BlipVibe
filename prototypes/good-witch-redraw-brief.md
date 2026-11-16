@@ -98,6 +98,16 @@ notif-purchase (cart) — lavender.
 | owl-crystal.png | 700x600 | post screen deco: white owl perched on a crystal ball with pink crystals |
 | moon-clouds.png | 1290x500 | messages/chat deco: crescent moon resting in pink clouds |
 
+## 6a. NIGHT CONCEPT FIRST (owner: "make sure to get a concept for the night mode")
+Before drawing any night pieces, make two night concept sheets — the SAME layout, screens, content and composition as
+the day sheets, re-lit for night — and STOP for the owner's approval:
+- `images/skins/good-witch/concept-night.png` ← night version of `concept-v1-approved.png` (1100x1429)
+- `images/skins/good-witch/concept-night-2.png` ← night version of `concept-2.png` (1100x1429)
+Night look: midnight indigo→violet sky with stars and a glowing moon, moonlit clouds, smoky dark-violet frosted glass
+panels, the same warm gold filigree and crescents, lighter lavender text/icons for contrast, softly glowing crystals,
+owl and cat in moonlight. Every screen, button, row and decoration in the same place as the day sheet.
+The night PIECES (section 6) are then traced from these approved night sheets, not invented.
+
 ## 6. NIGHT version (owner: "because it's so bright we need 2 renditions — a night time version and the white version")
 After the day set above is done, make a NIGHT set with the SAME file names into `kit/gw-night/`. Same shapes,
 ornaments, gold filigree and composition — only the lighting changes:
