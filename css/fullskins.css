@@ -4357,3 +4357,11 @@ html body.fs.fs-vaporwave .fs-tl-slot.fs-tl-empty::before { background: var(--fs
   html body.fs.fs-vaporwave #page-profile-view .pv-actions #pvInviteGroupBtn i { display: inline !important; }
 }
 @media (max-width: 768px) { html body.fs.fs-vaporwave #page-profile-view .pv-actions :is(#pvBlockBtn, #pvReportUserBtn) { grid-column: span 3 !important; } }
+/* owner (Nov 16): the Start menu must not be see-through — the Modern glass panel art let the page show through.
+   A solid layer is painted under the panel art (isolation keeps it inside the menu). */
+.fs-start-menu { isolation: isolate; --sm-solid: #d4d4dc; }
+body[data-fs-variant="modern"] .fs-start-menu { --sm-solid: #e3f1fd; }
+body[data-fs-variant="retro-dark"] .fs-start-menu { --sm-solid: #26222e; }
+body[data-fs-variant="modern-dark"] .fs-start-menu { --sm-solid: #10264a; }
+.fs-start-menu::before { content: ""; position: absolute; inset: -4px; z-index: -1; background: var(--sm-solid); }
+body[data-fs-variant^="modern"] .fs-start-menu::before { inset: -6px; border-radius: 14px; }
