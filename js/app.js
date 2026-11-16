@@ -5958,6 +5958,9 @@ $('#searchPageQuery').addEventListener('focus',function(){
     if(!this.value.trim()){var sr=$('#searchResults');if(sr) showSearchHistory(sr);}
 });
 
+// Nicknames are capped so they fit name banners/ribbons in every skin (owner, Nov 15 2026)
+var NICKNAME_MAX=20;
+
 // Edit Profile
 $('#editProfileBtn').addEventListener('click',function(e){
     e.preventDefault();
@@ -5983,7 +5986,7 @@ $('#editProfileBtn').addEventListener('click',function(e){
     html+='<div style="flex:1;"><label>First Name</label><input type="text" id="editFirstName" value="'+escapeHtml(firstName)+'" placeholder="First name"></div>';
     html+='<div style="flex:1;"><label>Last Name</label><input type="text" id="editLastName" value="'+escapeHtml(lastName)+'" placeholder="Last name"></div>';
     html+='</div>';
-    html+='<label>Nickname <span style="font-weight:normal;color:var(--gray);">(optional)</span></label><input type="text" id="editNickname" value="'+escapeHtml(nickname)+'" placeholder="Nickname">';
+    html+='<label>Nickname <span style="font-weight:normal;color:var(--gray);">(optional, up to '+NICKNAME_MAX+' characters)</span></label><input type="text" id="editNickname" value="'+escapeHtml(nickname)+'" placeholder="Nickname" maxlength="'+NICKNAME_MAX+'"><div id="nicknameCount" style="font-size:12px;color:var(--gray);text-align:right;margin:-4px 0 8px;"></div>';
     // Status, Bio, Private Followers — unchanged
     var statusEmojis=['😊','😎','🤩','😴','😤','🥳','🤔','😂','❤️','🔥','💀','👻','🎮','📚','💻','🎵','✨','🌙'];
     html+='<label>Status</label><div class="status-emoji-picker" id="statusEmojiPicker">';
@@ -6006,6 +6009,9 @@ $('#editProfileBtn').addEventListener('click',function(e){
         $('#namePreviewText').textContent=preview;
     }
     updateNamePreview();
+    function updateNicknameCount(){var c=Array.from($('#editNickname').value).length;$('#nicknameCount').textContent=c+'/'+NICKNAME_MAX;}
+    updateNicknameCount();
+    $('#editNickname').addEventListener('input',updateNicknameCount);
     ['editFirstName','editLastName','editNickname'].forEach(function(id){
         document.getElementById(id).addEventListener('input',updateNamePreview);
     });
@@ -6026,6 +6032,7 @@ $('#editProfileBtn').addEventListener('click',function(e){
         var ln=$('#editLastName').value.trim();
         var nn=$('#editNickname').value.trim();
         if(looksLikeEmail(fn)||looksLikeEmail(ln)||looksLikeEmail(nn)){showToast('Names cannot be email addresses');return;}
+        if(Array.from(nn).length>NICKNAME_MAX){showToast('Nickname can be up to '+NICKNAME_MAX+' characters');return;}
         var mode=document.querySelector('input[name="displayMode"]:checked').value;
         var uname=currentUser?currentUser.username:'User';
         var n=computeDisplayName(fn,ln,nn,mode,uname);

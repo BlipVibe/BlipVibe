@@ -54,4 +54,7 @@ images/skins/**
 !images/skins/anime-blaze/
 !images/skins/anime-blaze/assets/
 !images/skins/anime-blaze/assets/**
+!images/skins/witchcraft/
+!images/skins/witchcraft/assets/
+!images/skins/witchcraft/assets/**
 __pycache__/

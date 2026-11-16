@@ -2905,3 +2905,8 @@ html body.fs.fs-witchcraft .notif-item { gap: 10px; align-items: center; }
 html body.fs.fs-witchcraft .notif-item :is(.notif-text, p) { color: #efe2c8 !important; font-size: 17px !important; }
 html body.fs.fs-witchcraft .notif-item :is(.notif-time, small) { color: #cdb894 !important; }
 html body.fs.fs-witchcraft .notif-item .fa-chevron-down { color: #e8c27a !important; }
+/* Edit Profile sheet: the "Show my name as" radios overlapped their labels */
+html body.fs.fs-witchcraft #editProfileForm input[type="radio"] { position: static !important; appearance: auto !important; -webkit-appearance: radio !important; width: 18px !important; height: 18px !important; margin: 0 !important; accent-color: #c94cff; flex: 0 0 auto; }
+html body.fs.fs-witchcraft #editProfileForm label:has(> input[type="radio"]) { position: static !important; display: inline-flex !important; align-items: center; gap: 8px !important; color: #efe2c8 !important; }
+html body.fs.fs-witchcraft .status-emoji-btn { border-radius: 10px !important; }
+html body.fs.fs-witchcraft .status-emoji-btn.active { box-shadow: 0 0 0 2px #c94cff !important; border-color: transparent !important; }

@@ -74,7 +74,7 @@
     fonts: 'https://fonts.googleapis.com/css2?family=Bangers&family=Barlow+Semi+Condensed:ital,wght@0,500;0,700;1,700&display=swap'
   };
   FULL_SKINS.witchcraft = {
-    name: 'Witchcraft', wip: true, dark: true, ink: '#efe4d6', muted: '#bfae9c', accent: '#c94cff',
+    name: 'Witchcraft', dark: true, ink: '#efe4d6', muted: '#bfae9c', accent: '#c94cff',
     font: "'Cormorant Garamond', serif", titleFont: "'Cormorant Garamond', serif",
     timeline: 4, avatar: 'center', slice: 15, edge: 16,
     // traced from the approved concept (prototypes/witchcraft-redraw-brief.md → kit/redraw-a + redraw-b)
