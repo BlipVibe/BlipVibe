@@ -6771,3 +6771,19 @@ html body.fs.fs-blood-moon .fs-bm-btn.is-silver i { background-image: var(--fs-t
 /* Playfair Display (Blood Moon's own title face) runs wider than Cormorant: page titles a step smaller */
 @media (max-width: 768px) { html body.fs.fs-blood-moon:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { font-size: 30px !important; } }
 html body.fs.fs-blood-moon .quest-panel-header h4 { font-size: 23px !important; }
+/* inline greys from the app (e.g. "No comments yet") follow the dark theme's light pink: on parchment pop-ups use the paper ink */
+html body.fs.fs-blood-moon .modal-content :is(p, span, div)[style*="color"]:not(.btn):not(.btn *), html body.fs.fs-blood-moon #noCommentsMsg { color: var(--bm-paper-soft) !important; }
+/* pop-up TEXT AREAS sit on the light parchment text-area art: dark ink + placeholder (single-line fields stay light-on-dark) */
+html body.fs.fs-blood-moon .modal-content textarea { color: var(--bm-paper-ink) !important; }
+html body.fs.fs-blood-moon .modal-content textarea::placeholder { color: var(--bm-paper-soft) !important; opacity: 1 !important; }
+/* group names wrap to two lines instead of truncating (concept shows full names) */
+html body.fs.fs-blood-moon #groupsSections .group-card-body h4 { white-space: normal !important; overflow: visible !important; text-overflow: clip !important; display: -webkit-box !important; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.1 !important; font-size: 19px !important; }
+/* group page (concept group-page): the group picture overlaps the bottom of the banner (not the profile composition's offset),
+   a normal-size title, Leave Group on the dark button */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon #gvProfileCard .profile-avatar-wrap { width: 112px !important; height: 103px !important; margin: -64px auto 8px !important; }
+  html body.fs.fs-blood-moon #gvProfileCard .profile-avatar-wrap::after { left: -19.4px !important; top: -29.5px !important; width: 152.6px !important; height: 152.6px !important; }
+}
+html body.fs.fs-blood-moon #gvProfileCard :is(.profile-name, h2, h3) { font-size: clamp(24px, 7vw, 30px) !important; line-height: 1.1 !important; }
+html body.fs.fs-blood-moon #gvProfileCard .pv-actions .btn:is([id*="leave" i], [class*="leave" i]) { border-image-source: var(--fs-action-btn) !important; }
+html body.fs.fs-blood-moon #gvProfileCard i.fa-coins { color: var(--bm-gold) !important; }
