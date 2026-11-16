@@ -29,7 +29,9 @@ BEGIN
     -- full skins: the photos the owner picked for their timeline frames (Nov 2026)
     'fsTimelinePhotos', sd->'fsTimelinePhotos',
     -- full skins: colour option per skin, e.g. {"anime-blaze":"blue"} (Nov 2026)
-    'fsVariants', sd->'fsVariants'
+    'fsVariants', sd->'fsVariants',
+    -- full skins: zoom / position of each photo inside its frame, per skin (photo positioner, Nov 16 2026)
+    'fsPhotoPos', sd->'fsPhotoPos'
   );
 END;
 $$;

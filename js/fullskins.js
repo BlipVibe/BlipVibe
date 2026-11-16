@@ -995,6 +995,7 @@
     }
     removeRendered();
     active = null;
+    if (window.BlipPhotoPos) window.BlipPhotoPos.render();   // avatars back to the plain (uncropped) photo
     unwatchPosts();
     if (wasActive) restoreExtras();
   }
@@ -1065,16 +1066,19 @@
   // falling back to the cover again (spec: "Profile timeline photos").
   function timelinePhotos(coverEl, count) {
     var urls = [];
-    // the CSS hides the original cover with !important, so read the inline style the app set
-    var bg = coverEl && coverEl.style.backgroundImage;
-    var m = bg && bg.match(/url\(["']?(.*?)["']?\)/);
-    if (m) urls.push(m[1]);
-    else if (coverEl && coverEl.id === 'timelineCover' && data().cover()) urls.push(data().cover());
     // own photos only on your own timeline: home cover, or the profile view when it's you
     // (app.js shows #pvCoverEditBtn only on your own profile)
     var editBtn = document.getElementById('pvCoverEditBtn');
     var own = coverEl && (coverEl.id === 'timelineCover' ||
       (coverEl.id === 'pvCoverBanner' && editBtn && editBtn.style.display !== 'none'));
+    // the cover in frame 1: the same crop on every device (the 4:3 one when there is one), so a saved zoom / position
+    // looks the same on a phone and a desktop and to everyone viewing
+    var same = own ? data().cover() : (coverEl && coverEl.id === 'pvCoverBanner' && data().viewedCover ? data().viewedCover() : null);
+    // otherwise the CSS hides the original cover with !important, so read the inline style the app set
+    var bg = coverEl && coverEl.style.backgroundImage;
+    var m = bg && bg.match(/url\(["']?(.*?)["']?\)/);
+    if (m) urls.push(same || m[1]);
+    else if (coverEl && coverEl.id === 'timelineCover' && data().cover()) urls.push(data().cover());
     if (own) {
       (data().photos() || []).filter(function (p) { return p && p.src && !p.isVideo; })
         .forEach(function (p) { if (urls.length < count && urls.indexOf(p.src) < 0) urls.push(p.src); });
@@ -1094,6 +1098,7 @@
     if (!coverEl || !cfg) return;
     var wrap = document.createElement('div');
     wrap.className = 'fs-rendered fs-timeline fs-tl-' + cfg.timeline;
+    var placed = [];
     timelinePhotos(coverEl, cfg.timeline).forEach(function (src, i) {
       var slot = document.createElement('div');
       slot.className = 'fs-tl-slot fs-tl-slot-' + (i + 1);
@@ -1101,11 +1106,15 @@
         slot.className += ' fs-tl-own';
         slot.setAttribute('role', 'button');
         slot.setAttribute('aria-label', 'Choose photo ' + (i + 1));
-        (function (n) { slot.addEventListener('click', function (e) { e.stopPropagation(); data().pick(n); }); })(i);
+        (function (n, sl) { sl.addEventListener('click', function (e) {
+          e.stopPropagation();
+          if (window.BlipPhotoPos) window.BlipPhotoPos.slotMenu(sl, n, e); else data().pick(n);   // Move & zoom / Change photo
+        }); })(i, slot);
       }
       if (src) {
         var img = document.createElement('img');
-        img.src = src; img.alt = ''; img.loading = 'lazy';
+        img.alt = ''; img.loading = 'lazy';
+        if (window.BlipPhotoPos) placed.push([slot, img, src, i]); else img.src = src;   // src set once the frame is on the page
         slot.appendChild(img);
       } else {
         slot.className += ' fs-tl-empty';
@@ -1118,6 +1127,8 @@
       wrap.appendChild(slot);
     });
     coverEl.appendChild(wrap);
+    // saved zoom / position (photopos.js): crops each photo to exactly what its frame should show
+    placed.forEach(function (q) { window.BlipPhotoPos.timelineSlot(q[0], q[1], q[2], q[3], coverEl); });
   }
 
   // Quest graphic state: 0 / 50 / 100 from the bar width the app already renders.
@@ -1169,13 +1180,56 @@
       });
     });
   }
+  // Someone else's profile: every concept shows Follow · Message · Close Friend · Invite to Group, with Mute / Block /
+  // Report in a ⋯ menu at the top right. The app's own buttons stay (they carry the handlers) but are hidden; the
+  // menu items click them, and are rebuilt on each open so Mute/Unmute and Block/Unblock read right.
+  var PV_MENU = ['pvMuteBtn', 'pvBlockBtn', 'pvReportUserBtn'];
+  function wrapPvMore() {
+    var page = document.getElementById('page-profile-view'), follow = document.getElementById('pvFollowBtn');
+    // most concepts put ⋯ at the cover's top right; Vaporwave's puts it in the button row
+    var inRow = active === 'vaporwave', acts = follow && follow.closest('.pv-actions');
+    // (cover mode: the ⋯ hangs off the page at the cover's top right, so it stacks above the profile picture too)
+    var cover = document.getElementById('pvCoverBanner'), host = inRow ? acts : (cover && page);
+    if (page && (!follow || !page.contains(follow))) {   // your own profile (or a stale one): no ⋯
+      var old = page.querySelector('.fs-pv-more'); if (old) old.remove();
+    }
+    if (!page || !follow || !host || !page.contains(follow)) return;
+    // the app redraws the buttons (follow/unfollow, mute…): re-hide each time, build the ⋯ once per render
+    PV_MENU.forEach(function (id) { var b = document.getElementById(id); if (b) b.classList.add('fs-pv-hidden'); });
+    if (page.querySelector('.fs-pv-more')) return;
+    var wrap = document.createElement('div'), btn = document.createElement('button'), menu = document.createElement('div');
+    wrap.className = 'fs-pv-more';
+    btn.type = 'button'; btn.className = 'fs-pv-more-btn' + (inRow ? ' btn btn-outline' : ''); btn.setAttribute('aria-label', 'More: mute, block, report');
+    if (inRow) btn.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
+    menu.className = 'post-dropdown fs-pv-menu';
+    wrap.appendChild(btn); wrap.appendChild(menu); host.appendChild(wrap);
+    function place() { if (!inRow && cover) wrap.style.top = (cover.offsetTop + 10) + 'px'; }
+    place();
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      place();
+      if (menu.classList.contains('show')) { menu.classList.remove('show'); return; }
+      menu.innerHTML = '';
+      PV_MENU.forEach(function (id) {
+        var b = document.getElementById(id);
+        if (!b) return;
+        var a = document.createElement('a');
+        a.href = '#'; a.innerHTML = b.innerHTML; if (id !== 'pvMuteBtn') a.className = 'fs-pv-danger';
+        a.addEventListener('click', function (ev) { ev.preventDefault(); ev.stopPropagation(); menu.classList.remove('show'); b.click(); });
+        menu.appendChild(a);
+      });
+      // after this tap has finished bubbling: the app closes every open post menu on any document tap
+      setTimeout(function () { menu.classList.add('show'); }, 0);
+    });
+  }
   function watchPosts() {
     tagPosts();
     wrapNameCards();
+    wrapPvMore();
     if (postObserver || !window.MutationObserver) return;
     postObserver = new MutationObserver(function (muts) {
       if (!active) return;
-      for (var i = 0; i < muts.length; i++) if (muts[i].addedNodes.length) { tagPosts(); wrapNameCards(); break; }
+      for (var i = 0; i < muts.length; i++) if (muts[i].addedNodes.length) { tagPosts(); wrapNameCards(); wrapPvMore(); break; }
     });
     postObserver.observe(document.body, { childList: true, subtree: true });
   }
@@ -1189,6 +1243,7 @@
     renderTimeline(document.getElementById('timelineCover'));
     renderTimeline(document.getElementById('pvCoverBanner'));
     tagQuests();
+    if (window.BlipPhotoPos) window.BlipPhotoPos.render();   // saved zoom / position of the avatar in its frame
   }
 
   /* ---------- called from app.js ---------- */

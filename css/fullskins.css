@@ -2682,7 +2682,7 @@ html body.fs.fs-witchcraft :is(.msg-search, .page-search) input { padding-left: 
 /* full-screen chat: the base mobile body padding (72px + safe area, for the bottom bar) made the page 106pt taller than the
    screen once the chat opened, so the window scrolled and the fixed chat's input bar fell off the bottom */
 @media (max-width: 768px) {
-  html body.fs.fs-witchcraft:has(.messages-layout.chat-open) { padding-bottom: 0 !important; }
+  html body.fs.fs-witchcraft:has(#page-messages.active .messages-layout.chat-open) { padding-bottom: 0 !important; }
 }
 /* owner: the big header (moon · logo · icon bar) is HOME ONLY — every other concept page has just its gold title,
    cobwebs in both top corners, and the bottom bar */
@@ -3291,7 +3291,7 @@ html body.fs.fs-good-witch #msgChat #msgVoiceBtn i { background-image: var(--fs-
 html body.fs.fs-good-witch #msgChat #msgInput { flex: 1 1 auto; min-width: 0; margin: 0 !important; border: 0 !important; border-radius: 0 !important; background: var(--fs-field) center / 100% 100% no-repeat !important; padding: 11px 16px !important; color: var(--gw-ink) !important; font: 500 16px var(--fs-font) !important; }
 html body.fs.fs-good-witch #msgChat #sendMsgBtn { flex: 0 0 44px; width: 44px; height: 44px; padding: 0 !important; border: 0 !important; background: var(--fs-send-orb) center / contain no-repeat !important; }
 html body.fs.fs-good-witch #msgChat #sendMsgBtn i { opacity: 0 !important; }
-@media (max-width: 768px) { html body.fs.fs-good-witch:has(.messages-layout.chat-open) { padding-bottom: 0 !important; } }
+@media (max-width: 768px) { html body.fs.fs-good-witch:has(#page-messages.active .messages-layout.chat-open) { padding-bottom: 0 !important; } }
 
 /* ---------- page decorations (concept): owl on crystal under the post, moon in clouds under messages ---------- */
 html body.fs.fs-good-witch #page-messages .msg-sidebar::after { content: ""; display: block; width: calc(100% + 16px); margin: 8px -8px 0; aspect-ratio: 1290 / 500; background: var(--fs-moon-clouds) center bottom / 100% 100% no-repeat; pointer-events: none; }
@@ -3865,7 +3865,8 @@ html body.fs.fs-vaporwave .modal-content .modal-header .modal-close { position: 
   html body.fs.fs-vaporwave:has(#page-profiles.active) { --vw-page-title: var(--fs-title-network); }
   html body.fs.fs-vaporwave:has(#page-notifications.active) { --vw-page-title: var(--fs-title-notifications); }
   html body.fs.fs-vaporwave:has(#page-search.active) { --vw-page-title: var(--fs-title-search); }
-  html body.fs.fs-vaporwave:has(:is(#page-profile-view, #page-group-view).active) { --vw-page-title: var(--fs-title-profile); }
+  html body.fs.fs-vaporwave:has(#page-profile-view.active) { --vw-page-title: var(--fs-title-profile); }
+  html body.fs.fs-vaporwave:has(#page-group-view.active) { --vw-page-title: var(--fs-title-groups); }   /* concept: a group page is titled Groups */
   html body.fs.fs-vaporwave:not(:has(#page-home.active)):not(:has(#page-shop.active)) .navbar .nav-coins { display: none !important; }
   html body.fs.fs-vaporwave:has(#page-shop.active) .navbar .nav-coins { grid-column: 8 !important; grid-row: 1 / 3 !important; }
   html body.fs.fs-vaporwave:not(:has(#page-home.active)) .page.active { padding-top: calc(84px + env(safe-area-inset-top, 0px)) !important; }
@@ -4171,10 +4172,10 @@ html body.fs.fs-vaporwave :is(#page-profiles, #page-search, #page-notifications)
 html body.fs.fs-vaporwave :is(input, textarea, select), html body.fs.fs-vaporwave #msgChat #msgInput { font-size: 16px !important; }
 html body.fs.fs-vaporwave #msgChat .msg-chat-input { position: relative !important; z-index: 20 !important; padding: 10px 8px calc(10px + env(safe-area-inset-bottom, 0px)) !important; }
 /* the taskbar must not show over an open chat (it covered the message box) */
-html body.fs.fs-vaporwave:has(.messages-layout.chat-open) .nav-center { display: none !important; }
+html body.fs.fs-vaporwave:has(#page-messages.active .messages-layout.chat-open) .nav-center { display: none !important; }
 /* every full skin: an open full-screen chat must not keep the body's bottom-bar padding (the page grew taller than the
    screen and the fixed chat's input bar was lost) — Witchcraft and Good Witch had their own copy of this */
-@media (max-width: 768px) { html body.fs:has(.messages-layout.chat-open) { padding-bottom: 0 !important; } }
+@media (max-width: 768px) { html body.fs:has(#page-messages.active .messages-layout.chat-open) { padding-bottom: 0 !important; } }
 
 /* ---------- Skins page (concept skins): every card a small window, name in its title bar, picture, one button; all the
    same size (the equipped card shows Take off instead of a second Equipped button) ---------- */
@@ -4692,7 +4693,7 @@ html body.fs.fs-heavens-light #msgChat #msgVoiceBtn i { background-image: var(--
 html body.fs.fs-heavens-light #msgChat #msgInput { flex: 1 1 auto; min-width: 0; margin: 0 !important; border: 0 !important; border-radius: 0 !important; background: var(--fs-field) center / 100% 100% no-repeat !important; padding: 11px 16px !important; color: var(--hl-ink) !important; font: 500 16px var(--fs-font) !important; }
 html body.fs.fs-heavens-light #msgChat #sendMsgBtn { flex: 0 0 44px; width: 44px; height: 44px; padding: 0 !important; border: 0 !important; background: var(--fs-send-btn) center / contain no-repeat !important; }
 html body.fs.fs-heavens-light #msgChat #sendMsgBtn i { opacity: 0 !important; }
-@media (max-width: 768px) { html body.fs.fs-heavens-light:has(.messages-layout.chat-open) { padding-bottom: 0 !important; } }
+@media (max-width: 768px) { html body.fs.fs-heavens-light:has(#page-messages.active .messages-layout.chat-open) { padding-bottom: 0 !important; } }
 
 /* ---------- page decorations (concept): owl on crystal under the post, moon in clouds under messages ---------- */
 html body.fs.fs-heavens-light #page-messages .msg-sidebar::after { content: ""; display: block; width: calc(100% + 16px); margin: 8px -8px 0; aspect-ratio: 1290 / 500; background: var(--fs-page-deco-messages) center bottom / 100% 100% no-repeat; pointer-events: none; }
@@ -5450,6 +5451,100 @@ html body.fs.fs-good-witch[data-fs-variant="night"] #userDropdownMenu.user-dropd
 html body.fs.fs-vaporwave[data-fs-variant="modern"] #userDropdownMenu.user-dropdown { background: #e3f3ff !important; background-clip: border-box !important; border-radius: 14px !important; }   /* owner: Vaporwave = windows, so solid */
 html body.fs.fs-vaporwave[data-fs-variant="modern-dark"] #userDropdownMenu.user-dropdown { background: #0e2140 !important; background-clip: border-box !important; border-radius: 14px !important; }
 html body.fs.fs-good-witch[data-fs-variant="night"] #userDropdownMenu a:not(#dropdownAdmin), html body.fs.fs-good-witch[data-fs-variant="night"] #userDropdownMenu a:not(#dropdownAdmin) i { color: #f1e8ff !important; }
+
+/* someone else's profile: Mute / Block / Report live in a ⋯ menu at the cover's top right, as in every concept
+   (fullskins.js wrapPvMore). The menu is the skin's own post menu (.post-dropdown); the button is the skin's round
+   button art with its painted "more" icon. Outside full skins the app's buttons show as before. */
+.fs-pv-more { display: none; }
+html body.fs #page-profile-view .pv-actions .fs-pv-hidden.fs-pv-hidden { display: none !important; }
+html body.fs #page-profile-view:has(> .fs-pv-more) { position: relative; }
+html body.fs #page-profile-view > .fs-pv-more { display: block; position: absolute; top: 10px; right: 10px; z-index: 70; }
+body.fs .fs-pv-more-btn { width: 40px; height: 40px; padding: 0; border: 0; cursor: pointer;
+  background: var(--fs-icon-more) center / 58% auto no-repeat, var(--fs-btn-round) center / contain no-repeat; }
+body.fs .fs-pv-menu { top: 46px !important; right: 0 !important; left: auto !important; min-width: 170px; z-index: 31; }
+body.fs .fs-pv-menu a { font-size: 16px !important; }
+body.fs .fs-pv-menu a.fs-pv-danger, body.fs .fs-pv-menu a.fs-pv-danger i { color: #d23b2f !important; }
+
+/* ================= QA pass (skin-qa session, Nov 16) — fixes found on the full screen × skin × rendition sweep ================= */
+/* ⋯ menu on someone else's profile: items in the skin's own ink (they were dark-on-dark in Good Witch Night / HL Twilight) */
+html body.fs .fs-pv-menu a:not(.fs-pv-danger), html body.fs .fs-pv-menu a:not(.fs-pv-danger) i { color: var(--fs-ink) !important; }
+/* Vaporwave: the concept puts ⋯ in the button row, as one more window button (fullskins.js puts it in .pv-actions) */
+html body.fs.fs-vaporwave .pv-actions .fs-pv-more { display: block; position: relative; }
+html body.fs.fs-vaporwave .pv-actions .fs-pv-more-btn { width: 100%; height: 100%; min-height: 36px; background: none; }
+html body.fs.fs-vaporwave .pv-actions .fs-pv-menu { top: calc(100% + 4px) !important; }
+/* selects (Settings → Comment order, Who can message me) were white with the skin's light ink on dark skins */
+html body.fs select { background-color: var(--card) !important; color: var(--fs-ink) !important; font-size: 16px !important; }
+/* My Profile pop-up: skins without an avatar mask (Vaporwave, Heaven's Light) lost the photo (the mask URL 404s → nothing
+   drawn), and Anime Blaze's cut-in mask left light shards around it. Those three show the photo as a plain circle. */
+html body.fs:is(.fs-vaporwave, .fs-heavens-light, .fs-anime-blaze) .modal-profile-top img { -webkit-mask: none !important; mask: none !important;
+  border-radius: 50% !important; width: min(180px, 60%) !important; }
+/* Witchcraft: store-card "Owned" tag sat under the arch's rounded corner (only "NED" showed) — drop it into the open window */
+html body.fs.fs-witchcraft .fsk-owned { top: 26%; left: 50%; transform: translateX(-50%); }
+/* Witchcraft: create-post tool buttons were empty squares (glyph hidden, no art assigned) */
+html body.fs.fs-witchcraft #cpmCameraBtn i { background-image: var(--fs-icon-camera) !important; }
+html body.fs.fs-witchcraft #cpmGifBtn i { background-image: var(--fs-icon-gif) !important; }
+html body.fs.fs-witchcraft #cpmPollBtn i { background-image: var(--fs-icon-poll) !important; }
+html body.fs.fs-witchcraft #cpmScheduleBtn i { background-image: var(--fs-icon-schedule) !important; }
+html body.fs.fs-witchcraft #cpmEmojiBtn i { background-image: var(--fs-icon-emoji) !important; }
+/* Witchcraft: pop-ups used the generic panel slot tiled with "round", which scattered bits of its ornament across the
+   middle as little dots — use the post panel art, stretched, like every other Witchcraft panel */
+html body.fs.fs-witchcraft .modal-content:not(:has(.story-create-wrap, .story-canvas-full, .story-content, .story-progress)) {
+  border: 24px solid transparent !important; border-image: var(--fs-post-panel) 160 fill / 24px stretch !important; background: none !important; }
+/* Vaporwave Modern: pop-ups are see-through glass and the page showed through the text — real frosted glass, like its menu */
+html body.fs.fs-vaporwave[data-fs-variant="modern"] :is(.modal-content, .post-dropdown) { background-color: rgba(227, 243, 255, .82) !important;
+  background-clip: padding-box !important; -webkit-backdrop-filter: blur(16px) saturate(1.2); backdrop-filter: blur(16px) saturate(1.2); }
+html body.fs.fs-vaporwave[data-fs-variant="modern-dark"] :is(.modal-content, .post-dropdown) { background-color: rgba(14, 33, 64, .86) !important;
+  background-clip: padding-box !important; -webkit-backdrop-filter: blur(16px) saturate(1.2); backdrop-filter: blur(16px) saturate(1.2); }
+/* the old (pre-full-skin) Heaven's Light premium styles in style.css draw images/skin-textures/clouds.png — a cloud strip
+   with a fake grey checkerboard painted in — over the nav bars and profile cover. When that class is on the body under a
+   full skin (e.g. viewing a Heaven's Light user's profile), the checkerboard showed through see-through bar art
+   (owner, Nov 16, on Anime Blaze). Full skins never use it. */
+html body.fs.premium-heavens-light:not(.fs-vaporwave) :is(.navbar, .nav-center)::before,
+html body.fs.premium-heavens-light:not(.fs-vaporwave) :is(.navbar, .nav-center)::after,
+html body.fs.premium-heavens-light .profile-card .profile-cover::after { background: none !important; content: none !important; }
+/* Anime Blaze: style.css shrinks Follow to a 40px icon-only circle on phones; the concept's Follow is a labelled flash button */
+html body.fs.fs-anime-blaze #pvFollowBtn { width: auto !important; height: auto !important; min-height: 36px; padding: 8px 14px !important;
+  font-size: 13px !important; border-radius: 0 !important; gap: 6px; }
+/* Witchcraft: its menu-panel art has two divider lines painted in (made for a 3-row menu); stretched over the account
+   menu they cut across items. Menus use the clean post-panel art instead. */
+html body.fs.fs-witchcraft :is(#userDropdownMenu.user-dropdown, .post-dropdown) { border-width: 22px !important;
+  border-image: var(--fs-post-panel) 160 fill / 22px stretch !important; }
+/* Witchcraft: on cards you don't own, Try On + Buy sit side by side and each kept the 120px pill minimum, so Buy ran into
+   the next card. They share the row instead (each half the card). */
+html body.fs.fs-witchcraft .fsk-body .shop-card-actions { display: flex !important; gap: 4px; justify-content: center; }
+html body.fs.fs-witchcraft .fsk-body .shop-card-actions .btn { min-width: 0 !important; flex: 1 1 0; max-width: 50%; padding: 0 6px !important; font-size: 15px !important; margin: 4px 0 0 !important; }
+/* Witchcraft group page: it reuses the profile card, whose stats grid is built for two stats around the pentagram — the
+   group's third stat (Posts) got squeezed into a 30px fourth column. Three equal stat boxes there, no medallion. */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft #page-group-view .pv-profile-card:not(#_) .profile-stats { grid-template-columns: repeat(3, 1fr); }
+  html body.fs.fs-witchcraft #page-group-view .pv-profile-card:not(#_) .profile-stats::before { display: none; }
+  html body.fs.fs-witchcraft #page-group-view .pv-profile-card:not(#_) .profile-stats > .stat:nth-child(2) { grid-column: 2; }
+  html body.fs.fs-witchcraft #page-group-view .pv-profile-card:not(#_) .profile-stats > .stat:last-child { grid-column: 3; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft #page-group-view .pv-profile-card:not(#_) .pv-actions { grid-template-columns: repeat(3, 1fr); }
+  html body.fs.fs-witchcraft #page-group-view .pv-profile-card:not(#_) .pv-actions .btn { white-space: nowrap; font-size: 15px !important; }
+}
+html body.fs:is(.fs-dark, [data-fs-variant="night"], [data-fs-variant="twilight"], [data-fs-variant$="-dark"]) .fs-pv-menu a.fs-pv-danger,
+html body.fs:is(.fs-dark, [data-fs-variant="night"], [data-fs-variant="twilight"], [data-fs-variant$="-dark"]) .fs-pv-menu a.fs-pv-danger i { color: #ff8f80 !important; }
+/* Scrapbook search page: its field matched the old plain strip by id (#searchPageInput beat the torn-paper rule) and came
+   out a thin 28px strip with the icon outside it — same torn field as Network/Groups/Messages search now */
+html body.fs.fs-scrapbook #searchPageInput { background: none !important; border: 14px solid transparent !important;
+  border-image: var(--fs-field9-real) 80 fill / 14px round !important; }
+/* an empty page subtitle (Search before you type) drew a tiny blank paper label under the field */
+html body.fs .page-subtitle:empty { display: none !important; }
+/* Heaven's Light group page: the stats plaque is a two-panel frame; the group's third stat (Group Coins) wrapped onto the
+   frame's bottom edge and the numbers rode up over its top edge. Members · Posts stay in the plaque; Group Coins sits
+   centred just under it. */
+html body.fs.fs-heavens-light #gvProfileCard .profile-stats { flex-wrap: nowrap !important; margin-bottom: 40px !important; }
+html body.fs.fs-heavens-light #gvProfileCard .profile-stats > .stat:nth-child(3) { position: absolute; top: calc(100% + 4px); left: 0; right: 0; }
+html body.fs.fs-heavens-light #gvProfileCard .profile-stats > .stat:nth-child(3) .stat-count { display: inline !important; font-size: 20px !important; margin-right: 6px; }
+html body.fs.fs-heavens-light #gvProfileCard .profile-stats > .stat:nth-child(3) .stat-label { display: inline !important; }
+html body.fs.fs-heavens-light #gvProfileCard .profile-stats > .stat:nth-child(3) { display: flex !important; flex-direction: row !important; justify-content: center; align-items: baseline; gap: 6px; }
+/* Heaven's Light: its bottom bar stacks above the full-screen chat, so it covered the message box (keyboard open or not) */
+html body.fs.fs-heavens-light:has(#page-messages.active .messages-layout.chat-open) .nav-center { display: none !important; }
+/* Heaven's Light chat: the first button was the bare gold ring; the concept has a "+" in it (kit icon-plus over round-btn) */
+html body.fs.fs-heavens-light #msgChat #msgImgBtn i { background: var(--fs-icon-plus) center / 52% no-repeat, var(--fs-round-btn) center / contain no-repeat !important; }
 
 
 /* ======================================================================================
