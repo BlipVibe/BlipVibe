@@ -70,3 +70,14 @@ Process and owner rules for every skin: `../README.md`, `../scrapbook/NOTES.md`,
   Trending Hashtags / outline buttons on the action-btn art (were tiled). Owner asked for a zoom bar when CROPPING a picture
   (not a zoom button on the cameo — that was tried and removed): app-wide crop modal (js/app.js showUnifiedCropModal) now
   has a zoom slider that resizes the crop around its centre.
+- Nov 16 (owner QA after ship): (1) Logout unreachable — the app anchors the avatar menu to the avatar's RIGHT edge and the
+  avatar sits at the left here, so the menu opened off-screen: pinned under the avatar, marble menu panel, scrolls.
+  (2) top-bar photo centred in the winged wreath by measurement; Twilight's wreath had a pale haze painted across its
+  transparent area (a visible square) and a different window — Twilight now uses the clean Day wreath (pure gold).
+  (3) timeline photos are cut by the art's own window mask (temple-arch-mask, per-slot mask-size/position) — rounded
+  corners left ivory crescents. (4) equip gates: right door = left door mirrored. (5) "squares like a see-through PNG" on
+  the banner + bottom bar in Twilight: NOT the art — the app's OLD premium theme with the same id (style.css
+  body.premium-heavens-light) paints a translucent gradient + tiled clouds.png over .navbar/.nav-center via ::before/::after.
+  The look-only QA switch never adds premium-<id>, so it only shows after a real equip — QA now also adds that class.
+  (6) clear gap under the banner; wordmark sized to its space with a halo, never under the wreath/crescent.
+  Simulator gotcha: an OTA download switches the active snapshot (serverBasePath) mid-QA — reinstall into the new one.

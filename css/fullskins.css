@@ -5403,3 +5403,22 @@ html body.fs.fs-vaporwave .fs-start-btn { background: none !important; border: s
   border-image: var(--fs-start-btn) 8 10 8 128 fill / 3px 3px 3px 42px stretch; padding: 0 6px 0 2px; }
 html body.fs.fs-vaporwave[data-fs-variant^="modern"] .fs-start-btn { border-width: 7px 7px 7px 43px;
   border-image: var(--fs-start-btn) 22 22 22 132 fill / 7px 7px 7px 43px stretch; }
+html body.fs.fs-heavens-light #clearAllHistory { color: var(--hl-accent) !important; font-weight: 700 !important; }
+/* QA (owner, Nov 16: "squares like a see-through PNG on the banner and the navbar"): the app's OLD premium theme with the
+   same id (style.css body.premium-heavens-light) lays a semi-transparent gradient + tiled clouds.png texture over the top bar
+   and bottom bar through ::before/::after, and animates their background. The look-only QA switch never adds that class, so
+   it only showed on a real equip. The full skin switches all of it off. */
+html body.fs.fs-heavens-light.premium-heavens-light :is(.navbar, .nav-center)::before,
+html body.fs.fs-heavens-light.premium-heavens-light :is(.navbar, .nav-center)::after { content: none !important; display: none !important; background: none !important; }
+html body.fs.fs-heavens-light :is(.navbar, .nav-center) { animation: none !important; box-shadow: none !important; }
+html body.fs.fs-heavens-light.premium-heavens-light .profile-card .profile-cover::after { display: none !important; }
+html body.fs.fs-heavens-light.premium-heavens-light :is(.card, .feed-post) { box-shadow: none !important; }
+/* owner: "make sure the profile area isn't too far up, it's bleeding into the top banner" — clear gap under the banner */
+@media (max-width: 768px) {
+  html body.fs.fs-heavens-light #timelineCover { margin-top: 16px !important; }
+  /* wordmark readable and never under the wreath / the crescent toggle: sized to the space it has, soft halo for contrast */
+  html body.fs.fs-heavens-light .navbar .nav-logo { font-size: clamp(16px, 5vw, 21px) !important; padding-left: 16px !important; padding-right: 4px !important; overflow: hidden; text-overflow: clip;
+    -webkit-text-fill-color: currentColor !important; background: none !important; opacity: 1 !important;
+    text-shadow: 0 0 6px rgba(255, 244, 220, .9), 0 0 2px rgba(255, 244, 220, .9) !important; }
+  html body.fs.fs-heavens-light[data-fs-variant="twilight"] .navbar .nav-logo { text-shadow: 0 0 6px rgba(10, 14, 40, .9), 0 0 2px rgba(10, 14, 40, .9) !important; }
+}
