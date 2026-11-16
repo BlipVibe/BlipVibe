@@ -6728,3 +6728,11 @@ html body.fs.fs-blood-moon #notifTabs::-webkit-scrollbar { display: none; }
 html body.fs.fs-blood-moon #notifTabs .search-tab, html body.fs.fs-blood-moon #notifTabs .search-tab.active { flex: 0 0 auto !important; white-space: nowrap !important; margin: 0 !important; padding: 6px 6px !important; box-shadow: none !important;
   border-style: solid !important; border-color: transparent !important; border-width: 0 14px !important; border-image: var(--fs-chip) 0 70 fill / 0 14px stretch !important; font-size: 15px !important; }
 html body.fs.fs-blood-moon #notifTabs .search-tab.active { border-image-source: var(--fs-chip-active) !important; color: #fff !important; }
+/* fields inside pop-ups are the dark field art: light typed text + placeholder */
+html body.fs.fs-blood-moon .modal-content :is(input, textarea, select) { color: var(--bm-title) !important; }
+html body.fs.fs-blood-moon .modal-content :is(input, textarea)::placeholder { color: var(--bm-soft) !important; opacity: 1 !important; }
+html body.fs.fs-blood-moon .modal-content .btn { font-size: 16px !important; min-height: 40px; padding-left: 18px !important; padding-right: 18px !important; }
+html body.fs.fs-blood-moon .msg-bubble { font-size: 18px !important; line-height: 1.25 !important; }
+html body.fs.fs-blood-moon:has(#msgChat.active, .msg-chat.active, .msg-chat-open) #page-messages .msg-sidebar::after,
+html body.fs.fs-blood-moon:has(.messages-layout.chat-open) #page-messages .msg-sidebar::after { display: none !important; }
+html body.fs.fs-blood-moon #msgChat .msg-chat-header :is(h3, h4, .msg-chat-name) { font-size: 21px !important; color: var(--bm-title) !important; }
