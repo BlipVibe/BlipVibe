@@ -147,3 +147,8 @@ with pink sparkles, flowers, candles, fairy lights; each page different), corner
 Owner (Nov 15): "even the posts on Witchcraft have a border" — post-panel = ornate gold filigree border on all sides
 (corner scrollwork, crescent + sparkle burst top centre, pearl beads/stars along the edges); photo-frame = ornate gold
 frame per photo (filigree corners, crescent + star cluster top centre, beaded inner rim). Done FIRST.
+Owner (Nov 15): photo-frame corners distorted when stretched whole → used as 9-slice (corners 210x160 px fixed). Redraw
+as an ENCHANTED frame — gold corner clusters (vines, crystal/pearl, glints, sparkles) curling OVER the photo (owner loves
+that), plain uniform rims between corners, no centre motif; crescent moved to its own piece photo-crest.png (300x120).
+Owner also wants a themed top BANNER (header.png 1290x520): sky, crescent moon, owl on a gold branch, crystals, fairy
+lights, scalloped gold vine edge, calm band for the bar icons.

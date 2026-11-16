@@ -3399,3 +3399,7 @@ html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] .pm-thumb :is(img
   html body.fs.fs-good-witch:not(:has(#page-home.active)) .page-header .page-search { margin: 8px 0 0 !important; width: 100% !important; box-sizing: border-box; }
 }
 html body.fs.fs-good-witch :is(.msg-search, .page-search) { padding: 0 22px 0 30px !important; min-height: 54px; }
+/* photo frame (owner: corners stretched): 9-slice — corner ornaments keep their shape at any photo size, only the plain
+   rims stretch; the gold still curls over the photo corners */
+html body.fs.fs-good-witch .post-media-grid[class*="pm-count"] .pm-thumb::after { inset: -6px !important; background: none !important;
+  border: solid transparent !important; border-width: 46px 58px !important; border-image: var(--fs-photo-frame) 160 210 / 46px 58px stretch !important; }
