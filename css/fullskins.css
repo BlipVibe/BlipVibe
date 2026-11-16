@@ -4269,3 +4269,91 @@ html.fs-sd-off body { animation: fsTvOff .5s cubic-bezier(.6,0,.9,.4) forwards; 
 .fs-sd-boot span { color: #fff; font-size: 14px; }
 @keyframes fsBoot { from { width: 0; } to { width: 100%; } }
 .fs-shutdown.is-out { opacity: 0; transition: opacity .45s; }
+
+/* ---------- comments + create post (concept comments / create-post) ---------- */
+html body.fs.fs-vaporwave .comment-sort-tab { border-image-source: var(--fs-chip) !important; font-size: 13px !important; padding: 2px 8px !important; margin-right: 4px; }
+html body.fs.fs-vaporwave .comment-sort-tab.active { border-image-source: var(--fs-chip-active) !important; }
+html body.fs.fs-vaporwave .comment-item { padding: 6px 8px !important; margin-bottom: 6px !important; }
+html body.fs.fs-vaporwave .comment-item img { border-radius: 0 !important; border: 2px solid #fff; box-shadow: 1px 1px 0 #555; }
+html body.fs.fs-vaporwave :is(.comment-text, .comment-author, #noCommentsMsg) { color: var(--vw-ink) !important; }
+html body.fs.fs-vaporwave #noCommentsMsg { color: var(--vw-soft) !important; }
+html body.fs.fs-vaporwave #commentGifBtn { background: none !important; border: solid transparent !important; border-width: 4px !important; border-image: var(--fs-chip) 14 fill / 4px stretch !important;
+  border-radius: 0 !important; color: var(--vw-ink) !important; font: 700 12px var(--fs-font) !important; padding: 2px 6px !important; }
+html body.fs.fs-vaporwave #commentEmojiBtn i { color: var(--vw-ink) !important; }
+html body.fs.fs-vaporwave .cpm-textarea { background: none !important; border: solid transparent !important; border-width: 4px !important; border-image: var(--fs-field) 14 fill / 4px stretch !important;
+  border-radius: 0 !important; color: var(--vw-ink) !important; font: 16px var(--fs-font) !important; padding: 10px !important; margin: 4px 0 !important; }
+html body.fs.fs-vaporwave :is(#cpmCameraBtn, #cpmGifBtn, #cpmPollBtn, #cpmScheduleBtn) { width: 46px !important; height: 42px !important; flex: 0 0 46px; border: 0 !important; border-radius: 0 !important;
+  box-shadow: none !important; background: var(--fs-tool-tile) center / 100% 100% no-repeat !important; color: var(--vw-ink) !important; }
+html body.fs.fs-vaporwave #cpmPublish { width: auto !important; min-width: 0 !important; flex: 1 1 auto; max-width: 130px; height: 42px !important; padding: 0 8px !important; white-space: nowrap; }
+html body.fs.fs-vaporwave .cpm-footer > div { gap: 6px !important; }
+html body.fs.fs-vaporwave :is(.cpm-media-zone, #cpmMediaZone) { border-radius: 0 !important; background: var(--fs-add-photo) center / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-vaporwave :is(.char-counter, .cpm-user-name, .create-post-modal .modal-body) { color: var(--vw-ink) !important; }
+html body.fs.fs-vaporwave .create-post-modal img, html body.fs.fs-vaporwave .cpm-user img { border-radius: 0 !important; }
+
+/* ---------- someone else's profile (concept other-profile): Avatar.exe + Timeline.exe like Home, action buttons as bevel buttons ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-vaporwave #page-profile-view .pv-profile-card { margin-top: 10px !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-actions { grid-column: 1 / -1; display: flex !important; flex-wrap: wrap; gap: 6px !important; margin-top: 8px !important; justify-content: center; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-actions .btn { flex: 1 1 auto; width: auto !important; min-width: 0; height: 38px !important; margin: 0 !important; padding: 0 10px !important;
+    font-size: 13px !important; display: inline-flex !important; align-items: center; justify-content: center; gap: 5px; white-space: nowrap; color: var(--vw-ink) !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-actions .btn i { color: var(--vw-accent) !important; font-size: 13px; }
+  html body.fs.fs-vaporwave #page-profile-view :is(#pvAdminSuspend, #pvAdminDelete) { border-image: var(--fs-btn) 14 fill / 4px stretch !important; border: solid transparent !important; border-width: 4px !important;
+    background: none !important; color: var(--vw-ink) !important; font: 700 12px var(--fs-font) !important; padding: 2px 6px !important; border-radius: 0 !important; }
+  html body.fs.fs-vaporwave #pvAdminDelete, html body.fs.fs-vaporwave #pvAdminDelete i { color: #c0392b !important; }
+  html body.fs.fs-vaporwave .pv-back-link { color: var(--vw-ink) !important; }
+}
+html body.fs.fs-vaporwave .photos-card .search-tab > i { display: none !important; }
+/* someone else's profile: same order as Home — Avatar.exe card first, then Timeline.exe (it overlapped the card) */
+@media (max-width: 768px) {
+  html body.fs.fs-vaporwave #page-profile-view.active { display: flex !important; flex-direction: column; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-layout, html body.fs.fs-vaporwave #page-profile-view .pv-col-left { display: contents !important; }
+  html body.fs.fs-vaporwave #page-profile-view #pvProfileCard { order: -2; margin-top: 10px !important; }
+  html body.fs.fs-vaporwave #page-profile-view #pvCoverBanner { order: -1; margin-top: 0 !important; transform: none !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-profile-card .profile-info { padding-top: 0 !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-profile-card .profile-avatar-wrap { margin-top: 0 !important; }
+  html body.fs.fs-vaporwave #page-profile-view :is(.pv-col-photos, .pv-col-feed, .pv-col-skin, #pvPhotosCard) { margin-left: 8px !important; margin-right: 8px !important; }
+}
+
+/* ---------- someone else's profile, rebuilt to the concept (other-profile): compact Avatar.exe header, a tidy grid of
+   small bevel buttons (Follow / Message / Close Friend / Mute — Block / Report / Invite), admin as one small row,
+   no "Back to Home" (the taskbar is the way back), Timeline.exe right under ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-vaporwave #page-profile-view .pv-profile-card { width: auto !important; max-width: none !important; margin: 10px 8px 10px !important; box-sizing: border-box !important; padding: 10px !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-profile-card .profile-info { grid-template-columns: 112px minmax(0, 1fr) !important; column-gap: 10px !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-profile-card .profile-avatar-wrap { width: 112px !important; height: 92px !important; grid-row: 1 / 6 !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-profile-card .profile-name { font-size: 19px !important; line-height: 1.15 !important; overflow-wrap: anywhere; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-profile-card :is(.profile-title, .profile-about, .pv-status, .pv-online, .profile-website, #pvMutualFollowers) { grid-column: 2; font-size: 12px !important; margin: 0 !important; line-height: 1.3 !important; }
+  html body.fs.fs-vaporwave #page-profile-view #pvMutualFollowers img { width: 20px !important; height: 20px !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-profile-card .profile-stats { grid-column: 2 !important; margin-top: 4px !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-profile-card .stat-count { font-size: 16px !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-profile-card .stat-label { font-size: 11px !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-actions { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px !important; margin-top: 10px !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-actions .btn { width: 100% !important; height: 34px !important; font-size: 12px !important; padding: 0 4px !important; gap: 4px; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-actions .btn i { font-size: 11px !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-actions #pvInviteGroupBtn { grid-column: span 2; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-actions :is(#pvBlockBtn, #pvReportUserBtn) i { color: #c0392b !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-profile-card .profile-info > div:has(#pvAdminSuspend) { grid-column: 1 / -1; display: flex !important; flex-wrap: nowrap !important; align-items: center; justify-content: center;
+    gap: 6px !important; margin-top: 8px !important; padding-top: 8px !important; border-top: 1px solid rgba(0,0,0,.2) !important; }
+  html body.fs.fs-vaporwave #page-profile-view :is(#pvAdminSuspend, #pvAdminDelete) { height: 30px !important; white-space: nowrap; font-size: 12px !important; padding: 0 8px !important; flex: 0 0 auto; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-back-link, html body.fs.fs-vaporwave #gvBack { display: none !important; }
+  html body.fs.fs-vaporwave #page-profile-view #pvCoverBanner { margin: 0 8px 10px !important; width: auto !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-vaporwave #page-profile-view .pv-actions #pvCloseFriendBtn { grid-column: span 2; order: 6; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-actions #pvInviteGroupBtn { grid-column: span 1; order: 7; font-size: 11px !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-actions #pvInviteGroupBtn i { display: none !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-profile-card .profile-info > div:has(#pvAdminSuspend) { margin-top: 6px !important; padding: 6px 0 0 !important; }
+  html body.fs.fs-vaporwave #page-profile-view #pvAdminSuspend, html body.fs.fs-vaporwave #page-profile-view #pvAdminDelete {
+    border: solid transparent !important; border-width: 4px !important; border-image: var(--fs-btn) 14 fill / 4px stretch !important; background: none !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-profile-card { padding-bottom: 6px !important; }
+}
+/* no cover / no photo: each VHS tape shows a themed sunset test screen instead of an empty grey box */
+html body.fs.fs-vaporwave .fs-tl-slot.fs-tl-empty { background-image: var(--fs-vhs-window); }
+html body.fs.fs-vaporwave .fs-tl-slot.fs-tl-empty::before { background: var(--fs-vhs-overlay) center / 100% 100% no-repeat, var(--fs-header-page) center / cover no-repeat !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-vaporwave #page-profile-view .pv-actions { grid-template-columns: repeat(6, minmax(0, 1fr)) !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-actions .btn { grid-column: span 2 !important; order: 0 !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-actions :is(#pvCloseFriendBtn, #pvInviteGroupBtn) { grid-column: span 3 !important; }
+  html body.fs.fs-vaporwave #page-profile-view .pv-actions #pvInviteGroupBtn i { display: inline !important; }
+}
+@media (max-width: 768px) { html body.fs.fs-vaporwave #page-profile-view .pv-actions :is(#pvBlockBtn, #pvReportUserBtn) { grid-column: span 3 !important; } }
