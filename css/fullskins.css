@@ -3130,7 +3130,7 @@ html body.fs.fs-good-witch #profileCard .profile-links { border: 0 !important; b
   display: flex !important; align-items: center; justify-content: center; gap: 8px; box-sizing: border-box; }
 html body.fs.fs-good-witch #profileCard :is(.view-profile-link, .edit-profile-btn) , html body.fs.fs-good-witch #pvEditProfileBtn { color: var(--gw-title) !important; font: 700 22px var(--fs-title-font) !important; }
 html body.fs.fs-good-witch #profileCard .edit-profile-btn i, html body.fs.fs-good-witch #pvEditProfileBtn i { display: none !important; }
-html body.fs.fs-good-witch :is(#profileCard, .pv-profile-card)::after { content: ""; display: block; height: 0; padding-bottom: 40%; margin: 0 -8px; background: var(--fs-cat-cloud) center bottom / 100% auto no-repeat; }
+html body.fs.fs-good-witch :is(#profileCard, .pv-profile-card)::after { content: ""; display: block; height: 0; padding-bottom: 40%; margin: 0 -8px; background: var(--fs-owl-cloud) center bottom / 100% auto no-repeat; }
 html body.fs.fs-good-witch .pv-back-link { display: none !important; }
 
 /* ---------- Daily Quests (concept): frosted frame with gold crescent, each quest a CONSTELLATION that lights up ---------- */
@@ -4374,3 +4374,714 @@ body[data-fs-variant^="modern"] .fs-start-menu::before { inset: -6px; border-rad
 /* ---------- Equip transitions (js/fullskins.js equipTransition): full-screen canvas over everything, blocks taps ---------- */
 .fs-equip { position: fixed; inset: 0; z-index: 2147483600; pointer-events: auto; touch-action: none; }
 .fs-equip canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* ======================================================================================
+   HEAVEN'S LIGHT (Nov 16, WIP). Cloned from the Good Witch block as a base, then rebuilt FROM the approved concepts (owner: match almost 1:1):
+   images/skins/heavens-light/concept-v1-approved.png + concept-2.png (art prototypes/heavens-light-redraw-brief.md → kit/hl → assets/).
+   Crops: prototypes/reference/heavens-light/<screen>.png. Notes: images/skins/heavens-light/NOTES.md.
+   Text colours come from --hl-*.
+   ====================================================================================== */
+body.fs-heavens-light { --hl-title: #5a3a0e; --hl-ink: #4a3416; --hl-soft: #7a6240; --hl-accent: #a8771c; --hl-gold: #c9962e;
+  background: #f7efe0 !important; font-family: var(--fs-font) !important; font-size: 16px; color: var(--hl-ink); }
+body.fs-heavens-light * { border-image-repeat: stretch !important; }
+body.fs-heavens-light :is(h1, h2, h3, h4, .profile-name, .post-username, .card-heading, .nav-logo, .stat-count, .msg-contact-name,
+  .profile-card-name, .fsk-name, .group-card-body h4) { font-family: var(--fs-title-font) !important; font-weight: 700 !important; color: var(--hl-title) !important; }
+body.fs-heavens-light :is(p, span, label, small, .post-time, .msg-contact-preview, .stat-label) { color: inherit; }
+body.fs-heavens-light #premiumBgLayer { display: block !important; background: var(--fs-background) center / cover no-repeat !important; }
+body.fs-heavens-light :is(.page, .main-container, .center-feed, .page-container) { background: transparent !important; }
+
+/* ---------- Home top bar (concept home): avatar · BlipVibe · search · bell · music · coin pill, one row ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-heavens-light .navbar { border: 0 !important; border-image: none !important; box-shadow: none !important; overflow: visible !important;
+    background: var(--fs-top-bar) center bottom / 100% 100% no-repeat !important;
+    height: calc(64px + env(safe-area-inset-top, 0px)) !important; max-height: none !important; padding: env(safe-area-inset-top, 0px) 0 0 !important; box-sizing: border-box !important; }
+  html body.fs.fs-heavens-light .page.active { padding-top: calc(70px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-heavens-light .nav-container { display: grid !important; grid-template-columns: 50px 1fr 40px 40px 40px auto; align-items: center; column-gap: 4px; padding: 0 10px !important; height: 100%; }
+  html body.fs.fs-heavens-light .navbar :is(.nav-left, .nav-right) { display: contents !important; }
+  html body.fs.fs-heavens-light .navbar .nav-user { grid-column: 1; grid-row: 1; margin: 0 !important; }
+  html body.fs.fs-heavens-light .navbar .nav-user::after { display: none !important; }
+  html body.fs.fs-heavens-light .navbar .nav-avatar { width: 44px !important; height: 44px !important; border-radius: 50% !important; padding: 3px; box-sizing: border-box;
+    -webkit-mask: none !important; mask: none !important; box-shadow: none !important; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; object-fit: cover; }
+  html body.fs.fs-heavens-light .navbar .nav-logo { grid-column: 2; grid-row: 1; justify-self: start; font-size: 27px !important; color: var(--hl-title) !important; background: none !important; padding: 0 0 0 4px !important; text-shadow: none !important; }
+  html body.fs.fs-heavens-light .navbar .search-bar { display: none !important; }
+  html body.fs.fs-heavens-light .navbar .mobile-search-btn { grid-column: 3; grid-row: 1; }
+  html body.fs.fs-heavens-light .navbar .mobile-notif-btn { grid-column: 4; grid-row: 1; position: relative; }
+  html body.fs.fs-heavens-light .navbar .nav-music-wrap { grid-column: 5; grid-row: 1; }
+  html body.fs.fs-heavens-light .navbar .nav-coins { grid-column: 6; grid-row: 1; }
+  html body.fs.fs-heavens-light .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) { width: 38px !important; height: 38px !important; display: flex !important; align-items: center; justify-content: center;
+    background: none !important; border: 0 !important; padding: 0 !important; }
+  html body.fs.fs-heavens-light .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) > i { width: 25px !important; height: 25px !important; font-size: 0 !important; background-size: contain !important; background-repeat: no-repeat !important; background-position: center !important; }
+  html body.fs.fs-heavens-light .navbar .mobile-notif-btn .notif-badge { position: absolute; top: 0; right: 0; min-width: 17px; height: 17px; border-radius: 9px; background: #c9962e !important; color: #fff !important; font: 700 11px/17px system-ui !important; text-align: center; padding: 0 4px; }
+  html body.fs.fs-heavens-light .navbar .nav-coins { height: 36px !important; padding: 0 12px 0 8px !important; display: flex !important; align-items: center; gap: 5px; margin: 0 !important;
+    border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; background: var(--fs-coin-pill) center / 100% 100% no-repeat !important;
+    color: var(--hl-title) !important; font: 600 17px var(--fs-font) !important; }
+  html body.fs.fs-heavens-light .navbar .nav-coins > i { width: 22px !important; height: 22px !important; font-size: 0 !important; background: var(--fs-coin) center / contain no-repeat !important; }
+  html body.fs.fs-heavens-light .navbar .nav-coins .coin-count { color: var(--hl-title) !important; }
+  /* other pages: no app header (concept); back arrow · centred title (· coin pill on Skins only) */
+  html body.fs.fs-heavens-light:not(:has(#page-home.active)) .navbar { height: 0 !important; min-height: 0 !important; padding: 0 !important; background: none !important; }
+  html body.fs.fs-heavens-light:not(:has(#page-home.active)) .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-wrap, .nav-user) { display: none !important; }
+  html body.fs.fs-heavens-light:not(:has(#page-home.active)) .navbar .nav-logo { display: block !important; position: fixed !important; z-index: 60; top: calc(env(safe-area-inset-top, 0px) + 10px); left: 10px;
+    width: 40px; height: 40px; padding: 0 !important; font-size: 0 !important; color: transparent !important; background: var(--fs-icon-back) center / 28px no-repeat !important; }
+  html body.fs.fs-heavens-light:not(:has(#page-home.active)):not(:has(#page-shop.active)) .navbar .nav-coins { display: none !important; }
+  html body.fs.fs-heavens-light:has(#page-shop.active) .navbar .nav-coins { position: fixed !important; z-index: 60; top: calc(env(safe-area-inset-top, 0px) + 12px); right: 12px; }
+  html body.fs.fs-heavens-light:not(:has(#page-home.active)) .page.active { padding-top: calc(env(safe-area-inset-top, 0px) + 6px) !important; }
+  html body.fs.fs-heavens-light:not(:has(#page-home.active)) .page.active::before { content: ""; position: absolute; left: 0; top: 0; width: 120px; height: 100px; pointer-events: none;
+    background: var(--fs-corner-column-left) left top / contain no-repeat; z-index: 0; }
+  html body.fs.fs-heavens-light .page.active { position: relative; }
+}
+
+/* ---------- bottom bar (concept): frosted glass bar, each tab a pearly ORB with its icon, label under; active orb glows ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-heavens-light .nav-center { display: grid !important; grid-template-columns: repeat(5, 1fr); align-items: start; border: 0 !important; border-image: none !important; box-shadow: none !important; backdrop-filter: none !important;
+    height: calc(96px + env(safe-area-inset-bottom, 0px)) !important; padding: 6px 6px calc(env(safe-area-inset-bottom, 0px)) !important; box-sizing: border-box;
+    background: var(--fs-nav-bar) center top / 100% 100% no-repeat, linear-gradient(transparent 40%, var(--hl-navfill, #f7efe0) 40%) !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link { display: flex !important; flex-direction: column; align-items: center; gap: 1px; padding: 0 !important; min-width: 0; background: none !important; border: 0 !important; border-image: none !important;
+    color: var(--hl-soft) !important; font: 600 14px var(--fs-font) !important; transition: none !important; transform: none !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link > i { width: 58px !important; min-width: 58px; height: 58px !important; font-size: 0 !important;
+    background: var(--fs-icon-home) center / 30px no-repeat, var(--fs-nav-active) center / contain no-repeat !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link[data-page="groups"] > i { background-image: var(--fs-icon-groups), var(--fs-nav-active) !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link[data-page="shop"] > i { background-image: var(--fs-icon-skins), var(--fs-nav-active) !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link[data-page="profiles"] > i { background-image: var(--fs-icon-network), var(--fs-nav-active) !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link[data-page="messages"] > i { background-image: var(--fs-icon-messages), var(--fs-nav-active) !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link.active > i { background-image: var(--fs-icon-home), var(--fs-nav-active) !important; filter: drop-shadow(0 0 8px rgba(214, 170, 80, .55)); }
+  html body.fs.fs-heavens-light .nav-center .nav-link.active[data-page="groups"] > i { background-image: var(--fs-icon-groups), var(--fs-nav-active) !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link.active[data-page="shop"] > i { background-image: var(--fs-icon-skins), var(--fs-nav-active) !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link.active[data-page="profiles"] > i { background-image: var(--fs-icon-network), var(--fs-nav-active) !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link.active[data-page="messages"] > i { background-image: var(--fs-icon-messages), var(--fs-nav-active) !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link.active { color: var(--hl-accent) !important; font-weight: 700 !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link .notif-badge { position: absolute; top: 2px; right: 18%; }
+  html body.fs.fs-heavens-light .nav-center .nav-link { position: relative; }
+}
+
+/* ---------- glass panels + posts ---------- */
+html body.fs.fs-heavens-light :is(.card:not(.feed-post):not(.profile-card):not(.pv-profile-card), .comment-item, .post-dropdown) {
+  border: 24px solid transparent !important; border-image: var(--fs-post-panel) 90 fill / 24px stretch !important; background: none !important; box-shadow: none !important; padding: 0 2px !important; color: var(--hl-ink) !important; }
+html body.fs.fs-heavens-light .feed-post.feed-post.feed-post { background: none !important; box-shadow: none !important; border: 24px solid transparent !important;
+  border-image: var(--fs-post-panel) 90 fill / 24px stretch !important; padding: 0 2px !important; color: var(--hl-ink) !important; }
+html body.fs.fs-heavens-light .post-header { align-items: center !important; }
+html body.fs.fs-heavens-light .post-header .post-avatar { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; width: 48px !important; height: 48px !important;
+  padding: 3px; box-sizing: border-box; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-heavens-light .post-user-top { flex-direction: column !important; align-items: flex-start !important; gap: 0 !important; }
+html body.fs.fs-heavens-light .post-username { font-size: 19px !important; }
+html body.fs.fs-heavens-light :is(.post-time, .post-meta) { color: var(--hl-soft) !important; font-size: 15px !important; }
+html body.fs.fs-heavens-light :is(.post-content-text, .post-text, .post-content p) { color: var(--hl-ink) !important; font-size: 17px !important; }
+html body.fs.fs-heavens-light .post-menu-btn, html body.fs.fs-heavens-light .post-menu-btn i { color: var(--hl-title) !important; }
+html body.fs.fs-heavens-light .post-actions { border: 0 !important; justify-content: space-around; }
+html body.fs.fs-heavens-light .action-btn { color: var(--hl-ink) !important; font: 600 17px var(--fs-font) !important; }
+/* photos: whole, never cropped, rounded, thin gold frame hugging each one */
+html body.fs.fs-heavens-light .post-media-grid[class*="pm-count"] { display: flex !important; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px;
+  height: auto !important; max-height: none !important; aspect-ratio: auto !important; overflow: visible !important; background: none !important; margin: 4px 0 !important; }
+html body.fs.fs-heavens-light .post-media-grid[class*="pm-count"] .pm-thumb { position: relative; flex: 0 1 auto; width: fit-content !important; height: auto !important; min-height: 0 !important; max-height: none !important;
+  max-width: 100%; border: 0 !important; background: none !important; border-radius: 14px !important; overflow: visible !important; line-height: 0; }
+html body.fs.fs-heavens-light .post-media-grid[class*="pm-count"] .pm-thumb::after { content: ""; position: absolute; inset: -3px; z-index: 2; pointer-events: none; background: var(--fs-photo-frame) center / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-heavens-light .post-media-grid[class*="pm-count"] .pm-thumb :is(img, video) { display: block; width: auto !important; height: auto !important; min-height: 0 !important; max-width: 100% !important; max-height: 460px !important;
+  object-fit: contain !important; border-radius: 14px !important; background: transparent !important; }
+html body.fs.fs-heavens-light .post-media-grid[class*="pm-count"]:not(.pm-count-1) .pm-thumb { max-width: calc(50% - 4px); align-self: center !important; }
+html body.fs.fs-heavens-light .post-media-grid[class*="pm-count"]:not(.pm-count-1) .pm-thumb :is(img, video) { max-height: 230px !important; }
+html body.fs.fs-heavens-light .share-preview { border: 16px solid transparent !important; border-image: var(--fs-comment-bubble) 60 fill / 16px stretch !important; background: none !important; border-radius: 0 !important; color: var(--hl-ink) !important; }
+
+/* ---------- Home: profile block (owner rule: always on Home) built like the concept profile ---------- */
+body.fs-heavens-light :is(.pv-profile-card, #profileCard) { background: transparent !important; border: 0 !important; border-image: none !important; box-shadow: none !important; }
+body.fs-heavens-light :is(.pv-profile-card, #profileCard) .profile-cover { display: none !important; }
+body.fs-heavens-light :is(#coverEditBtn, #pvCoverEditBtn) { display: none !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-heavens-light :is(#timelineCover, #pvCoverBanner) { position: relative; height: 250px !important; aspect-ratio: auto !important; border-radius: 0 !important; background: none !important;
+    width: calc(100vw + 16px) !important; max-width: none !important; margin-left: calc(50% - 50vw - 8px) !important; margin-right: calc(50% - 50vw - 8px) !important; overflow: visible !important; }
+  /* the two gold crescents cradling the side bubbles (moon-frame = left crescent; right one mirrored) */
+  html body.fs.fs-heavens-light :is(#timelineCover, #pvCoverBanner)::before,
+  html body.fs.fs-heavens-light :is(#timelineCover, #pvCoverBanner)::after { content: ""; position: absolute; top: 14px; width: 270px; height: 189px; pointer-events: none; z-index: 1;
+    background: var(--fs-temple-arches) left top / 100% 100% no-repeat; }
+  html body.fs.fs-heavens-light :is(#timelineCover, #pvCoverBanner)::before { left: -3px; }
+  html body.fs.fs-heavens-light :is(#timelineCover, #pvCoverBanner)::after { right: -3px; transform: scaleX(-1); }
+}
+html body.fs.fs-heavens-light .fs-timeline { position: absolute; inset: 0; z-index: 2; }
+html body.fs.fs-heavens-light .fs-tl-slot { position: absolute; border-radius: 50%; aspect-ratio: 1; height: auto; }
+html body.fs.fs-heavens-light .fs-tl-slot img { position: absolute; inset: 3.5%; width: 93% !important; height: 93% !important; object-fit: cover; border-radius: 50%; }
+html body.fs.fs-heavens-light .fs-tl-slot::before { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: var(--fs-photo-frame) center / 100% 100% no-repeat; }
+html body.fs.fs-heavens-light .fs-tl-slot.fs-tl-empty::after { content: ""; position: absolute; inset: 3.5%; border-radius: 50%; background: radial-gradient(circle at 50% 40%, #fff 0%, #f3e6c8 70%, #e6d2a6 100%); z-index: 1; display: block !important; }
+html body.fs.fs-heavens-light .fs-tl-own::after { display: none !important; }
+html body.fs.fs-heavens-light .fs-tl-own.fs-tl-slot-3::after { display: block !important; content: ""; position: absolute; right: -2%; bottom: 2%; left: auto; top: auto; width: 34px; height: 34px; z-index: 4;
+  background: var(--fs-camera-badge) center / contain no-repeat !important; border-radius: 50%; }
+html body.fs.fs-heavens-light .fs-tl-slot-1 { left: 5.5%; top: 42px; width: 33.5%; }
+html body.fs.fs-heavens-light .fs-tl-slot-2 { left: 30%; top: 4px; width: 40%; z-index: 2; }
+html body.fs.fs-heavens-light .fs-tl-slot-3 { right: 5.5%; top: 42px; width: 33.5%; }
+html body.fs.fs-heavens-light :is(#profileAvatarImg, .pv-profile-card .profile-avatar) { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; border: 0 !important; box-shadow: none !important; object-fit: cover; }
+html body.fs.fs-heavens-light :is(.pv-profile-card, #profileCard) .profile-avatar-wrap { width: 150px !important; height: 150px !important; margin: -112px auto 0 !important; border-radius: 50% !important; overflow: visible !important; z-index: 3; position: relative; }
+html body.fs.fs-heavens-light :is(.pv-profile-card, #profileCard) .profile-avatar-wrap .profile-avatar { width: 100% !important; height: 100% !important; }
+html body.fs.fs-heavens-light :is(.pv-profile-card, #profileCard) .profile-avatar-wrap::after { display: block !important; content: ""; position: absolute; inset: -4%; z-index: 2; pointer-events: none;
+  background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-heavens-light :is(.pv-profile-card, #profileCard) .avatar-edit-btn { z-index: 4 !important; width: 36px !important; height: 36px !important; right: 2% !important; bottom: 2% !important; border: 0 !important; box-shadow: none !important;
+  background: var(--fs-camera-badge) center / contain no-repeat !important; }
+html body.fs.fs-heavens-light :is(.pv-profile-card, #profileCard) .avatar-edit-btn i { opacity: 0 !important; }
+html body.fs.fs-heavens-light .fs-namecard { border: 0 !important; border-image: none !important; background: none !important; transform: none !important; width: auto !important; padding: 0 !important; margin: 6px auto 0 !important; }
+html body.fs.fs-heavens-light .fs-namecard::before { display: none !important; }
+html body.fs.fs-heavens-light :is(.pv-profile-card, #profileCard) .profile-name { font-size: 40px !important; line-height: 1.05 !important; border: 0 !important; background: none !important; margin: 0 !important; }
+html body.fs.fs-heavens-light :is(.pv-profile-card, #profileCard) :is(.profile-title, .profile-about) { color: var(--hl-title) !important; font-style: italic; font-weight: 600; font-size: 18px !important; margin: 2px 0 0 !important; }
+html body.fs.fs-heavens-light :is(.pv-profile-card, #profileCard) :is(.profile-title, .profile-about):empty { display: none !important; }
+html body.fs.fs-heavens-light :is(.pv-profile-card, #profileCard) .profile-stats { display: flex !important; justify-content: center; align-items: center; position: relative; width: 92% !important; margin: 12px auto 0 !important;
+  aspect-ratio: 1100 / 260; border: 0 !important; border-image: none !important; background: var(--fs-stats-frame) center / 100% 100% no-repeat !important; padding: 0 12% !important; box-sizing: border-box; }
+html body.fs.fs-heavens-light :is(.pv-profile-card, #profileCard) .profile-stats > .stat { flex: 1 1 0; border: 0 !important; border-image: none !important; background: none !important; padding: 0 !important; text-align: center; }
+html body.fs.fs-heavens-light :is(.pv-profile-card, #profileCard) .profile-stats > .stat + .stat { border-left: 1.5px solid color-mix(in srgb, var(--hl-gold) 70%, transparent) !important; }
+html body.fs.fs-heavens-light :is(.pv-profile-card, #profileCard) .profile-stats > .stat + .stat::before { display: none !important; }
+html body.fs.fs-heavens-light :is(.pv-profile-card, #profileCard) .stat-count { font-size: 30px !important; line-height: 1 !important; }
+html body.fs.fs-heavens-light :is(.pv-profile-card, #profileCard) .stat-label { color: var(--hl-title) !important; font-size: 18px !important; font-weight: 600; }
+html body.fs.fs-heavens-light #pvEditProfileBtn,
+html body.fs.fs-heavens-light #profileCard .profile-links { border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important;
+  background: var(--fs-edit-btn) center / 100% 100% no-repeat !important; width: 72% !important; height: 56px; min-height: 0; margin: 14px auto 6px !important; padding: 0 16% 0 0 !important;
+  display: flex !important; align-items: center; justify-content: center; gap: 8px; box-sizing: border-box; }
+html body.fs.fs-heavens-light #profileCard :is(.view-profile-link, .edit-profile-btn) , html body.fs.fs-heavens-light #pvEditProfileBtn { color: var(--hl-title) !important; font: 700 22px var(--fs-title-font) !important; }
+html body.fs.fs-heavens-light #profileCard .edit-profile-btn i, html body.fs.fs-heavens-light #pvEditProfileBtn i { display: none !important; }
+html body.fs.fs-heavens-light :is(#profileCard, .pv-profile-card)::after { content: ""; display: block; height: 0; padding-bottom: 40%; margin: 0 -8px; background: var(--fs-marble-ledge) center bottom / 100% auto no-repeat; }
+html body.fs.fs-heavens-light .pv-back-link { display: none !important; }
+
+/* ---------- Daily Quests (concept): frosted frame with gold crescent, each quest a CONSTELLATION that lights up ---------- */
+html body.fs.fs-heavens-light .quest-panel { border: 0 !important; border-image: none !important; box-shadow: none !important; position: relative;
+  background: var(--fs-quests-frame) center / 100% 100% no-repeat !important; padding: 46px 18px 26px !important;
+  display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 4px 0 !important; }
+html body.fs.fs-heavens-light #questPanel[style*="none"] { display: none !important; }
+html body.fs.fs-heavens-light .quest-panel-header { grid-column: 1 / -1; justify-content: center !important; border: 0 !important; margin: 0 !important; }
+html body.fs.fs-heavens-light .quest-panel-header h4 { font-size: 26px !important; }
+html body.fs.fs-heavens-light .quest-panel-header i, html body.fs.fs-heavens-light .quest-reset { display: none !important; }
+html body.fs.fs-heavens-light .quest-item { display: flex !important; flex-direction: column; align-items: center; text-align: center; gap: 0; border: 0 !important; border-image: none !important;
+  background: none !important; padding: 0 !important; margin: 0 !important; min-width: 0; }
+html body.fs.fs-heavens-light .quest-icon { width: 92px !important; height: 80px !important; margin: 0 0 2px !important; border-radius: 0 !important; background: var(--fs-halo-0) center / contain no-repeat !important; }
+html body.fs.fs-heavens-light .quest-item[data-fs-q="50"] .quest-icon { background-image: var(--fs-halo-50) !important; }
+html body.fs.fs-heavens-light .quest-item[data-fs-q="100"] .quest-icon { background-image: var(--fs-halo-100) !important; }
+html body.fs.fs-heavens-light .quest-item:nth-child(3) .quest-icon { background-image: var(--fs-halo-0) !important; }
+html body.fs.fs-heavens-light .quest-item:nth-child(3)[data-fs-q="50"] .quest-icon { background-image: var(--fs-halo-50) !important; }
+html body.fs.fs-heavens-light .quest-item:nth-child(3)[data-fs-q="100"] .quest-icon { background-image: var(--fs-halo-100) !important; }
+html body.fs.fs-heavens-light .quest-item:nth-child(4) .quest-icon { background-image: var(--fs-halo-0) !important; }
+html body.fs.fs-heavens-light .quest-item:nth-child(4)[data-fs-q="50"] .quest-icon { background-image: var(--fs-halo-50) !important; }
+html body.fs.fs-heavens-light .quest-item:nth-child(4)[data-fs-q="100"] .quest-icon { background-image: var(--fs-halo-100) !important; }
+html body.fs.fs-heavens-light .quest-icon > i { display: none !important; }
+html body.fs.fs-heavens-light .quest-info { display: flex; flex-direction: column; align-items: center; }
+html body.fs.fs-heavens-light .quest-info p { color: var(--hl-title) !important; font-size: 16px !important; font-weight: 700; line-height: 1.1; margin: 0 !important; }
+html body.fs.fs-heavens-light .quest-bar { display: none !important; }
+html body.fs.fs-heavens-light .quest-progress { color: var(--hl-title) !important; font-size: 16px !important; font-weight: 600; }
+html body.fs.fs-heavens-light :is(.quest-reward, .quest-check) { background: none !important; color: var(--hl-title) !important; font: 700 17px var(--fs-font) !important; padding: 0 !important; display: inline-flex; align-items: center; gap: 4px; }
+html body.fs.fs-heavens-light .quest-reward > i { font-size: 0 !important; width: 20px; height: 20px; background: var(--fs-coin) center / contain no-repeat; }
+
+/* ---------- feed tabs: plain words, the active one on a soft glow with the constellation underline ---------- */
+html body.fs.fs-heavens-light #feedTabs { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 0 !important; border: 0 !important; background: none !important; margin: 6px 0 !important; }
+html body.fs.fs-heavens-light .search-tab { border: 0 !important; border-image: none !important; border-radius: 22px !important; box-shadow: none !important; background: none !important;
+  color: var(--hl-title) !important; font: 600 18px var(--fs-font) !important; padding: 8px 6px 14px !important; white-space: nowrap; display: flex !important; align-items: center; justify-content: center; }
+html body.fs.fs-heavens-light .search-tab > i { display: none !important; }
+html body.fs.fs-heavens-light #feedTabs .search-tab.active { background: radial-gradient(ellipse at 50% 45%, rgba(255, 226, 160, .75), transparent 70%), var(--fs-tab-active) center bottom / 86% 16px no-repeat !important; color: var(--hl-accent) !important; font-weight: 700 !important; }
+/* filter chips + segmented tabs */
+html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, .fsk-filters) { display: flex !important; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding: 2px 0 !important; border: 0 !important; background: none !important; scrollbar-width: none; }
+html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab, html body.fs.fs-heavens-light .fsk-filter {
+  flex: 0 0 auto; padding: 6px 14px !important; font-size: 15px !important; border-radius: 0 !important; background: var(--fs-chip) center / 100% 100% no-repeat !important; color: var(--hl-title) !important; }
+html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.active, html body.fs.fs-heavens-light .fsk-filter.active { background-image: var(--fs-chip-active) !important; color: #fff !important; }
+html body.fs.fs-heavens-light :is(#profilesTabs, #searchTabs) .search-tab { flex: 1 1 0; min-height: 46px; padding: 4px 6px !important; font-size: 15px !important; line-height: 1.1; white-space: normal; text-align: center;
+  background: var(--fs-seg-tab) center / 100% 100% no-repeat !important; }
+html body.fs.fs-heavens-light :is(#profilesTabs, #searchTabs) .search-tab.active { background-image: var(--fs-seg-tab-active) !important; color: #fff !important; }
+
+/* ---------- Home extras (concept home-full): stories, composer, Featured Skin, coin goal ---------- */
+html body.fs.fs-heavens-light .story-ring { background: var(--fs-story-ring) center / contain no-repeat !important; padding: 4px !important; }
+html body.fs.fs-heavens-light .story-add .story-ring:not(.story-has) { background-image: var(--fs-story-add) !important; }
+html body.fs.fs-heavens-light :is(.story-name, .story-label) { color: var(--hl-title) !important; }
+html body.fs.fs-heavens-light #openPostModal { border: 0 !important; border-image: none !important; background: none !important; padding: 0 2px !important; display: flex; align-items: center; gap: 8px; }
+html body.fs.fs-heavens-light .post-create-avatar { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; width: 46px !important; height: 46px !important; padding: 3px; box-sizing: border-box;
+  background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; }
+html body.fs.fs-heavens-light .post-input-fake { flex: 1; border: 0 !important; border-image: none !important; border-radius: 0 !important; background: var(--fs-composer) center / 100% 100% no-repeat !important;
+  padding: 12px 18px !important; min-height: 0 !important; color: var(--hl-soft) !important; font: 500 16px var(--fs-font) !important; }
+html body.fs.fs-heavens-light .featured-skin-banner { border: 0 !important; border-image: none !important; box-shadow: none !important; background: var(--fs-featured-frame) center / 100% 100% no-repeat !important; padding: 14px 18px !important; color: var(--hl-title) !important; }
+html body.fs.fs-heavens-light .coin-goal-bar { border: 0 !important; border-image: none !important; box-shadow: none !important; background: var(--fs-coin-goal-bar) center / 100% 100% no-repeat !important; padding: 10px 16px !important; color: var(--hl-title) !important; }
+html body.fs.fs-heavens-light .coin-goal-track { background: var(--fs-goal-track) center / 100% 100% no-repeat !important; border-radius: 0 !important; border: 0 !important; }
+html body.fs.fs-heavens-light .coin-goal-fill { background: var(--fs-goal-fill) left center / auto 100% no-repeat !important; border-radius: 0 !important; }
+
+/* ---------- page headers (concept groups/messages/skins/...): centred title, round icon buttons right ---------- */
+html body.fs.fs-heavens-light .page-header, html body.fs.fs-heavens-light .msg-sidebar-header { display: flex !important; flex-wrap: wrap; align-items: center; gap: 8px; padding: 6px 4px 0 52px !important; border: 0 !important; background: none !important; position: relative; z-index: 1; }
+html body.fs.fs-heavens-light :is(.page-header h2, .msg-sidebar-header h3) { flex: 1 1 auto; margin: 0 !important; text-align: center; font-size: 30px !important; background: none !important; border: 0 !important; padding: 0 !important; }
+html body.fs.fs-heavens-light .page-header h2 > i { display: none !important; }
+html body.fs.fs-heavens-light .page-header .page-subtitle { display: none !important; }
+html body.fs.fs-heavens-light .page-header .page-actions { display: contents !important; }
+html body.fs.fs-heavens-light .page-header .page-search { order: 5; flex: 1 1 100%; margin: 0 0 0 -44px !important; }
+html body.fs.fs-heavens-light .page-header .btn:not(.page-search) { width: 42px !important; height: 42px !important; min-width: 0; padding: 0 !important; font-size: 0 !important; border: 0 !important; border-image: none !important; border-radius: 50% !important; box-shadow: none !important; background: none !important; }
+html body.fs.fs-heavens-light .page-header .btn:not(.page-search) i { font-size: 0 !important; width: 26px; height: 26px; display: inline-block; background: var(--fs-icon-plus) center / contain no-repeat; margin: 0 !important; }
+html body.fs.fs-heavens-light .page-header .btn:not(.page-search) i::before { content: "" !important; }
+/* fields */
+html body.fs.fs-heavens-light :is(.msg-search, .page-search, .comment-input) { border: 0 !important; border-image: none !important; border-radius: 0 !important; background: var(--fs-field) center / 100% 100% no-repeat !important; padding: 0 10px !important; min-height: 46px; display: flex; align-items: center; box-shadow: none !important; }
+html body.fs.fs-heavens-light :is(.msg-search, .page-search) > i { font-size: 0 !important; width: 20px; height: 20px; flex: 0 0 20px; background: var(--fs-icon-search) center / contain no-repeat; position: static !important; transform: none !important; }
+html body.fs.fs-heavens-light :is(.msg-search, .page-search) > i::before { content: "" !important; }
+html body.fs.fs-heavens-light :is(.msg-search, .page-search) input { background: none !important; border: 0 !important; color: var(--hl-ink) !important; font: 500 17px var(--fs-font) !important; padding: 8px !important; height: auto !important; flex: 1; }
+
+/* ---------- list rows (groups, network, messages, notifications, search) ---------- */
+html body.fs.fs-heavens-light :is(.msg-contact, .notif-item, .profile-card-item, .follow-list-item) {
+  border: 16px solid transparent !important; border-image: var(--fs-list-row) 70 fill / 16px stretch !important; background: none !important; box-shadow: none !important; color: var(--hl-ink) !important; margin-bottom: 6px !important; }
+html body.fs.fs-heavens-light :is(.join-group-btn, .suggestion-follow-btn, .follow-btn, .profile-follow-btn) { border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important;
+  background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: var(--hl-title) !important; font: 700 16px var(--fs-font) !important; }
+html body.fs.fs-heavens-light :is(.msg-contact > div > img, .profile-card-item .profile-card-avatar, .notif-item img, #newGroupDmBtn > div:first-child) {
+  -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; border: 0 !important; padding: 3px !important; box-sizing: border-box; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; object-fit: cover; }
+html body.fs.fs-heavens-light .msg-contact-name > span { font-size: 0 !important; width: 20px; height: 20px; padding: 0 !important; display: inline-block; vertical-align: middle; background: var(--fs-unread-dot) center / contain no-repeat !important; border-radius: 0 !important; }
+html body.fs.fs-heavens-light :is(.msg-contact-preview, .msg-contact-time, .profile-card-bio) { color: var(--hl-soft) !important; }
+html body.fs.fs-heavens-light #groupsSections .shop-scroll-row, html body.fs.fs-heavens-light :is(#page-profiles, #page-search) :is(.connections-grid, .shop-scroll-row, .page-grid) {
+  display: flex !important; flex-direction: column; gap: 6px; overflow: visible !important; grid-template-columns: none !important; grid-auto-flow: row !important; }
+html body.fs.fs-heavens-light #groupsSections .group-card { min-width: 0 !important; max-width: none !important; width: 100%; transform: none !important; display: grid !important; grid-template-columns: 64px minmax(0, 1fr) auto; align-items: center; gap: 12px;
+  background: none !important; box-shadow: none !important; border: 16px solid transparent !important; border-image: var(--fs-list-row) 70 fill / 16px stretch !important; padding: 0 2px !important; }
+html body.fs.fs-heavens-light #groupsSections .group-card-banner { width: 64px; height: 64px !important; border-radius: 50%; overflow: hidden; padding: 3px; box-sizing: border-box; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; }
+html body.fs.fs-heavens-light #groupsSections .group-card-banner img { width: 100% !important; height: 100% !important; border-radius: 50% !important; border: 0 !important; object-fit: cover; margin: 0 !important; }
+html body.fs.fs-heavens-light #groupsSections .gc-icon-edit-btn, html body.fs.fs-heavens-light #groupsSections .group-card-actions .view-group-btn, html body.fs.fs-heavens-light #groupsSections .gc-btn-icon { display: none !important; }
+html body.fs.fs-heavens-light #groupsSections .group-card-body { padding: 0 !important; min-width: 0; }
+html body.fs.fs-heavens-light #groupsSections .group-card-body h4 { margin: 0; font-size: 20px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html body.fs.fs-heavens-light #groupsSections .group-card-body p:not(.group-members) { display: none; }
+html body.fs.fs-heavens-light #groupsSections .group-members { color: var(--hl-soft) !important; font-size: 15px !important; }
+html body.fs.fs-heavens-light #groupsSections .group-card-actions { padding: 0 !important; }
+html body.fs.fs-heavens-light #groupsSections .group-card-actions .btn { min-width: 84px; height: 40px; padding: 0 12px !important; white-space: nowrap; border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important;
+  background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: var(--hl-title) !important; font: 700 16px var(--fs-font) !important; }
+html body.fs.fs-heavens-light :is(#page-profiles, #page-search) .profile-card-item { display: grid !important; grid-template-columns: 58px minmax(0, 1fr) auto; column-gap: 12px; align-items: center; text-align: left;
+  min-width: 0 !important; max-width: none !important; width: 100%; transform: none !important; padding: 0 2px !important; }
+html body.fs.fs-heavens-light :is(#page-profiles, #page-search) .profile-card-item > * { grid-column: 2; margin: 0 !important; min-width: 0; text-align: left !important; }
+html body.fs.fs-heavens-light :is(#page-profiles, #page-search) .profile-card-avatar { grid-column: 1; grid-row: 1 / span 3; width: 58px !important; height: 58px !important; }
+html body.fs.fs-heavens-light :is(#page-profiles, #page-search) .profile-follow-btn { grid-column: 3; grid-row: 1 / span 3; width: auto !important; min-width: 90px; height: 40px; padding: 0 12px !important; }
+html body.fs.fs-heavens-light :is(#page-profiles, #page-search) .profile-card-name { font-size: 19px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html body.fs.fs-heavens-light :is(#page-profiles, #page-search) .profile-card-item:not(:has(.profile-card-bio)) .profile-card-name { grid-row: 1 / span 3; }
+/* notifications: lavender icon per type (concept), no coloured disc */
+html body.fs.fs-heavens-light .notif-icon { background: none !important; width: 40px !important; height: 40px !important; flex-shrink: 0; box-shadow: none !important; }
+html body.fs.fs-heavens-light .notif-icon i { font-size: 0 !important; width: 30px; height: 30px; display: block; margin: auto; background: var(--fs-notif-like) center / contain no-repeat; }
+html body.fs.fs-heavens-light .notif-icon i::before { content: "" !important; }
+html body.fs.fs-heavens-light .notif-icon i.fa-user-plus { background-image: var(--fs-notif-follow); }
+html body.fs.fs-heavens-light .notif-icon i:is(.fa-comment, .fa-reply) { background-image: var(--fs-notif-comment); }
+html body.fs.fs-heavens-light .notif-icon i.fa-at { background-image: var(--fs-notif-mention); }
+html body.fs.fs-heavens-light .notif-icon i.fa-envelope { background-image: var(--fs-notif-message); }
+html body.fs.fs-heavens-light .notif-icon i:is(.fa-users, .fa-envelope-open-text) { background-image: var(--fs-notif-group); }
+html body.fs.fs-heavens-light .notif-icon i:is(.fa-palette, .fa-coins) { background-image: var(--fs-notif-purchase); }
+html body.fs.fs-heavens-light .notif-item :is(.notif-text, p) { color: var(--hl-ink) !important; font-size: 16px !important; }
+
+/* ---------- skins shop (concept skins): frosted cards, art on top, name + coin price below, Equipped tag ---------- */
+html body.fs.fs-heavens-light .fsk-grid { gap: 10px !important; }
+html body.fs.fs-heavens-light .fsk-card { position: relative; background: var(--fs-skin-card) center / 100% 100% no-repeat !important; border: 0 !important; border-image: none !important; box-shadow: none !important; padding: 0 0 8px !important; overflow: visible !important; }
+html body.fs.fs-heavens-light .fsk-thumb { margin: 2% 2.5% 0 2.3% !important; aspect-ratio: 1.6; height: auto !important; border: 0 !important; border-radius: 12px 12px 0 0 !important; overflow: hidden; }
+html body.fs.fs-heavens-light .fsk-thumb img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+html body.fs.fs-heavens-light .fsk-body { padding: 4px 12px 0 !important; text-align: left !important; background: none !important; }
+html body.fs.fs-heavens-light .fsk-name { font-size: 18px !important; margin: 0 !important; text-align: left !important; }
+html body.fs.fs-heavens-light .fsk-badge { position: absolute; top: 4px; right: 4px; width: auto !important; height: 24px !important; padding: 0 12px !important; border-radius: 0 !important;
+  background: var(--fs-equipped-tag) center / 100% 100% no-repeat !important; color: #fff !important; font: 700 13px var(--fs-font) !important; display: inline-flex !important; align-items: center; }
+html body.fs.fs-heavens-light .fsk-badge i { display: none !important; }
+html body.fs.fs-heavens-light .fsk-badge::after { content: "Equipped"; }
+html body.fs.fs-heavens-light .fsk-body .btn { width: 100% !important; height: 38px; margin: 6px 0 0 !important; padding: 0 10px !important; display: flex !important; align-items: center; justify-content: center; gap: 5px;
+  border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: var(--hl-title) !important; font: 700 16px var(--fs-font) !important; }
+html body.fs.fs-heavens-light .fsk-body .btn.fsk-equipped { background-image: var(--fs-chip-active) !important; color: #fff !important; opacity: 1 !important; }
+html body.fs.fs-heavens-light :is(.fsk-soon, .fsk-takeoff) { color: var(--hl-soft) !important; }
+
+/* ---------- chat (concept chat): frosted bubbles, + orb, field, send orb; moon-in-clouds pinned above the input ---------- */
+html body.fs.fs-heavens-light #msgChat { background: var(--fs-background) center / cover no-repeat !important; }
+html body.fs.fs-heavens-light #msgChat .msg-chat-header { background: none !important; border-bottom: 0 !important; position: relative; }
+html body.fs.fs-heavens-light #msgChat .msg-chat-header::before { content: ""; position: absolute; left: 0; top: 0; width: 110px; height: 100%; background: var(--fs-corner-column-left) left top / contain no-repeat; pointer-events: none; }
+html body.fs.fs-heavens-light #msgChat .msg-back-btn { display: flex !important; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0 !important; background: none !important; position: relative; z-index: 1; }
+html body.fs.fs-heavens-light #msgChat .msg-back-btn i { font-size: 0 !important; display: block !important; width: 26px; height: 26px; background: var(--fs-icon-back) center / contain no-repeat !important; }
+html body.fs.fs-heavens-light #msgChat .msg-chat-header img { width: 46px !important; height: 46px !important; padding: 3px; box-sizing: border-box; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; position: relative; z-index: 1; }
+html body.fs.fs-heavens-light #msgChat .msg-chat-header h4 { font-size: 21px !important; position: relative; z-index: 1; }
+html body.fs.fs-heavens-light .msg-bubble { border: 16px solid transparent !important; border-image: var(--fs-bubble-in) 70 fill / 16px stretch !important; background: none !important; color: var(--hl-ink) !important; border-radius: 0 !important; box-shadow: none !important; padding: 0 4px !important; }
+html body.fs.fs-heavens-light .msg-bubble.sent { border-image-source: var(--fs-bubble-out) !important; color: #fff !important; }
+html body.fs.fs-heavens-light #msgChat .msg-chat-messages { overflow-x: hidden !important; touch-action: pan-y; }
+html body.fs.fs-heavens-light #msgChat .msg-chat-messages::after { content: ""; display: block; flex: 0 0 auto; height: calc(100vw * 500 / 1290 - 30px); }
+html body.fs.fs-heavens-light #msgChat .msg-chat-input { position: relative !important; z-index: 3; background: var(--fs-input-bar) center / 100% 100% no-repeat !important; border-top: 0 !important;
+  justify-content: center !important; align-items: center !important; gap: 6px !important; padding-left: 10px !important; padding-right: 10px !important; }
+html body.fs.fs-heavens-light #msgChat .msg-chat-input::before { content: ""; position: absolute; left: 0; right: 0; bottom: calc(100% - 4px); aspect-ratio: 1290 / 500; background: var(--fs-page-deco-messages) center bottom / 100% 100% no-repeat; pointer-events: none; z-index: -1; }
+html body.fs.fs-heavens-light #msgChat .msg-media-btn { display: flex !important; align-items: center; justify-content: center; width: 36px !important; height: 36px !important; padding: 0 !important; flex: 0 0 36px; background: none !important; }
+html body.fs.fs-heavens-light #msgChat .msg-media-btn i { font-size: 0 !important; display: block !important; width: 26px; height: 26px; background: center / contain no-repeat !important; }
+html body.fs.fs-heavens-light #msgChat #msgImgBtn i { background-image: var(--fs-round-btn) !important; width: 34px; height: 34px; }
+html body.fs.fs-heavens-light #msgChat #msgGifBtn i { background-image: var(--fs-icon-gif) !important; }
+html body.fs.fs-heavens-light #msgChat #msgVoiceBtn i { background-image: var(--fs-icon-emoji) !important; }
+html body.fs.fs-heavens-light #msgChat #msgInput { flex: 1 1 auto; min-width: 0; margin: 0 !important; border: 0 !important; border-radius: 0 !important; background: var(--fs-field) center / 100% 100% no-repeat !important; padding: 11px 16px !important; color: var(--hl-ink) !important; font: 500 16px var(--fs-font) !important; }
+html body.fs.fs-heavens-light #msgChat #sendMsgBtn { flex: 0 0 44px; width: 44px; height: 44px; padding: 0 !important; border: 0 !important; background: var(--fs-send-btn) center / contain no-repeat !important; }
+html body.fs.fs-heavens-light #msgChat #sendMsgBtn i { opacity: 0 !important; }
+@media (max-width: 768px) { html body.fs.fs-heavens-light:has(.messages-layout.chat-open) { padding-bottom: 0 !important; } }
+
+/* ---------- page decorations (concept): owl on crystal under the post, moon in clouds under messages ---------- */
+html body.fs.fs-heavens-light #page-messages .msg-sidebar::after { content: ""; display: block; width: calc(100% + 16px); margin: 8px -8px 0; aspect-ratio: 1290 / 500; background: var(--fs-page-deco-messages) center bottom / 100% 100% no-repeat; pointer-events: none; }
+@media (max-width: 768px) {
+  html body.fs.fs-heavens-light .nav-center :is(.nav-saved-link, .nav-notif-link) { display: none !important; }
+  /* concept: the bubbles start right under the top bar */
+  html body.fs.fs-heavens-light #timelineCover { margin-top: -34px !important; }
+}
+/* stats: the art draws its own centre divider — no second CSS line */
+html body.fs.fs-heavens-light :is(.pv-profile-card, #profileCard) .profile-stats > .stat + .stat { border-left: 0 !important; }
+/* Featured Skin + composer (QA vs concept home-full) */
+html body.fs.fs-heavens-light .featured-skin-banner :is(h4, h5, .featured-timer, .featured-timer i, h4 i) { color: var(--hl-title) !important; font-family: var(--fs-title-font) !important; }
+html body.fs.fs-heavens-light .featured-skin-banner h5 { font-size: 22px !important; font-weight: 700 !important; margin: 0 !important; }
+html body.fs.fs-heavens-light .featured-skin-banner p { color: var(--hl-soft) !important; }
+html body.fs.fs-heavens-light .featured-skin-banner .featured-preview { border-radius: 14px !important; }
+html body.fs.fs-heavens-light .featured-skin-banner .btn { border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; min-width: 84px; height: 40px;
+  background: var(--fs-follow-btn) center / 100% 100% no-repeat !important; color: #fff !important; font: 700 16px var(--fs-font) !important; }
+html body.fs.fs-heavens-light #openPostModal { margin: 6px 0 !important; padding: 0 !important; box-sizing: border-box; width: 100% !important; }
+html body.fs.fs-heavens-light .post-create-avatar { flex: 0 0 46px; }
+html body.fs.fs-heavens-light .post-input-fake { min-width: 0; }
+/* cat-on-cloud: tucked up under the Edit Profile pill like the concept, not a big gap */
+html body.fs.fs-heavens-light :is(#profileCard, .pv-profile-card)::after { padding-bottom: 30% !important; margin: -26px -8px 0 !important; background-size: 92% auto !important; }
+html body.fs.fs-heavens-light .share-preview :is(.share-preview-name, strong, .shared-post-author:not(img)) { color: var(--hl-title) !important; font-family: var(--fs-title-font) !important; font-weight: 700 !important; opacity: 1 !important; }
+html body.fs.fs-heavens-light .share-preview .share-preview-time { color: var(--hl-soft) !important; }
+/* readability (owner: text too light): body text plum on the light glass, never the app's pale primary */
+html body.fs.fs-heavens-light :is(.post-description, .post-description *, .share-preview-text, .share-preview-text *, .post-tags, .comment-text, .notif-text, .msg-contact-preview) { color: var(--hl-ink) !important; opacity: 1 !important; }
+html body.fs.fs-heavens-light .share-preview .share-preview-name, html body.fs.fs-heavens-light .share-preview strong.shared-post-author { color: var(--hl-title) !important; }
+html body.fs.fs-heavens-light :is(.post-time, .share-preview-time, .msg-contact-time, .group-members, .profile-card-bio, .post-meta) { color: var(--hl-soft) !important; opacity: 1 !important; }
+html body.fs.fs-heavens-light .post-badges :is(span, .post-badge) { background: rgba(255,255,255,.7) !important; color: var(--hl-title) !important; border: 1px solid rgba(201,163,92,.6) !important; }
+html body.fs.fs-heavens-light .post-badges :is(span, .post-badge) i { color: var(--hl-accent) !important; }
+html body.fs.fs-heavens-light .msg-bubble.sent, html body.fs.fs-heavens-light .msg-bubble.sent * { color: var(--hl-title) !important; }
+html body.fs.fs-heavens-light #newGroupDmBtn > div:first-child i { color: var(--hl-accent) !important; }
+/* readability pass 2 (owner: "still too hard to read — thicker font?"): Cormorant is hairline at 400/500, so every
+   Good Witch text is 600+ and a touch larger; sent bubble = deep plum (6.6:1 on its lavender art, white was 2.6:1) */
+body.fs-heavens-light { --hl-deep: #4a2a08; }
+html body.fs.fs-heavens-light :is(p, span, a, div, li, label, input, textarea, button, small, .action-btn, .msg-bubble, .msg-bubble *, .post-description, .msg-contact-preview, .notif-text, .comment-text) { font-weight: 600; }
+html body.fs.fs-heavens-light :is(h1, h2, h3, h4, h5, .profile-name, .post-username, .msg-contact-name, .stat-count, .fsk-name, .card-heading) { font-weight: 700 !important; }
+html body.fs.fs-heavens-light .msg-bubble { font-size: 18px !important; }
+html body.fs.fs-heavens-light .msg-bubble, html body.fs.fs-heavens-light .msg-bubble * { color: var(--hl-deep) !important; }
+html body.fs.fs-heavens-light .msg-bubble.sent, html body.fs.fs-heavens-light .msg-bubble.sent * { color: var(--hl-deep) !important; }
+html body.fs.fs-heavens-light .msg-read-receipt, html body.fs.fs-heavens-light .msg-read-receipt * { color: var(--hl-deep) !important; opacity: .85; }
+html body.fs.fs-heavens-light :is(.view-more-link, .view-all-link, a.view-more-link) { color: var(--hl-accent) !important; font-weight: 700 !important; }
+html body.fs.fs-heavens-light .featured-skin-banner :is(h4 i, .featured-timer i) { font-family: "Font Awesome 6 Free", "Font Awesome 6 Pro", "FontAwesome" !important; font-weight: 900 !important; color: var(--hl-accent) !important; }
+html body.fs.fs-heavens-light .featured-skin-banner .featured-timer i.far { font-weight: 400 !important; }
+html body.fs.fs-heavens-light .featured-skin-banner .btn { color: var(--hl-deep) !important; }
+/* the middle timeline photo sits in FRONT of the two side ones (owner) */
+html body.fs.fs-heavens-light :is(.fs-tl-slot-1, .fs-tl-slot-3) { z-index: 1 !important; }
+html body.fs.fs-heavens-light .fs-tl-slot-2 { z-index: 3 !important; }
+@media (max-width: 768px) { html body.fs.fs-heavens-light .nav-center .nav-link { color: var(--hl-title) !important; font-weight: 700 !important; } html body.fs.fs-heavens-light .nav-center .nav-link.active { color: var(--hl-accent) !important; } }
+/* nav orbs (owner: icons not centred, orbs bleeding into the bar): icon optically centred in the glass (above the gold
+   arc), bigger; each orb lifted off the pale bar with a soft violet shadow + rim */
+@media (max-width: 768px) {
+  html body.fs.fs-heavens-light .nav-center .nav-link > i { background-position: 50% 47%, center !important; background-size: 34px, contain !important; border-radius: 50%;
+    box-shadow: 0 3px 8px rgba(80, 40, 130, .35), 0 0 0 1.5px rgba(176, 130, 220, .55) !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link.active > i { box-shadow: 0 0 14px rgba(167, 110, 240, .7), 0 0 0 2px rgba(201, 163, 92, .8) !important; filter: none !important; }
+}
+@media (max-width: 768px) { html body.fs.fs-heavens-light .nav-center { padding-top: 16px !important; padding-bottom: calc(env(safe-area-inset-bottom, 0px) - 10px) !important; align-content: center; } }
+/* bars were see-through (content mixed with the icons): solid backing under the glass art */
+@media (max-width: 768px) {
+  html body.fs.fs-heavens-light .navbar { background: var(--fs-top-bar) center bottom / 100% 100% no-repeat, linear-gradient(var(--hl-barfill, #f4ecfd), var(--hl-barfill, #f4ecfd)) top / 100% calc(100% - 6px) no-repeat !important; }
+  html body.fs.fs-heavens-light .nav-center { background: var(--fs-nav-bar) center top / 100% 100% no-repeat, linear-gradient(var(--hl-barfill, #f4ecfd), var(--hl-barfill, #f4ecfd)) bottom / 100% calc(100% - 8px) no-repeat !important; }
+}
+html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs) .search-tab.active,
+html body.fs.fs-heavens-light .fsk-filter.active { color: var(--hl-deep) !important; font-weight: 700 !important; }
+html body.fs.fs-heavens-light #groupsSections .group-card-actions .btn .gc-btn-text { display: inline !important; font-size: 16px !important; color: var(--hl-title) !important; }
+html body.fs.fs-heavens-light .page-header .page-search { margin-top: 6px !important; }
+/* enchantment pass (owner: "more elaborate like the others"): title crest, gold vines in both top corners, sparkle trail,
+   and a different props-on-clouds scene at the bottom of each page */
+@media (max-width: 768px) {
+  html body.fs.fs-heavens-light:not(:has(#page-home.active)) .page.active::after { content: ""; position: absolute; right: 0; top: 0; width: 120px; height: 100px; pointer-events: none;
+    background: var(--fs-corner-column-right) right top / contain no-repeat; z-index: 0; }
+  html body.fs.fs-heavens-light:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { position: relative; padding-top: 30px !important; }
+  html body.fs.fs-heavens-light:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::before { content: ""; position: absolute; left: 50%; top: 0; width: 140px; height: 40px;
+    transform: translateX(-50%); background: var(--fs-title-crest) center / contain no-repeat; }
+  html body.fs.fs-heavens-light:not(:has(#page-home.active)) :is(.page-header, .msg-sidebar-header)::after { content: ""; position: absolute; left: -8px; right: -8px; bottom: -34px; height: 34px; pointer-events: none;
+    background: var(--fs-title-laurel) center / 100% 100% no-repeat; z-index: 0; }
+  html body.fs.fs-heavens-light .page-header .btn:not(.page-search) { order: 6; }
+}
+html body.fs.fs-heavens-light :is(#page-groups, #page-profiles, #page-notifications, #page-search, #page-shop, #page-group-view) .page-container::after,
+html body.fs.fs-heavens-light #page-messages .msg-sidebar::after {
+  content: ""; display: block; width: calc(100% + 16px); margin: 12px -8px 0; aspect-ratio: 1290 / 520; background: center bottom / 100% 100% no-repeat; pointer-events: none; }
+html body.fs.fs-heavens-light #page-groups .page-container::after { background-image: var(--fs-page-deco-groups); }
+html body.fs.fs-heavens-light #page-profiles .page-container::after { background-image: var(--fs-page-deco-network); }
+html body.fs.fs-heavens-light #page-notifications .page-container::after { background-image: var(--fs-page-deco-notifications); }
+html body.fs.fs-heavens-light #page-search .page-container::after { background-image: var(--fs-page-deco-search); }
+html body.fs.fs-heavens-light #page-shop .page-container::after { background-image: var(--fs-page-deco-skins); }
+html body.fs.fs-heavens-light #page-group-view .page-container::after { background-image: var(--fs-page-deco-post); }
+html body.fs.fs-heavens-light #page-messages .page-container::after { display: none; }
+html body.fs.fs-heavens-light #page-messages .msg-sidebar::after { background-image: var(--fs-page-deco-messages) !important; }
+/* posts: the new art has a four-sided ornate border — give it room (wider edge slice) */
+html body.fs.fs-heavens-light .feed-post.feed-post.feed-post { border-width: 34px !important; border-image: var(--fs-post-panel) 140 fill / 34px stretch !important; padding: 0 !important; }
+html body.fs.fs-heavens-light :is(.card:not(.feed-post):not(.profile-card):not(.pv-profile-card), .comment-item, .post-dropdown) { border-width: 30px !important; border-image: var(--fs-post-panel) 140 fill / 30px stretch !important; }
+html body.fs.fs-heavens-light .post-media-grid[class*="pm-count"] .pm-thumb { margin: 8px 6px !important; }
+html body.fs.fs-heavens-light .post-media-grid[class*="pm-count"] .pm-thumb::after { inset: -10px !important; }
+html body.fs.fs-heavens-light .post-media-grid[class*="pm-count"] .pm-thumb :is(img, video) { border-radius: 8px !important; }
+/* page header layout: crest · centred title · sparkle trail under it; + / compose top-right; search full width */
+@media (max-width: 768px) {
+  html body.fs.fs-heavens-light:not(:has(#page-home.active)) :is(.page-header, .msg-sidebar-header) { display: block !important; position: relative; padding: 4px 4px 0 !important; text-align: center; }
+  html body.fs.fs-heavens-light:not(:has(#page-home.active)) :is(.page-header, .msg-sidebar-header)::after { display: none !important; }
+  html body.fs.fs-heavens-light:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3) { display: block !important; width: auto !important; margin: 0 auto !important; padding: 34px 0 26px !important; text-align: center !important; }
+  html body.fs.fs-heavens-light:not(:has(#page-home.active)) :is(.page-header h2, .msg-sidebar-header h3)::after { content: ""; position: absolute; left: 6%; right: 6%; bottom: 0; height: 26px;
+    background: var(--fs-title-laurel) center / 100% 100% no-repeat; pointer-events: none; }
+  html body.fs.fs-heavens-light:not(:has(#page-home.active)) .page-header .page-actions { display: block !important; }
+  html body.fs.fs-heavens-light:not(:has(#page-home.active)) .page-header .btn:not(.page-search) { position: absolute !important; top: 42px; right: 4px; z-index: 2; }
+  html body.fs.fs-heavens-light:not(:has(#page-home.active)) .page-header .page-search { margin: 8px 0 0 !important; width: 100% !important; box-sizing: border-box; }
+}
+html body.fs.fs-heavens-light :is(.msg-search, .page-search) { padding: 0 22px 0 30px !important; min-height: 54px; }
+/* photo frame (owner: corners stretched): 9-slice — corner ornaments keep their shape at any photo size, only the plain
+   rims stretch; the gold still curls over the photo corners */
+html body.fs.fs-heavens-light .post-media-grid[class*="pm-count"] .pm-thumb::after { inset: -6px !important; background: none !important;
+  border: solid transparent !important; border-width: 46px 58px !important; border-image: var(--fs-photo-frame) 160 210 / 46px 58px stretch !important; }
+/* Featured Skin (owner: not fitted right): 9-slice so the corner ornaments keep their shape, text kept inside the rim */
+html body.fs.fs-heavens-light .featured-skin-banner { background: none !important; border: solid transparent !important; border-width: 30px 40px !important;
+  border-image: var(--fs-featured-frame) 110 150 fill / 30px 40px stretch !important; padding: 2px 0 !important; box-sizing: border-box; }
+html body.fs.fs-heavens-light .featured-skin-banner .featured-header { display: flex !important; justify-content: space-between; align-items: center; gap: 8px; margin: 0 0 6px !important; }
+html body.fs.fs-heavens-light .featured-skin-banner .featured-header h4 { font-size: 17px !important; margin: 0 !important; white-space: nowrap; }
+html body.fs.fs-heavens-light .featured-skin-banner .featured-timer { font-size: 14px !important; white-space: nowrap; }
+html body.fs.fs-heavens-light .featured-skin-banner .featured-body { display: grid !important; grid-template-columns: 70px minmax(0, 1fr) auto; align-items: center; gap: 10px; }
+html body.fs.fs-heavens-light .featured-skin-banner .featured-preview { width: 70px !important; height: 70px !important; }
+html body.fs.fs-heavens-light .featured-skin-banner .featured-info p { font-size: 14px !important; line-height: 1.25; margin: 2px 0 0 !important; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+html body.fs.fs-heavens-light .featured-skin-banner .btn { min-width: 76px !important; }
+/* any progress (1/3) lights the constellation halfway, not only from 40% */
+html body.fs.fs-heavens-light .quest-item[data-fs-started="1"]:not([data-fs-q="100"]):nth-child(2) .quest-icon { background-image: var(--fs-halo-50) !important; }
+html body.fs.fs-heavens-light .quest-item[data-fs-started="1"]:not([data-fs-q="100"]):nth-child(3) .quest-icon { background-image: var(--fs-halo-50) !important; }
+html body.fs.fs-heavens-light .quest-item[data-fs-started="1"]:not([data-fs-q="100"]):nth-child(4) .quest-icon { background-image: var(--fs-halo-50) !important; }
+/* themed Home banner (owner): sky + crescent + owl above, calm band for the bar (art rows 262–442), scalloped gold edge */
+@media (max-width: 768px) {
+  html body.fs.fs-heavens-light .navbar { height: calc(100vw * 520 / 1290) !important; min-height: calc(env(safe-area-inset-top, 0px) + 96px) !important;
+    padding: calc(100vw * 262 / 1290) 0 calc(100vw * 78 / 1290) !important; background: var(--fs-header) center top / 100% 100% no-repeat !important; }
+  html body.fs.fs-heavens-light .nav-container { height: 100% !important; }
+  html body.fs.fs-heavens-light .page.active { padding-top: calc(100vw * 500 / 1290 + 4px) !important; }
+  html body.fs.fs-heavens-light #timelineCover { margin-top: -10px !important; }
+}
+/* enchanted photo frame: 9-slice corners (210x160) + the crescent crest centred on the top rim */
+html body.fs.fs-heavens-light .post-media-grid[class*="pm-count"] .pm-thumb::before { content: ""; position: absolute; left: 50%; top: -20px; width: 90px; height: 36px;
+  transform: translateX(-50%); z-index: 3; pointer-events: none; background: var(--fs-title-crest) center / contain no-repeat; }
+html body.fs.fs-heavens-light .post-media-grid[class*="pm-count"] .pm-thumb::after { border-image: var(--fs-photo-frame) 160 210 / 46px 58px stretch !important; }
+/* cute QUEST BOARD (owner): board 9-slice (sign in the top slice), title on the hanging sign, each quest on a pinned note */
+html body.fs.fs-heavens-light .quest-panel { background: none !important; border: solid transparent !important; border-width: 40px 46px 30px !important;
+  border-image: var(--fs-quests-frame) 125 150 95 150 fill / 40px 46px 30px stretch !important; padding: 14px 0 6px !important; position: relative; gap: 8px !important; }
+html body.fs.fs-heavens-light .quest-panel-header { position: absolute !important; left: 0; right: 0; top: -36px; height: 28px; margin: 0 !important; display: flex !important; align-items: center; justify-content: center; }
+html body.fs.fs-heavens-light .quest-panel-header h4 { font-size: 20px !important; line-height: 1 !important; }
+html body.fs.fs-heavens-light .quest-item { background: none !important; border: solid transparent !important; border-width: 18px 12px 14px !important;
+  border-image: var(--fs-quest-row) 60 40 45 40 fill / 18px 12px 14px stretch !important; padding: 0 0 2px !important; }
+html body.fs.fs-heavens-light .quest-icon { width: 76px !important; height: 64px !important; }
+html body.fs.fs-heavens-light .quest-info p { font-size: 15px !important; }
+html body.fs.fs-heavens-light :is(.quest-reward, .quest-check) { font-size: 15px !important; }
+/* themed pills keep their end charms: 9-slice instead of whole-image stretch */
+html body.fs.fs-heavens-light .post-input-fake { background: none !important; border: solid transparent !important; border-width: 14px 30px !important;
+  border-image: var(--fs-composer) 70 150 fill / 14px 30px stretch !important; padding: 0 !important; }
+html body.fs.fs-heavens-light .coin-goal-bar { background: none !important; border: solid transparent !important; border-width: 12px 26px !important;
+  border-image: var(--fs-coin-goal-bar) 60 120 fill / 12px 26px stretch !important; }
+html body.fs.fs-heavens-light :is(.page-search, .msg-search) { background: none !important; border: solid transparent !important; border-width: 12px 26px !important;
+  border-image: var(--fs-field) 60 130 fill / 12px 26px stretch !important; padding: 0 4px !important; }
+html body.fs.fs-heavens-light .quest-panel-header { top: -30px !important; height: 34px !important; }
+html body.fs.fs-heavens-light .quest-panel-header h4 { font-size: 21px !important; transform: translateY(2px); }
+html body.fs.fs-heavens-light .quest-panel { border-width: 54px 46px 40px !important; border-image-slice: 160 150 110 150 fill !important; padding: 6px 4px 0 !important; }
+html body.fs.fs-heavens-light .quest-panel-header { top: -50px !important; height: 30px !important; }
+html body.fs.fs-heavens-light .quest-panel-header h4 { transform: none !important; font-size: 20px !important; }
+/* Daily Quests = painted open SPELL BOOK (owner rejected the flat board + hanging sign). Whole painted image at its own
+   ratio (1290x900); title + three quests written on the pages (page box 161–1136 x, 152–833 y) */
+html body.fs.fs-heavens-light .quest-panel { border: 0 !important; border-image: none !important; background: var(--fs-quests-frame) center / 100% 100% no-repeat !important;
+  aspect-ratio: 1290 / 900; height: auto !important; box-sizing: border-box; margin: 0 -6px !important;
+  padding: 14% 13% 14% 13% !important; align-content: start; row-gap: 2px !important; column-gap: 6px !important; }
+html body.fs.fs-heavens-light .quest-panel-header { position: static !important; height: auto !important; top: auto !important; margin: 0 0 2px !important; }
+html body.fs.fs-heavens-light .quest-panel-header h4 { font-size: 21px !important; }
+html body.fs.fs-heavens-light .quest-item { border: 0 !important; border-image: none !important; background: none !important; padding: 0 !important; }
+html body.fs.fs-heavens-light .quest-icon { width: 64px !important; height: 52px !important; }
+html body.fs.fs-heavens-light .quest-info p { font-size: 14px !important; line-height: 1.05 !important; }
+html body.fs.fs-heavens-light .quest-progress { font-size: 14px !important; }
+html body.fs.fs-heavens-light :is(.quest-reward, .quest-check) { font-size: 14px !important; }
+html body.fs.fs-heavens-light .quest-reward > i { width: 17px; height: 17px; }
+html body.fs.fs-heavens-light .quest-panel { align-content: center !important; padding-top: 12% !important; padding-bottom: 17% !important; }
+html body.fs.fs-heavens-light .quest-panel-header { margin-bottom: 8px !important; }
+/* People You May Know / Trending Groups (owner, every skin): the pair centred in the row, each pill splits the width
+   evenly and its icon + label are centred inside, clear of the art's end ornaments */
+@media (max-width: 768px) {
+  html body.fs .mobile-pills-bar { justify-content: center !important; gap: 10px !important; padding: 2px 4px !important; }
+  html body.fs .mobile-pill { flex: 1 1 0 !important; min-width: 0; max-width: 220px; justify-content: center !important; text-align: center;
+    padding-left: 22px !important; padding-right: 22px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+@media (max-width: 768px) {
+  html body.fs .mobile-pill { font-size: 14px !important; line-height: 1.1 !important; padding-top: 7px !important; padding-bottom: 7px !important; }
+  html body.fs .mobile-pill i { font-size: 13px !important; }
+}
+@media (max-width: 768px) { html body.fs .mobile-pill { font-size: 12.5px !important; padding-left: 26px !important; padding-right: 26px !important; gap: 5px !important; } }
+/* spell book layout (owner: nothing should sit on the spine): LEFT page = title, RIGHT page = the three quests listed
+   like spellbook entries (constellation · label + progress · coin) */
+html body.fs.fs-heavens-light .quest-panel { grid-template-columns: 1fr 1fr !important; grid-auto-flow: row; column-gap: 9% !important; row-gap: 6px !important;
+  padding: 13% 12% 15% 12.5% !important; align-content: center !important; align-items: center; }
+html body.fs.fs-heavens-light .quest-panel-header { grid-column: 1 !important; grid-row: 1 / span 3 !important; align-self: center; justify-content: center !important; text-align: center; }
+html body.fs.fs-heavens-light .quest-panel-header h4 { font-size: 26px !important; line-height: 1.05 !important; text-align: center; white-space: normal; max-width: 6em; margin: 0 auto !important; }
+html body.fs.fs-heavens-light .quest-item { grid-column: 2 !important; display: grid !important; grid-template-columns: 34px minmax(0, 1fr); column-gap: 6px; align-items: center; text-align: left !important; }
+html body.fs.fs-heavens-light .quest-icon { grid-column: 1; grid-row: 1 / span 2; width: 34px !important; height: 30px !important; margin: 0 !important; }
+html body.fs.fs-heavens-light .quest-info { grid-column: 2; align-items: flex-start !important; text-align: left; }
+html body.fs.fs-heavens-light .quest-info p { font-size: 13px !important; text-align: left !important; }
+html body.fs.fs-heavens-light .quest-progress { font-size: 12px !important; }
+html body.fs.fs-heavens-light :is(.quest-reward, .quest-check) { grid-column: 2; justify-self: start; font-size: 12px !important; }
+html body.fs.fs-heavens-light .quest-reward > i { width: 14px; height: 14px; }
+/* post action row: counts never wrap (view count broke into two lines) */
+html body.fs.fs-heavens-light .post-actions { flex-wrap: nowrap !important; gap: 2px !important; padding: 0 2px !important; }
+html body.fs.fs-heavens-light .post-actions .action-btn { white-space: nowrap !important; font-size: 15px !important; gap: 4px !important; padding: 4px 2px !important; min-width: 0; }
+html body.fs.fs-heavens-light .post-actions .action-btn > i { width: 22px !important; height: 22px !important; }
+/* owner: thicker gold around post photos — draw the frame art larger (corners + rims scale up together) */
+html body.fs.fs-heavens-light .post-media-grid[class*="pm-count"] .pm-thumb::after { inset: -12px !important; border-width: 64px 80px !important; }
+html body.fs.fs-heavens-light .post-media-grid[class*="pm-count"] .pm-thumb { margin: 14px 10px !important; }
+html body.fs.fs-heavens-light .post-media-grid[class*="pm-count"] .pm-thumb::before { top: -28px !important; width: 110px !important; height: 44px !important; }
+/* bar labels/icons are buttons, never selectable text (a long-press popped the iOS copy menu) */
+html body.fs :is(.nav-center, .navbar, .mobile-pills-bar, .search-tabs) { -webkit-user-select: none !important; user-select: none !important; -webkit-touch-callout: none !important; }
+/* Photos card fit inside the screen */
+html body.fs.fs-heavens-light .photos-card { margin-left: 0 !important; margin-right: 0 !important; width: auto !important; max-width: 100% !important; box-sizing: border-box; }
+/* post card v3 (iridescent + ornate gold, 140px corners) and thicker photo frame (210x160 corners) */
+html body.fs.fs-heavens-light .feed-post.feed-post.feed-post { border-width: 34px !important; border-image: var(--fs-post-panel) 140 fill / 34px stretch !important; }
+html body.fs.fs-heavens-light .post-media-grid[class*="pm-count"] .pm-thumb::after { border-image: var(--fs-photo-frame) 160 210 / 50px 64px stretch !important; border-width: 50px 64px !important; inset: -10px !important; }
+/* owner: same square card, gold rim as thick as Witchcraft's — draw the frame art larger (rim ~1.8x) and push it
+   outward with an outset so the post content keeps its room */
+html body.fs.fs-heavens-light .feed-post.feed-post.feed-post { border-width: 34px !important; border-image-source: var(--fs-post-panel) !important;
+  border-image-slice: 140 fill !important; border-image-width: 62px !important; border-image-outset: 12px !important; border-image-repeat: stretch !important;
+  margin-left: 12px !important; margin-right: 12px !important; margin-bottom: 26px !important; }
+/* shared-post box: slice must contain the whole corner ornament (art corners ~175x110) or the vines smear down the sides */
+html body.fs.fs-heavens-light .share-preview { border-width: 24px 34px !important; border-image: var(--fs-comment-bubble) 115 180 fill / 24px 34px stretch !important; padding: 2px 0 !important; }
+html body.fs.fs-heavens-light .comment-item { border-width: 24px 34px !important; border-image: var(--fs-comment-bubble) 115 180 fill / 24px 34px stretch !important; }
+/* cat-on-cloud: never tucked under the button (its ear and the crystal tips were cut off) */
+html body.fs.fs-heavens-light :is(#profileCard, .pv-profile-card)::after { margin: 10px -8px 0 !important; padding-bottom: 34% !important; background-size: 92% auto !important; background-position: center top !important; position: relative; z-index: 0; }
+/* themed sun / moon art on the Day/Night toggle (Good Witch) */
+/* enchanted charms around posts (owner: "like the scrapbook, place unused assets around the posts"): each post gets one of
+   six looks (data-fs-v 1-6, stable per post) — a charm perched on a corner of the gold frame, never over the content */
+html body.fs.fs-heavens-light .feed-post { position: relative; overflow: visible !important; }
+html body.fs.fs-heavens-light .feed-post::after { content: ""; position: absolute; pointer-events: none; z-index: 4; background: center / contain no-repeat; }
+html body.fs.fs-heavens-light .feed-post[data-fs-v="1"]::after { right: -26px; bottom: -40px; width: 104px; height: 90px; background-image: var(--fs-page-deco-post); }
+html body.fs.fs-heavens-light .feed-post[data-fs-v="2"]::after { left: -30px; top: -34px; width: 100px; height: 84px; background-image: var(--fs-corner-column-left); }
+html body.fs.fs-heavens-light .feed-post[data-fs-v="3"]::after { right: -14px; top: -26px; width: 56px; height: 56px; background-image: var(--fs-title-crest); transform: rotate(12deg); }
+html body.fs.fs-heavens-light .feed-post[data-fs-v="4"]::after { right: -30px; top: -34px; width: 100px; height: 84px; background-image: var(--fs-corner-column-right); }
+html body.fs.fs-heavens-light .feed-post[data-fs-v="5"]::after { left: -18px; bottom: -30px; width: 84px; height: 72px; background-image: var(--fs-halo-100); transform: rotate(-10deg); }
+html body.fs.fs-heavens-light .feed-post[data-fs-v="6"]::after { left: 50%; bottom: -32px; width: 150px; height: 44px; margin-left: -75px; background-image: var(--fs-title-crest); }
+/* a second, smaller sparkle on alternate looks */
+html body.fs.fs-heavens-light .feed-post:is([data-fs-v="1"], [data-fs-v="4"]) .post-header { position: relative; }
+html body.fs.fs-heavens-light .feed-post:is([data-fs-v="1"], [data-fs-v="4"]) .post-header::before { content: ""; position: absolute; left: -32px; top: -30px; width: 46px; height: 46px; pointer-events: none;
+  background: var(--fs-title-crest) center / contain no-repeat; opacity: .9; }
+/* keep posts far enough apart that the charms never collide */
+html body.fs.fs-heavens-light .feed-post.feed-post.feed-post { margin-bottom: 40px !important; }
+/* vines reached into the post (over the avatar) — use edge-sitting charms instead */
+html body.fs.fs-heavens-light .feed-post[data-fs-v="2"]::after { left: 50%; top: -30px; right: auto; bottom: auto; width: 120px; height: 48px; margin-left: -60px; background-image: var(--fs-title-crest); transform: none; }
+html body.fs.fs-heavens-light .feed-post[data-fs-v="4"]::after { right: -20px; top: -30px; left: auto; bottom: auto; width: 82px; height: 70px; background-image: var(--fs-halo-100); transform: rotate(14deg); }
+html body.fs.fs-heavens-light .feed-post:is([data-fs-v="1"], [data-fs-v="4"]) .post-header::before { left: -44px !important; top: -42px !important; width: 40px !important; height: 40px !important; }
+/* owner: golden ornaments around the round pictures — ornate gold ring (window 84%, inset 8%) on the cover bubbles + avatar */
+html body.fs.fs-heavens-light .fs-tl-slot::before { inset: -4% !important; background-image: var(--fs-photo-frame) !important; }
+html body.fs.fs-heavens-light .fs-tl-slot img { inset: 4% !important; width: 92% !important; height: 92% !important; }
+html body.fs.fs-heavens-light :is(.pv-profile-card, #profileCard) .profile-avatar-wrap::after { inset: -9% !important; background-image: var(--fs-photo-frame) !important; }
+/* ===== QA pass (owner: "not all sized correctly") ===== */
+/* skin cards: ornate frame as a 9-slice around the whole card (whole-image stretch put the window in the wrong place
+   and the art spilled past the frame); the card art sits inside with rounded corners */
+html body.fs.fs-heavens-light .fsk-card { background: none !important; border: solid transparent !important; border-width: 22px 26px !important;
+  border-image: var(--fs-comment-bubble) 115 180 fill / 22px 26px stretch !important; padding: 0 0 4px !important; overflow: hidden !important; box-sizing: border-box; }
+html body.fs.fs-heavens-light .fsk-thumb { margin: 0 !important; width: 100% !important; aspect-ratio: 4 / 3 !important; border-radius: 10px !important; overflow: hidden !important;
+  box-shadow: 0 0 0 2px rgba(201, 163, 92, .85) !important; }
+html body.fs.fs-heavens-light .fsk-body { padding: 6px 2px 0 !important; }
+html body.fs.fs-heavens-light .fsk-name { font-size: 17px !important; text-align: center !important; }
+html body.fs.fs-heavens-light .fsk-badge { top: 6px !important; right: 6px !important; }
+html body.fs.fs-heavens-light .fsk-color { outline: none !important; box-shadow: 0 0 0 2px rgba(201, 163, 92, .7) !important; }
+html body.fs.fs-heavens-light .fsk-color.is-on { box-shadow: 0 0 0 2px #fff, 0 0 0 4px #c9a35c !important; }
+html body.fs.fs-heavens-light .fsk-body .btn { height: 40px !important; font-size: 15px !important; }
+html body.fs.fs-heavens-light :is(.fsk-soon, .fsk-takeoff) { font-size: 14px !important; }
+/* chips / filter buttons: 9-slice so the end curls keep their shape on long labels */
+html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab, html body.fs.fs-heavens-light .fsk-filter {
+  background: none !important; border: solid transparent !important; border-width: 10px 18px !important; border-image: var(--fs-chip) 55 85 fill / 10px 18px stretch !important;
+  padding: 2px 4px !important; font-size: 15px !important; min-height: 0 !important; }
+html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.active, html body.fs.fs-heavens-light .fsk-filter.active { border-image-source: var(--fs-chip-active) !important; }
+html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.search-tab, html body.fs.fs-heavens-light .fsk-filter.fsk-filter {
+  background-image: none !important; background-color: transparent !important; box-shadow: none !important; border-width: 7px 14px !important; font-size: 14px !important; padding: 1px 2px !important; line-height: 1.2 !important; }
+html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) { gap: 6px !important; margin: 4px 0 !important; }
+html body.fs.fs-heavens-light .fsk-badge { background-color: transparent !important; box-shadow: none !important; }
+/* list rows (network/search/groups/messages/notifications): 9-slice matched to the art's corners, compact sizes */
+html body.fs.fs-heavens-light :is(.msg-contact, .notif-item, .profile-card-item, .follow-list-item, #groupsSections .group-card) {
+  border-width: 16px 24px !important; border-image: var(--fs-list-row) 95 150 fill / 16px 24px stretch !important; padding: 0 !important; margin: 0 0 8px !important; }
+html body.fs.fs-heavens-light :is(#page-profiles, #page-search) .profile-card-item { grid-template-columns: 50px minmax(0, 1fr) auto !important; column-gap: 10px !important; }
+html body.fs.fs-heavens-light :is(#page-profiles, #page-search) .profile-card-avatar { width: 50px !important; height: 50px !important; }
+html body.fs.fs-heavens-light :is(#page-profiles, #page-search) .profile-card-name { font-size: 17px !important; }
+html body.fs.fs-heavens-light :is(#page-profiles, #page-search) .profile-card-bio { font-size: 13px !important; }
+/* Join / Follow plaques: 9-slice so the heart + sparkle ends keep their size, words stay in the middle */
+html body.fs.fs-heavens-light :is(.join-group-btn, .suggestion-follow-btn, .follow-btn, .profile-follow-btn, #groupsSections .group-card-actions .btn) {
+  background: none !important; border: solid transparent !important; border-width: 9px 16px !important; border-image: var(--fs-join-btn) 60 95 fill / 9px 16px stretch !important;
+  height: auto !important; min-width: 0 !important; padding: 2px 2px !important; font-size: 14px !important; line-height: 1.2 !important; white-space: nowrap; }
+html body.fs.fs-heavens-light #groupsSections .group-card-actions .btn .gc-btn-text { font-size: 14px !important; }
+/* segmented tabs: smaller labels so two-line tabs fit */
+html body.fs.fs-heavens-light :is(#profilesTabs, #searchTabs) .search-tab { font-size: 13px !important; min-height: 40px !important; padding: 2px 6px !important; background: none !important;
+  border: solid transparent !important; border-width: 8px 16px !important; border-image: var(--fs-seg-tab) 55 90 fill / 8px 16px stretch !important; }
+html body.fs.fs-heavens-light :is(#profilesTabs, #searchTabs) .search-tab.active { border-image-source: var(--fs-seg-tab-active) !important; }
+/* section headers + count badge */
+html body.fs.fs-heavens-light :is(#page-profiles, #page-search) :is(h3, .section-title) { font-size: 17px !important; }
+html body.fs.fs-heavens-light :is(.section-count, .connections-count, .badge-count) { background: rgba(255,255,255,.18) !important; border: 1px solid rgba(201,163,92,.7) !important; color: var(--hl-title) !important; }
+/* skin-option toggle for colour skins (Anime Blaze): current colour as a jewel; tap = next colour */
+html body.fs .fs-swatch-btn { width: 34px; height: 34px; margin: 0 2px; flex: 0 0 auto; }
+html body.fs .fs-swatch-btn i { display: block; width: 22px; height: 22px; border-radius: 50%; font-size: 0;
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.75), transparent 45%), var(--sw);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #111, 0 0 10px var(--sw); }
+/* Anime Blaze colour swap button press */
+html body.fs-anime-blaze .fs-swatch-btn:active i { transform: scale(.85); }
+/* Anime Blaze skin cards (owner, Nov 15: all previews the same size, no colour dots): name on top, one compact
+   button under it, both inside the dark band so the button never covers the name */
+html body.fs.fs-anime-blaze .fsk-body { top: 65.5% !important; height: 25% !important; justify-content: flex-start !important; gap: 4px !important; }
+html body.fs.fs-anime-blaze .fsk-name { flex: 0 0 auto; line-height: 1.2 !important; padding-top: 1px; }
+html body.fs.fs-anime-blaze .fsk-body .btn:not(.fsk-equipped) { flex: 0 0 auto; height: 30px !important; line-height: 1 !important; margin: 0 !important; padding: 0 18px !important;
+  border-width: 0 !important; overflow: visible !important;
+  font-size: 13px !important; transform: none !important; display: inline-flex !important; align-items: center; }
+/* Good Witch skin cards all the same size (owner, Nov 15): the picture's "Equipped" tag already says it, so the
+   equipped card shows one button — Take off — in the place the other cards show Equip/Buy */
+html body.fs.fs-heavens-light .fsk-body .btn.fsk-equipped { display: none !important; }
+html body.fs.fs-heavens-light .fsk-body .fsk-takeoff { width: 100% !important; height: 40px !important; margin: 6px 0 0 !important; padding: 0 10px !important;
+  display: flex !important; align-items: center; justify-content: center; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+  background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: var(--hl-title) !important; font: 700 15px var(--fs-font) !important; text-decoration: none !important; }
+/* Good Witch Messages (QA Nov 15): search field the same width as the rows below it, with a gap before the first row */
+html body.fs.fs-heavens-light #page-messages .msg-search { margin: 0 7px 12px !important; }
+/* notifications (QA Nov 15): the expand arrow lines up on the right edge of every row, not right after the text */
+html body.fs .notif-text p .notif-expand-chevron { margin-left: auto !important; padding-left: 8px; flex: 0 0 auto; }
+/* Good Witch Search (QA Nov 15): People / Groups / Posts as the same gold chips as Notifications, centred */
+html body.fs.fs-heavens-light #page-search .search-tabs { display: flex !important; justify-content: center; gap: 8px; border: 0 !important; background: none !important; padding: 2px 0 !important; }
+html body.fs.fs-heavens-light #page-search .search-tab { flex: 0 0 auto; background: none !important; border: solid transparent !important; border-width: 10px 18px !important;
+  border-image: var(--fs-chip) 55 85 fill / 10px 18px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 2px 6px !important; font-size: 15px !important; min-height: 0 !important; color: var(--hl-title) !important; }
+html body.fs.fs-heavens-light #page-search .search-tab.active { border-image-source: var(--fs-chip-active) !important; color: var(--hl-deep) !important; font-weight: 700 !important; }
+html body.fs.fs-heavens-light #searchResults .search-results-grid { gap: 0 !important; margin-top: 8px; }
+/* Good Witch Groups (QA Nov 15): the phone layout squeezes group buttons into 40px circles, which cut "Joined" to "n" —
+   size the button to its word instead */
+html body.fs.fs-heavens-light #groupsSections .group-card-actions .btn { width: auto !important; min-width: 92px !important; height: auto !important; padding: 2px 6px !important; }
+/* Good Witch group page (QA Nov 15): name clear of the cover and sized to fit; three stats that fit the frame
+   ("Members" no longer splits); Edit / Joined / Leave as the same readable buttons as the group list, in Day and Night */
+html body.fs.fs-heavens-light #gvProfileCard .profile-name { font-size: 30px !important; margin: 34px 12px 0 !important; overflow-wrap: anywhere; position: relative; z-index: 2; }
+html body.fs.fs-heavens-light #gvProfileCard .profile-stats { padding: 6px 22px !important; width: 96% !important; }
+html body.fs.fs-heavens-light #gvProfileCard .stat-count { font-size: 24px !important; }
+html body.fs.fs-heavens-light #gvProfileCard .stat-label { font-size: 14px !important; white-space: nowrap; line-height: 1.2 !important; display: block; }
+html body.fs.fs-heavens-light #gvProfileCard .stat-label i { margin-right: 3px; font-size: 11px !important; }
+html body.fs.fs-heavens-light #gvProfileCard .stat-label { font-size: 13px !important; }
+html body.fs.fs-heavens-light #gvProfileCard .pv-actions { display: flex !important; flex-wrap: wrap; justify-content: center; gap: 8px !important; margin-top: 12px !important; }
+html body.fs.fs-heavens-light #gvProfileCard .pv-actions .btn { flex: 0 0 auto; width: auto !important; min-width: 110px; height: auto !important; margin: 0 !important; padding: 2px 6px !important;
+  background: none !important; border: solid transparent !important; border-width: 9px 16px !important; border-image: var(--fs-join-btn) 60 95 fill / 9px 16px stretch !important;
+  border-radius: 0 !important; box-shadow: none !important; color: var(--hl-title) !important; font: 700 15px var(--fs-font) !important; opacity: 1 !important; }
+html body.fs.fs-heavens-light #gvProfileCard .pv-actions .btn i { color: inherit !important; margin-right: 4px; }
+/* Good Witch comments (QA Nov 15): sort tabs as the gold chips, the comment box on the field art, GIF a small chip,
+   Post the same button as everywhere else */
+html body.fs.fs-heavens-light .comment-sort-tab { flex: 0 0 auto; background: none !important; border: solid transparent !important; border-width: 9px 16px !important;
+  border-image: var(--fs-chip) 55 85 fill / 9px 16px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 1px 4px !important; font-size: 15px !important; min-height: 0 !important; color: var(--hl-title) !important; margin-right: 6px; }
+html body.fs.fs-heavens-light .comment-sort-tab.active { border-image-source: var(--fs-chip-active) !important; color: var(--hl-deep) !important; font-weight: 700 !important; }
+html body.fs.fs-heavens-light #commentInput { background: none !important; border: solid transparent !important; border-width: 10px 20px !important;
+  border-image: var(--fs-field) 60 130 fill / 10px 20px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 2px 2px !important; min-height: 0 !important; color: var(--hl-ink) !important; font: 600 16px var(--fs-font) !important; }
+html body.fs.fs-heavens-light #commentGifBtn { background: none !important; border: solid transparent !important; border-width: 8px 12px !important;
+  border-image: var(--fs-chip) 55 85 fill / 8px 12px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 0 2px !important; color: var(--hl-title) !important; font: 700 13px var(--fs-font) !important; }
+html body.fs.fs-heavens-light #postCommentBtn { flex: 0 0 auto; width: auto !important; height: auto !important; background: none !important; border: solid transparent !important;
+  border-width: 9px 16px !important; border-image: var(--fs-join-btn) 60 95 fill / 9px 16px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 2px 6px !important; color: var(--hl-title) !important; font: 700 15px var(--fs-font) !important; }
+/* Good Witch post badges (Shared, location…): the small gold chip, like the other pills (QA Nov 15) */
+html body.fs.fs-heavens-light .post-badges :is(span, .post-badge) { background: none !important; border: solid transparent !important; border-width: 7px 12px !important;
+  border-image: var(--fs-chip) 55 85 fill / 7px 12px stretch !important; border-radius: 0 !important; padding: 0 2px !important; font-size: 13px !important; line-height: 1.2 !important; }
+/* Good Witch create post (QA Nov 15): the writing area on the text-area art, the four tools as the tool tiles, Publish
+   the same button as everywhere else (the stretched pearl panel showed a seam) */
+html body.fs.fs-heavens-light .cpm-textarea { background: none !important; border: solid transparent !important; border-width: 14px 20px !important;
+  border-image: var(--fs-text-area) 60 110 fill / 14px 20px stretch !important; border-radius: 0 !important; margin: 4px 0 !important; padding: 4px 6px !important;
+  color: var(--hl-ink) !important; font: 600 17px var(--fs-font) !important; }
+html body.fs.fs-heavens-light :is(#cpmCameraBtn, #cpmGifBtn, #cpmPollBtn, #cpmScheduleBtn) { width: 46px !important; height: 46px !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+  background: var(--fs-tool-tile) center / 100% 100% no-repeat !important; color: var(--hl-accent) !important; }
+html body.fs.fs-heavens-light #cpmPublish { width: auto !important; min-width: 120px; height: auto !important; background: none !important; border: solid transparent !important;
+  border-width: 10px 18px !important; border-image: var(--fs-join-btn) 60 95 fill / 10px 18px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 3px 8px !important; color: var(--hl-title) !important; font: 700 17px var(--fs-font) !important; }
+/* Good Witch: someone else's profile (QA Nov 15) — their photo sits fully in front of the timeline circles (it was
+   tucked behind the middle one), and Follow / Message / Mute / Block / Report / Close Friend / Invite are the same
+   readable gold buttons as the group page (they were pale stretched panels of mixed sizes) */
+html body.fs.fs-heavens-light #page-profile-view .pv-profile-card { position: relative; z-index: 3; }
+html body.fs.fs-heavens-light #page-profile-view .pv-profile-card .profile-avatar-wrap { margin-top: -40px !important; }
+html body.fs.fs-heavens-light #page-profile-view .pv-actions { display: flex !important; flex-wrap: wrap; justify-content: center; gap: 8px !important; margin-top: 12px !important; }
+html body.fs.fs-heavens-light #page-profile-view .pv-actions .btn:not(#pvEditProfileBtn) { flex: 0 0 auto; width: auto !important; min-width: 0; height: auto !important; margin: 0 !important; padding: 2px 6px !important;
+  background: none !important; border: solid transparent !important; border-width: 9px 16px !important; border-image: var(--fs-join-btn) 60 95 fill / 9px 16px stretch !important;
+  border-radius: 0 !important; box-shadow: none !important; color: var(--hl-title) !important; font: 700 15px var(--fs-font) !important; opacity: 1 !important; font-size: 15px !important; }
+html body.fs.fs-heavens-light #page-profile-view .pv-actions .btn:not(#pvEditProfileBtn) i { color: inherit !important; margin-right: 4px; font-size: 14px !important; }
+html body.fs.fs-heavens-light #pvCoverBanner { z-index: 0 !important; }
+/* Good Witch (QA Nov 15): Photos / Albums tabs as gold chips; admin Suspend / Delete as the gold button (Delete keeps red
+   lettering so it still reads as the dangerous one) */
+html body.fs.fs-heavens-light .photos-card .search-tabs { display: flex !important; gap: 8px; border: 0 !important; background: none !important; }
+html body.fs.fs-heavens-light .photos-card .search-tab { flex: 0 0 auto; background: none !important; border: solid transparent !important; border-width: 9px 16px !important;
+  border-image: var(--fs-chip) 55 85 fill / 9px 16px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 1px 4px !important; font-size: 15px !important; min-height: 0 !important; color: var(--hl-title) !important; }
+html body.fs.fs-heavens-light .photos-card .search-tab.active { border-image-source: var(--fs-chip-active) !important; color: var(--hl-deep) !important; font-weight: 700 !important; }
+html body.fs.fs-heavens-light .photos-card .search-tab > i { display: none !important; }
+html body.fs.fs-heavens-light :is(#pvAdminSuspend, #pvAdminDelete) { width: auto !important; height: auto !important; background: none !important; border: solid transparent !important;
+  border-width: 8px 14px !important; border-image: var(--fs-join-btn) 60 95 fill / 8px 14px stretch !important; border-radius: 0 !important; box-shadow: none !important;
+  padding: 1px 4px !important; color: var(--hl-title) !important; font: 700 13px var(--fs-font) !important; }
+html body.fs.fs-heavens-light #pvAdminDelete, html body.fs.fs-heavens-light #pvAdminDelete i { color: #c0392b !important; }
+html body.fs.fs-heavens-light :is(#cpmCameraBtn, #cpmGifBtn, #cpmPollBtn, #cpmScheduleBtn) { width: 42px !important; height: 42px !important; flex: 0 0 42px; }
+html body.fs.fs-heavens-light #cpmPublish { min-width: 0 !important; flex: 1 1 auto; max-width: 140px; }
+html body.fs.fs-heavens-light #cpmPublish { border-width: 9px 12px !important; border-image-width: 9px 12px !important; padding: 2px 0 !important; font-size: 16px !important;
+  white-space: nowrap; overflow: visible !important; text-overflow: clip !important; }
+html body.fs.fs-heavens-light .cpm-footer > div[style*="display:flex"] { gap: 6px !important; }
+html body.fs.fs-heavens-light #noCommentsMsg { color: var(--hl-soft) !important; }
+
+

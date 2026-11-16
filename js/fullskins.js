@@ -122,7 +122,7 @@
       'constellation-b-50', 'constellation-b-100', 'constellation-c-0', 'constellation-c-50', 'constellation-c-100',
       'tab-underline', 'post-panel', 'photo-frame', 'story-ring', 'story-add', 'composer', 'featured-frame', 'arrow-orb',
       'goal-track', 'goal-fill', 'coin-goal-bar', 'moon-frame', 'photo-bubble', 'avatar-ring', 'camera-badge',
-      'stats-frame', 'edit-btn', 'cat-cloud', 'star-frame', 'follow-btn', 'action-tile', 'menu-panel', 'list-row',
+      'stats-frame', 'edit-btn', 'owl-cloud', 'star-frame', 'follow-btn', 'action-tile', 'menu-panel', 'list-row',
       'join-btn', 'chip', 'chip-active', 'seg-tab', 'seg-tab-active', 'unread-gem', 'skin-card', 'skin-card-wide',
       'equipped-tag', 'bubble-in', 'bubble-out', 'input-bar', 'send-orb', 'plus-orb', 'field', 'text-area', 'public-pill',
       'tool-tile', 'post-btn', 'comment-bubble', 'reply-line', 'story-field', 'heart-orb', 'owl-crystal', 'moon-clouds',
@@ -171,6 +171,36 @@
     theme: { '--dark': '#1d1640', '--gray': '#5d5784', '--light-bg': '#ecebf2', '--card': '#d4d4dc',
       '--border': 'rgba(40,30,90,.35)', '--nav-bg': '#d4d4dc' },
     fonts: 'https://fonts.googleapis.com/css2?family=VT323&display=swap'
+  };
+  FULL_SKINS['heavens-light'] = {
+    name: "Heaven's Light", wip: true, dark: false, ink: '#4a3416', muted: '#8a7350', accent: '#c9962e',
+    font: "'Cormorant Garamond', serif", titleFont: "'Cinzel', serif",
+    timeline: 3, avatar: 'center', slice: 15, edge: 16,
+    // traced from the approved concept (prototypes/heavens-light-redraw-brief.md → kit/hl → assets/)
+    parts: { 'panel-card': 'post-panel', 'panel-card-active': 'post-panel', 'btn-primary': 'follow-btn',
+      'btn-secondary': 'action-btn', 'btn-round': 'round-btn', 'header-bar': 'top-bar', 'post-frame': 'post-panel',
+      'icon-coin': 'coin', 'quest-0': 'halo-0', 'quest-50': 'halo-50', 'quest-100': 'halo-100' },
+    assets: ['background', 'header', 'top-bar', 'title-laurel', 'wings-crest', 'nav-bar', 'nav-active',
+      'icon-home-on', 'icon-groups-on', 'icon-skins-on', 'icon-network-on', 'icon-messages-on', 'coin', 'coin-pill',
+      'corner-column-left', 'corner-column-right',
+      'icon-compose', 'icon-phone', 'icon-close', 'icon-like-on', 'icon-reply', 'icon-react', 'icon-chevron', 'icon-check',
+      'icon-clear', 'icon-photo', 'icon-gif', 'icon-poll', 'icon-schedule', 'icon-globe', 'icon-mute', 'icon-block',
+      'icon-report', 'icon-heart', 'icon-star', 'icon-gift', 'badge-count',
+      'notif-like', 'notif-follow', 'notif-comment', 'notif-mention', 'notif-message', 'notif-group', 'notif-purchase',
+      'avatar-wings', 'quests-frame', 'quest-row', 'halo-0', 'halo-50', 'halo-100', 'goal-track', 'goal-fill',
+      'reward-pill', 'tab', 'tab-active', 'story-ring', 'story-add', 'composer', 'featured-frame', 'coin-goal-frame',
+      'coin-stack', 'post-panel', 'post-panel-b', 'post-panel-c', 'photo-frame', 'action-strip',
+      'temple-arches', 'temple-arch-mask', 'cameo-wings', 'cameo-mask', 'camera-badge', 'laurel-sprig', 'stats-frame',
+      'edit-btn', 'follow-btn', 'action-btn', 'menu-panel', 'marble-ledge',
+      'list-row', 'join-btn', 'chip', 'chip-active', 'seg-tab', 'seg-tab-active', 'unread-dot', 'plus-btn', 'field',
+      'skin-card', 'skin-card-mask', 'price-pill', 'equipped-tag', 'bubble-in', 'bubble-out', 'input-bar', 'send-btn',
+      'round-btn', 'comment-bubble', 'text-area', 'tool-tile', 'post-btn', 'public-pill', 'story-field', 'heart-orb',
+      'sun-orb', 'like-orb', 'group-avatar-frame',
+      'page-deco-groups', 'page-deco-skins', 'page-deco-network', 'page-deco-notifications', 'page-deco-search',
+      'page-deco-messages', 'page-deco-post', 'title-crest'],
+    theme: { '--dark': '#4a3416', '--gray': '#8a7350', '--light-bg': '#f7efe0', '--card': '#fffaf0',
+      '--border': 'rgba(176,130,50,.35)', '--nav-bg': '#f7efe0' },
+    fonts: 'https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap'
   };
   window.FULL_SKINS = FULL_SKINS;
 
@@ -1406,11 +1436,16 @@
   }
 
   // GOOD WITCH — cloud roll: a sparkle trail swirls across, soft pastel clouds roll in from both sides and meet,
-  // the little cat-on-a-cloud floats up in the middle under a crescent moon; then the clouds drift apart.
+  // the snowy owl (owner: the skin's main animal, front view, wings spread) flies up into the middle under the crescent
+  // moon with a gentle wing beat, then swoops up and away as the clouds drift apart.
   function equipGoodWitch(id, swap) {
-    return Promise.all([fxArt(id, 'cat-cloud'), fxArt(id, 'moon-clouds'), fxArt(id, 'fx-cloud-1'), fxArt(id, 'fx-cloud-2'), fxArt(id, 'fx-cloud-3'), fxArt(id, 'fx-sparkle')]).then(function (r) {
+    return Promise.all([fxArt(id, 'fx-owl-wings'), fxArt(id, 'moon-clouds'), fxArt(id, 'fx-cloud-1'), fxArt(id, 'fx-cloud-2'), fxArt(id, 'fx-cloud-3'), fxArt(id, 'fx-sparkle')].concat(['a', 'b', 'c'].reduce(function (l, c) { return l.concat(['0', '50', '100'].map(function (q) { return fxArt(id, 'constellation-' + c + '-' + q); })); }, []))).then(function (r) {
       var c = fxCanvas('good-witch'), g = c.g, W = c.W, H = c.H;
-      var cat = r[0], moon = r[1], cloudIm = [r[2], r[3], r[4]].filter(Boolean), sparkIm = r[5], clouds = [], sparks = [], k;
+      var owl = r[0], moon = r[1], cloudIm = [r[2], r[3], r[4]].filter(Boolean), sparkIm = r[5], clouds = [], sparks = [], k;
+      // constellations everywhere (owner): the skin's own constellation art lights up star by star (0 -> 50 -> 100%)
+      var cons = [], cim = [[r[6], r[7], r[8]], [r[9], r[10], r[11]], [r[12], r[13], r[14]]];
+      for (k = 0; k < 15; k++) cons.push({ x: W * ((k % 3) + .2 + Math.random() * .6) / 3, y: H * ((k / 3 | 0) + .15 + Math.random() * .7) / 5,
+        s: 90 + Math.random() * 60, rot: (Math.random() - .5) * .8, im: cim[k % 3], d: 250 + Math.random() * 1100, ph: Math.random() * 6 });
       for (k = 0; k < 16; k++) { var left = k % 2 === 0; clouds.push({ left: left, y: (k / 16) * H * 1.1 - 30, r: 70 + Math.random() * 60, d: k * 45, tint: Math.random() < .5 ? '246,232,255' : '255,236,244', n: 4 + (k % 3), k: k }); }
       for (k = 0; k < 70; k++) sparks.push({ t: Math.random(), x: Math.random() * W, y: Math.random() * H, s: 1 + Math.random() * 3, ph: Math.random() * 6 });
       function puff(x, y, r, tint, a) {   // a fluffy cloud: overlapping soft circles with a pearly top
@@ -1436,6 +1471,14 @@
           }
           for (var i = 0; i < cl.n; i++) puff(x + (cl.left ? -1 : 1) * i * cl.r * 1.3, cl.y + (i % 2) * 18, cl.r, cl.tint, .97);
         });
+        cons.forEach(function (cn) {
+          if (!cn.im[0]) return;
+          var a = clamp01((t - cn.d) / 700); if (a <= 0) return;
+          var pop = a < .2 ? ease(a / .2) : 1, al = Math.min(1, a * 4) * (1 - part), y = cn.y - part * 90, w = cn.s * pop, h = w * cn.im[0].height / cn.im[0].width;
+          var lit = a < .45 ? 0 : a < .75 ? 1 : 2;   // dim -> half lit -> fully glowing
+          if (lit < 2) drawRot(g, cn.im[lit], cn.x, y, w, h, cn.rot, al);
+          if (lit > 0) drawRot(g, cn.im[lit === 1 ? 1 : 2], cn.x, y, w, h, cn.rot, al * (lit === 2 ? .85 + .15 * Math.sin(t / 150 + cn.ph) : clamp01((a - .45) / .1)));
+        });
         // sparkle trail sweeping across (a curve), then twinkles
         var sw = clamp01(t / 700);
         for (var s = 0; s < 40; s++) { var f = s / 40; if (f > sw) break; var x2 = W * (.05 + .9 * f), y2 = H * (.7 - .45 * Math.sin(f * Math.PI)) ; var al = (1 - (sw - f) * 2) * (1 - part); if (al <= 0) continue;
@@ -1443,7 +1486,17 @@
         sparks.forEach(function (p) { var al = clamp01((t - 600) / 500) * (.5 + .5 * Math.sin(t / 120 + p.ph)) * (1 - part); if (al <= 0) return; if (sparkIm) { drawRot(g, sparkIm, p.x, p.y - part * 60, p.s * 9, p.s * 9, 0, al); return; } g.fillStyle = 'rgba(226,170,64,' + al + ')'; star(p.x, p.y - part * 60, p.s * 1.4); });
         var ca = clamp01((t - 1100) / 500) * (1 - clamp01(part * 2));
         if (moon && ca) { var mw = Math.min(W * .95, 440); g.save(); g.globalAlpha = ca; g.drawImage(moon, W / 2 - mw / 2, H * .12 - 20 * (1 - ca), mw, mw * moon.height / moon.width); g.restore(); }
-        if (cat && ca) { var cw = Math.min(W * 1.05, 480), chh = cw * cat.height / cat.width; g.save(); g.globalAlpha = ca; g.drawImage(cat, W / 2 - cw / 2, H * .5 - chh / 2 + 30 * (1 - ca) + Math.sin(t / 400) * 5, cw, chh); g.restore(); }
+        if (owl) {   // the owl flies in from below (never just appears), hovers with a wing beat, then swoops off the top
+          var up = ease(clamp01((t - 750) / 900)), off = part * part;
+          if (up > 0) {
+            var ow = Math.min(W * .95, 440), oh = ow * owl.height / owl.width, beat = Math.sin(t / 105);
+            var oy = H * 1.25 + (H * .5 - H * 1.25) * up + Math.sin(t / 260) * 8 - off * H * 1.1;
+            var sc = (1 + off * .5), sx = sc * (1 + .07 * beat), sy = sc * (1 - .04 * beat);
+            g.save(); g.translate(W / 2, oy); g.rotate(Math.sin(t / 340) * .04 - off * .1); g.scale(sx, sy);
+            g.drawImage(owl, -ow / 2, -oh / 2, ow, oh); g.restore();
+            if (sparkIm) for (var q = 0; q < 6; q++) { var ph = (t / 600 + q / 6) % 1; drawRot(g, sparkIm, W / 2 + (q % 2 ? 1 : -1) * ow * (.38 + ph * .1), oy + oh * (.1 + ph * .6), 18, 18, 0, (1 - ph) * up); }
+          }
+        }
       }
       function star(x, y, s) { g.beginPath(); for (var i = 0; i < 8; i++) { var a = i / 8 * 6.283, r = i % 2 ? s * .35 : s * 1.6; g.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r); } g.closePath(); g.fill(); }
       var COVER = 1900;
