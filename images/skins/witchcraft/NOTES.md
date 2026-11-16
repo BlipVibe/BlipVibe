@@ -44,3 +44,17 @@ violet/magenta glow, candlelight; gold serif type (Cormorant Garamond); cobwebs 
 ## 5. Progress log
 - Nov 15: concept crops made, brief written, Codex Part A/B started; registry entry + first CSS pass (structure for
   every screen) written against the brief's art names.
+- Nov 15 (pm, owner QA live in the simulator): first device pass had skipped QA entirely (owner: "did you do any QA at
+  all"). Rebuilt page by page against the crops. Part C commissioned (72 pieces: gold line icons, neon notif icons,
+  coin/coin-pill/top-bar, icon-btn, back-badge, camera/react badges, pentagram medallion/sigil, triple moon, sparkle,
+  quests-shelf, seg-tab, action-btn, stat-box, text-area, public-pill, post-card, per-page shelves, witch hat, sconce).
+  Owner rules learned: big header (moon · logo · icon bar) is HOME ONLY; every other page = back arrow (badge) · three
+  moons over a CENTRED title · coin pill (coins only on Home + Skins); icons + coin pill sit fully INSIDE the top bar;
+  bottom bar bigger, solid to the screen edge (crop the art's transparent margins), icons centred in the shelf bays;
+  small ornaments drawn 1:1 from lossless art (moons were blurry); names must stay inside the ribbon.
+  Gotchas: field.png's top 25% is transparent (crop it when used as a bar); the base mobile body padding (72px+safe)
+  scrolled the page 106pt when the full-screen chat opened, pushing the input off-screen — zeroed while chat is open;
+  `:is(.pv-profile-card, #profileCard)` carries ID weight, so other-profile overrides need `:not(#_)`.
+  Done on device: Home (tarot fan, header, quests, tabs, posts in the arch frame, witch hat), Groups, Skins, Network,
+  Messages, Chat, other profile. Still to QA: Notifications (icons wired, not seen), Search, Comments, Create post,
+  Story, Group page, own profile page, the shelf-rail behind chips, and Part C post-card/quests-shelf swaps.
