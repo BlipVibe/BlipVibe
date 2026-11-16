@@ -106,6 +106,9 @@ the day sheets, re-lit for night — and STOP for the owner's approval:
 Night look: midnight indigo→violet sky with stars and a glowing moon, moonlit clouds, smoky dark-violet frosted glass
 panels, the same warm gold filigree and crescents, lighter lavender text/icons for contrast, softly glowing crystals,
 owl and cat in moonlight. Every screen, button, row and decoration in the same place as the day sheet.
+Owner: night = clearly DARKER colours overall, still the same Good Witch theme (same elements, pearly glass,
+gold, crescents, owl/cat/crystals) — deep indigo/plum/violet, muted moonlit pastels, gold + soft lavender accents,
+light text. Not a tinted day sheet, not a gothic theme.
 The night PIECES (section 6) are then traced from these approved night sheets, not invented.
 
 ## 6. NIGHT version (owner: "because it's so bright we need 2 renditions — a night time version and the white version")
