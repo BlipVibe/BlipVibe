@@ -50,3 +50,7 @@
 - Owner: posts "boring" — the card glass was the same pale lavender as the page, so nothing popped (gold is liked).
   Fix requested: post-panel v3 = pearlescent iridescent card (moon-phase watermark, constellation corners, lilac
   vignette, painted drop shadow) + background v2 = deeper, more saturated sky. Rule: card and page must contrast.
+- Nov 15 (late): background remade (owner): first deep sky "too pink / cotton candy", then "too much like night";
+  final Day = bright daytime lavender-periwinkle in the banner's palette, a step deeper than the banner so the ivory
+  cards pop (owner approved). Night = deep indigo with stars. Post card v3 (iridescent + gold rim) and thicker photo
+  frame in. Quests: spell book, title on the left page, quests listed on the right page (nothing on the spine).
