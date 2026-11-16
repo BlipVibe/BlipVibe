@@ -3340,3 +3340,11 @@ html body.fs.fs-good-witch .featured-skin-banner .btn { color: var(--gw-deep) !i
 html body.fs.fs-good-witch :is(.fs-tl-slot-1, .fs-tl-slot-3) { z-index: 1 !important; }
 html body.fs.fs-good-witch .fs-tl-slot-2 { z-index: 3 !important; }
 @media (max-width: 768px) { html body.fs.fs-good-witch .nav-center .nav-link { color: var(--gw-title) !important; font-weight: 700 !important; } html body.fs.fs-good-witch .nav-center .nav-link.active { color: var(--gw-accent) !important; } }
+/* nav orbs (owner: icons not centred, orbs bleeding into the bar): icon optically centred in the glass (above the gold
+   arc), bigger; each orb lifted off the pale bar with a soft violet shadow + rim */
+@media (max-width: 768px) {
+  html body.fs.fs-good-witch .nav-center .nav-link > i { background-position: 50% 47%, center !important; background-size: 34px, contain !important; border-radius: 50%;
+    box-shadow: 0 3px 8px rgba(80, 40, 130, .35), 0 0 0 1.5px rgba(176, 130, 220, .55) !important; }
+  html body.fs.fs-good-witch .nav-center .nav-link.active > i { box-shadow: 0 0 14px rgba(167, 110, 240, .7), 0 0 0 2px rgba(201, 163, 92, .8) !important; filter: none !important; }
+}
+@media (max-width: 768px) { html body.fs.fs-good-witch .nav-center { padding-top: 16px !important; padding-bottom: calc(env(safe-area-inset-bottom, 0px) - 10px) !important; align-content: center; } }
