@@ -2579,3 +2579,91 @@ body.fs-witchcraft .post-actions .action-btn i { color: #e6d2ae !important; }
 html body.fs.fs-witchcraft .post-media-grid[class*="pm-count"] .pm-thumb { margin: 12% 5.5% 7% !important; }
 html body.fs.fs-witchcraft .post-media-grid[class*="pm-count"] { padding: 0 !important; }
 html body.fs.fs-witchcraft .feed-post .post-content-text, html body.fs.fs-witchcraft .feed-post .post-text { margin: 6px 4px 0 !important; color: #efe2c8 !important; }
+/* messages list (concept messages): ringed avatars, gold names, gem for unread, gold search icon in a serif field */
+html body.fs.fs-witchcraft .msg-contact { border-bottom: 16px solid transparent !important; gap: 12px; padding: 0 4px !important; margin-bottom: 8px !important; align-items: center; }
+html body.fs.fs-witchcraft .msg-contact > div:first-child:not(.msg-contact-info) { flex-shrink: 0; }
+html body.fs.fs-witchcraft .msg-contact > div > img, html body.fs.fs-witchcraft #newGroupDmBtn > div:first-child {
+  width: 60px !important; height: 60px !important; border-radius: 50% !important; padding: 4px; box-sizing: border-box; object-fit: cover;
+  background: var(--fs-story-ring) center / 100% 100% no-repeat !important; }
+html body.fs.fs-witchcraft #newGroupDmBtn > div:first-child { background: radial-gradient(circle, #1d1319 64%, transparent 66%), var(--fs-story-ring) center / 100% 100% no-repeat !important; }
+html body.fs.fs-witchcraft #newGroupDmBtn > div:first-child i { color: #e8c27a !important; font-size: 20px !important; }
+html body.fs.fs-witchcraft .msg-contact-name { font-size: 20px !important; color: #ecd3a0 !important; }
+html body.fs.fs-witchcraft .msg-contact-preview { font-size: 16px !important; color: #e3d3b8 !important; }
+html body.fs.fs-witchcraft .msg-contact-time { color: #cdb894 !important; font-size: 14px !important; }
+html body.fs.fs-witchcraft .msg-contact-name > span { font-size: 0 !important; width: 22px; height: 22px; padding: 0 !important; display: inline-block; vertical-align: middle;
+  background: var(--fs-gem) center / contain no-repeat !important; border-radius: 0 !important; }
+html body.fs.fs-witchcraft :is(.msg-search, .page-search) > i { color: #e8c27a !important; }
+html body.fs.fs-witchcraft :is(.msg-search, .page-search) input { font-family: var(--fs-font) !important; color: #efe2c8 !important; font-size: 17px !important; background: none !important; }
+html body.fs.fs-witchcraft :is(.msg-search, .page-search) { padding: 0 8px !important; min-height: 0 !important; }
+html body.fs.fs-witchcraft :is(.msg-search, .page-search) input { padding: 8px 6px 8px 34px !important; height: auto !important; }
+html body.fs.fs-witchcraft :is(.msg-search, .page-search) input { padding-left: 42px !important; }
+/* top bar v3 (owner: concept shows the moon + stars above the logo, the icon bar INSET with the avatar outside it,
+   icons evenly spaced). Header art at its own ratio (1290x520) anchored to the bar's bottom so its moon sits above the logo. */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft .navbar { height: calc(158px + env(safe-area-inset-top, 0px)) !important; padding-bottom: 6px !important;
+    background: var(--fs-header) center bottom / 100% auto no-repeat, linear-gradient(#140d12, #140d12) top / 100% calc(100% - 100vw * 520 / 1290 + 4px) no-repeat !important; }
+  html body.fs.fs-witchcraft .page.active { padding-top: calc(164px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-witchcraft .nav-container { grid-template-columns: 1fr 1fr 1fr 1.75fr 64px !important; grid-template-rows: 34px 44px 58px !important; align-content: end; padding: 0 10px 0 18px !important; }
+  html body.fs.fs-witchcraft .navbar .nav-logo { grid-row: 2 !important; align-self: center !important; font-size: 36px !important; line-height: 1 !important; }
+  html body.fs.fs-witchcraft .nav-container::before { grid-row: 3 !important; grid-column: 1 / 5 !important; height: 52px !important; margin: 0 4px 0 -6px !important; }
+  html body.fs.fs-witchcraft .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-wrap, .nav-coins, .nav-user) { grid-row: 3 !important; }
+  html body.fs.fs-witchcraft .navbar .nav-coins { justify-self: end !important; margin-right: 10px !important; height: 40px !important; }
+  html body.fs.fs-witchcraft .navbar .nav-user { grid-column: 5 !important; justify-self: end !important; }
+  html body.fs.fs-witchcraft .navbar .nav-avatar { width: 54px !important; height: 54px !important; }
+  html body.fs.fs-witchcraft .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-wrap) i { font-size: 22px !important; font-weight: 400; }
+  html body.fs.fs-witchcraft .navbar .mobile-notif-btn { position: relative; }
+  html body.fs.fs-witchcraft .navbar .mobile-notif-btn .notif-badge { position: absolute; top: 2px; right: 2px; min-width: 18px; height: 18px; border-radius: 9px; background: #e2332f !important; color: #fff !important; font: 700 11px/18px system-ui !important; text-align: center; padding: 0 4px; }
+}
+/* bottom bar v2: icon + label centred in each of the shelf art's five bays (bay edges at 7.4/23.3/39.9/60.5/76.4/93% of the art) */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft .nav-center { display: grid !important; grid-template-columns: 205fr 215fr 265fr 205fr 215fr; align-items: center;
+    height: calc(100vw * 330 / 1290 + env(safe-area-inset-bottom, 0px) - 8px) !important; box-sizing: border-box;
+    padding: calc(100vw * 92 / 1290) 7% calc(env(safe-area-inset-bottom, 0px) + 100vw * 62 / 1290) 7.4% !important;
+    background: var(--fs-nav-bar) center top / 100% auto no-repeat, linear-gradient(#120c10, #120c10) bottom / 100% calc(100% - 100vw * 290 / 1290) no-repeat !important; }
+  html body.fs.fs-witchcraft .nav-center .nav-link { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 0 !important; min-width: 0; height: 100%; font-size: 13px !important; }
+  html body.fs.fs-witchcraft .nav-center .nav-link.active { background-size: 86% 92% !important; background-position: center 30% !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft .page.active { padding-top: calc(176px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-witchcraft .nav-center { height: calc(100vw * 330 / 1290 + env(safe-area-inset-bottom, 0px) + 6px) !important;
+    padding: calc(100vw * 96 / 1290) 7% calc(env(safe-area-inset-bottom, 0px) + 18px) 7.4% !important;
+    background: var(--fs-nav-bar) center top / 100% 100% no-repeat !important; }
+  html body.fs.fs-witchcraft .nav-center .nav-link.active { background-size: 90% 70% !important; background-position: center 20% !important; }
+}
+@media (max-width: 768px) {
+  /* header art (162pt tall at phone width) runs right up under the status bar; moon above the logo, icon bar on its lower band */
+  html body.fs.fs-witchcraft .navbar { height: calc(138px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-witchcraft .nav-container { grid-template-rows: 30px 44px 58px !important; }
+  html body.fs.fs-witchcraft .page.active { padding-top: calc(146px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-witchcraft .nav-center { padding-top: 44px !important; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 8px) !important; }
+}
+/* top bar v4 (owner: "ours sits so low"): measured from concept home — moon ≈62pt, logo centre ≈96pt, bar ≈124–160pt.
+   The header art is placed by its moon (pseudo, may hang below the bar like the concept's curved lower edge). */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft .navbar { height: calc(110px + env(safe-area-inset-top, 0px)) !important; padding-bottom: 2px !important; overflow: visible !important;
+    background: linear-gradient(#140d12, #140d12) top / 100% calc(env(safe-area-inset-top, 0px) - 10px) no-repeat !important; }
+  html body.fs.fs-witchcraft .navbar::before { content: ""; position: absolute; left: 0; right: 0; top: calc(env(safe-area-inset-top, 0px) - 25px); aspect-ratio: 1290 / 520;
+    background: var(--fs-header) center top / 100% 100% no-repeat; z-index: -1; pointer-events: none; }
+  html body.fs.fs-witchcraft .nav-container { grid-template-rows: 18px 40px 48px !important; position: relative; z-index: 1; }
+  html body.fs.fs-witchcraft .navbar .nav-logo { font-size: 32px !important; }
+  html body.fs.fs-witchcraft .nav-container::before { height: 44px !important; border-radius: 22px; }
+  html body.fs.fs-witchcraft .navbar .nav-coins { height: 34px !important; font-size: 16px !important; }
+  html body.fs.fs-witchcraft .navbar .nav-avatar { width: 48px !important; height: 48px !important; }
+  html body.fs.fs-witchcraft .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-wrap) i { font-size: 20px !important; }
+  html body.fs.fs-witchcraft .page.active { padding-top: calc(126px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-witchcraft .fs-tl-slot { top: 64px !important; }
+  html body.fs.fs-witchcraft :is(.fs-tl-slot-1, .fs-tl-slot-4) { top: 90px !important; }
+  html body.fs.fs-witchcraft :is(#timelineCover, #pvCoverBanner) { height: 390px !important; }
+}
+/* top bar v5 (owner: icons + coins weren't inside the box): every item vertically centred in the bar row, coin pill shorter than the bar */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft .nav-container { grid-template-rows: 18px 40px 54px !important; align-items: center !important; }
+  html body.fs.fs-witchcraft .nav-container::before { height: 50px !important; border-radius: 25px; align-self: center !important; }
+  html body.fs.fs-witchcraft .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-wrap, .nav-music-btn) { align-self: center !important; display: flex !important; align-items: center; justify-content: center;
+    width: 40px !important; height: 40px !important; margin: 0 !important; padding: 0 !important; line-height: 1 !important; }
+  html body.fs.fs-witchcraft .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-wrap) i { font-size: 19px !important; line-height: 1 !important; margin: 0 !important; }
+  html body.fs.fs-witchcraft .navbar .nav-coins { align-self: center !important; height: 34px !important; min-height: 0 !important; margin: 0 8px 0 0 !important; padding: 0 12px !important; line-height: 1 !important; box-sizing: border-box; }
+  html body.fs.fs-witchcraft .navbar .nav-coins :is(img, i, .coin-icon) { width: 22px !important; height: 22px !important; font-size: 18px !important; }
+  html body.fs.fs-witchcraft .navbar .nav-user { align-self: center !important; }
+}
+@media (max-width: 768px) { html body.fs.fs-witchcraft .nav-container::before { transform: translateY(-5px); } }
