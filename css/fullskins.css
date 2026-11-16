@@ -5314,3 +5314,41 @@ html body.fs.fs-heavens-light :is(#postCommentBtn, #cpmPublish) { background: no
   border-image: var(--fs-follow-btn) 50 90 fill / 9px 16px stretch !important; color: #fff !important; text-shadow: 0 1px 2px rgba(90, 58, 14, .6); }
 html body.fs.fs-heavens-light .share-preview { border-width: 26px !important; border-image: var(--fs-post-panel-c) 180 fill / 40px stretch !important; padding: 2px 0 !important; }
 html body.fs.fs-heavens-light .comment-item { border-width: 20px 26px !important; border-image: var(--fs-comment-bubble) 90 150 fill / 20px 26px stretch !important; }
+/* spacing (owner, Nov 16): content clears each post frame's ornament — top crests (c = winged laurel crest), side columns (b) */
+html body.fs.fs-heavens-light .feed-post.feed-post.feed-post { padding: 22px 12px 8px !important; }
+html body.fs.fs-heavens-light .feed-post.feed-post.feed-post:is([data-fs-v="3"], [data-fs-v="6"]) { padding-top: 40px !important; }
+html body.fs.fs-heavens-light .feed-post.feed-post.feed-post:is([data-fs-v="2"], [data-fs-v="5"]) { padding-left: 22px !important; padding-right: 22px !important; }
+html body.fs.fs-heavens-light .post-media-grid[class*="pm-count"] { margin-top: 22px !important; }
+html body.fs.fs-heavens-light :is(.post-content-text, .post-text, .post-content p) { margin-top: 6px !important; }
+/* bottom bar (owner, Nov 16): bigger icons; the active gold tile drawn whole (it was cut off at the bottom) */
+@media (max-width: 768px) {
+  html body.fs.fs-heavens-light .nav-center { height: calc(104px + env(safe-area-inset-bottom, 0px)) !important; padding-top: 16px !important; align-items: start !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link { height: 80px !important; justify-content: flex-start !important; padding-top: 4px !important; gap: 0 !important; overflow: visible !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link > i { width: 58px !important; min-width: 58px; height: 52px !important; background-size: 44px !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link.active { background-size: 72px 80px !important; background-position: center 0 !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link.active > i { background-size: 40px !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link span { font-size: 12px !important; line-height: 1.1 !important; margin-top: 2px; }
+}
+html body.fs.fs-heavens-light :is(.btn-outline, .btn-secondary, #trendingHashtagsBtn) { background: none !important; border: solid transparent !important; border-width: 10px 22px !important;
+  border-image: var(--fs-action-btn) 50 100 fill / 10px 22px stretch !important; border-radius: 0 !important; box-shadow: none !important; color: var(--hl-title) !important; }
+html body.fs.fs-heavens-light #trendingHashtagsBtn i, html body.fs.fs-heavens-light .card-heading i, html body.fs.fs-heavens-light .modal-header h3 i { color: var(--hl-gold) !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-heavens-light .nav-center .nav-link, html body.fs.fs-heavens-light .nav-center .nav-link span { font-size: 11px !important; letter-spacing: 0 !important;
+    overflow: visible !important; text-overflow: clip !important; white-space: nowrap !important; max-width: none !important; }
+}
+/* bottom bar (owner, Nov 16): bigger icons; the active gold tile drawn whole (it was cut off at the bottom) */
+@media (max-width: 768px) {
+  html body.fs.fs-heavens-light .nav-center { height: calc(104px + env(safe-area-inset-bottom, 0px)) !important; padding-top: 16px !important; align-items: start !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link { height: 80px !important; justify-content: flex-start !important; padding-top: 4px !important; gap: 0 !important; overflow: visible !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link > i { width: 58px !important; min-width: 58px; height: 52px !important; background-size: 44px !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link.active { background-size: 72px 80px !important; background-position: center 0 !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link.active > i { background-size: 40px !important; }
+  html body.fs.fs-heavens-light .nav-center .nav-link span { font-size: 12px !important; line-height: 1.1 !important; margin-top: 2px; }
+}
+html body.fs.fs-heavens-light :is(.btn-outline, .btn-secondary, #trendingHashtagsBtn) { background: none !important; border: solid transparent !important; border-width: 10px 22px !important;
+  border-image: var(--fs-action-btn) 50 100 fill / 10px 22px stretch !important; border-radius: 0 !important; box-shadow: none !important; color: var(--hl-title) !important; }
+html body.fs.fs-heavens-light #trendingHashtagsBtn i, html body.fs.fs-heavens-light .card-heading i, html body.fs.fs-heavens-light .modal-header h3 i { color: var(--hl-gold) !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-heavens-light .nav-center .nav-link, html body.fs.fs-heavens-light .nav-center .nav-link span { font-size: 11px !important; letter-spacing: 0 !important;
+    overflow: visible !important; text-overflow: clip !important; white-space: nowrap !important; max-width: none !important; }
+}

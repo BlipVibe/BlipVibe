@@ -63,4 +63,7 @@ images/skins/**
 !images/skins/vaporwave/
 !images/skins/vaporwave/assets/
 !images/skins/vaporwave/assets/**
+!images/skins/heavens-light/
+!images/skins/heavens-light/assets/
+!images/skins/heavens-light/assets/**
 __pycache__/

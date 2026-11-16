@@ -4128,6 +4128,8 @@ function showUnifiedCropModal(opts){
     html+='<img src="'+opts.src+'" crossorigin="anonymous" id="cropImg" style="max-width:100%;max-height:60vh;display:block;">';
     html+='<div id="cropBox" style="position:absolute;border:2px solid #fff;box-shadow:0 0 0 9999px rgba(0,0,0,.5);cursor:move;">';
     html+='<div id="cropResize" style="position:absolute;bottom:-4px;right:-4px;width:12px;height:12px;background:#fff;border:1px solid #333;cursor:nwse-resize;"></div></div></div>';
+    // zoom bar (owner, Nov 16): slide to zoom the crop in / out around its centre — the corner handle is fiddly on phones
+    html+='<div class="crop-zoom" style="display:flex;align-items:center;gap:10px;max-width:320px;margin:14px auto 0;"><i class="fas fa-magnifying-glass-minus" style="color:var(--gray);"></i><input type="range" id="cropZoom" min="0" max="100" step="1" value="0" aria-label="Zoom" style="flex:1;accent-color:var(--primary);"><i class="fas fa-magnifying-glass-plus" style="color:var(--gray);"></i></div>';
     html+='<div style="margin-top:16px;display:flex;gap:8px;justify-content:center;">'+(opts.skipLabel?'<button class="btn btn-secondary" id="cropSkipBtn">'+opts.skipLabel+'</button>':'')+'<button class="btn btn-primary" id="cropConfirmBtn">Apply</button></div></div>';
     showModal(html);
     var img=document.getElementById('cropImg');var box=document.getElementById('cropBox');var resizeHandle=document.getElementById('cropResize');
@@ -4136,6 +4138,19 @@ function showUnifiedCropModal(opts){
         else{var w=Math.min(img.clientWidth,img.clientWidth*0.9);if(w<10){setTimeout(_initBox,50);return;}var h=Math.round(w/opts.aspectRatio);if(h>img.clientHeight*0.9){h=Math.round(img.clientHeight*0.9);w=Math.round(h*opts.aspectRatio);}box.style.width=w+'px';box.style.height=h+'px';box.style.left=((img.clientWidth-w)/2)+'px';box.style.top=((img.clientHeight-h)/2)+'px';}
     }
     if(img.complete&&img.naturalWidth>0) setTimeout(_initBox,50); else img.onload=function(){setTimeout(_initBox,50);};
+    var zoomEl=document.getElementById('cropZoom');
+    function _zoomRange(){   // widest crop that fits the image (zoomed all the way out) .. smallest allowed (zoomed in)
+        var maxW=isSquare?Math.min(img.clientWidth,img.clientHeight):Math.min(img.clientWidth,img.clientHeight*opts.aspectRatio);
+        var minW=Math.min(maxW,isSquare?40:100);return [minW,maxW];
+    }
+    function _syncZoom(){if(!zoomEl)return;var r=_zoomRange();zoomEl.value=r[1]>r[0]?Math.round((r[1]-box.offsetWidth)/(r[1]-r[0])*100):0;}
+    if(zoomEl) zoomEl.addEventListener('input',function(){
+        var r=_zoomRange(),w=Math.round(r[1]-(r[1]-r[0])*(+zoomEl.value)/100),h=isSquare?w:Math.round(w/opts.aspectRatio);
+        var cx=box.offsetLeft+box.offsetWidth/2,cy=box.offsetTop+box.offsetHeight/2;
+        box.style.boxSizing='border-box';box.style.width=w+'px';box.style.height=h+'px';
+        box.style.left=Math.max(0,Math.min(cx-w/2,img.clientWidth-w))+'px';box.style.top=Math.max(0,Math.min(cy-h/2,img.clientHeight-h))+'px';
+    });
+    setTimeout(_syncZoom,200);
     var dragging=false,resizing=false,startX,startY,startL,startT,startW,startH;
     function _ds(x,y,isR){_cropDragging=true;if(isR){resizing=true;startW=box.offsetWidth;startH=box.offsetHeight;}else{dragging=true;startL=box.offsetLeft;startT=box.offsetTop;}startX=x;startY=y;}
     function _dm(x,y){
@@ -4145,7 +4160,7 @@ function showUnifiedCropModal(opts){
             else{var nw=Math.max(100,Math.min(startW+(x-startX),img.clientWidth-box.offsetLeft));var nh=Math.round(nw/opts.aspectRatio);if(nh>img.clientHeight-box.offsetTop){nh=img.clientHeight-box.offsetTop;nw=Math.round(nh*opts.aspectRatio);}box.style.width=nw+'px';box.style.height=nh+'px';}
         }
     }
-    function _de(){dragging=false;resizing=false;setTimeout(function(){_cropDragging=false;},50);}
+    function _de(){if(resizing)_syncZoom();dragging=false;resizing=false;setTimeout(function(){_cropDragging=false;},50);}
     box.addEventListener('mousedown',function(e){if(e.target===resizeHandle)return;_ds(e.clientX,e.clientY,false);e.preventDefault();});
     resizeHandle.addEventListener('mousedown',function(e){_ds(e.clientX,e.clientY,true);e.preventDefault();e.stopPropagation();});
     document.addEventListener('mousemove',function(e){_dm(e.clientX,e.clientY);});

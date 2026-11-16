@@ -173,7 +173,7 @@
     fonts: 'https://fonts.googleapis.com/css2?family=VT323&display=swap'
   };
   FULL_SKINS['heavens-light'] = {
-    name: "Heaven's Light", wip: true, dark: false, ink: '#4a3416', muted: '#8a7350', accent: '#c9962e',
+    name: "Heaven's Light", dark: false, ink: '#4a3416', muted: '#8a7350', accent: '#c9962e',
     font: "'Cormorant Garamond', serif", titleFont: "'Cinzel', serif",
     timeline: 3, avatar: 'center', slice: 15, edge: 16,
     // owner (Nov 16): two renditions — Day (assets/ root, concept-v1-approved.png) and Twilight (assets/twilight/,
@@ -1626,39 +1626,62 @@
     if (reduce) { if (data().setVariant) data().setVariant(id, next); return; }
     swapping = true;
     var toTw = next === 'twilight';
+    // smooth (owner, Nov 16: "not super smooth"): preload the other rendition's main art BEFORE the sky moves, keep the
+    // sky animating while anything still loads (no frozen frame), switch the skin a frame after the sky fully covers.
+    var dir = BASE + id + '/assets/' + (toTw ? 'twilight/' : '');
+    var main = ['background', 'header', 'top-bar', 'nav-bar', 'nav-active', 'post-panel', 'post-panel-b', 'post-panel-c',
+      'temple-arches', 'cameo-wings', 'quests-frame', 'quest-row', 'list-row', 'stats-frame', 'tab', 'tab-active', 'chip',
+      'chip-active', 'field', 'coin-pill', 'photo-frame', 'toggle-day', 'toggle-twilight', 'marble-ledge'];
+    var preload = Promise.race([Promise.all(main.map(function (n) { return fxImg(dir + n + '.webp'); })), fxWait(4000)]);
     Promise.all(['fx-sun-disc', 'fx-moon-disc', 'fx-cloud-bank', 'fx-sparkle'].map(function (n) { return fxArt(id, n); })).then(function (r) {
       var c = fxCanvas('heavens-light-swap'), g = c.g, W = c.W, H = c.H, sun = r[0], moon = r[1], bank = r[2], spark = r[3];
-      var stars = []; for (var k = 0; k < 60; k++) stars.push({ x: Math.random() * W, y: Math.random() * H * .6, s: 6 + Math.random() * 12, ph: Math.random() * 6 });
-      function sky(k, cover) {   // k = 0 day .. 1 twilight
-        var d = g.createLinearGradient(0, 0, 0, H); d.addColorStop(0, '#ffd99e'); d.addColorStop(.55, '#ffeccb'); d.addColorStop(1, '#fff7e6');
-        var n = g.createLinearGradient(0, 0, 0, H); n.addColorStop(0, '#141a38'); n.addColorStop(.55, '#3b3a6e'); n.addColorStop(1, '#e09a7a');
-        g.globalAlpha = cover * (1 - k); g.fillStyle = d; g.fillRect(0, 0, W, H);
-        g.globalAlpha = cover * k; g.fillStyle = n; g.fillRect(0, 0, W, H); g.globalAlpha = 1;
-        stars.forEach(function (s) { var a = cover * k * (.45 + .55 * Math.sin(Date.now() / 160 + s.ph)); if (a > 0 && spark) drawRot(g, spark, s.x, s.y, s.s, s.s, 0, a); });
+      var stars = []; for (var k = 0; k < 50; k++) stars.push({ x: Math.random() * W, y: Math.random() * H * .6, s: 6 + Math.random() * 12, ph: Math.random() * 6 });
+      var day = g.createLinearGradient(0, 0, 0, H); day.addColorStop(0, '#ffd99e'); day.addColorStop(.55, '#ffeccb'); day.addColorStop(1, '#fff7e6');
+      var tw = g.createLinearGradient(0, 0, 0, H); tw.addColorStop(0, '#141a38'); tw.addColorStop(.55, '#3b3a6e'); tw.addColorStop(1, '#e09a7a');
+      function inout(x) { return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+      var bw = Math.min(W * .62, 300), sunG = glowSprite('255,214,120'), moonG = glowSprite('230,230,255');
+      function glowSprite(rgb) {   // pre-rendered glow (a radial gradient per frame was costly)
+        var cv = document.createElement('canvas'), s = Math.ceil(bw * 2); cv.width = cv.height = s;
+        var x = cv.getContext('2d'), gg = x.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+        gg.addColorStop(0, 'rgba(' + rgb + ',.55)'); gg.addColorStop(1, 'rgba(' + rgb + ',0)'); x.fillStyle = gg; x.fillRect(0, 0, s, s); return cv;
       }
-      function body(im, y, a, glowCol) {
-        if (!im || a <= 0) return; var w = Math.min(W * .62, 300);
-        var gg = g.createRadialGradient(W / 2, y, 0, W / 2, y, w); gg.addColorStop(0, glowCol); gg.addColorStop(1, 'rgba(0,0,0,0)');
-        g.globalAlpha = a; g.fillStyle = gg; g.fillRect(0, y - w, W, w * 2); g.drawImage(im, W / 2 - w / 2, y - w / 2, w, w); g.globalAlpha = 1;
+      // one continuous motion (owner: the sun and moon must fade INTO each other, no hard swap): progress p 0..1 drives
+      // the sky colour, the sun sinking and the moon rising along the same arc, and a soft cross-fade between them.
+      function sstep(a, b, x) { x = Math.max(0, Math.min(1, (x - a) / (b - a))); return x * x * (3 - 2 * x); }
+      function frame(t, p, cover) {
+        var e = inout(p), k = k0 + (k1 - k0) * e;
+        g.clearRect(0, 0, W, H);
+        g.globalAlpha = cover * (1 - k); g.fillStyle = day; g.fillRect(0, 0, W, H);
+        g.globalAlpha = cover * k; g.fillStyle = tw; g.fillRect(0, 0, W, H);
+        if (spark) stars.forEach(function (s) { var a = cover * k * (.45 + .55 * Math.sin(t / 260 + s.ph)); if (a > .02) drawRot(g, spark, s.x, s.y, s.s, s.s, 0, a); });
+        var setIm = toTw ? sun : moon, riseIm = toTw ? moon : sun, setG = toTw ? sunG : moonG, riseG = toTw ? moonG : sunG;
+        // original path (owner liked it): the current body sinks behind the cloud bank, the other rises back out of it —
+        // with the two fading into each other where the paths meet (owner: "the sun to fade to the moon")
+        var fade = sstep(.38, .62, p);
+        var sy = hi + (lo - hi) * inout(Math.min(1, p / .62));
+        var ry = lo + (hi - lo) * inout(Math.max(0, (p - .38) / .62));
+        [[setIm, setG, sy, 1 - fade], [riseIm, riseG, ry, fade]].forEach(function (b) {
+          if (!b[0] || b[3] <= .01) return; g.globalAlpha = cover * b[3];
+          g.drawImage(b[1], W / 2 - bw, b[2] - bw, bw * 2, bw * 2); g.drawImage(b[0], W / 2 - bw / 2, b[2] - bw / 2, bw, bw); });
+        if (bank) { var w = W * 1.15, h = w * bank.height / bank.width; g.globalAlpha = cover; g.drawImage(bank, W / 2 - w / 2, H - h * .82, w, h); }
+        g.globalAlpha = 1;
       }
-      function clouds(a) { if (!bank || a <= 0) return; var w = W * 1.15, h = w * bank.height / bank.width; g.globalAlpha = a; g.drawImage(bank, W / 2 - w / 2, H - h * .82, w, h); g.globalAlpha = 1; }
-      var setter = toTw ? sun : moon, riser = toTw ? moon : sun, sc = toTw ? 'rgba(255,214,120,.55)' : 'rgba(230,230,255,.45)', rc = toTw ? 'rgba(230,230,255,.45)' : 'rgba(255,214,120,.55)';
-      var hi = H * .3, lo = H * .95, swapP = null;
-      return fxRun(1000, function (t, x) {   // sky covers the screen; the current body sinks behind the clouds
-        var e = ease(x); g.clearRect(0, 0, W, H);
-        sky(toTw ? e * .6 : 1 - e * .6, e); body(setter, hi + (lo - hi) * e, 1, sc); clouds(e);
+      var hi = H * .3, lo = H * .92, k0 = toTw ? 0 : 1, k1 = toTw ? 1 : 0, t0 = performance.now();
+      return preload.then(function () {
+        return fxRun(900, function (t, x) { frame(t, x * .5, inout(Math.min(1, x * 1.4))); });   // sky covers; first half of the arc
       }).then(function () {
-        if (data().setVariant) data().setVariant(id, next);
-        swapP = fxArtReady();
-        return Promise.all([swapP, fxRun(1100, function (t, x) {   // the other body rises; the sky finishes turning
-          var e = ease(x); g.clearRect(0, 0, W, H);
-          sky(toTw ? .6 + e * .4 : .4 - e * .4, 1); body(riser, lo + (hi - lo) * e, 1, rc); clouds(1);
-        })]);
+        return new Promise(function (ok) { requestAnimationFrame(function () {   // switch under full cover, motion never stops
+          if (data().setVariant) data().setVariant(id, next);
+          var ready = false; fxArtReady().then(function () { ready = true; });
+          var s0 = performance.now();
+          (function loop(now) {
+            var t = now - s0, x = Math.min(1, t / 1300);
+            frame(now - t0, .5 + .5 * x, 1);
+            if (x >= 1 && (ready || t > 5000)) ok(); else requestAnimationFrame(loop);
+          })(s0);
+        }); });
       }).then(function () {
-        return fxRun(700, function (t, x) {   // the sky clears away, revealing the new rendition
-          var e = ease(x); g.clearRect(0, 0, W, H); g.globalAlpha = 1 - e;
-          sky(toTw ? 1 : 0, 1); body(riser, hi - e * 40, 1, rc); clouds(1 - e); g.globalAlpha = 1;
-        });
+        return fxRun(800, function (t, x) { frame(t, 1, 1 - inout(x)); });   // the sky clears onto the new rendition
       }).then(function () { c.o.remove(); swapping = false; }, function () { c.o.remove(); swapping = false; });
     });
   }

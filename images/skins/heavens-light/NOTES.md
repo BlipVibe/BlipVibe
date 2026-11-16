@@ -1,6 +1,6 @@
 # Heaven's Light — build notes
 
-**Status (Nov 16 2026): WIP** (`wip: true` in `js/fullskins.js` → shows "Coming soon" in the store).
+**Status (Nov 16 2026): SHIPPED** (owner: "Finish and ship"; `wip` removed, assets whitelisted in `.gitignore`).
 Process and owner rules for every skin: `../README.md`, `../scrapbook/NOTES.md`, `../good-witch/NOTES.md`.
 
 ## Targets
@@ -63,3 +63,10 @@ Process and owner rules for every skin: `../README.md`, `../scrapbook/NOTES.md`,
   in comment text. QA gotcha: sim_install.sh without a rendition argument uses the REAL setVariant, which saves the
   choice to the account (it saved Twilight once; restored to Day by tapping back).
   Not yet checked: create post, group page, story viewer, search, chat input bar (simulator draws it only with keyboard).
+- Nov 16 (ship round, owner on device): swap made smooth (main art preloaded before the sky moves, the sky keeps moving
+  while the skin switches — no frozen frame) and the sun now FADES into the moon (and back) where they meet behind the
+  clouds, on the original path (owner rejected a version that changed the path). Post spacing: content clears each frame's
+  crest/columns (padding per look). Bottom bar: bigger icons (44px), whole active gold tile, labels never truncate.
+  Trending Hashtags / outline buttons on the action-btn art (were tiled). Owner asked for a zoom bar when CROPPING a picture
+  (not a zoom button on the cameo — that was tried and removed): app-wide crop modal (js/app.js showUnifiedCropModal) now
+  has a zoom slider that resizes the crop around its centre.
