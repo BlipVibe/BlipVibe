@@ -211,7 +211,7 @@
     fonts: 'https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap'
   };
   FULL_SKINS['blood-moon'] = {
-    name: 'Blood Moon', dark: true, ink: '#f4e6e4', muted: '#cfa9a6', accent: '#c4202f', wip: true,
+    name: 'Blood Moon', dark: true, ink: '#f4e6e4', muted: '#cfa9a6', accent: '#c4202f',
     font: "'EB Garamond', serif", titleFont: "'Playfair Display', serif",   // its own type (Cormorant is Witchcraft / Good Witch / Heaven's Light)
     timeline: 3, avatar: 'center', slice: 15, edge: 16,
     // owner (Nov 16): two renditions with different MOONS, each painted on its own (no filters) — Crimson (assets/ root,
@@ -1805,56 +1805,59 @@
     if (reduce) { if (data().setVariant) data().setVariant(id, next); return; }
     swapping = true;
     var toSilver = next === 'silver', from = bmSet(!toSilver), to = bmSet(toSilver);
+    // smooth (owner, Nov 16): the other moon's main art is fetched AND decoded before anything moves, so nothing pops in
     var dir = BASE + id + '/assets/' + (toSilver ? 'silver/' : '');
     var main = ['background', 'header', 'top-bar', 'nav-bar', 'nav-active', 'post-panel', 'post-panel-b', 'post-panel-c',
-      'gothic-windows', 'cameo-frame', 'avatar-ring', 'profile-card', 'quests-frame', 'quest-row', 'list-row', 'tab', 'tab-active',
-      'chip', 'chip-active', 'field', 'coin-pill', 'photo-frame', 'toggle-crimson', 'toggle-silver', 'rose-ledge'];
-    var preload = Promise.race([Promise.all(main.map(function (n) { return fxImg(dir + n + '.webp'); })), fxWait(4000)]);
+      'profile-sky', 'profile-windows', 'profile-mask-1', 'profile-mask-2', 'profile-mask-3', 'cameo-frame', 'avatar-ring',
+      'quests-frame', 'quest-row', 'list-row', 'tab', 'tab-active', 'seg-tab', 'seg-tab-active', 'chip', 'chip-active', 'field',
+      'coin-pill', 'photo-frame', 'round-btn', 'candelabra', 'title-flourish', 'toggle-crimson', 'toggle-silver', 'rose-ledge'];
+    function decoded(src) { return fxImg(src).then(function (im) { return im && im.decode ? im.decode().catch(function () {}).then(function () { return im; }) : im; }); }
+    var preload = Promise.race([Promise.all(main.map(function (n) { return decoded(dir + n + '.webp'); })), fxWait(4500)]);
     Promise.all([from.moon, to.moon, 'fx-umbra', 'fx-spires', 'fx-star', to.petals[0], to.petals[1]].map(function (n) { return fxArt(id, n); })).then(function (r) {
       var c = fxCanvas('blood-moon-swap'), g = c.g, W = c.W, H = c.H, m1 = r[0], m2 = r[1], umbra = r[2], spires = r[3], star = r[4], petals = [r[5], r[6]];
-      var sky1 = bmSky(g, H, from.sky), sky2 = bmSky(g, H, to.sky), stars = [], fall = [], k;
+      // the two night skies pre-rendered once (no gradient work per frame)
+      function skyCanvas(cols) { var cv = document.createElement('canvas'); cv.width = W; cv.height = H; var x = cv.getContext('2d'); x.fillStyle = bmSky(x, H, cols); x.fillRect(0, 0, W, H); return cv; }
+      var sky1 = skyCanvas(from.sky), sky2 = skyCanvas(to.sky), stars = [], fall = [], k;
       for (k = 0; k < 50; k++) stars.push({ x: Math.random() * W, y: Math.random() * H * .6, s: 6 + Math.random() * 12, ph: Math.random() * 6 });
-      for (k = 0; k < 26; k++) fall.push({ x: Math.random() * W, y: -40 - Math.random() * H * .6, s: 18 + Math.random() * 22, v: .12 + Math.random() * .1, ph: Math.random() * 6, p: k % 2 });
+      for (k = 0; k < 28; k++) fall.push({ x: Math.random() * W, y: -40 - Math.random() * H * .7, s: 18 + Math.random() * 22, v: .1 + Math.random() * .08, ph: Math.random() * 6, p: k % 2 });
       var ms = Math.min(W * .86, H * .5), cx = W / 2, cy = H * .38, ur = ms * .62;
+      function sstep(a, b, x) { x = Math.max(0, Math.min(1, (x - a) / (b - a))); return x * x * (3 - 2 * x); }
       function inout(x) { return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
-      // p 0..1 = the shadow's path from left of the moon to right of it; cover = how much of the night sky shows
-      function frame(t, p, cover) {
-        var ux = cx - ms * 1.25 + ms * 2.5 * inout(p), k2 = Math.max(0, Math.min(1, (p - .35) / .3));
+      // one continuous picture: p = the shadow's path (0 = left of the moon, .5 = totality, 1 = gone right), cover = sky opacity
+      function frame(t, p, cover, petalT) {
+        var e = inout(p), ux = cx - ms * 1.3 + ms * 2.6 * e, k2 = sstep(.38, .62, p);
         g.clearRect(0, 0, W, H);
-        g.globalAlpha = cover * (1 - k2); g.fillStyle = sky1; g.fillRect(0, 0, W, H);
-        g.globalAlpha = cover * k2; g.fillStyle = sky2; g.fillRect(0, 0, W, H);
-        if (star) stars.forEach(function (s) { var a = cover * (.4 + .6 * Math.sin(t / 250 + s.ph)); if (a > .02) drawRot(g, star, s.x, s.y, s.s, s.s, 0, a); });
+        g.globalAlpha = cover; g.drawImage(sky1, 0, 0);
+        if (k2 > 0) { g.globalAlpha = cover * k2; g.drawImage(sky2, 0, 0); }
+        if (star) stars.forEach(function (s) { var a = cover * (.4 + .6 * Math.sin(t / 300 + s.ph)); if (a > .02) drawRot(g, star, s.x, s.y, s.s, s.s, 0, a); });
         g.globalAlpha = cover;
         if (m1) g.drawImage(m1, cx - ms / 2, cy - ms / 2, ms, ms);
-        if (m2) { g.save(); g.beginPath(); g.rect(0, 0, ux, H); g.clip(); g.clearRect(cx - ms / 2, cy - ms / 2, Math.max(0, ux - cx + ms / 2), ms);
-          g.fillStyle = sky1; g.globalAlpha = cover * (1 - k2); g.fillRect(cx - ms / 2, cy - ms / 2, Math.max(0, ux - cx + ms / 2), ms);
-          g.fillStyle = sky2; g.globalAlpha = cover * k2; g.fillRect(cx - ms / 2, cy - ms / 2, Math.max(0, ux - cx + ms / 2), ms);
-          if (star) stars.forEach(function (s) { if (s.x < ux && Math.abs(s.x - cx) < ms / 2 && Math.abs(s.y - cy) < ms / 2) drawRot(g, star, s.x, s.y, s.s, s.s, 0, cover * .6); });
-          g.globalAlpha = cover; g.drawImage(m2, cx - ms / 2, cy - ms / 2, ms, ms); g.restore(); }
-        if (umbra) { g.globalAlpha = cover * .92; g.drawImage(umbra, ux - ur, cy - ur, ur * 2, ur * 2); }
+        // the shadow leaves the other moon behind it: the new moon is drawn only where the shadow has already passed
+        if (m2 && ux > cx - ms / 2) { g.save(); g.beginPath(); g.rect(0, 0, ux, H); g.clip(); g.drawImage(m2, cx - ms / 2, cy - ms / 2, ms, ms); g.restore(); }
+        if (umbra) { g.globalAlpha = cover * .94; g.drawImage(umbra, ux - ur, cy - ur, ur * 2, ur * 2); }
         if (spires) { var w = W * 1.1, h = w * spires.height / spires.width; g.globalAlpha = cover; g.drawImage(spires, cx - w / 2, H - h, w, h); }
-        if (p > .55) fall.forEach(function (f) { var im = petals[f.p]; if (!im) return; var y = f.y + (t - t0s) * f.v; if (y > H + 40) return;
-          drawRot(g, im, f.x + Math.sin(t / 600 + f.ph) * 26, y, f.s, f.s, t / 700 + f.ph, cover * Math.min(1, (p - .55) * 4)); });
+        if (petalT > 0) fall.forEach(function (f) { var im = petals[f.p]; if (!im) return; var y = f.y + petalT * f.v; if (y > H + 40) return;
+          drawRot(g, im, f.x + Math.sin(t / 650 + f.ph) * 24, y, f.s, f.s, t / 900 + f.ph, cover * Math.min(1, petalT / 500)); });
         g.globalAlpha = 1;
       }
-      var t0s = 0;
+      var IN = 650, PASS = 2600, OUT = 800, switched = false, ready = false, tSwitch = 0, outStart = 0;
       return preload.then(function () {
-        return fxRun(700, function (t, x) { frame(t, x * .2, inout(x)); });   // the night sky covers, the shadow approaches
-      }).then(function () {
-        return fxRun(700, function (t, x) { frame(700 + t, .2 + x * .3, 1); });   // the shadow reaches totality
-      }).then(function () {
-        return new Promise(function (ok) { requestAnimationFrame(function () {   // switch under full cover, motion never stops
-          if (data().setVariant) data().setVariant(id, next);
-          var ready = false; fxArtReady().then(function () { ready = true; });
-          var s0 = performance.now(); t0s = 1400;
+        return new Promise(function (ok) {
+          var t0 = performance.now();
           (function loop(now) {
-            var t = now - s0, x = Math.min(1, t / 1300);
-            frame(1400 + t, .5 + .5 * x, 1);
-            if (x >= 1 && (ready || t > 5000)) ok(); else requestAnimationFrame(loop);
-          })(s0);
-        }); });
-      }).then(function () {
-        return fxRun(800, function (t, x) { frame(2700 + t, 1, 1 - inout(x)); });   // the sky clears onto the new rendition
+            var t = now - t0;
+            var p = Math.min(1, t / PASS);
+            var cover = sstep(0, 1, t / IN);
+            if (!switched && p >= .5) {   // totality: the moon is dark, swap the skin underneath (motion keeps going)
+              switched = true; tSwitch = t;
+              setTimeout(function () { if (data().setVariant) data().setVariant(id, next); fxArtReady().then(function () { ready = true; }); }, 0);
+            }
+            var petalT = switched ? t - tSwitch : 0;
+            if (p >= 1 && (ready || t > PASS + 4000)) { if (!outStart) outStart = t; cover = 1 - sstep(0, 1, (t - outStart) / OUT); }
+            frame(t, p, cover, petalT);
+            if (outStart && t - outStart >= OUT) ok(); else requestAnimationFrame(loop);
+          })(t0);
+        });
       }).then(function () { c.o.remove(); swapping = false; }, function () { c.o.remove(); swapping = false; });
     });
   }

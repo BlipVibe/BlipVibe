@@ -1,6 +1,6 @@
 # Blood Moon — build notes
 
-**Status (Nov 16 2026): WIP on branch `claude/blood-moon-skin-fcb151`** (`wip: true`, assets not whitelisted yet).
+**Status (Nov 16 2026): SHIPPED** (owner: "Ship it"; `wip` removed, assets whitelisted in `.gitignore`, merged to main).
 Process and owner rules for every skin: `../README.md`, `../scrapbook/NOTES.md`, `../good-witch/NOTES.md`, `../heavens-light/NOTES.md`.
 
 ## Targets
@@ -45,6 +45,9 @@ Process and owner rules for every skin: `../README.md`, `../scrapbook/NOTES.md`,
   swells to fill the screen, then bursts into a whirl of rose petals (red / white) that blow away.
 - Crimson ↔ Silver (`bloodSwap`, the moon button in the Home top bar): an ECLIPSE: the earth's shadow slides across the
   giant moon, and as it passes it leaves the other moon behind; the sky turns, petals fall, the sky clears.
+  Smooth pass (owner: "isn't very smooth"): one continuous rAF timeline (no phase joins), the other rendition's art
+  fetched + decoded first, skies pre-rendered, the skin switches at totality under the dark moon, holds softly until the
+  new art is ready, then the sky fades out. Measured in the harness: no frozen frames, 2 single-frame hitches.
 
 ## QA (simulator, look-only hook, nothing saved)
 Checked Crimson: Home (profile block, quests, tabs, posts, composer, featured), Profile, Skins, Groups, Messages, chat,
