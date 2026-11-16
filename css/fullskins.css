@@ -3307,3 +3307,7 @@ html body.fs.fs-good-witch .featured-skin-banner .btn { border: 0 !important; bo
 html body.fs.fs-good-witch #openPostModal { margin: 6px 0 !important; padding: 0 !important; box-sizing: border-box; width: 100% !important; }
 html body.fs.fs-good-witch .post-create-avatar { flex: 0 0 46px; }
 html body.fs.fs-good-witch .post-input-fake { min-width: 0; }
+/* cat-on-cloud: tucked up under the Edit Profile pill like the concept, not a big gap */
+html body.fs.fs-good-witch :is(#profileCard, .pv-profile-card)::after { padding-bottom: 30% !important; margin: -26px -8px 0 !important; background-size: 92% auto !important; }
+html body.fs.fs-good-witch .share-preview :is(.share-preview-name, strong, .shared-post-author:not(img)) { color: var(--gw-title) !important; font-family: var(--fs-title-font) !important; font-weight: 700 !important; opacity: 1 !important; }
+html body.fs.fs-good-witch .share-preview .share-preview-time { color: var(--gw-soft) !important; }
