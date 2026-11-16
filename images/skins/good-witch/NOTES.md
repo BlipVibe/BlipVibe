@@ -61,3 +61,13 @@
   moon, constellations, sun/moon sparkle. Charms must sit on the frame edge, never over content (corner vines reached
   over the avatar — replaced). Spell book pages always use dark ink (light parchment in both modes).
   Pending: ornate gold ring for the round profile photos (photo-bubble-ornate, Codex drawing).
+- Nov 15 (late night): skin options live in the TOP BAR for every skin that has them (owner: "a toggle on top for all
+  the changeable skins"): Good Witch = sun/moon; Anime Blaze = a jewel of the current colour, each tap = next colour,
+  with its own manga power-up swap (js/fullskins.js blazeSwap: speed lines charge in, comic impact burst + lightning
+  slash in the new colour, screen splits open along the bolt). The store's colour dots are gone so every skin preview
+  card is the same size; the equipped card shows one button (Take off) because the picture's Equipped tag says it.
+  The choice saves per account (fsVariants via set_skin_look) — verified it survives an app relaunch.
+  QA pass: Messages search lined up with the rows, notification arrows right-aligned, Search tabs as gold chips,
+  group list buttons fit "Joined", group page (name clear of the cover, stats fit, readable buttons in Day + Night).
+  Not yet re-checked this pass: someone else's profile, comments, create post, and Night for Messages/Search.
+  Emoji show as "?" boxes in the simulator in every skin (app-wide, not a skin issue) — check on a real phone.

@@ -3692,3 +3692,16 @@ html body.fs.fs-good-witch #searchResults .search-results-grid { gap: 0 !importa
 /* Good Witch Groups (QA Nov 15): the phone layout squeezes group buttons into 40px circles, which cut "Joined" to "n" —
    size the button to its word instead */
 html body.fs.fs-good-witch #groupsSections .group-card-actions .btn { width: auto !important; min-width: 92px !important; height: auto !important; padding: 2px 6px !important; }
+/* Good Witch group page (QA Nov 15): name clear of the cover and sized to fit; three stats that fit the frame
+   ("Members" no longer splits); Edit / Joined / Leave as the same readable buttons as the group list, in Day and Night */
+html body.fs.fs-good-witch #gvProfileCard .profile-name { font-size: 30px !important; margin: 34px 12px 0 !important; overflow-wrap: anywhere; position: relative; z-index: 2; }
+html body.fs.fs-good-witch #gvProfileCard .profile-stats { padding: 6px 22px !important; width: 96% !important; }
+html body.fs.fs-good-witch #gvProfileCard .stat-count { font-size: 24px !important; }
+html body.fs.fs-good-witch #gvProfileCard .stat-label { font-size: 14px !important; white-space: nowrap; line-height: 1.2 !important; display: block; }
+html body.fs.fs-good-witch #gvProfileCard .stat-label i { margin-right: 3px; font-size: 11px !important; }
+html body.fs.fs-good-witch #gvProfileCard .stat-label { font-size: 13px !important; }
+html body.fs.fs-good-witch #gvProfileCard .pv-actions { display: flex !important; flex-wrap: wrap; justify-content: center; gap: 8px !important; margin-top: 12px !important; }
+html body.fs.fs-good-witch #gvProfileCard .pv-actions .btn { flex: 0 0 auto; width: auto !important; min-width: 110px; height: auto !important; margin: 0 !important; padding: 2px 6px !important;
+  background: none !important; border: solid transparent !important; border-width: 9px 16px !important; border-image: var(--fs-join-btn) 60 95 fill / 9px 16px stretch !important;
+  border-radius: 0 !important; box-shadow: none !important; color: var(--gw-title) !important; font: 700 15px var(--fs-font) !important; opacity: 1 !important; }
+html body.fs.fs-good-witch #gvProfileCard .pv-actions .btn i { color: inherit !important; margin-right: 4px; }
