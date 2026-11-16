@@ -5548,19 +5548,19 @@ html body.fs.fs-superhero[data-fs-variant="villains"] .user-dropdown #logoutBtn,
   html body.fs.fs-superhero .nav-center { display: grid !important; grid-template-columns: repeat(5, 1fr); align-items: start; border: 0 !important; border-image: none !important; backdrop-filter: none !important;
     height: calc(84px + env(safe-area-inset-bottom, 0px)) !important; padding: 12px 6px calc(env(safe-area-inset-bottom, 0px) - 6px) !important; box-sizing: border-box;
     background: var(--fs-nav-bar) center top / 100% 100% no-repeat, linear-gradient(var(--sh-pagefill), var(--sh-pagefill)) bottom / 100% calc(100% - 10px) no-repeat !important; }
-  html body.fs.fs-superhero .nav-center :is(.nav-saved-link, .nav-notif-link) { display: none !important; }
   html body.fs.fs-superhero .nav-center .nav-link { position: relative; display: flex !important; flex-direction: column; align-items: center; justify-content: flex-start; gap: 0; height: 66px; padding: 5px 0 0 !important; min-width: 0;
     background: none !important; border: 0 !important; border-image: none !important; color: var(--sh-title) !important; font: 400 12px var(--sh-tfont) !important; letter-spacing: .03em; text-transform: uppercase;
     transition: none !important; transform: none !important; overflow: visible !important; }
   html body.fs.fs-superhero .nav-center .nav-link span { font: inherit !important; white-space: nowrap; overflow: visible; }
   html body.fs.fs-superhero .nav-center .nav-link > i { width: 40px !important; min-width: 40px; height: 36px !important; background-position: center !important; background-size: 34px !important; filter: none !important; }
-  html body.fs.fs-superhero .nav-center .nav-link.active { background: var(--fs-nav-active) center top / 64px 62px no-repeat !important; }
+  html body.fs.fs-superhero .nav-center .nav-link.active { background: var(--fs-nav-active) center 0 / 72px 64px no-repeat !important; }
   html body.fs.fs-superhero .nav-center .nav-link.active > i { background-image: var(--fs-icon-home-on) !important; }
   html body.fs.fs-superhero .nav-center .nav-link.active[data-page="groups"] > i { background-image: var(--fs-icon-groups-on) !important; }
   html body.fs.fs-superhero .nav-center .nav-link.active[data-page="shop"] > i { background-image: var(--fs-icon-skins-on) !important; }
   html body.fs.fs-superhero .nav-center .nav-link.active[data-page="profiles"] > i { background-image: var(--fs-icon-network-on) !important; }
   html body.fs.fs-superhero .nav-center .nav-link.active[data-page="messages"] > i { background-image: var(--fs-icon-messages-on) !important; }
   html body.fs.fs-superhero .nav-center .nav-link.active { color: var(--sh-on) !important; }
+  html body.fs.fs-superhero .nav-center .nav-link:is(.nav-saved-link, .nav-notif-link, [data-page="saved"], [data-page="notifications"]) { display: none !important; }
   html body.fs.fs-superhero .nav-center .nav-link .notif-badge { position: absolute; top: 0; right: 14%; }
 }
 
@@ -5583,7 +5583,7 @@ html body.fs.fs-superhero #page-messages .msg-sidebar-header .btn, html body.fs.
 
 /* ---------- fields (16px, text clears the magnifier) ---------- */
 html body.fs.fs-superhero :is(.msg-search, .page-search) { display: flex !important; align-items: center; min-height: 48px; box-sizing: border-box; box-shadow: none !important; border-radius: 0 !important;
-  background: none !important; border: solid transparent !important; border-width: 12px 24px !important; border-image: var(--fs-field) 85 fill / 12px 24px stretch !important; padding: 0 2px !important; }
+  background: none !important; border: solid transparent !important; border-width: 12px 24px !important; border-image: var(--fs-field) 60 85 fill / 12px 24px stretch !important; padding: 0 2px !important; }
 html body.fs.fs-superhero :is(.msg-search, .page-search) > i { font-size: 0 !important; width: 20px; height: 20px; flex: 0 0 20px; background: var(--fs-icon-search) center / contain no-repeat; position: static !important; transform: none !important; }
 html body.fs.fs-superhero :is(.msg-search, .page-search) > i::before { content: "" !important; }
 html body.fs.fs-superhero :is(.msg-search, .page-search) input { background: none !important; border: 0 !important; color: var(--sh-ink) !important; font: 700 16px var(--sh-bfont) !important; padding: 4px 8px !important; height: auto !important; flex: 1; min-width: 0; }
@@ -5687,8 +5687,9 @@ html body.fs.fs-superhero #pvCoverBanner .fs-timeline { position: absolute; inse
 html body.fs.fs-superhero #pvCoverBanner .fs-timeline::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: var(--fs-timeline-frame) center / 100% 100% no-repeat; }
 /* slot boxes = each window's bounding box +1% (measured from timeline-mask in QA); the photo is cut by the mask itself */
 html body.fs.fs-superhero #pvCoverBanner .fs-tl-slot { position: absolute; top: var(--sh-t); left: var(--sh-l); width: var(--sh-w); height: var(--sh-h); }
+html body.fs.fs-superhero #pvCoverBanner .fs-tl-slot.fs-tl-empty::after { content: ""; }
 html body.fs.fs-superhero #pvCoverBanner .fs-tl-slot :is(img), html body.fs.fs-superhero #pvCoverBanner .fs-tl-slot.fs-tl-empty::after {
-  content: ""; position: absolute; inset: 0; width: 100% !important; height: 100% !important; object-fit: cover; display: block;
+  position: absolute; inset: 0; width: 100% !important; height: 100% !important; object-fit: cover; display: block;
   -webkit-mask: var(--fs-timeline-mask) var(--sh-mx) var(--sh-my) / var(--sh-msx) var(--sh-msy) no-repeat; mask: var(--fs-timeline-mask) var(--sh-mx) var(--sh-my) / var(--sh-msx) var(--sh-msy) no-repeat; }
 html body.fs.fs-superhero #pvCoverBanner .fs-tl-slot.fs-tl-empty::after { background: var(--fs-header) center / cover no-repeat; }
 html body.fs.fs-superhero #pvCoverBanner .fs-tl-own.fs-tl-slot-3::before { content: ""; position: absolute; right: 4%; top: 6%; width: 32px; height: 32px; z-index: 4; background: var(--fs-camera-badge) center / contain no-repeat; }
@@ -5708,18 +5709,18 @@ html body.fs.fs-superhero .pv-profile-card .profile-stats { display: flex !impor
   border: solid transparent !important; border-width: 16px 22px !important; border-image: var(--fs-stats-frame) 90 fill / 16px 22px stretch !important; background: none !important; padding: 2px 0 !important; }
 html body.fs.fs-superhero .pv-profile-card .stat-count { font-size: 28px !important; }
 html body.fs.fs-superhero .pv-profile-card .stat-label { font-size: 14px !important; }
-html body.fs.fs-superhero #pvEditProfileBtn { border: solid transparent !important; border-width: 12px 28px !important; border-image: var(--fs-edit-btn) 85 fill / 12px 28px stretch !important; border-radius: 0 !important;
+html body.fs.fs-superhero #pvEditProfileBtn { border: solid transparent !important; border-width: 12px 28px !important; border-image: var(--fs-edit-btn) 60 85 fill / 12px 28px stretch !important; border-radius: 0 !important;
   background: none !important; box-shadow: none !important; width: 80% !important; margin: 12px auto 8px !important; padding: 2px 0 !important; display: flex !important; justify-content: center;
   color: var(--sh-on) !important; font: 400 23px var(--sh-tfont) !important; letter-spacing: var(--sh-tspace); text-transform: uppercase; }
 html body.fs.fs-superhero #pvEditProfileBtn i { display: none !important; }
 html body.fs.fs-superhero #page-profile-view .pv-actions { display: grid !important; grid-template-columns: 1fr 1fr; gap: 8px !important; margin: 12px 6px 0 !important; }
 html body.fs.fs-superhero #page-profile-view .pv-actions .btn:not(#pvEditProfileBtn) { width: auto !important; min-width: 0; height: auto !important; margin: 0 !important; padding: 2px 4px !important; white-space: nowrap;
-  background: none !important; border: solid transparent !important; border-width: 10px 18px !important; border-image: var(--fs-action-btn) 75 fill / 10px 18px stretch !important;
+  background: none !important; border: solid transparent !important; border-width: 10px 18px !important; border-image: var(--fs-action-btn) 55 75 fill / 10px 18px stretch !important;
   border-radius: 0 !important; box-shadow: none !important; color: var(--sh-title) !important; font: 400 17px var(--sh-tfont) !important; letter-spacing: var(--sh-tspace); text-transform: uppercase; opacity: 1 !important; }
 html body.fs.fs-superhero #page-profile-view .pv-actions .btn:not(#pvEditProfileBtn):first-child { border-image-source: var(--fs-follow-btn) !important; color: var(--sh-on) !important; }
 html body.fs.fs-superhero #page-profile-view .pv-actions .btn i { color: inherit !important; margin-right: 4px; font-size: 14px !important; }
 html body.fs.fs-superhero :is(#pvAdminSuspend, #pvAdminDelete) { width: auto !important; height: auto !important; background: none !important; border: solid transparent !important; border-width: 8px 14px !important;
-  border-image: var(--fs-action-btn) 75 fill / 8px 14px stretch !important; border-radius: 0 !important; box-shadow: none !important; padding: 1px 4px !important; color: var(--sh-title) !important; font: 700 13px var(--sh-bfont) !important; }
+  border-image: var(--fs-action-btn) 55 75 fill / 8px 14px stretch !important; border-radius: 0 !important; box-shadow: none !important; padding: 1px 4px !important; color: var(--sh-title) !important; font: 700 13px var(--sh-bfont) !important; }
 html body.fs.fs-superhero #pvAdminDelete, html body.fs.fs-superhero #pvAdminDelete i { color: #c4161c !important; }
 /* the ⋯ menu (Mute / Block / Report) */
 html body.fs.fs-superhero :is(.pv-menu, .pv-more-menu, .post-dropdown, .dropdown-menu) { background: var(--sh-pagefill) !important; background-clip: padding-box !important; border: 20px solid transparent !important;
@@ -5782,7 +5783,7 @@ html body.fs.fs-superhero .featured-skin-banner { box-shadow: none !important; b
 html body.fs.fs-superhero .featured-skin-banner :is(h4, h5, .featured-timer) { color: var(--sh-title) !important; font-family: var(--sh-tfont) !important; letter-spacing: var(--sh-tspace); }
 html body.fs.fs-superhero .featured-skin-banner p { color: var(--sh-ink) !important; }
 html body.fs.fs-superhero .featured-skin-banner :is(h4 i, .featured-timer i) { font-family: "Font Awesome 6 Free" !important; font-weight: 900 !important; color: var(--sh-accent) !important; }
-html body.fs.fs-superhero .featured-skin-banner .btn { border: solid transparent !important; border-width: 9px 16px !important; border-image: var(--fs-follow-btn) 75 fill / 9px 16px stretch !important; border-radius: 0 !important;
+html body.fs.fs-superhero .featured-skin-banner .btn { border: solid transparent !important; border-width: 9px 16px !important; border-image: var(--fs-follow-btn) 55 75 fill / 9px 16px stretch !important; border-radius: 0 !important;
   background: none !important; box-shadow: none !important; color: var(--sh-on) !important; font: 400 16px var(--sh-tfont) !important; text-transform: uppercase; padding: 2px 4px !important; }
 html body.fs.fs-superhero .coin-goal-bar { box-shadow: none !important; background: none !important; border: solid transparent !important; border-width: 20px 22px !important;
   border-image: var(--fs-coin-goal-frame) 90 fill / 20px 22px stretch !important; padding: 2px 0 !important; color: var(--sh-title) !important; }
@@ -5794,8 +5795,8 @@ html body.fs.fs-superhero :is(.join-group-btn, .suggestion-follow-btn, .follow-b
   background: none !important; border: solid transparent !important; border-width: 9px 16px !important; border-image: var(--fs-join-btn) 60 fill / 9px 16px stretch !important; border-radius: 0 !important; box-shadow: none !important;
   height: auto !important; min-width: 0; padding: 2px 4px !important; color: var(--sh-on) !important; font: 400 16px var(--sh-tfont) !important; letter-spacing: var(--sh-tspace); text-transform: uppercase; white-space: nowrap; opacity: 1 !important; }
 html body.fs.fs-superhero :is(.btn-outline, .btn-secondary, #trendingHashtagsBtn) { background: none !important; border: solid transparent !important; border-width: 10px 18px !important;
-  border-image: var(--fs-action-btn) 75 fill / 10px 18px stretch !important; border-radius: 0 !important; box-shadow: none !important; color: var(--sh-title) !important; }
-html body.fs.fs-superhero .btn-primary:not(.page-search) { border-image: var(--fs-follow-btn) 75 fill / 10px 18px stretch !important; border-width: 10px 18px !important; color: var(--sh-on) !important; }
+  border-image: var(--fs-action-btn) 55 75 fill / 10px 18px stretch !important; border-radius: 0 !important; box-shadow: none !important; color: var(--sh-title) !important; }
+html body.fs.fs-superhero .btn-primary:not(.page-search) { border-image: var(--fs-follow-btn) 55 75 fill / 10px 18px stretch !important; border-width: 10px 18px !important; color: var(--sh-on) !important; }
 html body.fs.fs-superhero :is(.card-heading, .section-title, h3, h4) > i { color: var(--sh-accent) !important; }
 html body.fs.fs-superhero :is(.view-more-link, .view-all-link, #clearAllHistory) { color: var(--sh-accent) !important; font-weight: 700 !important; }
 
@@ -5892,7 +5893,7 @@ html body.fs.fs-superhero #msgChat #msgImgBtn i { background-image: var(--fs-ico
 html body.fs.fs-superhero #msgChat #msgGifBtn i { background-image: var(--fs-icon-gif) !important; }
 html body.fs.fs-superhero #msgChat #msgVoiceBtn i { background-image: var(--fs-icon-emoji) !important; }
 html body.fs.fs-superhero #msgChat #msgInput { flex: 1 1 auto; min-width: 0; margin: 0 !important; border-radius: 0 !important; background: none !important; border: solid transparent !important; border-width: 10px 20px !important;
-  border-image: var(--fs-field) 85 fill / 10px 20px stretch !important; padding: 2px 0 !important; color: var(--sh-ink) !important; font: 700 16px var(--sh-bfont) !important; }
+  border-image: var(--fs-field) 60 85 fill / 10px 20px stretch !important; padding: 2px 0 !important; color: var(--sh-ink) !important; font: 700 16px var(--sh-bfont) !important; }
 html body.fs.fs-superhero #msgChat #sendMsgBtn { flex: 0 0 44px; width: 44px; height: 44px; padding: 0 !important; border: 0 !important; background: var(--fs-send-btn) center / contain no-repeat !important; }
 html body.fs.fs-superhero #msgChat #sendMsgBtn i { opacity: 0 !important; }
 @media (max-width: 768px) { html body.fs.fs-superhero:has(.messages-layout.chat-open) { padding-bottom: 0 !important; } }
@@ -5903,12 +5904,12 @@ html body.fs.fs-superhero .modal-content { background: var(--sh-pagefill) !impor
 html body.fs.fs-superhero .modal-header h3 { text-transform: uppercase; }
 html body.fs.fs-superhero .modal-header h3 i { color: var(--sh-accent) !important; }
 html body.fs.fs-superhero .comment-item { background: none !important; box-shadow: none !important; border: solid transparent !important; border-width: 18px 22px !important; border-image: var(--fs-comment-bubble) 90 fill / 18px 22px stretch !important; color: var(--sh-ink) !important; }
-html body.fs.fs-superhero #commentInput { background: none !important; border: solid transparent !important; border-width: 10px 20px !important; border-image: var(--fs-field) 85 fill / 10px 20px stretch !important;
+html body.fs.fs-superhero #commentInput { background: none !important; border: solid transparent !important; border-width: 10px 20px !important; border-image: var(--fs-field) 60 85 fill / 10px 20px stretch !important;
   border-radius: 0 !important; box-shadow: none !important; padding: 2px 2px !important; min-height: 0 !important; color: var(--sh-ink) !important; font: 700 16px var(--sh-bfont) !important; }
 html body.fs.fs-superhero #commentGifBtn { background: none !important; border: solid transparent !important; border-width: 8px 12px !important; border-image: var(--fs-chip) 60 fill / 8px 12px stretch !important;
   border-radius: 0 !important; box-shadow: none !important; padding: 0 2px !important; color: var(--sh-title) !important; font: 700 13px var(--sh-bfont) !important; }
 html body.fs.fs-superhero :is(#postCommentBtn, #cpmPublish) { flex: 0 0 auto; width: auto !important; height: auto !important; background: none !important; border: solid transparent !important; border-width: 10px 20px !important;
-  border-image: var(--fs-post-btn) 85 fill / 10px 20px stretch !important; border-radius: 0 !important; box-shadow: none !important; padding: 2px 8px !important; color: var(--sh-on) !important;
+  border-image: var(--fs-post-btn) 60 85 fill / 10px 20px stretch !important; border-radius: 0 !important; box-shadow: none !important; padding: 2px 8px !important; color: var(--sh-on) !important;
   font: 400 18px var(--sh-tfont) !important; letter-spacing: var(--sh-tspace); text-transform: uppercase; white-space: nowrap; }
 html body.fs.fs-superhero .cpm-textarea { background: none !important; border: solid transparent !important; border-width: 16px 20px !important; border-image: var(--fs-text-area) 90 fill / 16px 20px stretch !important;
   border-radius: 0 !important; margin: 4px 0 !important; padding: 4px 4px !important; color: var(--sh-ink) !important; font: 700 17px var(--sh-bfont) !important; }
@@ -5921,3 +5922,46 @@ html body.fs.fs-superhero #gvProfileCard .profile-stats { border: solid transpar
 html body.fs.fs-superhero #gvProfileCard .stat-count { font-size: 22px !important; }
 html body.fs.fs-superhero #gvProfileCard .stat-label { font-size: 13px !important; white-space: nowrap; }
 html body.fs.fs-superhero #gvProfileCard .pv-actions { display: flex !important; flex-wrap: wrap; justify-content: center; gap: 8px !important; margin-top: 12px !important; }
+/* Heroes = tilted comic panels */
+html body.fs.fs-superhero #pvCoverBanner .fs-tl-slot-1 { --sh-l: 4.19%; --sh-t: 10.35%; --sh-w: 29.38%; --sh-h: 81.05%; --sh-msx: 340.4%; --sh-msy: 123.4%; --sh-mx: 5.93%; --sh-my: 54.60%; }
+html body.fs.fs-superhero #pvCoverBanner .fs-tl-slot-2 { --sh-l: 36.20%; --sh-t: 7.21%; --sh-w: 27.60%; --sh-h: 75.00%; --sh-msx: 362.4%; --sh-msy: 133.3%; --sh-mx: 50.00%; --sh-my: 28.84%; }
+html body.fs.fs-superhero #pvCoverBanner .fs-tl-slot-3 { --sh-l: 66.51%; --sh-t: 11.98%; --sh-w: 29.22%; --sh-h: 79.88%; --sh-msx: 342.2%; --sh-msy: 125.2%; --sh-mx: 93.98%; --sh-my: 59.54%; }
+html body.fs.fs-superhero .fsk-card { --sh-cl: 6.09%; --sh-ct: 5.39%; --sh-cw: 87.66%; --sh-ch: 75.39%; }
+/* measured windows (prototypes/tools/superhero_windows.py): Villains = cracked monitors */
+html body.fs.fs-superhero[data-fs-variant="villains"] #pvCoverBanner .fs-tl-slot-1 { --sh-l: 6.05%; --sh-t: 21.28%; --sh-w: 26.82%; --sh-h: 47.33%; --sh-msx: 372.8%; --sh-msy: 211.3%; --sh-mx: 8.26%; --sh-my: 40.40%; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #pvCoverBanner .fs-tl-slot-2 { --sh-l: 37.05%; --sh-t: 19.30%; --sh-w: 25.97%; --sh-h: 40.70%; --sh-msx: 385.1%; --sh-msy: 245.7%; --sh-mx: 50.05%; --sh-my: 32.55%; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #pvCoverBanner .fs-tl-slot-3 { --sh-l: 67.05%; --sh-t: 21.74%; --sh-w: 26.74%; --sh-h: 47.21%; --sh-msx: 373.9%; --sh-msy: 211.8%; --sh-mx: 91.53%; --sh-my: 41.19%; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .fsk-card { --sh-cl: 9.38%; --sh-ct: 7.63%; --sh-cw: 80.62%; --sh-ch: 70.13%; }
+/* QA 1 (Villains Home): nav labels never truncate; active label readable on the tile; Featured Skin button legible */
+@media (max-width: 768px) {
+  html body.fs.fs-superhero .nav-center .nav-link, html body.fs.fs-superhero .nav-center .nav-link span { text-overflow: clip !important; max-width: none !important; overflow: visible !important; }
+  html body.fs.fs-superhero[data-fs-variant="villains"] .nav-center .nav-link { font-size: 10px !important; letter-spacing: 0 !important; }
+  html body.fs.fs-superhero[data-fs-variant="villains"] .nav-center .nav-link.active { color: #f2ffe9 !important; text-shadow: 0 0 4px #000, 0 0 6px rgba(125, 255, 58, .9); }
+}
+html body.fs.fs-superhero .featured-skin-banner :is(.btn, .featured-buy-btn, button) { color: var(--sh-on) !important; -webkit-text-fill-color: var(--sh-on) !important; text-shadow: none !important; }
+/* QA 1 (Home vs concept home, both renditions): the Home top bar is the page material (cream comic paper / dark steel)
+   with the painted top strip under the status bar — the skyline / storm scene belongs to the cover, not the bar */
+@media (max-width: 768px) {
+  html body.fs.fs-superhero:has(#page-home.active) .navbar { background: var(--fs-top-bar) center top / 100% calc(env(safe-area-inset-top, 0px) + 14px) no-repeat,
+    var(--fs-background) center top / 100% auto no-repeat, var(--sh-pagefill) !important; }
+  html body.fs.fs-superhero .nav-center .nav-link.active { background-size: 76px 76px !important; background-position: center 0 !important; }
+  html body.fs.fs-superhero .nav-center .nav-link { padding-top: 6px !important; }
+  html body.fs.fs-superhero .nav-center .nav-link span { margin-top: 1px; }
+}
+html body.fs.fs-superhero .quest-info p { font: 400 15px var(--sh-tfont) !important; letter-spacing: var(--sh-tspace); }
+/* story rings: the photo sits inside the painted ring's window (Heroes ring window 15.5%, Villains 6.2%) */
+html body.fs.fs-superhero .story-ring { width: 62px !important; height: 62px !important; padding: 15% !important; box-sizing: border-box; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .story-ring { padding: 7% !important; }
+html body.fs.fs-superhero .story-ring img { border: 0 !important; }
+/* QA 2 (profile pages): Edit Profile spans the row; long names stay on one line inside the name banner */
+html body.fs.fs-superhero #page-profile-view .pv-actions #pvEditProfileBtn { grid-column: 1 / -1; width: 86% !important; justify-self: center; }
+html body.fs.fs-superhero .pv-profile-card .profile-name { white-space: nowrap; max-width: 94%; font-size: clamp(20px, 7vw, 30px) !important; overflow: hidden; text-overflow: ellipsis; box-sizing: border-box; padding-left: 46px !important; padding-right: 46px !important; }
+/* QA 3: Villains — light lettering with a dark edge on every green piece (the chip / tab centres are deep green), name
+   banner clear of the spiked ring; 9-slices never meet in the middle (every slice < half the art height) */
+body.fs-superhero[data-fs-variant="villains"] { --sh-on: #f4ffee; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(.search-tab.active, .fsk-filter.active, .comment-sort-tab.active, #feedTabs .search-tab.active, .join-group-btn, .suggestion-follow-btn,
+  .follow-btn, .profile-follow-btn, #groupsSections .group-card-actions .btn, #gvProfileCard .pv-actions .btn, .fsk-body .btn, .fsk-takeoff, .fsk-badge, #pvEditProfileBtn, #postCommentBtn, #cpmPublish,
+  .featured-skin-banner .btn, .nav-center .nav-link.active, #page-profile-view .pv-actions .btn:first-child) { text-shadow: 0 0 2px #000, 0 1px 2px #000, 0 0 6px rgba(0, 0, 0, .8) !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .featured-skin-banner :is(.btn, .featured-buy-btn, button) { -webkit-text-fill-color: #f4ffee !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .profile-name { margin-top: 40px !important; }
+html body.fs.fs-superhero .fsk-body .btn { border-image: var(--fs-price-pill) 45 60 fill / 9px 16px stretch !important; }
