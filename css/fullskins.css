@@ -6415,3 +6415,57 @@ html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) :is(.profile-titl
 }
 @media (max-width: 768px) { html body.fs.fs-blood-moon .nav-center .nav-link { transform: translateY(17px) !important; } }
 @media (max-width: 768px) { html body.fs.fs-blood-moon .nav-center .nav-link:not(.active) { color: var(--bm-gold) !important; } }
+
+/* ---------- OWN profile + Home (owner: "Profile page" — concept profile): the moon sky, two tall side arches and a wide
+   bottom arch hold the 3 cover photos (each photo masked to its opening), the round cameo between them. Others keep the
+   three-arch layout (concept other-profile). Openings measured from profile-windows-mask.png per rendition. ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon :is(#timelineCover, #pvCoverBanner):has(.fs-tl-own) { height: calc((100vw + 16px) * 1470 / 1290) !important;
+    background: var(--fs-profile-sky) center top / 100% 100% no-repeat !important; }
+}
+html body.fs.fs-blood-moon .fs-timeline:has(.fs-tl-own)::after { background-image: var(--fs-profile-windows) !important; z-index: 3 !important; }
+html body.fs.fs-blood-moon .fs-timeline .fs-tl-slot.fs-tl-own { border-radius: 0 !important; -webkit-mask: var(--fs-profile-windows-mask) no-repeat; mask: var(--fs-profile-windows-mask) no-repeat; }
+html body.fs.fs-blood-moon:not([data-fs-variant="silver"]) .fs-tl-own.fs-tl-slot-1 { left: 4.0%; top: 26.3%; width: 23.9%; height: 44.3%; right: auto; -webkit-mask-size: 418.41% 225.73%; mask-size: 418.41% 225.73%; -webkit-mask-position: 5.26% 47.22%; mask-position: 5.26% 47.22%; }
+html body.fs.fs-blood-moon:not([data-fs-variant="silver"]) .fs-tl-own.fs-tl-slot-2 { left: 13.2%; top: 63.9%; width: 73.0%; height: 31.7%; right: auto; -webkit-mask-size: 136.99% 315.46%; mask-size: 136.99% 315.46%; -webkit-mask-position: 48.89% 93.56%; mask-position: 48.89% 93.56%; }
+html body.fs.fs-blood-moon:not([data-fs-variant="silver"]) .fs-tl-own.fs-tl-slot-3 { left: 72.0%; top: 26.4%; width: 23.6%; height: 44.4%; right: auto; -webkit-mask-size: 423.73% 225.23%; mask-size: 423.73% 225.23%; -webkit-mask-position: 94.24% 47.48%; mask-position: 94.24% 47.48%; }
+html body.fs.fs-blood-moon[data-fs-variant="silver"] .fs-tl-own.fs-tl-slot-1 { left: 5.1%; top: 24.9%; width: 22.4%; height: 45.5%; right: auto; -webkit-mask-size: 446.43% 219.78%; mask-size: 446.43% 219.78%; -webkit-mask-position: 6.57% 45.69%; mask-position: 6.57% 45.69%; }
+html body.fs.fs-blood-moon[data-fs-variant="silver"] .fs-tl-own.fs-tl-slot-2 { left: 10.2%; top: 59.3%; width: 79.1%; height: 36.8%; right: auto; -webkit-mask-size: 126.42% 271.74%; mask-size: 126.42% 271.74%; -webkit-mask-position: 48.80% 93.83%; mask-position: 48.80% 93.83%; }
+html body.fs.fs-blood-moon[data-fs-variant="silver"] .fs-tl-own.fs-tl-slot-3 { left: 72.5%; top: 24.9%; width: 22.3%; height: 45.4%; right: auto; -webkit-mask-size: 448.43% 220.26%; mask-size: 448.43% 220.26%; -webkit-mask-position: 93.31% 45.60%; mask-position: 93.31% 45.60%; }
+/* camera badge for the cover photos: on the right arch, like the concept */
+html body.fs.fs-blood-moon .fs-tl-own.fs-tl-slot-3::after { -webkit-mask: none; }
+/* the cameo: avatar 122 x 112 (cameo window 73.4 x 67.1 %), centred between the side arches, its bottom over the bottom arch */
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card:has(.fs-tl-own)) .profile-avatar-wrap { width: 122px !important; height: 112px !important;
+    margin: calc((100vw + 16px) * 1470 / 1290 * -.52 - 56px) auto calc((100vw + 16px) * 1470 / 1290 * .52 - 50px) !important; z-index: 4 !important; }
+  html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card:has(.fs-tl-own)) .profile-avatar-wrap::after { left: -21.1px !important; top: -32.1px !important; width: 166.2px !important; height: 166.2px !important; }
+}
+@media (max-width: 768px) {
+  /* bigger cameo (concept ≈ 38 % of the width), centred at 55 % of the composition, over the bottom arch's dip */
+  html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card:has(.fs-tl-own)) .profile-avatar-wrap { width: 150px !important; height: 137px !important;
+    margin: calc((100vw + 16px) * 1470 / 1290 * -.45 - 68px) auto calc((100vw + 16px) * 1470 / 1290 * .45 - 66px) !important; }
+  html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card:has(.fs-tl-own)) .profile-avatar-wrap::after { left: -26px !important; top: -39.4px !important; width: 204.4px !important; height: 204.4px !important; }
+}
+/* candelabras either side of the name + bio (concept), not tiny sprigs */
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard { position: relative; padding: 0 64px !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard::before,
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard::after { content: ""; position: absolute; top: -18px; width: 54px; height: 126px; pointer-events: none;
+  background: var(--fs-candelabra) center / contain no-repeat; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard::before { left: 4px; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard::after { right: 4px; transform: scaleX(-1); }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) :is(.profile-title, .profile-about) { background: none !important; padding: 0 !important; text-transform: none !important; font-style: italic !important; letter-spacing: 0 !important; font-size: 17px !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .profile-name { text-transform: none !important; font-size: 34px !important; background: var(--fs-title-flourish) center / 100% auto no-repeat; }
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card:has(.fs-tl-own)) .profile-avatar-wrap {
+    margin: calc((100vw + 16px) * 1470 / 1290 * -.49 - 68px) auto calc((100vw + 16px) * 1470 / 1290 * .49 - 60px) !important; }
+}
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard::before,
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard::after { display: block !important; content: "" !important; top: -6px !important; width: 58px !important; height: 136px !important;
+  background: var(--fs-candelabra) center / contain no-repeat !important; border: 0 !important; opacity: 1 !important; z-index: 1; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard::before { left: 0 !important; right: auto !important; transform: none !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard::after { right: 0 !important; left: auto !important; transform: scaleX(-1) !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .fs-namecard .profile-name { background: var(--fs-title-flourish) center / min(100%, 300px) auto no-repeat !important; padding: 2px 0 !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card:has(.fs-tl-own)) .profile-avatar-wrap {
+    margin: calc((100vw + 16px) * 1470 / 1290 * -.49 - 68px) auto calc((100vw + 16px) * 1470 / 1290 * .49 - 40px) !important; }
+}
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card:has(.fs-tl-own)) .avatar-edit-btn { left: 50% !important; right: auto !important; bottom: -14px !important; transform: translateX(-50%) !important; width: 38px !important; height: 38px !important; }
