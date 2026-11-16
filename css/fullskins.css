@@ -6671,34 +6671,34 @@ html body.fs.fs-blood-moon .fsk-badge { top: 7% !important; bottom: auto !import
   html body.fs.fs-blood-moon .page.active { z-index: 0; }
 }
 /* tab rows = one joined dark bar with a crimson active pill (concept groups / network / search / group page / notifications) */
-html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs) { display: flex !important; gap: 0 !important; padding: 4px !important;
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs) { display: flex !important; gap: 0 !important; padding: 4px !important;
   background: var(--fs-seg-tab) center / 100% 100% no-repeat !important; border: 0 !important; flex-wrap: nowrap !important; overflow: hidden; }
-html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs) .search-tab { flex: 1 1 0; min-width: 0; background: none !important; border: 0 !important; color: var(--bm-soft) !important; white-space: nowrap; }
-html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs) .search-tab + .search-tab { box-shadow: -1px 0 0 rgba(216, 195, 176, .3); }
-html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs) .search-tab.active { background: var(--fs-seg-tab-active) center / 100% 100% no-repeat !important; color: #fff !important; box-shadow: none !important; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs) .search-tab { flex: 1 1 0; min-width: 0; background: none !important; border: 0 !important; color: var(--bm-soft) !important; white-space: nowrap; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs) .search-tab + .search-tab { box-shadow: -1px 0 0 rgba(216, 195, 176, .3); }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs) .search-tab.active { background: var(--fs-seg-tab-active) center / 100% 100% no-repeat !important; color: #fff !important; box-shadow: none !important; }
 body.fs-blood-moon[data-fs-variant="silver"] :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs) .search-tab + .search-tab { box-shadow: -1px 0 0 rgba(200, 215, 235, .3); }
 /* group pictures: rounded squares in a thin silver frame (concept), compact Join so names fit */
 html body.fs.fs-blood-moon .group-card-banner :is(img, .group-avatar, .gc-avatar) { border-radius: 8px !important; border: 3px solid transparent !important; border-image: var(--fs-photo-frame) 40 / 4px stretch !important; }
 html body.fs.fs-blood-moon .group-card .join-group-btn { padding: 4px 12px !important; min-width: 0 !important; width: auto !important; font-size: 15px !important; }
 html body.fs.fs-blood-moon .group-card .group-card-banner img { border-radius: 8px !important; border: 3px solid transparent !important; border-image: var(--fs-photo-frame) 40 / 4px stretch !important; width: 60px !important; height: 60px !important; }
-html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs) { min-height: 46px; align-items: stretch; padding: 5px 6px !important; background-size: 100% 100% !important; }
-html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs) .search-tab { font-size: 16px !important; padding: 6px 4px !important; display: flex !important; align-items: center; justify-content: center; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs) { min-height: 46px; align-items: stretch; padding: 5px 6px !important; background-size: 100% 100% !important; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs) .search-tab { font-size: 16px !important; padding: 6px 4px !important; display: flex !important; align-items: center; justify-content: center; }
 /* group pictures: rounded square in a thin silver frame (concept), not the round ring */
 html body.fs.fs-blood-moon #groupsSections .group-card-banner { border-radius: 8px !important; padding: 0 !important; background: none !important; overflow: visible !important; width: 62px !important; height: 62px !important; }
 html body.fs.fs-blood-moon #groupsSections .group-card-banner img { border-radius: 7px !important; border: 3px solid transparent !important; border-image: var(--fs-photo-frame) 40 / 4px stretch !important; box-sizing: border-box; }
 /* joined tab bars fit the screen: both rounded ends visible */
-html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs) { width: auto !important; max-width: calc(100% - 4px) !important; margin: 4px 2px 8px !important; box-sizing: border-box !important; overflow: hidden !important; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs) { width: auto !important; max-width: calc(100% - 4px) !important; margin: 4px 2px 8px !important; box-sizing: border-box !important; overflow: hidden !important; }
 /* joined bars + their active pill: 9-slice so the rounded scroll ends keep their shape at any width */
-html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) { background: none !important;
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) { background: none !important;
   border-style: solid !important; border-color: transparent !important; border-width: 0 22px !important; border-image: var(--fs-seg-tab) 0 80 fill / 0 22px stretch !important;
   padding: 5px 0 !important; margin: 4px 6px 8px !important; max-width: none !important; }
-html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) .search-tab.active { background: none !important;
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) .search-tab.active { background: none !important;
   border-style: solid !important; border-color: transparent !important; border-width: 0 16px !important; border-image: var(--fs-seg-tab-active) 0 80 fill / 0 16px stretch !important; margin: 0 -16px; }
-html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) .search-tab.active:first-child { margin-left: -18px; }
-html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) .search-tab.active:last-child { margin-right: -18px; }
-html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) { overflow: visible !important; }
-html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) .search-tab.active,
-html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) .search-tab.active:is(:first-child, :last-child) { margin: 0 -10px !important; border-width: 0 15px !important; border-image-width: 0 15px !important; position: relative; z-index: 1; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) .search-tab.active:first-child { margin-left: -18px; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) .search-tab.active:last-child { margin-right: -18px; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) { overflow: visible !important; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) .search-tab.active,
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs, #feedTabs) .search-tab.active:is(:first-child, :last-child) { margin: 0 -10px !important; border-width: 0 15px !important; border-image-width: 0 15px !important; position: relative; z-index: 1; }
 /* small avatars everywhere: the thin silver ring on dark, not a cream disc */
 html body.fs.fs-blood-moon :is(.post-header .post-avatar, .post-create-avatar, .msg-contact > div > img, .msg-contact img, .profile-card-item .profile-card-avatar, .notif-item img, #msgChat .msg-chat-header img, .comment-item img, .story-avatar) {
   background: var(--fs-avatar-ring-small) center / 100% 100% no-repeat, #1a0608 !important; padding: 3px !important; box-sizing: border-box !important; border: 0 !important; box-shadow: none !important; }
@@ -6715,7 +6715,7 @@ html body.fs.fs-blood-moon :is(.msg-contact-time, .msg-time) { font-size: 14px !
   html body.fs.fs-blood-moon .nav-center .nav-link.active { background-size: 100% 100% !important; background-position: center !important; }
 }
 /* tab labels may take two lines when long (Network: Not Following Back / People You May Know), never overlap */
-html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #notifTabs, .gv-tabs, #groupViewTabs) .search-tab { white-space: normal !important; line-height: 1.1 !important; text-align: center; overflow-wrap: normal; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #profilesTabs, #searchTabs, #page-search .search-tabs, #notifTabs, .gv-tabs, #groupViewTabs) .search-tab { white-space: normal !important; line-height: 1.1 !important; text-align: center; overflow-wrap: normal; }
 html body.fs.fs-blood-moon #profilesTabs .search-tab { font-size: 14px !important; padding: 4px 2px !important; }
 /* people rows (concept network / search): bigger silver-ringed avatar and name */
 html body.fs.fs-blood-moon .profile-card-item .profile-card-avatar { width: 58px !important; height: 58px !important; }
