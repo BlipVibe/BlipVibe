@@ -7450,3 +7450,8 @@ html body.fs.fs-blood-moon[data-fs-variant="silver"] .profile-card-item img.prof
     background: var(--fs-nav-bar) center top / 100% var(--bmh) no-repeat, linear-gradient(transparent calc(var(--bmh) - 8px), var(--bm-navfill) 0) !important; }
   html body.fs.fs-blood-moon .nav-center .nav-link { transform: translateY(15px) !important; }
 }
+/* the profile block is pulled up over the cover by the cameo's negative margin: its empty box must not swallow taps meant
+   for the cover arches (tap a photo → move & zoom / change photo); only its real content stays tappable */
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card), html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .profile-info { pointer-events: none !important; }
+html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .profile-info > *, html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) > :not(.profile-info) { pointer-events: auto !important; }
+html body.fs.fs-blood-moon .fs-tl-slot.fs-tl-own { z-index: 3 !important; cursor: pointer; }
