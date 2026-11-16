@@ -2910,3 +2910,10 @@ html body.fs.fs-witchcraft #editProfileForm input[type="radio"] { position: stat
 html body.fs.fs-witchcraft #editProfileForm label:has(> input[type="radio"]) { position: static !important; display: inline-flex !important; align-items: center; gap: 8px !important; color: #efe2c8 !important; }
 html body.fs.fs-witchcraft .status-emoji-btn { border-radius: 10px !important; }
 html body.fs.fs-witchcraft .status-emoji-btn.active { box-shadow: 0 0 0 2px #c94cff !important; border-color: transparent !important; }
+/* other profile photo (owner): fill the arch window exactly, never over the gold — clip with the frame's own window mask
+   (art window 9.2/21.6/9.6/9.0%, mask grown 6px; mask scaled to the full art relative to the window-sized photo) */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft .pv-profile-card:not(#_) .profile-avatar-wrap .profile-avatar {
+    left: 9.2% !important; top: 21.6% !important; width: 81.2% !important; height: 69.4% !important; border-radius: 0 !important; object-fit: cover !important; box-shadow: none !important;
+    -webkit-mask: var(--fs-avatar-arch-mask) 48.8% 70.6% / 123.2% 144.1% no-repeat !important; mask: var(--fs-avatar-arch-mask) 48.8% 70.6% / 123.2% 144.1% no-repeat !important; }
+}
