@@ -72,3 +72,12 @@ Good Witch owns the circle reveal from the button. So Superhero uses none of tho
 - Leftovers / ideas: Villains `profile-scene` came out as an empty frame (the lair wall reads fine behind it);
   Villains `react-orb` has no disc (unused — story reactions use round-btn); group cover frame not visible on a group
   with no cover photo; Villains comments modal not screenshotted (same CSS as Heroes).
+- Nov 16 (evening, owner): profile pop-up redesigned per rendition (`prototypes/superhero-profile-modal-brief.md`):
+  Heroes = centred comic hero file, Villains = left-aligned dossier. Owner: "the profile area should be completely organized
+  different for heroes and villains … I like the styles". Home "boring" + "3 cards with no way to change them on the home
+  page" + "too much like the tarot cards" → `prototypes/superhero-home-brief.md`: timeline = comic page grid (Heroes: big
+  panel left + two stacked) / monitor wall (Villains: wide screen top + two below; biggest window = slot 1 = cover), on Home
+  AND Profile, every own frame tappable with a camera badge; richer backgrounds, stickers (burst / flyer / corner), section
+  divider, photo tiles, bigger stories + quest icons; Home card mirrored (photo left / right); Profile page placement
+  differs (Heroes centred + starburst counters; Villains dossier + hex readouts + command-list buttons).
+  QA on my own simulator (BlipVibe Superhero) with the QA read-only guard; deleted afterwards.
