@@ -66,4 +66,10 @@ images/skins/**
 !images/skins/heavens-light/
 !images/skins/heavens-light/assets/
 !images/skins/heavens-light/assets/**
+!images/skins/superhero/
+!images/skins/superhero/assets/
+!images/skins/superhero/assets/**
+!images/skins/blood-moon/
+!images/skins/blood-moon/assets/
+!images/skins/blood-moon/assets/**
 __pycache__/

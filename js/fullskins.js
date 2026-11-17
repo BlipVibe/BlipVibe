@@ -210,6 +210,84 @@
       '--border': 'rgba(176,130,50,.35)', '--nav-bg': '#f7efe0' },
     fonts: 'https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap'
   };
+  FULL_SKINS['blood-moon'] = {
+    name: 'Blood Moon', dark: true, ink: '#f4e6e4', muted: '#cfa9a6', accent: '#c4202f',
+    font: "'EB Garamond', serif", titleFont: "'Playfair Display', serif",   // its own type (Cormorant is Witchcraft / Good Witch / Heaven's Light)
+    timeline: 3, avatar: 'center', slice: 15, edge: 16,
+    // owner (Nov 16): two renditions with different MOONS, each painted on its own (no filters) — Crimson (assets/ root,
+    // concept-crimson*.png) and Silver (assets/silver/, concept-silver*.png, no red anywhere), same file names in both
+    variants: [
+      { id: 'crimson', name: 'Crimson', accent: '#c4202f', swatch: '#5a0a12' },
+      { id: 'silver', name: 'Silver', accent: '#8fb8e6', swatch: '#1b2a48', dark: true, ink: '#eef3fa', muted: '#aebdd2',
+        theme: { '--dark': '#eef3fa', '--gray': '#aebdd2', '--light-bg': '#0f1a30', '--card': '#1d2b48',
+          '--border': 'rgba(190,210,235,.35)', '--nav-bg': '#0f1a30' } }
+    ],
+    // traced from the approved concepts (prototypes/blood-moon-crimson-brief.md / -silver-brief.md → kit/ → assets/)
+    parts: { 'panel-card': 'post-panel', 'panel-card-active': 'post-panel', 'btn-primary': 'follow-btn',
+      'btn-secondary': 'action-btn', 'btn-round': 'round-btn', 'header-bar': 'top-bar', 'post-frame': 'post-panel',
+      'icon-coin': 'coin', 'icon-edit': 'icon-compose', 'icon-send': 'send-btn',
+      'quest-0': 'moon-0', 'quest-50': 'moon-50', 'quest-100': 'moon-100' },
+    assets: ['background', 'header', 'top-bar', 'title-flourish', 'nav-bar', 'nav-active',
+      'icon-home-on', 'icon-groups-on', 'icon-skins-on', 'icon-network-on', 'icon-messages-on', 'coin', 'coin-pill',
+      'curtain-left', 'curtain-right',
+      'icon-compose', 'icon-phone', 'icon-close', 'icon-like-on', 'icon-dislike-on', 'icon-reply', 'icon-react', 'icon-chevron',
+      'icon-check', 'icon-clear', 'icon-photo', 'icon-gif', 'icon-poll', 'icon-schedule', 'icon-globe', 'icon-mute', 'icon-block',
+      'icon-report', 'icon-heart', 'icon-star', 'icon-gift', 'icon-settings', 'badge-count',
+      'notif-like', 'notif-follow', 'notif-comment', 'notif-mention', 'notif-message', 'notif-group', 'notif-purchase',
+      'avatar-ring', 'avatar-ring-small', 'profile-card', 'quests-frame', 'quest-row', 'moon-0', 'moon-50', 'moon-100',
+      'goal-track', 'goal-fill', 'reward-pill', 'tab', 'tab-active', 'story-ring', 'story-add', 'composer', 'featured-frame',
+      'coin-goal-frame', 'post-panel', 'post-panel-b', 'post-panel-c', 'photo-frame', 'action-strip',
+      'gothic-windows', 'gothic-windows-mask', 'cameo-frame', 'cameo-mask', 'camera-badge', 'candelabra', 'stats-frame',
+      'edit-btn', 'follow-btn', 'action-btn', 'menu-panel', 'rose-ledge',
+      'list-row', 'join-btn', 'chip', 'chip-active', 'seg-tab', 'seg-tab-active', 'unread-dot', 'plus-btn', 'field',
+      'skin-card', 'skin-card-mask', 'price-pill', 'equipped-tag', 'bubble-in', 'bubble-out', 'input-bar', 'send-btn',
+      'round-btn', 'comment-bubble', 'text-area', 'tool-tile', 'post-btn', 'story-field', 'heart-orb', 'mask-orb', 'rose-orb',
+      'group-avatar-frame', 'group-banner',
+      'page-deco-groups', 'page-deco-skins', 'page-deco-network', 'page-deco-notifications', 'page-deco-search',
+      'page-deco-messages', 'page-deco-post', 'moon-crest', 'toggle-crimson', 'toggle-silver',
+      'profile-windows', 'profile-windows-mask', 'profile-sky', 'profile-mask-1', 'profile-mask-2', 'profile-mask-3'],
+    theme: { '--dark': '#f4e6e4', '--gray': '#cfa9a6', '--light-bg': '#1a0608', '--card': '#2a0c10',
+      '--border': 'rgba(200,190,200,.35)', '--nav-bg': '#1a0608' },
+    fonts: 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap'
+  };
+  FULL_SKINS.superhero = {
+    name: 'Superhero', dark: false, ink: '#1a1a1a', muted: '#4a4a52', accent: '#e8261c',
+    font: "'Comic Neue', sans-serif", titleFont: "'Luckiest Guy', cursive",
+    timeline: 3, avatar: 'center', slice: 15, edge: 16,
+    // owner (Nov 16): "do heroes and villains … heroes should look much different than villains". Two renditions, each
+    // its own painted kit from its own approved concept: Heroes (assets/ root, concept-heroes*.png) = sunny golden-age
+    // comic city; Villains (assets/villains/, concept-villains*.png) = storm lair, gunmetal, neon green/purple. Same file
+    // names in both folders (prototypes/superhero-kit-brief.md).
+    variants: [
+      { id: 'heroes', name: 'Heroes', accent: '#e8261c', swatch: '#ffd23a' },
+      { id: 'villains', name: 'Villains', accent: '#7dff3a', swatch: '#2a1f3a', dark: true, ink: '#eef2ea', muted: '#b4b9c4',
+        theme: { '--dark': '#eef2ea', '--gray': '#b4b9c4', '--light-bg': '#15141b', '--card': '#24232c',
+          '--border': 'rgba(125,255,58,.35)', '--nav-bg': '#15141b' } }
+    ],
+    parts: { 'panel-card': 'post-panel', 'panel-card-active': 'post-panel', 'btn-primary': 'follow-btn',
+      'btn-secondary': 'action-btn', 'btn-round': 'round-btn', 'header-bar': 'top-bar', 'post-frame': 'post-panel',
+      'icon-coin': 'coin', 'avatar-frame': 'avatar-frame', 'timeline-frame': 'timeline-frame' },
+    assets: ['background', 'header', 'top-bar', 'title-banner', 'nav-bar', 'nav-active',
+      'icon-home-on', 'icon-groups-on', 'icon-skins-on', 'icon-network-on', 'icon-messages-on', 'coin', 'coin-pill',
+      'toggle-heroes', 'toggle-villains',
+      'icon-compose', 'icon-phone', 'icon-close', 'icon-like-on', 'icon-dislike-on', 'icon-reply', 'icon-react',
+      'icon-chevron', 'icon-check', 'icon-clear', 'icon-photo', 'icon-gif', 'icon-poll', 'icon-schedule', 'icon-globe',
+      'icon-mute', 'icon-block', 'icon-report', 'icon-heart', 'icon-star', 'icon-gift', 'icon-shop',
+      'notif-like', 'notif-follow', 'notif-comment', 'notif-mention', 'notif-message', 'notif-group', 'notif-purchase',
+      'badge-count', 'unread-dot',
+      'cover-frame', 'profile-card', 'stats-divider', 'quests-frame', 'goal-track', 'goal-fill', 'reward-coin',
+      'tab', 'tab-active', 'story-ring', 'story-add', 'composer', 'featured-frame', 'coin-goal-frame', 'coin-stack',
+      'post-panel', 'post-panel-b', 'post-panel-c', 'photo-frame', 'action-strip',
+      'timeline-mask', 'cameo', 'cameo-mask', 'camera-badge', 'name-banner', 'laurel-sprig', 'stats-frame', 'edit-btn',
+      'follow-btn', 'action-btn', 'menu-panel', 'profile-scene', 'skyline-deco',
+      'list-row', 'join-btn', 'chip', 'chip-active', 'seg-tab', 'seg-tab-active', 'plus-btn', 'field',
+      'skin-card', 'skin-card-mask', 'price-pill', 'equipped-tag', 'bubble-in', 'bubble-out', 'input-bar', 'send-btn',
+      'round-btn', 'comment-bubble', 'text-area', 'tool-tile', 'post-btn', 'public-pill', 'story-field', 'heart-orb',
+      'like-orb', 'react-orb', 'group-avatar-frame', 'group-cover-frame'],
+    theme: { '--dark': '#1a1a1a', '--gray': '#4a4a52', '--light-bg': '#fbf3dc', '--card': '#fffaf0',
+      '--border': 'rgba(0,0,0,.6)', '--nav-bg': '#fbf3dc' },
+    fonts: 'https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Black+Ops+One&family=Comic+Neue:ital,wght@0,700;1,700&family=Exo+2:wght@600;700&display=swap'
+  };
   // #Basic (Nov 16, WIP): clean-girl neutrals, two seasonal renditions — Rosé (assets/ root, concept-rose*.png) and
   // Pumpkin Spice (assets/pumpkin/, concept-pumpkin*.png), same file names in both. Signature interaction: the Barista Bar
   // (basicBar). Brief prototypes/basic-kit-brief.md → kit/{rose,pumpkin,fx} → assets/. Notes: images/skins/basic/NOTES.md.
@@ -348,6 +426,17 @@
       }
       return;
     }
+    if (ids.indexOf('crimson') >= 0 && ids.indexOf('silver') >= 0) {
+      // Blood Moon: a little moon in a filigree bezel — blood-red (Crimson) / silver-white (Silver); tap = an eclipse
+      // passes over the giant moon and leaves the other moon behind (bloodSwap)
+      var sv = variant === 'silver', mb = document.createElement('button');
+      mb.id = 'fsDayNight'; mb.type = 'button'; mb.className = 'fs-daynight fs-bm-btn ' + (sv ? 'is-silver' : 'is-crimson');
+      mb.setAttribute('aria-label', sv ? 'Switch to the Crimson moon' : 'Switch to the Silver moon');
+      mb.innerHTML = '<i></i>';
+      mb.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); bloodSwap(id, sv ? 'crimson' : 'silver'); });
+      search.parentNode.insertBefore(mb, search);
+      return;
+    }
     if (ids.indexOf('rose') >= 0 && ids.indexOf('pumpkin') >= 0) {
       // #Basic: the season drink — an iced latte glass (Rosé) / a steaming ribbed mug (Pumpkin Spice); tap = a gust of petals
       // or autumn leaves sweeps the screen and the season changes (basicSwap). Sits after the coin pill with the Barista cup.
@@ -368,6 +457,16 @@
       hb.innerHTML = '<i></i>';
       hb.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); heavenSwap(id, tw ? 'day' : 'twilight'); });
       search.parentNode.insertBefore(hb, search);
+      return;
+    }
+    if (ids.indexOf('heroes') >= 0 && ids.indexOf('villains') >= 0) {
+      // Superhero: the gold winged BV badge (Heroes) / the green skull-circuit sigil (Villains); tap = heroSwap
+      var vil = variant === 'villains', sb = document.createElement('button');
+      sb.id = 'fsDayNight'; sb.type = 'button'; sb.className = 'fs-daynight fs-sh-btn ' + (vil ? 'is-villains' : 'is-heroes');
+      sb.setAttribute('aria-label', vil ? 'Switch to Heroes' : 'Switch to Villains');
+      sb.innerHTML = '<i></i>';
+      sb.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); heroSwap(id, vil ? 'heroes' : 'villains'); });
+      search.parentNode.insertBefore(sb, search);
       return;
     }
     if (ids.indexOf('day') < 0 || ids.indexOf('night') < 0) {
@@ -1200,6 +1299,7 @@
     }
     removeRendered();
     active = null;
+    if (window.BlipPhotoPos) window.BlipPhotoPos.render();   // avatars back to the plain (uncropped) photo
     unwatchPosts();
     if (wasActive) restoreExtras();
   }
@@ -1271,16 +1371,19 @@
   // falling back to the cover again (spec: "Profile timeline photos").
   function timelinePhotos(coverEl, count) {
     var urls = [];
-    // the CSS hides the original cover with !important, so read the inline style the app set
-    var bg = coverEl && coverEl.style.backgroundImage;
-    var m = bg && bg.match(/url\(["']?(.*?)["']?\)/);
-    if (m) urls.push(m[1]);
-    else if (coverEl && coverEl.id === 'timelineCover' && data().cover()) urls.push(data().cover());
     // own photos only on your own timeline: home cover, or the profile view when it's you
     // (app.js shows #pvCoverEditBtn only on your own profile)
     var editBtn = document.getElementById('pvCoverEditBtn');
     var own = coverEl && (coverEl.id === 'timelineCover' ||
       (coverEl.id === 'pvCoverBanner' && editBtn && editBtn.style.display !== 'none'));
+    // the cover in frame 1: the same crop on every device (the 4:3 one when there is one), so a saved zoom / position
+    // looks the same on a phone and a desktop and to everyone viewing
+    var same = own ? data().cover() : (coverEl && coverEl.id === 'pvCoverBanner' && data().viewedCover ? data().viewedCover() : null);
+    // otherwise the CSS hides the original cover with !important, so read the inline style the app set
+    var bg = coverEl && coverEl.style.backgroundImage;
+    var m = bg && bg.match(/url\(["']?(.*?)["']?\)/);
+    if (m) urls.push(same || m[1]);
+    else if (coverEl && coverEl.id === 'timelineCover' && data().cover()) urls.push(data().cover());
     if (own) {
       (data().photos() || []).filter(function (p) { return p && p.src && !p.isVideo; })
         .forEach(function (p) { if (urls.length < count && urls.indexOf(p.src) < 0) urls.push(p.src); });
@@ -1300,6 +1403,7 @@
     if (!coverEl || !cfg) return;
     var wrap = document.createElement('div');
     wrap.className = 'fs-rendered fs-timeline fs-tl-' + cfg.timeline;
+    var placed = [];
     timelinePhotos(coverEl, cfg.timeline).forEach(function (src, i) {
       var slot = document.createElement('div');
       slot.className = 'fs-tl-slot fs-tl-slot-' + (i + 1);
@@ -1307,11 +1411,15 @@
         slot.className += ' fs-tl-own';
         slot.setAttribute('role', 'button');
         slot.setAttribute('aria-label', 'Choose photo ' + (i + 1));
-        (function (n) { slot.addEventListener('click', function (e) { e.stopPropagation(); data().pick(n); }); })(i);
+        (function (n, sl) { sl.addEventListener('click', function (e) {
+          e.stopPropagation();
+          if (window.BlipPhotoPos) window.BlipPhotoPos.slotMenu(sl, n, e); else data().pick(n);   // Move & zoom / Change photo
+        }); })(i, slot);
       }
       if (src) {
         var img = document.createElement('img');
-        img.src = src; img.alt = ''; img.loading = 'lazy';
+        img.alt = ''; img.loading = 'lazy';
+        if (window.BlipPhotoPos) placed.push([slot, img, src, i]); else img.src = src;   // src set once the frame is on the page
         slot.appendChild(img);
       } else {
         slot.className += ' fs-tl-empty';
@@ -1324,6 +1432,8 @@
       wrap.appendChild(slot);
     });
     coverEl.appendChild(wrap);
+    // saved zoom / position (photopos.js): crops each photo to exactly what its frame should show
+    placed.forEach(function (q) { window.BlipPhotoPos.timelineSlot(q[0], q[1], q[2], q[3], coverEl); });
   }
 
   // Quest graphic state: 0 / 50 / 100 from the bar width the app already renders.
@@ -1438,6 +1548,7 @@
     renderTimeline(document.getElementById('timelineCover'));
     renderTimeline(document.getElementById('pvCoverBanner'));
     tagQuests();
+    if (window.BlipPhotoPos) window.BlipPhotoPos.render();   // saved zoom / position of the avatar in its frame
   }
 
   /* ---------- called from app.js ---------- */
@@ -1474,10 +1585,11 @@
     ['neon-wave', 'Neon Wave', 'neon'], ['vaporwave', 'Vaporwave', 'neon'], ['matrix', 'Matrix', 'neon'],
     ['toxic-green', 'Toxic Green', 'neon'], ['geo-prism', 'Geo Prism', 'neon'], ['anime-blaze', 'Anime Blaze', 'neon'],
     ['autumn-leaves', 'Autumn Leaves', 'nature'], ['ocean-tide', 'Ocean Tide', 'nature'], ['deep-wave', 'Deep Wave', 'nature'],
-    ['molten-gold', 'Molten Gold', 'nature']
+    ['molten-gold', 'Molten Gold', 'nature'],
+    ['superhero', 'Superhero', 'comic']
   ];
   var CATEGORIES = [['all', 'All'], ['aesthetic', 'Aesthetic'], ['cute', 'Cute'], ['mystic', 'Mystic'],
-    ['neon', 'Neon'], ['nature', 'Nature']];
+    ['neon', 'Neon'], ['nature', 'Nature'], ['comic', 'Comic']];
   var PRICE = 300;
 
   function catalog() {
@@ -1987,6 +2099,322 @@
       }).then(function () { c.o.remove(); swapping = false; }, function () { c.o.remove(); swapping = false; });
     });
   }
+  // Blood Moon art set for a rendition: the giant moon, its rose petals and the night sky colours
+  function bmSet(silver) {
+    return silver ? { moon: 'fx-moon-silver', petals: ['fx-petal-white-1', 'fx-petal-white-2'], sky: ['#050a18', '#13234a', '#3b5684'], glow: '200,220,255' }
+      : { moon: 'fx-moon-crimson', petals: ['fx-petal-red-1', 'fx-petal-red-2'], sky: ['#0b0103', '#3a0610', '#7a1420'], glow: '255,60,60' };
+  }
+  function bmSky(g, H, cols) {
+    var s = g.createLinearGradient(0, 0, 0, H); s.addColorStop(0, cols[0]); s.addColorStop(.6, cols[1]); s.addColorStop(1, cols[2]); return s;
+  }
+  // Equip (Blood Moon's own): MOONRISE — night falls over the screen, the opera spires rise, the giant moon climbs over
+  // them and swells until it fills the screen (the skin is applied behind it), then the moon bursts into a whirl of rose
+  // petals that blow outward and away, revealing the new skin. Uses the rendition you'll see (Crimson / Silver).
+  function equipBloodMoon(id, swap) {
+    var silver = pickVariant(id) === 'silver', set = bmSet(silver);
+    return Promise.all([set.moon, set.petals[0], set.petals[1], 'fx-spires', 'fx-mist', 'fx-star'].map(function (n) { return fxArt(id, n); })).then(function (r) {
+      var c = fxCanvas('blood-moon'), g = c.g, W = c.W, H = c.H, moon = r[0], petals = [r[1], r[2]], spires = r[3], mist = r[4], star = r[5], k;
+      var sky = bmSky(g, H, set.sky), stars = [], burst = [];
+      for (k = 0; k < 46; k++) stars.push({ x: Math.random() * W, y: Math.random() * H * .65, s: 6 + Math.random() * 12, ph: Math.random() * 6 });
+      for (k = 0; k < 130; k++) { var a = Math.random() * Math.PI * 2, d = .15 + Math.random() * .5;
+        burst.push({ a: a, d: d, v: .6 + Math.random() * 1.1, s: 22 + Math.random() * 34, rot: Math.random() * 6, spin: (Math.random() - .5) * 8, p: k % 2 }); }
+      var m0 = Math.min(W, H) * .5, cx = W / 2, diag = Math.sqrt(W * W + H * H);
+      function night(a, t) {
+        g.globalAlpha = a; g.fillStyle = sky; g.fillRect(0, 0, W, H);
+        if (star) stars.forEach(function (s) { var al = a * (.4 + .6 * Math.sin(t / 240 + s.ph)); if (al > .02) drawRot(g, star, s.x, s.y, s.s, s.s, 0, al); });
+        g.globalAlpha = 1;
+      }
+      function drawMoon(y, size, a) {
+        if (!moon) { g.globalAlpha = a; g.fillStyle = silver ? '#dfe8f5' : '#b3202c'; g.beginPath(); g.arc(cx, y, size * .4, 0, 7); g.fill(); g.globalAlpha = 1; return; }
+        g.globalAlpha = a; g.drawImage(moon, cx - size / 2, y - size / 2, size, size); g.globalAlpha = 1;
+      }
+      function skyline(rise, a) {
+        if (spires) { var w = W * 1.1, h = w * spires.height / spires.width; g.globalAlpha = a; g.drawImage(spires, cx - w / 2, H - h * rise, w, h); }
+        if (mist) { var mw = W * 1.6, mh = mw * mist.height / mist.width; g.globalAlpha = a * .7; g.drawImage(mist, -W * .3, H - mh * .7 * rise, mw, mh); }
+        g.globalAlpha = 1;
+      }
+      return fxRun(1000, function (t, x) {   // night falls, spires rise, the moon climbs over them
+        var e = ease(x); g.clearRect(0, 0, W, H); night(e, t);
+        drawMoon(H * 1.05 - (H * 1.05 - H * .42) * e, m0, Math.min(1, x * 2)); skyline(e, e);
+      }).then(function () {
+        return fxRun(700, function (t, x) {   // the moon swells until it fills the screen
+          var e = x * x; g.clearRect(0, 0, W, H); night(1, 1000 + t);
+          drawMoon(H * .42 + (H * .5 - H * .42) * e, m0 + (diag * 1.5 - m0) * e, 1); skyline(1 - e * .4, 1 - e);
+        });
+      }).then(function () {
+        var sw = swap();
+        return Promise.all([sw, fxRun(500, function (t, x) { g.clearRect(0, 0, W, H); night(1, 1700 + t); drawMoon(H * .5, diag * 1.5 * (1 + .02 * Math.sin(t / 90)), 1); })]);
+      }).then(function () {
+        return fxRun(1500, function (t, x) {   // the moon bursts into rose petals that blow away
+          var e = ease(x); g.clearRect(0, 0, W, H);
+          drawMoon(H * .5, diag * 1.5 * (1 + e * .3), Math.max(0, 1 - x * 2.2));
+          burst.forEach(function (b) {
+            var im = petals[b.p]; if (!im) return; var dist = (b.d + e * b.v * 1.3) * diag * .6;
+            var px = cx + Math.cos(b.a) * dist, py = H * .5 + Math.sin(b.a) * dist + e * e * 120;
+            drawRot(g, im, px, py, b.s, b.s, b.rot + b.spin * e, Math.min(1, x * 5) * (1 - Math.max(0, (x - .6) / .4)));
+          });
+        });
+      }).then(function () { c.o.remove(); });
+    });
+  }
+  // Crimson <-> Silver (Blood Moon's own): an ECLIPSE — the night sky covers the screen with the giant current moon over
+  // the spires; the earth's shadow slides across it, the moon goes dark at totality (the skin switches underneath), and as
+  // the shadow passes it leaves the OTHER moon behind; the sky turns with it, then clears onto the new rendition.
+  function bloodSwap(id, next) {
+    if (swapping) return;
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { if (data().setVariant) data().setVariant(id, next); return; }
+    swapping = true;
+    var toSilver = next === 'silver', from = bmSet(!toSilver), to = bmSet(toSilver);
+    // smooth (owner, Nov 16): the other moon's main art is fetched AND decoded before anything moves, so nothing pops in
+    var dir = BASE + id + '/assets/' + (toSilver ? 'silver/' : '');
+    var main = ['background', 'header', 'top-bar', 'nav-bar', 'nav-active', 'post-panel', 'post-panel-b', 'post-panel-c',
+      'profile-sky', 'profile-windows', 'profile-mask-1', 'profile-mask-2', 'profile-mask-3', 'cameo-frame', 'avatar-ring',
+      'quests-frame', 'quest-row', 'list-row', 'tab', 'tab-active', 'seg-tab', 'seg-tab-active', 'chip', 'chip-active', 'field',
+      'coin-pill', 'photo-frame', 'round-btn', 'candelabra', 'title-flourish', 'toggle-crimson', 'toggle-silver', 'rose-ledge'];
+    function decoded(src) { return fxImg(src).then(function (im) { return im && im.decode ? im.decode().catch(function () {}).then(function () { return im; }) : im; }); }
+    var preload = Promise.race([Promise.all(main.map(function (n) { return decoded(dir + n + '.webp'); })), fxWait(4500)]);
+    Promise.all([from.moon, to.moon, 'fx-umbra', 'fx-spires', 'fx-star', to.petals[0], to.petals[1]].map(function (n) { return fxArt(id, n); })).then(function (r) {
+      var c = fxCanvas('blood-moon-swap'), g = c.g, W = c.W, H = c.H, m1 = r[0], m2 = r[1], umbra = r[2], spires = r[3], star = r[4], petals = [r[5], r[6]];
+      // the two night skies pre-rendered once (no gradient work per frame)
+      function skyCanvas(cols) { var cv = document.createElement('canvas'); cv.width = W; cv.height = H; var x = cv.getContext('2d'); x.fillStyle = bmSky(x, H, cols); x.fillRect(0, 0, W, H); return cv; }
+      var sky1 = skyCanvas(from.sky), sky2 = skyCanvas(to.sky), stars = [], fall = [], k;
+      for (k = 0; k < 50; k++) stars.push({ x: Math.random() * W, y: Math.random() * H * .6, s: 6 + Math.random() * 12, ph: Math.random() * 6 });
+      for (k = 0; k < 28; k++) fall.push({ x: Math.random() * W, y: -40 - Math.random() * H * .7, s: 18 + Math.random() * 22, v: .1 + Math.random() * .08, ph: Math.random() * 6, p: k % 2 });
+      var ms = Math.min(W * .86, H * .5), cx = W / 2, cy = H * .38, ur = ms * .62;
+      function sstep(a, b, x) { x = Math.max(0, Math.min(1, (x - a) / (b - a))); return x * x * (3 - 2 * x); }
+      function inout(x) { return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+      // one continuous picture: p = the shadow's path (0 = left of the moon, .5 = totality, 1 = gone right), cover = sky opacity
+      function frame(t, p, cover, petalT) {
+        var e = inout(p), ux = cx - ms * 1.3 + ms * 2.6 * e, k2 = sstep(.38, .62, p);
+        g.clearRect(0, 0, W, H);
+        g.globalAlpha = cover; g.drawImage(sky1, 0, 0);
+        if (k2 > 0) { g.globalAlpha = cover * k2; g.drawImage(sky2, 0, 0); }
+        if (star) stars.forEach(function (s) { var a = cover * (.4 + .6 * Math.sin(t / 300 + s.ph)); if (a > .02) drawRot(g, star, s.x, s.y, s.s, s.s, 0, a); });
+        g.globalAlpha = cover;
+        if (m1) g.drawImage(m1, cx - ms / 2, cy - ms / 2, ms, ms);
+        // the shadow leaves the other moon behind it: the new moon is drawn only where the shadow has already passed
+        if (m2 && ux > cx - ms / 2) { g.save(); g.beginPath(); g.rect(0, 0, ux, H); g.clip(); g.drawImage(m2, cx - ms / 2, cy - ms / 2, ms, ms); g.restore(); }
+        if (umbra) { g.globalAlpha = cover * .94; g.drawImage(umbra, ux - ur, cy - ur, ur * 2, ur * 2); }
+        if (spires) { var w = W * 1.1, h = w * spires.height / spires.width; g.globalAlpha = cover; g.drawImage(spires, cx - w / 2, H - h, w, h); }
+        if (petalT > 0) fall.forEach(function (f) { var im = petals[f.p]; if (!im) return; var y = f.y + petalT * f.v; if (y > H + 40) return;
+          drawRot(g, im, f.x + Math.sin(t / 650 + f.ph) * 24, y, f.s, f.s, t / 900 + f.ph, cover * Math.min(1, petalT / 500)); });
+        g.globalAlpha = 1;
+      }
+      var IN = 650, PASS = 2600, OUT = 800, switched = false, ready = false, tSwitch = 0, outStart = 0;
+      return preload.then(function () {
+        return new Promise(function (ok) {
+          var t0 = performance.now();
+          (function loop(now) {
+            var t = now - t0;
+            var p = Math.min(1, t / PASS);
+            var cover = sstep(0, 1, t / IN);
+            if (!switched && p >= .5) {   // totality: the moon is dark, swap the skin underneath (motion keeps going)
+              switched = true; tSwitch = t;
+              setTimeout(function () { if (data().setVariant) data().setVariant(id, next); fxArtReady().then(function () { ready = true; }); }, 0);
+            }
+            var petalT = switched ? t - tSwitch : 0;
+            if (p >= 1 && (ready || t > PASS + 4000)) { if (!outStart) outStart = t; cover = 1 - sstep(0, 1, (t - outStart) / OUT); }
+            frame(t, p, cover, petalT);
+            if (outStart && t - outStart >= OUT) ok(); else requestAnimationFrame(loop);
+          })(t0);
+        });
+      }).then(function () { c.o.remove(); swapping = false; }, function () { c.o.remove(); swapping = false; });
+    });
+  }
+  // SUPERHERO (owner: every skin's animations are its own). Art per rendition: assets/fx-*.webp (Heroes) and
+  // assets/villains/fx-*.webp (Villains), painted in each rendition's style.
+  function shArt(id, v, names) {
+    var dir = BASE + id + '/assets/' + (v === 'villains' ? 'villains/' : '');
+    return Promise.all(names.map(function (n) { return fxImg(dir + n + '.webp'); }));
+  }
+  function shCover(g, im, x, y, w, h) {   // draw im covering the box (like background-size: cover)
+    if (!im) return;
+    var s = Math.max(w / im.width, h / im.height), iw = im.width * s, ih = im.height * s;
+    g.save(); g.beginPath(); g.rect(x, y, w, h); g.clip(); g.drawImage(im, x + (w - iw) / 2, y + (h - ih) / 2, iw, ih); g.restore();
+  }
+  // Equip = the COMIC BOOK (Western golden-age; nothing slams or shatters — that's Anime Blaze's manga page): a comic
+  // book with this rendition's cover art floats up onto the screen, its cover swings open on the spine, we zoom into the
+  // printed page until it fills the screen (the skin is applied under it), then the page dissolves away in HALFTONE DOTS
+  // like comic print, from the middle outward, onto the new look.
+  function equipSuperhero(id, swap) {
+    var v = (data().variant && data().variant(id)) === 'villains' ? 'villains' : 'heroes';
+    return shArt(id, v, ['card', 'fx-page', 'fx-cloud']).then(function (r) {
+      var c = fxCanvas('superhero'), g = c.g, W = c.W, H = c.H, card = r[0], page = r[1], cloud = r[2];
+      var vil = v === 'villains', sky = vil ? '#120f18' : '#7cc8f2', ink = vil ? '#7dff3a' : '#111', paper = vil ? '#1c1a22' : '#fbf3dc';
+      var bw = Math.min(W * .62, 290), bh = bw * 1.45, bx = (W - bw) / 2, by = (H - bh) / 2;
+      function backdrop(a, t) {
+        g.globalAlpha = a; g.fillStyle = sky; g.fillRect(0, 0, W, H);
+        if (cloud) { var cw = W * 1.3, ch = cw * cloud.height / cloud.width;
+          g.globalAlpha = a * .9; g.drawImage(cloud, -W * .15 + Math.sin(t / 1400) * 20, H - ch * .7, cw, ch);
+          g.globalAlpha = a * .5; g.drawImage(cloud, W * .1 - Math.sin(t / 1600) * 20, -ch * .35, cw, ch); }
+        g.globalAlpha = 1;
+      }
+      function cover(x, y, w, h) {   // the closed book: thick ink border, cover art, masthead with the issue number
+        g.fillStyle = ink; g.fillRect(x - 5, y - 5, w + 10, h + 10);
+        g.fillStyle = paper; g.fillRect(x, y, w, h);
+        shCover(g, card, x, y + h * .16, w, h * .84);
+        g.fillStyle = vil ? '#2a1f3a' : '#d81f1a'; g.fillRect(x, y, w, h * .16);
+        g.fillStyle = vil ? '#e8ffe0' : '#fff'; g.font = (h * .1 | 0) + 'px ' + (vil ? '"Black Ops One"' : '"Luckiest Guy", "Bangers"') + ', sans-serif';
+        g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('BLIPVIBE', x + w / 2, y + h * .085);
+        g.font = (h * .035 | 0) + 'px sans-serif'; g.textAlign = 'left'; g.fillText('No. 1', x + 8, y + h * .2);
+      }
+      function inside(x, y, w, h) {   // the printed page inside the book
+        g.fillStyle = ink; g.fillRect(x - 5, y - 5, w + 10, h + 10);
+        if (page) shCover(g, page, x, y, w, h); else { g.fillStyle = paper; g.fillRect(x, y, w, h); }
+      }
+      return fxRun(900, function (t, x) {   // the book floats up into the middle, settling from a slight tilt
+        var e = ease(x); g.clearRect(0, 0, W, H); backdrop(Math.min(1, x * 1.6), t);
+        g.save(); g.translate(W / 2, by + bh / 2 + (1 - e) * (H * .7)); g.rotate((1 - e) * -.18); g.translate(-W / 2, -(by + bh / 2));
+        cover(bx, by, bw, bh); g.restore();
+      }).then(function () {
+        return fxRun(700, function (t, x) {   // the cover swings open on the spine (left edge)
+          var e = ease(x); g.clearRect(0, 0, W, H); backdrop(1, 900 + t);
+          inside(bx, by, bw, bh);
+          var k = Math.cos(e * Math.PI);   // 1 → -1: the cover turns over its spine
+          g.save(); g.translate(bx, 0); g.scale(k, 1);
+          if (k > 0) cover(0, by, bw, bh); else { g.fillStyle = paper; g.fillRect(0, by, bw, bh); g.strokeStyle = ink; g.lineWidth = 5; g.strokeRect(0, by, bw, bh); }
+          g.restore();
+        });
+      }).then(function () {
+        return fxRun(800, function (t, x) {   // zoom into the page until it fills the screen
+          var e = ease(x), s = 1 + (Math.max(W / bw, H / bh) * 1.06 - 1) * e;
+          g.clearRect(0, 0, W, H); backdrop(1 - e, 1600 + t);
+          var w = bw * s, h = bh * s; inside(W / 2 - w / 2, H / 2 - h / 2, w, h);
+        });
+      }).then(function () {
+        var sw = swap(), still = true;
+        (function hold() { if (!still) return; g.clearRect(0, 0, W, H); inside(-6, -6, W + 12, H + 12); requestAnimationFrame(hold); })();
+        return sw.then(function () { still = false; });
+      }).then(function () {
+        var cell = 16, cols = Math.ceil(W / cell) + 1, rows = Math.ceil(H / cell) + 1, D = Math.hypot(W, H) / 2;
+        return fxRun(1000, function (t, x) {   // halftone dissolve: print dots open from the middle outward
+          g.clearRect(0, 0, W, H); g.globalCompositeOperation = 'source-over'; inside(-6, -6, W + 12, H + 12);
+          g.globalCompositeOperation = 'destination-out'; g.fillStyle = '#000'; g.beginPath();
+          for (var j = 0; j < rows; j++) for (var i = 0; i < cols; i++) {
+            var px = i * cell + (j % 2) * cell / 2, py = j * cell, d = Math.hypot(px - W / 2, py - H / 2) / D;
+            var rr = clamp01(x * 1.7 - d * .7) * cell * .78; if (rr > .3) { g.moveTo(px + rr, py); g.arc(px, py, rr, 0, 6.29); }
+          }
+          g.fill(); g.globalCompositeOperation = 'source-over';
+        });
+      }).then(function () { c.o.remove(); });
+    });
+  }
+  // Heroes <-> Villains (the top-bar badge). Two different moves, each in the style of where you're going (no lightning,
+  // no cracks, no shatter, no circle reveal — those belong to Anime Blaze and Good Witch):
+  // - to VILLAINS = "the villain's smoke": purple smoke billows up over the screen, the green skull sigil glows out of it,
+  //   the skin switches behind the smoke, then the sigil shrinks back into the badge as the smoke sinks away.
+  // - to HEROES = "the hero signal": a searchlight beam sweeps up and projects the gold BV emblem on the sky, dawn rises up
+  //   the screen behind it with turning sun rays; the skin switches under the sky, then the emblem soars off the top and
+  //   the clouds drift apart onto the city.
+  function heroSwap(id, next) {
+    if (swapping) return;
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { if (data().setVariant) data().setVariant(id, next); return; }
+    swapping = true;
+    var toV = next === 'villains', dir = BASE + id + '/assets/' + (toV ? 'villains/' : '');
+    var main = ['background', 'header', 'top-bar', 'nav-bar', 'nav-active', 'post-panel', 'post-panel-b', 'post-panel-c',
+      'cover-frame', 'profile-card', 'quests-frame', 'list-row', 'tab', 'tab-active', 'chip', 'chip-active', 'field',
+      'coin-pill', 'photo-frame', 'title-banner', 'avatar-frame', 'toggle-heroes', 'toggle-villains'];
+    var preload = Promise.race([Promise.all(main.map(function (n) { return fxImg(dir + n + '.webp'); })), fxWait(4000)]);
+    var btn = document.getElementById('fsDayNight'), br = btn ? btn.getBoundingClientRect() : { left: innerWidth - 40, top: 60, width: 0, height: 0 };
+    var bx = br.left + br.width / 2, by = br.top + br.height / 2;
+    function done(c) { if (c) c.o.remove(); swapping = false; }
+    function switchUnder() {   // switch while covered; resolves once the new art is in
+      return new Promise(function (ok) { requestAnimationFrame(function () {
+        if (data().setVariant) data().setVariant(id, next);
+        Promise.race([fxArtReady(), fxWait(5000)]).then(ok);
+      }); });
+    }
+    if (toV) {
+      shArt(id, 'villains', ['fx-cloud', 'toggle-villains', 'fx-spark']).then(function (r) {
+        var c = fxCanvas('superhero-swap'), g = c.g, W = c.W, H = c.H, smoke = r[0], sigil = r[1], spark = r[2];
+        var puffs = []; for (var k = 0; k < 9; k++) puffs.push({ x: (k / 8) * W, d: Math.random() * .35, s: 1 + Math.random() * .6, ph: Math.random() * 6 });
+        var motes = []; for (k = 0; k < 24; k++) motes.push({ x: Math.random() * W, y: Math.random() * H, s: 10 + Math.random() * 16, v: .02 + Math.random() * .05, ph: Math.random() * 6 });
+        var S = Math.min(W, H) * .5;
+        function fog(cov, t) {   // cov 0 = clear, 1 = the screen fully smothered
+          g.fillStyle = 'rgba(16,10,26,' + cov * .94 + ')'; g.fillRect(0, 0, W, H);
+          if (!smoke) return;
+          puffs.forEach(function (p) {
+            var w = W * .9 * p.s, h = w * smoke.height / smoke.width, rise = clamp01(cov * 1.25 - p.d);
+            var y = H - h * .3 - rise * (H * .95) + Math.sin(t / 900 + p.ph) * 10;
+            g.globalAlpha = Math.min(1, rise * 1.4); g.drawImage(smoke, p.x - w / 2 + Math.sin(t / 1300 + p.ph) * 18, y, w, h);
+          });
+          g.globalAlpha = 1;
+        }
+        function glowSigil(x, y, s, a, t) {
+          if (!sigil || a <= 0) return;
+          g.save(); g.globalAlpha = a; g.shadowColor = 'rgba(125,255,58,.9)'; g.shadowBlur = 30 + 14 * Math.sin(t / 160);
+          g.drawImage(sigil, x - s / 2, y - s / 2, s, s); g.restore();
+        }
+        function rising(a, t) { if (spark) motes.forEach(function (m) { var y = (m.y - t * m.v + H * 4) % H; drawRot(g, spark, m.x + Math.sin(t / 500 + m.ph) * 8, y, m.s, m.s, t / 400 + m.ph, a * (.5 + .5 * Math.sin(t / 200 + m.ph))); }); }
+        return preload.then(function () {
+          return fxRun(1000, function (t, x) { g.clearRect(0, 0, W, H); fog(ease(x), t); rising(x, t);
+            glowSigil(W / 2, H * .45, S * (.6 + .4 * ease(x)), clamp01(x * 2 - .8), t); });
+        }).then(function () {
+          var still = true, t0 = performance.now();
+          (function hold(now) { if (!still) return; var t = 1000 + now - t0; g.clearRect(0, 0, W, H); fog(1, t); rising(1, t); glowSigil(W / 2, H * .45, S, 1, t); requestAnimationFrame(hold); })(t0);
+          return switchUnder().then(function () { still = false; });
+        }).then(function () {
+          return fxRun(1100, function (t, x) {   // the sigil shrinks back into the badge; the smoke sinks away
+            var e = ease(x); g.clearRect(0, 0, W, H); fog(1 - e, 2000 + t); rising(1 - e, 2000 + t);
+            glowSigil(W / 2 + (bx - W / 2) * e, H * .45 + (by - H * .45) * e, S + (36 - S) * e, 1 - Math.max(0, x - .85) * 6, 2000 + t);
+          });
+        }).then(function () { done(c); }, function () { done(c); });
+      });
+      return;
+    }
+    shArt(id, 'heroes', ['fx-burst', 'toggle-heroes', 'fx-cloud']).then(function (r) {
+      var c = fxCanvas('superhero-swap'), g = c.g, W = c.W, H = c.H, sun = r[0], emblem = r[1], cloud = r[2];
+      var ex = W / 2, ey = H * .3, S = Math.min(W, H) * .42;
+      var skyG = g.createLinearGradient(0, 0, 0, H); skyG.addColorStop(0, '#2f8fe0'); skyG.addColorStop(.6, '#8fd3ff'); skyG.addColorStop(1, '#fff1b8');
+      function night(a) { g.fillStyle = 'rgba(8,12,30,' + a + ')'; g.fillRect(0, 0, W, H); }
+      function beam(a, ang) {   // searchlight from the bottom centre
+        if (a <= 0) return;
+        g.save(); g.translate(W / 2, H + 30); g.rotate(ang);
+        var bg = g.createLinearGradient(0, 0, 0, -H * 1.2); bg.addColorStop(0, 'rgba(255,246,200,' + .85 * a + ')'); bg.addColorStop(1, 'rgba(255,246,200,0)');
+        g.fillStyle = bg; g.beginPath(); g.moveTo(-14, 0); g.lineTo(14, 0); g.lineTo(W * .32, -H * 1.2); g.lineTo(-W * .32, -H * 1.2); g.closePath(); g.fill(); g.restore();
+      }
+      function signal(x, y, s, a) {   // the projected emblem
+        if (!emblem || a <= 0) return;
+        g.save(); g.globalAlpha = a; g.shadowColor = 'rgba(255,220,90,.9)'; g.shadowBlur = 26; g.drawImage(emblem, x - s / 2, y - s / 2, s, s); g.restore();
+      }
+      function dawn(level, t) {   // the day sky rises up the screen (level 0..1 = how much of the screen it covers)
+        if (level <= 0) return;
+        var top = H * (1 - level);
+        g.save(); g.beginPath(); g.rect(0, top - 40, W, H - top + 40); g.clip();
+        g.fillStyle = skyG; g.fillRect(0, 0, W, H);
+        if (sun) { g.globalAlpha = .55; var R = Math.max(W, H) * .9; g.translate(ex, ey); g.rotate(t / 3000); g.drawImage(sun, -R, -R, R * 2, R * 2); }
+        g.restore();
+      }
+      function clouds(part, a) {   // two cloud banks; part 0 = closed over the bottom, 1 = drifted off the sides
+        if (!cloud || a <= 0) return;
+        var cw = W * 1.2, ch = cw * cloud.height / cloud.width, y = H - ch * .75;
+        g.save(); g.globalAlpha = a; g.drawImage(cloud, -cw * .35 - part * W * .9, y, cw, ch);
+        g.translate(W + cw * .35 + part * W * .9, 0); g.scale(-1, 1); g.drawImage(cloud, 0, y, cw, ch); g.restore();
+      }
+      return preload.then(function () {
+        return fxRun(900, function (t, x) {   // night falls a little; the searchlight sweeps up and the emblem lights on the sky
+          var e = ease(x); g.clearRect(0, 0, W, H); night(.75 * e); beam(e, (1 - e) * -.6);
+          signal(ex, ey, S * (.7 + .3 * e), clamp01(x * 2.2 - 1));
+        });
+      }).then(function () {
+        return fxRun(800, function (t, x) {   // dawn rises up the screen behind the signal
+          var e = ease(x); g.clearRect(0, 0, W, H); night(.75); dawn(e, t); clouds(0, e); beam(1 - e, 0); signal(ex, ey, S, 1);
+        });
+      }).then(function () {
+        var still = true, t0 = performance.now();
+        (function hold(now) { if (!still) return; var t = 800 + now - t0; g.clearRect(0, 0, W, H); dawn(1, t); clouds(0, 1); signal(ex, ey, S, 1); requestAnimationFrame(hold); })(t0);
+        return switchUnder().then(function () { still = false; });
+      }).then(function () {
+        return fxRun(1100, function (t, x) {   // the emblem soars off the top, the sky lifts and the clouds drift apart
+          var e = ease(x); g.clearRect(0, 0, W, H);
+          g.save(); g.globalAlpha = 1 - e; dawn(1, 2000 + t); g.restore();
+          clouds(e, 1 - x * .6); signal(ex, ey - e * (ey + S), S * (1 - .3 * e), 1);
+        });
+      }).then(function () { done(c); }, function () { done(c); });
+    });
+  }
   // #BASIC — "flat-lay snap": a travertine + linen surface slides up, the props glide in from the edges one by one and settle
   // into a flat-lay (each with its own soft drop), a phone camera viewfinder fades in and focuses, *snap* — a white flash —
   // and the photo shrinks away into a little camera-roll thumbnail, leaving the new skin.
@@ -2089,7 +2517,7 @@
       }).then(function () { c.o.remove(); swapping = false; }, function () { c.o.remove(); swapping = false; });
     });
   }
-  var EQUIP_FX = { 'basic': equipBasic, 'scrapbook': equipScrapbook, 'anime-blaze': equipBlaze, 'witchcraft': equipWitchcraft, 'good-witch': equipGoodWitch, 'vaporwave': equipVaporwave, 'heavens-light': equipHeaven };
+  var EQUIP_FX = { 'basic': equipBasic, 'scrapbook': equipScrapbook, 'anime-blaze': equipBlaze, 'witchcraft': equipWitchcraft, 'good-witch': equipGoodWitch, 'vaporwave': equipVaporwave, 'heavens-light': equipHeaven, 'blood-moon': equipBloodMoon, 'superhero': equipSuperhero };
   // app.js calls this from the Equip buttons: equipTransition(id, function () { ...apply + save... })
   function equipTransition(id, applyFn) {
     var fx = EQUIP_FX[id], reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
