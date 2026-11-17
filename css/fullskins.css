@@ -5373,13 +5373,13 @@ html body.fs.fs-heavens-light .user-dropdown a i { color: var(--hl-gold) !import
 html body.fs.fs-heavens-light .user-dropdown #logoutBtn, html body.fs.fs-heavens-light .user-dropdown #logoutBtn i { color: #b03a2e !important; }
 html body.fs.fs-heavens-light[data-fs-variant="twilight"] .navbar .user-dropdown { background: #3a4260 !important; background-clip: padding-box !important; }
 html body.fs.fs-heavens-light[data-fs-variant="twilight"] .user-dropdown #logoutBtn, html body.fs.fs-heavens-light[data-fs-variant="twilight"] .user-dropdown #logoutBtn i { color: #ff9a8a !important; }
-/* QA: the top-bar photo sits exactly in the winged wreath's window (avatar-wings window 11.7% 10.3% 14.7% 18.8% l t r b of 600x600):
-   the wreath is laid around the 46px photo at 64px, offsets from those measurements */
+/* QA: the top-bar photo sits exactly in the winged wreath's gold ring (owner, Nov 17: photo hung out on the left). Ring in
+   avatar-wings 600x600: outer 84..505 x, centre (294, 284.5) -> at 65.6px the ring's outer edge = the 46px photo, centred on it */
 @media (max-width: 768px) {
   html body.fs.fs-heavens-light .navbar .nav-user { display: block !important; position: relative !important; width: 46px !important; height: 46px !important; padding: 0 !important; margin: 0 0 0 6px !important; align-self: center; }
   html body.fs.fs-heavens-light .navbar .nav-user :is(.nav-username, > i) { display: none !important; }
   html body.fs.fs-heavens-light .navbar .nav-avatar { display: block; position: absolute !important; left: 0; top: 0; width: 46px !important; height: 46px !important; margin: 0 !important; border-radius: 50% !important; }
-  html body.fs.fs-heavens-light .navbar .nav-user::before { left: -7.5px !important; top: -6.6px !important; width: 64px !important; height: 64px !important; background-size: 100% 100% !important; z-index: 2; }
+  html body.fs.fs-heavens-light .navbar .nav-user::before { left: -9.2px !important; top: -8.1px !important; width: 65.6px !important; height: 65.6px !important; background-size: 100% 100% !important; z-index: 2; }
 }
 @media (max-width: 768px) {
   html body.fs.fs-heavens-light .navbar .user-dropdown { border-width: 44px 22px 22px !important; border-image-slice: 130 70 70 70 fill !important; border-image-width: 44px 22px 22px !important; }
@@ -6087,8 +6087,8 @@ html body .fsk-owned.fsk-owned { top: auto !important; left: 6px !important; bot
   box-shadow: 0 0 0 2px #fff, 0 1px 3px rgba(0, 0, 0, .45); font-size: 0 !important; color: transparent !important; overflow: hidden; }
 html body .fsk-owned.fsk-owned::before { content: "\2713"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
   color: #fff; font: 900 13px/1 -apple-system, system-ui, sans-serif; }
-/* Witchcraft's arch window: keep it inside the open part of the arch */
-html body.fs.fs-witchcraft .fsk-owned.fsk-owned { left: 8px !important; bottom: 8px; }
+/* Witchcraft: the name plaque overlaps the bottom of the picture, so the dot sits just above it */
+html body.fs.fs-witchcraft .fsk-owned.fsk-owned { left: 14px !important; bottom: 32px; z-index: 6; }
 /* unreadable-text pass (owner rule U): placeholders in the skin's own ink at ~65% — Heaven's Light's were near-white on
    cream (Day) and near-invisible in places; same rule keeps every skin's placeholders readable */
 html body.fs :is(input, textarea)::placeholder { color: color-mix(in srgb, var(--fs-ink) 62%, transparent) !important; opacity: 1 !important; }
@@ -8859,14 +8859,13 @@ html body.fs.fs-superhero #page-profile-view .photos-card :is(.photos-grid, .pv-
 html body.fs.fs-superhero #page-profile-view .photos-card :is(.photos-grid, .pv-photos-grid, .photos-preview) > *::after { content: ""; position: absolute; inset: -6%; pointer-events: none; background: var(--fs-photo-tile) center / 100% 100% no-repeat; }
 html body.fs.fs-superhero #page-profile-view .page-container::after { content: ""; display: block; width: calc(100% + 16px); margin: 12px -8px 0; aspect-ratio: 1290 / 520; background: var(--fs-skyline-deco) center bottom / 100% 100% no-repeat; pointer-events: none; }
 
-/* --- HEROES: profile timeline = a straight row of three equal square comic panels (timeline-row); Home keeps the big + two
-   stacked grid --- */
+/* --- HEROES: someone's profile shows its pictures exactly like Home (owner rule, Nov 17: "the profile where the pictures are
+   should match the profile view from the home view") = the big panel + two stacked comic grid, same size and place as Home's
+   #timelineCover (was a straight row of three squares from the redesign concept) --- */
 @media (max-width: 768px) {
-  html body.fs.fs-superhero[data-fs-variant="heroes"] #pvCoverBanner { height: calc((100vw + 16px) * 470 / 1290) !important; background: none !important; margin-top: 6px !important; }
+  html body.fs.fs-superhero[data-fs-variant="heroes"] #pvCoverBanner { height: calc((100vw - 8px) * 860 / 1290) !important; width: auto !important;
+    margin-left: 4px !important; margin-right: 4px !important; background: none !important; }
 }
-html body.fs.fs-superhero[data-fs-variant="heroes"] #pvCoverBanner .fs-timeline::after { background-image: var(--fs-timeline-row) !important; }
-html body.fs.fs-superhero[data-fs-variant="heroes"] #pvCoverBanner .fs-tl-slot :is(img), html body.fs.fs-superhero[data-fs-variant="heroes"] #pvCoverBanner .fs-tl-slot.fs-tl-empty::after {
-  -webkit-mask-image: var(--fs-timeline-row-mask) !important; mask-image: var(--fs-timeline-row-mask) !important; }
 /* --- VILLAINS: one steel dossier plate holds photo + name + status + bio + badges; the counters plate joins under it --- */
 html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-info { grid-template-columns: 108px minmax(0, 1fr); align-items: start; }
 html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-info::before { grid-row: 1 / 6; }
@@ -8879,10 +8878,6 @@ html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .badge-ro
 html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .badge-row > * { transform: scale(1.2); margin: 3px 5px !important; }
 html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-stats { margin-top: 18px !important; }
 html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) :is(.stat-count, .stat-label) { color: #eef2ea !important; }
-/* Heroes profile row: windows measured from timeline-row-mask (three equal squares) */
-html body.fs.fs-superhero[data-fs-variant="heroes"] #pvCoverBanner .fs-tl-slot-1 { --sh-l: 5.89%; --sh-t: 14.04%; --sh-w: 26.20%; --sh-h: 71.91%; --sh-msx: 381.7%; --sh-msy: 139.1%; --sh-mx: 7.98%; --sh-my: 50.00%; }
-html body.fs.fs-superhero[data-fs-variant="heroes"] #pvCoverBanner .fs-tl-slot-2 { --sh-l: 36.90%; --sh-t: 14.04%; --sh-w: 26.20%; --sh-h: 71.91%; --sh-msx: 381.7%; --sh-msy: 139.1%; --sh-mx: 50.00%; --sh-my: 50.00%; }
-html body.fs.fs-superhero[data-fs-variant="heroes"] #pvCoverBanner .fs-tl-slot-3 { --sh-l: 67.91%; --sh-t: 14.04%; --sh-w: 26.20%; --sh-h: 71.91%; --sh-msx: 381.7%; --sh-msy: 139.1%; --sh-mx: 92.02%; --sh-my: 50.00%; }
 /* redesign fix: the name / status / bio come out of .fs-namecard (display: contents), so they need their own grid cell and
    stacking above the panel pseudo-item */
 html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) :is(.profile-name, .profile-title, .profile-about) { position: relative !important; z-index: 2 !important; }
@@ -9033,3 +9028,39 @@ html body.fs.fs-superhero[data-fs-variant="heroes"] #page-profile-view .pv-profi
 @media (max-width: 768px) { html body.fs.fs-superhero[data-fs-variant="heroes"]:has(#page-home.active) .navbar { background: var(--fs-top-bar) center top / 100% calc(env(safe-area-inset-top, 0px) + 14px) no-repeat, #fbf3dc !important; } }
 html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#page-profile-view #pvProfileCard, #page-profile-view .pv-profile-card) { margin-top: -22px !important; }
 html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#page-home #profileCard) { margin-top: 2px !important; }
+
+/* ======================================================================================
+   SKIN QA pass 2 (Nov 17) — cross-skin fixes found on the Blood Moon / Superhero / #Basic sweep
+   ====================================================================================== */
+/* Blood Moon + Superhero: their bottom bar is forced visible (display:grid !important), so in an open chat it covered the
+   message box (concepts: chat has no bottom bar, the type-a-message bar sits at the bottom) */
+html body.fs:is(.fs-blood-moon, .fs-superhero):has(#page-messages.active .messages-layout.chat-open) .nav-center { display: none !important; }
+/* "My Profile" pop-up photo: Blood Moon has no avatar-mask art, so the generic mask hid the photo completely; Witchcraft's
+   avatar-mask (the arch's scalloped window) showed as a torn-looking shape with no frame around it. Both now show the photo
+   round inside their own painted avatar ring, like the Home profile photo */
+html body.fs:is(.fs-blood-moon, .fs-witchcraft) .modal-profile-top img { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important;
+  width: 180px !important; height: 180px !important; padding: 6px !important; box-sizing: border-box !important; object-fit: cover;
+  background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; margin: 0 auto 10px !important; display: block; }
+/* Superhero group page: the profile row's grid gave the group name/description the full width (gc 1/-1), so they ran over
+   the group picture and the cover photo. Concept group-page: picture left, name + description beside it under the cover */
+html body.fs.fs-superhero #page-group-view #gvProfileCard .profile-info > :is(.profile-name, .profile-title) { grid-column: 2 / -1 !important; text-align: left !important; }
+html body.fs.fs-superhero #page-group-view #gvProfileCard .profile-info > .profile-name { margin-top: 54px !important; white-space: normal !important; overflow: visible !important;
+  text-overflow: clip !important; overflow-wrap: break-word; line-height: 1.05 !important; font-size: clamp(19px, 6vw, 26px) !important; }
+html body.fs.fs-superhero #page-group-view #gvProfileCard .profile-info > .profile-title { margin-top: 4px !important; }
+/* Superhero create post: four 46px tool tiles + a 112px Publish didn't fit the pop-up (Publish clipped at the right edge) */
+html body.fs.fs-superhero .create-post-modal :is(#cpmCameraBtn, #cpmGifBtn, #cpmPollBtn, #cpmScheduleBtn) { width: 38px !important; height: 38px !important; flex: 0 0 38px !important; }
+html body.fs.fs-superhero .create-post-modal #cpmPublish { flex: none !important; width: auto !important; max-width: none !important; margin-left: auto !important;
+  padding: 2px 8px !important; border-width: 10px 12px !important; font-size: 14px !important; text-overflow: clip !important; }
+/* Superhero network: names were cut to "JASON MA…" in a 117px nowrap box; long names wrap by whole words (owner rule) */
+html body.fs.fs-superhero .connections-grid .profile-card-name { white-space: normal !important; overflow: visible !important; text-overflow: clip !important;
+  overflow-wrap: break-word; line-height: 1.05 !important; font-size: 17px !important; }
+/* Superhero comments: "Write a comment…" was cut off (the 100px Post plaque leaves the field ~139px): the placeholder is
+   14px (typing stays 16px, so iOS doesn't zoom); the Villains sort tabs
+   ran off the pop-up (OLDEST clipped) — three tabs share the width */
+html body.fs.fs-superhero #commentInput::placeholder { font-size: 14px !important; }
+html body.fs.fs-superhero #commentInput { border-width: 10px 12px !important; border-image-width: 10px 12px !important; }
+html body.fs.fs-superhero #postCommentBtn { font-size: 16px !important; padding: 2px 4px !important; border-width: 10px 14px !important; border-image-width: 10px 14px !important; }
+html body.fs.fs-superhero .comment-sort-tab { flex: 1 1 0 !important; min-width: 0 !important; padding-left: 6px !important; padding-right: 6px !important; justify-content: center; }
+/* #Basic + Superhero groups: group names were cut with "…" ("danes game co…"); they wrap by whole words (owner rule) */
+html body.fs:is(.fs-basic, .fs-superhero) #page-groups .group-card-body > h4 { white-space: normal !important; overflow: visible !important; text-overflow: clip !important;
+  overflow-wrap: break-word; line-height: 1.1 !important; }

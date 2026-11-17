@@ -14814,6 +14814,8 @@ function renderMutualFollowers(container,mutuals){
     else if(names.length===2) html+='<span>Followed by '+escapeHtml(names[0])+' and '+escapeHtml(names[1])+'</span>';
     else html+='<span>Followed by '+escapeHtml(names[0])+'</span>';
     html+='</div>';
+    // the profile can re-render while an earlier lookup is still in flight: replace, never stack a second line
+    container.querySelectorAll('.mutual-followers').forEach(function(el){el.remove();});
     container.insertAdjacentHTML('beforeend',html);
 }
 

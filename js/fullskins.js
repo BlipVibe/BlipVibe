@@ -1514,7 +1514,15 @@
     if (inRow) btn.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
     menu.className = 'post-dropdown fs-pv-menu';
     wrap.appendChild(btn); wrap.appendChild(menu); host.appendChild(wrap);
-    function place() { if (!inRow && cover) wrap.style.top = (cover.offsetTop + 10) + 'px'; }
+    // measured on screen, not offsetTop (the cover's offsetParent differs per skin): 10px into the cover, never under the top bar
+    function place() {
+      if (inRow || !cover) return;
+      var hr = (wrap.offsetParent || host).getBoundingClientRect(), cr = cover.getBoundingClientRect(), nav = document.querySelector('.navbar');
+      if (!cr.height) { wrap.style.top = (cover.offsetTop + 10) + 'px'; return; }   // page not laid out yet
+      var top = cr.top - hr.top + 10;
+      if (nav && window.scrollY < 4) top = Math.max(top, nav.getBoundingClientRect().bottom - hr.top + 6);
+      wrap.style.top = Math.round(top) + 'px';
+    }
     place();
     btn.addEventListener('click', function (e) {
       e.stopPropagation();
