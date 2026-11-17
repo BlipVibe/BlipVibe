@@ -8528,3 +8528,35 @@ html body.fs.fs-basic #profileCard .profile-info :is(.fs-namecard, .profile-stat
 html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-info::before { border-width: 26px 24px 14px 32px !important;
   border-image: var(--fs-place-card) 110 110 60 140 fill / 26px 24px 14px 32px stretch !important; margin-top: -14px !important; }
 html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-stats { padding-right: 30px !important; }
+
+/* ===== owner, Nov 17: "the profile picture is not as close or cluttered as the concept" — zoom the shelfie in (1.25x around
+   the middle of the shelf: bigger frames, far less empty wall) and give the photo a bigger dish nestled against the tall
+   frame, sitting on the shelf, like the concept ===== */
+html body.fs.fs-basic :is(#timelineCover, #pvCoverBanner) { overflow: hidden !important; }
+html body.fs.fs-basic :is(#timelineCover, #pvCoverBanner) .fs-timeline { inset: auto !important; left: -12.5% !important; top: -21% !important; width: 125% !important; height: 125% !important; }
+/* Rosé: photo 118px (dish 158 x 163), dish resting on the zoomed shelf at the left end */
+html body.fs.fs-basic :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-avatar-wrap { width: 118px !important; height: 118px !important; margin-left: 20px !important;
+  margin-top: calc((100vw + 16px) * -900 / 1290 + 80px) !important; margin-bottom: -94px !important; }
+/* Pumpkin: photo 98px in its thicker dish (160 x 158) */
+html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-avatar-wrap { width: 98px !important; height: 98px !important; margin-left: 29px !important;
+  margin-top: calc((100vw + 16px) * -900 / 1290 + 92px) !important; margin-bottom: -124px !important; }
+
+/* ===== shelf v2 (prototypes/basic-shelf-v2-brief.md): the concept's tight arrangement is painted into the art now, so no
+   zoom; windows re-measured from shelf-mask; the dish nests against the tall frame on the shelf (shelf top at 76%) ===== */
+html body.fs.fs-basic :is(#timelineCover, #pvCoverBanner) .fs-timeline { left: 0 !important; top: 0 !important; width: 100% !important; height: 100% !important; }
+html body.fs.fs-basic .fs-tl-slot-1 { left: 26.90% !important; top: 10.44% !important; width: 14.96% !important; height: 61.22% !important; }
+html body.fs.fs-basic .fs-tl-slot-2 { left: 47.75% !important; top: 37.56% !important; width: 14.11% !important; height: 34.11% !important; }
+html body.fs.fs-basic .fs-tl-slot-3 { left: 63.57% !important; top: 59.44% !important; width: 15.74% !important; height: 14.89% !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] .fs-tl-slot-1 { left: 26.82% !important; top: 11.44% !important; width: 15.50% !important; height: 56.11% !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] .fs-tl-slot-2 { left: 46.90% !important; top: 39.89% !important; width: 14.34% !important; height: 27.67% !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] .fs-tl-slot-3 { left: 63.41% !important; top: 54.00% !important; width: 14.26% !important; height: 14.22% !important; }
+html body.fs.fs-basic :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-avatar-wrap { margin-top: calc((100vw + 16px) * -900 / 1290 + 76px) !important; margin-left: 22px !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-avatar-wrap { margin-top: calc((100vw + 16px) * -900 / 1290 + 91px) !important; margin-left: 30px !important; }
+@media (max-width: 768px) { html body.fs.fs-basic #timelineCover { margin-top: 4px !important; } }
+html body.fs.fs-basic #profileCard .profile-info :is(.fs-namecard, .profile-stats) { transform: translateY(-74px) !important; }
+html body.fs.fs-basic #profileCard .profile-info::before, html body.fs.fs-basic #profileCard .profile-info::after { transform: translateY(-74px) !important; }
+html body.fs.fs-basic #profileCard .profile-links { margin-top: -70px !important; }
+html body.fs.fs-basic:not([data-fs-variant="pumpkin"]) :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-avatar-wrap { width: 104px !important; height: 104px !important;
+  margin-top: calc((100vw + 16px) * -900 / 1290 + 86px) !important; margin-left: 24px !important; }
+@media (max-width: 768px) { html body.fs.fs-basic #timelineCover { margin-top: 34px !important; } }
+@media (max-width: 768px) { html body.fs.fs-basic #timelineCover { margin-top: 12px !important; } }

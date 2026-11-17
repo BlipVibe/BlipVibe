@@ -60,3 +60,4 @@ convert with `prototypes/tools/basic_convert.py images/skins/basic`.
   (prototypes/basic-icons-chunky-brief.md) and sized up. "the name folded card … floating mid air" → it now stands on its
   own oak ledge (card-ledge art, prototypes/basic-card-ledge-brief.md), name + bio left, stats stacked right (concept).
   "use this navbar" → the concept nav: slimmer inset oak tray, active tab = ceramic disc centred in the tray. Shelf kept.
+- Nov 17: owner "not as close or cluttered as the concept" → shelf-scene repainted in the concept arrangement (prototypes/basic-shelf-v2-brief.md), windows re-measured, dish nests on the tall frame, name card leans right on the shelf.
