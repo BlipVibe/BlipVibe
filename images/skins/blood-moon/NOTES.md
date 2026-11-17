@@ -57,3 +57,7 @@ Own QA simulator "BlipVibe Blood Moon" (owner rule: one per session, deleted whe
 (Cormorant is Witchcraft / Good Witch / Heaven's Light; owner: every skin must look different).
 Not yet checked: story viewer; equip/swap on a real phone.
 Ship = remove `wip`, whitelist `images/skins/blood-moon/assets/` in `.gitignore`, merge to main (owner OK first).
+- Nov 16 (after ship): cover arches weren't tappable on Home (the profile block, pulled up by the cameo's negative margin,
+  sat over them). Fixed in 7a2cbcf (pointer-events:none on the empty box, content stays tappable); confirmed by the
+  photo-positioner session on a read-only simulator: each arch opens Move, zoom & rotate / Change photo, and the camera
+  badge opens the editor with the cameo frame and the moon knob.
