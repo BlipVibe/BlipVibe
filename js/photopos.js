@@ -286,7 +286,7 @@
     }
     modal('<div class="modal-header"><h3>' + esc(opts.title || 'Move, zoom & rotate') + '</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>' +
       '<div class="modal-body fs-pp-body"><div class="fs-pp-stage" aria-label="Photo preview — drag to move"><div class="fs-pp-scale"></div><canvas class="fs-pp-ghost"></canvas></div>' +
-      '<p class="fs-pp-hint">Drag to move · pinch to zoom · twist to rotate</p>' +
+      '<p class="fs-pp-hint">Drag, pinch or twist the photo</p>' +
       slider('fs-pp-z', 'Zoom', 1, ZMAX, .01, p.z) + slider('fs-pp-r', 'Rotate', -180, 180, 1, p.r) +
       '<div class="fs-pp-btns"><button class="btn btn-outline fs-pp-reset" type="button">Reset</button>' +
       '<button class="btn btn-outline fs-pp-cancel" type="button">Cancel</button>' +
