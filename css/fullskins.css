@@ -9064,3 +9064,14 @@ html body.fs.fs-superhero .comment-sort-tab { flex: 1 1 0 !important; min-width:
 /* #Basic + Superhero groups: group names were cut with "…" ("danes game co…"); they wrap by whole words (owner rule) */
 html body.fs:is(.fs-basic, .fs-superhero) #page-groups .group-card-body > h4 { white-space: normal !important; overflow: visible !important; text-overflow: clip !important;
   overflow-wrap: break-word; line-height: 1.1 !important; }
+/* Heaven's Light create post: "Write something…" sat under the gold crest painted on the field's top edge */
+html body.fs.fs-heavens-light .cpm-textarea { padding-top: 18px !important; }
+/* Good Witch "My Profile" pop-up: the avatar-mask cut the photo into a frameless star; round in its own ring like Home */
+html body.fs.fs-good-witch .modal-profile-top img { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important;
+  width: 180px !important; height: 180px !important; padding: 6px !important; box-sizing: border-box !important; object-fit: cover;
+  background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; margin: 0 auto 10px !important; display: block; }
+/* #Basic comments: "Write a comment…" was cut off (20px field ends in a ~150px field) */
+html body.fs.fs-basic #commentInput { border-width: 10px 12px !important; border-image-width: 10px 12px !important; }
+html body.fs.fs-basic #commentInput::placeholder { font-size: 14px !important; }
+/* Anime Blaze store cards: the name banner + Equip are painted over the picture's bottom, so the ✓ goes top-left */
+html body.fs.fs-anime-blaze .fsk-owned.fsk-owned { top: 6px !important; bottom: auto !important; }
