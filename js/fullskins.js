@@ -292,7 +292,7 @@
   // Pumpkin Spice (assets/pumpkin/, concept-pumpkin*.png), same file names in both. Signature interaction: the Barista Bar
   // (basicBar). Brief prototypes/basic-kit-brief.md → kit/{rose,pumpkin,fx} → assets/. Notes: images/skins/basic/NOTES.md.
   FULL_SKINS['basic'] = {
-    name: '#Basic', dark: false, ink: '#4a3426', muted: '#8a7262', accent: '#c98f86', wip: true,
+    name: '#Basic', dark: false, ink: '#4a3426', muted: '#8a7262', accent: '#c98f86',
     font: "'Quicksand', sans-serif", titleFont: "'Quicksand', sans-serif",
     timeline: 3, avatar: 'center', slice: 15, edge: 16,
     variants: [

@@ -1,6 +1,6 @@
 # #Basic — build notes
 
-Status: WIP (branch `claude/basic-skin-65ee54`), `wip: true` in `js/fullskins.js`. Two renditions: Rosé + Pumpkin Spice.
+Status: SHIPPED Nov 17 2026 (owner approved). Two renditions: Rosé + Pumpkin Spice.
 
 ## Targets
 - Approved Nov 16 2026 ("Approved, go"): `concept-rose.png`, `concept-rose-2.png`, `concept-rose-barista.png`,
@@ -63,3 +63,4 @@ convert with `prototypes/tools/basic_convert.py images/skins/basic`.
 - Nov 17: owner "not as close or cluttered as the concept" → shelf-scene repainted in the concept arrangement (prototypes/basic-shelf-v2-brief.md), windows re-measured, dish nests on the tall frame, name card leans right on the shelf.
 - Nov 17: full QA pass, every page in Rosé + Pumpkin (read-only). Fixed: other-profile dish height, Pumpkin chat sent-bubble contrast, equipped tag (now a tick on the picture), quest reward chip centring, Pumpkin quests header inside the notepad, modal square corners + dark rules, post avatar touching card edge, name card stats inside the card.
 - Nov 17: owner "everything is too spaced out" → tighter rhythm everywhere (home blocks, card/ledge empty space reclaimed, compact photos card, lists, headers, chips, skins grid, posts); Pumpkin art pieces had 60–120px transparent margins (notepad, post cards, place card, bubbles…) → trimmed in kit/ to their painted edge + 14px like Rosé.
+- Nov 17: owner "Yes, ship it" → wip removed, store card from the painted Rosé store-card, assets/ whitelisted, merged + pushed to main.
