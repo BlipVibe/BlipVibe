@@ -9075,3 +9075,27 @@ html body.fs.fs-basic #commentInput { border-width: 10px 12px !important; border
 html body.fs.fs-basic #commentInput::placeholder { font-size: 14px !important; }
 /* Anime Blaze store cards: the name banner + Equip are painted over the picture's bottom, so the ✓ goes top-left */
 html body.fs.fs-anime-blaze .fsk-owned.fsk-owned { top: 6px !important; bottom: auto !important; }
+/* Owner (Nov 17, rule V: profile view = Home, "always refer back to the concept art"): someone's profile shows their photo
+   in the SAME themed frame as the Home profile = the concept's profile screen (Witchcraft: round photo in the gold crescent
+   ring; was the other-profile arch). Group pages keep their own frame. */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft #page-profile-view .pv-profile-card:not(#_) .profile-avatar-wrap { width: 150px !important; height: 150px !important; border-radius: 50% !important; margin: -190px auto 0 !important; }
+  html body.fs.fs-witchcraft #page-profile-view .pv-profile-card:not(#_) .profile-avatar-wrap .profile-avatar { position: relative !important; left: auto !important; top: auto !important;
+    width: 100% !important; height: 100% !important; border-radius: 50% !important; -webkit-mask: none !important; mask: none !important; object-fit: cover !important; }
+  html body.fs.fs-witchcraft #page-profile-view .pv-profile-card:not(#_) .profile-avatar-wrap::after { inset: -5% !important; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; }
+}
+/* Anime Blaze (same rule): the tilted cut-in on someone's profile becomes the Home photo — round in the concept's sketchy
+   ink ring, centred under the cover, name and bio below it as on Home */
+@media (max-width: 768px) {
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .profile-avatar-wrap { position: relative !important; top: auto !important; right: auto !important;
+    width: 145px !important; height: 145px !important; margin: -105px auto 0 !important; filter: none !important; z-index: 3 !important; border-radius: 50% !important; }
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .profile-avatar-wrap .profile-avatar { clip-path: none !important; border-radius: 50% !important; filter: none !important; }
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .profile-avatar-wrap::after { display: block !important; }
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .profile-info { align-items: center !important; }
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .fs-namecard { margin: 8px auto 0 !important; padding: 0 !important; background: none !important; text-align: center !important; max-width: 100%; }
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .fs-namecard > .profile-name { display: block !important; background: none !important; border: 0 !important; border-image: none !important;
+    padding: 0 !important; text-align: center !important; font-size: 34px !important; }
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .fs-namecard > :is(.profile-title, .profile-about) { display: block !important; text-align: center !important; margin: 6px 0 0 !important; }
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .fs-namecard > :first-of-type + :is(.profile-title, .profile-about) { margin-top: 6px !important; }
+  html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .profile-info > :is(.profile-title, .profile-about, p, div:not(.fs-namecard):not(.profile-stats):not(.pv-actions):not(.profile-avatar-wrap)) { text-align: center !important; }
+}

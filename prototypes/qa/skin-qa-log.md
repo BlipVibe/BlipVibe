@@ -18,7 +18,7 @@ kept on this machine only), `images/skins/README.md` and the skin's `NOTES.md`. 
 | R | **Readable** | text is hard to read over its background (menus included); text fields under 16px |
 | L | **Long names** | a long display name (test: "Alexandria Montgomery") on Home's profile card, my Profile or someone else's profile breaks mid-word, becomes unreadable, collides with or hides behind decorations (flourishes, laurels, frames, candelabras), or pushes the layout under the cover art |
 | U | **Unreadable text** | any text too close in colour to what's behind it — button labels (Free / Buy / Join / Follow / tabs, active and inactive), pop-up titles, names and placeholders, field placeholders and typed text, card headings, app-coloured icons left unthemed. Pass ≈ WCAG 4.5:1 body, 3:1 large titles. Also grep for CSS variables used but never defined (they fall back silently) |
-| V | **Profile view = Home** (owner, Nov 17) | someone's profile shows its pictures differently from the Home profile of the same skin (cover / timeline frames, art, layout), or the profile photo doesn't fill its frame on either |
+| V | **Profile view = Home** (owner, Nov 17) | someone's profile shows its pictures differently from the Home profile of the same skin (cover / timeline frames, art, layout, and the profile photo's themed frame — taken from the concept art), or the profile photo doesn't fill its frame on either |
 | M | **Menus/motion** | the account menu has every item on screen with Log out reachable; liked/disliked visibly fill; the skin's own swap/equip animations play and nothing just pops in |
 
 **Every pass also checks:** the owner's phone (and the QA install) runs the current OTA version, not the App Store builtin bundle. Any new `skin_data` key the July App Store copy doesn't know is added to the `preserve_new_skin_keys` list (supabase/app-store-copy-compat.sql).
@@ -119,7 +119,6 @@ network) are horizontal scrollers by design. No story to open on the QA account 
 |---|---|---|
 | Group page layout doesn't match the concept (compact header + Feed / Chat / Group Shop tabs) | all | rework per skin, keeping Edit / Leave / Rules / Invite in the ⋯ menu; needs the owner's OK on where those go |
 | Heaven's Light rendition swap starts with one plain white frame | HL | confirm with the owner whether the flash is intended |
-| Profile photo shape on someone's profile differs from Home: Anime Blaze tilted cut-in (owner said they love it), Witchcraft arch (concept other-profile) vs round on Home | Anime Blaze, Witchcraft | owner: does rule V cover the profile photo too, or only the cover/timeline pictures? |
 
 ## Owner-reported findings
 
@@ -155,7 +154,7 @@ so nothing comes back. Re-check column: date of the last pass that confirmed it.
 | 25 | Nov 17 | #Basic (Rosé + Pumpkin Spice) | all screens | everything too spaced out → tightened; Pumpkin art had 60–120 px transparent margins (trimmed) | fixed before ship (7a4477e) | ✓ Nov 17 pass 2 |
 
 | 26 | Nov 17 | Heaven's Light (Day + Twilight) | Home top bar | profile picture doesn't fill its little space (photo hung out of the wreath's gold ring on the left, gap on the right) | 063fa13 (wreath re-centred on the ring measured in avatar-wings) | ✓ Nov 17 pass 2 |
-| 27 | Nov 17 | all | profile view | rule: the profile view's picture area must match the Home profile view (criterion V) | 063fa13 (Superhero Heroes: big + two stacked grid on profiles too) | ✓ Nov 17 pass 2: Scrapbook, Good Witch, Vaporwave, HL, Blood Moon, Superhero, #Basic match; Anime Blaze + Witchcraft avatar shapes differ — see Open |
+| 27 | Nov 17 | all | profile view | rule: the profile view's picture area must match the Home profile view (criterion V) | 063fa13 (Superhero Heroes: big + two stacked grid on profiles too) | ✓ Nov 17 pass 2: Scrapbook, Good Witch, Vaporwave, HL, Blood Moon, Superhero, #Basic match; Anime Blaze + Witchcraft profile photos made round in their Home rings (owner: "make them round" — round where the concept's profile screen is round, themed otherwise; always per the concept art) |
 | 28 | Nov 17 | all | every screen | check everything is aligned and matches the concept art; fix what doesn't | 063fa13 + this pass | ✓ Nov 17 pass 2 (fixes below) |
 
 ## Queued for the next pass
