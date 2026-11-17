@@ -81,3 +81,12 @@ Good Witch owns the circle reveal from the button. So Superhero uses none of tho
   divider, photo tiles, bigger stories + quest icons; Home card mirrored (photo left / right); Profile page placement
   differs (Heroes centred + starburst counters; Villains dossier + hex readouts + command-list buttons).
   QA on my own simulator (BlipVibe Superhero) with the QA read-only guard; deleted afterwards.
+- Nov 16 (night): owner: profile photo covered a timeline picture + "doesn't look very structured" → ChatGPT redesign
+  concepts `concept-profile-heroes.png` / `concept-profile-villains.png` (brief `prototypes/superhero-profile-redesign-brief.md`),
+  approved ("Build them … 1 for 1, same spacing"). Heroes = one continuous comic page (plain cream, ink rules between
+  sections, full-width red banner bar, profile row photo | ink divider | name, bio between laurels, gold-ringed badges,
+  counters without a box, Photos on the banner bar); profile timeline = straight row of three square panels
+  (timeline-row + mask); Home keeps the big + two stacked grid. Villains = compact steel dossier under the monitor wall,
+  counters plate attached, Photos in its own steel frame. Gotchas: the app's .pv-layout has margin-top:-60px (pulled the
+  info over the cover); `:is(#page-home #profileCard, …)` counts TWO ids — overrides must match it; children of the
+  display:contents .fs-namecard need their own grid cells + z-index above the panel pseudo-item.

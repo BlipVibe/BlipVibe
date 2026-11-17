@@ -287,7 +287,9 @@
       // profile pop-up (prototypes/superhero-profile-modal-brief.md)
       'modal-panel', 'modal-header', 'photo-ring', 'bio-box', 'stat-badge', 'skin-tag', 'close-btn', 'modal-deco',
       // Home rework (prototypes/superhero-home-brief.md)
-      'sticker-burst', 'sticker-flyer', 'sticker-corner', 'section-divider', 'photo-tile'],
+      'sticker-burst', 'sticker-flyer', 'sticker-corner', 'section-divider', 'photo-tile',
+      // profile redesign (prototypes/superhero-profile-redesign-brief.md): Heroes profile row of three square panels
+      'timeline-row', 'timeline-row-mask', 'banner-bar', 'ink-rule', 'badge-ring'],
     theme: { '--dark': '#1a1a1a', '--gray': '#4a4a52', '--light-bg': '#fbf3dc', '--card': '#fffaf0',
       '--border': 'rgba(0,0,0,.6)', '--nav-bg': '#fbf3dc' },
     fonts: 'https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Black+Ops+One&family=Comic+Neue:ital,wght@0,700;1,700&family=Exo+2:wght@600;700&display=swap'

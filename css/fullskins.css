@@ -7608,3 +7608,250 @@ html body.fs.fs-superhero #page-profile-view .pv-profile-card .profile-stats > .
 html body.fs.fs-superhero[data-fs-variant="heroes"] .pv-profile-card .profile-avatar-wrap { margin-top: -96px !important; }
 html body.fs.fs-superhero[data-fs-variant="heroes"] .pv-profile-card .profile-name { margin-top: 44px !important; position: relative; z-index: 4; }
 html body.fs.fs-superhero[data-fs-variant="villains"] #timelineCover::before { left: auto; right: -12px; bottom: auto; top: -18px; transform: rotate(14deg); }
+/* ===================== PROFILE REDESIGN (owner, Nov 16: "the profile picture is literally covering one of the pictures";
+   "doesn't look very structured" → ChatGPT concepts concept-profile-heroes.png / concept-profile-villains.png, approved:
+   "Build them"). Rules: NOTHING overlaps a timeline photo; a clear grid; Heroes = comic page of inked panels, Villains =
+   steel surveillance dossier. These rules supersede the earlier profile / Home-card placement above. ===================== */
+/* --- shared: no stickers or photos over the timeline; photo sits in the info block, never pulled up over the frames --- */
+html body.fs.fs-superhero #timelineCover::before { content: none !important; }
+html body.fs.fs-superhero .fs-tl-own::before { right: 4% !important; bottom: 6% !important; width: 26px !important; height: 26px !important; }
+html body.fs.fs-superhero :is(#page-home #profileCard, #page-profile-view .pv-profile-card) { margin: 10px 4px 8px !important; }
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .profile-info { display: grid !important; grid-template-columns: 116px minmax(0, 1fr); column-gap: 12px; row-gap: 0; align-items: center;
+  position: relative; border: 0 !important; border-image: none !important; background: none !important; padding: 0 !important; text-align: left !important; }
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .profile-info > * { grid-column: 1 / -1; position: relative; z-index: 1; }
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .fs-namecard { display: contents !important; }
+/* the info panel drawn behind the photo + name rows (a pseudo grid item) */
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .profile-info::before { content: ""; grid-column: 1 / -1; grid-row: 1 / 4; align-self: stretch; z-index: 0; margin: -16px -10px;
+  border: solid transparent; border-width: 22px; border-image: var(--fs-profile-card) 90 fill / 22px stretch; }
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .profile-avatar-wrap { grid-column: 1 !important; grid-row: 1 / 4; width: 100px !important; height: 100px !important; margin: 4px 0 4px 6px !important;
+  border-radius: 50% !important; overflow: visible !important; z-index: 2 !important; justify-self: start; align-self: center; }
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .profile-avatar-wrap::after { inset: -13% !important; background: var(--fs-avatar-frame) center / 100% 100% no-repeat !important; }
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .avatar-edit-btn { right: -6% !important; bottom: -4% !important; width: 32px !important; height: 32px !important; }
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .profile-name { grid-column: 2 !important; grid-row: 1; align-self: end; display: block !important; margin: 0 !important; padding: 0 !important;
+  background: none !important; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: clamp(21px, 6.6vw, 28px) !important; line-height: 1.05 !important;
+  color: var(--sh-title) !important; text-shadow: none !important; text-transform: uppercase; text-align: left !important; }
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .profile-title { grid-column: 2 !important; grid-row: 2; margin: 2px 0 0 !important; padding: 0 !important; background: none !important;
+  text-align: left !important; font: italic 700 16px var(--sh-bfont) !important; text-transform: none !important; color: var(--sh-ink) !important; display: block !important; -webkit-line-clamp: unset; }
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .profile-about { grid-row: 4; margin: 20px 0 0 !important; padding: 2px 44px !important; text-align: center !important; text-transform: none !important;
+  font: 700 16px var(--sh-bfont) !important; color: var(--sh-ink) !important; display: block !important; -webkit-line-clamp: unset;
+  background: var(--fs-laurel-sprig) left center / 32px auto no-repeat !important; }
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .profile-about::after { content: "" !important; display: block !important; position: absolute; right: 0; top: 0; bottom: 0; width: 32px;
+  background: var(--fs-laurel-sprig) center / 32px auto no-repeat; transform: scaleX(-1); }
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .profile-title:empty + .profile-about, html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .profile-about:empty { }
+html body.fs.fs-superhero .pv-profile-card :is(.badge-row, .profile-website, #pvMutualFollowers) { justify-content: center !important; text-align: center !important; margin-top: 10px !important; }
+html body.fs.fs-superhero .pv-profile-card .badge-row { gap: 10px !important; }
+html body.fs.fs-superhero .pv-profile-card .badge-row > * { transform: scale(1.35); margin: 4px 6px !important; }
+/* counters: one structured row with the ink / neon divider, on the stats panel */
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .profile-stats { display: flex !important; justify-content: center; align-items: center; width: auto !important; margin: 14px 0 0 !important; gap: 0 !important;
+  border: solid transparent !important; border-width: 14px 22px !important; border-image: var(--fs-stats-frame) 90 fill / 14px 22px stretch !important; background: none !important; padding: 0 !important; }
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .profile-stats > .stat,
+html body.fs.fs-superhero #page-profile-view .pv-profile-card .profile-stats > .stat,
+html body.fs.fs-superhero #page-profile-view .pv-profile-card .profile-stats > .stat + .stat { flex: 1 1 0 !important; width: auto !important; height: auto !important; background: none !important; padding: 2px 0 !important; }
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .profile-stats > .stat + .stat,
+html body.fs.fs-superhero #page-profile-view .pv-profile-card .profile-stats > .stat + .stat { background: var(--fs-stats-divider) left center / 3px 80% no-repeat !important; }
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .stat-count { font-size: 26px !important; color: var(--sh-title) !important; text-shadow: none !important; }
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .stat-label { font-size: 14px !important; color: var(--sh-title) !important; text-shadow: none !important; text-transform: none !important; }
+/* buttons: Edit Profile full width; someone else's = Follow + Message, then the rest in a fixed grid (order per rendition) */
+html body.fs.fs-superhero #page-profile-view .pv-actions { display: grid !important; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px !important; margin: 14px 0 0 !important; flex-direction: unset; }
+html body.fs.fs-superhero #page-profile-view .pv-actions .btn { grid-column: span 6; width: auto !important; justify-content: center !important; text-align: center !important; padding: 2px 4px !important; display: flex !important; align-items: center; gap: 6px; font-size: 16px !important; }
+html body.fs.fs-superhero #page-profile-view .pv-actions :is(#pvFollowBtn, #pvMsgBtn, #pvCloseFriendBtn, #pvInviteGroupBtn) { grid-column: span 3; }
+html body.fs.fs-superhero #page-profile-view .pv-actions :is(#pvMuteBtn, #pvBlockBtn, #pvReportUserBtn) { grid-column: span 2; font-size: 14px !important; }
+html body.fs.fs-superhero #page-profile-view .pv-actions #pvEditProfileBtn { grid-column: 1 / -1; width: auto !important; margin: 0 !important; }
+html body.fs.fs-superhero #page-profile-view .pv-actions #pvFollowBtn { border-image-source: var(--fs-follow-btn) !important; color: var(--sh-on) !important; }
+html body.fs.fs-superhero #page-profile-view .pv-actions #pvMsgBtn { border-image-source: var(--fs-follow-btn) !important; color: var(--sh-on) !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #page-profile-view .pv-actions #pvMsgBtn { border-image-source: var(--fs-action-btn) !important; color: var(--sh-title) !important; }
+html body.fs.fs-superhero #page-profile-view .pv-actions .btn i { color: inherit !important; }
+/* Heroes order: Follow · Message / Mute · Block · Report / Close Friend (full) / Invite (full) */
+html body.fs.fs-superhero[data-fs-variant="heroes"] #page-profile-view .pv-actions :is(#pvCloseFriendBtn, #pvInviteGroupBtn) { grid-column: 1 / -1; order: 5; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] #page-profile-view .pv-actions #pvInviteGroupBtn { order: 6; }
+/* Villains order: Follow · Message / Close Friend · Invite / Mute · Block · Report */
+html body.fs.fs-superhero[data-fs-variant="villains"] #page-profile-view .pv-actions :is(#pvMuteBtn, #pvBlockBtn, #pvReportUserBtn) { order: 5; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #page-profile-view .pv-actions .btn { font-size: 14px !important; }
+/* Photos section: banner title (red ribbon / steel plate), chips, thumbnails in mini comic panels / mini monitors */
+html body.fs.fs-superhero #page-profile-view .photos-card { border: 0 !important; border-image: none !important; background: none !important; padding: 0 !important; margin: 18px 4px 0 !important; }
+html body.fs.fs-superhero #page-profile-view .photos-card .card-heading { display: block !important; text-align: center; margin: 0 0 10px !important; padding: 10px 0 12px !important; font-size: 24px !important; text-transform: uppercase;
+  color: #fff !important; background: var(--fs-title-banner) center / 100% 100% no-repeat !important; text-shadow: 2px 2px 0 #111, -1px -1px 0 #111, 1px -1px 0 #111, -1px 1px 0 #111; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #page-profile-view .photos-card .card-heading { color: #e8ffe0 !important; text-shadow: 0 0 8px rgba(125, 255, 58, .55), 1px 1px 0 #000; width: 70%; margin: 0 auto 10px !important; }
+html body.fs.fs-superhero #page-profile-view .photos-card .card-heading i { display: none !important; }
+html body.fs.fs-superhero #page-profile-view .photos-card .search-tabs { display: grid !important; grid-template-columns: 1fr 1fr; gap: 8px !important; }
+html body.fs.fs-superhero #page-profile-view .photos-card .search-tab { flex: none !important; }
+html body.fs.fs-superhero #page-profile-view .photos-card :is(.photos-grid, .pv-photos-grid, .photos-preview) { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 10px !important; margin-top: 12px; }
+html body.fs.fs-superhero #page-profile-view .photos-card :is(.photos-grid, .pv-photos-grid, .photos-preview) > * { transform: none !important; position: relative; }
+html body.fs.fs-superhero #page-profile-view .photos-card :is(.photos-grid, .pv-photos-grid, .photos-preview) > * img { width: 100% !important; aspect-ratio: 1; object-fit: cover; border-radius: 0 !important; display: block; }
+html body.fs.fs-superhero #page-profile-view .photos-card :is(.photos-grid, .pv-photos-grid, .photos-preview) > *::after { content: ""; position: absolute; inset: -6%; pointer-events: none; background: var(--fs-photo-tile) center / 100% 100% no-repeat; }
+html body.fs.fs-superhero #page-profile-view .page-container::after { content: ""; display: block; width: calc(100% + 16px); margin: 12px -8px 0; aspect-ratio: 1290 / 520; background: var(--fs-skyline-deco) center bottom / 100% 100% no-repeat; pointer-events: none; }
+
+/* --- HEROES: profile timeline = a straight row of three equal square comic panels (timeline-row); Home keeps the big + two
+   stacked grid --- */
+@media (max-width: 768px) {
+  html body.fs.fs-superhero[data-fs-variant="heroes"] #pvCoverBanner { height: calc((100vw + 16px) * 470 / 1290) !important; background: none !important; margin-top: 6px !important; }
+}
+html body.fs.fs-superhero[data-fs-variant="heroes"] #pvCoverBanner .fs-timeline::after { background-image: var(--fs-timeline-row) !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] #pvCoverBanner .fs-tl-slot :is(img), html body.fs.fs-superhero[data-fs-variant="heroes"] #pvCoverBanner .fs-tl-slot.fs-tl-empty::after {
+  -webkit-mask-image: var(--fs-timeline-row-mask) !important; mask-image: var(--fs-timeline-row-mask) !important; }
+/* --- VILLAINS: one steel dossier plate holds photo + name + status + bio + badges; the counters plate joins under it --- */
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-info { grid-template-columns: 108px minmax(0, 1fr); align-items: start; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-info::before { grid-row: 1 / 6; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-avatar-wrap { grid-row: 1 / 6; align-self: center; width: 96px !important; height: 96px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-name { text-transform: none; font-size: clamp(19px, 6vw, 25px) !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-about { grid-column: 2 !important; grid-row: 3; margin: 4px 0 0 !important; padding: 0 !important; text-align: left !important;
+  background: none !important; font-weight: 600 !important; font-size: 15px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-about::after { content: none !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .badge-row { grid-column: 2 !important; grid-row: 4; justify-content: flex-start !important; margin: 8px 0 4px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .badge-row > * { transform: scale(1.2); margin: 3px 5px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-stats { margin-top: 18px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) :is(.stat-count, .stat-label) { color: #eef2ea !important; }
+/* Heroes profile row: windows measured from timeline-row-mask (three equal squares) */
+html body.fs.fs-superhero[data-fs-variant="heroes"] #pvCoverBanner .fs-tl-slot-1 { --sh-l: 5.89%; --sh-t: 14.04%; --sh-w: 26.20%; --sh-h: 71.91%; --sh-msx: 381.7%; --sh-msy: 139.1%; --sh-mx: 7.98%; --sh-my: 50.00%; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] #pvCoverBanner .fs-tl-slot-2 { --sh-l: 36.90%; --sh-t: 14.04%; --sh-w: 26.20%; --sh-h: 71.91%; --sh-msx: 381.7%; --sh-msy: 139.1%; --sh-mx: 50.00%; --sh-my: 50.00%; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] #pvCoverBanner .fs-tl-slot-3 { --sh-l: 67.91%; --sh-t: 14.04%; --sh-w: 26.20%; --sh-h: 71.91%; --sh-msx: 381.7%; --sh-msy: 139.1%; --sh-mx: 92.02%; --sh-my: 50.00%; }
+/* redesign fix: the name / status / bio come out of .fs-namecard (display: contents), so they need their own grid cell and
+   stacking above the panel pseudo-item */
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) :is(.profile-name, .profile-title, .profile-about) { position: relative !important; z-index: 2 !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#profileCard, .pv-profile-card) .profile-about { grid-column: 1 / -1 !important; }
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .profile-title:empty { display: none !important; }
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .profile-name { grid-row: 1 / 3; align-self: center; }
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .profile-name:has(+ .profile-title:not(:empty)) { grid-row: 1; align-self: end; }
+/* redesign fix 2 (vs concepts): full-width counters + mutual row in both; big full-width Edit Profile plaque; Villains buttons
+   back on the concept grid (the earlier stacked-list rules are more specific, so these carry the variant too); profile
+   timeline clear of the top bar */
+html body.fs.fs-superhero[data-fs-variant] :is(#profileCard, .pv-profile-card) .profile-info > :is(.profile-stats, #pvMutualFollowers, .profile-website, .pv-actions, .pv-online, .pv-status-line) { grid-column: 1 / -1 !important; }
+html body.fs.fs-superhero[data-fs-variant] :is(#profileCard, .pv-profile-card) .profile-info > :not(.profile-avatar-wrap):not(.fs-namecard):not(.badge-row):not(.profile-stats):not(.pv-actions) { grid-column: 1 / -1 !important; }
+html body.fs.fs-superhero[data-fs-variant] .pv-profile-card #pvMutualFollowers { justify-content: center !important; text-align: center !important; }
+html body.fs.fs-superhero[data-fs-variant] #page-profile-view .pv-actions { display: grid !important; grid-template-columns: repeat(6, minmax(0, 1fr)) !important; flex-direction: unset !important; gap: 8px !important; margin: 14px 0 0 !important; }
+html body.fs.fs-superhero[data-fs-variant] #page-profile-view .pv-actions .btn { justify-content: center !important; text-align: center !important; padding: 2px 4px !important; width: auto !important; }
+html body.fs.fs-superhero[data-fs-variant] #page-profile-view .pv-actions :is(#pvFollowBtn, #pvMsgBtn, #pvCloseFriendBtn, #pvInviteGroupBtn) { grid-column: span 3 !important; }
+html body.fs.fs-superhero[data-fs-variant] #page-profile-view .pv-actions :is(#pvMuteBtn, #pvBlockBtn, #pvReportUserBtn) { grid-column: span 2 !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] #page-profile-view .pv-actions :is(#pvCloseFriendBtn, #pvInviteGroupBtn) { grid-column: 1 / -1 !important; }
+html body.fs.fs-superhero[data-fs-variant] #page-profile-view .pv-actions #pvEditProfileBtn { grid-column: 1 / -1 !important; width: auto !important; min-height: 56px; font-size: 24px !important; border-width: 12px 28px !important; }
+html body.fs.fs-superhero[data-fs-variant] #page-profile-view .pv-actions :is(#pvFollowBtn, #pvMsgBtn) { min-height: 44px; font-size: 17px !important; }
+@media (max-width: 768px) { html body.fs.fs-superhero[data-fs-variant] #pvCoverBanner { margin-top: 56px !important; } }
+/* redesign fix 3: the info panel (drawn 16px outside its grid) starts BELOW the timeline frames — never over them; Edit Profile
+   spans the full width like the concepts; Villains' two-up buttons fit their words */
+html body.fs.fs-superhero[data-fs-variant] :is(#page-home #profileCard, #page-profile-view .pv-profile-card) { margin-top: 30px !important; }
+html body.fs.fs-superhero[data-fs-variant] #page-profile-view .pv-actions #pvEditProfileBtn { justify-self: stretch !important; width: 100% !important; box-sizing: border-box; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #page-profile-view .pv-actions :is(#pvCloseFriendBtn, #pvInviteGroupBtn, #pvFollowBtn, #pvMsgBtn) { font-size: 12.5px !important; letter-spacing: 0 !important; }
+/* same Photos section on Home (concept home phones) */
+html body.fs.fs-superhero #page-home .photos-card { border: 0 !important; border-image: none !important; background: none !important; padding: 0 !important; margin: 18px 4px 0 !important; }
+html body.fs.fs-superhero #page-home .photos-card .card-heading { display: block !important; text-align: center; margin: 0 0 10px !important; padding: 10px 0 12px !important; font-size: 24px !important; text-transform: uppercase;
+  color: #fff !important; background: var(--fs-title-banner) center / 100% 100% no-repeat !important; text-shadow: 2px 2px 0 #111, -1px -1px 0 #111, 1px -1px 0 #111, -1px 1px 0 #111; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #page-home .photos-card .card-heading { color: #e8ffe0 !important; text-shadow: 0 0 8px rgba(125, 255, 58, .55), 1px 1px 0 #000; width: 70%; margin: 0 auto 10px !important; }
+html body.fs.fs-superhero #page-home .photos-card .card-heading i { display: none !important; }
+html body.fs.fs-superhero #page-home .photos-card .search-tabs { display: grid !important; grid-template-columns: 1fr 1fr; gap: 8px !important; }
+html body.fs.fs-superhero #page-home .photos-card .search-tab { flex: none !important; }
+html body.fs.fs-superhero #page-home .photos-card :is(.photos-grid, .pv-photos-grid, .photos-preview) { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 10px !important; margin-top: 12px; }
+html body.fs.fs-superhero #page-home .photos-card :is(.photos-grid, .pv-photos-grid, .photos-preview) > * { transform: none !important; position: relative; }
+html body.fs.fs-superhero #page-home .photos-card :is(.photos-grid, .pv-photos-grid, .photos-preview) > * img { width: 100% !important; aspect-ratio: 1; object-fit: cover; border-radius: 0 !important; display: block; }
+html body.fs.fs-superhero #page-home .photos-card :is(.photos-grid, .pv-photos-grid, .photos-preview) > *::after { content: ""; position: absolute; inset: -6%; pointer-events: none; background: var(--fs-photo-tile) center / 100% 100% no-repeat; }
+/* redesign fix 4 (vs concepts): PROFILE title plate in the top bar (red ribbon / steel plate) beside the back button; Heroes
+   ink divider between the photo and the name */
+@media (max-width: 768px) {
+  html body.fs.fs-superhero #page-profile-view.active::before { content: "PROFILE"; position: absolute; z-index: 5; left: 50%; top: calc(env(safe-area-inset-top, 0px) + 10px); transform: translateX(-50%);
+    width: auto !important; height: auto !important; padding: 9px 46px 11px; white-space: nowrap; font: 400 25px var(--sh-tfont); letter-spacing: var(--sh-tspace); color: #fff; opacity: 1 !important;
+    background: var(--fs-title-banner) center / 100% 100% no-repeat !important; text-shadow: 2px 2px 0 #111, -1px -1px 0 #111, 1px -1px 0 #111, -1px 1px 0 #111; pointer-events: none; }
+  html body.fs.fs-superhero[data-fs-variant="villains"] #page-profile-view.active::before { color: #e8ffe0; text-shadow: 0 0 8px rgba(125, 255, 58, .55), 1px 1px 0 #000; }
+}
+html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#profileCard, .pv-profile-card) :is(.profile-name, .profile-title) { padding-left: 14px !important; background: var(--fs-stats-divider) left center / 3px 100% no-repeat !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#profileCard, .pv-profile-card) .profile-name { font-size: clamp(22px, 7vw, 30px) !important; }
+/* redesign fix 5: older per-rendition rules pulled the photo / name up over the timeline (-96px / -44px); the redesign puts
+   them inside the info panel, below the frames */
+html body.fs.fs-superhero[data-fs-variant] #page-profile-view .pv-profile-card .profile-avatar-wrap { margin: 4px 0 4px 6px !important; }
+html body.fs.fs-superhero[data-fs-variant] #page-profile-view .pv-profile-card .profile-name { margin: 0 !important; }
+html body.fs.fs-superhero[data-fs-variant] #page-profile-view .pv-profile-card { margin-top: 34px !important; }
+/* the app's .pv-layout pulls the profile column up 60px over the cover; the redesign keeps it below the timeline frames */
+html body.fs.fs-superhero #page-profile-view .pv-layout { margin-top: 0 !important; }
+html body.fs.fs-superhero[data-fs-variant] #page-profile-view .pv-profile-card { margin-top: 26px !important; }
+/* redesign spacing (matched to the concepts): tighter section gaps; the name centred in its panel when there's no status */
+html body.fs.fs-superhero :is(#profileCard, .pv-profile-card) .profile-info:not(:has(.profile-title:not(:empty))) .profile-name { grid-row: 1 / 4 !important; align-self: center !important; }
+html body.fs.fs-superhero[data-fs-variant] :is(#profileCard, .pv-profile-card) .profile-about { margin-top: 16px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-about { margin-top: 4px !important; }
+html body.fs.fs-superhero[data-fs-variant] .pv-profile-card .badge-row { margin-top: 8px !important; margin-bottom: 0 !important; }
+html body.fs.fs-superhero[data-fs-variant] :is(#profileCard, .pv-profile-card) .profile-stats { margin-top: 10px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-stats { margin-top: 14px !important; }
+html body.fs.fs-superhero[data-fs-variant] #page-profile-view .pv-actions { margin-top: 10px !important; }
+html body.fs.fs-superhero[data-fs-variant] :is(#page-profile-view, #page-home) .photos-card { margin-top: 12px !important; }
+html body.fs.fs-superhero[data-fs-variant] :is(#page-profile-view, #page-home) .photos-card .card-heading { margin-bottom: 8px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-info .profile-name { grid-row: 1 !important; align-self: end !important; margin-top: 6px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-info:not(:has(.profile-title:not(:empty))) .profile-about { grid-row: 2 !important; }
+/* ===== Villains compact pass (owner: "close but not compact enough" + the concept): the dossier plate tucks up into the
+   monitor wall's empty bracket strip (below the screens — never over a photo), counters attached right under it, small even
+   gaps, the Photos section inside its own steel frame ===== */
+@media (max-width: 768px) {
+  html body.fs.fs-superhero[data-fs-variant="villains"] #pvCoverBanner { margin-top: 46px !important; }
+  html body.fs.fs-superhero[data-fs-variant="villains"] #timelineCover { margin-top: 0 !important; }
+}
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#page-home #profileCard, #page-profile-view .pv-profile-card) { margin-top: -20px !important; margin-bottom: 4px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-info { row-gap: 0 !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-info::before { margin: -12px -8px -10px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-stats { margin-top: 12px !important; border-width: 10px 18px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .stat-count { font-size: 23px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .badge-row { margin: 6px 0 0 !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #page-profile-view .pv-actions { margin-top: 6px !important; gap: 6px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #page-profile-view .pv-actions #pvEditProfileBtn { min-height: 50px; font-size: 21px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#page-profile-view, #page-home) .photos-card { margin: 8px 0 0 !important; padding: 0 2px 4px !important;
+  border: solid transparent !important; border-width: 30px 18px 16px !important; border-image: var(--fs-profile-card) 90 fill / 30px 18px 16px stretch !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#page-profile-view, #page-home) .photos-card .card-heading { margin: -42px auto 8px !important; width: 62% !important; padding: 8px 0 10px !important; font-size: 20px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#page-profile-view, #page-home) .photos-card :is(.photos-grid, .pv-photos-grid, .photos-preview) { gap: 6px !important; margin-top: 8px !important; }
+/* ===== Heroes 1-for-1 pass (owner: "gotta stay within the concepts" + concept-profile-heroes.png): ONE continuous comic page —
+   plain cream paper inside a thick ink border, sections separated by thin ink rules (no floating rounded cards, no busy
+   background behind the content), the full-width red banner bar on top, gold-ringed badges, counters without a box ===== */
+body.fs-superhero[data-fs-variant="heroes"]:has(#page-profile-view.active) #premiumBgLayer { background: #fbf3dc !important; }
+@media (max-width: 768px) {
+  /* top bar = the full-width red banner with the title (profile) */
+  html body.fs.fs-superhero[data-fs-variant="heroes"] #page-profile-view.active::before { left: 0 !important; right: 0 !important; transform: none !important; top: env(safe-area-inset-top, 0px) !important;
+    height: 52px !important; padding: 0 !important; line-height: 52px; text-align: center; font-size: 27px !important; background: var(--fs-banner-bar) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-superhero[data-fs-variant="heroes"]:has(#page-profile-view.active) .navbar .nav-logo { top: calc(env(safe-area-inset-top, 0px) + 7px) !important; z-index: 310 !important; }
+  html body.fs.fs-superhero[data-fs-variant="heroes"] #pvCoverBanner { margin-top: 58px !important; }
+}
+/* the page: one ink-bordered sheet around timeline + profile + photos */
+html body.fs.fs-superhero[data-fs-variant="heroes"] #page-profile-view .page-container, html body.fs.fs-superhero[data-fs-variant="heroes"] #page-profile-view .pv-layout { background: none !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] #page-profile-view .pv-profile-card { margin: 0 4px !important; padding: 0 10px !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#profileCard, .pv-profile-card) .profile-info::before { content: none !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#profileCard, .pv-profile-card) .profile-info { padding: 10px 0 0 !important; background: var(--fs-ink-rule) center top / 100% 4px no-repeat !important; row-gap: 0; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#profileCard, .pv-profile-card) .profile-avatar-wrap { width: 92px !important; height: 92px !important; margin: 0 0 8px 4px !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#profileCard, .pv-profile-card) .profile-name { font-size: clamp(22px, 7vw, 29px) !important; font-style: italic; }
+/* bio between laurels, with the ink rule above it */
+html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#profileCard, .pv-profile-card) .profile-about { margin: 0 !important; padding: 10px 44px 6px !important; font-style: italic;
+  background: var(--fs-ink-rule) center top / 100% 3px no-repeat, var(--fs-laurel-sprig) left 4px center / 30px auto no-repeat !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#profileCard, .pv-profile-card) .profile-about::after { right: 4px !important; top: 6px !important; }
+/* gold-ringed badges */
+html body.fs.fs-superhero[data-fs-variant="heroes"] .pv-profile-card .badge-row { gap: 10px !important; margin: 4px 0 8px !important; justify-content: center !important; flex-wrap: wrap; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] .pv-profile-card .badge-row > * { transform: none !important; width: 46px !important; height: 46px !important; margin: 0 !important; position: relative;
+  display: inline-flex !important; align-items: center; justify-content: center; border-radius: 50% !important; font-size: 18px !important; box-sizing: border-box; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] .pv-profile-card .badge-row > *::after { content: ""; position: absolute; inset: -14%; pointer-events: none; background: var(--fs-badge-ring) center / 100% 100% no-repeat; }
+/* counters: no box — numbers + the ink divider, with the ink rule above */
+html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#profileCard, .pv-profile-card) .profile-stats { border: 0 !important; border-image: none !important; margin: 0 !important; padding: 8px 0 6px !important;
+  background: var(--fs-ink-rule) center top / 100% 3px no-repeat !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#profileCard, .pv-profile-card) .stat-count { font: italic 400 25px var(--sh-tfont) !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#profileCard, .pv-profile-card) .stat-label { font: italic 700 15px var(--sh-bfont) !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] #page-profile-view .pv-actions { margin-top: 4px !important; gap: 6px !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] #page-profile-view .pv-actions .btn { font-style: italic; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] #page-profile-view .pv-actions #pvEditProfileBtn { min-height: 50px; font-size: 24px !important; }
+/* Photos: the full-width red banner bar with the title, chips, a tight 3-column grid of ink-framed photos */
+html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#page-profile-view, #page-home) .photos-card { margin: 8px 4px 0 !important; padding: 0 10px !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#page-profile-view, #page-home) .photos-card .card-heading { margin: 0 -10px 8px !important; padding: 0 !important; height: 44px; line-height: 44px; font-size: 24px !important; font-style: italic;
+  background: var(--fs-banner-bar) center / 100% 100% no-repeat !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#page-profile-view, #page-home) .photos-card :is(.photos-grid, .pv-photos-grid, .photos-preview) { gap: 6px !important; margin-top: 8px !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#page-profile-view, #page-home) .photos-card :is(.photos-grid, .pv-photos-grid, .photos-preview) > * { transform: none !important; }
+/* camera badges centred under each frame like the concept */
+html body.fs.fs-superhero[data-fs-variant="heroes"] .fs-tl-own::before { right: auto !important; left: 50% !important; margin-left: -13px; bottom: 4% !important; }
+/* Home (concept phone c): same profile row / bio / counters under the comic page grid, Photos with the banner bar */
+html body.fs.fs-superhero[data-fs-variant="heroes"] #page-home #profileCard { margin: 6px 4px 0 !important; padding: 0 10px !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] .navbar .nav-logo { background-image: var(--fs-banner-bar) !important; padding-left: 52px !important; padding-right: 52px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-info:not(:has(.profile-title:not(:empty))) .profile-name,
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-info:has(.profile-title:not(:empty)) .profile-name { grid-row: 1 !important; align-self: end !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#profileCard, .pv-profile-card) .profile-info:not(:has(.profile-title:not(:empty))) .profile-about { grid-row: 2 !important; align-self: start !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#page-profile-view, #page-home) .photos-card { overflow: visible !important; margin-top: 26px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#page-profile-view, #page-home) .photos-card .card-heading { position: relative; z-index: 2; margin-top: -48px !important; display: block !important; }
+/* final concept match: badges on ONE row; Heroes timeline row sits right on the first ink rule; Heroes Home on plain cream too */
+html body.fs.fs-superhero[data-fs-variant="heroes"] .pv-profile-card .badge-row { flex-wrap: nowrap !important; gap: 6px !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] .pv-profile-card .badge-row > * { width: 38px !important; height: 38px !important; flex: 0 0 38px; font-size: 15px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .badge-row { flex-wrap: nowrap !important; gap: 4px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .badge-row > * { transform: none !important; margin: 0 !important; width: 26px !important; height: 26px !important; flex: 0 0 26px; font-size: 12px !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] #page-profile-view .pv-profile-card { margin-top: 0 !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] #page-home #profileCard { margin-top: 2px !important; }
+body.fs-superhero[data-fs-variant="heroes"]:has(#page-home.active) #premiumBgLayer { background: #fbf3dc !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] #page-profile-view .pv-profile-card { margin-top: -18px !important; }
+@media (max-width: 768px) { html body.fs.fs-superhero[data-fs-variant="heroes"]:has(#page-home.active) .navbar { background: var(--fs-top-bar) center top / 100% calc(env(safe-area-inset-top, 0px) + 14px) no-repeat, #fbf3dc !important; } }
+html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#page-profile-view #pvProfileCard, #page-profile-view .pv-profile-card) { margin-top: -22px !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] :is(#page-home #profileCard) { margin-top: 2px !important; }
