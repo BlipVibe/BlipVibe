@@ -56,3 +56,7 @@ convert with `prototypes/tools/basic_convert.py images/skins/basic`.
   (navy modals/menus) that had been renamed to Pumpkin. Equip "flat-lay snap" checked in the app (look-only trigger).
   Known: this fresh simulator draws some emoji as "?" boxes (no emoji font) — not a skin issue.
   Left: owner approval → remove wip, whitelist assets in .gitignore, ask before merging to main.
+- Nov 17 (owner feedback): "icons need to be bigger and chunkier" → all icon/notif/menu art repainted ~2.5x heavier
+  (prototypes/basic-icons-chunky-brief.md) and sized up. "the name folded card … floating mid air" → it now stands on its
+  own oak ledge (card-ledge art, prototypes/basic-card-ledge-brief.md), name + bio left, stats stacked right (concept).
+  "use this navbar" → the concept nav: slimmer inset oak tray, active tab = ceramic disc centred in the tray. Shelf kept.

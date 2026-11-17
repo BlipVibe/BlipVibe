@@ -318,7 +318,7 @@
       'skin-card', 'skin-card-mask', 'price-pill', 'equipped-tag', 'bubble-in', 'bubble-out', 'input-bar', 'send-btn', 'round-btn',
       'comment-bubble', 'text-area', 'tool-tile', 'add-tile', 'post-btn', 'public-pill', 'story-field', 'heart-orb', 'group-avatar-frame',
       'barista-card', 'barista-emblem', 'menu-dots', 'menu-profile', 'menu-saved', 'menu-skins', 'menu-settings', 'menu-season',
-      'menu-latte', 'menu-lastcall'],
+      'menu-latte', 'menu-lastcall', 'card-ledge'],
     theme: { '--dark': '#4a3426', '--gray': '#8a7262', '--light-bg': '#f6eee6', '--card': '#fdf8f3',
       '--border': 'rgba(201,143,134,.3)', '--nav-bg': '#f6eee6' },
     fonts: 'https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Lora:ital,wght@1,500;1,600&family=Caveat+Brush&display=swap'

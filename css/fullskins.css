@@ -8465,3 +8465,66 @@ html body.fs.fs-basic[data-fs-variant="pumpkin"] .fsk-name { font-size: 14px !im
 html body.fs.fs-basic[data-fs-variant="pumpkin"] .fsk-body .btn { height: 28px !important; }
 html body.fs.fs-basic .fsk-name { flex: 0 0 auto !important; line-height: 1.35 !important; min-height: 1.35em; padding-bottom: 1px !important; }
 html body.fs.fs-basic .fsk-body .btn { flex: 0 0 auto !important; }
+
+/* ===== owner, Nov 17: "the icons need to be bigger and chunkier" — bigger here; the art is repainted chunkier
+   (prototypes/basic-icons-chunky-brief.md) ===== */
+@media (max-width: 768px) {
+  html body.fs.fs-basic .nav-container { grid-template-columns: 40px minmax(0, 1fr) 32px 32px 32px auto 36px 36px !important; }
+  html body.fs.fs-basic .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) { width: 32px !important; }
+  html body.fs.fs-basic .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) > i { width: 28px !important; height: 28px !important; }
+  html body.fs.fs-basic :is(.fs-barista-btn, .fs-bs-season) { width: 36px; height: 36px; }
+  html body.fs.fs-basic :is(.fs-barista-btn, .fs-bs-season) i { width: 34px !important; height: 34px !important; }
+  html body.fs.fs-basic .nav-center .nav-link > i { width: 50px !important; min-width: 50px; height: 50px !important; background-size: 34px !important; }
+  html body.fs.fs-basic .nav-center .nav-link.active > i { width: 74px !important; min-width: 74px; height: 74px !important; background-size: 32px, contain !important; }
+}
+html body.fs.fs-basic .post-actions .action-btn > i { width: 28px !important; height: 28px !important; }
+html body.fs.fs-basic .notif-icon { width: 46px !important; height: 46px !important; }
+html body.fs.fs-basic .notif-icon i { width: 40px !important; height: 40px !important; }
+html body.fs.fs-basic :is(.page-header h2, .msg-sidebar-header h3) { background-size: 30px !important; padding-left: 38px !important; }
+html body.fs.fs-basic :is(.msg-search, .page-search) > i { width: 24px !important; height: 24px !important; flex-basis: 24px !important; }
+.fs-barista-menu .fs-bm-list button i { flex-basis: 32px !important; height: 32px !important; }
+
+/* ===== owner, Nov 17: the place card "is floating mid air" — it now STANDS ON its own oak ledge (card-ledge art, like the
+   approved concept): name + bio on the left of the card, following / followers stacked on the right ===== */
+html body.fs.fs-basic :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-info { grid-template-columns: 7% minmax(0, 1fr) auto 9% !important; }
+html body.fs.fs-basic :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-info > * { grid-column: 1 / -1 !important; }
+html body.fs.fs-basic :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-info::before { grid-row: 2 !important; grid-column: 2 / 4 !important; width: auto !important; justify-self: stretch !important; margin: 0 !important; z-index: 1; position: relative; }
+html body.fs.fs-basic :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .fs-namecard { grid-row: 2 !important; grid-column: 2 !important; width: auto !important; justify-self: stretch !important; padding: 16px 8px 18px 32px !important; z-index: 2; align-self: center; }
+html body.fs.fs-basic :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-stats { grid-row: 2 !important; grid-column: 3 !important; width: auto !important; justify-self: end !important; align-self: center; z-index: 2;
+  flex-direction: column !important; gap: 6px !important; padding: 10px 22px 12px 10px !important; margin: 0 !important; border-left: 1px solid rgba(74, 52, 38, .15) !important; }
+html body.fs.fs-basic :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-stats > .stat { flex-direction: column !important; align-items: flex-start !important; gap: 0 !important; line-height: 1.1; }
+html body.fs.fs-basic :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-stats .stat-count { font-size: 16px !important; }
+html body.fs.fs-basic :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-stats .stat-label { font-size: 12.5px !important; }
+html body.fs.fs-basic :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-info::after { content: "" !important; display: block !important; grid-row: 3 !important; grid-column: 1 / -1 !important;
+  height: calc((100vw + 16px) * 260 / 1290); margin: -52px -8px 0 !important; z-index: 0; position: relative; pointer-events: none;
+  background: var(--fs-card-ledge) center top / 100% 100% no-repeat !important; }
+html body.fs.fs-basic :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-info > :not(.profile-avatar-wrap):not(.fs-namecard):not(.profile-stats) { grid-row: auto; }
+html body.fs.fs-basic #profileCard .profile-links { grid-row: 4 !important; margin-top: 2px !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .fs-namecard { padding-left: 42px !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-stats { padding-left: 10px !important; }
+
+/* ===== owner, Nov 17: "use this navbar" (concept nav): slimmer oak tray inset from the screen edges, chunky icons, the
+   active tab a ceramic disc CENTRED in the tray (just proud of it top and bottom), icon over its lowercase label ===== */
+@media (max-width: 768px) {
+  html body.fs.fs-basic .nav-center { left: 16px !important; right: 16px !important; height: 58px !important; padding: 0 10px !important;
+    bottom: max(10px, calc(env(safe-area-inset-bottom, 0px) - 12px)) !important; background: var(--fs-nav-tray) center / 100% 100% no-repeat !important; overflow: visible !important; }
+  html body.fs.fs-basic .nav-center .nav-link { height: 58px !important; align-items: center !important; justify-content: center !important; }
+  html body.fs.fs-basic .nav-center .nav-link > i { width: 44px !important; min-width: 44px; height: 44px !important; background-size: 30px !important; margin: 0 !important; }
+  html body.fs.fs-basic .nav-center .nav-link.active > i { width: 66px !important; min-width: 66px; height: 66px !important; margin: 0 !important;
+    background-position: center 30%, center !important; background-size: 26px, contain !important; filter: drop-shadow(0 3px 5px rgba(74, 52, 38, .22)) !important; }
+  html body.fs.fs-basic .nav-center .nav-link.active > i::after { bottom: 12px !important; font-size: 11px !important; }
+  html body.fs.fs-basic .page.active { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px)) !important; }
+}
+/* the shelf scene's wall melts into the page instead of ending in a hard edge */
+html body.fs.fs-basic :is(#timelineCover, #pvCoverBanner) .fs-timeline::after { -webkit-mask: linear-gradient(#000 80%, transparent) !important; mask: linear-gradient(#000 80%, transparent) !important; }
+html body.fs.fs-basic #profileCard .profile-avatar-wrap { margin-bottom: -76px !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] #profileCard .profile-avatar-wrap { margin-bottom: -124px !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-stats { padding-right: 34px !important; }
+html body.fs.fs-basic #profileCard .profile-info :is(.fs-namecard, .profile-stats), html body.fs.fs-basic #profileCard .profile-info::before, html body.fs.fs-basic #profileCard .profile-info::after { transform: translateY(-34px); }
+html body.fs.fs-basic #profileCard .profile-links { margin-top: -30px !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-info { grid-template-columns: 7% minmax(0, 1fr) auto 13% !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-stats { padding-right: 16px !important; }
+html body.fs.fs-basic #profileCard .profile-info :is(.fs-namecard, .profile-stats) { transform: translateY(-34px) !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-info::before { border-width: 26px 24px 14px 32px !important;
+  border-image: var(--fs-place-card) 110 110 60 140 fill / 26px 24px 14px 32px stretch !important; margin-top: -14px !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-stats { padding-right: 30px !important; }
