@@ -14831,15 +14831,23 @@ async function initLiveUpdates(){
     var U=window.Capacitor.Plugins.CapacitorUpdater;
     if(!U) return;
     try{await U.notifyAppReady();}catch(e){console.warn('[OTA] notifyAppReady:',e);}
-    // Clean up old downloaded versions (Nov 16: every update left another full copy behind; the test simulator held
-    // 397 of them, 21 GB). Keep only the running bundle and the one queued for the next launch.
-    try{
-        var cur0=await U.current(), keep={builtin:1};
-        if(cur0&&cur0.bundle&&cur0.bundle.id) keep[cur0.bundle.id]=1;
-        if(U.getNextBundle){try{var nx=await U.getNextBundle();if(nx&&nx.id) keep[nx.id]=1;}catch(e){}}
-        var lst=await U.list();
-        ((lst&&lst.bundles)||[]).forEach(function(b){ if(b&&b.id&&!keep[b.id]) U.delete({id:b.id}).catch(function(){}); });
-    }catch(e){console.warn('[OTA] cleanup:',e);}
+    // Clean up old downloaded versions (Nov 16: every update left another full copy behind). Nov 17 fix: the first
+    // version kept only the running + queued bundle and deleted the updater's FALLBACK copy, so when a launch was slow
+    // and the updater rolled back, it had nothing to roll back to and dropped to the App Store build (no skins).
+    // Now: wait a minute (after notifyAppReady), keep the running, queued and the 3 newest good downloads.
+    setTimeout(async function(){
+        try{
+            var cur0=await U.current(), keep={builtin:1};
+            if(!cur0||!cur0.bundle||!cur0.bundle.id||cur0.bundle.id==='builtin') return; // never prune from the App Store build
+            keep[cur0.bundle.id]=1;
+            if(U.getNextBundle){try{var nx=await U.getNextBundle();if(nx&&nx.id) keep[nx.id]=1;}catch(e){}}
+            var lst=await U.list(), all=((lst&&lst.bundles)||[]).filter(function(b){return b&&b.id&&b.id!=='builtin';});
+            all.filter(function(b){return b.status==='success';})
+               .sort(function(a,b){return String(b.downloaded||'').localeCompare(String(a.downloaded||''));})
+               .slice(0,3).forEach(function(b){keep[b.id]=1;});
+            all.forEach(function(b){ if(!keep[b.id]&&b.status!=='downloading') U.delete({id:b.id}).catch(function(){}); });
+        }catch(e){console.warn('[OTA] cleanup:',e);}
+    },60000);
     try{
         var res=await fetch(OTA_MANIFEST_URL+'?t='+Date.now(),{cache:'no-store'});
         if(!res.ok) return;
