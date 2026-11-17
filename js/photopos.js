@@ -197,17 +197,25 @@
 
   // copy every computed style of `src` (and its ::before/::after, as real spans) onto `dst`, so the copy keeps the
   // skin's look outside its page context
+  // iOS WebKit leaves border-image frame art unpainted in the copy (seen: Superhero's comic cover frame) unless the
+  // element also has an outline; an invisible one is enough
+  function paintFix(el) {
+    var bi = el.style.borderImageSource;
+    if (bi && bi !== 'none' && (!el.style.outlineStyle || el.style.outlineStyle === 'none')) el.style.outline = '1px solid transparent';
+  }
   function freeze(src, dst) {
     var out = {};
     var cs = getComputedStyle(src);
     for (var i = 0; i < cs.length; i++) dst.style.setProperty(cs[i], cs.getPropertyValue(cs[i]), cs.getPropertyPriority(cs[i]));
     dst.style.transition = 'none'; dst.style.animation = 'none'; dst.style.pointerEvents = 'none';
+    paintFix(dst);
     ['before', 'after'].forEach(function (w) {
       var ps = getComputedStyle(src, '::' + w), ct = ps.getPropertyValue('content');
       if (!ct || ct === 'none' || ct === 'normal') return;
       var sp = document.createElement('span');
       for (var j = 0; j < ps.length; j++) sp.style.setProperty(ps[j], ps.getPropertyValue(ps[j]));
       sp.style.transition = 'none'; sp.style.animation = 'none'; sp.style.pointerEvents = 'none';
+      paintFix(sp);
       var m = ct.match(/^"(.*)"$/);
       if (m && m[1]) sp.textContent = m[1].replace(/\\a /g, '\n');
       out[w] = sp;
@@ -281,7 +289,7 @@
     }
 
     function slider(cls, label, min, max, step, val) {
-      return '<label class="fs-pp-zoom ' + cls + '"><span class="fs-pp-zl">' + label + '</span><span class="fs-pp-track"><span class="fs-pp-fill"></span>' +
+      return '<label class="fs-pp-zoom ' + cls + '"><span class="fs-pp-zl">' + label + (cls === 'fs-pp-r' ? ' <b class="fs-pp-deg"></b>' : '') + '</span><span class="fs-pp-track"><span class="fs-pp-fill"></span>' +
         '<input type="range" class="fs-pp-range" min="' + min + '" max="' + max + '" step="' + step + '" value="' + val + '" aria-label="' + label + '"></span></label>';
     }
     modal('<div class="modal-header"><h3>' + esc(opts.title || 'Move, zoom & rotate') + '</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>' +
@@ -295,7 +303,8 @@
     if (mc) mc.classList.add('fs-pp-modal');
     var stage = mc.querySelector('.fs-pp-stage'), scaler = mc.querySelector('.fs-pp-scale'), ghost = mc.querySelector('.fs-pp-ghost');
     var zr = mc.querySelector('.fs-pp-z .fs-pp-range'), zf = mc.querySelector('.fs-pp-z .fs-pp-fill');
-    var rr = mc.querySelector('.fs-pp-r .fs-pp-range'), rf = mc.querySelector('.fs-pp-r .fs-pp-fill');
+    var rr = mc.querySelector('.fs-pp-r .fs-pp-range'), rf = mc.querySelector('.fs-pp-r .fs-pp-fill'), deg = mc.querySelector('.fs-pp-deg');
+    var rawR = p.r;   // the twist as the fingers made it; what shows is that, pulled onto straight when close (sticky)
     var root = made.el, cv = made.canvas;
     [['position', 'relative'], ['inset', 'auto'], ['margin', '0'], ['flex', 'none'], ['translate', 'none'],
       ['width', fw + 'px'], ['height', fh + 'px'], ['max-width', 'none'], ['max-height', 'none']].forEach(function (q) { root.style.setProperty(q[0], q[1], 'important'); });
@@ -305,7 +314,7 @@
     function V() { var v = view(im.naturalWidth, im.naturalHeight, A, p); p.x = v.x; p.y = v.y; return v; }
     function layout() {
       // fit the frame as drawn (its bounding box), with a little of the art around it when it sits in a bigger picture
-      var sw = stage.clientWidth, sh = Math.min(window.innerHeight * .42, 400), room = ctx === opts.frame ? 24 : 56;
+      var sw = stage.clientWidth, sh = Math.min(window.innerHeight * .42, 400), room = ctx === opts.frame ? 24 : 80;
       k = Math.min((sw - room) / rect.width, (sh - room) / rect.height, 6);
       var stH = Math.min(sh, Math.ceil(rect.height * k + room));
       stage.style.height = stH + 'px';
@@ -320,6 +329,7 @@
     function draw() {
       zf.style.width = ((p.z - 1) / (ZMAX - 1) * 100) + '%';
       rf.style.width = ((p.r + 180) / 360 * 100) + '%';
+      if (deg) deg.textContent = Math.round(p.r) + '\u00b0';
       if (!im) return;
       var v = V(), g = cv.getContext('2d');
       g.clearRect(0, 0, cv.width, cv.height);
@@ -359,9 +369,10 @@
       var c = Math.cos(-v.th), si = Math.sin(-v.th), du = b.u - a.u, dw = b.w - a.w;
       p.x -= (du * c - dw * si) / v.s / im.naturalWidth; p.y -= (du * si + dw * c) / v.s / im.naturalHeight; draw();
     }
-    function snapAngle(r) {   // a twist that ends near straight snaps straight
-      var q = Math.round(r / 90) * 90; return Math.abs(r - q) < 3 ? q : r;
+    function sticky(r, zone) {   // within `zone` degrees of straight (or a quarter turn) it locks there
+      var q = Math.round(r / 90) * 90; return Math.abs(r - q) < zone ? q : r;
     }
+    function wrap(r) { while (r > 180) r -= 360; while (r < -180) r += 360; return r; }
 
     // pointers: one = drag, two = pinch (zoom) + twist (rotate) + drag by the midpoint
     var pts = {}, last = null;
@@ -385,8 +396,8 @@
       if (last && s) {
         if (s.d && last.d) {
           var da = s.a - last.a; if (da > Math.PI) da -= 2 * Math.PI; if (da < -Math.PI) da += 2 * Math.PI;
-          var nr = p.r + da * 180 / Math.PI; if (nr > 180) nr -= 360; if (nr < -180) nr += 360;
-          setView(p.z * s.d / last.d, nr, frameUnits(s.x, s.y));
+          rawR = wrap(rawR + da * 180 / Math.PI);
+          setView(p.z * s.d / last.d, sticky(rawR, 7), frameUnits(s.x, s.y));
         }
         moveBy(s.x - last.x, s.y - last.y);
       }
@@ -394,34 +405,38 @@
     });
     function up(e) {
       delete pts[e.pointerId]; last = snap();
-      if (!last) { moving(false); setView(p.z, snapAngle(p.r)); }
+      if (!last) { moving(false); rawR = p.r; }
     }
     stage.addEventListener('pointerup', up); stage.addEventListener('pointercancel', up);
     var wheelT = null;
     stage.addEventListener('wheel', function (e) {   // wheel = zoom, shift + wheel = rotate
       e.preventDefault(); moving(true); clearTimeout(wheelT); wheelT = setTimeout(function () { moving(false); }, 450);
       var f = frameUnits(e.clientX, e.clientY);
-      if (e.shiftKey) setView(p.z, p.r + (e.deltaY || e.deltaX) * .15, f);
+      if (e.shiftKey) { rawR = wrap(rawR + (e.deltaY || e.deltaX) * .15); setView(p.z, sticky(rawR, 4), f); }
       else setView(p.z * Math.exp(-e.deltaY * (e.ctrlKey ? .01 : .0015)), p.r, f);
     }, { passive: false });
     // Safari trackpad / iOS gestures (pointer events already handle touch; this covers the Mac trackpad)
     var g0 = null;
     stage.addEventListener('gesturestart', function (e) { e.preventDefault(); if (!Object.keys(pts).length) g0 = { z: p.z, r: p.r }; });
-    stage.addEventListener('gesturechange', function (e) { e.preventDefault(); if (g0 && !Object.keys(pts).length) setView(g0.z * e.scale, g0.r + e.rotation); });
-    stage.addEventListener('gestureend', function () { g0 = null; });
+    stage.addEventListener('gesturechange', function (e) { e.preventDefault(); if (g0 && !Object.keys(pts).length) setView(g0.z * e.scale, sticky(wrap(g0.r + e.rotation), 7)); });
+    stage.addEventListener('gestureend', function () { g0 = null; rawR = p.r; });
     zr.addEventListener('input', function () { setView(+zr.value, p.r); });
-    rr.addEventListener('input', function () { setView(p.z, +rr.value); });
+    rr.addEventListener('input', function () { setView(p.z, sticky(+rr.value, 5)); rawR = p.r; });
+    // tap the word "Rotate" (or its degrees) to put the photo straight again
+    var rl = mc.querySelector('.fs-pp-r .fs-pp-zl');
+    rl.setAttribute('role', 'button'); rl.setAttribute('aria-label', 'Straighten');
+    rl.addEventListener('click', function (e) { e.preventDefault(); setView(p.z, 0); rawR = 0; });
     stage.tabIndex = 0;
     stage.addEventListener('keydown', function (e) {
       var st = 12, m = { ArrowLeft: [-st, 0], ArrowRight: [st, 0], ArrowUp: [0, -st], ArrowDown: [0, st] }[e.key];
       if (m) { e.preventDefault(); moveBy(m[0], m[1]); }
       else if (e.key === '+' || e.key === '=') setView(p.z * 1.1, p.r);
       else if (e.key === '-') setView(p.z / 1.1, p.r);
-      else if (e.key === '[') setView(p.z, p.r - 5);
-      else if (e.key === ']') setView(p.z, p.r + 5);
+      else if (e.key === '[') { setView(p.z, p.r - 1); rawR = p.r; }
+      else if (e.key === ']') { setView(p.z, p.r + 1); rawR = p.r; }
     });
 
-    mc.querySelector('.fs-pp-reset').addEventListener('click', function () { p = { x: .5, y: .5, z: 1, r: 0 }; zr.value = 1; rr.value = 0; draw(); });
+    mc.querySelector('.fs-pp-reset').addEventListener('click', function () { p = { x: .5, y: .5, z: 1, r: 0 }; rawR = 0; zr.value = 1; rr.value = 0; draw(); });
     mc.querySelector('.fs-pp-cancel').addEventListener('click', function () { unmodal(); });
     mc.querySelector('.fs-pp-save').addEventListener('click', function () {
       var r = function (v, n) { return Math.round(v * n) / n; };
