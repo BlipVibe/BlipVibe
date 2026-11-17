@@ -47,3 +47,12 @@ convert with `prototypes/tools/basic_convert.py images/skins/basic`.
   Chat, Skins, Network, Notifications, Search; Barista Bar menu, Latte Break, Last Call and the season gust all working.
   Left: Profile page, post view, comments, create post, story, group page, other profile; Pumpkin kit (still painting in
   Codex: kit/pumpkin → convert) + full Pumpkin QA; equip transition check; then owner approval → remove wip, whitelist assets.
+- Nov 17: merged main (QA read-only guard 81fd23c). Every QA launch: app stopped, all bundles patched with
+  __BV_QA_READONLY, "[QA read-only] ON" confirmed (green RO chip) — the app's updater can drop an unguarded bundle while it
+  runs, so always stop the app before syncing. Pumpkin kit converted (assets/pumpkin/). Finished Rosé: own profile, other
+  profile (place card, linen action pills), group page (rounded cover + ceramic square frame, no place card), post, comments,
+  create post, story. Pumpkin geometry (own frame windows, thicker dish, wider place-card flap, skin-card window) and
+  Pumpkin QA: Home, Groups, Skins, Messages, Barista Bar, account menu. Removed cloned Heaven's Light Twilight dark rules
+  (navy modals/menus) that had been renamed to Pumpkin. Equip "flat-lay snap" checked in the app (look-only trigger).
+  Known: this fresh simulator draws some emoji as "?" boxes (no emoji font) — not a skin issue.
+  Left: owner approval → remove wip, whitelist assets in .gitignore, ask before merging to main.

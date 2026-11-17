@@ -7898,7 +7898,6 @@ html body.fs.fs-basic #cpmPublish { min-width: 0 !important; flex: 1 1 auto; max
 html body.fs.fs-basic #cpmPublish { border-width: 9px 12px !important; border-image-width: 9px 12px !important; padding: 2px 0 !important; font-size: 16px !important; white-space: nowrap; overflow: visible !important; text-overflow: clip !important; }
 html body.fs.fs-basic .cpm-footer > div[style*="display:flex"] { gap: 6px !important; }
 html body.fs.fs-basic #noCommentsMsg { color: var(--bs-soft) !important; }
-body.fs-basic[data-fs-variant="pumpkin"] { --bs-title: #f8e7bf; --bs-ink: #f6ecd6; --bs-soft: #d2c4a6; --bs-accent: #f0c35a; --bs-gold: #e8b74a; background: #1d2340 !important; }
 body.fs-basic :is(h1, h2, h3, h4, .nav-logo, .profile-name, .page-header h2, .msg-sidebar-header h3, .quest-panel-header h4) { letter-spacing: .02em; }
 html body.fs.fs-basic :is(.post-header .post-avatar, .post-create-avatar, .msg-contact > div > img, .profile-card-item .profile-card-avatar, .notif-item img, #msgChat .msg-chat-header img, .comment-item img) { background: var(--fs-avatar-ring) center / 100% 100% no-repeat, #f3e6c8 !important; }
 @media (max-width: 768px) {
@@ -7908,7 +7907,6 @@ html body.fs.fs-basic :is(.post-header .post-avatar, .post-create-avatar, .msg-c
   html body.fs.fs-basic .navbar .nav-logo { font-size: 25px !important; text-transform: uppercase; }
 }
 @media (max-width: 768px) {
-  html body.fs.fs-basic[data-fs-variant="pumpkin"] .nav-center { --bs-navfill: #2a3150; }
   html body.fs.fs-basic .nav-center .nav-link { color: var(--bs-title) !important; font: 600 12px var(--fs-title-font) !important; text-transform: uppercase; letter-spacing: .02em; }
   html body.fs.fs-basic .nav-center .nav-link > i { width: 54px !important; min-width: 54px; height: 50px !important; background: var(--fs-icon-home) center / 32px no-repeat !important; filter: none !important; }
   html body.fs.fs-basic .nav-center .nav-link[data-page="groups"] > i { background-image: var(--fs-icon-groups) !important; }
@@ -7937,7 +7935,6 @@ html body.fs.fs-basic .fs-tl-slot-3 { left: 66.9%; right: auto; }
 html body.fs.fs-basic .fs-tl-slot img { position: absolute; inset: 0; width: 100% !important; height: 100% !important; object-fit: cover; border-radius: inherit !important; z-index: 0; }
 html body.fs.fs-basic .fs-tl-slot::before { display: none !important; }
 html body.fs.fs-basic .fs-tl-slot.fs-tl-empty::after { inset: 0; border-radius: inherit; background: linear-gradient(#ffe9c2, #fbd7a4 55%, #fff5e2) !important; z-index: 0; }
-html body.fs.fs-basic[data-fs-variant="pumpkin"] .fs-tl-slot.fs-tl-empty::after { background: linear-gradient(#2b2f63, #6b4f86 60%, #e6a37c) !important; }
 html body.fs.fs-basic .fs-tl-own.fs-tl-slot-3::after { z-index: 2 !important; right: -4% !important; top: 4% !important; bottom: auto !important; width: 36px !important; height: 36px !important; }
 html body.fs.fs-basic :is(.pv-profile-card, #profileCard) .profile-avatar-wrap { width: 138px !important; height: 188px !important; margin: -150px auto 64px !important; border-radius: 50% !important; }
 html body.fs.fs-basic :is(#profileAvatarImg, .pv-profile-card .profile-avatar) { border-radius: 50% / 50% !important; }
@@ -8021,16 +8018,11 @@ html body.fs.fs-basic .fsk-body .btn.fsk-equipped { background-image: var(--fs-e
 html body.fs.fs-basic .fsk-badge { top: 8%; right: 7%; z-index: 3; text-transform: uppercase; }
 html body.fs.fs-basic .fsk-card.fsk-card { border: 0 !important; border-image: none !important; box-shadow: none !important; }
 html body.fs.fs-basic .fsk-name { align-self: center; color: var(--bs-title) !important; text-shadow: none !important; font-size: 15px !important; padding: 3px 12px !important; margin-top: 4% !important; background: rgba(255, 248, 232, .88) !important; border-radius: 12px; box-shadow: 0 0 0 1px rgba(201, 150, 46, .6); max-width: 92%; }
-html body.fs.fs-basic[data-fs-variant="pumpkin"] .fsk-name { background: rgba(40, 46, 78, .88) !important; }
 html body.fs.fs-basic .fsk-badge { top: auto !important; bottom: 25% !important; right: 50% !important; transform: translateX(50%); }
 html body.fs.fs-basic :is(#profilesTabs, #searchTabs) .search-tab { min-height: 44px !important; padding: 0 2px !important; font-size: 11.5px !important; line-height: 1.05 !important; background: none !important; border: solid transparent !important; border-width: 9px 20px !important; border-image: var(--fs-seg-tab) 45 100 fill / 9px 20px stretch !important; }
 html body.fs.fs-basic :is(#profilesTabs, #searchTabs) .search-tab.active { border-image-source: var(--fs-seg-tab-active) !important; color: #fff !important; }
 html body.fs.fs-basic :is(.msg-contact, .notif-item, .profile-card-item, .follow-list-item) { margin-bottom: 4px !important; }
 html body.fs.fs-basic :is(#page-profiles, #page-search) .profile-card-item { padding: 0 !important; min-height: 0 !important; }
-html body.fs.fs-basic[data-fs-variant="pumpkin"] .quest-panel :is(h4, p, span, .quest-progress, .quest-reward, .quest-check) { color: var(--bs-title) !important; text-shadow: 0 1px 2px rgba(0, 0, 0, .45); }
-html body.fs.fs-basic[data-fs-variant="pumpkin"] .msg-bubble:not(.sent), html body.fs.fs-basic[data-fs-variant="pumpkin"] .msg-bubble:not(.sent) * { color: var(--bs-ink) !important; }
-html body.fs.fs-basic[data-fs-variant="pumpkin"] .post-badges :is(span, .post-badge) { background: rgba(40, 46, 78, .8) !important; color: var(--bs-title) !important; }
-html body.fs.fs-basic[data-fs-variant="pumpkin"] .fs-tl-slot.fs-tl-empty::after { background: linear-gradient(#2b2f63, #6b4f86 60%, #e6a37c) !important; }
 html body.fs.fs-basic .post-badges :is(span, .post-badge) { background-color: transparent !important; }
 html body.fs.fs-basic .msg-bubble { font-size: 17px !important; line-height: 1.3 !important; }
 html body.fs.fs-basic .msg-bubble { border-width: 12px 16px !important; border-image-width: 12px 16px !important; }
@@ -8041,7 +8033,6 @@ html body.fs.fs-basic :is(.quest-panel-header h4, .page-header h2, .msg-sidebar-
 html body.fs.fs-basic :is(.quest-panel-header h4, .page-header h2, .msg-sidebar-header h3)::after,
 html body.fs.fs-basic :is(.pv-profile-card, #profileCard) .profile-title { background: none !important; padding: 0 12px !important; }
 html body.fs.fs-basic .modal-content { background: #fbf4e6 !important; background-clip: padding-box !important; border: 30px solid transparent !important; border-image: var(--fs-post-card) 180 fill / 46px stretch !important; border-radius: 0 !important; box-shadow: 0 10px 40px rgba(60, 35, 5, .35) !important; }
-html body.fs.fs-basic[data-fs-variant="pumpkin"] .modal-content { background: #3a4260 !important; background-clip: padding-box !important; }
 html body.fs.fs-basic :is(#postCommentBtn, #cpmPublish) { background: none !important; border: solid transparent !important; border-width: 9px 16px !important; border-image: var(--fs-follow-btn) 50 90 fill / 9px 16px stretch !important; color: #fff !important; text-shadow: 0 1px 2px rgba(90, 58, 14, .6); }
 html body.fs.fs-basic .share-preview { border-width: 26px !important; border-image: var(--fs-post-card-c) 180 fill / 40px stretch !important; padding: 2px 0 !important; }
 html body.fs.fs-basic .comment-item { border-width: 20px 26px !important; border-image: var(--fs-comment-bubble) 90 150 fill / 20px 26px stretch !important; }
@@ -8083,8 +8074,6 @@ html body.fs.fs-basic .user-dropdown a { color: var(--bs-title) !important; font
 html body.fs.fs-basic .user-dropdown a:last-child { border-bottom: 0; }
 html body.fs.fs-basic .user-dropdown a i { color: var(--bs-gold) !important; width: 20px !important; }
 html body.fs.fs-basic .user-dropdown #logoutBtn, html body.fs.fs-basic .user-dropdown #logoutBtn i { color: #b03a2e !important; }
-html body.fs.fs-basic[data-fs-variant="pumpkin"] .navbar .user-dropdown { background: #3a4260 !important; background-clip: padding-box !important; }
-html body.fs.fs-basic[data-fs-variant="pumpkin"] .user-dropdown #logoutBtn, html body.fs.fs-basic[data-fs-variant="pumpkin"] .user-dropdown #logoutBtn i { color: #ff9a8a !important; }
 @media (max-width: 768px) {
   html body.fs.fs-basic .navbar .nav-user { display: block !important; position: relative !important; width: 46px !important; height: 46px !important; padding: 0 !important; margin: 0 0 0 6px !important; align-self: center; }
   html body.fs.fs-basic .navbar .nav-user :is(.nav-username, > i) { display: none !important; }
@@ -8105,7 +8094,6 @@ html body.fs.fs-basic :is(.navbar, .nav-center) { animation: none !important; bo
 @media (max-width: 768px) {
   html body.fs.fs-basic #timelineCover { margin-top: 16px !important; }
   html body.fs.fs-basic .navbar .nav-logo { font-size: clamp(16px, 5vw, 21px) !important; padding-left: 16px !important; padding-right: 4px !important; overflow: hidden; text-overflow: clip; -webkit-text-fill-color: currentColor !important; background: none !important; opacity: 1 !important; text-shadow: 0 0 6px rgba(255, 244, 220, .9), 0 0 2px rgba(255, 244, 220, .9) !important; }
-  html body.fs.fs-basic[data-fs-variant="pumpkin"] .navbar .nav-logo { text-shadow: 0 0 6px rgba(10, 14, 40, .9), 0 0 2px rgba(10, 14, 40, .9) !important; }
 }
 html body.fs.fs-basic .fsk-soon { display: block !important; text-align: center !important; width: 100%; }
 html body.fs:is(.fs-vaporwave, .fs-basic, .fs-anime-blaze) .modal-profile-top img { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; width: min(180px, 60%) !important; }
@@ -8431,3 +8419,49 @@ html body.fs.fs-basic :is(.profile-follow-btn, .follow-btn, .suggestion-follow-b
 html body.fs.fs-basic #msgChat #msgImgBtn i { background: var(--fs-icon-plus) center / 55% no-repeat, var(--fs-round-btn) center / contain no-repeat !important; }
 html body.fs.fs-basic #msgChat .msg-bubble.sent { color: var(--bs-title) !important; }
 html body.fs.fs-basic #msgChat .msg-chat-header { border-bottom: 0 !important; }
+html body.fs.fs-basic .mobile-pills-bar { background: none !important; box-shadow: none !important; border: 0 !important; }
+/* profile view: same shelfie; the cover banner sits 78px lower in this page's flow, so the dish lifts further */
+html body.fs.fs-basic .pv-profile-card .profile-avatar-wrap { margin-top: calc((100vw + 16px) * -180 / 402 - 78px) !important; }
+html body.fs.fs-basic #pvEditProfileBtn { width: 70% !important; height: 48px !important; font: 700 18px var(--fs-font) !important; text-transform: lowercase !important; background: var(--fs-edit-btn) center / 100% 100% no-repeat !important; }
+html body.fs.fs-basic #pvProfileCard .profile-avatar-wrap { margin-top: calc((100vw + 16px) * -180 / 402 - 78px) !important; }
+html body.fs.fs-basic #pvProfileCard :is(#pvMsgBtn, #pvCloseFriendBtn, #pvInviteGroupBtn) { background-image: var(--fs-action-btn) !important; color: var(--bs-title) !important; }
+html body.fs.fs-basic #pvProfileCard .profile-avatar-wrap { margin-top: calc((100vw + 16px) * -180 / 402) !important; transform: translateY(-78px) !important; }
+html body.fs.fs-basic :is(#pvMsgBtn, #pvCloseFriendBtn, #pvInviteGroupBtn) { background: var(--fs-action-btn) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; border: 0 !important; box-shadow: none !important; }
+html body.fs.fs-basic #groupsSections .group-card-actions .btn { background: var(--fs-join-btn) center / 100% 100% no-repeat !important; box-shadow: none !important; border: 0 !important; outline: 0 !important; }
+/* group page (concept group-page): rounded cover photo, the group picture in the rounded-square ceramic frame overlapping its
+   bottom-left, name + tagline, stats as a quiet row — no place card here */
+html body.fs.fs-basic #gvCoverBanner { border-radius: 18px !important; margin: 0 8px !important; height: 170px !important; overflow: hidden; }
+html body.fs.fs-basic #gvProfileCard .profile-info { display: block !important; text-align: left; padding: 0 12px !important; }
+html body.fs.fs-basic #gvProfileCard .profile-info::before { display: none !important; }
+html body.fs.fs-basic #gvProfileCard .profile-avatar-wrap { width: 84px !important; height: 84px !important; margin: -56px 0 6px 10px !important; transform: none !important; border-radius: 16px !important; }
+html body.fs.fs-basic #gvProfileCard .profile-avatar-wrap :is(.profile-avatar, .gv-icon-wrap) { border-radius: 14px !important; width: 100% !important; height: 100% !important; }
+html body.fs.fs-basic #gvProfileCard .profile-avatar-wrap::after { left: -21% !important; top: -23% !important; width: 142% !important; height: 146% !important; background-image: var(--fs-group-avatar-frame) !important; }
+html body.fs.fs-basic #gvProfileCard :is(.fs-namecard, .profile-stats) { width: auto !important; justify-self: auto; padding: 0 !important; margin: 4px 0 !important; }
+html body.fs.fs-basic #gvProfileCard .profile-name { font-size: 22px !important; }
+html body.fs.fs-basic #gvProfileCard .profile-stats { flex-wrap: wrap; gap: 4px 16px !important; }
+html body.fs.fs-basic #gvProfileCard .btn { background: var(--fs-action-btn) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; height: 40px; font-size: 15px !important; }
+html body.fs.fs-basic #gvProfileCard .btn:is(.btn-primary, .join-group-btn) { background-image: var(--fs-join-btn) !important; color: var(--bs-on-fill) !important; }
+html body.fs.fs-basic :is(.modal-header, .modal-footer, .modal-content hr, .modal-content .divider) { border-color: rgba(74, 52, 38, .14) !important; }
+html body.fs.fs-basic .modal-content :is(.stat-divider, .modal-divider) { background: rgba(74, 52, 38, .14) !important; }
+html body.fs.fs-basic :is(.quest-reward, .quest-check) { justify-content: center !important; text-align: center !important; padding: 5px 8px !important; }
+
+/* ===== #BASIC · PUMPKIN SPICE geometry (its art is painted separately: own frame windows, dish window, place-card flap) ===== */
+html body.fs.fs-basic[data-fs-variant="pumpkin"] .navbar .nav-logo { text-shadow: none !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] .fs-tl-slot-1 { left: 28.84% !important; top: 29.11% !important; width: 16.43% !important; height: 37.11% !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] .fs-tl-slot-2 { left: 45.12% !important; top: 44.67% !important; width: 15.19% !important; height: 21.33% !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] .fs-tl-slot-3 { left: 62.25% !important; top: 54.11% !important; width: 13.41% !important; height: 13.33% !important; }
+/* dish window 18.1 / 19.1 / 20.5 / 18.9 % → a smaller photo box inside a thicker dish */
+html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard) .profile-avatar-wrap { width: 84px !important; height: 84px !important; margin-left: 26px !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] #profileCard .profile-avatar-wrap { margin-top: calc((100vw + 16px) * -180 / 402 + 8px) !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard) .profile-avatar-wrap::after { left: -29.5% !important; top: -30.8% !important; width: 162.9% !important; height: 161.3% !important; }
+/* place card: the folded flap is wider on this card stock */
+html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard) .profile-info::before { border-width: 14px 14px 14px 32px !important; border-image: var(--fs-place-card) 60 60 60 140 fill / 14px 14px 14px 32px stretch !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard) :is(.fs-namecard, .profile-stats) { padding-left: 44px !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] #profileCard .profile-avatar-wrap { margin-bottom: -100px !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] .fsk-thumb { left: 9.8% !important; top: 8.2% !important; width: 79.6% !important; height: 60.2% !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] .fsk-body { inset: 70% 0 0 0 !important; padding: 0 11% 7% !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] .fsk-body { inset: 68.6% 0 0 0 !important; padding: 2px 11% 5% !important; justify-content: space-between !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] .fsk-name { font-size: 14px !important; line-height: 1.2 !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] .fsk-body .btn { height: 28px !important; }
+html body.fs.fs-basic .fsk-name { flex: 0 0 auto !important; line-height: 1.35 !important; min-height: 1.35em; padding-bottom: 1px !important; }
+html body.fs.fs-basic .fsk-body .btn { flex: 0 0 auto !important; }
