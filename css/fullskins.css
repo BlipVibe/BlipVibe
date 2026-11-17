@@ -7455,3 +7455,79 @@ html body.fs.fs-blood-moon[data-fs-variant="silver"] .profile-card-item img.prof
 html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card), html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .profile-info { pointer-events: none !important; }
 html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) .profile-info > *, html body.fs.fs-blood-moon :is(#profileCard, .pv-profile-card) > :not(.profile-info) { pointer-events: auto !important; }
 html body.fs.fs-blood-moon .fs-tl-slot.fs-tl-own { z-index: 3 !important; cursor: pointer; }
+/* ===== Superhero profile pop-up (owner, Nov 16: "redesigned for the heroes and the villains … not so plain"): a comic
+   HERO FILE (Heroes) / a classified VILLAIN DOSSIER (Villains), each from its own painted set
+   (prototypes/superhero-profile-modal-brief.md): panel, splash / surveillance header behind the photo, photo ring, name on
+   the banner, bio in a speech balloon / terminal screen, counters on starbursts / power cells, skin caption tag ===== */
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) { background: none !important; border: 40px solid transparent !important; border-image: var(--fs-modal-panel) 200 fill / 40px stretch !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .5) !important; padding: 0 !important; overflow-x: hidden !important; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-header { position: relative; z-index: 4; border: 0 !important; padding: 0 0 4px !important; justify-content: center !important; background: none !important; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-header h3 { margin: 0 auto !important; font-size: 21px !important; text-transform: uppercase; color: #fff !important; padding: 7px 40px 9px !important;
+  background: var(--fs-title-banner) center / 100% 100% no-repeat !important; text-shadow: 2px 2px 0 #111, -1px -1px 0 #111, 1px -1px 0 #111, -1px 1px 0 #111; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-header h3 { color: #e8ffe0 !important; text-shadow: 0 0 8px rgba(125, 255, 58, .55), 1px 1px 0 #000; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-close { position: absolute !important; right: -14px; top: -14px; width: 40px !important; height: 40px !important; border: 0 !important; border-radius: 50% !important;
+  background: var(--fs-close-btn) center / contain no-repeat !important; box-shadow: none !important; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-close i { opacity: 0 !important; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-body { padding: 0 !important; position: relative; }
+html body.fs.fs-superhero .modal-profile-top { position: relative; text-align: center; margin: 0 0 6px !important; padding: 0 !important; }
+html body.fs.fs-superhero .modal-profile-top::before { content: ""; position: absolute; left: -6px; right: -6px; top: 0; aspect-ratio: 1200 / 560; z-index: 0; pointer-events: none; background: var(--fs-modal-header) center / 100% 100% no-repeat; }
+html body.fs.fs-superhero .modal-profile-top img { position: relative; z-index: 2; width: 132px !important; height: 132px !important; aspect-ratio: 1 !important; margin: 16% auto 0 !important; border-radius: 50% !important;
+  -webkit-mask: none !important; mask: none !important; object-fit: cover; border: 0 !important; box-shadow: none !important; display: block; }
+html body.fs.fs-superhero .modal-profile-top::after { content: ""; position: absolute; z-index: 3; left: 50%; top: 0; width: 232px; height: 232px; margin: calc(16% - 48px) 0 0 -114px; pointer-events: none;
+  background: var(--fs-photo-ring) center / 100% 100% no-repeat; }
+html body.fs.fs-superhero .modal-profile-top h3 { position: relative; z-index: 4; display: inline-block; margin: 30px auto 0 !important; padding: 9px 40px 11px !important; max-width: 94%; box-sizing: border-box;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: clamp(20px, 6.5vw, 27px) !important; text-transform: uppercase; color: #fff !important;
+  background: var(--fs-name-banner) center / 100% 100% no-repeat !important; text-shadow: 2px 2px 0 #111, -1px -1px 0 #111, 1px -1px 0 #111, -1px 1px 0 #111; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-top h3 { color: #e8ffe0 !important; text-shadow: 0 0 8px rgba(125, 255, 58, .55), 1px 1px 0 #000; }
+html body.fs.fs-superhero .modal-profile-top p { margin: 10px 4px 0 !important; padding: 2px 4px !important; min-height: 24px; border: solid transparent !important; border-width: 22px 26px 16px !important;
+  border-image: var(--fs-bio-box) 100 fill / 22px 26px 16px stretch !important; color: var(--sh-ink) !important; font: 700 16px var(--sh-bfont) !important; line-height: 1.3; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-top p { color: #c9ffb3 !important; font-family: var(--sh-bfont) !important; }
+html body.fs.fs-superhero .modal-profile-top p:empty { display: none; }
+html body.fs.fs-superhero .modal-profile-stats { display: flex !important; justify-content: center; gap: 18px !important; border: 0 !important; padding: 4px 0 !important; margin: 6px 0 4px !important; }
+html body.fs.fs-superhero .modal-profile-stats .stat { width: 112px; height: 112px; max-width: none !important; display: flex !important; flex-direction: column; align-items: center; justify-content: center;
+  background: var(--fs-stat-badge) center / contain no-repeat !important; border: 0 !important; padding: 0 !important; }
+html body.fs.fs-superhero .modal-profile-stats .stat-count { font: 400 26px var(--sh-tfont) !important; line-height: 1 !important; color: var(--sh-title) !important; }
+html body.fs.fs-superhero .modal-profile-stats .stat-label { font: 700 11px var(--sh-bfont) !important; text-transform: uppercase; color: var(--sh-title) !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-stats :is(.stat-count, .stat-label) { color: #e8ffe0 !important; text-shadow: 0 0 6px rgba(125, 255, 58, .7); }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-body > div[style*="text-align"] p { display: inline-block; margin: 4px auto 0 !important; padding: 0 6px !important; border: solid transparent !important;
+  border-width: 9px 20px !important; border-image: var(--fs-skin-tag) 75 fill / 9px 20px stretch !important; color: var(--sh-title) !important; font: 700 14px var(--sh-bfont) !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-body > div[style*="text-align"] p { color: #f4ffee !important; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-actions { display: grid !important; grid-template-columns: 1fr 1fr; gap: 8px !important; margin: 12px 0 0 !important; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-actions .btn { width: auto !important; min-width: 0; height: auto !important; margin: 0 !important; padding: 2px 4px !important; white-space: nowrap;
+  background: none !important; border: solid transparent !important; border-width: 10px 18px !important; border-image: var(--fs-action-btn) 55 75 fill / 10px 18px stretch !important; border-radius: 0 !important;
+  box-shadow: none !important; color: var(--sh-title) !important; font: 400 16px var(--sh-tfont) !important; letter-spacing: var(--sh-tspace); text-transform: uppercase; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-actions .btn:only-child,
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-actions :is(#modalFollowBtn, #modalViewMyProfileBtn) { border-image-source: var(--fs-follow-btn) !important; color: var(--sh-on) !important; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-actions .btn:only-child { grid-column: 1 / -1; width: 80% !important; justify-self: center; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) #modalBlockBtn { color: #c4161c !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) #modalBlockBtn { color: #ff6b8a !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-actions :is(#modalFollowBtn, #modalViewMyProfileBtn, .btn:only-child) { text-shadow: 0 0 2px #000, 0 1px 2px #000 !important; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-body::after { content: ""; display: block; margin: 10px -10px -16px; aspect-ratio: 1200 / 300; background: var(--fs-modal-deco) center bottom / 100% 100% no-repeat; pointer-events: none; }
+/* Villains pop-up = a different LAYOUT, not just different art (owner: "completely organized different … placement"):
+   a left-aligned DOSSIER — surveillance screen strip across the top carrying the title plate at its left; photo in the
+   spiked ring on the LEFT with the name plate + terminal bio beside it; the two power-cell readouts and the skin tag in one
+   row; the actions as a stacked command list. (Heroes keeps the centred comic hero file.) */
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-header { height: 118px; margin: 0 -8px 10px; padding: 0 0 10px 6px !important; align-items: flex-end !important;
+  justify-content: flex-start !important; background: var(--fs-modal-header) center / cover no-repeat !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-header h3 { margin: 0 !important; font-size: 18px !important; padding: 6px 30px 8px 34px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-top { display: grid !important; grid-template-columns: 122px minmax(0, 1fr); grid-template-rows: auto 1fr; column-gap: 12px; align-items: start; text-align: left !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-top::before { display: none !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-top img { grid-column: 1; grid-row: 1 / span 2; width: 100px !important; height: 100px !important; margin: 12px 0 0 11px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-top::after { left: 0; top: 0; width: 149px; height: 149px; margin: -7px 0 0 -13px; }  /* ring window measured: 16% 12.8% / 67% */
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-top h3 { grid-column: 2; grid-row: 1; justify-self: start; margin: 6px 0 0 !important; max-width: 100%; font-size: clamp(16px, 5vw, 21px) !important; padding: 7px 26px 9px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-top p { grid-column: 2; grid-row: 2; margin: 8px 0 0 !important; font-size: 15px !important; text-align: left; border-width: 18px 20px 14px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-body { display: flex; flex-direction: column; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-stats { justify-content: flex-start !important; gap: 8px !important; margin: 12px 0 0 !important; padding: 0 !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-stats .stat { width: 92px; height: 92px; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-stats .stat-count { font-size: 21px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-stats .stat-label { font-size: 9.5px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-body > div[style*="text-align"] { text-align: right !important; margin-top: -58px; padding-left: 196px; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-body > div[style*="text-align"] p { font-size: 12px !important; line-height: 1.2; white-space: normal; text-align: center; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-actions { display: flex !important; flex-direction: column; gap: 6px !important; margin: 14px 0 0 !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-actions .btn { width: 100% !important; justify-content: flex-start !important; text-align: left !important; padding-left: 12px !important; display: flex !important; align-items: center; gap: 10px; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-actions .btn:only-child { width: 100% !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-actions .btn i { color: var(--sh-accent) !important; }
+/* pop-up QA: close button inside the panel corner; Villains skin tag on its own row under the readouts, left-aligned */
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-close { right: -8px !important; top: -8px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-body > div[style*="text-align"] { text-align: left !important; margin-top: 8px !important; padding-left: 0 !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-body > div[style*="text-align"] p { font-size: 13px !important; white-space: nowrap; }
