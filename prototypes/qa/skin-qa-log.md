@@ -20,6 +20,8 @@ kept on this machine only), `images/skins/README.md` and the skin's `NOTES.md`. 
 | U | **Unreadable text** | any text too close in colour to what's behind it — button labels (Free / Buy / Join / Follow / tabs, active and inactive), pop-up titles, names and placeholders, field placeholders and typed text, card headings, app-coloured icons left unthemed. Pass ≈ WCAG 4.5:1 body, 3:1 large titles. Also grep for CSS variables used but never defined (they fall back silently) |
 | M | **Menus/motion** | the account menu has every item on screen with Log out reachable; liked/disliked visibly fill; the skin's own swap/equip animations play and nothing just pops in |
 
+**Every pass also checks:** the owner's phone (and the QA install) runs the current OTA version, not the App Store builtin bundle. Any new `skin_data` key the July App Store copy doesn't know is added to the `preserve_new_skin_keys` list (supabase/app-store-copy-compat.sql).
+
 **Before any pass:** the QA install injects `window.__BV_QA_READONLY=true;` next to `window.FS_BASE` in `<head>`, uses `js/supabase.js` from main, and the console shows `[QA read-only] ON`. No pass runs without it.
 
 Automated checks run on every capture too (`qaCheck` / `qaPlace` in the QA harness): horizontal scroll, fields < 16px,
@@ -119,3 +121,16 @@ so nothing comes back. Re-check column: date of the last pass that confirmed it.
 | 17 | Nov 16 | all | profile card / profiles | long names must wrap by word, stay readable, not hit decorations or push under the cover (criterion L) | — | pass 2 |
 | 18 | Nov 16 | all | everywhere | unreadable text: buttons, pop-ups, placeholders, headings, app-coloured icons (criterion U) | — | pass 2 |
 | 19 | Nov 16 | all (live accounts) | — | test simulators changed live account settings | 81fd23c (QA read-only mode: `window.__BV_QA_READONLY=true` in the QA install's `<head>` + main's `js/supabase.js` swallow every live write) | every QA install must show `[QA read-only] ON` in the console before a pass |
+| 20 | Nov 17 | all (owner's iPhone) | whole app | plain pre-skins default look: no Skins tab, default colours, plain like buttons, profile counts 0 (account data intact: 14 skins owned, Scrapbook equipped). **Root cause:** the App Store copy (1.0.3, July) crashed in applyPremiumSkin on skins it doesn't know (scrapbook, good-witch, superhero, basic), and its update check only ran after startup, so the phone could never update, even after a reinstall. Contributing: the Nov 16 OTA cleanup in initLiveUpdates deleted the updater's fallback bundle, so a slow-start rollback dropped the phone to that copy | 353ba3e (notifyAppReady first in `<head>`; cleanup waits 60 s, never runs from builtin, keeps the running, queued and 3 newest good bundles); 395a82b (js/ota.js: update check runs first and standalone; verified on a fresh sim with app.js deliberately broken); 67ff9ac + live SQL supabase/app-store-copy-compat.sql (get_own_profile hides unknown skins from the July copy; current code reads get_own_profile_v2; trigger keeps fsPhotoPos) | ✓ Nov 17: July copy reaches its update check with Superhero equipped; owner's phone has its skins back |
+| 21 | Nov 17 | #Basic (Rosé + Pumpkin Spice) | icons | icons too thin / small → chunkier and bigger | fixed before ship (7a4477e) | next pass |
+| 22 | Nov 17 | #Basic (Rosé + Pumpkin Spice) | Home profile card | name card floating → stands on an oak ledge | fixed before ship (7a4477e) | next pass |
+| 23 | Nov 17 | #Basic (Rosé + Pumpkin Spice) | bottom bar | nav → the concept's inset tray with a centred ceramic disc | fixed before ship (7a4477e) | next pass |
+| 24 | Nov 17 | #Basic (Rosé + Pumpkin Spice) | Home shelf | shelf not cosy like the concept → repainted shelf scene | fixed before ship (7a4477e) | next pass |
+| 25 | Nov 17 | #Basic (Rosé + Pumpkin Spice) | all screens | everything too spaced out → tightened; Pumpkin art had 60–120 px transparent margins (trimmed) | fixed before ship (7a4477e) | next pass |
+
+## Queued for the next pass
+
+| Skin | Renditions | Extra checks |
+|---|---|---|
+| Blood Moon (main 6f983c7) | Crimson (assets/), Silver (assets/silver/, no red anywhere); moon button (bloodSwap) | cover photos masked by profile-mask-1..3 with no holes or spill on Home + every profile; long names beside the flourishes and candelabras; parchment pop-up text vs dark fields; nav labels inside the arched cells |
+| #Basic (main 7a4477e) | Rosé (assets/), Pumpkin Spice (assets/pumpkin/); season drink in the top bar | Barista Bar (cup button → menu, Latte Break, Last Call); season gust; flat-lay equip |

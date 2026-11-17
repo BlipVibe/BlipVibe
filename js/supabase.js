@@ -9,6 +9,41 @@ const SUPABASE_ANON = 'sb_publishable_PPMPXSazIqUTmkgAx6f3Tg_VVyn1VbB';
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
+// QA READ-ONLY MODE (owner, Nov 16: test simulators were "actively changing everyone's account"). Test simulators set
+// window.__BV_QA_READONLY = true in <head> (injected by the QA scripts, never in the shipped app). While it is set, every
+// write to the live database is swallowed here — inserts, updates, upserts, deletes, uploads and any RPC that isn't a
+// read — so QA can tap anything without touching a real account. Reads work normally.
+(function qaReadOnlyGuard() {
+  if (!window.__BV_QA_READONLY) return;
+  var READ_RPC = /^(get_|search_|is_current_user_admin$|admin_get_|admin_user_count$|admin_open_report_count$)/;
+  function noop(label) {   // a chainable stand-in for a query builder that resolves to "nothing happened"
+    var done = Promise.resolve({ data: null, error: null, count: 0, status: 204 });
+    var p = new Proxy(function () {}, {
+      get: function (t, k) { if (k === 'then') return done.then.bind(done); if (k === 'catch') return done.catch.bind(done); if (k === 'finally') return done.finally.bind(done); return function () { return p; }; },
+      apply: function () { return p; }
+    });
+    console.info('[QA read-only] blocked ' + label);
+    return p;
+  }
+  var rawFrom = sb.from.bind(sb);
+  sb.from = function (table) {
+    var q = rawFrom(table);
+    ['insert', 'update', 'upsert', 'delete'].forEach(function (m) { q[m] = function () { return noop(m + ' ' + table); }; });
+    return q;
+  };
+  var rawRpc = sb.rpc.bind(sb);
+  sb.rpc = function (fn, args, opts) { return READ_RPC.test(fn) ? rawRpc(fn, args, opts) : noop('rpc ' + fn); };
+  if (sb.storage && sb.storage.from) {
+    var rawStore = sb.storage.from.bind(sb.storage);
+    sb.storage.from = function (bucket) {
+      var b = rawStore(bucket);
+      ['upload', 'update', 'remove', 'move', 'copy'].forEach(function (m) { b[m] = function () { return noop('storage ' + m + ' ' + bucket); }; });
+      return b;
+    };
+  }
+  console.warn('[QA read-only] ON — no writes reach the live database from this device');
+})();
+
 // ---- EMAIL MASKING (hide email-as-username from public display) -------------
 function _isEmailStr(s){return s&&/[^\s@]+@[^\s@]+\.[^\s@]+/.test(s);}
 function _maskEmail(s){var at=s.indexOf('@');return s.substring(0,Math.min(at,2))+'***';}
@@ -147,7 +182,11 @@ async function sbGetProfile(userId) {
 // Get OWN profile with private columns (skin_data, birthday, email)
 // Uses SECURITY DEFINER RPC to bypass column-level revokes
 async function sbGetOwnProfile() {
-  const { data, error } = await sb.rpc('get_own_profile');
+  // get_own_profile_v2 = the full profile. The old get_own_profile is kept for the App Store copy of the app (July 2026,
+  // 1.0.3): it hides an equipped skin that copy has never heard of, which used to crash its startup before it could
+  // download an update (Nov 17). Fall back to the old name until v2 exists.
+  let { data, error } = await sb.rpc('get_own_profile_v2');
+  if (error) ({ data, error } = await sb.rpc('get_own_profile'));
   if (error) throw error;
   return _sanitizeProfile(data);
 }

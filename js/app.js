@@ -731,7 +731,8 @@ function syncAllAvatars(newSrc) {
     var oldBase = old ? old.split('?')[0] : '';
     if (currentUser) currentUser.avatar_url = newSrc;
     document.querySelectorAll('img').forEach(function (img) {
-        if (img.src === old || (oldBase && img.src.split('?')[0] === oldBase)) img.src = newSrc;
+        var cur = img.dataset.fsOrig || img.src; // full-skin frames may show a zoomed crop (photopos.js)
+        if (cur === old || (oldBase && cur.split('?')[0] === oldBase)) img.src = newSrc;
     });
     populateUserUI();
 }
@@ -816,7 +817,7 @@ async function initApp() {
     // Remove the pre-paint hash-nav style now that JS has taken over
     var hashFix=document.getElementById('hash-nav-fix');
     if(hashFix) hashFix.remove();
-    reapplyCustomizations(); // Re-apply skins, fonts, nav styles, dark mode
+    try{ reapplyCustomizations(); }catch(e){ console.error('reapplyCustomizations',e); } // Re-apply skins, fonts, nav styles, dark mode (a bad look must never stop startup)
     showCookieConsent(); // Show cookie banner if not yet accepted
     if(settings.showLocation) detectUserLocation(); // Only request location when user opted in
     if(currentUser.cover_photo_url) { state.coverPhoto = currentUser.cover_photo_url; }
@@ -1236,6 +1237,7 @@ function _buildSkinData(){
         savedFolders:savedFolders||[],
         fsTimelinePhotos:state.fsTimelinePhotos||[],
         fsVariants:state.fsVariants||{},
+        fsPhotoPos:state.fsPhotoPos||{},
         hiddenPosts:hiddenPosts||{},
         reportedPosts:reportedPosts||[],
         pinnedPosts:state.pinnedPosts||{},
@@ -1340,6 +1342,8 @@ function _applySkinDataFromCache(sd){
     if('premiumBgUrl' in sd) premiumBgImage=sd.premiumBgUrl||null;
     if('fsTimelinePhotos' in sd) state.fsTimelinePhotos=Array.isArray(sd.fsTimelinePhotos)?sd.fsTimelinePhotos:[];
     if('fsVariants' in sd) state.fsVariants=(sd.fsVariants&&typeof sd.fsVariants==='object')?sd.fsVariants:{};
+    // full skins: zoom / position of each photo in its frame, per skin (photopos.js). Saved as an ordinary key.
+    if('fsPhotoPos' in sd) state.fsPhotoPos=(sd.fsPhotoPos&&typeof sd.fsPhotoPos==='object'&&!Array.isArray(sd.fsPhotoPos))?sd.fsPhotoPos:{};
     if(sd.premiumBgOverlay!==undefined) premiumBgOverlay=sd.premiumBgOverlay;
     if(sd.premiumBgDarkness!==undefined) premiumBgDarkness=sd.premiumBgDarkness;
     if(sd.premiumCardTransparency!==undefined) premiumCardTransparency=sd.premiumCardTransparency;
@@ -1886,7 +1890,7 @@ function navigateTo(page,skipPush){
         applyPremiumSkin(null,true);
         applySkin(null,true);
         _pvRealSkin=null;
-        window._fsViewedVariants=null;
+        window._fsViewedVariants=null;window._fsViewedPhotoPos=null;window._fsViewedCover=null;
         loadSkinDataFromSupabase().then(function(){
             _pvSaved=null; // only clear AFTER server data is loaded
             reapplyCustomizations();
@@ -3622,7 +3626,7 @@ async function showProfileView(person){
         applyPremiumSkin(null,true);
         applySkin(null,true);
         _pvRealSkin=null;
-        window._fsViewedVariants=null;
+        window._fsViewedVariants=null;window._fsViewedPhotoPos=null;window._fsViewedCover=null;
         await loadSkinDataFromSupabase();
         _pvSaved=null; // only clear AFTER server data is loaded
         reapplyCustomizations();
@@ -3639,6 +3643,7 @@ async function showProfileView(person){
                 if(pubSkin.premiumBgUrl) person.premiumBg={src:pubSkin.premiumBgUrl,overlay:pubSkin.premiumBgOverlay!=null?pubSkin.premiumBgOverlay:0,darkness:pubSkin.premiumBgDarkness!=null?pubSkin.premiumBgDarkness:0,cardTrans:pubSkin.premiumCardTransparency!=null?pubSkin.premiumCardTransparency:0.1};
                 person.fsTimeline=Array.isArray(pubSkin.fsTimelinePhotos)?pubSkin.fsTimelinePhotos:null;
                 person.fsVariants=(pubSkin.fsVariants&&typeof pubSkin.fsVariants==='object')?pubSkin.fsVariants:null;
+                person.fsPhotoPos=(pubSkin.fsPhotoPos&&typeof pubSkin.fsPhotoPos==='object')?pubSkin.fsPhotoPos:null;
                 person._skinLoaded=true;
             }
         }catch(e){console.warn('Failed to load public skin data:',e);}
@@ -3648,6 +3653,7 @@ async function showProfileView(person){
     // profile: nothing is swapped there, and blocking saves lost timeline photos picked on it.
     _pvSaved=isMe?null:true;
     window._fsViewedVariants=isMe?null:(person.fsVariants||{}); // their full-skin colour options
+    window._fsViewedPhotoPos=isMe?null:(person.fsPhotoPos||{}); // their photo zoom / positions
     if(!isMe){
         // Save our real values before any visual changes
         _pvRealSkin={premiumSkin:state.activePremiumSkin,skin:state.activeSkin,font:state.activeFont,tpl:state.activeTemplate,bgImage:premiumBgImage,bgOverlay:premiumBgOverlay,bgDarkness:premiumBgDarkness,cardTrans:premiumCardTransparency};
@@ -3670,6 +3676,7 @@ async function showProfileView(person){
     var _pvMobile=person.cover_photo_url_mobile||(isMe?state.coverPhotoMobile:null);
     var coverUrl=_pvIsMobile?(_pvMobile||_pvDesktop):(_pvDesktop||_pvMobile);
     $('#pvCoverBanner').style.backgroundImage=coverUrl?'url('+coverUrl+')':'';
+    window._fsViewedCover=isMe?null:(_pvMobile||_pvDesktop||null); // full-skin frame 1: same crop on every device
     // Show cover edit button on own profile
     var pvCoverBtn=$('#pvCoverEditBtn');
     if(pvCoverBtn) pvCoverBtn.style.display=isMe?'flex':'none';
@@ -5909,6 +5916,7 @@ function showMobileCoverCropModal(src,isRecrop){
                 state.coverPhotoMobile=null;
                 applyCoverPhoto();
             }catch(e){console.error('Clear mobile cover error:',e);}
+            _fsPpCover();
         },
         onConfirm:async function(blob,canvas){
             if(!currentUser){state.coverPhotoMobile=canvas.toDataURL('image/jpeg',0.9);applyCoverPhoto();return;}
@@ -5922,6 +5930,7 @@ function showMobileCoverCropModal(src,isRecrop){
                 state.coverPhotoMobile=canvas.toDataURL('image/jpeg',0.9);
             }
             applyCoverPhoto();
+            _fsPpCover();
         }
     });
 }
@@ -6156,7 +6165,8 @@ $('#avatarEditBtn').addEventListener('click',function(e){
     e.stopPropagation();
     var photos=state.photos.profile;
     var html='<div class="modal-header"><h3>Change Profile Picture</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body">';
-    html+='<div style="text-align:center;margin-bottom:16px;"><button class="btn btn-primary" id="avatarUploadNewBtn"><i class="fas fa-upload"></i> Upload New Photo</button></div>';
+    var _ppOn=window.BlipPhotoPos&&window.BlipFullSkins&&BlipFullSkins.active()&&currentUser&&currentUser.avatar_url;
+    html+='<div style="text-align:center;margin-bottom:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><button class="btn btn-primary" id="avatarUploadNewBtn"><i class="fas fa-upload"></i> Upload New Photo</button>'+(_ppOn?'<button class="btn btn-outline" id="avatarMoveZoomBtn"><i class="fas fa-up-down-left-right"></i> Move, Zoom &amp; Rotate</button>':'')+'</div>';
     if(photos.length>0){
         html+='<p style="font-size:13px;color:var(--gray);margin-bottom:12px;text-align:center;">Or select from previous uploads:</p>';
         html+='<div class="shop-scroll-row" id="avatarPickRow" style="gap:12px;padding:8px 4px 12px;">';
@@ -6169,6 +6179,8 @@ $('#avatarEditBtn').addEventListener('click',function(e){
     showModal(html);
     if(photos.length>0) initDragScroll('#modalContent');
     document.getElementById('avatarUploadNewBtn').addEventListener('click',function(){closeModal();$('#avatarFileInput').click();});
+    var _ppBtn=document.getElementById('avatarMoveZoomBtn');
+    if(_ppBtn) _ppBtn.addEventListener('click',function(){closeModal();setTimeout(function(){BlipPhotoPos.editAvatar();},120);});
     $$('.avatar-pick-thumb').forEach(function(thumb){
         thumb.addEventListener('mouseenter',function(){thumb.style.borderColor='var(--primary)';});
         thumb.addEventListener('mouseleave',function(){thumb.style.borderColor='transparent';});
@@ -6228,8 +6240,17 @@ function showCropModal(src,isRecrop){
                 if(!isRecrop) state.photos.profile.unshift({src:du,date:Date.now()});
             }
             renderPhotosCard();
+            _fsPpAfter(function(){BlipPhotoPos.editAvatar();});
         }
     });
+}
+// full skins: after picking a photo, open the frame's Move & zoom editor (photopos.js)
+function _fsPpAfter(fn){
+    if(window.BlipPhotoPos&&window.BlipFullSkins&&BlipFullSkins.active()) setTimeout(fn,450);
+}
+function _fsPpCover(){
+    if((state.fsTimelinePhotos||[])[0]) return; // frame 1 shows a photo you picked, not the cover
+    _fsPpAfter(function(){BlipPhotoPos.editSlot(0,$('#page-profile-view.active')?'pvCoverBanner':'timelineCover');});
 }
 
 // Settings & dropdown handlers
@@ -10647,6 +10668,19 @@ window.BlipFullSkinsData={
     cover:function(){return state.coverPhotoMobile||state.coverPhoto||null;},
     chosen:function(){return state.fsTimelinePhotos||[];},          // your picks, by slot
     viewed:function(){return window._fsViewedTimeline||null;},      // the viewed person's picks
+    viewedCover:function(){return window._fsViewedCover||null;},
+    // app.js lives inside DOMContentLoaded, so its helpers aren't globals: hand them to photopos.js
+    showModal:function(h){showModal(h);},closeModal:function(){closeModal();},toast:function(t){showToast(t);},
+    // photo zoom / position per skin and frame (photopos.js): yours, and the viewed person's
+    photoPos:function(){return state.fsPhotoPos||{};},
+    viewedPhotoPos:function(){return window._fsViewedPhotoPos||null;},
+    setPhotoPos:function(skin,key,pos){
+        var all=Object.assign({},state.fsPhotoPos||{}),t=Object.assign({},all[skin]||{});
+        if(pos) t[key]=pos; else delete t[key];
+        if(Object.keys(t).length) all[skin]=t; else delete all[skin];
+        state.fsPhotoPos=all;
+        saveState();syncSkinDataToSupabase(true);
+    },
     // colour option for full skin `id`: the viewed person's while on their profile, else yours
     variant:function(id){var v=window._fsViewedVariants||state.fsVariants||{};return v[id]||null;},
     setVariant:function(id,v){
@@ -10678,6 +10712,8 @@ window.BlipFullSkinsData={
             saveState();syncSkinDataToSupabase(true);closeModal();
             if(window.BlipFullSkins) BlipFullSkins.render();
             showToast('Timeline photo updated');
+            // then zoom / move it inside the frame
+            if(window.BlipPhotoPos) setTimeout(function(){BlipPhotoPos.editSlot(slot,$('#page-profile-view.active')?'pvCoverBanner':'timelineCover');},350);
         });});
     }
 };
@@ -14783,42 +14819,9 @@ function renderMutualFollowers(container,mutuals){
 
 // ======================== PUSH NOTIFICATIONS (Capacitor) ========================
 // ======================== LIVE UPDATES (OTA) ========================
-// The native app ships a snapshot of the web bundle. Rather than an App Store
-// resubmit for every JS/CSS fix, it checks a manifest on launch and downloads
-// the newer bundle, applying it on the NEXT launch (never yanks the UI mid-use).
-// Apple permits this — it only ever updates interpreted (JS/CSS/HTML) code.
-// Safety: notifyAppReady() marks the running bundle healthy; if a bundle fails
-// to boot, the plugin automatically rolls back to the last good one.
-var OTA_MANIFEST_URL='https://jrybcihteqlqkdbrmagx.supabase.co/storage/v1/object/public/ota/manifest.json';
-async function initLiveUpdates(){
-    if(!window.Capacitor||!window.Capacitor.isNativePlatform()) return;
-    var U=window.Capacitor.Plugins.CapacitorUpdater;
-    if(!U) return;
-    try{await U.notifyAppReady();}catch(e){console.warn('[OTA] notifyAppReady:',e);}
-    // Clean up old downloaded versions (Nov 16: every update left another full copy behind; the test simulator held
-    // 397 of them, 21 GB). Keep only the running bundle and the one queued for the next launch.
-    try{
-        var cur0=await U.current(), keep={builtin:1};
-        if(cur0&&cur0.bundle&&cur0.bundle.id) keep[cur0.bundle.id]=1;
-        if(U.getNextBundle){try{var nx=await U.getNextBundle();if(nx&&nx.id) keep[nx.id]=1;}catch(e){}}
-        var lst=await U.list();
-        ((lst&&lst.bundles)||[]).forEach(function(b){ if(b&&b.id&&!keep[b.id]) U.delete({id:b.id}).catch(function(){}); });
-    }catch(e){console.warn('[OTA] cleanup:',e);}
-    try{
-        var res=await fetch(OTA_MANIFEST_URL+'?t='+Date.now(),{cache:'no-store'});
-        if(!res.ok) return;
-        var m=await res.json();
-        if(!m||!m.version||!m.url) return;
-        var cur=await U.current();
-        var curVer=(cur&&cur.bundle&&cur.bundle.version)||'builtin';
-        if(m.version===curVer) return; // already current
-        console.log('[OTA] update available:',curVer,'->',m.version);
-        var bundle=await U.download({url:m.url,version:m.version});
-        if(!bundle||!bundle.id||bundle.status==='error') return;
-        await U.next({id:bundle.id});
-        console.log('[OTA] downloaded — applies on next launch');
-    }catch(e){console.warn('[OTA] check failed:',e);}
-}
+// Lives in js/ota.js, loaded first in <head> on its own (Nov 17: an update check that waited for the whole app to
+// start could never run when startup broke). This stays as a no-op hook for wireNewFeatures.
+function initLiveUpdates(){}
 
 // ======================== iOS KEYBOARD FIX ========================
 // With resize:"body", opening the keyboard while a modal is up (comments,

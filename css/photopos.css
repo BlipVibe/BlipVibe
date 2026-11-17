@@ -1,0 +1,51 @@
+/* Photo positioner (js/photopos.js) — Move & zoom a photo inside a full skin's frame.
+ * Opens in the app modal, which every skin already dresses; this only places the pieces. The track / fill are each
+ * skin's own bar art, the knob is painted per skin (images/skins/<id>/kit/pp → assets/pp-knob.webp). */
+.fs-pp-body { padding-top: 6px !important; }
+.fs-pp-stage { position: relative; width: 100%; height: 280px; overflow: hidden; touch-action: none; cursor: grab;
+  -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; outline: none; }
+.fs-pp-stage:active { cursor: grabbing; }
+.fs-pp-scale { position: absolute; left: 0; top: 12px; transform-origin: 0 0; pointer-events: none; }
+.fs-pp-hint { margin: 6px 0 10px !important; text-align: center; font: 15px/1.35 var(--fs-font, inherit) !important;
+  color: var(--fs-muted, #666) !important; }
+.fs-pp-zoom { display: flex; align-items: center; gap: 12px; margin: 0 4px 14px; }
+.fs-pp-zl { font: 700 16px var(--fs-font, inherit); color: var(--fs-ink, inherit); min-width: 3.2em; }
+.fs-pp-track { position: relative; flex: 1; height: 18px; display: block;
+  background: var(--pp-track) center / 100% 100% no-repeat; }
+.fs-pp-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--pp-fill) left center / auto 100% no-repeat;
+  background-size: 100% 100%; pointer-events: none; }
+.fs-pp-range { position: absolute; left: -15px; right: -15px; top: 50%; width: calc(100% + 30px); height: 40px; margin: -20px 0 0;
+  -webkit-appearance: none; appearance: none; background: transparent; cursor: pointer; }
+.fs-pp-range::-webkit-slider-runnable-track { height: 40px; background: transparent; border: 0; }
+.fs-pp-range::-moz-range-track { height: 40px; background: transparent; border: 0; }
+.fs-pp-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 34px; height: 34px; margin-top: 3px;
+  border: 0; border-radius: 0; background: var(--fs-pp-knob) center / contain no-repeat; box-shadow: none; }
+.fs-pp-range::-moz-range-thumb { width: 34px; height: 34px; border: 0; border-radius: 0; background: var(--fs-pp-knob) center / contain no-repeat; }
+.fs-pp-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.fs-pp-btns .btn { min-width: 92px; font-size: 16px !important; }
+
+/* each skin's own bar art for the zoom track */
+body.fs-scrapbook .fs-pp-zoom { --pp-track: var(--fs-track-real); --pp-fill: var(--fs-fill-real); }
+body.fs-anime-blaze .fs-pp-zoom { --pp-track: var(--fs-track); --pp-fill: var(--fs-fill); }
+body.fs-witchcraft .fs-pp-zoom, body.fs-good-witch .fs-pp-zoom, body.fs-heavens-light .fs-pp-zoom, body.fs-blood-moon .fs-pp-zoom, body.fs-superhero .fs-pp-zoom { --pp-track: var(--fs-goal-track); --pp-fill: var(--fs-goal-fill); }
+body.fs-vaporwave .fs-pp-zoom { --pp-track: var(--fs-progress-track); --pp-fill: var(--fs-progress-fill); }
+
+/* Move & zoom / Change photo menu on your own timeline frames (skins dress .post-dropdown) */
+.fs-pp-menu { position: absolute !important; z-index: 10050 !important; min-width: 180px; right: auto !important; bottom: auto !important; }
+.fs-pp-menu a { display: flex !important; align-items: center; gap: 10px; font-size: 16px !important; }
+/* the copied skin art around the frame fades out at the stage edges instead of ending in a hard rectangle */
+.fs-pp-stage { --pp-f: 14px;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--pp-f), #000 calc(100% - var(--pp-f)), transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 var(--pp-f), #000 calc(100% - var(--pp-f)), transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent 0, #000 var(--pp-f), #000 calc(100% - var(--pp-f)), transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 var(--pp-f), #000 calc(100% - var(--pp-f)), transparent 100%);
+  mask-composite: intersect; }
+/* while you drag / pinch / twist: the whole photo shows faintly beyond the frame, so you can see what its shape cuts off */
+.fs-pp-ghost { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0;
+  transition: opacity .18s ease; z-index: 2; }
+.fs-pp-stage.is-moving .fs-pp-ghost { opacity: .4; }
+.fs-pp-zoom + .fs-pp-zoom { margin-top: -2px; }
+.fs-pp-zl { min-width: 4.2em; }
+.fs-pp-r .fs-pp-zl { cursor: pointer; }
+.fs-pp-deg { display: block; font: 600 13px var(--fs-font, inherit); color: var(--fs-muted, inherit); }
