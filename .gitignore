@@ -76,3 +76,4 @@ images/skins/**
 !images/skins/blood-moon/assets/
 !images/skins/blood-moon/assets/**
 __pycache__/
+prototypes/desktop/shots/

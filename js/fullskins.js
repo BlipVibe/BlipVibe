@@ -32,7 +32,7 @@
     scrapbook: {
       name: 'Scrapbook', dark: false, ink: '#3e2d20', muted: '#75604b', accent: '#cf6f8c',
       font: "'Kalam', cursive", titleFont: "'Caveat', cursive",
-      timeline: 2, avatar: 'center', slice: 16.67,
+      timeline: 2, deskTimeline: 3, avatar: 'center', slice: 16.67,
       // art swapped in for a standard part (asset file names in images/skins/<id>/assets/)
       parts: { 'background': 'background-v2', 'panel-card': 'card9-soft', 'panel-card-active': 'panel9-pink',
         'btn-secondary': 'strip9-layered', 'btn-primary': 'strip9-pink', 'header-bar': 'header9-pink',
@@ -1407,10 +1407,12 @@
   function renderTimeline(coverEl) {
     var cfg = FULL_SKINS[active];
     if (!coverEl || !cfg) return;
+    // desktop layouts (js/fullskins-desktop.js) may show more cover frames than the phone (cfg.deskTimeline)
+    var count = (cfg.deskTimeline && window.BlipFullSkinsDesk && window.BlipFullSkinsDesk.on()) ? cfg.deskTimeline : cfg.timeline;
     var wrap = document.createElement('div');
-    wrap.className = 'fs-rendered fs-timeline fs-tl-' + cfg.timeline;
+    wrap.className = 'fs-rendered fs-timeline fs-tl-' + count;
     var placed = [];
-    timelinePhotos(coverEl, cfg.timeline).forEach(function (src, i) {
+    timelinePhotos(coverEl, count).forEach(function (src, i) {
       var slot = document.createElement('div');
       slot.className = 'fs-tl-slot fs-tl-slot-' + (i + 1);
       if (isOwnTimeline(coverEl) && data().pick) { // tap a frame to choose its photo
