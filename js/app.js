@@ -817,7 +817,7 @@ async function initApp() {
     // Remove the pre-paint hash-nav style now that JS has taken over
     var hashFix=document.getElementById('hash-nav-fix');
     if(hashFix) hashFix.remove();
-    reapplyCustomizations(); // Re-apply skins, fonts, nav styles, dark mode
+    try{ reapplyCustomizations(); }catch(e){ console.error('reapplyCustomizations',e); } // Re-apply skins, fonts, nav styles, dark mode (a bad look must never stop startup)
     showCookieConsent(); // Show cookie banner if not yet accepted
     if(settings.showLocation) detectUserLocation(); // Only request location when user opted in
     if(currentUser.cover_photo_url) { state.coverPhoto = currentUser.cover_photo_url; }
@@ -14819,50 +14819,9 @@ function renderMutualFollowers(container,mutuals){
 
 // ======================== PUSH NOTIFICATIONS (Capacitor) ========================
 // ======================== LIVE UPDATES (OTA) ========================
-// The native app ships a snapshot of the web bundle. Rather than an App Store
-// resubmit for every JS/CSS fix, it checks a manifest on launch and downloads
-// the newer bundle, applying it on the NEXT launch (never yanks the UI mid-use).
-// Apple permits this — it only ever updates interpreted (JS/CSS/HTML) code.
-// Safety: notifyAppReady() marks the running bundle healthy; if a bundle fails
-// to boot, the plugin automatically rolls back to the last good one.
-var OTA_MANIFEST_URL='https://jrybcihteqlqkdbrmagx.supabase.co/storage/v1/object/public/ota/manifest.json';
-async function initLiveUpdates(){
-    if(!window.Capacitor||!window.Capacitor.isNativePlatform()) return;
-    var U=window.Capacitor.Plugins.CapacitorUpdater;
-    if(!U) return;
-    try{await U.notifyAppReady();}catch(e){console.warn('[OTA] notifyAppReady:',e);}
-    // Clean up old downloaded versions (Nov 16: every update left another full copy behind). Nov 17 fix: the first
-    // version kept only the running + queued bundle and deleted the updater's FALLBACK copy, so when a launch was slow
-    // and the updater rolled back, it had nothing to roll back to and dropped to the App Store build (no skins).
-    // Now: wait a minute (after notifyAppReady), keep the running, queued and the 3 newest good downloads.
-    setTimeout(async function(){
-        try{
-            var cur0=await U.current(), keep={builtin:1};
-            if(!cur0||!cur0.bundle||!cur0.bundle.id||cur0.bundle.id==='builtin') return; // never prune from the App Store build
-            keep[cur0.bundle.id]=1;
-            if(U.getNextBundle){try{var nx=await U.getNextBundle();if(nx&&nx.id) keep[nx.id]=1;}catch(e){}}
-            var lst=await U.list(), all=((lst&&lst.bundles)||[]).filter(function(b){return b&&b.id&&b.id!=='builtin';});
-            all.filter(function(b){return b.status==='success';})
-               .sort(function(a,b){return String(b.downloaded||'').localeCompare(String(a.downloaded||''));})
-               .slice(0,3).forEach(function(b){keep[b.id]=1;});
-            all.forEach(function(b){ if(!keep[b.id]&&b.status!=='downloading') U.delete({id:b.id}).catch(function(){}); });
-        }catch(e){console.warn('[OTA] cleanup:',e);}
-    },60000);
-    try{
-        var res=await fetch(OTA_MANIFEST_URL+'?t='+Date.now(),{cache:'no-store'});
-        if(!res.ok) return;
-        var m=await res.json();
-        if(!m||!m.version||!m.url) return;
-        var cur=await U.current();
-        var curVer=(cur&&cur.bundle&&cur.bundle.version)||'builtin';
-        if(m.version===curVer) return; // already current
-        console.log('[OTA] update available:',curVer,'->',m.version);
-        var bundle=await U.download({url:m.url,version:m.version});
-        if(!bundle||!bundle.id||bundle.status==='error') return;
-        await U.next({id:bundle.id});
-        console.log('[OTA] downloaded — applies on next launch');
-    }catch(e){console.warn('[OTA] check failed:',e);}
-}
+// Lives in js/ota.js, loaded first in <head> on its own (Nov 17: an update check that waited for the whole app to
+// start could never run when startup broke). This stays as a no-op hook for wireNewFeatures.
+function initLiveUpdates(){}
 
 // ======================== iOS KEYBOARD FIX ========================
 // With resize:"body", opening the keyboard while a modal is up (comments,
