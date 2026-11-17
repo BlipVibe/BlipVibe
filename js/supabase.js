@@ -182,7 +182,11 @@ async function sbGetProfile(userId) {
 // Get OWN profile with private columns (skin_data, birthday, email)
 // Uses SECURITY DEFINER RPC to bypass column-level revokes
 async function sbGetOwnProfile() {
-  const { data, error } = await sb.rpc('get_own_profile');
+  // get_own_profile_v2 = the full profile. The old get_own_profile is kept for the App Store copy of the app (July 2026,
+  // 1.0.3): it hides an equipped skin that copy has never heard of, which used to crash its startup before it could
+  // download an update (Nov 17). Fall back to the old name until v2 exists.
+  let { data, error } = await sb.rpc('get_own_profile_v2');
+  if (error) ({ data, error } = await sb.rpc('get_own_profile'));
   if (error) throw error;
   return _sanitizeProfile(data);
 }
