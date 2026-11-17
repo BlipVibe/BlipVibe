@@ -34,7 +34,7 @@ body.fs-vaporwave .fs-pp-zoom { --pp-track: var(--fs-progress-track); --pp-fill:
 .fs-pp-menu { position: absolute !important; z-index: 10050 !important; min-width: 180px; right: auto !important; bottom: auto !important; }
 .fs-pp-menu a { display: flex !important; align-items: center; gap: 10px; font-size: 16px !important; }
 /* the copied skin art around the frame fades out at the stage edges instead of ending in a hard rectangle */
-.fs-pp-stage { --pp-f: 26px;
+.fs-pp-stage { --pp-f: 14px;
   -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--pp-f), #000 calc(100% - var(--pp-f)), transparent 100%),
     linear-gradient(to bottom, transparent 0, #000 var(--pp-f), #000 calc(100% - var(--pp-f)), transparent 100%);
   -webkit-mask-composite: source-in;
@@ -47,3 +47,5 @@ body.fs-vaporwave .fs-pp-zoom { --pp-track: var(--fs-progress-track); --pp-fill:
 .fs-pp-stage.is-moving .fs-pp-ghost { opacity: .4; }
 .fs-pp-zoom + .fs-pp-zoom { margin-top: -2px; }
 .fs-pp-zl { min-width: 4.2em; }
+.fs-pp-r .fs-pp-zl { cursor: pointer; }
+.fs-pp-deg { display: block; font: 600 13px var(--fs-font, inherit); color: var(--fs-muted, inherit); }

@@ -20,6 +20,8 @@ kept on this machine only), `images/skins/README.md` and the skin's `NOTES.md`. 
 | U | **Unreadable text** | any text too close in colour to what's behind it — button labels (Free / Buy / Join / Follow / tabs, active and inactive), pop-up titles, names and placeholders, field placeholders and typed text, card headings, app-coloured icons left unthemed. Pass ≈ WCAG 4.5:1 body, 3:1 large titles. Also grep for CSS variables used but never defined (they fall back silently) |
 | M | **Menus/motion** | the account menu has every item on screen with Log out reachable; liked/disliked visibly fill; the skin's own swap/equip animations play and nothing just pops in |
 
+**Every pass also checks:** the owner's phone (and the QA install) runs the current OTA version, not the App Store builtin bundle.
+
 **Before any pass:** the QA install injects `window.__BV_QA_READONLY=true;` next to `window.FS_BASE` in `<head>`, uses `js/supabase.js` from main, and the console shows `[QA read-only] ON`. No pass runs without it.
 
 Automated checks run on every capture too (`qaCheck` / `qaPlace` in the QA harness): horizontal scroll, fields < 16px,
@@ -119,3 +121,4 @@ so nothing comes back. Re-check column: date of the last pass that confirmed it.
 | 17 | Nov 16 | all | profile card / profiles | long names must wrap by word, stay readable, not hit decorations or push under the cover (criterion L) | — | pass 2 |
 | 18 | Nov 16 | all | everywhere | unreadable text: buttons, pop-ups, placeholders, headings, app-coloured icons (criterion U) | — | pass 2 |
 | 19 | Nov 16 | all (live accounts) | — | test simulators changed live account settings | 81fd23c (QA read-only mode: `window.__BV_QA_READONLY=true` in the QA install's `<head>` + main's `js/supabase.js` swallow every live write) | every QA install must show `[QA read-only] ON` in the console before a pass |
+| 20 | Nov 17 | all (owner's iPhone) | whole app | plain pre-skins default look: no Skins tab, default colours, plain like buttons, profile counts 0. The Nov 16 OTA cleanup in initLiveUpdates deleted the updater's fallback bundle, so a slow-start rollback dropped the phone to the App Store builtin bundle (account data intact: 14 skins owned, Scrapbook equipped) | 353ba3e (notifyAppReady first thing in `<head>`; cleanup waits 60 s, never runs from builtin, keeps the running, queued and 3 newest good bundles) | pending owner confirmation on device |

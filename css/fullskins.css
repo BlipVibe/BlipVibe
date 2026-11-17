@@ -5923,16 +5923,6 @@ html body.fs.fs-superhero #gvProfileCard .profile-stats { border: solid transpar
 html body.fs.fs-superhero #gvProfileCard .stat-count { font-size: 22px !important; }
 html body.fs.fs-superhero #gvProfileCard .stat-label { font-size: 13px !important; white-space: nowrap; }
 html body.fs.fs-superhero #gvProfileCard .pv-actions { display: flex !important; flex-wrap: wrap; justify-content: center; gap: 8px !important; margin-top: 12px !important; }
-/* Heroes = tilted comic panels */
-html body.fs.fs-superhero #pvCoverBanner .fs-tl-slot-1 { --sh-l: 4.19%; --sh-t: 10.35%; --sh-w: 29.38%; --sh-h: 81.05%; --sh-msx: 340.4%; --sh-msy: 123.4%; --sh-mx: 5.93%; --sh-my: 54.60%; }
-html body.fs.fs-superhero #pvCoverBanner .fs-tl-slot-2 { --sh-l: 36.20%; --sh-t: 7.21%; --sh-w: 27.60%; --sh-h: 75.00%; --sh-msx: 362.4%; --sh-msy: 133.3%; --sh-mx: 50.00%; --sh-my: 28.84%; }
-html body.fs.fs-superhero #pvCoverBanner .fs-tl-slot-3 { --sh-l: 66.51%; --sh-t: 11.98%; --sh-w: 29.22%; --sh-h: 79.88%; --sh-msx: 342.2%; --sh-msy: 125.2%; --sh-mx: 93.98%; --sh-my: 59.54%; }
-html body.fs.fs-superhero .fsk-card { --sh-cl: 6.09%; --sh-ct: 5.39%; --sh-cw: 87.66%; --sh-ch: 75.39%; }
-/* measured windows (prototypes/tools/superhero_windows.py): Villains = cracked monitors */
-html body.fs.fs-superhero[data-fs-variant="villains"] #pvCoverBanner .fs-tl-slot-1 { --sh-l: 6.05%; --sh-t: 21.28%; --sh-w: 26.82%; --sh-h: 47.33%; --sh-msx: 372.8%; --sh-msy: 211.3%; --sh-mx: 8.26%; --sh-my: 40.40%; }
-html body.fs.fs-superhero[data-fs-variant="villains"] #pvCoverBanner .fs-tl-slot-2 { --sh-l: 37.05%; --sh-t: 19.30%; --sh-w: 25.97%; --sh-h: 40.70%; --sh-msx: 385.1%; --sh-msy: 245.7%; --sh-mx: 50.05%; --sh-my: 32.55%; }
-html body.fs.fs-superhero[data-fs-variant="villains"] #pvCoverBanner .fs-tl-slot-3 { --sh-l: 67.05%; --sh-t: 21.74%; --sh-w: 26.74%; --sh-h: 47.21%; --sh-msx: 373.9%; --sh-msy: 211.8%; --sh-mx: 91.53%; --sh-my: 41.19%; }
-html body.fs.fs-superhero[data-fs-variant="villains"] .fsk-card { --sh-cl: 9.38%; --sh-ct: 7.63%; --sh-cw: 80.62%; --sh-ch: 70.13%; }
 /* QA 1 (Villains Home): nav labels never truncate; active label readable on the tile; Featured Skin button legible */
 @media (max-width: 768px) {
   html body.fs.fs-superhero .nav-center .nav-link, html body.fs.fs-superhero .nav-center .nav-link span { text-overflow: clip !important; max-width: none !important; overflow: visible !important; }
@@ -8620,3 +8610,166 @@ html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileC
 html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-info { grid-template-columns: 7% minmax(0, 1fr) auto 9% !important; }
 html body.fs.fs-basic[data-fs-variant="pumpkin"] .quest-panel { border-width: 22px !important; border-image: var(--fs-quests-panel) 90 fill / 22px stretch !important; padding: 0 !important; }
 @media (max-width: 768px) { html body.fs.fs-basic:not(:has(#page-home.active)) .page.active { padding-top: calc(84px + env(safe-area-inset-top, 0px)) !important; } }
+/* ===== Superhero profile pop-up (owner, Nov 16: "redesigned for the heroes and the villains … not so plain"): a comic
+   HERO FILE (Heroes) / a classified VILLAIN DOSSIER (Villains), each from its own painted set
+   (prototypes/superhero-profile-modal-brief.md): panel, splash / surveillance header behind the photo, photo ring, name on
+   the banner, bio in a speech balloon / terminal screen, counters on starbursts / power cells, skin caption tag ===== */
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) { background: none !important; border: 40px solid transparent !important; border-image: var(--fs-modal-panel) 200 fill / 40px stretch !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .5) !important; padding: 0 !important; overflow-x: hidden !important; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-header { position: relative; z-index: 4; border: 0 !important; padding: 0 0 4px !important; justify-content: center !important; background: none !important; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-header h3 { margin: 0 auto !important; font-size: 21px !important; text-transform: uppercase; color: #fff !important; padding: 7px 40px 9px !important;
+  background: var(--fs-title-banner) center / 100% 100% no-repeat !important; text-shadow: 2px 2px 0 #111, -1px -1px 0 #111, 1px -1px 0 #111, -1px 1px 0 #111; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-header h3 { color: #e8ffe0 !important; text-shadow: 0 0 8px rgba(125, 255, 58, .55), 1px 1px 0 #000; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-close { position: absolute !important; right: -14px; top: -14px; width: 40px !important; height: 40px !important; border: 0 !important; border-radius: 50% !important;
+  background: var(--fs-close-btn) center / contain no-repeat !important; box-shadow: none !important; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-close i { opacity: 0 !important; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-body { padding: 0 !important; position: relative; }
+html body.fs.fs-superhero .modal-profile-top { position: relative; text-align: center; margin: 0 0 6px !important; padding: 0 !important; }
+html body.fs.fs-superhero .modal-profile-top::before { content: ""; position: absolute; left: -6px; right: -6px; top: 0; aspect-ratio: 1200 / 560; z-index: 0; pointer-events: none; background: var(--fs-modal-header) center / 100% 100% no-repeat; }
+html body.fs.fs-superhero .modal-profile-top img { position: relative; z-index: 2; width: 132px !important; height: 132px !important; aspect-ratio: 1 !important; margin: 16% auto 0 !important; border-radius: 50% !important;
+  -webkit-mask: none !important; mask: none !important; object-fit: cover; border: 0 !important; box-shadow: none !important; display: block; }
+html body.fs.fs-superhero .modal-profile-top::after { content: ""; position: absolute; z-index: 3; left: 50%; top: 0; width: 232px; height: 232px; margin: calc(16% - 48px) 0 0 -114px; pointer-events: none;
+  background: var(--fs-photo-ring) center / 100% 100% no-repeat; }
+html body.fs.fs-superhero .modal-profile-top h3 { position: relative; z-index: 4; display: inline-block; margin: 30px auto 0 !important; padding: 9px 40px 11px !important; max-width: 94%; box-sizing: border-box;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: clamp(20px, 6.5vw, 27px) !important; text-transform: uppercase; color: #fff !important;
+  background: var(--fs-name-banner) center / 100% 100% no-repeat !important; text-shadow: 2px 2px 0 #111, -1px -1px 0 #111, 1px -1px 0 #111, -1px 1px 0 #111; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-top h3 { color: #e8ffe0 !important; text-shadow: 0 0 8px rgba(125, 255, 58, .55), 1px 1px 0 #000; }
+html body.fs.fs-superhero .modal-profile-top p { margin: 10px 4px 0 !important; padding: 2px 4px !important; min-height: 24px; border: solid transparent !important; border-width: 22px 26px 16px !important;
+  border-image: var(--fs-bio-box) 100 fill / 22px 26px 16px stretch !important; color: var(--sh-ink) !important; font: 700 16px var(--sh-bfont) !important; line-height: 1.3; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-top p { color: #c9ffb3 !important; font-family: var(--sh-bfont) !important; }
+html body.fs.fs-superhero .modal-profile-top p:empty { display: none; }
+html body.fs.fs-superhero .modal-profile-stats { display: flex !important; justify-content: center; gap: 18px !important; border: 0 !important; padding: 4px 0 !important; margin: 6px 0 4px !important; }
+html body.fs.fs-superhero .modal-profile-stats .stat { width: 112px; height: 112px; max-width: none !important; display: flex !important; flex-direction: column; align-items: center; justify-content: center;
+  background: var(--fs-stat-badge) center / contain no-repeat !important; border: 0 !important; padding: 0 !important; }
+html body.fs.fs-superhero .modal-profile-stats .stat-count { font: 400 26px var(--sh-tfont) !important; line-height: 1 !important; color: var(--sh-title) !important; }
+html body.fs.fs-superhero .modal-profile-stats .stat-label { font: 700 11px var(--sh-bfont) !important; text-transform: uppercase; color: var(--sh-title) !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-stats :is(.stat-count, .stat-label) { color: #e8ffe0 !important; text-shadow: 0 0 6px rgba(125, 255, 58, .7); }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-body > div[style*="text-align"] p { display: inline-block; margin: 4px auto 0 !important; padding: 0 6px !important; border: solid transparent !important;
+  border-width: 9px 20px !important; border-image: var(--fs-skin-tag) 75 fill / 9px 20px stretch !important; color: var(--sh-title) !important; font: 700 14px var(--sh-bfont) !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-body > div[style*="text-align"] p { color: #f4ffee !important; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-actions { display: grid !important; grid-template-columns: 1fr 1fr; gap: 8px !important; margin: 12px 0 0 !important; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-actions .btn { width: auto !important; min-width: 0; height: auto !important; margin: 0 !important; padding: 2px 4px !important; white-space: nowrap;
+  background: none !important; border: solid transparent !important; border-width: 10px 18px !important; border-image: var(--fs-action-btn) 55 75 fill / 10px 18px stretch !important; border-radius: 0 !important;
+  box-shadow: none !important; color: var(--sh-title) !important; font: 400 16px var(--sh-tfont) !important; letter-spacing: var(--sh-tspace); text-transform: uppercase; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-actions .btn:only-child,
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-actions :is(#modalFollowBtn, #modalViewMyProfileBtn) { border-image-source: var(--fs-follow-btn) !important; color: var(--sh-on) !important; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-actions .btn:only-child { grid-column: 1 / -1; width: 80% !important; justify-self: center; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) #modalBlockBtn { color: #c4161c !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) #modalBlockBtn { color: #ff6b8a !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-actions :is(#modalFollowBtn, #modalViewMyProfileBtn, .btn:only-child) { text-shadow: 0 0 2px #000, 0 1px 2px #000 !important; }
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-body::after { content: ""; display: block; margin: 10px -10px -16px; aspect-ratio: 1200 / 300; background: var(--fs-modal-deco) center bottom / 100% 100% no-repeat; pointer-events: none; }
+/* Villains pop-up = a different LAYOUT, not just different art (owner: "completely organized different … placement"):
+   a left-aligned DOSSIER — surveillance screen strip across the top carrying the title plate at its left; photo in the
+   spiked ring on the LEFT with the name plate + terminal bio beside it; the two power-cell readouts and the skin tag in one
+   row; the actions as a stacked command list. (Heroes keeps the centred comic hero file.) */
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-header { height: 118px; margin: 0 -8px 10px; padding: 0 0 10px 6px !important; align-items: flex-end !important;
+  justify-content: flex-start !important; background: var(--fs-modal-header) center / cover no-repeat !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-header h3 { margin: 0 !important; font-size: 18px !important; padding: 6px 30px 8px 34px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-top { display: grid !important; grid-template-columns: 122px minmax(0, 1fr); grid-template-rows: auto 1fr; column-gap: 12px; align-items: start; text-align: left !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-top::before { display: none !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-top img { grid-column: 1; grid-row: 1 / span 2; width: 100px !important; height: 100px !important; margin: 12px 0 0 11px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-top::after { left: 0; top: 0; width: 149px; height: 149px; margin: -7px 0 0 -13px; }  /* ring window measured: 16% 12.8% / 67% */
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-top h3 { grid-column: 2; grid-row: 1; justify-self: start; margin: 6px 0 0 !important; max-width: 100%; font-size: clamp(16px, 5vw, 21px) !important; padding: 7px 26px 9px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-top p { grid-column: 2; grid-row: 2; margin: 8px 0 0 !important; font-size: 15px !important; text-align: left; border-width: 18px 20px 14px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-body { display: flex; flex-direction: column; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-stats { justify-content: flex-start !important; gap: 8px !important; margin: 12px 0 0 !important; padding: 0 !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-stats .stat { width: 92px; height: 92px; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-stats .stat-count { font-size: 21px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-profile-stats .stat-label { font-size: 9.5px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-body > div[style*="text-align"] { text-align: right !important; margin-top: -58px; padding-left: 196px; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-body > div[style*="text-align"] p { font-size: 12px !important; line-height: 1.2; white-space: normal; text-align: center; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-actions { display: flex !important; flex-direction: column; gap: 6px !important; margin: 14px 0 0 !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-actions .btn { width: 100% !important; justify-content: flex-start !important; text-align: left !important; padding-left: 12px !important; display: flex !important; align-items: center; gap: 10px; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-actions .btn:only-child { width: 100% !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-actions .btn i { color: var(--sh-accent) !important; }
+/* pop-up QA: close button inside the panel corner; Villains skin tag on its own row under the readouts, left-aligned */
+html body.fs.fs-superhero .modal-content:has(.modal-profile-top) .modal-close { right: -8px !important; top: -8px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-body > div[style*="text-align"] { text-align: left !important; margin-top: 8px !important; padding-left: 0 !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .modal-content:has(.modal-profile-top) .modal-body > div[style*="text-align"] p { font-size: 13px !important; white-space: nowrap; }
+/* ===== Home + profile rework (owner, Nov 16: Home "boring"; "3 cards with no way to change them on the home page"; "too much
+   like the tarot cards"; "profile area completely organized different for heroes and villains"). Timeline = a COMIC PAGE GRID
+   (Heroes: big panel left + two stacked right) / a SURVEILLANCE MONITOR WALL (Villains: wide screen on top + two below), on
+   BOTH Home and Profile, every frame tappable to choose its photo (prototypes/superhero-home-brief.md). ===== */
+@media (max-width: 768px) {
+  html body.fs.fs-superhero #timelineCover { height: calc((100vw - 8px) * 860 / 1290) !important; margin: 4px 4px 0 !important; }
+}
+html body.fs.fs-superhero #timelineCover .fs-timeline::after { border: 0 !important; border-image: none !important; background: var(--fs-timeline-frame) center / 100% 100% no-repeat; }
+html body.fs.fs-superhero #timelineCover :is(.fs-tl-slot-2, .fs-tl-slot-3) { display: block !important; }
+html body.fs.fs-superhero :is(#timelineCover, #pvCoverBanner) .fs-tl-slot { position: absolute; inset: auto; top: var(--sh-t); left: var(--sh-l); width: var(--sh-w); height: var(--sh-h); z-index: 0; }
+html body.fs.fs-superhero :is(#timelineCover, #pvCoverBanner) .fs-tl-slot.fs-tl-empty::after { content: ""; }
+html body.fs.fs-superhero :is(#timelineCover, #pvCoverBanner) .fs-tl-slot :is(img), html body.fs.fs-superhero :is(#timelineCover, #pvCoverBanner) .fs-tl-slot.fs-tl-empty::after {
+  position: absolute; inset: 0; width: 100% !important; height: 100% !important; object-fit: cover; display: block;
+  -webkit-mask: var(--fs-timeline-mask) var(--sh-mx) var(--sh-my) / var(--sh-msx) var(--sh-msy) no-repeat; mask: var(--fs-timeline-mask) var(--sh-mx) var(--sh-my) / var(--sh-msx) var(--sh-msy) no-repeat; }
+html body.fs.fs-superhero :is(#timelineCover, #pvCoverBanner) .fs-tl-slot.fs-tl-empty::after { background: var(--fs-header) center / cover no-repeat; }
+/* a small camera badge on each of YOUR frames, so it's clear they can be changed */
+html body.fs.fs-superhero .fs-tl-own::before { content: ""; position: absolute; right: 6%; bottom: 8%; width: 30px; height: 30px; z-index: 4; pointer-events: none; background: var(--fs-camera-badge) center / contain no-repeat; display: block !important; }
+html body.fs.fs-superhero .fs-tl-own::after { display: block; }
+html body.fs.fs-superhero #timelineCover .fs-tl-own.fs-tl-slot-1::after { content: none !important; }
+/* Home profile card: Heroes = photo LEFT, Villains = photo RIGHT (mirrored placement) */
+html body.fs.fs-superhero #profileCard { margin-top: -26px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #profileCard .profile-info { grid-template-columns: minmax(0, 1fr) 112px; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #profileCard .profile-avatar-wrap { grid-column: 2; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #profileCard :is(.fs-namecard, .profile-stats, .profile-links) { grid-column: 1; grid-row: auto; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #profileCard .fs-namecard { grid-row: 1; }
+/* Home richness: comic stickers / lair props perched on the big pieces, section dividers, bigger stories + quest icons */
+html body.fs.fs-superhero #timelineCover::before { content: ""; position: absolute; z-index: 5; left: -10px; bottom: -34px; width: 92px; height: 92px; pointer-events: none; background: var(--fs-sticker-burst) center / contain no-repeat; transform: rotate(-12deg); }
+html body.fs.fs-superhero .quest-panel::after { content: ""; position: absolute; right: -18px; top: -62px; width: 120px; height: 70px; pointer-events: none; background: var(--fs-sticker-flyer) center / contain no-repeat; z-index: 3; }
+html body.fs.fs-superhero .featured-skin-banner { position: relative; }
+html body.fs.fs-superhero .featured-skin-banner::after { content: ""; position: absolute; left: -30px; top: -30px; width: 58px; height: 58px; pointer-events: none; background: var(--fs-sticker-corner) center / contain no-repeat; }
+html body.fs.fs-superhero #feedTabs { position: relative; margin-top: 30px !important; }
+html body.fs.fs-superhero #feedTabs::before { content: ""; position: absolute; left: 0; right: 0; top: -26px; height: 20px; background: var(--fs-section-divider) center / 100% 100% no-repeat; pointer-events: none; }
+html body.fs.fs-superhero .stories-bar { gap: 12px !important; padding: 6px 2px !important; }
+html body.fs.fs-superhero .story-ring { width: 70px !important; height: 70px !important; }
+html body.fs.fs-superhero :is(.story-name, .story-label) { font: 400 13px var(--sh-tfont) !important; letter-spacing: .02em; text-transform: uppercase; }
+html body.fs.fs-superhero .quest-icon { width: 60px !important; height: 60px !important; }
+html body.fs.fs-superhero .quest-item { grid-template-columns: 60px minmax(0, 1fr) auto !important; min-height: 64px !important; }
+html body.fs.fs-superhero .quest-progress { width: 60px !important; font-size: 16px !important; }
+html body.fs.fs-superhero .quest-info p { font-size: 17px !important; }
+/* gallery thumbnails as mini comic panels / mini monitors */
+html body.fs.fs-superhero .photos-preview :is(img, .photo-thumb, .photos-preview-item) { border-radius: 0 !important; }
+html body.fs.fs-superhero .photos-preview > * { position: relative; }
+html body.fs.fs-superhero .photos-preview > *::after { content: ""; position: absolute; inset: -6%; pointer-events: none; background: var(--fs-photo-tile) center / 100% 100% no-repeat; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] .photos-preview > *:nth-child(odd) { transform: rotate(-2deg); }
+html body.fs.fs-superhero[data-fs-variant="heroes"] .photos-preview > *:nth-child(even) { transform: rotate(2deg); }
+
+/* Profile page placement: HEROES = centred comic hero (big winged ring centred under the page grid, name banner, bio, the two
+   counters on STARBURSTS side by side, buttons in a 2-column grid); VILLAINS = left-aligned DOSSIER (photo in the spiked ring
+   on the LEFT, name plate + bio beside it, counters on HEX readouts in a row, buttons as a stacked command list) */
+html body.fs.fs-superhero .pv-profile-card .profile-stats { width: auto !important; border: 0 !important; border-image: none !important; gap: 16px; padding: 0 !important; margin: 12px auto 0 !important; }
+html body.fs.fs-superhero .pv-profile-card .profile-stats > .stat { flex: 0 0 auto !important; width: 112px; height: 112px; display: flex !important; flex-direction: column; justify-content: center; align-items: center;
+  background: var(--fs-stat-badge) center / contain no-repeat !important; }
+html body.fs.fs-superhero .pv-profile-card .profile-stats > .stat + .stat { background: var(--fs-stat-badge) center / contain no-repeat !important; }
+html body.fs.fs-superhero .pv-profile-card .stat-count { font-size: 25px !important; }
+html body.fs.fs-superhero .pv-profile-card .stat-label { font-size: 11px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card :is(.stat-count, .stat-label) { color: #e8ffe0 !important; text-shadow: 0 0 6px rgba(125, 255, 58, .7); }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .profile-info { display: grid !important; grid-template-columns: 124px minmax(0, 1fr); column-gap: 10px; align-items: start; text-align: left !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .profile-info > * { grid-column: 1 / -1; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .profile-avatar-wrap { grid-column: 1 !important; grid-row: 1 / span 2; width: 104px !important; height: 104px !important; margin: -44px 0 0 10px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .profile-avatar-wrap::after { inset: -46% -48% -40% -50% !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .fs-namecard { grid-column: 2 !important; grid-row: 1; text-align: left !important; margin: 8px 0 0 !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .profile-name { margin: 0 !important; max-width: 100%; font-size: clamp(17px, 5.4vw, 23px) !important; padding: 9px 26px 11px !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card :is(.profile-title, .profile-about) { text-align: left !important; background: none !important; padding: 2px 4px !important; text-transform: none; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .profile-about::after { display: none !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card :is(.badge-row, .profile-website, #pvMutualFollowers) { grid-column: 2 !important; justify-content: flex-start !important; text-align: left !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .profile-stats { justify-content: flex-start !important; margin: 14px 0 0 !important; gap: 8px; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .profile-stats > .stat { width: 96px; height: 96px; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #page-profile-view .pv-actions { display: flex !important; flex-direction: column; gap: 6px !important; margin: 14px 4px 0 !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #page-profile-view .pv-actions .btn { width: 100% !important; justify-content: flex-start !important; text-align: left !important; padding-left: 12px !important; display: flex !important; align-items: center; gap: 10px; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #page-profile-view .pv-actions #pvEditProfileBtn { width: 100% !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #page-profile-view .pv-actions .btn i { color: var(--sh-accent) !important; }
+/* measured windows (prototypes/tools/superhero_windows.py): Heroes = comic page grid, Villains = monitor wall */
+html body.fs.fs-superhero :is(#timelineCover, #pvCoverBanner) .fs-tl-slot-1 { --sh-l: 4.88%; --sh-t: 11.86%; --sh-w: 46.82%; --sh-h: 80.58%; --sh-msx: 213.6%; --sh-msy: 124.1%; --sh-mx: 9.18%; --sh-my: 61.08%; }
+html body.fs.fs-superhero :is(#timelineCover, #pvCoverBanner) .fs-tl-slot-2 { --sh-l: 55.27%; --sh-t: 11.86%; --sh-w: 37.67%; --sh-h: 35.93%; --sh-msx: 265.4%; --sh-msy: 278.3%; --sh-mx: 88.68%; --sh-my: 18.51%; }
+html body.fs.fs-superhero :is(#timelineCover, #pvCoverBanner) .fs-tl-slot-3 { --sh-l: 55.27%; --sh-t: 52.91%; --sh-w: 37.67%; --sh-h: 39.53%; --sh-msx: 265.4%; --sh-msy: 252.9%; --sh-mx: 88.68%; --sh-my: 87.50%; }
+html body.fs.fs-superhero .fsk-card { --sh-cl: 6.09%; --sh-ct: 5.39%; --sh-cw: 87.66%; --sh-ch: 75.39%; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#timelineCover, #pvCoverBanner) .fs-tl-slot-1 { --sh-l: 11.71%; --sh-t: 10.70%; --sh-w: 76.59%; --sh-h: 35.12%; --sh-msx: 130.6%; --sh-msy: 284.8%; --sh-mx: 50.00%; --sh-my: 16.49%; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#timelineCover, #pvCoverBanner) .fs-tl-slot-2 { --sh-l: 6.28%; --sh-t: 63.14%; --sh-w: 39.07%; --sh-h: 22.79%; --sh-msx: 256.0%; --sh-msy: 438.8%; --sh-mx: 10.31%; --sh-my: 81.78%; }
+html body.fs.fs-superhero[data-fs-variant="villains"] :is(#timelineCover, #pvCoverBanner) .fs-tl-slot-3 { --sh-l: 54.73%; --sh-t: 63.14%; --sh-w: 38.99%; --sh-h: 22.79%; --sh-msx: 256.5%; --sh-msy: 438.8%; --sh-mx: 89.71%; --sh-my: 81.78%; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .fsk-card { --sh-cl: 9.38%; --sh-ct: 7.63%; --sh-cw: 80.62%; --sh-ch: 70.13%; }
+/* rework QA: counters on their badges on the Profile page (an earlier id-level rule cleared them); Heroes name banner clear
+   of the winged ring; Villains Home splat sits on the cover's top-left, away from the name */
+html body.fs.fs-superhero #page-profile-view .pv-profile-card .profile-stats > .stat,
+html body.fs.fs-superhero #page-profile-view .pv-profile-card .profile-stats > .stat + .stat { background: var(--fs-stat-badge) center / contain no-repeat !important; border: 0 !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] .pv-profile-card .profile-avatar-wrap { margin-top: -96px !important; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] .pv-profile-card .profile-name { margin-top: 44px !important; position: relative; z-index: 4; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #timelineCover::before { left: auto; right: -12px; bottom: auto; top: -18px; transform: rotate(14deg); }

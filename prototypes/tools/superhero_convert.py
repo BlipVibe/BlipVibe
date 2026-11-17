@@ -8,12 +8,12 @@ import sys, os, glob, numpy as np
 from PIL import Image
 from scipy import ndimage as ndi
 skin = sys.argv[1]; which = sys.argv[2] if len(sys.argv) > 2 else 'both'
-WINDOWED = ['avatar-frame', 'cover-frame', 'photo-frame', 'featured-frame', 'skin-card', 'cameo', 'group-avatar-frame', 'group-cover-frame', 'story-ring']
+WINDOWED = ['photo-ring', 'avatar-frame', 'cover-frame', 'photo-frame', 'featured-frame', 'skin-card', 'cameo', 'group-avatar-frame', 'group-cover-frame', 'story-ring']
 LOSSLESS_PREFIX = ('icon-', 'notif-', 'quest-', 'toggle-')
 LOSSLESS = {'coin', 'reward-coin', 'send-btn', 'round-btn', 'plus-btn', 'heart-orb', 'like-orb', 'react-orb', 'camera-badge', 'unread-dot',
             'badge-count', 'story-ring', 'story-add', 'avatar-frame', 'laurel-sprig', 'stats-divider', 'fx-spark'}
 # painted for the first animation draft (too close to Anime Blaze's slam/shatter) — not shipped
-SKIP = {'fx-sfx', 'fx-speedlines', 'fx-bolt', 'fx-crack', 'fx-shard', 'fx-spark'}
+SKIP = {'fx-sfx', 'fx-speedlines', 'fx-bolt', 'fx-crack', 'fx-shard', 'fx-spark', 'quest-badge-frame'}
 OPAQUE = {'background', 'header', 'fx-page'}
 def checker(a):
     """True if the corners look like a painted grey/white transparency checkerboard."""

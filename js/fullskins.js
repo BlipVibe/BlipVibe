@@ -283,7 +283,11 @@
       'list-row', 'join-btn', 'chip', 'chip-active', 'seg-tab', 'seg-tab-active', 'plus-btn', 'field',
       'skin-card', 'skin-card-mask', 'price-pill', 'equipped-tag', 'bubble-in', 'bubble-out', 'input-bar', 'send-btn',
       'round-btn', 'comment-bubble', 'text-area', 'tool-tile', 'post-btn', 'public-pill', 'story-field', 'heart-orb',
-      'like-orb', 'react-orb', 'group-avatar-frame', 'group-cover-frame'],
+      'like-orb', 'react-orb', 'group-avatar-frame', 'group-cover-frame',
+      // profile pop-up (prototypes/superhero-profile-modal-brief.md)
+      'modal-panel', 'modal-header', 'photo-ring', 'bio-box', 'stat-badge', 'skin-tag', 'close-btn', 'modal-deco',
+      // Home rework (prototypes/superhero-home-brief.md)
+      'sticker-burst', 'sticker-flyer', 'sticker-corner', 'section-divider', 'photo-tile'],
     theme: { '--dark': '#1a1a1a', '--gray': '#4a4a52', '--light-bg': '#fbf3dc', '--card': '#fffaf0',
       '--border': 'rgba(0,0,0,.6)', '--nav-bg': '#fbf3dc' },
     fonts: 'https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Black+Ops+One&family=Comic+Neue:ital,wght@0,700;1,700&family=Exo+2:wght@600;700&display=swap'
