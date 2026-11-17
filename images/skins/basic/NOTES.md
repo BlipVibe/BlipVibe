@@ -61,3 +61,4 @@ convert with `prototypes/tools/basic_convert.py images/skins/basic`.
   own oak ledge (card-ledge art, prototypes/basic-card-ledge-brief.md), name + bio left, stats stacked right (concept).
   "use this navbar" → the concept nav: slimmer inset oak tray, active tab = ceramic disc centred in the tray. Shelf kept.
 - Nov 17: owner "not as close or cluttered as the concept" → shelf-scene repainted in the concept arrangement (prototypes/basic-shelf-v2-brief.md), windows re-measured, dish nests on the tall frame, name card leans right on the shelf.
+- Nov 17: full QA pass, every page in Rosé + Pumpkin (read-only). Fixed: other-profile dish height, Pumpkin chat sent-bubble contrast, equipped tag (now a tick on the picture), quest reward chip centring, Pumpkin quests header inside the notepad, modal square corners + dark rules, post avatar touching card edge, name card stats inside the card.

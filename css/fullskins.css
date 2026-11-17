@@ -8560,3 +8560,22 @@ html body.fs.fs-basic:not([data-fs-variant="pumpkin"]) :is(.pv-profile-card, #pr
   margin-top: calc((100vw + 16px) * -900 / 1290 + 86px) !important; margin-left: 24px !important; }
 @media (max-width: 768px) { html body.fs.fs-basic #timelineCover { margin-top: 34px !important; } }
 @media (max-width: 768px) { html body.fs.fs-basic #timelineCover { margin-top: 12px !important; } }
+
+/* ===== full QA pass (Nov 17) fixes ===== */
+html body.fs.fs-basic #pvProfileCard .profile-avatar-wrap { transform: none !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] #msgChat .msg-bubble.sent, html body.fs.fs-basic[data-fs-variant="pumpkin"] #msgChat .msg-bubble.sent * { color: #fff8ef !important; }
+html body.fs.fs-basic .fsk-badge { width: auto !important; min-width: 0 !important; max-width: none !important; white-space: nowrap !important; padding: 0 10px !important; font-size: 11px !important; height: 22px !important; overflow: visible !important; }
+html body.fs.fs-basic .quest-reward > i { display: none !important; }
+html body.fs.fs-basic :is(.quest-reward, .quest-check) { padding: 5px 0 !important; min-width: 54px !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] .quest-panel { border-width: 34px 26px 30px !important; border-image: var(--fs-quests-panel) 110 90 100 fill / 34px 26px 30px stretch !important; }
+html body.fs.fs-basic #pvProfileCard .profile-avatar-wrap { transform: translateY(66px) !important; }
+html body.fs.fs-basic .modal-content { background-color: transparent !important; box-shadow: none !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] .quest-panel { padding-top: 14px !important; padding-bottom: 6px !important; }
+html body.fs.fs-basic .modal-content * { border-color: rgba(74, 52, 38, .14) !important; }
+html body.fs.fs-basic .modal-content :is(.modal-body, .modal-header, .modal-footer) { padding-left: 10px !important; padding-right: 10px !important; }
+html body.fs.fs-basic .feed-post .post-header { padding-top: 6px !important; }
+html body.fs.fs-basic :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .fs-namecard { padding-bottom: 22px !important; }
+html body.fs.fs-basic :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-stats { padding-top: 14px !important; padding-bottom: 18px !important; }
+html body.fs.fs-basic .fsk-badge { font-size: 0 !important; width: 26px !important; height: 26px !important; padding: 0 !important; border-radius: 50% !important; right: 8% !important; top: 7% !important;
+  background: var(--fs-tick-100) center / contain no-repeat !important; }
+html body.fs.fs-basic .fsk-badge::after { content: none !important; }
