@@ -279,6 +279,8 @@
     var fw = ctx.offsetWidth, fh = ctx.offsetHeight;
     // centre of the frame as drawn (a tilted polaroid keeps its tilt), from the copy's top-left
     var fcx = rect.left + rect.width / 2 - crect.left, fcy = rect.top + rect.height / 2 - crect.top;
+    var irect = opts.img.getBoundingClientRect();
+    var icx = irect.left + irect.width / 2 - crect.left, icy = irect.top + irect.height / 2 - crect.top;
     var start = posFor(true, opts.key, opts.src) || { x: .5, y: .5, z: 1, r: 0 };
     var p = { x: start.x, y: start.y, z: start.z, r: start.r || 0 };
     // a frame the skin tilts (Scrapbook polaroids, Witchcraft tarot cards): screen moves are turned into the frame's axes
@@ -320,8 +322,14 @@
       stage.style.height = stH + 'px';
       scaler.style.width = fw + 'px'; scaler.style.height = fh + 'px';
       scaler.style.transform = 'scale(' + k + ')';
-      scaler.style.left = (sw / 2 - fcx * k) + 'px';
-      scaler.style.top = (stH / 2 - fcy * k) + 'px';
+      // centre on where the photo really sits in the copy (a copy without the card's other contents can lay out
+      // differently from the page), falling back to the page position
+      scaler.style.left = '0px'; scaler.style.top = '0px';
+      var s0 = scaler.getBoundingClientRect(), c0 = cv.getBoundingClientRect();
+      var ccx = c0.width ? (c0.left + c0.width / 2 - s0.left) / k : fcx, ccy = c0.height ? (c0.top + c0.height / 2 - s0.top) / k : fcy;
+      if (opts.frame !== opts.img) { ccx += fcx - icx; ccy += fcy - icy; }   // frame centre = photo centre + its offset on the page
+      scaler.style.left = (sw / 2 - ccx * k) + 'px';
+      scaler.style.top = (stH / 2 - ccy * k) + 'px';
       cv.width = Math.max(1, Math.round(box.w * k * dpr)); cv.height = Math.max(1, Math.round(box.h * k * dpr));
       ghost.width = Math.round(sw * dpr); ghost.height = Math.round(stH * dpr);
       draw();
@@ -472,7 +480,8 @@
     if (!a || !a.wrap) return;
     var src = origOf(a.img);
     if (!src || /default-avatar/.test(src)) return;
-    open({ frame: a.img, context: a.wrap.parentElement || a.wrap, img: a.img, src: src, key: 'avatar', title: 'Move, zoom & rotate' });
+    // the avatar's own frame wrapper (its rings / wings / arch art) — not the whole card, whose other contents shift it
+    open({ frame: a.img, context: a.wrap, img: a.img, src: src, key: 'avatar', title: 'Move, zoom & rotate' });
   }
 
   // tap on your own timeline frame: Move & zoom / Change photo
