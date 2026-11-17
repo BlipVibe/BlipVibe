@@ -3,7 +3,8 @@
  * zoom and move it around within the shape for the photo you're putting in it?"
  *
  * How it works
- * - A position is { s: photo url (no query), x, y: centre of the view in the photo (0..1), z: zoom (1 = fills the frame) },
+ * - A position is { s: photo url (no query), x, y: centre of the view in the photo (0..1), z: zoom (1 = fills the frame),
+ *   r: rotation in degrees (owner, Nov 16: "move/zoom/rotate photo to fit the way you want it") },
  *   saved per skin and per frame in skin_data.fsPhotoPos = { "<skin>": { avatar: {...}, tl0: {...}, tl1: {...} } }.
  *   It only applies while the frame still shows that same photo, so a new photo starts centred again.
  * - Drawing: the photo is cropped (canvas) to exactly what the frame should show, at the frame's own shape, and the
@@ -40,20 +41,36 @@
   function posFor(own, key, src) {
     var t = table(own), p = t && t[key];
     if (!p || typeof p !== 'object' || !src || base(p.s) !== base(src)) return null;
-    var z = +p.z, x = +p.x, y = +p.y;
-    if (!(z >= 1) || !(x >= 0 && x <= 1) || !(y >= 0 && y <= 1)) return null;
-    return { x: x, y: y, z: Math.min(z, ZMAX) };
+    var z = +p.z, x = +p.x, y = +p.y, r = +(p.r || 0);
+    if (!(z >= 1) || !(x >= 0 && x <= 1) || !(y >= 0 && y <= 1) || !(r >= -180 && r <= 180)) return null;
+    return { x: x, y: y, z: Math.min(z, ZMAX), r: r };
   }
 
   /* ---------- crop maths (shared by the editor and the renderer) ---------- */
 
-  // part of a W x H photo shown in a frame of aspect A (w/h) at position p — "cover" at z = 1
-  function cropRect(W, H, A, p) {
-    var cw, ch;
-    if (W / H > A) { ch = H; cw = H * A; } else { cw = W; ch = W / A; }
-    cw /= p.z; ch /= p.z;
-    var cx = clamp(p.x * W, cw / 2, W - cw / 2), cy = clamp(p.y * H, ch / 2, H - ch / 2);
-    return { sx: cx - cw / 2, sy: cy - ch / 2, sw: cw, sh: ch, cx: cx / W, cy: cy / H };
+  // How a W x H photo sits in a frame of aspect A (w/h, frame height = 1 unit) at position p.
+  // s = frame units per photo pixel. At z = 1 the photo just covers the frame at its rotation (a turned photo needs a
+  // bigger minimum, so no corner of the frame is ever left empty); the centre is kept where the photo still covers it.
+  function view(W, H, A, p) {
+    var th = (p.r || 0) * Math.PI / 180, c = Math.abs(Math.cos(th)), si = Math.abs(Math.sin(th));
+    var bw = A * c + si, bh = A * si + c;                 // the frame's bounding box, turned into the photo's axes
+    var s = Math.max(bw / W, bh / H) * p.z;
+    var hw = bw / (2 * s), hh = bh / (2 * s);
+    var cx = clamp(p.x * W, hw, W - hw), cy = clamp(p.y * H, hh, H - hh);
+    return { s: s, th: th, cx: cx, cy: cy, x: cx / W, y: cy / H };
+  }
+  // draw it into a w x h canvas area (the frame) — the same call for the page crop and the live editor
+  function paint(g, im, w, h, v) {
+    g.save();
+    g.translate(w / 2, h / 2); g.rotate(v.th); g.scale(h * v.s, h * v.s);
+    g.imageSmoothingQuality = 'high';
+    g.drawImage(im, -v.cx, -v.cy);
+    g.restore();
+  }
+  // photo pixel under frame point (u, v) in frame units from the centre
+  function photoAt(v, u, w) {
+    var c = Math.cos(-v.th), si = Math.sin(-v.th);
+    return { x: v.cx + (u * c - w * si) / v.s, y: v.cy + (u * si + w * c) / v.s };
   }
 
   function loadSrc(src) {
@@ -84,15 +101,14 @@
   }
 
   function cropUrl(im, A, p, maxSide, type) {
-    var r = cropRect(im.naturalWidth, im.naturalHeight, A, p);
-    var key = im.src + '|' + A.toFixed(3) + '|' + p.x.toFixed(4) + '|' + p.y.toFixed(4) + '|' + p.z.toFixed(3) + '|' + maxSide;
+    var v = view(im.naturalWidth, im.naturalHeight, A, p);
+    var key = im.src + '|' + A.toFixed(3) + '|' + p.x.toFixed(4) + '|' + p.y.toFixed(4) + '|' + p.z.toFixed(3) + '|' + (p.r || 0) + '|' + maxSide;
     if (cache[key]) return Promise.resolve(cache[key]);
-    var s = Math.min(1, maxSide / Math.max(r.sw, r.sh));
+    // as many pixels as the photo really has in view, capped at what the frame needs
+    var h = Math.max(1, Math.round(Math.min(1 / v.s, maxSide / Math.max(1, A))));
     var c = document.createElement('canvas');
-    c.width = Math.max(1, Math.round(r.sw * s)); c.height = Math.max(1, Math.round(r.sh * s));
-    var g = c.getContext('2d');
-    g.imageSmoothingQuality = 'high';
-    g.drawImage(im, r.sx, r.sy, r.sw, r.sh, 0, 0, c.width, c.height);
+    c.height = h; c.width = Math.max(1, Math.round(h * A));
+    paint(c.getContext('2d'), im, c.width, c.height, v);
     return new Promise(function (ok) {
       c.toBlob(function (b) {
         if (!b) { ok(null); return; }
@@ -255,30 +271,41 @@
     var fw = ctx.offsetWidth, fh = ctx.offsetHeight;
     // centre of the frame as drawn (a tilted polaroid keeps its tilt), from the copy's top-left
     var fcx = rect.left + rect.width / 2 - crect.left, fcy = rect.top + rect.height / 2 - crect.top;
-    var start = posFor(true, opts.key, opts.src) || { x: .5, y: .5, z: 1 };
-    var p = { x: start.x, y: start.y, z: start.z };
+    var start = posFor(true, opts.key, opts.src) || { x: .5, y: .5, z: 1, r: 0 };
+    var p = { x: start.x, y: start.y, z: start.z, r: start.r || 0 };
+    // a frame the skin tilts (Scrapbook polaroids, Witchcraft tarot cards): screen moves are turned into the frame's axes
+    var tilt = 0;
+    for (var el = opts.img; el && el !== ctx.parentElement; el = el.parentElement) {
+      var tf = getComputedStyle(el).transform;
+      if (tf && tf !== 'none') { try { var mx = new DOMMatrix(tf); tilt += Math.atan2(mx.b, mx.a); } catch (x) {} }
+    }
 
-    modal('<div class="modal-header"><h3>' + esc(opts.title || 'Move & zoom') + '</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>' +
-      '<div class="modal-body fs-pp-body"><div class="fs-pp-stage" aria-label="Photo preview — drag to move"><div class="fs-pp-scale"></div></div>' +
-      '<p class="fs-pp-hint">Drag to move · pinch or scroll to zoom</p>' +
-      '<label class="fs-pp-zoom"><span class="fs-pp-zl">Zoom</span><span class="fs-pp-track"><span class="fs-pp-fill"></span>' +
-      '<input type="range" class="fs-pp-range" min="1" max="' + ZMAX + '" step="0.01" value="' + p.z + '" aria-label="Zoom"></span></label>' +
+    function slider(cls, label, min, max, step, val) {
+      return '<label class="fs-pp-zoom ' + cls + '"><span class="fs-pp-zl">' + label + '</span><span class="fs-pp-track"><span class="fs-pp-fill"></span>' +
+        '<input type="range" class="fs-pp-range" min="' + min + '" max="' + max + '" step="' + step + '" value="' + val + '" aria-label="' + label + '"></span></label>';
+    }
+    modal('<div class="modal-header"><h3>' + esc(opts.title || 'Move, zoom & rotate') + '</h3><button class="modal-close"><i class="fas fa-times"></i></button></div>' +
+      '<div class="modal-body fs-pp-body"><div class="fs-pp-stage" aria-label="Photo preview — drag to move"><div class="fs-pp-scale"></div><canvas class="fs-pp-ghost"></canvas></div>' +
+      '<p class="fs-pp-hint">Drag to move · pinch to zoom · twist to rotate</p>' +
+      slider('fs-pp-z', 'Zoom', 1, ZMAX, .01, p.z) + slider('fs-pp-r', 'Rotate', -180, 180, 1, p.r) +
       '<div class="fs-pp-btns"><button class="btn btn-outline fs-pp-reset" type="button">Reset</button>' +
       '<button class="btn btn-outline fs-pp-cancel" type="button">Cancel</button>' +
       '<button class="btn btn-primary fs-pp-save" type="button">Save</button></div></div>');
     var mc = document.getElementById('modalContent');
     if (mc) mc.classList.add('fs-pp-modal');
-    var stage = mc.querySelector('.fs-pp-stage'), scaler = mc.querySelector('.fs-pp-scale');
-    var range = mc.querySelector('.fs-pp-range'), fill = mc.querySelector('.fs-pp-fill');
+    var stage = mc.querySelector('.fs-pp-stage'), scaler = mc.querySelector('.fs-pp-scale'), ghost = mc.querySelector('.fs-pp-ghost');
+    var zr = mc.querySelector('.fs-pp-z .fs-pp-range'), zf = mc.querySelector('.fs-pp-z .fs-pp-fill');
+    var rr = mc.querySelector('.fs-pp-r .fs-pp-range'), rf = mc.querySelector('.fs-pp-r .fs-pp-fill');
     var root = made.el, cv = made.canvas;
     [['position', 'relative'], ['inset', 'auto'], ['margin', '0'], ['flex', 'none'], ['translate', 'none'],
       ['width', fw + 'px'], ['height', fh + 'px'], ['max-width', 'none'], ['max-height', 'none']].forEach(function (q) { root.style.setProperty(q[0], q[1], 'important'); });
     scaler.appendChild(root);
 
-    var k = 1, im = null;
+    var k = 1, im = null, A = box.w / box.h, dpr = Math.min(window.devicePixelRatio || 1, 3);
+    function V() { var v = view(im.naturalWidth, im.naturalHeight, A, p); p.x = v.x; p.y = v.y; return v; }
     function layout() {
       // fit the frame as drawn (its bounding box), with a little of the art around it when it sits in a bigger picture
-      var sw = stage.clientWidth, sh = Math.min(window.innerHeight * .46, 420), room = ctx === opts.frame ? 24 : 56;
+      var sw = stage.clientWidth, sh = Math.min(window.innerHeight * .42, 400), room = ctx === opts.frame ? 24 : 56;
       k = Math.min((sw - room) / rect.width, (sh - room) / rect.height, 6);
       var stH = Math.min(sh, Math.ceil(rect.height * k + room));
       stage.style.height = stH + 'px';
@@ -286,91 +313,120 @@
       scaler.style.transform = 'scale(' + k + ')';
       scaler.style.left = (sw / 2 - fcx * k) + 'px';
       scaler.style.top = (stH / 2 - fcy * k) + 'px';
-      var dpr = Math.min(window.devicePixelRatio || 1, 3);
       cv.width = Math.max(1, Math.round(box.w * k * dpr)); cv.height = Math.max(1, Math.round(box.h * k * dpr));
+      ghost.width = Math.round(sw * dpr); ghost.height = Math.round(stH * dpr);
       draw();
     }
     function draw() {
-      fill.style.width = ((p.z - 1) / (ZMAX - 1) * 100) + '%';
+      zf.style.width = ((p.z - 1) / (ZMAX - 1) * 100) + '%';
+      rf.style.width = ((p.r + 180) / 360 * 100) + '%';
       if (!im) return;
-      var r = cropRect(im.naturalWidth, im.naturalHeight, box.w / box.h, p);
-      p.x = r.cx; p.y = r.cy;   // keep the centre where it can actually be (photo always fills the frame)
-      var g = cv.getContext('2d');
+      var v = V(), g = cv.getContext('2d');
       g.clearRect(0, 0, cv.width, cv.height);
-      g.imageSmoothingQuality = 'high';
-      g.drawImage(im, r.sx, r.sy, r.sw, r.sh, 0, 0, cv.width, cv.height);
+      paint(g, im, cv.width, cv.height, v);
+      // the whole photo, faint, around the frame while you move it: shows what the frame's shape leaves out
+      var gg = ghost.getContext('2d'), sr = stage.getBoundingClientRect(), cr = cv.getBoundingClientRect();
+      gg.clearRect(0, 0, ghost.width, ghost.height);
+      gg.save();
+      gg.translate((cr.left + cr.width / 2 - sr.left) * dpr, (cr.top + cr.height / 2 - sr.top) * dpr);
+      gg.rotate(tilt + v.th);
+      var u = box.h * k * dpr * v.s;
+      gg.scale(u, u);
+      gg.drawImage(im, -v.cx, -v.cy);
+      gg.restore();
     }
-    function setZoom(z, fx, fy) {   // zoom around a point of the frame (fx, fy in 0..1 of the frame), default the centre
+    // a screen point → frame units from the frame centre (frame height = 1)
+    function frameUnits(x, y) {
+      var cr = cv.getBoundingClientRect(), dx = x - (cr.left + cr.width / 2), dy = y - (cr.top + cr.height / 2);
+      var c = Math.cos(-tilt), si = Math.sin(-tilt), h = box.h * k;
+      return { u: (dx * c - dy * si) / h, w: (dx * si + dy * c) / h };
+    }
+    // change zoom / rotation keeping the photo point under (fu) where it is
+    function setView(z, r, fu) {
       if (!im) return;
-      z = clamp(z, 1, ZMAX);
-      var A = box.w / box.h, a = cropRect(im.naturalWidth, im.naturalHeight, A, p);
-      fx = fx == null ? .5 : fx; fy = fy == null ? .5 : fy;
-      var px = (a.sx + a.sw * fx) / im.naturalWidth, py = (a.sy + a.sh * fy) / im.naturalHeight;
-      p.z = z;
-      var b = cropRect(im.naturalWidth, im.naturalHeight, A, { x: .5, y: .5, z: z });
-      p.x = px + (.5 - fx) * b.sw / im.naturalWidth; p.y = py + (.5 - fy) * b.sh / im.naturalHeight;
-      range.value = z; draw();
+      fu = fu || { u: 0, w: 0 };
+      var P = photoAt(V(), fu.u, fu.w);
+      p.z = clamp(z, 1, ZMAX); p.r = Math.max(-180, Math.min(180, r));
+      var v = view(im.naturalWidth, im.naturalHeight, A, { x: .5, y: .5, z: p.z, r: p.r });
+      var c = Math.cos(-v.th), si = Math.sin(-v.th);
+      p.x = (P.x - (fu.u * c - fu.w * si) / v.s) / im.naturalWidth;
+      p.y = (P.y - (fu.u * si + fu.w * c) / v.s) / im.naturalHeight;
+      zr.value = p.z; rr.value = Math.round(p.r); draw();
     }
     function moveBy(dx, dy) {   // screen pixels
       if (!im) return;
-      var r = cropRect(im.naturalWidth, im.naturalHeight, box.w / box.h, p);
-      var perPx = r.sw / (box.w * k);
-      p.x -= dx * perPx / im.naturalWidth; p.y -= dy * perPx / im.naturalHeight; draw();
+      var a = frameUnits(0, 0), b = frameUnits(dx, dy), v = V();
+      var c = Math.cos(-v.th), si = Math.sin(-v.th), du = b.u - a.u, dw = b.w - a.w;
+      p.x -= (du * c - dw * si) / v.s / im.naturalWidth; p.y -= (du * si + dw * c) / v.s / im.naturalHeight; draw();
     }
-    function framePoint(cx, cy) {
-      var b = cv.getBoundingClientRect();
-      return { x: clamp((cx - b.left) / b.width, 0, 1), y: clamp((cy - b.top) / b.height, 0, 1) };
+    function snapAngle(r) {   // a twist that ends near straight snaps straight
+      var q = Math.round(r / 90) * 90; return Math.abs(r - q) < 3 ? q : r;
     }
 
-    // pointers: one = drag, two = pinch (+ drag by the midpoint)
+    // pointers: one = drag, two = pinch (zoom) + twist (rotate) + drag by the midpoint
     var pts = {}, last = null;
     function snap() {
       var l = Object.keys(pts).map(function (i) { return pts[i]; });
       if (!l.length) return null;
-      if (l.length === 1) return { x: l[0].x, y: l[0].y, d: 0 };
-      return { x: (l[0].x + l[1].x) / 2, y: (l[0].y + l[1].y) / 2, d: Math.hypot(l[0].x - l[1].x, l[0].y - l[1].y) };
+      if (l.length === 1) return { x: l[0].x, y: l[0].y, d: 0, a: 0 };
+      return { x: (l[0].x + l[1].x) / 2, y: (l[0].y + l[1].y) / 2, d: Math.hypot(l[0].x - l[1].x, l[0].y - l[1].y),
+        a: Math.atan2(l[1].y - l[0].y, l[1].x - l[0].x) };
     }
+    function moving(on) { stage.classList.toggle('is-moving', !!on); }
     stage.addEventListener('pointerdown', function (e) {
       pts[e.pointerId] = { x: e.clientX, y: e.clientY };
       try { stage.setPointerCapture(e.pointerId); } catch (x) {}
-      last = snap(); e.preventDefault();
+      last = snap(); moving(true); e.preventDefault();
     });
     stage.addEventListener('pointermove', function (e) {
       if (!pts[e.pointerId]) return;
       pts[e.pointerId] = { x: e.clientX, y: e.clientY };
       var s = snap();
       if (last && s) {
-        if (s.d && last.d) { var f = framePoint(s.x, s.y); setZoom(p.z * s.d / last.d, f.x, f.y); }
+        if (s.d && last.d) {
+          var da = s.a - last.a; if (da > Math.PI) da -= 2 * Math.PI; if (da < -Math.PI) da += 2 * Math.PI;
+          var nr = p.r + da * 180 / Math.PI; if (nr > 180) nr -= 360; if (nr < -180) nr += 360;
+          setView(p.z * s.d / last.d, nr, frameUnits(s.x, s.y));
+        }
         moveBy(s.x - last.x, s.y - last.y);
       }
       last = s; e.preventDefault();
     });
-    function up(e) { delete pts[e.pointerId]; last = snap(); }
+    function up(e) {
+      delete pts[e.pointerId]; last = snap();
+      if (!last) { moving(false); setView(p.z, snapAngle(p.r)); }
+    }
     stage.addEventListener('pointerup', up); stage.addEventListener('pointercancel', up);
-    stage.addEventListener('wheel', function (e) {
-      e.preventDefault();
-      var f = framePoint(e.clientX, e.clientY);
-      setZoom(p.z * Math.exp(-e.deltaY * (e.ctrlKey ? .01 : .0015)), f.x, f.y);
+    var wheelT = null;
+    stage.addEventListener('wheel', function (e) {   // wheel = zoom, shift + wheel = rotate
+      e.preventDefault(); moving(true); clearTimeout(wheelT); wheelT = setTimeout(function () { moving(false); }, 450);
+      var f = frameUnits(e.clientX, e.clientY);
+      if (e.shiftKey) setView(p.z, p.r + (e.deltaY || e.deltaX) * .15, f);
+      else setView(p.z * Math.exp(-e.deltaY * (e.ctrlKey ? .01 : .0015)), p.r, f);
     }, { passive: false });
-    // Safari trackpad pinch
-    var gz = 1;
-    stage.addEventListener('gesturestart', function (e) { e.preventDefault(); gz = p.z; });
-    stage.addEventListener('gesturechange', function (e) { e.preventDefault(); setZoom(gz * e.scale); });
-    range.addEventListener('input', function () { setZoom(+range.value); });
+    // Safari trackpad / iOS gestures (pointer events already handle touch; this covers the Mac trackpad)
+    var g0 = null;
+    stage.addEventListener('gesturestart', function (e) { e.preventDefault(); if (!Object.keys(pts).length) g0 = { z: p.z, r: p.r }; });
+    stage.addEventListener('gesturechange', function (e) { e.preventDefault(); if (g0 && !Object.keys(pts).length) setView(g0.z * e.scale, g0.r + e.rotation); });
+    stage.addEventListener('gestureend', function () { g0 = null; });
+    zr.addEventListener('input', function () { setView(+zr.value, p.r); });
+    rr.addEventListener('input', function () { setView(p.z, +rr.value); });
     stage.tabIndex = 0;
     stage.addEventListener('keydown', function (e) {
-      var st = 12, m = { ArrowLeft: [st, 0], ArrowRight: [-st, 0], ArrowUp: [0, st], ArrowDown: [0, -st] }[e.key];
+      var st = 12, m = { ArrowLeft: [-st, 0], ArrowRight: [st, 0], ArrowUp: [0, -st], ArrowDown: [0, st] }[e.key];
       if (m) { e.preventDefault(); moveBy(m[0], m[1]); }
-      else if (e.key === '+' || e.key === '=') setZoom(p.z * 1.1);
-      else if (e.key === '-') setZoom(p.z / 1.1);
+      else if (e.key === '+' || e.key === '=') setView(p.z * 1.1, p.r);
+      else if (e.key === '-') setView(p.z / 1.1, p.r);
+      else if (e.key === '[') setView(p.z, p.r - 5);
+      else if (e.key === ']') setView(p.z, p.r + 5);
     });
 
-    mc.querySelector('.fs-pp-reset').addEventListener('click', function () { p = { x: .5, y: .5, z: 1 }; range.value = 1; draw(); });
+    mc.querySelector('.fs-pp-reset').addEventListener('click', function () { p = { x: .5, y: .5, z: 1, r: 0 }; zr.value = 1; rr.value = 0; draw(); });
     mc.querySelector('.fs-pp-cancel').addEventListener('click', function () { unmodal(); });
     mc.querySelector('.fs-pp-save').addEventListener('click', function () {
       var r = function (v, n) { return Math.round(v * n) / n; };
-      var val = (Math.abs(p.z - 1) < .005 && Math.abs(p.x - .5) < .002 && Math.abs(p.y - .5) < .002) ? null :
-        { s: base(opts.src), x: r(p.x, 10000), y: r(p.y, 10000), z: r(p.z, 1000) };
+      var val = (Math.abs(p.z - 1) < .005 && Math.abs(p.x - .5) < .002 && Math.abs(p.y - .5) < .002 && Math.abs(p.r) < .5) ? null :
+        { s: base(opts.src), x: r(p.x, 10000), y: r(p.y, 10000), z: r(p.z, 1000), r: r(p.r, 10) };
       if (dat().setPhotoPos) dat().setPhotoPos(id, opts.key, val);
       unmodal();
       if (fs()) fs().render();
@@ -394,14 +450,14 @@
     var slot = cover && cover.querySelector('.fs-tl-slot[data-fs-slot="' + n + '"]');
     var info = slotInfo(slot);
     if (!slot || !info.img || !info.src) return;
-    open({ frame: slot, context: cover, img: info.img, src: info.src, key: info.key, title: 'Move & zoom photo' });
+    open({ frame: slot, context: cover, img: info.img, src: info.src, key: info.key, title: 'Move, zoom & rotate' });
   }
   function editAvatar() {
     var a = avatarImgs().filter(function (x) { return x.own && x.img.offsetParent; })[0] || avatarImgs()[0];
     if (!a || !a.wrap) return;
     var src = origOf(a.img);
     if (!src || /default-avatar/.test(src)) return;
-    open({ frame: a.img, context: a.wrap.parentElement || a.wrap, img: a.img, src: src, key: 'avatar', title: 'Move & zoom profile picture' });
+    open({ frame: a.img, context: a.wrap.parentElement || a.wrap, img: a.img, src: src, key: 'avatar', title: 'Move, zoom & rotate' });
   }
 
   // tap on your own timeline frame: Move & zoom / Change photo
@@ -411,7 +467,7 @@
     closeMenu();
     var m = document.createElement('div');
     m.className = 'post-dropdown show fs-pp-menu';
-    m.innerHTML = '<a href="#" data-a="move"><i class="fas fa-up-down-left-right"></i> Move &amp; zoom</a><a href="#" data-a="pick"><i class="fas fa-image"></i> Change photo</a>';
+    m.innerHTML = '<a href="#" data-a="move"><i class="fas fa-up-down-left-right"></i> Move, zoom &amp; rotate</a><a href="#" data-a="pick"><i class="fas fa-image"></i> Change photo</a>';
     document.body.appendChild(m);
     var r = slot.getBoundingClientRect();
     var top = r.top + window.scrollY + Math.min(r.height / 2, 60), left = r.left + window.scrollX + r.width / 2 - m.offsetWidth / 2;
@@ -435,6 +491,6 @@
   });
 
   window.BlipPhotoPos = { timelineSlot: timelineSlot, render: render, open: open, editSlot: editSlot,
-    editAvatar: editAvatar, slotMenu: slotMenu, posFor: posFor, cropRect: cropRect };
+    editAvatar: editAvatar, slotMenu: slotMenu, posFor: posFor, view: view };
   if (fs() && fs().active && fs().active()) { fs().apply(fs().active()); }   // a skin went on before this file loaded
 })();

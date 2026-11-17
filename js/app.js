@@ -6166,7 +6166,7 @@ $('#avatarEditBtn').addEventListener('click',function(e){
     var photos=state.photos.profile;
     var html='<div class="modal-header"><h3>Change Profile Picture</h3><button class="modal-close"><i class="fas fa-times"></i></button></div><div class="modal-body">';
     var _ppOn=window.BlipPhotoPos&&window.BlipFullSkins&&BlipFullSkins.active()&&currentUser&&currentUser.avatar_url;
-    html+='<div style="text-align:center;margin-bottom:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><button class="btn btn-primary" id="avatarUploadNewBtn"><i class="fas fa-upload"></i> Upload New Photo</button>'+(_ppOn?'<button class="btn btn-outline" id="avatarMoveZoomBtn"><i class="fas fa-up-down-left-right"></i> Move &amp; Zoom</button>':'')+'</div>';
+    html+='<div style="text-align:center;margin-bottom:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><button class="btn btn-primary" id="avatarUploadNewBtn"><i class="fas fa-upload"></i> Upload New Photo</button>'+(_ppOn?'<button class="btn btn-outline" id="avatarMoveZoomBtn"><i class="fas fa-up-down-left-right"></i> Move, Zoom &amp; Rotate</button>':'')+'</div>';
     if(photos.length>0){
         html+='<p style="font-size:13px;color:var(--gray);margin-bottom:12px;text-align:center;">Or select from previous uploads:</p>';
         html+='<div class="shop-scroll-row" id="avatarPickRow" style="gap:12px;padding:8px 4px 12px;">';
