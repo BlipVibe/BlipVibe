@@ -8579,3 +8579,44 @@ html body.fs.fs-basic :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .p
 html body.fs.fs-basic .fsk-badge { font-size: 0 !important; width: 26px !important; height: 26px !important; padding: 0 !important; border-radius: 50% !important; right: 8% !important; top: 7% !important;
   background: var(--fs-tick-100) center / contain no-repeat !important; }
 html body.fs.fs-basic .fsk-badge::after { content: none !important; }
+
+/* ===== owner, Nov 17: "everything is too spaced out" — the concept's tight rhythm ===== */
+/* Home: the lifted card/ledge left 74px of empty layout below them — take it back; small, even gaps between blocks */
+html body.fs.fs-basic #profileCard { margin-bottom: -60px !important; }
+html body.fs.fs-basic #profileCard .profile-links { margin-top: -78px !important; margin-bottom: 0 !important; height: 36px !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-basic .page.active { padding-top: calc(70px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-basic #timelineCover { margin-top: 2px !important; }
+  html body.fs.fs-basic :is(.left-sidebar, .center-feed, .right-sidebar, .main-container) { gap: 8px !important; row-gap: 8px !important; }
+  html body.fs.fs-basic :is(.left-sidebar, .center-feed) > * { margin-top: 0 !important; margin-bottom: 8px !important; }
+  html body.fs.fs-basic :is(.photos-card, .card.photos-card) { margin: 8px 0 !important; }
+  html body.fs.fs-basic .mobile-pills-bar { margin: 4px 0 !important; padding: 0 !important; }
+  html body.fs.fs-basic .stories-bar { margin: 2px 0 !important; padding: 2px 0 !important; min-height: 0 !important; }
+  html body.fs.fs-basic #openPostModal { margin: 4px 0 !important; }
+  html body.fs.fs-basic .featured-skin-banner { margin: 6px 0 !important; }
+  html body.fs.fs-basic .quest-panel { margin: 6px 0 !important; }
+  html body.fs.fs-basic .quest-item { min-height: 44px !important; }
+  html body.fs.fs-basic #feedTabs { margin: 6px 0 !important; }
+  html body.fs.fs-basic .feed-post.feed-post.feed-post { margin: 6px 0 8px !important; }
+  /* page headers + lists */
+  html body.fs.fs-basic .page-header, html body.fs.fs-basic .msg-sidebar-header { padding-top: 6px !important; gap: 2px 8px !important; }
+  html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, .fsk-filters) { margin: 4px 0 !important; }
+  html body.fs.fs-basic :is(.msg-contact, .notif-item, .profile-card-item, .follow-list-item) { margin-bottom: 4px !important; }
+  html body.fs.fs-basic #groupsSections .group-card { margin-bottom: 4px !important; }
+  html body.fs.fs-basic .fsk-grid { gap: 8px !important; row-gap: 8px !important; }
+  html body.fs.fs-basic :is(#groupsSections, .shop-scroll-row, .connections-grid, .page-grid) { gap: 4px !important; row-gap: 4px !important; }
+}
+html body.fs.fs-basic #profileCard .profile-links { margin-top: -96px !important; }
+html body.fs.fs-basic #profileCard { margin-bottom: -70px !important; }
+html body.fs.fs-basic .card:not(.feed-post):not(.profile-card):not(.pv-profile-card) { border-width: 16px !important; border-image-width: 16px !important; padding: 2px 4px !important; }
+html body.fs.fs-basic .photos-card .card-heading { margin: 0 0 4px !important; padding: 0 0 4px !important; font-size: 16px !important; }
+html body.fs.fs-basic .photos-card .photos-preview { margin: 0 !important; gap: 6px !important; }
+html body.fs.fs-basic .photos-card .view-more-link { display: block; margin: 4px 0 0 !important; padding: 2px 0 !important; font-size: 14px !important; }
+/* Pumpkin art trimmed to its painted edges (it had 60–120px transparent margins) → same slices as Rosé */
+html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-info::before { border-width: 14px 14px 14px 26px !important;
+  border-image: var(--fs-place-card) 60 60 60 120 fill / 14px 14px 14px 26px stretch !important; margin-top: 0 !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .fs-namecard { padding-left: 34px !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-stats { padding-right: 22px !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] :is(.pv-profile-card, #profileCard):not(#gvProfileCard) .profile-info { grid-template-columns: 7% minmax(0, 1fr) auto 9% !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"] .quest-panel { border-width: 22px !important; border-image: var(--fs-quests-panel) 90 fill / 22px stretch !important; padding: 0 !important; }
+@media (max-width: 768px) { html body.fs.fs-basic:not(:has(#page-home.active)) .page.active { padding-top: calc(84px + env(safe-area-inset-top, 0px)) !important; } }
