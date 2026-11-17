@@ -5545,3 +5545,16 @@ html body.fs.fs-heavens-light #gvProfileCard .profile-stats > .stat:nth-child(3)
 html body.fs.fs-heavens-light:has(#page-messages.active .messages-layout.chat-open) .nav-center { display: none !important; }
 /* Heaven's Light chat: the first button was the bare gold ring; the concept has a "+" in it (kit icon-plus over round-btn) */
 html body.fs.fs-heavens-light #msgChat #msgImgBtn i { background: var(--fs-icon-plus) center / 52% no-repeat, var(--fs-round-btn) center / contain no-repeat !important; }
+/* store cards: "Owned" is a small green check dot in the picture's bottom-left corner (owner, Nov 16: the word in the
+   middle of the preview got in the way). The word stays for screen readers. */
+html body .fsk-owned.fsk-owned { top: auto !important; left: 6px !important; bottom: 6px; right: auto; transform: none !important;
+  width: 20px; height: 20px; padding: 0 !important; border-radius: 50% !important; background: #22b04b !important;
+  box-shadow: 0 0 0 2px #fff, 0 1px 3px rgba(0, 0, 0, .45); font-size: 0 !important; color: transparent !important; overflow: hidden; }
+html body .fsk-owned.fsk-owned::before { content: "\2713"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  color: #fff; font: 900 13px/1 -apple-system, system-ui, sans-serif; }
+/* Witchcraft's arch window: keep it inside the open part of the arch */
+html body.fs.fs-witchcraft .fsk-owned.fsk-owned { left: 8px !important; bottom: 8px; }
+/* unreadable-text pass (owner rule U): placeholders in the skin's own ink at ~65% — Heaven's Light's were near-white on
+   cream (Day) and near-invisible in places; same rule keeps every skin's placeholders readable */
+html body.fs :is(input, textarea)::placeholder { color: color-mix(in srgb, var(--fs-ink) 62%, transparent) !important; opacity: 1 !important; }
+html body.fs.fs-heavens-light .post-input-fake { color: color-mix(in srgb, var(--fs-ink) 70%, transparent) !important; }

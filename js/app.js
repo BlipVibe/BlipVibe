@@ -8536,7 +8536,7 @@ function _fskCardHtml(k,mode){
         actions=shopBuy(false,k.price,'fsk-buy','data-fsk-id="'+k.id+'"','premium',k.id);
     }
     return '<div class="fsk-card'+(k.ready?'':' fsk-locked')+(equipped?' fsk-is-equipped':'')+'" data-fsk-cat="'+k.cat+'">'
-        +'<div class="fsk-thumb"><img src="'+k.card+'" alt="" loading="lazy">'+(equipped?'<span class="fsk-badge"><i class="fas fa-check"></i></span>':'')+(owned&&!equipped?'<span class="fsk-owned">Owned</span>':'')+'</div>'
+        +'<div class="fsk-thumb"><img src="'+k.card+'" alt="" loading="lazy">'+(equipped?'<span class="fsk-badge"><i class="fas fa-check"></i></span>':'')+(owned&&!equipped?'<span class="fsk-owned" title="Owned" aria-label="Owned">Owned</span>':'')+'</div>'
         +'<div class="fsk-body"><h4 class="fsk-name">'+escapeHtml(k.name)+'</h4>'+actions+'</div></div>';
 }
 function _fskSectionHtml(){

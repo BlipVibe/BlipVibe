@@ -1160,14 +1160,28 @@
       setTimeout(function () { menu.classList.add('show'); }, 0);
     });
   }
+  // Single-line name art (Witchcraft's name ribbon on a profile / group page): a long name shrinks to fit the ribbon
+  // (down to 18px) instead of being cut to "Alexandria Mont…"; only if it still can't fit does it wrap, by whole words.
+  function fitRibbonNames() {
+    if (active !== 'witchcraft') return;
+    document.querySelectorAll('.pv-profile-card .profile-name').forEach(function (h) {
+      if (!h.getClientRects().length) return;
+      h.style.removeProperty('font-size'); h.style.removeProperty('white-space'); h.style.removeProperty('text-overflow');
+      h.style.setProperty('text-overflow', 'clip', 'important');
+      var size = parseFloat(getComputedStyle(h).fontSize);
+      while (h.scrollWidth > h.clientWidth + 1 && size > 18) { size -= 1; h.style.setProperty('font-size', size + 'px', 'important'); }
+      if (h.scrollWidth > h.clientWidth + 1) { h.style.setProperty('white-space', 'normal', 'important'); h.style.setProperty('overflow-wrap', 'normal', 'important'); }
+    });
+  }
   function watchPosts() {
     tagPosts();
     wrapNameCards();
     wrapPvMore();
+    fitRibbonNames();
     if (postObserver || !window.MutationObserver) return;
     postObserver = new MutationObserver(function (muts) {
       if (!active) return;
-      for (var i = 0; i < muts.length; i++) if (muts[i].addedNodes.length) { tagPosts(); wrapNameCards(); wrapPvMore(); break; }
+      for (var i = 0; i < muts.length; i++) if (muts[i].addedNodes.length) { tagPosts(); wrapNameCards(); wrapPvMore(); fitRibbonNames(); break; }
     });
     postObserver.observe(document.body, { childList: true, subtree: true });
   }
