@@ -9143,3 +9143,47 @@ body.fs.tpl-cinema .card { margin-left: 0 !important; margin-right: 0 !important
 /* Vaporwave + Scrapbook: posts have side margins, but the base "#feedContainer .card { width: 100% }" (id rule) kept them
    full width, so each post ran 8px (Scrapbook 4px) past the right edge of the screen and its frame was cut off. */
 html body.fs:is(.fs-vaporwave, .fs-scrapbook) :is(#feedContainer, #pvPostsFeed, #gvPostsFeed) > .card { width: auto !important; }
+
+/* Pass 5 (Nov 17): story reply bar — six reaction emoji + the reply field + send in one row pushed the field and send
+   button off the right edge on skins without their own story layout. Every full skin puts the reactions on their own
+   centred row above the field (as Anime Blaze and Superhero already do). */
+html body.fs .story-input-bar:not(#_) { flex-wrap: wrap !important; padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important; }
+html body.fs .story-input-bar:not(#_) .story-reactions-row { order: -1; width: 100%; justify-content: center; margin: 0 0 4px !important; flex-wrap: nowrap; }
+html body.fs .story-input-bar:not(#_) .story-comment-input { flex: 1 1 0; min-width: 0; }
+/* Pass 5: Superhero's story header padding (14px) put the name and close button up under the clock and the camera
+   cutout, which cut the name to "STORY"; it now starts below the safe area like the other skins. */
+html body.fs.fs-superhero .story-header:not(#_) { padding-top: calc(14px + env(safe-area-inset-top, 0px)) !important; }
+/* Pass 5: the story caption sat 40px from the bottom, under the reply bar (reactions + field) on every skin → it rides
+   above the bar; on your own story (Views / delete row only) it keeps clear of that row. */
+html body.fs .story-viewer-overlay:has(.story-input-bar) .story-text:not(#_) { bottom: calc(150px + env(safe-area-inset-bottom, 0px)) !important; }
+html body.fs .story-viewer-overlay:has(.story-viewers) .story-text:not(#_) { bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important; }
+/* Pass 5: account menu text unreadable — a real equip also adds the legacy premium-<id> class, whose style.css theme
+   paints menu links in its pale --ps-text (#fcc / #e0d0ff), on Blood Moon's parchment / silver panel and light Vaporwave's
+   window. Dark ink on those light panels (Admin Panel / Logout keep their red). */
+html body.fs.fs-blood-moon :is(#userDropdownMenu, .post-dropdown) a:not(#_):not(.logout-link):not([style*="color"]) { color: #2a1414 !important; }
+html body.fs.fs-blood-moon[data-fs-variant="silver"] :is(#userDropdownMenu, .post-dropdown) a:not(#_):not(.logout-link):not([style*="color"]) { color: #1d2230 !important; }
+html body.fs.fs-blood-moon :is(#userDropdownMenu, .post-dropdown) a:not(#_) i { color: #8e1b1b !important; }
+html body.fs.fs-blood-moon[data-fs-variant="silver"] :is(#userDropdownMenu, .post-dropdown) a:not(#_) i { color: #3d4a63 !important; }
+html body.fs.fs-vaporwave:is([data-fs-variant="retro"], [data-fs-variant="modern"]) :is(#userDropdownMenu, .post-dropdown) a:not(#_):not(.logout-link):not([style*="color"]) { color: #1b1236 !important; }
+html body.fs.fs-vaporwave:is([data-fs-variant="retro"], [data-fs-variant="modern"]) :is(#userDropdownMenu, .post-dropdown) a:not(#_) i { color: #7a2fd0 !important; }
+html body.fs:is(.fs-blood-moon, .fs-vaporwave) #userDropdownMenu #logoutBtn:not(#_) { color: #b3261e !important; }
+/* Pass 5: Villains — "DAILY QUESTS" ran under the drone on the header art (the S was hidden); the title centres in the
+   plate left of the drone and sizes to fit the wide stencil face. */
+html body.fs.fs-superhero[data-fs-variant="villains"] .quest-panel-header:not(#_) { right: 26% !important; left: 6% !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .quest-panel-header:not(#_) h4 { font-size: 18px !important; letter-spacing: 0 !important; white-space: nowrap; }
+/* Pass 5: Superhero store — the "Equipped" tag sat inside the picture box, under the card's button plate, and had no
+   word on it (the art is a blank plate): the equipped card showed Take off over an empty band. The tag now sits in the
+   plate under Take off with its word, like the concept store card. */
+html body.fs.fs-superhero .fsk-is-equipped .fsk-thumb .fsk-badge:not(#_) { display: none !important; }
+html body.fs.fs-superhero .fsk-is-equipped .fsk-body:not(#_)::after { content: 'Equipped'; position: absolute; left: 50%; bottom: 7px; transform: translateX(-50%); width: 80%; height: 28px;
+  background: var(--fs-equipped-tag) center / 100% 100% no-repeat; color: var(--sh-on, #111); font: 400 14px var(--sh-tfont); letter-spacing: var(--sh-tspace); text-transform: uppercase;
+  display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 3; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .fsk-is-equipped .fsk-body:not(#_)::after { color: #f4ffee; text-shadow: 0 0 2px #000, 0 1px 2px #000; }
+/* Pass 5: Witchcraft group page — "Group Coins" broke into two lines and ran over the plaque's top and bottom frame;
+   one line, sized to the plaque. */
+html body.fs.fs-witchcraft #page-group-view .profile-stats:not(#_) .stat-label { white-space: nowrap !important; font-size: 12px !important; letter-spacing: -.01em !important; }
+html body.fs.fs-witchcraft #page-group-view .profile-stats:not(#_) .stat-label :is(i, img, svg) { font-size: 11px !important; width: 11px !important; height: auto !important; margin-right: 2px !important; }
+html body.fs.fs-witchcraft #page-group-view .profile-stats:not(#_) .stat:last-child { min-width: 100px !important; flex: 0 0 100px !important; padding: 0 8px !important; box-sizing: border-box !important; }
+/* Pass 5: Superhero Network / Search rows — a one-word name ("Bboy_Kooaid") broke mid-word at 19px; names size down
+   so a single word stays whole (two-word names still wrap between words). */
+html body.fs.fs-superhero :is(#page-profiles, #page-search) .profile-card-name:not(#_) { font-size: 16px !important; letter-spacing: 0 !important; overflow-wrap: normal !important; word-break: normal !important; min-width: 0; }
