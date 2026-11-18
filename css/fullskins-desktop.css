@@ -106,7 +106,6 @@
     grid-row: 2; margin: 0 0 6px !important; padding: 0 !important; background: none !important;
     font-size: 19px !important; text-align: left !important;
   }
-  html body.fsd-scrapbook #profileCard .profile-about { display: none !important; }
   html body.fsd-scrapbook #profileCard .profile-stats {
     grid-row: 3;
     margin: 0 12px 0 0 !important; padding: 6px 0 !important;
@@ -345,4 +344,15 @@
   html body.fsd-scrapbook #page-home .promo-card .coin-rule { font-size: 14px !important; white-space: nowrap; }
   html body.fsd-scrapbook #page-home .group-item .group-name { font-family: var(--fs-title-font) !important; font-size: 21px !important; }
   html body.fsd-scrapbook #page-home .group-item .group-members { font-size: 14px !important; }
+  /* composer: no second sheet — just the slim paper field on the centre sheet (concept) */
+  html body.fsd-scrapbook #page-home .center-feed > .post-create-bar {
+    border: 0 !important; border-image: none !important; background: none !important; box-shadow: none !important;
+    padding: 0 !important; gap: 10px !important; filter: none !important;
+  }
+  html body.fsd-scrapbook #page-home .center-feed > .post-create-bar::before,
+  html body.fsd-scrapbook #page-home .center-feed > .post-create-bar::after { display: none !important; }
+  html body.fsd-scrapbook #page-home .center-feed > .post-create-bar .post-input-fake {
+    flex: 1; border: 14px solid transparent !important; border-image: var(--fs-field9-real) 80 fill / 14px round !important;
+    padding: 2px 6px !important; background: none !important;
+  }
 }
