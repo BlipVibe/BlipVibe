@@ -128,4 +128,21 @@
   }
   html body.fsd #page-notifications .page-header > h2 { grid-column: 1 !important; justify-self: center; }
   html body.fsd #page-notifications .page-container > .search-tabs { grid-column: 1 !important; grid-row: auto !important; flex-wrap: wrap !important; justify-content: center; }
+
+  /* FIT skins (body.fsd-fit): the 1440x900 design is one screen, scaled to fit the window and centred; the page
+     never scrolls (the feed / lists scroll inside their own panels) */
+  html body.fsd-fit { overflow: hidden !important; }
+  html body.fsd-fit .navbar {
+    width: 1440px !important; left: calc(50vw / var(--fsd-z, 1) - 720px) !important; right: auto !important;
+    top: calc(50vh / var(--fsd-z, 1) - 450px) !important; background: none !important; border: 0 !important; box-shadow: none !important;
+  }
+  html body.fsd-fit .page.active, html body.fsd-fit #page-home.page.active {
+    position: fixed !important; width: 1440px !important; height: 900px !important; max-width: none !important;
+    left: calc(50vw / var(--fsd-z, 1) - 720px) !important; top: calc(50vh / var(--fsd-z, 1) - 450px) !important;
+    margin: 0 !important; padding: 0 !important; overflow: hidden !important;
+  }
+  html body.fsd-fit #premiumBgLayer {
+    background-position: center center !important;
+    background-size: calc(1440px * var(--fsd-z, 1)) calc(900px * var(--fsd-z, 1)) !important; background-repeat: no-repeat !important;
+  }
 }

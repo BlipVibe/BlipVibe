@@ -30,10 +30,21 @@
       'list-row-active', 'progress-track', 'progress-fill', 'halo-0', 'halo-50', 'halo-100', 'photo-frame-square',
       'photo-frame-portrait', 'photo-frame-wide', 'chat-panel', 'chat-header', 'bubble-received', 'bubble-sent',
       'notification-row', 'group-card-frame', 'skin-card-frame', 'search-dropdown', 'decor-laurels', 'decor-coins',
-      'decor-floral-corner', 'bg-groups', 'bg-skins']
+      'decor-floral-corner', 'bg-groups', 'bg-skins'],
+    // Witchcraft: an open spell book on a candlelit altar, one screen (desktop concepts images/skins/witchcraft/desktop/)
+    witchcraft: ['bg', 'wordmark-plate', 'search-field', 'icon-button', 'coin-pill', 'avatar-ring', 'nav-tab', 'nav-tab-active',
+      'tarot-frame', 'tarot-frame-star', 'profile-ring', 'nameplate', 'primary-button', 'primary-button-active', 'quests-card',
+      'progress-track', 'progress-fill', 'decor-candles', 'decor-crystals', 'decor-flourish', 'thumbnail-frame', 'photo-frame',
+      'parchment-note', 'parchment-tall', 'parchment-wide', 'people-row', 'story-seal', 'composer', 'feed-tab', 'feed-tab-active',
+      'post-card', 'feed-panel', 'chip', 'chip-active', 'side-card', 'list-row', 'list-row-active', 'chat-backdrop', 'chat-header',
+      'chat-received', 'chat-sent', 'input-bar', 'search-dropdown', 'group-frame', 'group-frame-star', 'skin-frame', 'skin-frame-star']
   };
   // where each skin's concept puts the side panels (default: quests + coin goal top-left, featured skin top-right)
   var PLACE = { 'heavens-light': { featured: 'left-end' } };
+  // one-screen skins (an open book, a stage, a desktop of windows): the whole 1440x900 design fits the window
+  // (scale by width AND height, centred), and the feed scrolls inside its panel instead of the page
+  var FIT = { witchcraft: true };
+  var DESIGN_H = 900;
   var NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
   var BASE = new URL(window.FS_BASE || (NATIVE ? 'https://blipvibe.com/images/skins/' : 'images/skins/'), document.baseURI).href;
   var artSet = [];
@@ -113,7 +124,9 @@
   }
 
   function scale() {
-    var z = on ? Math.max(0.76, Math.min(window.innerWidth / DESIGN_W, 1.5)) : 1;
+    var z = on ? Math.min(window.innerWidth / DESIGN_W, 1.5) : 1;
+    if (on && FIT[skin]) z = Math.min(z, window.innerHeight / DESIGN_H);
+    if (on) z = Math.max(0.6, z);
     document.documentElement.style.setProperty('--fsd-z', String(Math.round(z * 1000) / 1000));
   }
 
@@ -127,7 +140,8 @@
     var hadFrames = on;
     if (on) { restore(); b.classList.remove('fsd'); if (skin) b.classList.remove('fsd-' + skin); }
     on = want; skin = want ? id : null;
-    if (on) { ensureCSS(skin); b.classList.add('fsd', 'fsd-' + skin); arrange(); clearHomePad(); }
+    b.classList.remove('fsd-fit');
+    if (on) { ensureCSS(skin); b.classList.add('fsd', 'fsd-' + skin); if (FIT[skin]) b.classList.add('fsd-fit'); arrange(); clearHomePad(); }
     else if (hadFrames && typeof window.syncNavPadding === 'function') window.syncNavPadding();
     setArt(on ? skin : null);
     scale();
@@ -142,6 +156,14 @@
     if (on && h && h.style.getPropertyValue('padding-top')) h.style.removeProperty('padding-top');
   }
 
+  // fit skins scroll the feed inside its panel; app.js loads more posts on WINDOW scroll, so forward the panel's
+  // scroll to the same loader (_loadMorePosts guards against double loads itself)
+  function onFeedScroll(e) {
+    if (!on || !FIT[skin]) return;
+    var el = e.target;
+    if (el && el.scrollHeight - el.scrollTop - el.clientHeight < 600 && typeof window._loadMorePosts === 'function') window._loadMorePosts();
+  }
+
   window.BlipFullSkinsDesk = { on: function () { return on; }, sync: sync };
 
   function start() {
@@ -150,6 +172,8 @@
     new MutationObserver(function () { sync(); }).observe(document.body, { attributes: true, attributeFilter: ['class', 'data-fs-variant'] });
     if (mq.addEventListener) mq.addEventListener('change', sync); else mq.addListener(sync);
     window.addEventListener('resize', scale);
+    var feed = $('feedContainer');
+    if (feed) feed.addEventListener('scroll', onFeedScroll, { passive: true });
     var home = $('page-home');
     if (home) new MutationObserver(clearHomePad).observe(home, { attributes: true, attributeFilter: ['style'] });
   }
