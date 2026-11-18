@@ -344,4 +344,41 @@
   html body.fsd-scrapbook #page-messages #msgInput { font-size: 19px !important; min-height: 52px; }
   html body.fsd-scrapbook #page-messages .msg-following-header h4 { font-family: var(--fs-title-font) !important; font-size: 26px !important; }
   html body.fsd-scrapbook #page-messages .msg-following-list { font-size: 15px !important; }
+
+  /* ---- GROUPS (desktop-groups.png): script title + paper chips in one row, taped paper group cards ---- */
+  html body.fsd-scrapbook :is(#page-groups, #page-shop, #page-notifications) .page-header > h2 {
+    font-family: var(--fs-title-font) !important; font-weight: 700 !important; font-size: 56px !important; line-height: 1 !important;
+    border: 16px solid transparent !important; border-image: var(--fs-label9-real) 80 fill / 16px round !important; padding: 0 14px !important;
+  }
+  html body.fsd-scrapbook :is(#page-groups, #page-shop, #page-notifications) .page-header > h2 > i { display: none !important; }
+  html body.fsd-scrapbook :is(#page-groups, #page-shop, #page-notifications) .page-container > .search-tabs .search-tab { font-size: 20px !important; height: 48px !important; padding: 0 22px !important; }
+  html body.fsd-scrapbook #page-groups .page-search input { font-size: 18px !important; }
+  html body.fsd-scrapbook #page-groups #createGroupBtn { font-size: 20px !important; height: 50px !important; padding: 0 22px !important; }
+  html body.fsd-scrapbook #groupsSections .group-card {
+    position: relative; overflow: visible !important; text-align: center; padding: 6px 4px 10px !important;
+    border: 26px solid transparent !important; border-radius: 0 !important; background: none !important; box-shadow: none !important;
+    border-image: var(--fsd-sheet9-tall) 140 fill / 26px round !important;
+    filter: drop-shadow(2px 4px 6px rgba(80, 50, 30, .22));
+  }
+  html body.fsd-scrapbook #groupsSections .group-card::before {
+    content: ""; position: absolute; z-index: 3; top: -30px; left: 50%; width: 96px; height: 30px; margin-left: -48px;
+    background: var(--fs-tape-beige) center / 100% 100% no-repeat; transform: rotate(-3deg); pointer-events: none;
+  }
+  html body.fsd-scrapbook #groupsSections .group-card-banner {
+    height: 190px !important; border-radius: 0 !important; overflow: hidden;
+    border: 6px solid transparent !important; border-image: var(--fs-photo-edge9) 30 / 6px / 3px round !important;
+  }
+  html body.fsd-scrapbook #groupsSections .group-card-banner img { width: 100% !important; height: 100% !important; object-fit: cover; border-radius: 0 !important; position: static !important; transform: none !important; }
+  html body.fsd-scrapbook #groupsSections .group-card-body h4 { font-family: var(--fs-title-font) !important; font-size: 30px !important; margin: 10px 0 2px !important; }
+  html body.fsd-scrapbook #groupsSections .group-card-body p { font-size: 16px !important; }
+  html body.fsd-scrapbook #groupsSections .group-card-body .group-members { font-size: 18px !important; }
+  html body.fsd-scrapbook #groupsSections .group-card-actions { justify-content: center !important; gap: 10px; margin-top: 8px; }
+  html body.fsd-scrapbook #groupsSections .group-card-actions .btn { font-size: 20px !important; min-width: 120px; height: 42px; }
+  html body.fsd-scrapbook #groupsSections .group-card-actions .btn {
+    width: auto !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; color: var(--fs-ink) !important;
+    border: 12px solid transparent !important; border-image: var(--fs-button9-real-rose) 80 fill / 12px round !important;
+    padding: 0 14px !important; display: inline-flex !important; align-items: center; justify-content: center; gap: 6px; opacity: 1 !important;
+  }
+  html body.fsd-scrapbook #groupsSections .group-card-actions .btn :is(.gc-btn-text, span) { display: inline !important; font-family: var(--fs-title-font); font-size: 22px; }
+  html body.fsd-scrapbook #groupsSections .group-card-actions .btn::before, html body.fsd-scrapbook #groupsSections .group-card-actions .btn::after { display: none !important; }
 }
