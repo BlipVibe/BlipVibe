@@ -220,3 +220,129 @@
     padding: 0 4px 10px;
     filter: drop-shadow(2px 4px 6px rgba(80, 50, 30, .22));
   }
+
+  /* posts with a picture: text + actions on the left, the photo taped on the right (concept) */
+  html body.fsd-scrapbook #feedContainer .feed-post:has(.post-media-grid) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 46%;
+    grid-template-rows: auto auto 1fr auto auto;
+    column-gap: 18px;
+  }
+  html body.fsd-scrapbook #feedContainer .feed-post:has(.post-media-grid) > * { grid-column: 1; }
+  html body.fsd-scrapbook #feedContainer .feed-post:has(.post-media-grid) > .post-media-grid { grid-column: 2; grid-row: 1 / 5; align-self: center; margin: 0 !important; }
+  html body.fsd-scrapbook #feedContainer .feed-post:has(.post-media-grid) > .post-actions { grid-row: 4; align-self: end; }
+  html body.fsd-scrapbook #feedContainer .feed-post:has(.post-media-grid) > .post-comments { grid-column: 1 / -1; grid-row: 5; }
+  html body.fsd-scrapbook #feedContainer .feed-post:has(.post-media-grid) .action-right { display: none !important; }
+
+  /* Earn Coins: gift + script title, the four rules as a row of paper chips (no logo/blurb) */
+  html body.fsd-scrapbook #page-home .promo-card .promo-logo,
+  html body.fsd-scrapbook #page-home .promo-card .promo-subtitle,
+  html body.fsd-scrapbook #page-home .promo-card .coin-rule small,
+  html body.fsd-scrapbook #page-home .promo-card .coin-rule > i { display: none !important; }
+  html body.fsd-scrapbook #page-home .promo-card { text-align: left !important; padding: 6px 8px 10px !important; }
+  html body.fsd-scrapbook #page-home .promo-card .promo-title { margin: 0 0 8px !important; font-size: 22px !important; text-align: left !important; }
+  html body.fsd-scrapbook #page-home .promo-card .promo-title::before { content: "\f06b"; font-family: "Font Awesome 6 Free"; font-weight: 900; font-size: 17px; margin-right: 8px; }
+  html body.fsd-scrapbook #page-home .promo-card .coin-rules { display: grid !important; grid-template-columns: repeat(4, 1fr); gap: 6px !important; }
+  html body.fsd-scrapbook #page-home .promo-card .coin-rule {
+    display: block !important; margin: 0 !important; padding: 2px 2px !important; text-align: center;
+    background: none !important; border-radius: 0 !important;
+    border: 12px solid transparent !important;
+    border-image: var(--fsd-tab-paper) 40 fill / 12px stretch !important;
+    font-size: 13px !important; line-height: 1.2;
+  }
+  html body.fsd-scrapbook #page-home .promo-card .coin-rule span { display: block; }
+  html body.fsd-scrapbook #page-home .promo-card .coin-rule strong { display: block; }
+
+  /* People You May Know / Trending Groups: compact torn rows, round "+" */
+  html body.fsd-scrapbook #page-home .suggestion-item,
+  html body.fsd-scrapbook #page-home .group-item {
+    border: 12px solid transparent !important; border-radius: 0 !important; background: none !important;
+    border-image: var(--fsd-tab-paper) 40 fill / 12px stretch !important;
+    padding: 0 4px !important; margin: 0 0 4px !important;
+  }
+  html body.fsd-scrapbook #page-home .group-item .group-desc { display: none !important; }
+  html body.fsd-scrapbook #page-home .suggestion-list { display: flex !important; flex-direction: column !important; flex-wrap: nowrap !important; gap: 0 !important; }
+  html body.fsd-scrapbook #page-home .suggestion-item {
+    display: flex !important; flex-direction: row !important; align-items: center !important; gap: 10px !important;
+    width: auto !important; min-height: 0 !important; text-align: left !important;
+  }
+  html body.fsd-scrapbook #page-home .suggestion-item .suggestion-avatar { width: 38px !important; height: 38px !important; margin: 0 !important; }
+  html body.fsd-scrapbook #page-home .suggestion-item .suggestion-info { flex: 1; min-width: 0; }
+  html body.fsd-scrapbook #page-home .suggestion-item .suggestion-info h4 { font-size: 16px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fsd-scrapbook #page-home .suggestion-item .suggestion-info p:empty { display: none; }
+  html body.fsd-scrapbook #page-home .suggestion-item .suggestion-follow-btn { width: 28px !important; height: 28px !important; flex: none; margin: 0 !important; }
+
+  /* centre sheet: stories, composer and tabs sit close together like the concept */
+  html body.fsd-scrapbook #page-home .center-feed > .stories-bar { margin-bottom: 4px !important; padding-top: 0 !important; }
+  html body.fsd-scrapbook #page-home .center-feed > .post-create-bar { margin-bottom: 8px !important; }
+  html body.fsd-scrapbook #page-home .center-feed > .search-tabs { margin-bottom: 8px !important; }
+  html body.fsd-scrapbook #page-home .center-feed { gap: 6px !important; row-gap: 6px !important; }
+  html body.fsd-scrapbook #page-home .center-feed > .stories-bar { padding-bottom: 2px !important; }
+  html body.fsd-scrapbook #page-home .center-feed > .post-create-bar { padding: 2px 10px !important; min-height: 0 !important; }
+  html body.fsd-scrapbook #page-home .center-feed > .post-create-bar .post-create-avatar { width: 36px !important; height: 36px !important; }
+
+  /* ---- 1:1 with desktop-home.png: type sizes and pieces measured from the concept (1536 → 1440 = x0.94) ---- */
+  html body.fsd-scrapbook #page-home .card-heading,
+  html body.fsd-scrapbook #page-home .quest-panel-header h3,
+  html body.fsd-scrapbook #page-home .quest-panel-header h4,
+  html body.fsd-scrapbook #page-home .promo-card .promo-title {
+    font-family: var(--fs-title-font) !important; font-weight: 700 !important;
+    font-size: 30px !important; line-height: 1.1 !important; color: var(--fs-ink) !important;
+    text-transform: none !important; letter-spacing: 0 !important;
+  }
+  html body.fsd-scrapbook #page-home .quest-panel-header { margin-bottom: 8px !important; }
+  html body.fsd-scrapbook #page-home .quest-panel-header *:not(h3):not(h4):not(i) { font-size: 0 !important; }
+  html body.fsd-scrapbook #page-home .quest-item { gap: 12px !important; padding: 6px 4px !important; align-items: center !important; }
+  html body.fsd-scrapbook #page-home .quest-item .quest-icon { width: 46px !important; height: 46px !important; flex: none; font-size: 20px !important; }
+  html body.fsd-scrapbook #page-home .quest-item .quest-info p { font-size: 19px !important; margin: 0 0 4px !important; }
+  html body.fsd-scrapbook #page-home .quest-item .quest-progress { font-size: 15px !important; }
+  html body.fsd-scrapbook #page-home .quest-item .quest-bar { height: 9px !important; }
+  html body.fsd-scrapbook #page-home .quest-item .quest-reward { font-size: 19px !important; font-weight: 700; }
+
+  /* feed tabs span the sheet as three wide paper tabs */
+  html body.fsd-scrapbook #page-home #feedTabs { display: flex !important; gap: 10px !important; }
+  html body.fsd-scrapbook #page-home #feedTabs .search-tab { flex: 1 1 0 !important; justify-content: center !important; height: 46px !important; font-size: 19px !important; }
+
+  /* stories: bigger rings like the concept */
+  html body.fsd-scrapbook #page-home .stories-bar .story-avatar,
+  html body.fsd-scrapbook #page-home .stories-bar .story-ring { width: 68px !important; height: 68px !important; }
+  html body.fsd-scrapbook #page-home .stories-bar .story-name,
+  html body.fsd-scrapbook #page-home .stories-bar .story-item span { font-size: 15px !important; }
+  html body.fsd-scrapbook #page-home .post-create-bar .post-input-fake { font-size: 19px !important; }
+
+  /* posts: script name + date on one line, larger body */
+  html body.fsd-scrapbook #feedContainer .post-username { font-family: var(--fs-title-font) !important; font-size: 23px !important; }
+  html body.fsd-scrapbook #feedContainer .post-time { font-size: 15px !important; }
+  html body.fsd-scrapbook #feedContainer .post-description p { font-size: 18px !important; line-height: 1.4 !important; }
+  html body.fsd-scrapbook #feedContainer .post-actions .action-btn { font-size: 16px !important; }
+
+  /* Photos card: three taped polaroids, alternate tilts (phone polaroid frame art) */
+  html body.fsd-scrapbook #page-home .photos-card .photos-preview {
+    display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 10px !important; padding: 6px 4px 10px !important;
+  }
+  html body.fsd-scrapbook #page-home .photos-card .photos-preview > *:nth-child(n+4) { display: none !important; }
+  html body.fsd-scrapbook #page-home .photos-card .photos-preview > * {
+    border: solid transparent !important; border-width: 10px 11px 30px 10px !important; border-radius: 0 !important;
+    border-image: var(--fs-photo-frame) 44 49 137 40 fill / 10px 11px 30px 10px round !important;
+    background-clip: padding-box; aspect-ratio: 3 / 4; height: auto !important; width: auto !important;
+    transform: rotate(-3deg); overflow: visible !important; position: relative;
+  }
+  html body.fsd-scrapbook #page-home .photos-card .photos-preview > *:nth-child(2) { transform: rotate(2deg) translateY(6px); }
+  html body.fsd-scrapbook #page-home .photos-card .photos-preview > *:nth-child(3) { transform: rotate(4deg); }
+  html body.fsd-scrapbook #page-home .photos-card .photos-preview img { width: 100% !important; height: 100% !important; object-fit: cover; border-radius: 0 !important; }
+
+  /* hero card: big script name, larger stats */
+  html body.fsd-scrapbook #profileCard .profile-name,
+  html body.fsd-scrapbook #profileCard .fs-namecard h2,
+  html body.fsd-scrapbook #profileCard .fs-namecard h3 { font-size: 42px !important; }
+  html body.fsd-scrapbook #profileCard .profile-stats .stat-count { font-size: 30px !important; line-height: 1.1 !important; }
+  html body.fsd-scrapbook #profileCard .profile-stats .stat-label { font-size: 19px !important; }
+  html body.fsd-scrapbook #featuredSkinBanner .featured-header h4 { font-family: var(--fs-title-font) !important; font-weight: 700 !important; font-size: 30px !important; color: var(--fs-ink) !important; }
+  html body.fsd-scrapbook #featuredSkinBanner .featured-timer { font-size: 14px !important; }
+  html body.fsd-scrapbook #featuredSkinBanner .featured-info h5 { font-family: var(--fs-title-font) !important; font-size: 26px !important; }
+  html body.fsd-scrapbook #featuredSkinBanner .featured-info p { font-size: 15px !important; }
+  html body.fsd-scrapbook #featuredSkinBanner .featured-preview { width: 130px !important; height: 84px !important; flex: none; }
+  html body.fsd-scrapbook #page-home .promo-card .coin-rule { font-size: 14px !important; white-space: nowrap; }
+  html body.fsd-scrapbook #page-home .group-item .group-name { font-family: var(--fs-title-font) !important; font-size: 21px !important; }
+  html body.fsd-scrapbook #page-home .group-item .group-members { font-size: 14px !important; }
+}
