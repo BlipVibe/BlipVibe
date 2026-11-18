@@ -57,13 +57,22 @@
       'start-menu', 'side-panel', 'feed-panel', 'quests-panel', 'people-panel', 'groups-panel', 'coin-note', 'section-header',
       'cover-frame', 'profile-ring', 'primary-button', 'story-panel', 'composer', 'chip-active', 'chip-inactive', 'post-card',
       'photo-frame', 'people-row', 'progress-track', 'progress-fill', 'nameplate', 'decor-bust', 'decor-cassette', 'decor-coins',
-      'chat-panel', 'conversation-panel', 'bubble-received', 'bubble-sent', 'input', 'list-row', 'list-row-active', 'search-dropdown']
+      'chat-panel', 'conversation-panel', 'bubble-received', 'bubble-sent', 'input', 'list-row', 'list-row-active', 'search-dropdown'],
+    // Anime Blaze: a manga page with a slanted menu rail, one screen (red + blue/ purple/ green/ pink/ recoloured offline)
+    'anime-blaze': [
+      'avatar-ring', 'bg', 'chat-panel', 'chat-received', 'chat-sent', 'chip-active', 'chip-inactive',
+      'chip-inactive-ivory', 'coin-pill', 'composer-field', 'cover-frame', 'decor-flame', 'decor-gutter',
+      'decor-maple', 'decor-mountain', 'feed-sheet', 'gallery-photo-frame', 'group-cover-frame', 'icon-button',
+      'input-bar', 'list-row-inactive', 'list-row-unread', 'nameplate', 'nav-rail', 'nav-tab-active',
+      'nav-tab-inactive', 'notification-row', 'people-row', 'post-card', 'post-photo-frame', 'primary-button',
+      'progress-fill', 'progress-track', 'quests-card', 'rendition-switch', 'search-dropdown', 'search-field',
+      'section-banner', 'side-card', 'skin-cover-frame', 'stories-panel', 'story-ring']
   };
   // where each skin's concept puts the side panels (default: quests + coin goal top-left, featured skin top-right)
   var PLACE = { 'heavens-light': { featured: 'left-end' } };
   // one-screen skins (an open book, a stage, a desktop of windows): the whole 1440x900 design fits the window
   // (scale by width AND height, centred), and the feed scrolls inside its panel instead of the page
-  var FIT = { witchcraft: true, 'blood-moon': true, superhero: true, vaporwave: true };
+  var FIT = { witchcraft: true, 'blood-moon': true, superhero: true, vaporwave: true, 'anime-blaze': true };
   var DESIGN_H = 900;
   var NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
   var BASE = new URL(window.FS_BASE || (NATIVE ? 'https://blipvibe.com/images/skins/' : 'images/skins/'), document.baseURI).href;
