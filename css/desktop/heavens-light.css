@@ -403,4 +403,96 @@
   html body.fs.fsd.fsd-heavens-light #page-messages :is(.msg-chat-input, .msg-chat-header)::after,
   html body.fs.fsd.fsd-heavens-light #page-messages .msg-sidebar-header h3::before,
   html body.fs.fsd.fsd-heavens-light #page-messages .msg-sidebar-header h3::after { display: none !important; }
+
+  /* ---------- GROUPS / SKINS / NOTIFICATIONS: the temple's own wall backgrounds, content on the marble ---------- */
+  html body.fs.fsd.fsd-heavens-light:has(#page-groups.active) #premiumBgLayer { background-image: var(--fsd-bg-groups) !important; }
+  html body.fs.fsd.fsd-heavens-light:has(#page-shop.active) #premiumBgLayer { background-image: var(--fsd-bg-skins) !important; }
+  html body.fs.fsd.fsd-heavens-light[data-fs-variant="twilight"]:is(:has(#page-groups.active), :has(#page-shop.active)) #premiumBgLayer { background-image: var(--fsd-bg) !important; }
+  html body.fs.fsd.fsd-heavens-light #page-groups > .page-container { width: 960px !important; margin: 150px 0 0 152px !important; }
+  html body.fs.fsd.fsd-heavens-light #page-shop > .page-container { width: 1080px !important; margin-top: 140px !important; }
+  html body.fs.fsd.fsd-heavens-light #page-notifications > .page-container { --fsd-notif-shift: 0px; --fsd-notif-w: 700px; margin-top: 150px !important; }
+  html body.fs.fsd.fsd-heavens-light :is(#page-groups, #page-shop, #page-notifications) .page-container { background: none !important; border: 0 !important; box-shadow: none !important; }
+  html body.fs.fsd.fsd-heavens-light :is(#page-groups, #page-shop, #page-notifications) .page-header > h2 {
+    font-family: var(--hl-title) !important; font-weight: 700 !important; font-size: 30px !important; letter-spacing: .08em; text-transform: uppercase; color: #6e4c16 !important;
+    background: none !important; border: solid transparent !important; border-width: 22px 52px 14px 52px !important; padding: 0 10px !important; line-height: 1.1 !important;
+    border-image: var(--fsd-name-plate) 56 120 34 120 fill / 22px 52px 14px 52px stretch !important;
+  }
+  html body.fs.fsd.fsd-heavens-light :is(#page-groups, #page-shop, #page-notifications) .page-header > h2 > i,
+  html body.fs.fsd.fsd-heavens-light :is(#page-groups, #page-shop, #page-notifications) .page-header > h2::before,
+  html body.fs.fsd.fsd-heavens-light :is(#page-groups, #page-shop, #page-notifications) .page-header > h2::after { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light :is(#page-groups, #page-shop, #page-notifications) .page-subtitle { font-style: italic; font-size: 15px !important; }
+  html body.fs.fsd.fsd-heavens-light :is(#page-groups, #page-shop, #page-notifications) .search-tabs .search-tab,
+  html body.fs.fsd.fsd-heavens-light #page-shop .fsk-filters > * {
+    height: 32px !important; padding: 0 14px !important; border-radius: 0 !important; box-shadow: none !important; background: none !important;
+    border: 12px solid transparent !important; border-image: var(--fsd-chip) 24 28 fill / 12px 14px stretch !important;
+    font-family: var(--hl-title) !important; font-size: 12px !important; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: #6e4c16 !important;
+  }
+  html body.fs.fsd.fsd-heavens-light :is(#page-groups, #page-shop, #page-notifications) .search-tabs .search-tab.active,
+  html body.fs.fsd.fsd-heavens-light #page-shop .fsk-filters > .active { border-image-source: var(--fsd-chip-active) !important; color: #fffaf0 !important; text-shadow: 0 1px 2px rgba(110, 76, 22, .6); }
+  html body.fs.fsd.fsd-heavens-light #page-groups .page-search {
+    background: none !important; border-radius: 0 !important; box-shadow: none !important; width: 230px !important;
+    border: 12px solid transparent !important; border-image: var(--fsd-search-field) 30 fill / 12px stretch !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-groups #createGroupBtn {
+    height: 34px !important; border-radius: 0 !important; box-shadow: none !important; background: none !important; color: #6e4c16 !important;
+    border: 12px solid transparent !important; border-image: var(--fsd-primary-button) 24 28 fill / 12px 14px stretch !important;
+    font-family: var(--hl-title) !important; font-size: 12px !important; font-weight: 700; text-transform: uppercase; padding: 0 10px !important;
+  }
+  /* group cards: gold frame with the cover in its window (16,24 628x286 of 660x480) and the marble plate below */
+  html body.fs.fsd.fsd-heavens-light #page-groups #groupsSections .shop-scroll-row { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 18px !important; overflow: visible !important; }
+  html body.fs.fsd.fsd-heavens-light #page-groups #groupsSections .shop-scroll-row > .group-card { width: auto !important; flex: none !important; }
+  html body.fs.fsd.fsd-heavens-light #groupsSections .group-card {
+    aspect-ratio: 660 / 480; position: relative; padding: 0 !important; border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important;
+    background: var(--fsd-group-card-frame) center / 100% 100% no-repeat !important; text-align: center; overflow: visible !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #groupsSections .group-card::before, html body.fs.fsd.fsd-heavens-light #groupsSections .group-card::after { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #groupsSections .group-card-banner {
+    position: absolute !important; left: 2.4%; top: 5%; width: 95.2% !important; height: 59.6% !important; z-index: -1; border-radius: 10px 10px 0 0 !important; overflow: hidden; border: 0 !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #groupsSections .group-card-banner img { width: 100% !important; height: 100% !important; object-fit: cover; position: static !important; border-radius: 0 !important; transform: none !important; }
+  html body.fs.fsd.fsd-heavens-light #groupsSections .group-card-body { margin-top: 62% !important; padding: 0 8% !important; }
+  html body.fs.fsd.fsd-heavens-light #groupsSections .group-card-body h4 { font-family: var(--hl-title) !important; font-size: 14px !important; text-transform: uppercase; margin: 0 !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fsd.fsd-heavens-light #groupsSections .group-card-body p { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #groupsSections .group-card-body .group-members { font-size: 12px !important; }
+  html body.fs.fsd.fsd-heavens-light #groupsSections .group-card-actions { justify-content: center !important; gap: 6px; margin: 2px 0 0 !important; }
+  html body.fs.fsd.fsd-heavens-light #groupsSections .group-card-actions .btn {
+    width: auto !important; height: 22px; min-width: 64px; padding: 0 6px !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; color: #6e4c16 !important;
+    border: 8px solid transparent !important; border-image: var(--fsd-primary-button) 24 28 fill / 8px 9px stretch !important; font-size: 11px !important; display: inline-flex !important; align-items: center; justify-content: center; opacity: 1 !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #groupsSections .group-card-actions .btn :is(.gc-btn-text, span) { display: inline !important; }
+  html body.fs.fsd.fsd-heavens-light #groupsSections .group-card-actions .btn i { display: none !important; }
+  /* skin cards: gold frame, picture in the window (31,43 435x289 of 500x456), name + price on the plate */
+  html body.fs.fsd.fsd-heavens-light #page-shop .fsk-card {
+    aspect-ratio: 500 / 456; position: relative; padding: 0 !important; border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important;
+    background: var(--fsd-skin-card-frame) center / 100% 100% no-repeat !important; text-align: center; overflow: visible !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-shop .fsk-card::before, html body.fs.fsd.fsd-heavens-light #page-shop .fsk-card::after { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-shop .fsk-thumb {
+    position: absolute !important; left: 6.2%; top: 9.4%; width: 87% !important; height: 63.4% !important; z-index: -1; margin: 0 !important;
+    border: 0 !important; border-image: none !important; border-radius: 0 !important; background: none !important; transform: none !important; overflow: hidden;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-shop .fsk-thumb img { width: 100% !important; height: 100% !important; object-fit: cover; }
+  html body.fs.fsd.fsd-heavens-light #page-shop .fsk-body { margin-top: 73% !important; padding: 0 8% !important; }
+  html body.fs.fsd.fsd-heavens-light #page-shop .fsk-name { font-family: var(--hl-title) !important; font-size: 13px !important; text-transform: uppercase; margin: 0 !important; }
+  html body.fs.fsd.fsd-heavens-light #page-shop .fsk-card .skin-price { font-size: 12px !important; }
+  html body.fs.fsd.fsd-heavens-light #page-shop .fsk-card .shop-card-actions { justify-content: center !important; gap: 4px; margin: 2px 0 0 !important; }
+  html body.fs.fsd.fsd-heavens-light #page-shop .fsk-card .shop-card-actions .btn {
+    width: auto !important; height: 20px; min-width: 54px; padding: 0 4px !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; color: #6e4c16 !important;
+    border: 7px solid transparent !important; border-image: var(--fsd-primary-button) 24 28 fill / 7px 8px stretch !important; font-size: 10.5px !important; white-space: nowrap;
+  }
+  /* notifications: marble + gold rows */
+  html body.fs.fsd.fsd-heavens-light #notifList .notif-item {
+    min-height: 0; gap: 10px !important; margin: 0 0 6px !important; padding: 0 6px !important; align-items: center !important;
+    background: none !important; border-radius: 0 !important; box-shadow: none !important;
+    border: 14px solid transparent !important; border-width: 14px 20px !important; border-image: var(--fsd-notification-row) 28 40 fill / 14px 20px stretch !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #notifList .notif-item::before, html body.fs.fsd.fsd-heavens-light #notifList .notif-item::after { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #notifList .notif-icon { width: 36px !important; height: 36px !important; flex: none; }
+  html body.fs.fsd.fsd-heavens-light #notifList .notif-text p { font-size: 15px !important; margin: 0 !important; }
+  html body.fs.fsd.fsd-heavens-light #notifList .notif-text span { font-size: 12px !important; }
+  html body.fs.fsd.fsd-heavens-light[data-fs-variant="twilight"] :is(#page-groups, #page-shop, #page-notifications) .page-header > h2 { color: #f3d58a !important; text-shadow: 0 1px 3px rgba(0, 0, 0, .5); }
+  html body.fs.fsd.fsd-heavens-light #page-groups #groupsSections .group-card-actions { display: flex !important; position: absolute; left: 0; right: 0; bottom: 9%; }
+  html body.fs.fsd.fsd-heavens-light #page-groups #groupsSections .group-card-actions .btn { flex: none !important; width: auto !important; max-width: 40%; }
+  html body.fs.fsd.fsd-heavens-light :is(#page-groups, #page-shop, #page-notifications, #page-messages) > .page-container::before,
+  html body.fs.fsd.fsd-heavens-light :is(#page-groups, #page-shop, #page-notifications, #page-messages) > .page-container::after { display: none !important; }
 }
