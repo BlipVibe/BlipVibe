@@ -51,13 +51,19 @@
       'cover-frame-right', 'profile-ring', 'name-banner', 'primary-button', 'quests-card', 'progress-track', 'progress-fill',
       'decor-burst', 'decor-coins', 'decor-laurel', 'decor-edge', 'chip', 'chip-active', 'side-card', 'section-banner', 'post-card',
       'feed-panel', 'photo-frame', 'people-row', 'list-row', 'list-row-active', 'chat-panel', 'chat-received', 'chat-sent',
-      'input-bar', 'group-cover-frame', 'skin-card-frame']
+      'input-bar', 'group-cover-frame', 'skin-card-frame'],
+    // Vaporwave: a 90s desktop of windows with a Start taskbar, one screen (Retro + modern/, retro-dark/, modern-dark/)
+    vaporwave: ['bg', 'taskbar', 'search', 'icon-button', 'coin-pill', 'avatar-ring', 'rendition-switch', 'nav-active', 'nav-inactive',
+      'start-menu', 'side-panel', 'feed-panel', 'quests-panel', 'people-panel', 'groups-panel', 'coin-note', 'section-header',
+      'cover-frame', 'profile-ring', 'primary-button', 'story-panel', 'composer', 'chip-active', 'chip-inactive', 'post-card',
+      'photo-frame', 'people-row', 'progress-track', 'progress-fill', 'nameplate', 'decor-bust', 'decor-cassette', 'decor-coins',
+      'chat-panel', 'conversation-panel', 'bubble-received', 'bubble-sent', 'input', 'list-row', 'list-row-active', 'search-dropdown']
   };
   // where each skin's concept puts the side panels (default: quests + coin goal top-left, featured skin top-right)
   var PLACE = { 'heavens-light': { featured: 'left-end' } };
   // one-screen skins (an open book, a stage, a desktop of windows): the whole 1440x900 design fits the window
   // (scale by width AND height, centred), and the feed scrolls inside its panel instead of the page
-  var FIT = { witchcraft: true, 'blood-moon': true, superhero: true };
+  var FIT = { witchcraft: true, 'blood-moon': true, superhero: true, vaporwave: true };
   var DESIGN_H = 900;
   var NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
   var BASE = new URL(window.FS_BASE || (NATIVE ? 'https://blipvibe.com/images/skins/' : 'images/skins/'), document.baseURI).href;

@@ -1,0 +1,322 @@
+/* BlipVibe full skins — VAPORWAVE desktop layout: a real 90s desktop (one screen).
+   Spec (owner-approved, 1:1): images/skins/vaporwave/desktop/desktop-*.png (Retro) + desktop-{modern,retro-dark,modern-dark}-*.
+   Art: images/skins/vaporwave/assets/desktop/ (Retro) and assets/desktop/<rendition>/ (kit/desktop/manifest.json, 2x art).
+   FIT skin (body.fsd-fit). Page tabs = desktop icons down the left; every panel is a window (Profile.exe, Main Feed.exe,
+   Quests.exe, Featured Skin.exe, Earn Coins on BlipVibe.exe, Buddies.exe, Trending Groups.exe); coin goal = sticky note;
+   the Start taskbar along the bottom holds Start (the phone skin's own Start menu), the wordmark, search, music, coins,
+   avatar and the OS / lamp switches. */
+@media (min-width: 1100px) {
+  html body.fs.fsd.fsd-vaporwave { --fsd-bar-h: 0px; --vw-ink: var(--fs-ink, #141414); --vw-ui: 'Tahoma', 'Verdana', sans-serif; }
+  html body.fs.fsd.fsd-vaporwave #premiumBgLayer { background-image: var(--fsd-bg) !important; background-color: #1a0a3a !important; }
+  html body.fs.fsd.fsd-vaporwave::before, html body.fs.fsd.fsd-vaporwave::after { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave .page { background: none !important; }
+
+  /* ---------- taskbar along the bottom + desktop icons down the left ---------- */
+  html body.fs.fsd.fsd-vaporwave .navbar { height: 900px !important; max-height: none !important; overflow: visible !important; pointer-events: none; }
+  html body.fs.fsd.fsd-vaporwave .navbar::before {
+    content: ""; display: block !important; position: absolute; left: 0; top: 840px; width: 1440px; height: 60px; z-index: 0; pointer-events: none;
+    border: solid transparent; border-width: 10px 157px; border-image: var(--fsd-taskbar) 21 334 fill / 10px 157px stretch; box-sizing: border-box; transform: none !important; background: none !important;
+  }
+  html body.fs.fsd.fsd-vaporwave .navbar::after { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-container { position: relative; display: block !important; padding: 0 !important; height: 900px !important; }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-container > * { pointer-events: auto; }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-logo {
+    position: absolute; left: 140px; top: 846px; width: 152px; height: 48px; margin: 0 !important; padding: 0 !important; z-index: 1;
+    background: var(--fs-wordmark) center / contain no-repeat !important; color: transparent !important; font-size: 0 !important; overflow: hidden;
+  }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-logo img { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave .navbar .search-bar {
+    display: flex !important; position: absolute; left: 797px; top: 848px; width: 202px; height: 40px; align-items: center; gap: 8px; z-index: 1;
+    background: none !important; border-radius: 0 !important; box-shadow: none !important; padding: 0 4px !important;
+    border: 10px solid transparent !important; border-width: 10px 6px !important; border-image: var(--fsd-search) 21 12 20 12 fill / 10px 6px stretch !important;
+  }
+  html body.fs.fsd.fsd-vaporwave .navbar .search-bar input { font-family: var(--vw-ui) !important; font-size: 16px !important; background: none !important; border: 0 !important; padding: 0 !important; height: auto !important; color: var(--vw-ink) !important; }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-right { position: absolute; inset: 0; display: block !important; margin: 0 !important; pointer-events: none; }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-right > * { position: absolute !important; pointer-events: auto; z-index: 1; }
+  html body.fs.fsd.fsd-vaporwave .navbar #navMusicWrap { left: 1014px; top: 847px; }
+  html body.fs.fsd.fsd-vaporwave .navbar #navMusicBtn {
+    width: 44px !important; height: 44px !important; border-radius: 0 !important; border: 0 !important; box-shadow: none !important;
+    background: var(--fsd-icon-button) center / 100% 100% no-repeat !important; color: var(--vw-ink) !important; font-size: 18px !important;
+  }
+  html body.fs.fsd.fsd-vaporwave .navbar #navCoins {
+    left: 1072px; top: 847px; height: 42px !important; min-width: 112px; padding: 0 4px !important; border-radius: 0 !important; box-shadow: none !important; background: none !important;
+    border: 10px solid transparent !important; border-width: 10px 6px !important; border-image: var(--fsd-coin-pill) 23 12 22 12 fill / 10px 6px stretch !important;
+    display: flex !important; align-items: center; justify-content: center; gap: 6px; font-family: var(--vw-ui) !important; font-size: 18px !important; color: var(--vw-ink) !important;
+  }
+  html body.fs.fsd.fsd-vaporwave .navbar #navUserDropdown { left: 1193px; top: 842px; }
+  html body.fs.fsd.fsd-vaporwave .navbar #navUserDropdown .nav-avatar {
+    width: 56px !important; height: 56px !important; padding: 6px; border: 0 !important; box-shadow: none !important; background: var(--fsd-avatar-ring) center / 100% 100% no-repeat !important;
+  }
+  html body.fs.fsd.fsd-vaporwave .navbar #navUserDropdown :is(.nav-username, .fa-chevron-down) { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave .navbar #navUserDropdown .user-dropdown { top: auto !important; bottom: 62px !important; right: 0 !important; }
+  html body.fs.fsd.fsd-vaporwave .navbar #fsDayNight {
+    left: 1262px; top: 847px; width: 64px !important; height: 44px !important; margin: 0 !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important;
+    background: var(--fsd-rendition-switch) center / 100% 100% no-repeat !important;
+  }
+  html body.fs.fsd.fsd-vaporwave .navbar #fsLamp { left: 1336px; top: 847px; width: 44px !important; height: 44px !important; margin: 0 !important; }
+  html body.fs.fsd.fsd-vaporwave .navbar :is(#mobileSearchBtn, #mobileNotifBtn, #fsBarista) { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center { position: absolute; inset: 0; display: block !important; margin: 0 !important; transform: none !important; pointer-events: none; }
+  /* the phone skin's own Start button + menu, on the taskbar */
+  html body.fs.fsd.fsd-vaporwave .navbar #fsStart { position: absolute !important; left: 10px; top: 846px; width: 120px !important; height: 48px !important; margin: 0 !important; pointer-events: auto; z-index: 1; }
+  html body.fs.fsd.fsd-vaporwave.fsd-fit #fsStartMenu {
+    zoom: var(--fsd-z, 1); position: fixed !important; left: calc(50vw / var(--fsd-z, 1) - 710px) !important; right: auto !important;
+    top: auto !important; bottom: calc(50vh / var(--fsd-z, 1) - 450px + 62px) !important; width: 240px !important; z-index: 1000;
+  }
+  /* desktop icons (the phone kit's pixel icons) with a label underneath */
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link {
+    position: absolute !important; left: 12px; width: 100px !important; height: 70px !important; pointer-events: auto;
+    display: flex !important; flex-direction: column; align-items: center; justify-content: flex-start; gap: 2px; padding: 0 !important; margin: 0 !important;
+    background: none !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+  }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link > i { display: block !important; width: 46px; height: 46px; color: transparent !important; font-size: 0 !important; background: center / contain no-repeat; }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link > span:not(.notif-badge) {
+    display: block !important; font-family: var(--vw-ui) !important; font-size: 14px !important; line-height: 1.25; color: #141414 !important; background: #fff; padding: 0 4px; white-space: nowrap;
+  }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link.active > span:not(.notif-badge) { background: #1a2bd0; color: #fff !important; }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link::before, html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link::after { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link:nth-child(1 of .nav-link) { top: 14px; }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link:nth-child(1 of .nav-link) > i { background-image: var(--fs-icon-home); }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link:nth-child(2 of .nav-link) { top: 94px; }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link:nth-child(2 of .nav-link) > i { background-image: var(--fs-icon-groups); }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link:nth-child(3 of .nav-link) { top: 172px; }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link:nth-child(3 of .nav-link) > i { background-image: var(--fs-icon-skins); }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link:nth-child(4 of .nav-link) { top: 250px; }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link:nth-child(4 of .nav-link) > i { background-image: var(--fs-icon-network); }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link:nth-child(5 of .nav-link) { top: 328px; display: flex !important; }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link:nth-child(5 of .nav-link) > i { background-image: var(--fs-icon-photo); }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link:nth-child(6 of .nav-link) { top: 406px; }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link:nth-child(6 of .nav-link) > i { background-image: var(--fs-icon-messages); }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link:nth-child(7 of .nav-link) { top: 484px; display: flex !important; }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link:nth-child(7 of .nav-link) > i { background-image: var(--fs-icon-bell); }
+  html body.fs.fsd.fsd-vaporwave .navbar .nav-center .nav-link .notif-badge { top: -4px !important; right: 18px !important; left: auto !important; }
+
+  /* ---------- HOME: windows at their concept positions ---------- */
+  html body.fs.fsd.fsd-vaporwave #page-home :is(.main-container, .left-sidebar, .right-sidebar, .center-feed) {
+    position: static !important; display: block !important; width: auto !important; max-width: none !important; margin: 0 !important; padding: 0 !important;
+    background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; transform: none !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home :is(.left-sidebar, .right-sidebar, .center-feed) > * { position: absolute !important; margin: 0 !important; box-sizing: border-box; z-index: 2; }
+  html body.fs.fsd.fsd-vaporwave #page-home .right-sidebar > .card:not(.promo-card):not(.suggestions-card):not(.groups-card),
+  html body.fs.fsd.fsd-vaporwave #page-home .center-feed > :is(#discoverSort, #main-content, .mobile-pills-bar) { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home :is(.left-sidebar, .right-sidebar) > * { background: none !important; box-shadow: none !important; border-radius: 0 !important; overflow: visible !important; color: var(--vw-ink) !important; font-family: var(--vw-ui) !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home :is(.left-sidebar, .right-sidebar, .center-feed) > *::before,
+  html body.fs.fsd.fsd-vaporwave #page-home :is(.left-sidebar, .right-sidebar, .center-feed) > *::after { display: none !important; }
+  /* the two big window frames drawn behind their contents: Profile.exe (side-panel) and Main Feed.exe (feed-panel) */
+  html body.fs.fsd.fsd-vaporwave #page-home::before {
+    content: ""; display: block !important; position: absolute; left: 158px; top: 25px; width: 354px; height: 470px; z-index: 1; pointer-events: none;
+    border: solid transparent; border-width: 59px 60px; border-image: var(--fsd-side-panel) 125 128 fill / 59px 60px stretch; box-sizing: border-box; background: none !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home .center-feed::before {
+    content: ""; display: block !important; position: absolute; left: 528px; top: 92px; width: 480px; height: 743px; z-index: 1; pointer-events: none;
+    border: solid transparent; border-width: 83px 80px; border-image: var(--fsd-feed-panel) 177 170 fill / 83px 80px stretch; box-sizing: border-box; background: none !important;
+  }
+  /* window titles (the .exe captions in the painted title bars) */
+  html body.fs.fsd.fsd-vaporwave #page-home .left-sidebar::before, html body.fs.fsd.fsd-vaporwave #page-home .center-feed::after {
+    display: block !important; position: absolute; z-index: 3; pointer-events: none; font-family: 'Courier New', monospace; font-size: 17px; font-weight: 700; color: #fff; letter-spacing: .02em;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home .left-sidebar::before { content: "Profile.exe"; left: 168px; top: 30px; }
+  html body.fs.fsd.fsd-vaporwave #page-home .center-feed::after { content: "Main Feed.exe"; left: 540px; top: 96px; }
+  html body.fs.fsd.fsd-vaporwave #page-home :is(.quest-panel, .featured-skin-banner, .promo-card, .suggestions-card, .groups-card)::after {
+    display: block !important; position: absolute; left: 12px; top: 4px; z-index: 3; pointer-events: none; font-family: 'Courier New', monospace; font-size: 16px; font-weight: 700; color: #fff; white-space: nowrap;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home .left-sidebar > .quest-panel::after { content: "Quests.exe"; }
+  html body.fs.fsd.fsd-vaporwave #page-home .right-sidebar > .featured-skin-banner::after { content: "Featured Skin.exe"; }
+  html body.fs.fsd.fsd-vaporwave #page-home .right-sidebar > .promo-card::after { content: "Earn Coins on BlipVibe.exe"; }
+  html body.fs.fsd.fsd-vaporwave #page-home .right-sidebar > .suggestions-card::after { content: "Buddies.exe"; }
+  html body.fs.fsd.fsd-vaporwave #page-home .right-sidebar > .groups-card::after { content: "Trending Groups.exe"; }
+  /* section headers inside windows (blue bar) */
+  html body.fs.fsd.fsd-vaporwave #page-home :is(.card-heading, .quest-panel-header h3, .quest-panel-header h4) {
+    display: flex !important; align-items: center; height: 26px; margin: 0 0 6px !important; padding: 0 !important; box-sizing: border-box;
+    border: solid transparent; border-width: 4px 78px 4px 6px; border-image: var(--fsd-section-header) 9 166 9 12 fill / 4px 78px 4px 6px stretch;
+    font-family: var(--vw-ui) !important; font-weight: 700 !important; font-size: 16px !important; color: #fff !important; text-transform: none !important; letter-spacing: 0 !important; text-align: left !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home .card-heading > i, html body.fs.fsd.fsd-vaporwave #page-home .quest-panel-header :is(i, span, small, p),
+  html body.fs.fsd.fsd-vaporwave #page-home .featured-timer, html body.fs.fsd.fsd-vaporwave #page-home :is(.photos-card, .suggestions-card) .view-more-link { display: none !important; }
+
+  /* Profile.exe contents: four .vhs cover windows (cover-frame window 15,32 322x170 of 352x220 -> 7,15 151x80 of 165x103), ring, name, stats, View Profile, Photos */
+  html body.fs.fsd.fsd-vaporwave #page-home > .timeline-cover {
+    position: absolute !important; left: 0; top: 0; width: 1440px !important; height: 900px !important; margin: 0 !important; pointer-events: none;
+    background: none !important; border: 0 !important; border-radius: 0 !important; overflow: visible !important; z-index: 2;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home > .timeline-cover::before, html body.fs.fsd.fsd-vaporwave #page-home > .timeline-cover::after,
+  html body.fs.fsd.fsd-vaporwave #page-home .timeline-cover-btn { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .fs-timeline { position: absolute !important; inset: 0 !important; width: 1440px !important; height: 900px !important; transform: none !important; aspect-ratio: auto !important; background: none !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .fs-timeline::before, html body.fs.fsd.fsd-vaporwave #page-home .fs-timeline::after { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .fs-tl-slot { position: absolute !important; width: 151px !important; height: 80px !important; pointer-events: auto; transform: none !important; border: 0 !important; box-shadow: none !important; margin: 0 !important; overflow: visible !important; border-radius: 0 !important; background-color: #241040; }
+  html body.fs.fsd.fsd-vaporwave #page-home .fs-tl-slot::before { content: ""; display: block !important; position: absolute; left: -7px; top: -15px; width: 165px; height: 103px; z-index: 2; pointer-events: none; border: 0 !important; transform: none !important; background: var(--fsd-cover-frame) center / 100% 100% no-repeat; }
+  html body.fs.fsd.fsd-vaporwave #page-home .fs-tl-slot :is(img, .fs-tl-img) { width: 100% !important; height: 100% !important; object-fit: cover; border-radius: 0 !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .fs-tl-slot-1 { left: 179px !important; top: 73px !important; z-index: 1; }
+  html body.fs.fsd.fsd-vaporwave #page-home .fs-tl-slot-2 { left: 340px !important; top: 85px !important; z-index: 2; }
+  html body.fs.fsd.fsd-vaporwave #page-home .fs-tl-slot-3 { left: 175px !important; top: 165px !important; z-index: 3; }
+  html body.fs.fsd.fsd-vaporwave #page-home .fs-tl-slot-4 { left: 347px !important; top: 179px !important; z-index: 4; }
+  html body.fs.fsd.fsd-vaporwave #page-home .fs-tl-own::after { z-index: 5; }
+  html body.fs.fsd.fsd-vaporwave .fsd-hero-card { position: absolute; left: 205px; top: 230px; width: 300px; height: 165px; z-index: 6; }
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard, html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-info {
+    background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; overflow: visible !important; position: static !important; display: block !important; height: 165px;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard::before, html body.fs.fsd.fsd-vaporwave #page-home #profileCard::after,
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-cover, html body.fs.fsd.fsd-vaporwave #page-home #profileCard .badge-row,
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-info::after,
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-links .edit-profile-btn { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-info::before {
+    content: ""; display: block !important; position: absolute; left: 45px; top: 3px; width: 105px; height: 105px; z-index: 2; pointer-events: none; border: 0 !important; transform: none !important;
+    background: var(--fsd-profile-ring) center / 100% 100% no-repeat;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-avatar-wrap {
+    position: absolute !important; inset: 12px auto auto 54px !important; transform: none !important; z-index: 1; width: 86px !important; height: 86px !important; margin: 0 !important;
+    border-radius: 50% !important; overflow: hidden; background: none !important; border: 0 !important; box-shadow: none !important; padding: 0 !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-avatar-wrap::before, html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-avatar-wrap::after { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-avatar { width: 100% !important; height: 100% !important; border-radius: 50% !important; object-fit: cover; border: 0 !important; box-shadow: none !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard .fs-namecard {
+    position: absolute !important; left: 160px; top: 38px; width: 140px !important; margin: 0 !important; padding: 0 !important; text-align: left !important; height: auto !important;
+    background: none !important; border: 0 !important; border-image: none !important; transform: none !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard .fs-namecard::before, html body.fs.fsd.fsd-vaporwave #page-home #profileCard .fs-namecard::after { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-name { font-family: var(--vw-ui) !important; font-size: 28px !important; font-weight: 700 !important; margin: 0 !important; line-height: 1 !important; color: var(--vw-ink) !important; text-align: left !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard :is(.profile-title, .profile-about) { font-family: var(--vw-ui) !important; font-size: 16px !important; margin: 4px 0 0 !important; text-align: left !important; color: var(--vw-ink) !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-stats {
+    position: absolute !important; left: 8px; top: 108px; width: 280px !important; display: flex !important; justify-content: space-around; margin: 0 !important; padding: 0 !important; aspect-ratio: auto !important;
+    background: none !important; border: 0 !important; border-image: none !important; height: auto !important; min-height: 0 !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-stats::before, html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-stats::after { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-stats .stat { display: flex !important; flex: none !important; flex-direction: row-reverse; gap: 5px; padding: 0 !important; background: none !important; border: 0 !important; border-image: none !important; height: auto !important; white-space: nowrap; }
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-stats .stat + .stat { border-left: 1px solid rgba(0, 0, 0, .3) !important; padding-left: 26px !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-stats .stat-count { font-family: var(--vw-ui) !important; font-weight: 700; font-size: 16px !important; color: var(--vw-ink) !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-stats .stat-label { font-family: var(--vw-ui) !important; font-size: 16px !important; color: var(--vw-ink) !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-links { position: absolute !important; left: 47px; top: 132px; margin: 0 !important; display: flex !important; padding: 0 !important; background: none !important; border: 0 !important; height: auto !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home #profileCard .profile-links .view-profile-link {
+    font-family: var(--vw-ui) !important; font-weight: 700; font-size: 17px !important; height: 30px; width: 186px; display: inline-flex !important; align-items: center; justify-content: center;
+    background: none !important; border: 7px solid transparent !important; border-width: 7px 6px !important; border-image: var(--fsd-primary-button) 15 12 14 12 fill / 7px 6px stretch !important;
+    padding: 0 !important; color: var(--vw-ink) !important; border-radius: 0 !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home .left-sidebar > .photos-card { left: 176px; top: 398px; width: 322px; height: 92px; padding: 0 !important; border: 0 !important; border-image: none !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .photos-card .card-heading { height: 20px; border: 0 !important; border-image: none !important; color: var(--vw-ink) !important; font-size: 15px !important; font-weight: 400 !important; margin: 0 0 2px !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .photos-card .card-heading::before { content: "\25BC  "; white-space: pre; font-size: 11px; }
+  html body.fs.fsd.fsd-vaporwave #page-home .photos-card .photos-preview { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 8px !important; padding: 0 !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .photos-card .photos-preview > *:nth-child(n+5) { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .photos-card .photos-preview > * {
+    aspect-ratio: 1 / 1; width: auto !important; height: auto !important; border-radius: 0 !important; overflow: hidden; transform: none !important;
+    border: 4px solid transparent !important; border-image: var(--fsd-icon-button) 16 fill / 4px stretch !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home .photos-card .photos-preview img { width: 100% !important; height: 100% !important; object-fit: cover; border-radius: 0 !important; }
+
+  /* Buddies.exe + Trending Groups.exe (people-panel slice 69 60 64 60, groups-panel 71 51 57 51) */
+  html body.fs.fsd.fsd-vaporwave #page-home .right-sidebar > .suggestions-card {
+    left: 216px; top: 506px; width: 286px; height: 182px; padding: 0 4px !important; border-style: solid !important; border-color: transparent !important;
+    border-width: 32px 28px 30px 28px !important; border-image: var(--fsd-people-panel) 69 60 64 60 fill / 32px 28px 30px 28px stretch !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home .right-sidebar > .groups-card {
+    left: 222px; top: 690px; width: 286px; height: 142px; padding: 0 4px !important; border-style: solid !important; border-color: transparent !important;
+    border-width: 33px 24px 27px 24px !important; border-image: var(--fsd-groups-panel) 71 51 57 51 fill / 33px 24px 27px 24px stretch !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home :is(.suggestions-card, .groups-card) :is(.card-heading) { margin: -8px -22px 4px !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .suggestions-card::after, html body.fs.fsd.fsd-vaporwave #page-home .groups-card::after { left: -16px !important; top: -28px !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .suggestion-list { display: flex !important; flex-direction: column !important; flex-wrap: nowrap !important; gap: 2px !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .right-sidebar .suggestions-card .suggestion-list .suggestion-item,
+  html body.fs.fsd.fsd-vaporwave #page-home .group-item {
+    display: flex !important; flex-direction: row !important; align-items: center; gap: 8px !important; width: 100% !important; flex: none !important; max-width: none !important;
+    height: 37px !important; min-height: 0 !important; padding: 0 4px !important; margin: 0 !important; text-align: left !important; box-shadow: none !important; border-radius: 0 !important; background: none !important;
+    border: 6px solid transparent !important; border-image: var(--fsd-people-row) 15 13 fill / 6px stretch !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home .suggestions-card .suggestion-list .suggestion-item:nth-child(n+4), html body.fs.fsd.fsd-vaporwave #page-home .groups-card .group-list > *:nth-child(n+4) { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home :is(.suggestion-item .suggestion-avatar, .group-item .group-icon) { width: 28px !important; height: 28px !important; flex: none; margin: 0 !important; border-radius: 0 !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .suggestion-item .suggestion-info { flex: 1 1 0 !important; min-width: 0 !important; width: auto !important; display: block !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .suggestion-item .suggestion-info h4 { font-family: var(--vw-ui) !important; font-weight: 700; font-size: 14px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0 !important; color: var(--vw-ink) !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .suggestion-item .suggestion-info p { font-size: 11px !important; margin: 0 !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .suggestion-item .suggestion-follow-btn {
+    width: auto !important; height: 24px !important; padding: 0 8px !important; flex: none; margin: 0 !important; border-radius: 0 !important; font-family: var(--vw-ui) !important; font-size: 12px !important; color: #fff !important;
+    background: none !important; border: 6px solid transparent !important; border-image: var(--fsd-chip-active) 17 12 16 12 fill / 6px stretch !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home .group-item .group-info { flex: 1; min-width: 0; }
+  html body.fs.fsd.fsd-vaporwave #page-home .group-item .group-name { font-family: var(--vw-ui) !important; font-weight: 700; font-size: 14px !important; margin: 0 !important; color: var(--vw-ink) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fsd.fsd-vaporwave #page-home .group-item .group-desc { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .group-item .group-members { font-size: 11px !important; color: var(--vw-ink) !important; }
+
+  /* Main Feed.exe contents: Stories, composer, tabs, feed (scrolls inside the window) */
+  html body.fs.fsd.fsd-vaporwave #page-home .center-feed > .stories-bar {
+    left: 548px; top: 130px; width: 452px; height: 122px; display: flex !important; justify-content: space-around; gap: 4px !important; padding: 28px 0 0 !important; overflow: visible !important;
+    background: none !important; border: 0 !important; border-image: none !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home .center-feed > .stories-bar::before {
+    content: "Stories"; display: flex !important; align-items: center; position: absolute; left: 0; top: 0; width: 452px; height: 24px; box-sizing: border-box;
+    border: solid transparent; border-width: 4px 78px 4px 6px; border-image: var(--fsd-section-header) 9 166 9 12 fill / 4px 78px 4px 6px stretch;
+    font-family: var(--vw-ui); font-weight: 700; font-size: 16px; color: #fff; background: none !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home .center-feed > .stories-bar :is(.story-name, .story-item span) { font-family: var(--vw-ui) !important; font-size: 14px !important; color: var(--vw-ink) !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .center-feed > .post-create-bar {
+    left: 546px; top: 264px; width: 456px; height: 50px; display: flex !important; align-items: center; gap: 10px; padding: 0 4px !important; min-height: 0 !important;
+    background: none !important; box-shadow: none !important; border-radius: 0 !important;
+    border: 9px solid transparent !important; border-image: var(--fsd-composer) 19 fill / 9px stretch !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home .center-feed > .post-create-bar .post-create-avatar { width: 36px !important; height: 36px !important; border-radius: 0 !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .center-feed > .post-create-bar .post-input-fake { flex: 1; font-family: var(--vw-ui) !important; font-size: 16px !important; padding: 0 8px !important; color: var(--vw-ink) !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .center-feed > #feedTabs { left: 546px; top: 326px; width: 456px; height: 36px; display: flex !important; gap: 2px !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home #feedTabs .search-tab {
+    flex: 1 1 0 !important; height: 36px !important; justify-content: center !important; border-radius: 0 !important; box-shadow: none !important; background: none !important; padding: 0 !important;
+    border: 6px solid transparent !important; border-image: var(--fsd-chip-inactive) 13 14 fill / 6px stretch !important;
+    font-family: var(--vw-ui) !important; font-size: 19px !important; color: var(--vw-ink) !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home #feedTabs .search-tab.active { border-image: var(--fsd-chip-active) 17 12 16 12 fill / 6px stretch !important; font-weight: 700; }
+  html body.fs.fsd.fsd-vaporwave #page-home #feedTabs .search-tab > i { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .center-feed > #feedContainer {
+    left: 546px; top: 370px; width: 456px; height: 458px; overflow-y: auto !important; overflow-x: hidden !important; display: block !important; scrollbar-width: none; padding: 0 !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home .center-feed > #feedContainer::-webkit-scrollbar { display: none; }
+  html body.fs.fsd.fsd-vaporwave #feedContainer .feed-post {
+    position: relative !important; background: none !important; box-shadow: none !important; border-radius: 0 !important; margin: 0 0 8px !important; padding: 0 4px !important; color: var(--vw-ink) !important; font-family: var(--vw-ui) !important;
+    border-style: solid !important; border-color: transparent !important; border-width: 12px 12px !important; border-image: var(--fsd-post-card) 83 78 fill / 12px stretch !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #feedContainer .feed-post::before, html body.fs.fsd.fsd-vaporwave #feedContainer .feed-post::after { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave #feedContainer .post-username { font-family: var(--vw-ui) !important; font-size: 18px !important; font-weight: 700; color: var(--vw-ink) !important; }
+  html body.fs.fsd.fsd-vaporwave #feedContainer .post-time { font-size: 14px !important; }
+  html body.fs.fsd.fsd-vaporwave #feedContainer .post-description p { font-size: 17px !important; color: var(--vw-ink) !important; }
+  html body.fs.fsd.fsd-vaporwave #feedContainer .post-actions .action-btn { font-size: 17px !important; }
+  html body.fs.fsd.fsd-vaporwave #feedContainer .action-right { display: none !important; }
+
+  /* right windows: Quests.exe, Featured Skin.exe, Earn Coins on BlipVibe.exe, and the Coin Goal sticky note */
+  html body.fs.fsd.fsd-vaporwave #page-home .left-sidebar > .quest-panel {
+    left: 1032px; top: 60px; width: 344px; height: 222px; padding: 0 4px !important; border-style: solid !important; border-color: transparent !important;
+    border-width: 38px 18px 18px 18px !important; border-image: var(--fsd-quests-panel) 82 76 fill / 38px 18px 18px 18px stretch !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home .left-sidebar > .quest-panel::after { left: 0 !important; top: -34px !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .quest-item {
+    display: flex !important; flex-direction: row !important; align-items: center; gap: 8px !important; margin: 0 0 4px !important; padding: 0 6px !important; height: 44px !important; min-height: 0 !important;
+    background: none !important; border: 6px solid transparent !important; border-image: var(--fsd-people-row) 15 13 fill / 6px stretch !important; grid-template-columns: none !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home .quest-item > * { grid-column: auto !important; grid-row: auto !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .quest-item .quest-icon { width: 30px !important; height: 30px !important; flex: none; background: none !important; border: 0 !important; color: #b14bd6 !important; font-size: 18px !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .quest-item .quest-info { flex: 1; min-width: 0; display: grid !important; grid-template-columns: 1fr auto; grid-template-areas: "t t" "b p"; column-gap: 8px; }
+  html body.fs.fsd.fsd-vaporwave #page-home .quest-item .quest-info p { grid-area: t; font-family: var(--vw-ui) !important; font-weight: 700; font-size: 14px !important; margin: 0 !important; white-space: nowrap; color: var(--vw-ink) !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .quest-item .quest-bar { grid-area: b; align-self: center; height: 12px !important; border-radius: 0 !important; background: var(--fsd-progress-track) center / 100% 100% no-repeat !important; border: 0 !important; overflow: hidden; margin: 0 !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .quest-item .quest-bar-fill { background: var(--fsd-progress-fill) left center / auto 100% repeat-x !important; border-radius: 0 !important; height: 100% !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .quest-item .quest-progress { grid-area: p; font-size: 13px !important; color: var(--vw-ink) !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .quest-item .quest-reward { font-family: var(--vw-ui) !important; font-weight: 700; font-size: 15px !important; color: var(--vw-ink) !important; background: none !important; border: 0 !important; padding: 0 !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .featured-skin-banner {
+    left: 1036px; top: 302px; width: 318px; height: 140px; padding: 0 6px !important; border-style: solid !important; border-color: transparent !important;
+    border-width: 32px 18px 18px 18px !important; border-image: var(--fsd-quests-panel) 82 76 fill / 32px 18px 18px 18px stretch !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home .featured-skin-banner::after { left: 0 !important; top: -28px !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .featured-header { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .featured-body { display: flex !important; align-items: center; gap: 12px; height: 90px; }
+  html body.fs.fsd.fsd-vaporwave #page-home .featured-preview { width: 112px !important; height: 82px !important; flex: none; border-radius: 0 !important; border: 4px solid transparent !important; border-image: var(--fsd-icon-button) 16 fill / 4px stretch !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .featured-info h5 { font-family: var(--vw-ui) !important; font-style: italic; font-size: 24px !important; color: var(--vw-ink) !important; margin: 0 0 4px !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .featured-info p { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .featured-buy-btn {
+    height: 28px; font-family: var(--vw-ui) !important; font-size: 15px !important; padding: 0 12px !important; border-radius: 0 !important; color: #fff !important; background: none !important;
+    border: 6px solid transparent !important; border-image: var(--fsd-chip-active) 17 12 16 12 fill / 6px stretch !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home .right-sidebar > .promo-card {
+    left: 1048px; top: 460px; width: 332px; height: 166px; padding: 0 6px !important; border-style: solid !important; border-color: transparent !important;
+    border-width: 32px 18px 18px 18px !important; border-image: var(--fsd-quests-panel) 82 76 fill / 32px 18px 18px 18px stretch !important;
+  }
+  html body.fs.fsd.fsd-vaporwave #page-home .right-sidebar > .promo-card::after { left: 0 !important; top: -28px !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .promo-card :is(.promo-logo, .promo-subtitle, .promo-title) { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .promo-card .coin-rules { display: flex !important; flex-direction: column; gap: 0 !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .promo-card .coin-rule { display: flex !important; justify-content: space-between; align-items: center; gap: 8px; height: 29px; font-family: var(--vw-ui) !important; font-weight: 700; font-size: 15px !important; color: var(--vw-ink) !important; background: none !important; border: 0 !important; border-bottom: 1px solid rgba(0, 0, 0, .12) !important; border-image: none !important; padding: 0 8px !important; margin: 0 !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .promo-card .coin-rule small { display: none !important; }
+  html body.fs.fsd.fsd-vaporwave #page-home .left-sidebar > .coin-goal-bar {
+    left: 1105px; top: 630px; width: 200px; height: 190px; padding: 40px 20px 0 !important; border: 0 !important; border-image: none !important; transform: rotate(-7deg);
+    background: var(--fsd-coin-note) center / 100% 100% no-repeat !important; color: #2a1030 !important; text-align: center; font-family: 'Comic Sans MS', 'Marker Felt', cursive !important;
+  }
+}
