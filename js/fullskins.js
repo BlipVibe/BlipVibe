@@ -1519,11 +1519,14 @@
       if (inRow || !cover) return;
       var hr = (wrap.offsetParent || host).getBoundingClientRect(), cr = cover.getBoundingClientRect(), nav = document.querySelector('.navbar');
       if (!cr.height) { wrap.style.top = (cover.offsetTop + 10) + 'px'; return; }   // page not laid out yet
-      var top = cr.top - hr.top + 10;
-      if (nav && window.scrollY < 4) top = Math.max(top, nav.getBoundingClientRect().bottom - hr.top + 6);
-      wrap.style.top = Math.round(top) + 'px';
+      wrap.style.top = Math.round(cr.top - hr.top + 10) + 'px';
+      // when the top bar covers it (#Basic): drop it just under the bar. (Superhero's concept has ⋯ in its title bar, but
+      // the bar stacks above the page, so it sits at the cover's top right instead.)
+      if (!nav || window.scrollY > 4) return;
+      var br = btn.getBoundingClientRect(), hit = document.elementFromPoint(br.left + br.width / 2, br.top + br.height / 2);
+      if (hit && !wrap.contains(hit) && nav.contains(hit)) wrap.style.top = Math.round(nav.getBoundingClientRect().bottom - hr.top + 6) + 'px';
     }
-    place();
+    place(); setTimeout(place, 350); setTimeout(place, 1200);   // again once the page and cover art have laid out
     btn.addEventListener('click', function (e) {
       e.stopPropagation();
       place();

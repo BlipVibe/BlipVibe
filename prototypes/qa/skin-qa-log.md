@@ -75,6 +75,21 @@ Commits: 7d78031, 88f1231, 94e8360.
 | Rendition toggle + swap | n/a | pass | pass | pass | pass | pass | n/a | pass | pass | pass | pass | pass | pass | pass | pass | AB lightning, GW day→night sweep, VW "Updating BlipVibe" pixel swap, HL sun→moon (one white flash frame at the start — by design?) |
 | Equip transition | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | Scrapbook paper collage, AB comic burst, WC moon ring + smoke, GW owl + constellations, VW BIOS boot, HL temple gates |
 
+## Pass 3 (Nov 17, owner: "qa all of the skins each page"): every page × 21 renditions, own profile page added
+
+Kept QA simulator "BlipVibe Skin QA" (owner: keep it signed in for QA), `[QA read-only] ON`. New screen in the sweep:
+own-profile (my profile page) compared with Home and someone else's profile for rule V.
+
+| Fix | Commit | Skins |
+|---|---|---|
+| Group names + network names wrap by whole words (were "…") | this commit | all |
+| Own profile page: Edit Profile was a 77px box on the left of the 4-column grid → wide plaque centred (concept profile) | this commit | Witchcraft |
+| ⋯ on someone's profile: re-placed after the page lays out (#Basic's was under the top bar again); moves under the bar only when the bar actually covers it | this commit | all cover-mode skins |
+
+Rule V check (Home ↔ own profile page ↔ someone's profile): pictures (cover / timeline frames, layout) and the profile
+photo's themed frame match in all 21 renditions. Known deviation: Superhero's concept puts ⋯ inside the title bar, but the
+top bar stacks above the page, so ⋯ sits at the cover's top right just under it (visible, works).
+
 ## Pass 2 (Nov 17): every rendition incl. Blood Moon, Superhero, #Basic
 
 Own simulator "BlipVibe Skin QA", `[QA read-only] ON`, OTA bundle on the sim = main (not builtin). 21 renditions × 18 screens

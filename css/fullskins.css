@@ -9099,3 +9099,16 @@ html body.fs.fs-anime-blaze .fsk-owned.fsk-owned { top: 6px !important; bottom: 
   html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .fs-namecard > :first-of-type + :is(.profile-title, .profile-about) { margin-top: 6px !important; }
   html body.fs.fs-anime-blaze #page-profile-view:has(#pvFollowBtn) .profile-info > :is(.profile-title, .profile-about, p, div:not(.fs-namecard):not(.profile-stats):not(.pv-actions):not(.profile-avatar-wrap)) { text-align: center !important; }
 }
+/* QA pass 3 (owner rule L, every skin): group names and network names were cut with "…" ("Danes Game C…",
+   "Antioch Peve…") — they wrap by whole words; a single long word breaks only when it can't fit */
+html body.fs #page-groups .group-card-body > h4,
+html body.fs .connections-grid .profile-card-name { white-space: normal !important; overflow: visible !important; text-overflow: clip !important;
+  overflow-wrap: break-word; word-break: normal; line-height: 1.12 !important; }
+/* Witchcraft own profile: Edit Profile sat in the first cell of the 4-column buttons grid (a 77px box on the left); the
+   concept's profile screen has one wide plaque centred under the counters */
+@media (max-width: 768px) {
+  html body.fs.fs-witchcraft #page-profile-view .pv-profile-card:not(#_) .pv-actions:has(#pvEditProfileBtn) { display: flex !important; justify-content: center; }
+  html body.fs.fs-witchcraft #page-profile-view .pv-profile-card:not(#_) #pvEditProfileBtn { width: 80% !important; max-width: 320px; height: 58px !important; font-size: 21px !important;
+    white-space: nowrap !important; text-overflow: clip !important; justify-content: center; }
+  html body.fs.fs-witchcraft #page-profile-view .pv-profile-card:not(#_) #pvEditProfileBtn i { display: none !important; }
+}
