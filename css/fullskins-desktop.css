@@ -120,4 +120,12 @@
   html body.fsd #page-shop .page-grid { display: flex !important; flex-direction: column; align-items: center; }
   html body.fsd #page-shop .fsk-filters { justify-content: center; margin: 0 0 14px !important; }
   html body.fsd #page-shop .fsk-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 22px !important; width: 100%; }
+
+  /* NOTIFICATIONS: the list sits right of centre (left side stays free for the search dropdown, like the concept) */
+  html body.fsd #page-notifications > .page-container {
+    width: var(--fsd-notif-w, 860px) !important; margin: 14px 0 0 calc(50% - var(--fsd-notif-w, 860px) / 2 + var(--fsd-notif-shift, 190px)) !important;
+    grid-template-columns: minmax(0, 1fr) !important; justify-items: stretch;
+  }
+  html body.fsd #page-notifications .page-header > h2 { grid-column: 1 !important; justify-self: center; }
+  html body.fsd #page-notifications .page-container > .search-tabs { grid-column: 1 !important; grid-row: auto !important; flex-wrap: wrap !important; justify-content: center; }
 }
