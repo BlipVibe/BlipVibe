@@ -77,4 +77,19 @@
   html body.fsd #page-profile-view .pv-layout > .pv-col-photos { grid-column: 1; grid-row: 1; }
   html body.fsd #page-profile-view .pv-layout > .pv-col-feed { grid-column: 2; grid-row: 1; min-width: 0; }
   html body.fsd #page-profile-view .pv-layout > .pv-col-skin { grid-column: 3; grid-row: 1; position: static !important; }
+
+  /* MESSAGES: list | open chat (| the app's Following strip), filling the window under the bar */
+  html body.fsd #page-messages > .messages-layout {
+    display: grid !important; max-width: none !important;
+    width: var(--fsd-cols-w, 1400px); margin: var(--fsd-msg-top, 14px) auto 0 !important; padding: 0 !important;
+    grid-template-columns: var(--fsd-msg-list, 440px) minmax(0, 1fr) var(--fsd-msg-follow, 200px) !important;
+    gap: var(--fsd-gap, 20px) !important;
+    height: calc(100vh / var(--fsd-z, 1) - var(--fsd-bar-h, 76px) - var(--fsd-msg-top, 14px) - 24px) !important;
+    border: 0 !important; border-radius: 0 !important; background: none !important; box-shadow: none !important;
+  }
+  html body.fsd #page-messages .messages-layout > * { height: auto !important; min-height: 0 !important; max-height: none !important; position: relative !important; display: flex !important; flex-direction: column; transform: none !important; inset: auto !important; width: auto !important; }
+  html body.fsd #page-messages .msg-contact-list,
+  html body.fsd #page-messages #chatMessages,
+  html body.fsd #page-messages .msg-following-list { flex: 1 1 auto; min-height: 0; overflow-y: auto !important; }
+  html body.fsd #page-messages .msg-back-btn { display: none !important; }
 }

@@ -316,4 +316,32 @@
   html body.fsd-scrapbook #pvSkinCard .card { padding: 4px 6px 10px !important; }
   html body.fsd-scrapbook #pvSkinCard h4 { font-family: var(--fs-title-font) !important; font-weight: 700 !important; font-size: 30px !important; color: var(--fs-ink) !important; }
   html body.fsd-scrapbook #pvSkinCard :is(p, div, span) { font-size: 18px !important; }
+
+  /* ---- MESSAGES (desktop-messages.png): conversation list on the spiral notepad, chat on one big torn sheet ---- */
+  html body.fsd-scrapbook #page-messages .msg-sidebar {
+    border-style: solid !important; border-color: transparent !important; border-radius: 0 !important; background: none !important; box-shadow: none !important;
+    border-width: 22px 22px 22px 40px !important;
+    border-image: var(--fsd-notepad9) 110 110 110 150 fill / 22px 22px 22px 40px round !important;
+    padding: 0 0 0 8px !important; filter: drop-shadow(2px 4px 6px rgba(80, 50, 30, .22));
+  }
+  html body.fsd-scrapbook #page-messages .msg-sidebar::before, html body.fsd-scrapbook #page-messages .msg-sidebar::after { display: none !important; }
+  html body.fsd-scrapbook #page-messages :is(.msg-chat, .msg-following-bar) {
+    border: 30px solid transparent !important; border-radius: 0 !important; background: none !important; box-shadow: none !important;
+    border-image: var(--fsd-sheet9-tall) 140 fill / 30px round !important;
+    padding: 0 !important; filter: drop-shadow(2px 4px 6px rgba(80, 50, 30, .22));
+  }
+  html body.fsd-scrapbook #page-messages :is(.msg-chat, .msg-following-bar)::before { display: none !important; }
+  html body.fsd-scrapbook #page-messages .msg-sidebar-header h3 { font-family: var(--fs-title-font) !important; font-size: 34px !important; }
+  html body.fsd-scrapbook #page-messages .msg-search input { font-size: 16px !important; text-overflow: ellipsis; }
+  html body.fsd-scrapbook #page-messages .msg-contact { min-height: 76px; gap: 12px !important; margin-bottom: 6px !important; }
+  html body.fsd-scrapbook #page-messages .msg-contact img, html body.fsd-scrapbook #page-messages .msg-contact > div:first-child { width: 56px !important; height: 56px !important; flex: none; }
+  html body.fsd-scrapbook #page-messages .msg-contact-name { font-family: var(--fs-title-font) !important; font-size: 23px !important; }
+  html body.fsd-scrapbook #page-messages .msg-contact-info :is(p, span, small, div:not(.msg-contact-name)) { font-size: 16px !important; }
+  html body.fsd-scrapbook #page-messages .msg-chat-header { min-height: 80px; gap: 14px !important; }
+  html body.fsd-scrapbook #page-messages .msg-chat-header img { width: 64px !important; height: 64px !important; }
+  html body.fsd-scrapbook #page-messages .msg-chat-header h4 { font-family: var(--fs-title-font) !important; font-size: 32px !important; }
+  html body.fsd-scrapbook #page-messages #chatMessages { font-size: 21px !important; padding: 16px 24px !important; }
+  html body.fsd-scrapbook #page-messages #msgInput { font-size: 19px !important; min-height: 52px; }
+  html body.fsd-scrapbook #page-messages .msg-following-header h4 { font-family: var(--fs-title-font) !important; font-size: 26px !important; }
+  html body.fsd-scrapbook #page-messages .msg-following-list { font-size: 15px !important; }
 }
