@@ -381,4 +381,35 @@
   }
   html body.fsd-scrapbook #groupsSections .group-card-actions .btn :is(.gc-btn-text, span) { display: inline !important; font-family: var(--fs-title-font); font-size: 22px; }
   html body.fsd-scrapbook #groupsSections .group-card-actions .btn::before, html body.fsd-scrapbook #groupsSections .group-card-actions .btn::after { display: none !important; }
+
+  /* ---- SKINS store (desktop-skins.png): centred, big paper skin cards with tape ---- */
+  html body.fsd-scrapbook #page-shop .page-subtitle { font-size: 17px !important; margin: 0 !important; }
+  html body.fsd-scrapbook #page-shop :is(#shopTabs, #mySkinsTabs) .search-tab { font-size: 15px !important; height: 38px !important; padding: 0 10px !important; }
+  html body.fsd-scrapbook #page-shop .fsk-filters > * { font-size: 19px !important; height: 44px !important; padding: 0 22px !important; }
+  html body.fsd-scrapbook #page-shop #skinPageToggle { margin: 4px 0 18px !important; }
+  html body.fsd-scrapbook #page-shop .fsk-grid { padding: 6px 4px 10px !important; }
+  html body.fsd-scrapbook #page-shop .fsk-card {
+    position: relative; overflow: visible !important; padding: 4px 4px 8px !important; text-align: center;
+    border: 24px solid transparent !important; border-radius: 0 !important; background: none !important; box-shadow: none !important;
+    border-image: var(--fsd-sheet9-tall) 140 fill / 24px round !important;
+    filter: drop-shadow(2px 4px 6px rgba(80, 50, 30, .22));
+  }
+  html body.fsd-scrapbook #page-shop .fsk-card::before {
+    content: ""; position: absolute; z-index: 3; top: -26px; left: 18px; width: 86px; height: 28px;
+    background: var(--fs-tape-beige) center / 100% 100% no-repeat; transform: rotate(-6deg); pointer-events: none;
+  }
+  html body.fsd-scrapbook #page-shop .fsk-thumb { width: 100% !important; height: 172px !important; min-height: 0 !important; max-height: none !important; aspect-ratio: auto !important; }
+  html body.fsd-scrapbook #page-shop .fsk-thumb img { width: 100% !important; height: 100% !important; object-fit: cover; }
+  html body.fsd-scrapbook #page-shop .fsk-name {
+    font-size: 28px !important; margin: 8px auto 2px !important; display: inline-block;
+    border: 14px solid transparent; border-image: var(--fs-label9-real) 80 fill / 14px round; padding: 0 18px;
+  }
+  html body.fsd-scrapbook #page-shop .fsk-card .skin-price { font-size: 22px !important; font-weight: 700; }
+  html body.fsd-scrapbook #page-shop .fsk-card .shop-card-actions { justify-content: center !important; gap: 10px; margin-top: 6px; }
+  html body.fsd-scrapbook #page-shop .fsk-card .shop-card-actions .btn {
+    width: auto !important; min-width: 110px; height: 42px; font-size: 19px !important; white-space: nowrap; overflow: visible !important;
+    border-radius: 0 !important; background: none !important; box-shadow: none !important; color: var(--fs-ink) !important;
+    border: 12px solid transparent !important; border-image: var(--fs-button9-real) 80 fill / 12px round !important; padding: 0 12px !important;
+  }
+  html body.fsd-scrapbook #page-shop .fsk-card .shop-card-actions .btn.fsk-buy { border-image-source: var(--fs-button9-real-rose) !important; }
 }

@@ -110,4 +110,14 @@
   }
   html body.fsd #groupsSections .group-card { width: auto !important; min-width: 0 !important; max-width: none !important; display: flex !important; flex-direction: column !important; grid-template-columns: none !important; }
   html body.fsd #groupsSections .group-card > * { width: auto !important; max-width: none !important; grid-column: auto !important; grid-row: auto !important; }
+
+  /* SKINS store: a centred stack (title, tabs, chips, Shop / My Skins) over a 4-column grid of big skin cards */
+  html body.fsd #page-shop > .page-container { display: flex !important; flex-direction: column; align-items: center; width: var(--fsd-shop-w, 1240px) !important; }
+  html body.fsd #page-shop .page-header { display: flex !important; flex-direction: column; align-items: center; gap: 4px; order: 0; }
+  html body.fsd #page-shop #skinPageToggle { order: 1; justify-content: center; margin: 12px 0 4px !important; }
+  html body.fsd #page-shop :is(#skinShopView, #mySkinView) { order: 2; width: 100%; }
+  html body.fsd #page-shop :is(#shopTabs, #mySkinsTabs) { justify-content: center; flex-wrap: wrap !important; display: flex !important; gap: 8px; margin: 10px 0 !important; }
+  html body.fsd #page-shop .page-grid { display: flex !important; flex-direction: column; align-items: center; }
+  html body.fsd #page-shop .fsk-filters { justify-content: center; margin: 0 0 14px !important; }
+  html body.fsd #page-shop .fsk-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 22px !important; width: 100%; }
 }
