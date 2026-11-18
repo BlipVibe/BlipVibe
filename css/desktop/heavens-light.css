@@ -326,4 +326,18 @@
     position: static !important; margin: 2px auto 0 !important; height: 24px; font-size: 12px !important; padding: 0 14px !important; border-radius: 0 !important;
     background: none !important; border: 8px solid transparent !important; border-image: var(--fsd-primary-button) 24 28 fill / 8px 9px stretch !important; color: #6e4c16 !important;
   }
+
+  /* ---- Twilight: same temple after sunset (moonlit slate marble, same warm gold) — light gold lettering ---- */
+  html body.fs.fsd.fsd-heavens-light[data-fs-variant="twilight"] .navbar .nav-logo { color: #f3d58a !important; text-shadow: 0 1px 3px rgba(0, 0, 0, .55); }
+  html body.fs.fsd.fsd-heavens-light[data-fs-variant="twilight"] .navbar .nav-center .nav-link { color: #f3d58a !important; }
+  html body.fs.fsd.fsd-heavens-light[data-fs-variant="twilight"] .navbar .nav-center .nav-link > span:not(.notif-badge) { color: #f6e7c2 !important; text-shadow: 0 1px 2px rgba(0, 0, 0, .6); }
+  html body.fs.fsd.fsd-heavens-light[data-fs-variant="twilight"] .navbar #navMusicBtn { color: #f3d58a !important; }
+  html body.fs.fsd.fsd-heavens-light[data-fs-variant="twilight"] #page-home :is(.card-heading, .quest-panel-header h3, .quest-panel-header h4, .promo-title, .featured-header h4),
+  html body.fs.fsd.fsd-heavens-light[data-fs-variant="twilight"] #page-home #feedTabs .search-tab,
+  html body.fs.fsd.fsd-heavens-light[data-fs-variant="twilight"] #page-home #profileCard .profile-links .view-profile-link,
+  html body.fs.fsd.fsd-heavens-light[data-fs-variant="twilight"] #page-home :is(.suggestion-follow-btn, .featured-buy-btn) { color: #f3d58a !important; text-shadow: 0 1px 2px rgba(0, 0, 0, .55); }
+  html body.fs.fsd.fsd-heavens-light[data-fs-variant="twilight"] #page-home #feedTabs .search-tab.active { color: #2c3456 !important; text-shadow: none; }
+  html body.fs.fsd.fsd-heavens-light[data-fs-variant="twilight"] #page-home .center-feed > .post-create-bar .post-input-fake { color: #2c3456 !important; }
+  html body.fs.fsd.fsd-heavens-light[data-fs-variant="twilight"] #page-home #profileCard .profile-links .view-profile-link,
+  html body.fs.fsd.fsd-heavens-light[data-fs-variant="twilight"] #page-home :is(.suggestion-follow-btn, .featured-buy-btn) { color: #2c3456 !important; text-shadow: none; }
 }
