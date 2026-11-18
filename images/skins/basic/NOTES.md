@@ -64,3 +64,12 @@ convert with `prototypes/tools/basic_convert.py images/skins/basic`.
 - Nov 17: full QA pass, every page in Rosé + Pumpkin (read-only). Fixed: other-profile dish height, Pumpkin chat sent-bubble contrast, equipped tag (now a tick on the picture), quest reward chip centring, Pumpkin quests header inside the notepad, modal square corners + dark rules, post avatar touching card edge, name card stats inside the card.
 - Nov 17: owner "everything is too spaced out" → tighter rhythm everywhere (home blocks, card/ledge empty space reclaimed, compact photos card, lists, headers, chips, skins grid, posts); Pumpkin art pieces had 60–120px transparent margins (notepad, post cards, place card, bubbles…) → trimmed in kit/ to their painted edge + 14px like Rosé.
 - Nov 17: owner "Yes, ship it" → wip removed, store card from the painted Rosé store-card, assets/ whitelisted, merged + pushed to main.
+- Nov 17 (owner: "redesign the layout and everything … it literally doesn't look good"): full redesign → v2 "AESTHETIC
+  WIDGETS" (owner picked it; kept palette, Rosé + Pumpkin, Barista Bar, equip + season FX). Concepts
+  `concept-w-{rose,pumpkin}[-2|-barista].png` (local), crops `prototypes/reference/basic-w-*/`, briefs
+  `prototypes/basic-widgets-concept-brief.md` + `prototypes/basic-widgets-kit-brief.md`. New kit: wallpaper, widget (9-slice,
+  every card), widget-inner, top-bar, dock, tile/tile-on (icon tiles), pill/pill-on, field, avatar-ring, bubbles, send-btn,
+  white dock icons, barista-card, store card. timeline: 4 (frame 1 = the cover on the profile widget, 2-4 = photo widgets).
+  Home + profile view are a CSS grid (wrappers display:contents). Old shelf CSS removed; old art names alias to the kit.
+  QA'd read-only in own simulator: Home, Groups, Skins, Messages, Chat, Barista menu, profile pop-up, profile view, Pumpkin.
+  Not seen (data didn't load on the test device): Network list, feed posts, notifications, search, group page.
