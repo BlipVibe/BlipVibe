@@ -27,6 +27,16 @@
   var NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
   var BASE = new URL(window.FS_BASE || (NATIVE ? 'https://blipvibe.com/images/skins/' : 'images/skins/'), document.baseURI).href;
   var artSet = [];
+  var CSS_V = String(Date.now());      // same cache-busting as the other skin files (index.html)
+  // each skin's desktop layout lives in css/desktop/<skin>.css and is only fetched while that skin is on
+  function ensureCSS(id) {
+    if (!id || !ART[id] || document.getElementById('fsdCSS-' + id)) return;
+    var l = document.createElement('link');
+    l.id = 'fsdCSS-' + id; l.rel = 'stylesheet';
+    l.href = 'css/desktop/' + id + '.css?t=' + CSS_V;
+    var main = document.getElementById('fullSkinsDeskCSS');
+    if (main && main.parentNode) main.parentNode.insertBefore(l, main.nextSibling); else document.head.appendChild(l);
+  }
   var on = false, skin = null, lastVariant = null;
 
   function activeSkin() {
@@ -98,7 +108,7 @@
 
   function sync() {
     var id = activeSkin();
-    var want = !!id && mq.matches;
+    var want = !!id && !!ART[id] && mq.matches;   // only skins whose desktop layout is built
     var variant = document.body.getAttribute('data-fs-variant');
     if (want === on && id === skin && variant === lastVariant) { scale(); return; }
     lastVariant = variant;
@@ -106,7 +116,7 @@
     var hadFrames = on;
     if (on) { restore(); b.classList.remove('fsd'); if (skin) b.classList.remove('fsd-' + skin); }
     on = want; skin = want ? id : null;
-    if (on) { b.classList.add('fsd', 'fsd-' + skin); arrange(); }
+    if (on) { ensureCSS(skin); b.classList.add('fsd', 'fsd-' + skin); arrange(); }
     setArt(on ? skin : null);
     scale();
     // phone and desktop may show a different number of cover frames: redraw them
