@@ -187,6 +187,14 @@
   }
   html body.fsd-scrapbook #page-home .left-sidebar > .quest-panel::before { display: none !important; }
 
+  /* top bar: the wide layered torn-paper strip (painted 2560x130 for desktop; flowers + lace on both ends) */
+  html body.fsd-scrapbook .navbar {
+    border: 0 !important; border-image: none !important;
+    background: var(--fsd-topbar-wide) center bottom / 100% 100% no-repeat !important;
+    height: calc(var(--fsd-bar-h) + 14px) !important;
+  }
+  html body.fsd-scrapbook .navbar .nav-container { padding: 0 150px 14px 110px !important; }
+
   /* top bar page tabs: torn paper tags, icon over label; active = rose paper */
   html body.fsd-scrapbook .navbar .nav-center { gap: 8px !important; }
   html body.fsd-scrapbook .navbar .nav-center .nav-link {
