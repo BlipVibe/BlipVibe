@@ -1,0 +1,278 @@
+/* BlipVibe full skins — BLOOD MOON desktop layout: an opera house stage (one screen).
+   Spec (owner-approved, 1:1): images/skins/blood-moon/desktop/desktop-*.png (Crimson) + desktop-silver-*.png.
+   Art: images/skins/blood-moon/assets/desktop/ (Crimson) and assets/desktop/silver/, painted at 2x the 1536 concept
+   (kit/desktop/manifest.json: asset_scale 2). Design px = concept x 0.9375; art slices x 0.469.
+   FIT skin (body.fsd-fit): curtain valance with the wordmark cartouche and hanging medallion tabs across the top;
+   search left, music / coins / avatar / moon switch right; LEFT opera boxes = quests, coin goal, photos; RIGHT boxes =
+   featured skin, earn coins, people, trending groups; on stage = three gothic cover frames behind the profile
+   cameo, name + stats beside it, stories, composer, feed tabs, posts (scrolling on the stage). */
+@media (min-width: 1100px) {
+  html body.fs.fsd.fsd-blood-moon { --fsd-bar-h: 150px; --bm-title: var(--fs-title-font); --bm-ink: #3a1418; --bm-cream: #f6e6d8; --bm-red: #a0141f; }
+  html body.fs.fsd.fsd-blood-moon #premiumBgLayer { background-image: var(--fsd-bg) !important; background-color: #1a0508 !important; }
+  html body.fs.fsd.fsd-blood-moon::before, html body.fs.fsd.fsd-blood-moon::after { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon .page { background: none !important; }
+
+  /* ---------- the curtain valance: cartouche wordmark, medallion tabs hanging from it ---------- */
+  html body.fs.fsd.fsd-blood-moon .navbar {
+    height: 150px !important; max-height: none !important; overflow: visible !important;
+    background: var(--fsd-nav-valance) center top / 1440px 155px no-repeat !important;
+  }
+  html body.fs.fsd.fsd-blood-moon .navbar::before, html body.fs.fsd.fsd-blood-moon .navbar::after { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon .navbar .nav-container { position: relative; display: block !important; padding: 0 !important; height: 150px !important; }
+  html body.fs.fsd.fsd-blood-moon .navbar .nav-logo {
+    position: absolute; left: 579px; top: 0; width: 281px; height: 75px; margin: 0 !important; padding: 0 0 4px !important;
+    display: flex !important; align-items: center; justify-content: center; background: var(--fsd-nav-cartouche) center / 100% 100% no-repeat !important;
+    font-family: var(--bm-title) !important; font-weight: 700 !important; font-size: 34px !important; line-height: 1 !important; color: var(--bm-cream) !important;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, .7);
+  }
+  html body.fs.fsd.fsd-blood-moon .navbar .nav-logo img { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon .navbar .search-bar {
+    display: flex !important; position: absolute; left: 66px; top: 54px; width: 234px; height: 49px; align-items: center; gap: 8px;
+    background: none !important; border-radius: 0 !important; box-shadow: none !important; padding: 0 2px !important;
+    border: solid transparent !important; border-width: 16px 62px 16px 40px !important; border-image: var(--fsd-search-field) 34 133 34 86 fill / 16px 62px 16px 40px stretch !important;
+  }
+  html body.fs.fsd.fsd-blood-moon .navbar .search-bar input { font-size: 15px !important; background: none !important; border: 0 !important; padding: 0 !important; height: auto !important; color: var(--bm-cream) !important; }
+  html body.fs.fsd.fsd-blood-moon .navbar .search-bar i { color: var(--bm-cream) !important; margin-left: -22px; }
+  html body.fs.fsd.fsd-blood-moon .navbar .nav-right { position: absolute; left: 1055px; top: 46px; display: flex !important; align-items: center; gap: 14px; margin: 0 !important; }
+  html body.fs.fsd.fsd-blood-moon .navbar #navMusicBtn {
+    width: 47px !important; height: 47px !important; border-radius: 50% !important; border: 0 !important; box-shadow: none !important;
+    background: var(--fsd-icon-button) center / 100% 100% no-repeat !important; color: var(--bm-cream) !important;
+  }
+  html body.fs.fsd.fsd-blood-moon .navbar #navCoins {
+    height: 42px !important; min-width: 108px; padding: 0 4px !important; border-radius: 0 !important; box-shadow: none !important; background: none !important;
+    border: 12px solid transparent !important; border-width: 12px 27px !important; border-image: var(--fsd-coin-pill) 26 57 fill / 12px 27px stretch !important;
+    display: flex !important; align-items: center; justify-content: center; gap: 6px; font-size: 17px !important; color: var(--bm-cream) !important;
+  }
+  html body.fs.fsd.fsd-blood-moon .navbar #navUserDropdown .nav-avatar {
+    width: 70px !important; height: 70px !important; padding: 12px; border: 0 !important; box-shadow: none !important;
+    background: var(--fsd-avatar-ring) center / 100% 100% no-repeat !important;
+  }
+  html body.fs.fsd.fsd-blood-moon .navbar #navUserDropdown :is(.nav-username, .fa-chevron-down) { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon .navbar #fsDayNight {
+    position: absolute; left: 250px; top: 12px; width: 77px !important; height: 45px !important; margin: 0 !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important;
+    background: var(--fsd-rendition-switch) center / 100% 100% no-repeat !important;
+  }
+  html body.fs.fsd.fsd-blood-moon .navbar .nav-center { position: absolute; inset: 0; display: block !important; margin: 0 !important; transform: none !important; pointer-events: none; }
+  html body.fs.fsd.fsd-blood-moon .navbar .nav-center .nav-link {
+    position: absolute !important; top: 51px; width: 94px !important; height: 122px !important; pointer-events: auto;
+    display: flex !important; flex-direction: column; align-items: center; justify-content: flex-start; gap: 0; padding: 22px 0 0 !important; margin: 0 !important;
+    background: var(--fsd-nav-tab) center top / 100% 100% no-repeat !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; color: var(--bm-cream) !important;
+  }
+  html body.fs.fsd.fsd-blood-moon .navbar .nav-center .nav-link > i { font-size: 18px !important; }
+  html body.fs.fsd.fsd-blood-moon .navbar .nav-center .nav-link > span:not(.notif-badge) { display: block !important; font-family: var(--bm-title) !important; font-size: 13px !important; color: var(--bm-cream) !important; white-space: nowrap; margin-top: 2px; }
+  html body.fs.fsd.fsd-blood-moon .navbar .nav-center .nav-link.active { background-image: var(--fsd-nav-tab-active) !important; }
+  html body.fs.fsd.fsd-blood-moon .navbar .nav-center .nav-link::before, html body.fs.fsd.fsd-blood-moon .navbar .nav-center .nav-link::after { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon .navbar .nav-center .nav-link:nth-child(1) { left: 365px; }
+  html body.fs.fsd.fsd-blood-moon .navbar .nav-center .nav-link:nth-child(2) { left: 458px; }
+  html body.fs.fsd.fsd-blood-moon .navbar .nav-center .nav-link:nth-child(3) { left: 546px; }
+  html body.fs.fsd.fsd-blood-moon .navbar .nav-center .nav-link:nth-child(4) { left: 636px; }
+  html body.fs.fsd.fsd-blood-moon .navbar .nav-center .nav-link:nth-child(5) { left: 731px; display: flex !important; }
+  html body.fs.fsd.fsd-blood-moon .navbar .nav-center .nav-link:nth-child(6) { left: 833px; }
+  html body.fs.fsd.fsd-blood-moon .navbar .nav-center .nav-link:nth-child(7) { left: 938px; display: flex !important; }
+  html body.fs.fsd.fsd-blood-moon .navbar .nav-center .nav-link .notif-badge { top: 8px !important; right: 14px !important; }
+
+  /* ---------- HOME: every panel at its concept position ---------- */
+  html body.fs.fsd.fsd-blood-moon #page-home :is(.main-container, .left-sidebar, .right-sidebar, .center-feed) {
+    position: static !important; display: block !important; width: auto !important; max-width: none !important; margin: 0 !important; padding: 0 !important;
+    background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; transform: none !important;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home :is(.left-sidebar, .right-sidebar, .center-feed) > * { position: absolute !important; margin: 0 !important; box-sizing: border-box; }
+  html body.fs.fsd.fsd-blood-moon #page-home .right-sidebar > .card:not(.promo-card):not(.suggestions-card):not(.groups-card),
+  html body.fs.fsd.fsd-blood-moon #page-home .center-feed > :is(#discoverSort, #main-content, .mobile-pills-bar) { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home :is(.left-sidebar, .right-sidebar) > * {
+    background: none !important; box-shadow: none !important; border-radius: 0 !important; overflow: visible !important; text-align: center; color: var(--bm-ink) !important;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home :is(.left-sidebar, .right-sidebar, .center-feed) > *::before,
+  html body.fs.fsd.fsd-blood-moon #page-home :is(.left-sidebar, .right-sidebar, .center-feed) > *::after { display: none !important; }
+  /* side boxes: side-panel (slice 72 67 66 67 at 2x) with the plaque title (panel-title) on the top rim */
+  html body.fs.fsd.fsd-blood-moon #page-home :is(.left-sidebar, .right-sidebar) > :is(.quest-panel, .coin-goal-bar, .photos-card, .featured-skin-banner, .promo-card, .suggestions-card, .groups-card) {
+    border-style: solid !important; border-color: transparent !important; border-width: 34px 31px 31px 31px !important;
+    border-image: var(--fsd-side-panel) 72 67 66 67 fill / 34px 31px 31px 31px stretch !important; padding: 0 !important;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home :is(.card-heading, .quest-panel-header h3, .quest-panel-header h4, .promo-title, .featured-header h4) {
+    position: absolute !important; left: 50%; top: -52px; transform: translateX(-50%); width: 202px; height: 47px; margin: 0 !important; z-index: 2;
+    display: flex !important; align-items: center; justify-content: center; text-align: center !important; white-space: nowrap;
+    background: var(--fsd-panel-title) center / 100% 100% no-repeat !important;
+    font-family: var(--bm-title) !important; font-weight: 700 !important; font-size: 17px !important; color: var(--bm-ink) !important; text-transform: none !important; letter-spacing: 0 !important;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home :is(.card-heading, .featured-header h4) > i,
+  html body.fs.fsd.fsd-blood-moon #page-home .quest-panel-header :is(i, span, small, p),
+  html body.fs.fsd.fsd-blood-moon #page-home .featured-timer,
+  html body.fs.fsd.fsd-blood-moon #page-home :is(.photos-card, .suggestions-card) .view-more-link { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .quest-panel-header { position: static !important; }
+
+  /* left boxes */
+  html body.fs.fsd.fsd-blood-moon #page-home .left-sidebar > .quest-panel { left: 75px; top: 206px; width: 234px; height: 158px; text-align: left; }
+  html body.fs.fsd.fsd-blood-moon #page-home .quest-item { display: flex !important; flex-direction: row !important; align-items: center; gap: 6px !important; padding: 0 !important; margin: 0 0 6px !important; background: none !important; border: 0 !important; border-image: none !important; height: auto !important; min-height: 0 !important; grid-template-columns: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .quest-item > * { grid-column: auto !important; grid-row: auto !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .quest-item .quest-icon { width: 38px !important; height: 38px !important; flex: none; color: transparent !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; background: var(--fsd-quest-moon-0) center / 100% 100% no-repeat !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .quest-item .quest-icon > i { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .quest-item:is([style*="--fs-q: 0.4"], [style*="--fs-q: 0.5"], [style*="--fs-q: 0.6"], [style*="--fs-q: 0.7"], [style*="--fs-q: 0.8"]) .quest-icon { background-image: var(--fsd-quest-moon-50) !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .quest-item[style*="--fs-q: 1"] .quest-icon { background-image: var(--fsd-quest-moon-100) !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .quest-item .quest-info { flex: 1; min-width: 0; display: grid !important; grid-template-columns: 1fr auto; grid-template-areas: "t t" "b p"; column-gap: 6px; }
+  html body.fs.fsd.fsd-blood-moon #page-home .quest-item .quest-info p { grid-area: t; font-size: 14px !important; margin: 0 !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--bm-ink) !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .quest-item .quest-bar { grid-area: b; align-self: center; height: 9px !important; border-radius: 0 !important; background: var(--fsd-progress-track) center / 100% 100% no-repeat !important; border: 0 !important; overflow: hidden; margin: 0 !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .quest-item .quest-bar-fill { background: var(--fsd-progress-fill) left center / 100% 100% no-repeat !important; border-radius: 0 !important; height: 100% !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .quest-item .quest-progress { grid-area: p; font-size: 13px !important; color: var(--bm-ink) !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .quest-item .quest-reward {
+    font-size: 12px !important; font-weight: 700; color: var(--bm-cream) !important; min-width: 34px; height: 22px; padding: 0 !important; display: inline-flex !important; align-items: center; justify-content: center;
+    background: none !important; border: 8px solid transparent !important; border-width: 8px 13px !important; border-image: var(--fsd-chip-active) 26 42 fill / 8px 13px stretch !important;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home .quest-item .quest-reward i { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .left-sidebar > .coin-goal-bar { left: 85px; top: 488px; width: 214px; height: 86px; }
+  html body.fs.fsd.fsd-blood-moon #page-home .left-sidebar > .photos-card { left: 72px; top: 688px; width: 240px; height: 116px; }
+  html body.fs.fsd.fsd-blood-moon #page-home .photos-card .photos-preview { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 2px !important; padding: 0 !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .photos-card .photos-preview > *:nth-child(n+4) { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .photos-card .photos-preview > * {
+    aspect-ratio: 170 / 220; width: auto !important; height: auto !important; border-radius: 0 !important; overflow: hidden; transform: none !important;
+    border: solid transparent !important; border-width: 11px 11px 11px 10px !important; border-image: var(--fsd-gallery-frame) 24 24 24 22 fill / 11px 11px 11px 10px stretch !important;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home .photos-card .photos-preview img { width: 100% !important; height: 100% !important; object-fit: cover; border-radius: 0 !important; }
+  /* right boxes */
+  html body.fs.fsd.fsd-blood-moon #page-home .featured-skin-banner { left: 1150px; top: 194px; width: 232px; height: 132px; border: 0 !important; border-image: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .featured-header h4 { top: -36px !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .featured-body { position: relative; display: block !important; height: 122px; }
+  html body.fs.fsd.fsd-blood-moon #page-home .featured-preview { position: absolute !important; left: 23px; top: 28px; width: 172px !important; height: 71px !important; border-radius: 0 !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .featured-body::after { content: ""; display: block !important; position: absolute; left: 0; top: 0; width: 216px; height: 122px; background: var(--fsd-featured-frame) center / 100% 100% no-repeat; pointer-events: none; }
+  html body.fs.fsd.fsd-blood-moon #page-home .featured-info { position: absolute; left: 0; right: 0; top: 106px; z-index: 1; text-align: center; }
+  html body.fs.fsd.fsd-blood-moon #page-home .featured-info h5 {
+    display: inline-flex !important; align-items: center; justify-content: center; height: 30px; min-width: 150px; margin: 0 !important; font-family: var(--bm-title) !important; font-size: 16px !important; color: var(--bm-ink) !important;
+    border: 12px solid transparent; border-width: 12px 40px; border-image: var(--fsd-name-plate) 38 169 26 169 fill / 12px 40px stretch;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home .featured-info p { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .featured-buy-btn { position: absolute !important; left: 50%; top: 140px; transform: translateX(-50%); height: 20px; font-size: 11px !important; padding: 0 10px !important; border-radius: 0 !important; background: none !important; color: var(--bm-cream) !important; border: 7px solid transparent !important; border-image: var(--fsd-chip) 27 42 fill / 7px 12px stretch !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .right-sidebar > .promo-card { left: 1150px; top: 374px; width: 232px; height: 100px; }
+  html body.fs.fsd.fsd-blood-moon #page-home .right-sidebar > .suggestions-card { left: 1150px; top: 516px; width: 232px; height: 104px; }
+  html body.fs.fsd.fsd-blood-moon #page-home .right-sidebar > .groups-card { left: 1140px; top: 684px; width: 246px; height: 116px; }
+  html body.fs.fsd.fsd-blood-moon #page-home .promo-card :is(.promo-logo, .promo-subtitle) { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .promo-card .coin-rules { display: flex !important; flex-direction: column; gap: 0 !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .promo-card .coin-rule { display: flex !important; justify-content: space-between; align-items: center; gap: 6px; font-size: 13px !important; color: var(--bm-ink) !important; background: none !important; border: 0 !important; border-image: none !important; padding: 0 !important; margin: 0 !important; text-align: left; }
+  html body.fs.fsd.fsd-blood-moon #page-home .promo-card .coin-rule small { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .suggestion-list { display: flex !important; flex-direction: column !important; flex-wrap: nowrap !important; gap: 0 !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .right-sidebar .suggestions-card .suggestion-list .suggestion-item,
+  html body.fs.fsd.fsd-blood-moon #page-home .group-item {
+    display: flex !important; flex-direction: row !important; align-items: center; gap: 6px !important; width: 100% !important; flex: none !important; max-width: none !important;
+    height: 34px !important; min-height: 0 !important; padding: 0 2px !important; margin: 0 !important; text-align: left !important;
+    background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; border-radius: 0 !important;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home .suggestions-card .suggestion-list .suggestion-item:nth-child(n+4),
+  html body.fs.fsd.fsd-blood-moon #page-home .groups-card .group-list > *:nth-child(n+4) { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home :is(.suggestion-item .suggestion-avatar, .group-item .group-icon) { width: 28px !important; height: 28px !important; flex: none; margin: 0 !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .suggestion-item .suggestion-info { flex: 1 1 0 !important; min-width: 0 !important; width: auto !important; display: block !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .suggestion-item .suggestion-info h4 { font-size: 14px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0 !important; color: var(--bm-ink) !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .suggestion-item .suggestion-info p:empty { display: none; }
+  html body.fs.fsd.fsd-blood-moon #page-home .suggestion-item .suggestion-follow-btn {
+    width: auto !important; height: 20px !important; padding: 0 6px !important; flex: none; margin: 0 !important; border-radius: 0 !important; font-size: 11px !important; color: var(--bm-cream) !important;
+    background: none !important; border: 7px solid transparent !important; border-width: 7px 12px !important; border-image: var(--fsd-chip-active) 26 42 fill / 7px 12px stretch !important;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home .group-item .group-info { flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; }
+  html body.fs.fsd.fsd-blood-moon #page-home .group-item .group-name { font-size: 13px !important; margin: 0 !important; color: var(--bm-ink) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+  html body.fs.fsd.fsd-blood-moon #page-home .group-item .group-desc { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .group-item .group-members { font-size: 12px !important; color: var(--bm-ink) !important; white-space: nowrap; }
+
+  /* the stage: three gothic cover frames (left / centre / right), the profile cameo in front */
+  html body.fs.fsd.fsd-blood-moon #page-home > .timeline-cover {
+    position: absolute !important; left: 0; top: 0; width: 1440px !important; height: 900px !important; margin: 0 !important; pointer-events: none;
+    background: none !important; border: 0 !important; border-radius: 0 !important; overflow: visible !important; z-index: 1;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home > .timeline-cover::before, html body.fs.fsd.fsd-blood-moon #page-home > .timeline-cover::after,
+  html body.fs.fsd.fsd-blood-moon #page-home .timeline-cover-btn { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .fs-timeline { position: absolute !important; inset: 0 !important; width: 1440px !important; height: 900px !important; transform: none !important; aspect-ratio: auto !important; background: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .fs-timeline::before, html body.fs.fsd.fsd-blood-moon #page-home .fs-timeline::after { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .fs-tl-slot {
+    position: absolute !important; pointer-events: auto; transform: none !important; border: 0 !important; box-shadow: none !important; margin: 0 !important; overflow: visible !important;
+    border-radius: 0 !important; background-color: #1a0508;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home .fs-tl-slot::before { content: ""; display: block !important; position: absolute; z-index: 2; pointer-events: none; border: 0 !important; transform: none !important; background: center / 100% 100% no-repeat; }
+  html body.fs.fsd.fsd-blood-moon #page-home .fs-tl-slot :is(img, .fs-tl-img) { width: 100% !important; height: 100% !important; object-fit: cover; border-radius: 0 !important; }
+  /* window boxes from the kit (x0.469): left 22,28 144x99 of 188x141 · centre 27,25 152x124 of 206x169 · right 13,18 161x105 of 188x141 */
+  html body.fs.fsd.fsd-blood-moon #page-home .fs-tl-slot-1 { left: 467px !important; top: 258px !important; width: 144px !important; height: 99px !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .fs-tl-slot-1::before { left: -22px; top: -28px; width: 188px; height: 141px; background-image: var(--fsd-cover-left); }
+  html body.fs.fsd.fsd-blood-moon #page-home .fs-tl-slot-2 { left: 636px !important; top: 222px !important; width: 152px !important; height: 124px !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .fs-tl-slot-2::before { left: -27px; top: -25px; width: 206px; height: 169px; background-image: var(--fsd-cover-center); }
+  html body.fs.fsd.fsd-blood-moon #page-home .fs-tl-slot-3 { left: 829px !important; top: 248px !important; width: 161px !important; height: 105px !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .fs-tl-slot-3::before { left: -13px; top: -18px; width: 188px; height: 141px; background-image: var(--fsd-cover-right); }
+  html body.fs.fsd.fsd-blood-moon #page-home .fs-tl-own::after { z-index: 3; }
+  /* profile: rose cameo (profile-frame window 38,35 82x94 of 159x169), name / bio / stats / View Profile to its right */
+  html body.fs.fsd.fsd-blood-moon .fsd-hero-card { position: absolute; left: 553px; top: 277px; width: 360px; height: 170px; z-index: 3; }
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard, html body.fs.fsd.fsd-blood-moon #page-home #profileCard .profile-info {
+    background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; overflow: visible !important; position: static !important; display: block !important; height: 170px;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard::before, html body.fs.fsd.fsd-blood-moon #page-home #profileCard::after,
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard .profile-cover, html body.fs.fsd.fsd-blood-moon #page-home #profileCard .badge-row,
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard .profile-info::after,
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard .profile-links .edit-profile-btn { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard .profile-info::before {
+    content: ""; display: block !important; position: absolute; left: 0; top: 0; width: 159px; height: 169px; z-index: 2; pointer-events: none; border: 0 !important; transform: none !important;
+    background: var(--fsd-profile-frame) center / 100% 100% no-repeat;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard .profile-avatar-wrap {
+    position: absolute !important; left: 38px; top: 35px; inset: 35px auto auto 38px !important; transform: none !important; z-index: 1; width: 82px !important; height: 94px !important; margin: 0 !important;
+    border-radius: 50% !important; overflow: hidden; background: none !important; border: 0 !important; box-shadow: none !important; padding: 0 !important;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard .profile-avatar-wrap::before, html body.fs.fsd.fsd-blood-moon #page-home #profileCard .profile-avatar-wrap::after { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard .profile-avatar { width: 100% !important; height: 100% !important; border-radius: 50% !important; object-fit: cover; border: 0 !important; box-shadow: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard .fs-namecard {
+    position: absolute !important; left: 165px; top: 38px; width: 200px !important; margin: 0 !important; padding: 0 !important; text-align: left !important; height: auto !important;
+    background: none !important; border: 0 !important; border-image: none !important; transform: none !important;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard .fs-namecard::before, html body.fs.fsd.fsd-blood-moon #page-home #profileCard .fs-namecard::after { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard .profile-name { font-family: var(--bm-title) !important; font-size: 28px !important; font-weight: 700 !important; margin: 0 !important; line-height: 1 !important; color: var(--bm-cream) !important; text-align: left !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard :is(.profile-title, .profile-about) { font-size: 15px !important; margin: 2px 0 0 !important; text-align: left !important; color: var(--bm-cream) !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard .profile-stats {
+    position: absolute !important; left: 165px; top: 96px; display: flex !important; gap: 0; margin: 0 !important; padding: 0 !important; width: auto !important; aspect-ratio: auto !important;
+    background: none !important; border: 0 !important; border-image: none !important; height: auto !important; min-height: 0 !important;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard .profile-stats::before, html body.fs.fsd.fsd-blood-moon #page-home #profileCard .profile-stats::after { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard .profile-stats .stat { display: flex !important; flex: none !important; flex-direction: row-reverse; gap: 4px; padding: 0 6px 0 0 !important; background: none !important; border: 0 !important; border-image: none !important; height: auto !important; white-space: nowrap; }
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard .profile-stats .stat + .stat { padding-left: 6px !important; border-left: 1px solid rgba(246, 230, 216, .5) !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard .profile-stats :is(.stat-count, .stat-label) { font-size: 14px !important; line-height: 1.2 !important; color: var(--bm-cream) !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard .profile-links { position: absolute !important; left: 187px; top: 113px; margin: 0 !important; display: flex !important; padding: 0 !important; background: none !important; border: 0 !important; height: auto !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home #profileCard .profile-links .view-profile-link {
+    font-family: var(--bm-title) !important; font-size: 15px !important; height: 37px; min-width: 125px; display: inline-flex !important; align-items: center; justify-content: center;
+    background: none !important; border: 14px solid transparent !important; border-width: 14px 22px !important; border-image: var(--fsd-primary-button) 29 46 fill / 14px 22px stretch !important;
+    padding: 0 !important; color: var(--bm-cream) !important; border-radius: 0 !important;
+  }
+
+  /* on stage: stories, composer, feed tabs, the feed (scrolls inside the feed panel) */
+  html body.fs.fsd.fsd-blood-moon #page-home .center-feed > .stories-bar {
+    left: 520px; top: 424px; width: 400px; height: 90px; display: flex !important; justify-content: center; gap: 28px !important; padding: 0 !important; overflow: visible !important;
+    background: none !important; border: 0 !important; border-image: none !important;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home .center-feed > .stories-bar :is(.story-name, .story-item span) { color: var(--bm-cream) !important; font-size: 13px !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .center-feed > .post-create-bar {
+    left: 412px; top: 516px; width: 600px; height: 62px; display: flex !important; align-items: center; gap: 12px; padding: 0 20px !important; min-height: 0 !important;
+    background: none !important; box-shadow: none !important; border-radius: 0 !important;
+    border: solid transparent !important; border-width: 18px 60px !important; border-image: var(--fsd-composer-panel) 38 379 38 378 fill / 18px 60px stretch !important;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home .center-feed > .post-create-bar .post-create-avatar { width: 44px !important; height: 44px !important; margin-left: -50px; }
+  html body.fs.fsd.fsd-blood-moon #page-home .center-feed > .post-create-bar .post-input-fake { flex: 1; background: none !important; border: 0 !important; border-image: none !important; font-size: 16px !important; font-style: italic; padding: 0 !important; color: var(--bm-ink) !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .center-feed > #feedTabs { left: 470px; top: 579px; width: 474px; height: 38px; display: flex !important; gap: 12px !important; justify-content: center; }
+  html body.fs.fsd.fsd-blood-moon #page-home #feedTabs .search-tab {
+    flex: 1 1 0 !important; height: 38px !important; justify-content: center !important; border-radius: 0 !important; box-shadow: none !important; background: none !important; padding: 0 !important;
+    border: 12px solid transparent !important; border-width: 12px 20px !important; border-image: var(--fsd-chip) 27 42 fill / 12px 20px stretch !important;
+    font-family: var(--bm-title) !important; font-size: 15px !important; color: var(--bm-cream) !important;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home #feedTabs .search-tab.active { border-image-source: var(--fsd-chip-active) !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home #feedTabs .search-tab > i { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon #page-home .center-feed > #feedContainer {
+    left: 398px; top: 610px; width: 620px; height: 244px; overflow-y: auto !important; overflow-x: hidden !important; display: block !important; scrollbar-width: none;
+    border: solid transparent !important; border-width: 31px 30px 27px 30px !important; border-image: var(--fsd-feed-panel) 66 65 58 64 fill / 31px 30px 27px 30px stretch !important; padding: 0 !important;
+  }
+  html body.fs.fsd.fsd-blood-moon #page-home .center-feed > #feedContainer::-webkit-scrollbar { display: none; }
+  html body.fs.fsd.fsd-blood-moon #feedContainer .feed-post {
+    position: relative !important; background: none !important; box-shadow: none !important; border-radius: 0 !important; margin: 0 0 6px !important; padding: 0 4px !important; color: var(--bm-ink) !important;
+    border-style: solid !important; border-color: transparent !important; border-width: 14px 20px !important; border-image: var(--fsd-post-card) 30 250 30 249 fill / 14px 20px stretch !important;
+  }
+  html body.fs.fsd.fsd-blood-moon #feedContainer .feed-post:has(.post-media-grid) { display: grid !important; grid-template-columns: minmax(0, 1fr) 50%; grid-template-rows: auto auto 1fr auto auto; column-gap: 12px; }
+  html body.fs.fsd.fsd-blood-moon #feedContainer .feed-post:has(.post-media-grid) > * { grid-column: 1; }
+  html body.fs.fsd.fsd-blood-moon #feedContainer .feed-post:has(.post-media-grid) > .post-media-grid { grid-column: 2; grid-row: 1 / 5; align-self: center; margin: 0 !important; max-height: 104px; overflow: hidden; }
+  html body.fs.fsd.fsd-blood-moon #feedContainer .feed-post:has(.post-media-grid) > .post-actions { grid-row: 4; }
+  html body.fs.fsd.fsd-blood-moon #feedContainer .feed-post:has(.post-media-grid) > .post-comments { grid-column: 1 / -1; grid-row: 5; }
+  html body.fs.fsd.fsd-blood-moon #feedContainer .feed-post::before, html body.fs.fsd.fsd-blood-moon #feedContainer .feed-post::after { display: none !important; }
+  html body.fs.fsd.fsd-blood-moon #feedContainer .post-username { font-family: var(--bm-title) !important; font-size: 15px !important; font-weight: 700; color: var(--bm-red) !important; }
+  html body.fs.fsd.fsd-blood-moon #feedContainer .post-time { font-size: 12px !important; }
+  html body.fs.fsd.fsd-blood-moon #feedContainer .post-description p { font-size: 14px !important; color: var(--bm-ink) !important; }
+  html body.fs.fsd.fsd-blood-moon #feedContainer .post-actions .action-btn { font-size: 13px !important; }
+  html body.fs.fsd.fsd-blood-moon #feedContainer .action-right { display: none !important; }
+}

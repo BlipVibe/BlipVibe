@@ -37,13 +37,20 @@
       'progress-track', 'progress-fill', 'decor-candles', 'decor-crystals', 'decor-flourish', 'thumbnail-frame', 'photo-frame',
       'parchment-note', 'parchment-tall', 'parchment-wide', 'people-row', 'story-seal', 'composer', 'feed-tab', 'feed-tab-active',
       'post-card', 'feed-panel', 'chip', 'chip-active', 'side-card', 'list-row', 'list-row-active', 'chat-backdrop', 'chat-header',
-      'chat-received', 'chat-sent', 'input-bar', 'search-dropdown', 'group-frame', 'group-frame-star', 'skin-frame', 'skin-frame-star']
+      'chat-received', 'chat-sent', 'input-bar', 'search-dropdown', 'group-frame', 'group-frame-star', 'skin-frame', 'skin-frame-star'],
+    // Blood Moon: an opera house stage, one screen (desktop concepts images/skins/blood-moon/desktop/, Crimson + silver/)
+    'blood-moon': ['bg', 'nav-valance', 'nav-cartouche', 'nav-tab', 'nav-tab-active', 'search-field', 'icon-button', 'coin-pill',
+      'avatar-ring', 'rendition-switch', 'rendition-moon', 'side-panel', 'panel-title', 'quests-panel', 'quest-moon-0', 'quest-moon-50',
+      'quest-moon-100', 'progress-track', 'progress-fill', 'chip', 'chip-active', 'gallery-frame', 'featured-frame', 'name-plate',
+      'cover-left', 'cover-center', 'cover-right', 'profile-frame', 'primary-button', 'composer-panel', 'feed-panel', 'post-card',
+      'photo-frame', 'people-row', 'candelabra', 'rose-cluster', 'rose-vine', 'chat-panel', 'conversation-panel', 'bubble-received',
+      'bubble-sent', 'input-bar', 'list-row', 'list-row-active', 'notification-row', 'page-title', 'group-card', 'skin-card', 'search-dropdown']
   };
   // where each skin's concept puts the side panels (default: quests + coin goal top-left, featured skin top-right)
   var PLACE = { 'heavens-light': { featured: 'left-end' } };
   // one-screen skins (an open book, a stage, a desktop of windows): the whole 1440x900 design fits the window
   // (scale by width AND height, centred), and the feed scrolls inside its panel instead of the page
-  var FIT = { witchcraft: true };
+  var FIT = { witchcraft: true, 'blood-moon': true };
   var DESIGN_H = 900;
   var NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
   var BASE = new URL(window.FS_BASE || (NATIVE ? 'https://blipvibe.com/images/skins/' : 'images/skins/'), document.baseURI).href;
