@@ -73,3 +73,11 @@ convert with `prototypes/tools/basic_convert.py images/skins/basic`.
   Home + profile view are a CSS grid (wrappers display:contents). Old shelf CSS removed; old art names alias to the kit.
   QA'd read-only in own simulator: Home, Groups, Skins, Messages, Chat, Barista menu, profile pop-up, profile view, Pumpkin.
   Not seen (data didn't load on the test device): Network list, feed posts, notifications, search, group page.
+
+## Nov 17 2026 — nine squares (owner: "make it 9 squares with the middle being the profile picture", "1 for 1")
+- Concept: `concept-grid-<r>.png` (ChatGPT, approved, local only) + `prototypes/basic-grid-concept-brief.md`.
+- `timeline: 8`; the frames are a 3x3 grid (117:103 tiles, 4pt gutters, 13/9pt insets) over the top of the profile
+  widget, frame 1 (cover) top-middle; the profile picture sits absolutely in the middle square. Missing photos stay empty
+  tiles (no cover repeats). Bio shown under the name. Home: featured = picture + "featured" + name + coin chip; daily
+  routine = compact one-line rows; posts inset ~7pt. Someone's profile: follow · message · ⋯ (mute, block, report,
+  close friend, invite in the ⋯ menu), the widget drawn on `#pvProfileCard::before` so the row sits under it.

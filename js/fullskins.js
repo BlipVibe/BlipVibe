@@ -300,7 +300,7 @@
   FULL_SKINS['basic'] = {
     name: '#Basic', dark: false, ink: '#4a3426', muted: '#8a7262', accent: '#c98f86',
     font: "'Quicksand', sans-serif", titleFont: "'Quicksand', sans-serif",
-    timeline: 4, avatar: 'center', slice: 15, edge: 16,
+    timeline: 8, avatar: 'center', slice: 15, edge: 16,
     variants: [
       { id: 'rose', name: 'Rosé', accent: '#c98f86', swatch: '#f1d9d3' },
       { id: 'pumpkin', name: 'Pumpkin Spice', accent: '#b8754a', swatch: '#e8cfae', ink: '#4a3022', muted: '#8a6a52',
@@ -311,7 +311,7 @@
       'btn-secondary': 'action-btn', 'btn-round': 'btn-round', 'header-bar': 'top-bar', 'nav-bar': 'dock', 'nav-active': 'tile-on',
       'icon-coin': 'coin', 'quest-0': 'cup-0', 'quest-50': 'cup-50', 'quest-100': 'cup-100', 'avatar-frame': 'avatar-ring' },
     assets: ['wallpaper', 'widget', 'widget-inner', 'dock', 'tile', 'tile-on', 'pill', 'pill-on', 'ring-track', 'ring-fill', 'photo-shade', 'icon-camera', 'icon-edit', 'icon-bell', 'icon-search',
-      'icon-home', 'icon-groups', 'icon-skins', 'icon-network', 'icon-messages', 'icon-plus',
+      'icon-home', 'icon-groups', 'icon-skins', 'icon-network', 'icon-messages', 'icon-more','icon-plus',
       'top-bar', 'icon-home-on', 'icon-groups-on', 'icon-skins-on', 'icon-network-on', 'icon-messages-on',
       'barista-btn', 'toggle-rose', 'toggle-pumpkin', 'avatar-ring',
       'icon-video', 'icon-compose', 'icon-phone', 'icon-close', 'icon-like-on', 'icon-dislike-on', 'icon-reply', 'icon-chevron', 'icon-check',
@@ -1401,7 +1401,8 @@
       for (var i = 0; i < count; i++) if (picks[i]) urls[i] = picks[i];
     }
     // no photos at all (e.g. someone without a cover): empty slots render as blank photo paper
-    while (urls.length < count) urls.push(urls[0] || null);
+    // (#Basic's nine squares: a missing photo stays an empty tile, not eight copies of the cover)
+    while (urls.length < count) urls.push(active === 'basic' ? null : (urls[0] || null));
     return urls.slice(0, count);
   }
 
@@ -1499,7 +1500,7 @@
   function wrapPvMore() {
     var page = document.getElementById('page-profile-view'), follow = document.getElementById('pvFollowBtn');
     // most concepts put ⋯ at the cover's top right; Vaporwave's puts it in the button row
-    var inRow = active === 'vaporwave', acts = follow && follow.closest('.pv-actions');
+    var inRow = active === 'vaporwave' || active === 'basic', acts = follow && follow.closest('.pv-actions');
     // (cover mode: the ⋯ hangs off the page at the cover's top right, so it stacks above the profile picture too)
     var cover = document.getElementById('pvCoverBanner'), host = inRow ? acts : (cover && page);
     if (page && (!follow || !page.contains(follow))) {   // your own profile (or a stale one): no ⋯
@@ -1507,7 +1508,9 @@
     }
     if (!page || !follow || !host || !page.contains(follow)) return;
     // the app redraws the buttons (follow/unfollow, mute…): re-hide each time, build the ⋯ once per render
-    PV_MENU.forEach(function (id) { var b = document.getElementById(id); if (b) b.classList.add('fs-pv-hidden'); });
+    // #Basic's concept row is follow · message · ⋯, so Close Friend and Invite to Group live in its ⋯ menu too
+    var ids = active === 'basic' ? PV_MENU.concat(['pvCloseFriendBtn', 'pvInviteGroupBtn']) : PV_MENU;
+    ids.forEach(function (id) { var b = document.getElementById(id); if (b) b.classList.add('fs-pv-hidden'); });
     if (page.querySelector('.fs-pv-more')) return;
     var wrap = document.createElement('div'), btn = document.createElement('button'), menu = document.createElement('div');
     wrap.className = 'fs-pv-more';
@@ -1533,11 +1536,11 @@
       place();
       if (menu.classList.contains('show')) { menu.classList.remove('show'); return; }
       menu.innerHTML = '';
-      PV_MENU.forEach(function (id) {
+      ids.forEach(function (id) {
         var b = document.getElementById(id);
         if (!b) return;
         var a = document.createElement('a');
-        a.href = '#'; a.innerHTML = b.innerHTML; if (id !== 'pvMuteBtn') a.className = 'fs-pv-danger';
+        a.href = '#'; a.innerHTML = b.innerHTML; if (id === 'pvBlockBtn' || id === 'pvReportUserBtn') a.className = 'fs-pv-danger';
         a.addEventListener('click', function (ev) { ev.preventDefault(); ev.stopPropagation(); menu.classList.remove('show'); b.click(); });
         menu.appendChild(a);
       });
