@@ -44,13 +44,20 @@
       'quest-moon-100', 'progress-track', 'progress-fill', 'chip', 'chip-active', 'gallery-frame', 'featured-frame', 'name-plate',
       'cover-left', 'cover-center', 'cover-right', 'profile-frame', 'primary-button', 'composer-panel', 'feed-panel', 'post-card',
       'photo-frame', 'people-row', 'candelabra', 'rose-cluster', 'rose-vine', 'chat-panel', 'conversation-panel', 'bubble-received',
-      'bubble-sent', 'input-bar', 'list-row', 'list-row-active', 'notification-row', 'page-title', 'group-card', 'skin-card', 'search-dropdown']
+      'bubble-sent', 'input-bar', 'list-row', 'list-row-active', 'notification-row', 'page-title', 'group-card', 'skin-card', 'search-dropdown'],
+    // Superhero: a comic book page with a cover spine down the right, one screen (Heroes + villains/)
+    superhero: ['bg', 'nav-spine', 'spine-emblem', 'spine-masthead', 'nav-tab', 'nav-tab-active', 'search-field', 'search-popover',
+      'avatar-ring', 'round-button', 'icon-button', 'coin-pill', 'rendition-track', 'cover-frame-left', 'cover-frame-middle',
+      'cover-frame-right', 'profile-ring', 'name-banner', 'primary-button', 'quests-card', 'progress-track', 'progress-fill',
+      'decor-burst', 'decor-coins', 'decor-laurel', 'decor-edge', 'chip', 'chip-active', 'side-card', 'section-banner', 'post-card',
+      'feed-panel', 'photo-frame', 'people-row', 'list-row', 'list-row-active', 'chat-panel', 'chat-received', 'chat-sent',
+      'input-bar', 'group-cover-frame', 'skin-card-frame']
   };
   // where each skin's concept puts the side panels (default: quests + coin goal top-left, featured skin top-right)
   var PLACE = { 'heavens-light': { featured: 'left-end' } };
   // one-screen skins (an open book, a stage, a desktop of windows): the whole 1440x900 design fits the window
   // (scale by width AND height, centred), and the feed scrolls inside its panel instead of the page
-  var FIT = { witchcraft: true, 'blood-moon': true };
+  var FIT = { witchcraft: true, 'blood-moon': true, superhero: true };
   var DESIGN_H = 900;
   var NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
   var BASE = new URL(window.FS_BASE || (NATIVE ? 'https://blipvibe.com/images/skins/' : 'images/skins/'), document.baseURI).href;

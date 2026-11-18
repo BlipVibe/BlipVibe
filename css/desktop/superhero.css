@@ -1,0 +1,312 @@
+/* BlipVibe full skins — SUPERHERO desktop layout: a comic book page (one screen) with a cover spine down the right.
+   Spec (owner-approved, 1:1): images/skins/superhero/desktop/desktop-*.png (Heroes) + desktop-villains-*.png.
+   Art: images/skins/superhero/assets/desktop/ (Heroes) and assets/desktop/villains/ (kit/desktop/manifest.json, 2x art).
+   FIT skin (body.fsd-fit). Positions measured on the 1440x900 concept; art slices x 0.469.
+   Structure: RIGHT spine = winged BV emblem + rendition plate, avatar, music, BLIPVIBE masthead, issue + coins, search,
+   tabs as stacked yellow caption boxes (active = red starburst); page = splash panel (painted in bg) with the three
+   tilted cover inset panels, profile ring + name ribbon + speech-balloon bio + stats + View Profile, MISSION BRIEFING
+   quests card with coin goal, stories strip, composer balloon + feed tabs, two post panels, photos / featured skin /
+   earn coins / people / trending groups panels. */
+@media (min-width: 1100px) {
+  html body.fs.fsd.fsd-superhero { --fsd-bar-h: 0px; --sh-title: var(--fs-title-font); --sh-ink: #141414; --sh-yellow: #ffd23a; }
+  html body.fs.fsd.fsd-superhero #premiumBgLayer { background-image: var(--fsd-bg) !important; background-color: #f5ead0 !important; }
+  html body.fs.fsd.fsd-superhero[data-fs-variant="villains"] #premiumBgLayer { background-color: #14161c !important; }
+  html body.fs.fsd.fsd-superhero::before, html body.fs.fsd.fsd-superhero::after { display: none !important; }
+  html body.fs.fsd.fsd-superhero .page { background: none !important; }
+
+  /* ---------- the cover spine (right edge) ---------- */
+  html body.fs.fsd.fsd-superhero .navbar { height: 900px !important; max-height: none !important; overflow: visible !important; pointer-events: none; }
+  html body.fs.fsd.fsd-superhero .navbar::before {
+    content: ""; display: block !important; position: absolute; left: 1200px; top: 0; width: 240px; height: 900px; z-index: 0; pointer-events: none;
+    background: var(--fsd-nav-spine) center / 100% 100% no-repeat !important; border: 0 !important; transform: none !important;
+  }
+  html body.fs.fsd.fsd-superhero .navbar::after {
+    content: ""; display: block !important; position: absolute; left: 1206px; top: 4px; width: 228px; height: 152px; z-index: 1; pointer-events: none;
+    background: var(--fsd-spine-emblem) center / contain no-repeat !important; border: 0 !important; transform: none !important;
+  }
+  html body.fs.fsd.fsd-superhero .navbar .nav-container { position: relative; display: block !important; padding: 0 !important; height: 900px !important; }
+  html body.fs.fsd.fsd-superhero .navbar .nav-container > * { pointer-events: auto; }
+  html body.fs.fsd.fsd-superhero .navbar .nav-logo {
+    position: absolute; left: 1208px; top: 252px; width: 224px; height: 100px; margin: 0 !important; padding: 0 !important; z-index: 1;
+    background: var(--fsd-spine-masthead) center / contain no-repeat !important; color: transparent !important; font-size: 0 !important; overflow: hidden;
+  }
+  html body.fs.fsd.fsd-superhero .navbar .nav-logo img { display: none !important; }
+  html body.fs.fsd.fsd-superhero .navbar .nav-logo::after {
+    content: "ISSUE 01"; position: absolute; left: 6px; top: 124px; font-family: var(--sh-title); font-size: 15px; color: var(--sh-ink);
+    background: #fffbe8; border: 2px solid #141414; padding: 1px 8px; display: none;
+  }
+  html body.fs.fsd.fsd-superhero .navbar .search-bar {
+    display: flex !important; position: absolute; left: 1215px; top: 420px; width: 210px; height: 40px; align-items: center; gap: 6px; z-index: 1;
+    background: none !important; border-radius: 0 !important; box-shadow: none !important; padding: 0 4px !important;
+    border: 12px solid transparent !important; border-width: 12px 43px 12px 20px !important; border-image: var(--fsd-search-field) 26 92 26 42 fill / 12px 43px 12px 20px stretch !important;
+  }
+  html body.fs.fsd.fsd-superhero .navbar .search-bar input { font-size: 16px !important; background: none !important; border: 0 !important; padding: 0 !important; height: auto !important; color: var(--sh-ink) !important; font-family: var(--fs-font) !important; }
+  html body.fs.fsd.fsd-superhero .navbar .nav-right { position: absolute; inset: 0; display: block !important; margin: 0 !important; pointer-events: none; }
+  html body.fs.fsd.fsd-superhero .navbar .nav-right > * { position: absolute !important; pointer-events: auto; z-index: 1; }
+  html body.fs.fsd.fsd-superhero .navbar #navUserDropdown { left: 1214px; top: 198px; }
+  html body.fs.fsd.fsd-superhero .navbar #navUserDropdown .nav-avatar {
+    width: 92px !important; height: 92px !important; padding: 13px; border: 0 !important; box-shadow: none !important; background: var(--fsd-avatar-ring) center / 100% 100% no-repeat !important;
+  }
+  html body.fs.fsd.fsd-superhero .navbar #navUserDropdown :is(.nav-username, .fa-chevron-down) { display: none !important; }
+  html body.fs.fsd.fsd-superhero .navbar #navMusicWrap { left: 1360px; top: 204px; }
+  html body.fs.fsd.fsd-superhero .navbar #navMusicBtn {
+    width: 50px !important; height: 50px !important; border-radius: 0 !important; border: 0 !important; box-shadow: none !important;
+    background: var(--fsd-round-button) center / 100% 100% no-repeat !important; color: var(--sh-ink) !important; font-size: 20px !important;
+  }
+  html body.fs.fsd.fsd-superhero .navbar #navCoins {
+    left: 1312px; top: 376px; height: 36px !important; min-width: 112px; padding: 0 4px !important; border-radius: 0 !important; box-shadow: none !important; background: none !important;
+    border: 12px solid transparent !important; border-width: 12px !important; border-image: var(--fsd-coin-pill) 35 26 fill / 12px stretch !important;
+    display: flex !important; align-items: center; justify-content: center; gap: 6px; font-family: var(--sh-title) !important; font-size: 18px !important; color: var(--sh-ink) !important;
+  }
+  html body.fs.fsd.fsd-superhero .navbar #fsDayNight {
+    left: 1214px; top: 160px; width: 212px !important; height: 34px !important; margin: 0 !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important;
+    background: var(--fsd-rendition-track) center / 100% 100% no-repeat !important;
+  }
+  html body.fs.fsd.fsd-superhero .navbar :is(#mobileSearchBtn, #mobileNotifBtn, #fsBarista) { display: none !important; }
+  /* tabs: stacked yellow caption boxes, the active one with the red starburst */
+  html body.fs.fsd.fsd-superhero .navbar .nav-center { position: absolute; inset: 0; display: block !important; margin: 0 !important; transform: none !important; pointer-events: none; }
+  html body.fs.fsd.fsd-superhero .navbar .nav-center .nav-link {
+    position: absolute !important; left: 1214px; width: 212px !important; height: 42px !important; pointer-events: auto; z-index: 1;
+    display: flex !important; flex-direction: row; align-items: center; justify-content: flex-start; gap: 14px; padding: 0 0 0 26px !important; margin: 0 !important;
+    background: none !important; border-radius: 0 !important; box-shadow: none !important; color: var(--sh-ink) !important;
+    border: 12px solid transparent !important; border-image: var(--fsd-nav-tab) 25 26 fill / 12px stretch !important;
+  }
+  html body.fs.fsd.fsd-superhero .navbar .nav-center .nav-link > i { font-size: 18px !important; width: 26px; text-align: center; }
+  html body.fs.fsd.fsd-superhero .navbar .nav-center .nav-link > span:not(.notif-badge) { display: block !important; font-family: var(--sh-title) !important; font-size: 19px !important; letter-spacing: .02em; text-transform: uppercase; color: var(--sh-ink) !important; }
+  html body.fs.fsd.fsd-superhero .navbar .nav-center .nav-link.active {
+    height: 46px !important; border-width: 12px 45px 12px 56px !important; padding-left: 0 !important;
+    border-image: var(--fsd-nav-tab-active) 26 95 26 119 fill / 12px 45px 12px 56px stretch !important;
+  }
+  html body.fs.fsd.fsd-superhero .navbar .nav-center .nav-link::before, html body.fs.fsd.fsd-superhero .navbar .nav-center .nav-link::after { display: none !important; }
+  html body.fs.fsd.fsd-superhero .navbar .nav-center .nav-link:nth-child(1) { top: 468px; }
+  html body.fs.fsd.fsd-superhero .navbar .nav-center .nav-link:nth-child(2) { top: 516px; }
+  html body.fs.fsd.fsd-superhero .navbar .nav-center .nav-link:nth-child(3) { top: 560px; }
+  html body.fs.fsd.fsd-superhero .navbar .nav-center .nav-link:nth-child(4) { top: 604px; }
+  html body.fs.fsd.fsd-superhero .navbar .nav-center .nav-link:nth-child(5) { top: 648px; display: flex !important; }
+  html body.fs.fsd.fsd-superhero .navbar .nav-center .nav-link:nth-child(6) { top: 693px; }
+  html body.fs.fsd.fsd-superhero .navbar .nav-center .nav-link:nth-child(7) { top: 740px; display: flex !important; }
+  html body.fs.fsd.fsd-superhero .navbar .nav-center .nav-link .notif-badge { top: -8px !important; right: -18px !important; left: auto !important; }
+
+  /* ---------- HOME: panels at their concept positions on the comic page ---------- */
+  html body.fs.fsd.fsd-superhero #page-home :is(.main-container, .left-sidebar, .right-sidebar, .center-feed) {
+    position: static !important; display: block !important; width: auto !important; max-width: none !important; margin: 0 !important; padding: 0 !important;
+    background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; transform: none !important;
+  }
+  html body.fs.fsd.fsd-superhero #page-home :is(.left-sidebar, .right-sidebar, .center-feed) > * { position: absolute !important; margin: 0 !important; box-sizing: border-box; }
+  html body.fs.fsd.fsd-superhero #page-home .right-sidebar > .card:not(.promo-card):not(.suggestions-card):not(.groups-card),
+  html body.fs.fsd.fsd-superhero #page-home .center-feed > :is(#discoverSort, #main-content, .mobile-pills-bar) { display: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home :is(.left-sidebar, .right-sidebar) > * { background: none !important; box-shadow: none !important; border-radius: 0 !important; overflow: visible !important; text-align: center; color: var(--sh-ink) !important; }
+  html body.fs.fsd.fsd-superhero #page-home :is(.left-sidebar, .right-sidebar, .center-feed) > *::before,
+  html body.fs.fsd.fsd-superhero #page-home :is(.left-sidebar, .right-sidebar, .center-feed) > *::after { display: none !important; }
+  /* small panels (side-card 400x420, slice 42 34 42 34) with a red ribbon title (section-banner, slice 26 114 34 114) */
+  html body.fs.fsd.fsd-superhero #page-home :is(.left-sidebar > .photos-card, .right-sidebar > .featured-skin-banner, .right-sidebar > .promo-card, .right-sidebar > .suggestions-card, .right-sidebar > .groups-card) {
+    border-style: solid !important; border-color: transparent !important; border-width: 20px 16px !important; padding: 18px 2px 0 !important;
+    border-image: var(--fsd-side-card) 42 34 fill / 20px 16px stretch !important;
+  }
+  html body.fs.fsd.fsd-superhero #page-home :is(.card-heading, .promo-title, .featured-header h4) {
+    position: absolute !important; left: 50%; top: -18px; transform: translateX(-50%); min-width: 150px; height: 36px; margin: 0 !important; z-index: 2; padding: 0 !important;
+    display: flex !important; align-items: center; justify-content: center; white-space: nowrap; box-sizing: border-box;
+    border: solid transparent; border-width: 12px 40px 16px 40px; border-image: var(--fsd-section-banner) 26 114 34 114 fill / 12px 40px 16px 40px stretch;
+    font-family: var(--sh-title) !important; font-weight: 400 !important; font-size: 16px !important; color: var(--sh-yellow) !important; text-transform: uppercase; letter-spacing: .02em;
+    -webkit-text-stroke: 1px #141414; text-align: center !important;
+  }
+  html body.fs.fsd.fsd-superhero #page-home :is(.card-heading, .featured-header h4) > i,
+  html body.fs.fsd.fsd-superhero #page-home .quest-panel-header :is(i, span, small, p),
+  html body.fs.fsd.fsd-superhero #page-home .featured-timer,
+  html body.fs.fsd.fsd-superhero #page-home :is(.photos-card, .suggestions-card) .view-more-link { display: none !important; }
+
+  /* cover: three tilted inset panels over the splash (windows: L 20,37 227x266 of 280x360 · M 32,46 277x286 of 352x380 · R 22,27 294x328 of 340x380) */
+  html body.fs.fsd.fsd-superhero #page-home > .timeline-cover {
+    position: absolute !important; left: 0; top: 0; width: 1440px !important; height: 900px !important; margin: 0 !important; pointer-events: none;
+    background: none !important; border: 0 !important; border-radius: 0 !important; overflow: visible !important; z-index: 1;
+  }
+  html body.fs.fsd.fsd-superhero #page-home > .timeline-cover::before, html body.fs.fsd.fsd-superhero #page-home > .timeline-cover::after,
+  html body.fs.fsd.fsd-superhero #page-home .timeline-cover-btn { display: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home .fs-timeline { position: absolute !important; inset: 0 !important; width: 1440px !important; height: 900px !important; transform: none !important; aspect-ratio: auto !important; background: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home .fs-timeline::before, html body.fs.fsd.fsd-superhero #page-home .fs-timeline::after { display: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home .fs-tl-slot { position: absolute !important; pointer-events: auto; border: 0 !important; box-shadow: none !important; margin: 0 !important; overflow: visible !important; border-radius: 0 !important; background-color: #fff; }
+  html body.fs.fsd.fsd-superhero #page-home .fs-tl-slot::before { content: ""; display: block !important; position: absolute; z-index: 2; pointer-events: none; border: 0 !important; transform: none !important; background: center / 100% 100% no-repeat; }
+  html body.fs.fsd.fsd-superhero #page-home .fs-tl-slot :is(img, .fs-tl-img) { width: 100% !important; height: 100% !important; object-fit: cover; border-radius: 0 !important; }
+  html body.fs.fsd.fsd-superhero #page-home .fs-tl-slot-1 { left: 407px !important; top: 51px !important; width: 106px !important; height: 125px !important; transform: rotate(-4deg) !important; }
+  html body.fs.fsd.fsd-superhero #page-home .fs-tl-slot-1::before { left: -9px; top: -17px; width: 131px; height: 169px; background-image: var(--fsd-cover-frame-left); }
+  html body.fs.fsd.fsd-superhero #page-home .fs-tl-slot-2 { left: 529px !important; top: 42px !important; width: 130px !important; height: 134px !important; transform: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home .fs-tl-slot-2::before { left: -15px; top: -21px; width: 165px; height: 178px; background-image: var(--fsd-cover-frame-middle); }
+  html body.fs.fsd.fsd-superhero #page-home .fs-tl-slot-3 { left: 666px !important; top: 49px !important; width: 138px !important; height: 154px !important; transform: rotate(4deg) !important; }
+  html body.fs.fsd.fsd-superhero #page-home .fs-tl-slot-3::before { left: -10px; top: -13px; width: 159px; height: 178px; background-image: var(--fsd-cover-frame-right); }
+  html body.fs.fsd.fsd-superhero #page-home .fs-tl-own::after { z-index: 3; }
+
+  /* profile: winged gold ring (window 92,62 269x269 of 464x388 -> 43,29 126x126 of 218x182), red name ribbon, balloon bio */
+  html body.fs.fsd.fsd-superhero .fsd-hero-card { position: absolute; left: 287px; top: 128px; width: 470px; height: 240px; z-index: 3; }
+  html body.fs.fsd.fsd-superhero #page-home #profileCard, html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-info {
+    background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; overflow: visible !important; position: static !important; display: block !important; height: 240px;
+  }
+  html body.fs.fsd.fsd-superhero #page-home #profileCard::before, html body.fs.fsd.fsd-superhero #page-home #profileCard::after,
+  html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-cover, html body.fs.fsd.fsd-superhero #page-home #profileCard .badge-row,
+  html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-info::after,
+  html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-links .edit-profile-btn { display: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-info::before {
+    content: ""; display: block !important; position: absolute; left: 0; top: 0; width: 218px; height: 182px; z-index: 2; pointer-events: none; border: 0 !important; transform: none !important;
+    background: var(--fsd-profile-ring) center / 100% 100% no-repeat;
+  }
+  html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-avatar-wrap {
+    position: absolute !important; inset: 29px auto auto 43px !important; transform: none !important; z-index: 1; width: 126px !important; height: 126px !important; margin: 0 !important;
+    border-radius: 50% !important; overflow: hidden; background: none !important; border: 0 !important; box-shadow: none !important; padding: 0 !important;
+  }
+  html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-avatar-wrap::before, html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-avatar-wrap::after { display: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-avatar { width: 100% !important; height: 100% !important; border-radius: 50% !important; object-fit: cover; border: 0 !important; box-shadow: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home #profileCard .fs-namecard {
+    position: absolute !important; left: 167px; top: 35px; width: 309px !important; margin: 0 !important; padding: 0 !important; height: auto !important; text-align: center !important;
+    background: none !important; border: 0 !important; border-image: none !important; transform: none !important;
+  }
+  html body.fs.fsd.fsd-superhero #page-home #profileCard .fs-namecard::before, html body.fs.fsd.fsd-superhero #page-home #profileCard .fs-namecard::after { display: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-name {
+    display: flex !important; align-items: center; justify-content: center; height: 96px; margin: 0 !important; box-sizing: border-box;
+    border: solid transparent; border-width: 23px 57px 34px 57px; border-image: var(--fsd-name-banner) 49 122 73 122 fill / 23px 57px 34px 57px stretch;
+    font-family: var(--sh-title) !important; font-size: 34px !important; font-weight: 400 !important; line-height: 1 !important; color: var(--sh-yellow) !important;
+    -webkit-text-stroke: 1.5px #141414; text-transform: uppercase;
+  }
+  html body.fs.fsd.fsd-superhero #page-home #profileCard :is(.profile-title, .profile-about) {
+    display: flex !important; align-items: center; justify-content: center; width: 220px; height: 42px; margin: 2px auto 0 22px !important; box-sizing: border-box;
+    border: 14px solid transparent; border-image: var(--fs-bubble-in) 100 fill / 14px stretch;
+    font-size: 19px !important; font-family: var(--fs-font) !important; color: var(--sh-ink) !important; text-align: center !important;
+  }
+  html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-stats {
+    position: absolute !important; left: 207px; top: 150px; display: flex !important; gap: 0; margin: 0 !important; padding: 0 !important; width: auto !important; aspect-ratio: auto !important;
+    background: none !important; border: 0 !important; border-image: none !important; height: auto !important; min-height: 0 !important;
+  }
+  html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-stats::before, html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-stats::after { display: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-stats .stat { display: flex !important; flex: none !important; flex-direction: row-reverse; gap: 5px; padding: 0 10px !important; background: none !important; border: 0 !important; border-image: none !important; height: auto !important; white-space: nowrap; }
+  html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-stats .stat + .stat { border-left: 2px solid #141414 !important; }
+  html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-stats .stat-count { font-family: var(--sh-title) !important; font-size: 18px !important; color: var(--sh-ink) !important; }
+  html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-stats .stat-label { font-size: 16px !important; color: var(--sh-ink) !important; }
+  html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-links { position: absolute !important; left: 212px; top: 178px; margin: 0 !important; display: flex !important; padding: 0 !important; background: none !important; border: 0 !important; height: auto !important; }
+  html body.fs.fsd.fsd-superhero #page-home #profileCard .profile-links .view-profile-link {
+    font-family: var(--sh-title) !important; font-size: 22px !important; text-transform: uppercase; height: 53px; min-width: 199px; display: inline-flex !important; align-items: center; justify-content: center;
+    background: none !important; border: 12px solid transparent !important; border-width: 12px 23px !important; border-image: var(--fsd-primary-button) 26 50 fill / 12px 23px stretch !important;
+    padding: 0 !important; color: var(--sh-ink) !important; border-radius: 0 !important;
+  }
+
+  /* MISSION BRIEFING: quests card (920x824, slice 61 66 85 66) top right of the page, coin goal inside it */
+  html body.fs.fsd.fsd-superhero #page-home .left-sidebar > .quest-panel {
+    left: 800px; top: 0; width: 400px; height: 290px; text-align: left; padding: 48px 10px 0 !important;
+    border: 0 !important; border-image: none !important; background: var(--fsd-quests-card) center top / 400px 358px no-repeat !important;
+  }
+  html body.fs.fsd.fsd-superhero #page-home .left-sidebar > .quest-panel .quest-panel-header h3,
+  html body.fs.fsd.fsd-superhero #page-home .left-sidebar > .quest-panel .quest-panel-header h4 {
+    position: absolute !important; left: 0; right: 0; top: 4px; margin: 0 !important; text-align: center !important;
+    font-family: var(--sh-title) !important; font-size: 30px !important; font-weight: 400 !important; color: var(--sh-yellow) !important; -webkit-text-stroke: 1.5px #141414; text-transform: uppercase;
+  }
+  html body.fs.fsd.fsd-superhero #page-home .quest-panel-header :is(i, span, small, p) { display: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home .quest-item { display: flex !important; flex-direction: row !important; align-items: center; gap: 8px !important; padding: 0 !important; margin: 0 0 10px !important; background: none !important; border: 0 !important; border-image: none !important; height: auto !important; min-height: 0 !important; grid-template-columns: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home .quest-item > * { grid-column: auto !important; grid-row: auto !important; }
+  html body.fs.fsd.fsd-superhero #page-home .quest-item .quest-icon { width: 46px !important; height: 46px !important; flex: none; border-radius: 0 !important; border: 0 !important; box-shadow: none !important; background: var(--fsd-round-button) center / 100% 100% no-repeat !important; color: #1d5fbf !important; font-size: 18px !important; }
+  html body.fs.fsd.fsd-superhero #page-home .quest-item .quest-info { flex: 1; min-width: 0; display: grid !important; grid-template-columns: 1fr auto; grid-template-areas: "t t" "b p"; column-gap: 8px; }
+  html body.fs.fsd.fsd-superhero #page-home .quest-item .quest-info p { grid-area: t; font-family: var(--fs-font) !important; font-weight: 700; font-size: 17px !important; margin: 0 !important; white-space: nowrap; color: var(--sh-ink) !important; }
+  html body.fs.fsd.fsd-superhero #page-home .quest-item .quest-bar { grid-area: b; align-self: center; height: 20px !important; border-radius: 0 !important; background: var(--fsd-progress-track) center / 100% 100% no-repeat !important; border: 0 !important; overflow: hidden; margin: 0 !important; padding: 4px 6px; }
+  html body.fs.fsd.fsd-superhero #page-home .quest-item .quest-bar-fill { background: var(--fsd-progress-fill) left center / 100% 100% no-repeat !important; border-radius: 0 !important; height: 100% !important; }
+  html body.fs.fsd.fsd-superhero #page-home .quest-item .quest-progress { grid-area: p; font-size: 15px !important; color: var(--sh-ink) !important; }
+  html body.fs.fsd.fsd-superhero #page-home .quest-item .quest-reward {
+    width: 56px; height: 44px; flex: none; display: inline-flex !important; align-items: center; justify-content: center; padding: 0 !important; border: 0 !important;
+    background: var(--fsd-decor-burst) center / 100% 100% no-repeat !important; font-family: var(--sh-title) !important; font-size: 18px !important; color: var(--sh-ink) !important;
+  }
+  html body.fs.fsd.fsd-superhero #page-home .quest-item .quest-reward i { display: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home .left-sidebar > .coin-goal-bar {
+    left: 900px; top: 290px; width: 250px; height: 84px; padding: 4px 0 0 !important; border: 0 !important; border-image: none !important; text-align: center;
+  }
+  html body.fs.fsd.fsd-superhero #page-home .left-sidebar > .coin-goal-bar::before {
+    content: ""; display: block !important; position: absolute; left: -94px; top: 10px; width: 92px; height: 78px; background: var(--fsd-decor-coins) center / contain no-repeat;
+  }
+
+  /* stories strip + composer balloon + feed tabs (the two blue strip panels painted in bg) */
+  html body.fs.fsd.fsd-superhero #page-home .center-feed > .stories-bar {
+    left: 20px; top: 382px; width: 530px; height: 120px; display: flex !important; justify-content: space-around; gap: 6px !important; padding: 0 !important; overflow: visible !important;
+    background: none !important; border: 0 !important; border-image: none !important;
+  }
+  html body.fs.fsd.fsd-superhero #page-home .center-feed > .stories-bar :is(.story-name, .story-item span) { font-family: var(--sh-title) !important; font-size: 14px !important; color: var(--sh-ink) !important; }
+  html body.fs.fsd.fsd-superhero #page-home .center-feed > .post-create-bar {
+    left: 612px; top: 400px; width: 540px; height: 60px; display: flex !important; align-items: center; gap: 12px; padding: 0 !important; min-height: 0 !important;
+    background: none !important; box-shadow: none !important; border-radius: 0 !important; border: 0 !important; border-image: none !important;
+  }
+  html body.fs.fsd.fsd-superhero #page-home .center-feed > .post-create-bar .post-create-avatar { display: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home .center-feed > .post-create-bar .post-input-fake {
+    width: 360px; flex: none; height: 58px; display: flex !important; align-items: center; padding: 0 10px !important; box-sizing: border-box;
+    border: 18px solid transparent !important; border-image: var(--fs-bubble-in) 100 fill / 18px stretch !important; background: none !important;
+    font-family: var(--fs-font) !important; font-size: 21px !important; font-weight: 700; color: var(--sh-ink) !important;
+  }
+  html body.fs.fsd.fsd-superhero #page-home .center-feed > #feedTabs { left: 604px; top: 472px; width: 540px; height: 40px; display: flex !important; gap: 8px !important; }
+  html body.fs.fsd.fsd-superhero #page-home #feedTabs .search-tab {
+    flex: 1 1 0 !important; height: 40px !important; justify-content: center !important; border-radius: 0 !important; box-shadow: none !important; background: none !important; padding: 0 !important;
+    border: 12px solid transparent !important; border-width: 12px 16px !important; border-image: var(--fsd-chip) 31 34 fill / 12px 16px stretch !important;
+    font-family: var(--sh-title) !important; font-size: 19px !important; text-transform: uppercase; color: var(--sh-ink) !important;
+  }
+  html body.fs.fsd.fsd-superhero #page-home #feedTabs .search-tab.active { border-width: 12px 24px !important; border-image: var(--fsd-chip-active) 26 51 fill / 12px 24px stretch !important; color: var(--sh-yellow) !important; -webkit-text-stroke: 1px #141414; }
+  html body.fs.fsd.fsd-superhero #page-home #feedTabs .search-tab > i { display: none !important; }
+
+  /* posts: comic panels side by side (scrolling horizontally would lose them — the feed scrolls vertically in its two-column strip) */
+  html body.fs.fsd.fsd-superhero #page-home .center-feed > #feedContainer {
+    left: 4px; top: 522px; width: 586px; height: 370px; overflow-y: auto !important; overflow-x: hidden !important; scrollbar-width: none; padding: 0 !important;
+    display: grid !important; grid-template-columns: 1fr 1fr; gap: 0 10px; align-content: start;
+  }
+  html body.fs.fsd.fsd-superhero #page-home .center-feed > #feedContainer::-webkit-scrollbar { display: none; }
+  html body.fs.fsd.fsd-superhero #feedContainer .feed-post {
+    position: relative !important; background: none !important; box-shadow: none !important; border-radius: 0 !important; margin: 0 0 8px !important; padding: 6px 6px 0 !important; min-height: 364px; color: var(--sh-ink) !important;
+    border-style: solid !important; border-color: transparent !important; border-width: 16px 23px 23px 23px !important; border-image: var(--fsd-post-card) 34 50 50 50 fill / 16px 23px 23px 23px stretch !important;
+    display: flex !important; flex-direction: column;
+  }
+  html body.fs.fsd.fsd-superhero #feedContainer .feed-post::before, html body.fs.fsd.fsd-superhero #feedContainer .feed-post::after { display: none !important; }
+  html body.fs.fsd.fsd-superhero #feedContainer .post-username { font-family: var(--sh-title) !important; font-size: 18px !important; font-weight: 400 !important; text-transform: uppercase; color: var(--sh-ink) !important; }
+  html body.fs.fsd.fsd-superhero #feedContainer .post-time { font-size: 13px !important; }
+  html body.fs.fsd.fsd-superhero #feedContainer .post-description {
+    border: 14px solid transparent !important; border-image: var(--fs-bubble-in) 100 fill / 14px stretch !important; background: none !important; margin: 4px 0 !important; padding: 0 4px !important;
+  }
+  html body.fs.fsd.fsd-superhero #feedContainer .post-description p { font-size: 15px !important; color: var(--sh-ink) !important; margin: 0 !important; }
+  html body.fs.fsd.fsd-superhero #feedContainer .post-media-grid { margin: 4px 0 !important; flex: 1; min-height: 0; overflow: hidden; }
+  html body.fs.fsd.fsd-superhero #feedContainer .post-actions .action-btn { font-size: 14px !important; }
+  html body.fs.fsd.fsd-superhero #feedContainer .action-right { display: none !important; }
+
+  /* lower panels: photos | featured skin (top), earn coins | people | trending groups (bottom) */
+  html body.fs.fsd.fsd-superhero #page-home .left-sidebar > .photos-card { left: 592px; top: 530px; width: 298px; height: 160px; }
+  html body.fs.fsd.fsd-superhero #page-home .photos-card .photos-preview { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 4px !important; padding: 0 !important; }
+  html body.fs.fsd.fsd-superhero #page-home .photos-card .photos-preview > *:nth-child(n+4) { display: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home .photos-card .photos-preview > * { aspect-ratio: 4 / 5; width: auto !important; height: auto !important; border-radius: 0 !important; overflow: hidden; border: 3px solid #141414 !important; transform: rotate(-2deg); background: #fff; }
+  html body.fs.fsd.fsd-superhero #page-home .photos-card .photos-preview > *:nth-child(2) { transform: rotate(2deg); }
+  html body.fs.fsd.fsd-superhero #page-home .photos-card .photos-preview img { width: 100% !important; height: 100% !important; object-fit: cover; border-radius: 0 !important; }
+  html body.fs.fsd.fsd-superhero #page-home .featured-skin-banner { left: 892px; top: 530px; width: 304px; height: 160px; }
+  html body.fs.fsd.fsd-superhero #page-home .featured-body { position: relative; display: block !important; height: 110px; }
+  html body.fs.fsd.fsd-superhero #page-home .featured-preview { position: absolute !important; inset: 0 !important; width: auto !important; height: auto !important; border-radius: 0 !important; }
+  html body.fs.fsd.fsd-superhero #page-home .featured-info { position: absolute; right: 6px; top: 20px; z-index: 1; text-align: center; }
+  html body.fs.fsd.fsd-superhero #page-home .featured-info h5 { font-family: var(--sh-title) !important; font-size: 26px !important; color: var(--sh-yellow) !important; -webkit-text-stroke: 1.5px #141414; text-transform: uppercase; margin: 0 !important; transform: rotate(-6deg); }
+  html body.fs.fsd.fsd-superhero #page-home .featured-info p, html body.fs.fsd.fsd-superhero #page-home .featured-buy-btn { display: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home .right-sidebar > .promo-card { left: 576px; top: 694px; width: 186px; height: 196px; }
+  html body.fs.fsd.fsd-superhero #page-home .right-sidebar > .suggestions-card { left: 766px; top: 694px; width: 234px; height: 196px; }
+  html body.fs.fsd.fsd-superhero #page-home .right-sidebar > .groups-card { left: 1002px; top: 694px; width: 194px; height: 196px; }
+  html body.fs.fsd.fsd-superhero #page-home :is(.promo-card, .suggestions-card, .groups-card) :is(.card-heading, .promo-title) { min-width: 0; width: 100%; font-size: 13px !important; border-width: 10px 30px 14px 30px; }
+  html body.fs.fsd.fsd-superhero #page-home .promo-card :is(.promo-logo, .promo-subtitle) { display: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home .promo-card .coin-rules { display: flex !important; flex-direction: column; gap: 4px !important; padding-left: 26px !important; }
+  html body.fs.fsd.fsd-superhero #page-home .promo-card .coin-rule { display: flex !important; justify-content: space-between; gap: 4px; font-size: 13px !important; font-weight: 700; color: var(--sh-ink) !important; background: #fff !important; border: 2px solid #141414 !important; border-image: none !important; padding: 2px 6px !important; margin: 0 !important; border-radius: 8px !important; text-align: left; }
+  html body.fs.fsd.fsd-superhero #page-home .promo-card .coin-rule :is(small, i) { display: none !important; }
+  /* people + groups: three portrait tiles across, follow under each (concept) */
+  html body.fs.fsd.fsd-superhero #page-home .suggestion-list { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 4px !important; }
+  html body.fs.fsd.fsd-superhero #page-home .right-sidebar .suggestions-card .suggestion-list .suggestion-item {
+    display: flex !important; flex-direction: column !important; align-items: center; gap: 2px !important; width: auto !important; flex: none !important; max-width: none !important;
+    height: auto !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important; background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important;
+  }
+  html body.fs.fsd.fsd-superhero #page-home .suggestions-card .suggestion-list .suggestion-item:nth-child(n+4) { display: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home .suggestion-item .suggestion-avatar { width: 62px !important; height: 62px !important; margin: 0 !important; border: 3px solid #141414 !important; border-radius: 50% !important; }
+  html body.fs.fsd.fsd-superhero #page-home .suggestion-item .suggestion-info { width: 100% !important; display: block !important; text-align: center; }
+  html body.fs.fsd.fsd-superhero #page-home .suggestion-item .suggestion-info h4 { font-size: 12px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0 !important; color: var(--sh-ink) !important; }
+  html body.fs.fsd.fsd-superhero #page-home .suggestion-item .suggestion-info p:empty { display: none; }
+  html body.fs.fsd.fsd-superhero #page-home .suggestion-item .suggestion-follow-btn {
+    width: 64px !important; height: 26px !important; padding: 0 !important; margin: 0 !important; border-radius: 0 !important; font-size: 11px !important; color: var(--sh-ink) !important;
+    background: none !important; border: 9px solid transparent !important; border-width: 9px 16px !important; border-image: var(--fsd-primary-button) 26 50 fill / 9px 16px stretch !important;
+  }
+  html body.fs.fsd.fsd-superhero #page-home .group-list { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+  html body.fs.fsd.fsd-superhero #page-home .groups-card .group-list > *:nth-child(n+4) { display: none !important; }
+  html body.fs.fsd.fsd-superhero #page-home .group-item { display: flex !important; flex-direction: column !important; align-items: center; gap: 2px !important; padding: 0 !important; margin: 0 !important; background: none !important; border: 0 !important; border-image: none !important; height: auto !important; text-align: center !important; }
+  html body.fs.fsd.fsd-superhero #page-home .group-item .group-icon { width: 54px !important; height: 54px !important; border: 3px solid #141414 !important; border-radius: 6px !important; }
+  html body.fs.fsd.fsd-superhero #page-home .group-item .group-name { font-size: 12px !important; margin: 0 !important; color: var(--sh-ink) !important; line-height: 1.1; }
+  html body.fs.fsd.fsd-superhero #page-home .group-item :is(.group-desc, .group-members) { display: none !important; }
+
+  /* Villains: same page, lair art; light lettering where Heroes uses black ink */
+  html body.fs.fsd.fsd-superhero[data-fs-variant="villains"] { --sh-ink: #e8ffe0; --sh-yellow: #a8ff3e; }
+}
