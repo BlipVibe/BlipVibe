@@ -9116,11 +9116,11 @@ html body.fs .connections-grid .profile-card-name { white-space: normal !importa
 /* Owner QA (Nov 17): the post like/dislike row ran out of the post (views "52" past the frame) — the buttons' spacing came
    from the row's inner group (.action-left, 10px gaps from the phone layout), not the row. The group now fills the row and
    spreads its buttons evenly; the liked-by avatars only take room when there are some. */
-html body.fs .post-actions:not(#_) { flex-wrap: nowrap !important; min-width: 0; }
-html body.fs .post-actions:not(#_) .action-left { flex: 1 1 auto !important; min-width: 0 !important; width: auto !important; gap: 0 !important; justify-content: space-between !important; flex-wrap: nowrap !important; }
-html body.fs .post-actions:not(#_) .action-btn { flex: 0 1 auto !important; min-width: 0 !important; }
+html body.fs:not(.fs-scrapbook) .post-actions:not(#_) { flex-wrap: nowrap !important; min-width: 0; }
+html body.fs:not(.fs-scrapbook) .post-actions:not(#_) .action-left { flex: 1 1 auto !important; min-width: 0 !important; width: auto !important; gap: 0 !important; justify-content: space-between !important; flex-wrap: nowrap !important; }
+html body.fs:not(.fs-scrapbook) .post-actions:not(#_) .action-btn { flex: 0 1 auto !important; min-width: 0 !important; }
 html body.fs .post-actions:not(#_) .action-right:has(.liked-avatars:empty) { display: none !important; }
-html body.fs .post-actions:not(#_) .action-right { flex: 0 0 auto; }
+html body.fs:not(.fs-scrapbook) .post-actions:not(#_) .action-right { flex: 0 0 auto; }
 /* Good Witch: the constellation charm on every 5th post sat on the bottom-left corner, right over the like button — it now
    hangs off the top-right corner (top-left would cover the poster's photo), clear of the ⋯ menu. */
 html body.fs.fs-good-witch .feed-post[data-fs-v="5"]::after { bottom: auto !important; left: auto !important; top: -34px !important; right: -16px !important; width: 70px !important; height: 60px !important; }

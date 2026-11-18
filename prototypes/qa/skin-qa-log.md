@@ -92,6 +92,9 @@ page) and ran it over 18 screens × all 21 renditions, twice (before and after t
 | Framed cards (sidebar cards, group "Post in…" bar, profile skin/photo cards) 4 px off both screen edges | all (owner's account uses the "Cinema" layout template, which pulls cards 12 px wide) | full skins drop the template's card pull |
 | Posts 8 px past the right edge, frame cut off | Vaporwave (Scrapbook 4 px = its intended tilt) | base `#feedContainer .card {width:100%}` overrode the skin's side margins → width auto |
 
+Confirmation sweep caught one regression: the all-skins row rule squashed Scrapbook's buttons to 4 px on posts with
+liked-by avatars (Scrapbook puts those on their own line) → Scrapbook keeps its own row layout. Re-checked clean.
+
 Checked and left as designed: Good Witch's quest book and Vaporwave's quest header art bleed a few px past the panel;
 Superhero's liked thumb pops to 34 px; Scrapbook posts tilt; Blood Moon's active tab pill overlaps the bar's end caps.
 
