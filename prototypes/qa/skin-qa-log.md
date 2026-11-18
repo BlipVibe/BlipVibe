@@ -26,7 +26,9 @@ kept on this machine only), `images/skins/README.md` and the skin's `NOTES.md`. 
 **Before any pass:** the QA install injects `window.__BV_QA_READONLY=true;` next to `window.FS_BASE` in `<head>`, uses `js/supabase.js` from main, and the console shows `[QA read-only] ON`. No pass runs without it.
 
 Automated checks run on every capture too (`qaCheck` / `qaPlace` in the QA harness): horizontal scroll, fields < 16px,
-premium overlays, squished `<img>`, text clipped in or spilling out of its box.
+premium overlays, squished `<img>`, text clipped in or spilling out of its box, and (since pass 4) `qaOverflow`: every
+element on the page, on- or off-screen, is checked for a child sticking out sideways past its parent's content box or text
+clipped by a hidden overflow — screenshots alone missed rows that ran a few px past their frames.
 
 Cell values: **pass**, **fixed** (commit), **open** (what's wrong).
 
@@ -74,6 +76,24 @@ Commits: 7d78031, 88f1231, 94e8360.
 | Bottom bar / Start bar | pass | pass | pass | pass | pass | pass | pass | pass | pass | fixed | fixed | fixed | fixed | pass | pass | Vaporwave Start bar vanished on every page after leaving a chat any way but Back |
 | Rendition toggle + swap | n/a | pass | pass | pass | pass | pass | n/a | pass | pass | pass | pass | pass | pass | pass | pass | AB lightning, GW day→night sweep, VW "Updating BlipVibe" pixel swap, HL sun→moon (one white flash frame at the start — by design?) |
 | Equip transition | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | Scrapbook paper collage, AB comic burst, WC moon ring + smoke, GW owl + constellations, VW BIOS boot, HL temple gates |
+
+## Pass 4 (Nov 17, owner: "stuff is still out of bounds … like, dislike stuff on the posts. Did you really do QA?")
+
+Screenshots alone missed overflows of a few px, so pass 4 added the automatic `qaOverflow` check (every element, whole
+page) and ran it over 18 screens × all 21 renditions, twice (before and after the fixes), plus screenshots.
+
+| Found | Skins | Fix |
+|---|---|---|
+| Post like/dislike row ran out of the post (views "52" past the frame; up to 41 px) | Witchcraft, Good Witch, Heaven's Light, Blood Moon, Superhero, #Basic (Vaporwave once posts were narrowed) | the row's inner button group took 10 px gaps from the phone layout; it now fills the row and spreads its buttons evenly, all skins; liked-by avatars only take room when there are some |
+| Constellation charm on every 5th post sat on top of the like button | Good Witch | moved to the post's top-right corner (top-left covered the poster's photo) |
+| Notifications: 8 tabs ran off the screen, "All" pill overlapped "Mentions" | Blood Moon | bar scrolls sideways inside its frame |
+| Network: "Not Following Back" broke into 3 lines and spilled out of the tab frame | Blood Moon | 14 px, two lines |
+| Group page: "Group Coins" ran out of the stats box (owner screenshot) | Scrapbook | box widened, stats share it evenly, labels wrap between words only |
+| Framed cards (sidebar cards, group "Post in…" bar, profile skin/photo cards) 4 px off both screen edges | all (owner's account uses the "Cinema" layout template, which pulls cards 12 px wide) | full skins drop the template's card pull |
+| Posts 8 px past the right edge, frame cut off | Vaporwave (Scrapbook 4 px = its intended tilt) | base `#feedContainer .card {width:100%}` overrode the skin's side margins → width auto |
+
+Checked and left as designed: Good Witch's quest book and Vaporwave's quest header art bleed a few px past the panel;
+Superhero's liked thumb pops to 34 px; Scrapbook posts tilt; Blood Moon's active tab pill overlaps the bar's end caps.
 
 ## Pass 3 (Nov 17, owner: "qa all of the skins each page"): every page × 21 renditions, own profile page added
 
@@ -171,6 +191,8 @@ so nothing comes back. Re-check column: date of the last pass that confirmed it.
 | 26 | Nov 17 | Heaven's Light (Day + Twilight) | Home top bar | profile picture doesn't fill its little space (photo hung out of the wreath's gold ring on the left, gap on the right) | 063fa13 (wreath re-centred on the ring measured in avatar-wings) | ✓ Nov 17 pass 2 |
 | 27 | Nov 17 | all | profile view | rule: the profile view's picture area must match the Home profile view (criterion V) | 063fa13 (Superhero Heroes: big + two stacked grid on profiles too) | ✓ Nov 17 pass 2: Scrapbook, Good Witch, Vaporwave, HL, Blood Moon, Superhero, #Basic match; Anime Blaze + Witchcraft profile photos made round in their Home rings (owner: "make them round" — round where the concept's profile screen is round, themed otherwise; always per the concept art) |
 | 28 | Nov 17 | all | every screen | check everything is aligned and matches the concept art; fix what doesn't | 063fa13 + this pass | ✓ Nov 17 pass 2 (fixes below) |
+| 29 | Nov 17 | all | posts | like/dislike row and other text/boxes still flow out of bounds | pass 4 (this commit) | ✓ Nov 17 pass 4 (qaOverflow clean on the post rows in all 21 renditions) |
+| 30 | Nov 17 | Scrapbook | group page | "Group Coins" runs out of the stats box (screenshot) | pass 4 (this commit) | ✓ Nov 17 pass 4 |
 
 ## Queued for the next pass
 

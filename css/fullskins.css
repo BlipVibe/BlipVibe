@@ -9112,3 +9112,34 @@ html body.fs .connections-grid .profile-card-name { white-space: normal !importa
     white-space: nowrap !important; text-overflow: clip !important; justify-content: center; }
   html body.fs.fs-witchcraft #page-profile-view .pv-profile-card:not(#_) #pvEditProfileBtn i { display: none !important; }
 }
+
+/* Owner QA (Nov 17): the post like/dislike row ran out of the post (views "52" past the frame) — the buttons' spacing came
+   from the row's inner group (.action-left, 10px gaps from the phone layout), not the row. The group now fills the row and
+   spreads its buttons evenly; the liked-by avatars only take room when there are some. */
+html body.fs .post-actions:not(#_) { flex-wrap: nowrap !important; min-width: 0; }
+html body.fs .post-actions:not(#_) .action-left { flex: 1 1 auto !important; min-width: 0 !important; width: auto !important; gap: 0 !important; justify-content: space-between !important; flex-wrap: nowrap !important; }
+html body.fs .post-actions:not(#_) .action-btn { flex: 0 1 auto !important; min-width: 0 !important; }
+html body.fs .post-actions:not(#_) .action-right:has(.liked-avatars:empty) { display: none !important; }
+html body.fs .post-actions:not(#_) .action-right { flex: 0 0 auto; }
+/* Good Witch: the constellation charm on every 5th post sat on the bottom-left corner, right over the like button — it now
+   hangs off the top-right corner (top-left would cover the poster's photo), clear of the ⋯ menu. */
+html body.fs.fs-good-witch .feed-post[data-fs-v="5"]::after { bottom: auto !important; left: auto !important; top: -34px !important; right: -16px !important; width: 70px !important; height: 60px !important; }
+/* Blood Moon (owner QA Nov 17): Notifications has 8 tabs — they ran off the screen ("Follow…") and the "All" pill
+   overlapped "Mentions". The bar now scrolls sideways inside its frame. Network: "Not Following Back" broke into three
+   lines and spilled out of the frame — two lines now. */
+html body.fs.fs-blood-moon #notifTabs:not(#_) { overflow-x: auto !important; overflow-y: hidden !important; scrollbar-width: none; -webkit-overflow-scrolling: touch; justify-content: flex-start !important; padding: 5px 8px !important; }
+html body.fs.fs-blood-moon #notifTabs:not(#_)::-webkit-scrollbar { display: none; }
+html body.fs.fs-blood-moon #notifTabs:not(#_) .search-tab { flex: 0 0 auto !important; margin: 0 !important; padding: 6px 10px !important; font-size: 15px !important; }
+html body.fs.fs-blood-moon #profilesTabs:not(#_) .search-tab { font-size: 14px !important; line-height: 1.1 !important; padding: 4px 6px !important; }
+/* Scrapbook group page: "Group Coins" (with its coin) ran out of the stats box — the three stats share the box evenly and a
+   long label wraps instead. */
+html body.fs.fs-scrapbook #page-group-view .profile-stats:not(#_) .stat { flex: 1 1 0 !important; min-width: 0 !important; }
+html body.fs.fs-scrapbook #page-group-view .profile-stats:not(#_) { width: calc(100% - 36px) !important; max-width: 360px !important; box-sizing: border-box !important; margin-left: auto !important; margin-right: auto !important; }
+html body.fs.fs-scrapbook #page-group-view .profile-stats:not(#_) .stat-label { font-size: 15px !important; white-space: normal !important; word-break: normal !important; overflow-wrap: normal !important; line-height: 1.1 !important; text-align: center; }
+/* Layout template "Cinema" (tpl-cinema) pulls every .card 12px past the column (edge-to-edge) — under a full skin that pushed
+   framed cards (sidebar cards, group "Post in…" bar, profile skin/photo cards) 4px off the screen. Full skins frame their
+   cards, so the pull is dropped; skin rules that set their own card margins still win (higher specificity). */
+body.fs.tpl-cinema .card { margin-left: 0 !important; margin-right: 0 !important; }
+/* Vaporwave + Scrapbook: posts have side margins, but the base "#feedContainer .card { width: 100% }" (id rule) kept them
+   full width, so each post ran 8px (Scrapbook 4px) past the right edge of the screen and its frame was cut off. */
+html body.fs:is(.fs-vaporwave, .fs-scrapbook) :is(#feedContainer, #pvPostsFeed, #gvPostsFeed) > .card { width: auto !important; }
