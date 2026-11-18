@@ -9187,3 +9187,18 @@ html body.fs.fs-witchcraft #page-group-view .profile-stats:not(#_) .stat:last-ch
 /* Pass 5: Superhero Network / Search rows — a one-word name ("Bboy_Kooaid") broke mid-word at 19px; names size down
    so a single word stays whole (two-word names still wrap between words). */
 html body.fs.fs-superhero :is(#page-profiles, #page-search) .profile-card-name:not(#_) { font-size: 16px !important; letter-spacing: 0 !important; overflow-wrap: normal !important; word-break: normal !important; min-width: 0; }
+/* Pass 5: Blood Moon comment box — the 20px painted frame left ~108px inside, so "Write a comment..." was cut; thinner
+   frame sides and a smaller placeholder (typed text stays 16px so iOS doesn't zoom). */
+html body.fs.fs-blood-moon #commentInput:not(#_) { border-left-width: 13px !important; border-right-width: 13px !important; }
+html body.fs.fs-blood-moon #commentInput:not(#_)::placeholder { font-size: 14px !important; }
+/* Pass 5: Vaporwave puts the profile ⋯ on the Timeline.exe window low on the page, so Mute/Block/Report dropped down
+   behind the taskbar; the menu opens upward from the button. */
+html body.fs.fs-vaporwave #page-profile-view .fs-pv-more .fs-pv-menu:not(#_) { top: auto !important; bottom: 46px !important; }
+/* Pass 5: Superhero Villains — "ADD CLOSE FRIEND" was cut to "ADD CLOSE FRIENI" on its plaque (wide stencil face). */
+html body.fs.fs-superhero[data-fs-variant="villains"] #page-profile-view .pv-actions .btn:not(#_) { font-size: 11px !important; letter-spacing: 0 !important; white-space: nowrap !important; padding-left: 2px !important; padding-right: 2px !important; border-left-width: 12px !important; border-right-width: 12px !important; }
+/* Pass 5: Vaporwave modern — "People You May Know" was cut to "…Knov" on its Home pill (wider bold face + 26px padding). */
+html body.fs.fs-vaporwave[data-fs-variant^="modern"] :is(#pillPeopleYouKnow, #pillTrendingGroups):not(#_) { padding-left: 8px !important; padding-right: 8px !important; font-size: 12px !important; gap: 5px !important; letter-spacing: 0 !important; }
+/* Pass 5: the settings / notification-preferences "Done" button also carries .modal-close, whose base 36x36 icon-button
+   size squeezed it to a square with "Done" cut ("Donı") and pushed it left on Vaporwave. A text button sizes to its word. */
+html body.fs .btn.modal-close:not(#_) { width: auto !important; min-width: 110px !important; display: inline-flex !important; margin: 0 auto !important; }
+html body.fs.fs-vaporwave .btn.modal-close:not(#_) { padding-left: 18px !important; padding-right: 18px !important; font-size: 14px !important; }

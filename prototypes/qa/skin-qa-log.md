@@ -77,6 +77,34 @@ Commits: 7d78031, 88f1231, 94e8360.
 | Rendition toggle + swap | n/a | pass | pass | pass | pass | pass | n/a | pass | pass | pass | pass | pass | pass | pass | pass | AB lightning, GW day→night sweep, VW "Updating BlipVibe" pixel swap, HL sun→moon (one white flash frame at the start — by design?) |
 | Equip transition | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | Scrapbook paper collage, AB comic burst, WC moon ring + smoke, GW owl + constellations, VW BIOS boot, HL temple gates |
 
+## Pass 5 (Nov 18, owner: "do the full things … all the pictures where they're supposed to be, no out of bounds")
+
+Every page × 21 renditions, 23 screens (pass 4's 18 plus Home stories, Home quests, the store top, the **story viewer**
+and the **account menu**), three full sweeps. New automatic checks: `qaFrames` (photo spills past / gaps inside its
+frame, broken images) and `qaBtnFit` (a button / tab / pill's words inside its *painted* frame, not just its outer box).
+The story viewer is opened on a display-only test story (QA build only). Profile screens now run last: viewing someone
+else's profile can leave the look-only QA switch on their look, which hid the store / groups screens in sweep 1.
+
+| Found | Skins | Fix |
+|---|---|---|
+| Story viewer: the reply field and send button pushed off the right edge by the six reactions | all without their own story layout | reactions on their own centred row above the field |
+| Story viewer: the caption sat under the reply bar | all | caption rides above the bar (above Views/delete on your own story) |
+| Story viewer: poster's name cut to "STORY" and the ✕ under the clock / camera cutout | Superhero | header starts below the safe area |
+| Account menu text unreadable (pale pink / lilac on parchment, silver, light windows) — a real equip adds the legacy `premium-<id>` theme whose `--ps-text` painted the links | Blood Moon (both), Vaporwave retro + modern | dark ink on the light panels, Logout red; same for the post ⋯ menu |
+| "DAILY QUESTS" ran under the drone (S hidden) | Superhero Villains | title centred left of the drone, sized to fit |
+| Store: the Equipped tag was hidden under the button plate and had no word on it | Superhero (both) | tag with "EQUIPPED" under Take off |
+| Group page: "Group Coins" broke over the plaque's frame | Witchcraft | one line, coins plaque a little wider |
+| Network: "Bboy_Kooaid" broke mid-name | Superhero (both) | names size down so one word stays whole |
+| Comment box: "Write a comment…" cut by the frame | Blood Moon (both) | thinner frame sides, smaller placeholder (typed text stays 16 px) |
+| Profile ⋯ menu dropped down behind the taskbar | Vaporwave (all 4) | opens upward |
+| "ADD CLOSE FRIEND" cut to "FRIENI" | Superhero Villains | profile buttons sized to their plaques |
+| Home pill "People You May Know" cut to "…Knov" | Vaporwave modern + modern-dark | pill text sized to its frame |
+| Settings "Done" squeezed into a 36 px square ("Donı"), pushed left (it also carries the ✕ button's class) | Vaporwave (all 4); size reset on every skin | text button sizes to its word, centred |
+
+Checked and left as designed: Witchcraft view count touches its button padding (0 px past); the Witchcraft search field
+fills the header under the side ornaments; the reaction row's "?" boxes run wide only because the simulator has no emoji
+font (owner confirmed emoji show on phones).
+
 ## Pass 4 (Nov 17, owner: "stuff is still out of bounds … like, dislike stuff on the posts. Did you really do QA?")
 
 Screenshots alone missed overflows of a few px, so pass 4 added the automatic `qaOverflow` check (every element, whole
@@ -149,7 +177,7 @@ network) are horizontal scrollers by design. No story to open on the QA account 
 
 ## Simulator-only quirks (not app bugs)
 
-- Emoji show as `[?]` boxes in the iOS 26 simulator, on any font.
+- Emoji show as `[?]` boxes in the iOS 26 simulator, on any font (owner confirmed Nov 17: they show on phones).
 
 ## Open
 
@@ -196,6 +224,7 @@ so nothing comes back. Re-check column: date of the last pass that confirmed it.
 | 28 | Nov 17 | all | every screen | check everything is aligned and matches the concept art; fix what doesn't | 063fa13 + this pass | ✓ Nov 17 pass 2 (fixes below) |
 | 29 | Nov 17 | all | posts | like/dislike row and other text/boxes still flow out of bounds | pass 4 (this commit) | ✓ Nov 17 pass 4 (qaOverflow clean on the post rows in all 21 renditions) |
 | 30 | Nov 17 | Scrapbook | group page | "Group Coins" runs out of the stats box (screenshot) | pass 4 (this commit) | ✓ Nov 17 pass 4 |
+| 31 | Nov 17 | all | every page incl. story viewer + account menu | "do the full things … pictures where they're supposed to be, no out of bounds" | pass 5 | ✓ Nov 18 pass 5 (3 sweeps) |
 
 ## Queued for the next pass
 
