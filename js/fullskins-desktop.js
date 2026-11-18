@@ -59,6 +59,18 @@
       'photo-frame', 'people-row', 'progress-track', 'progress-fill', 'nameplate', 'decor-bust', 'decor-cassette', 'decor-coins',
       'chat-panel', 'conversation-panel', 'bubble-received', 'bubble-sent', 'input', 'list-row', 'list-row-active', 'search-dropdown'],
     // Anime Blaze: a manga page with a slanted menu rail, one screen (red + blue/ purple/ green/ pink/ recoloured offline)
+    // Good Witch: floating cloud islands, one screen (Day + night/)
+    'good-witch': [
+      'avatar-ring', 'bg', 'chat-input', 'chat-orb', 'chat-received', 'chat-sent', 'chip-active', 'chip-inactive',
+      'coin-pill', 'composer', 'conversation-header', 'cover-ring', 'decor-butterfly', 'decor-cat',
+      'decor-crystal-ball', 'decor-crystals', 'decor-necklace', 'decor-owl', 'decor-potion', 'decor-wand',
+      'earn-card', 'featured-card', 'group-cover-frame', 'groups-card', 'hero-crescent', 'icon-button', 'list-row',
+      'list-row-active', 'name-cloud', 'nav-active', 'nav-inactive', 'nav-rail', 'notification-row',
+      'notification-row-unread', 'page-heading', 'people-card', 'people-row', 'photo-frame', 'photo-panel',
+      'post-card', 'primary-button', 'profile-post-card', 'profile-ring', 'progress-fill', 'progress-track',
+      'quest-0', 'quest-100', 'quest-50', 'quests-card', 'rendition-track', 'search-dropdown', 'search-field',
+      'side-card', 'skin-cover-frame', 'stories-cloud', 'tabs-track', 'thumbnail-frame', 'utility-cloud',
+      'wordmark-cloud'],
     'anime-blaze': [
       'avatar-ring', 'bg', 'chat-panel', 'chat-received', 'chat-sent', 'chip-active', 'chip-inactive',
       'chip-inactive-ivory', 'coin-pill', 'composer-field', 'cover-frame', 'decor-flame', 'decor-gutter',
@@ -72,7 +84,7 @@
   var PLACE = { 'heavens-light': { featured: 'left-end' } };
   // one-screen skins (an open book, a stage, a desktop of windows): the whole 1440x900 design fits the window
   // (scale by width AND height, centred), and the feed scrolls inside its panel instead of the page
-  var FIT = { witchcraft: true, 'blood-moon': true, superhero: true, vaporwave: true, 'anime-blaze': true };
+  var FIT = { witchcraft: true, 'blood-moon': true, superhero: true, vaporwave: true, 'anime-blaze': true, 'good-witch': true };
   var DESIGN_H = 900;
   var NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
   var BASE = new URL(window.FS_BASE || (NATIVE ? 'https://blipvibe.com/images/skins/' : 'images/skins/'), document.baseURI).href;
