@@ -1,0 +1,329 @@
+/* BlipVibe full skins — HEAVEN'S LIGHT desktop layout: a symmetrical sky temple seen head-on.
+   Spec (owner-approved, 1:1): images/skins/heavens-light/desktop/desktop-*.png (Day) + desktop-twilight-*.png.
+   Art: images/skins/heavens-light/assets/desktop/ (Day) and assets/desktop/twilight/ (same names), painted from the
+   concepts (kit/desktop/manifest.json). Loaded by js/fullskins-desktop.js only while Heaven's Light is on and the
+   window is desktop-wide. Design px are 1440-wide (concept 1536 x 0.9375); the whole layout scales with --fsd-z.
+   Structure: golden pediment nav (tabs = medallions in the frieze), the temple background fixed behind everything
+   (bg is width-anchored so its columns stay under the panels), profile centred in the nave under the three arches,
+   one feed column down the nave, quests / coin goal / photos / featured skin on the LEFT altars and people /
+   groups / earn coins on the RIGHT altars (sticky, they stay in their niches while the feed scrolls). */
+@media (min-width: 1100px) {
+  html body.fs.fsd.fsd-heavens-light {
+    --fsd-bar-h: 150px;
+    --fsd-cols-w: 1140px; --fsd-col-l: 240px; --fsd-col-r: 240px; --fsd-gap: 88px; --fsd-cols-top: 0px;
+    --fsd-card-left: 532px; --fsd-card-w: 376px; --fsd-card-top: 66px;
+    --hl-title: 'Cinzel', serif;
+  }
+
+  /* ---------- the temple: background fixed and anchored to the window width ---------- */
+  html body.fs.fsd.fsd-heavens-light #premiumBgLayer {
+    background: var(--fsd-bg) center top / 100% auto no-repeat !important;
+    background-color: #f2e4cc !important;
+  }
+  html body.fs.fsd.fsd-heavens-light[data-fs-variant="twilight"] #premiumBgLayer { background-color: #2a3150 !important; }
+  html body.fs.fsd.fsd-heavens-light::before, html body.fs.fsd.fsd-heavens-light::after { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light .page { background: none !important; }
+
+  /* ---------- navigation: the golden pediment / frieze ---------- */
+  html body.fs.fsd.fsd-heavens-light .navbar {
+    background: var(--fsd-nav-pediment) center top / 100% 100% no-repeat !important;
+    border: 0 !important; border-image: none !important; box-shadow: none !important;
+    height: var(--fsd-bar-h) !important; max-height: none !important;
+  }
+  html body.fs.fsd.fsd-heavens-light .navbar::before, html body.fs.fsd.fsd-heavens-light .navbar::after { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light .navbar .nav-container { position: relative; display: block !important; padding: 0 !important; }
+  /* wordmark carved in the pediment's centre plate, between the laurels */
+  html body.fs.fsd.fsd-heavens-light .navbar .nav-logo {
+    position: absolute; left: 50%; top: 19px; transform: translateX(-50%);
+    font-family: var(--hl-title) !important; font-weight: 700 !important; font-size: 34px !important; letter-spacing: .06em;
+    color: #9a6a1c !important; text-shadow: 0 1px 0 rgba(255, 255, 255, .7); background: none !important;
+    padding: 0 !important; margin: 0 !important; line-height: 1 !important;
+  }
+  html body.fs.fsd.fsd-heavens-light .navbar .nav-logo img { display: none !important; }
+  /* left end of the frieze: search, music, coins, avatar on gold plaques */
+  html body.fs.fsd.fsd-heavens-light .navbar .search-bar {
+    display: flex !important; position: absolute; left: 86px; top: 89px; width: 136px; height: 34px;
+    background: none !important; border-radius: 0 !important; box-shadow: none !important;
+    border: 14px solid transparent !important; border-image: var(--fsd-search-field) 30 fill / 14px stretch !important;
+    padding: 0 2px !important; align-items: center; gap: 6px;
+  }
+  html body.fs.fsd.fsd-heavens-light .navbar .search-bar input { font-size: 14px !important; background: none !important; border: 0 !important; padding: 0 !important; height: auto !important; color: var(--fs-ink) !important; }
+  html body.fs.fsd.fsd-heavens-light .navbar .search-bar i { font-size: 12px; }
+  html body.fs.fsd.fsd-heavens-light .navbar .nav-right {
+    position: absolute; left: 232px; top: 86px; display: flex !important; align-items: center; gap: 8px; margin: 0 !important;
+  }
+  html body.fs.fsd.fsd-heavens-light .navbar .nav-right > :is(#fsDayNight) {
+    position: absolute; left: 990px; top: 2px; width: 92px; height: 36px; margin: 0 !important;
+    background: var(--fsd-rendition-track) center / 100% 100% no-repeat !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important;
+  }
+  html body.fs.fsd.fsd-heavens-light .navbar #navMusicBtn {
+    width: 40px !important; height: 40px !important; border-radius: 50% !important; border: 0 !important; box-shadow: none !important;
+    background: var(--fsd-icon-button) center / 100% 100% no-repeat !important; color: #9a6a1c !important;
+  }
+  html body.fs.fsd.fsd-heavens-light .navbar #navCoins {
+    height: 34px !important; min-width: 74px; padding: 0 4px !important; border-radius: 0 !important; box-shadow: none !important;
+    background: none !important; border: 12px solid transparent !important; border-image: var(--fsd-coin-pill) 24 28 fill / 12px 14px stretch !important;
+    display: flex !important; align-items: center; gap: 4px; font-size: 15px !important;
+  }
+  html body.fs.fsd.fsd-heavens-light .navbar #navUserDropdown .nav-avatar {
+    width: 46px !important; height: 46px !important; padding: 5px; border: 0 !important; box-shadow: none !important;
+    background: var(--fsd-avatar-ring) center / 100% 100% no-repeat !important;
+  }
+  /* the frieze: tabs as carved gold medallions (icon + caps label), the active one lit with rays */
+  html body.fs.fsd.fsd-heavens-light .navbar .nav-center {
+    position: absolute; left: 446px; top: 58px; width: 662px; height: 88px;
+    display: flex !important; justify-content: space-between; align-items: flex-start; gap: 0 !important; margin: 0 !important; transform: none !important;
+  }
+  html body.fs.fsd.fsd-heavens-light .navbar .nav-center .nav-link {
+    display: flex !important; flex-direction: column; align-items: center; justify-content: flex-start;
+    width: 68px !important; height: 86px !important; padding: 10px 0 0 !important; margin: 0 !important;
+    background: var(--fsd-nav-tab) center top / 62px 62px no-repeat !important;
+    border: 0 !important; border-radius: 0 !important; box-shadow: none !important; color: #8a5f1a !important; position: relative;
+  }
+  html body.fs.fsd.fsd-heavens-light .navbar .nav-center .nav-link > i { font-size: 19px !important; line-height: 34px; }
+  html body.fs.fsd.fsd-heavens-light .navbar .nav-center .nav-link > span:not(.notif-badge) {
+    display: block !important; position: absolute; top: 62px; left: -14px; right: -14px; text-align: center;
+    font-family: var(--hl-title) !important; font-size: 10.5px !important; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+    color: #6e4c16 !important; white-space: nowrap;
+  }
+  html body.fs.fsd.fsd-heavens-light .navbar .nav-center .nav-link.active {
+    background: var(--fsd-nav-tab-active) center -10px / 82px 82px no-repeat !important; color: #fff8e6 !important;
+  }
+  html body.fs.fsd.fsd-heavens-light .navbar .nav-center .nav-link::after,
+  html body.fs.fsd.fsd-heavens-light .navbar .nav-center .nav-link::before { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light .navbar .nav-center .nav-link .notif-badge { top: 2px !important; right: 6px !important; }
+
+  /* ---------- HOME: three arches, centred cameo + marble tablet, nave feed, altars both sides ---------- */
+  html body.fs.fsd.fsd-heavens-light #page-home > .timeline-cover {
+    position: absolute !important; left: 0; top: var(--fsd-bar-h); width: 1440px !important; height: 300px !important; z-index: 2;
+    background: none !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home > .timeline-cover::before,
+  html body.fs.fsd.fsd-heavens-light #page-home > .timeline-cover::after { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .timeline-cover-btn { display: none !important; }
+  /* the cover photos sit in the background's three arched windows (painted temple frames) */
+  html body.fs.fsd.fsd-heavens-light #page-home .fs-timeline {
+    position: absolute !important; inset: 0 !important; width: 1440px !important; height: 300px !important;
+    transform: none !important; aspect-ratio: auto !important; background: none !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home .fs-timeline::before, html body.fs.fsd.fsd-heavens-light #page-home .fs-timeline::after { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .fs-tl-slot {
+    position: absolute !important; top: 12px !important; height: 152px !important; transform: none !important;
+    border-radius: 60px 60px 0 0 !important; overflow: hidden !important; border: 0 !important; box-shadow: none !important;
+    background-image: none; margin: 0 !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home .fs-tl-slot::before { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .fs-tl-slot img { width: 100% !important; height: 100% !important; object-fit: cover; border-radius: 0 !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .fs-tl-slot-1 { left: 521px !important; width: 104px !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .fs-tl-slot-2 { left: 663px !important; width: 108px !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .fs-tl-slot-3 { left: 810px !important; width: 105px !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .fs-tl-own::after { z-index: 3; }
+
+  /* profile: oval gold cameo with wings (profile-frame window 182,38 188x222 of 560x300), marble tablet below */
+  html body.fs.fsd.fsd-heavens-light .fsd-hero-card { text-align: center; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard {
+    background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; padding: 0 !important; overflow: visible !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard::before, html body.fs.fsd.fsd-heavens-light #page-home #profileCard::after,
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-cover { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-info {
+    display: flex !important; flex-direction: column; align-items: center; position: relative;
+    padding: 0 !important; margin: 0 !important; background: none !important; border: 0 !important; border-image: none !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-info::before {
+    content: ""; position: absolute; z-index: 0; left: 57px; top: 0; width: 262px; height: 140px; pointer-events: none;
+    background: var(--fsd-profile-frame) center / 100% 100% no-repeat;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-avatar-wrap {
+    position: relative; z-index: 1; width: 88px !important; height: 104px !important; margin: 18px 0 0 !important;
+    border-radius: 50% !important; overflow: hidden; background: none !important; border: 0 !important; box-shadow: none !important; padding: 0 !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-avatar-wrap::before, html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-avatar-wrap::after { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-avatar { width: 100% !important; height: 100% !important; border-radius: 50% !important; object-fit: cover; border: 0 !important; box-shadow: none !important; }
+  /* the tablet: name, bio, stats, View Profile on the marble name plate (slice 56 120 34 120 of 800x260) */
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .fs-namecard {
+    position: relative; z-index: 1; margin: 2px 0 0 !important; width: 330px !important; padding: 0 !important;
+    background: none !important; border: 0 !important; border-image: none !important; transform: none !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .fs-namecard::before { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-info > .fs-namecard ~ * { position: relative; z-index: 1; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-info .hl-plate,
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-info::after {
+    content: ""; position: absolute; z-index: 0; left: 23px; top: 122px; width: 330px; height: 112px; pointer-events: none;
+    border: solid transparent; border-width: 26px 56px 16px 56px;
+    border-image: var(--fsd-name-plate) 56 120 34 120 fill / 26px 56px 16px 56px stretch; box-sizing: border-box;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-name { font-family: var(--hl-title) !important; font-size: 24px !important; font-weight: 700 !important; margin: 0 !important; line-height: 1.1 !important; color: var(--fs-ink) !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard :is(.profile-title, .profile-about) { font-size: 15px !important; font-style: italic; margin: 0 !important; text-align: center !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-stats {
+    display: flex !important; justify-content: center; gap: 0; margin: 2px 0 0 !important; padding: 0 !important;
+    background: none !important; border: 0 !important; border-image: none !important; height: auto !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-stats::before, html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-stats::after { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-stats .stat { display: flex !important; flex-direction: row-reverse; gap: 4px; padding: 0 10px !important; background: none !important; border: 0 !important; border-image: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-stats .stat + .stat { border-left: 1px solid rgba(154, 106, 28, .45) !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-stats .stat-count { font-size: 14px !important; font-weight: 700; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-stats .stat-label { font-size: 14px !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-links { margin: 4px 0 0 !important; display: flex !important; justify-content: center; gap: 6px; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-links .view-profile-link {
+    font-family: var(--hl-title) !important; font-size: 12px !important; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+    height: 28px; min-width: 148px; display: inline-flex !important; align-items: center; justify-content: center;
+    background: none !important; border: 12px solid transparent !important; border-image: var(--fsd-primary-button) 24 28 fill / 12px 14px stretch !important;
+    padding: 0 6px !important; color: #6e4c16 !important; border-radius: 0 !important;
+  }
+
+  /* three columns: the nave between the altars; the hero occupies the top of the nave */
+  html body.fs.fsd.fsd-heavens-light #page-home > .main-container { margin-top: 0 !important; align-items: start; }
+  html body.fs.fsd.fsd-heavens-light #page-home .center-feed { padding-top: 300px !important; background: none !important; border: 0 !important; border-image: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home :is(.left-sidebar, .right-sidebar) {
+    position: sticky !important; top: var(--fsd-bar-h); align-self: start; flex-direction: column; gap: 6px !important;
+    max-height: calc(100vh / var(--fsd-z, 1) - var(--fsd-bar-h)); overflow-y: auto; overflow-x: visible; scrollbar-width: none; padding: 0 0 12px !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home :is(.left-sidebar, .right-sidebar)::-webkit-scrollbar { display: none; }
+
+  /* altars: the first panel on each side stands on the tall altar (side-altar 640x580, slice 190 80 64 80),
+     the rest on marble side cards (side-card 640x320, slice 82 72 60 72) */
+  html body.fs.fsd.fsd-heavens-light #page-home :is(.left-sidebar, .right-sidebar) > :is(.card, .quest-panel, .coin-goal-bar, .featured-skin-banner) {
+    background: none !important; box-shadow: none !important; border-radius: 0 !important; margin: 0 !important; overflow: visible !important;
+    border-style: solid !important; border-color: transparent !important;
+    border-width: 38px 34px 28px 34px !important;
+    border-image: var(--fsd-side-card) 82 72 60 72 fill / 38px 34px 28px 34px stretch !important;
+    padding: 0 2px 2px !important; text-align: center;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home .left-sidebar > .quest-panel,
+  html body.fs.fsd.fsd-heavens-light #page-home .right-sidebar > .suggestions-card {
+    border-width: 84px 36px 30px 36px !important;
+    border-image: var(--fsd-side-altar) 190 80 64 80 fill / 84px 36px 30px 36px stretch !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home :is(.left-sidebar, .right-sidebar) > *::before { display: none !important; }
+  /* panel titles: Cinzel caps on the altar's carved band */
+  html body.fs.fsd.fsd-heavens-light #page-home :is(.card-heading, .quest-panel-header h3, .quest-panel-header h4, .promo-title, .featured-header h4) {
+    font-family: var(--hl-title) !important; font-weight: 700 !important; font-size: 14px !important; letter-spacing: .06em; text-transform: uppercase;
+    color: #6e4c16 !important; text-align: center !important; justify-content: center; margin: 0 0 6px !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home .left-sidebar > .quest-panel .quest-panel-header,
+  html body.fs.fsd.fsd-heavens-light #page-home .right-sidebar > .suggestions-card .card-heading { margin-top: -46px !important; margin-bottom: 14px !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home :is(.card-heading, .featured-header h4) > i,
+  html body.fs.fsd.fsd-heavens-light #page-home .quest-panel-header :is(i, span, small, p) { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .featured-timer { display: none !important; }
+  /* quests: golden halos that fill (halo-0 / 50 / 100), thin gold bars, coin + reward */
+  html body.fs.fsd.fsd-heavens-light #page-home .quest-item { display: flex !important; align-items: center; gap: 8px !important; padding: 3px 0 !important; text-align: left; background: none !important; border: 0 !important; border-image: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .quest-item .quest-icon {
+    width: 34px !important; height: 34px !important; flex: none; border-radius: 0 !important; color: transparent !important;
+    background: var(--fsd-halo-0) center / 100% 100% no-repeat !important; border: 0 !important; box-shadow: none !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home .quest-item .quest-icon > i { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .quest-item:is([style*="--fs-q: 0.4"], [style*="--fs-q: 0.5"], [style*="--fs-q: 0.6"], [style*="--fs-q: 0.7"], [style*="--fs-q: 0.8"]) .quest-icon { background-image: var(--fsd-halo-50) !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .quest-item[style*="--fs-q: 1"] .quest-icon { background-image: var(--fsd-halo-100) !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .quest-item .quest-info { flex: 1; min-width: 0; }
+  html body.fs.fsd.fsd-heavens-light #page-home .quest-item .quest-info p { font-size: 14px !important; margin: 0 0 3px !important; font-weight: 600; }
+  html body.fs.fsd.fsd-heavens-light #page-home .quest-item .quest-bar {
+    height: 8px !important; border-radius: 0 !important; background: var(--fsd-progress-track) center / 100% 100% no-repeat !important; border: 0 !important; overflow: hidden;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home .quest-item .quest-bar-fill { background: var(--fsd-progress-fill) left center / auto 100% no-repeat !important; border-radius: 0 !important; height: 100% !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .quest-item .quest-progress { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .quest-item .quest-reward { font-size: 13px !important; font-weight: 700; background: none !important; border: 0 !important; padding: 0 !important; color: var(--fs-ink) !important; }
+  /* photos: three small framed arches/portraits */
+  html body.fs.fsd.fsd-heavens-light #page-home .photos-card .photos-preview { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .photos-card .photos-preview > *:nth-child(n+4) { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .photos-card .photos-preview > * {
+    aspect-ratio: 160 / 220; width: auto !important; height: auto !important; border-radius: 0 !important; overflow: hidden; position: relative;
+    border: solid transparent !important; border-width: 10px 10px 12px 9px !important;
+    border-image: var(--fsd-photo-frame-portrait) 16 13 16 13 fill / 10px 10px 12px 9px stretch !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home .photos-card .photos-preview img { width: 100% !important; height: 100% !important; object-fit: cover; border-radius: 0 !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .photos-card .view-more-link { display: none !important; }
+  /* featured skin + coin goal */
+  html body.fs.fsd.fsd-heavens-light #page-home .featured-body { flex-direction: column; align-items: center; gap: 4px !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .featured-preview { width: 100% !important; height: 62px !important; border-radius: 0 !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .featured-info { text-align: center; }
+  html body.fs.fsd.fsd-heavens-light #page-home .featured-info h5 { font-family: var(--hl-title) !important; font-size: 15px !important; text-transform: uppercase; }
+  html body.fs.fsd.fsd-heavens-light #page-home .featured-info p { display: none !important; }
+  /* right altars: people rows, group rows, earn-coins rows on marble strips */
+  html body.fs.fsd.fsd-heavens-light #page-home .suggestion-list { display: flex !important; flex-direction: column !important; gap: 4px !important; flex-wrap: nowrap !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home :is(.suggestion-item, .group-item, .coin-rule) {
+    display: flex !important; flex-direction: row !important; align-items: center; gap: 8px !important; width: auto !important; text-align: left !important;
+    min-height: 0 !important; margin: 0 !important; padding: 0 2px !important; background: none !important; border-radius: 0 !important; box-shadow: none !important;
+    border: 10px solid transparent !important; border-image: var(--fsd-people-row) 22 24 fill / 10px 11px stretch !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home .suggestion-item .suggestion-avatar { width: 34px !important; height: 34px !important; margin: 0 !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .suggestion-item .suggestion-info { flex: 1; min-width: 0; }
+  html body.fs.fsd.fsd-heavens-light #page-home .suggestion-item .suggestion-info h4 { font-size: 14px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0 !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .suggestion-item .suggestion-info p:empty { display: none; }
+  html body.fs.fsd.fsd-heavens-light #page-home .suggestion-item .suggestion-follow-btn {
+    width: auto !important; height: 22px !important; padding: 0 8px !important; flex: none; margin: 0 !important; border-radius: 0 !important;
+    background: none !important; border: 8px solid transparent !important; border-image: var(--fsd-primary-button) 24 28 fill / 8px 9px stretch !important; color: #6e4c16 !important; font-size: 11px !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home .group-item .group-icon { width: 34px !important; height: 34px !important; flex: none; }
+  html body.fs.fsd.fsd-heavens-light #page-home .group-item .group-name { font-size: 14px !important; margin: 0 !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .group-item .group-desc { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .group-item .group-members { font-size: 12px !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .suggestions-card .view-more-link { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .promo-card :is(.promo-logo, .promo-subtitle) { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .promo-card .coin-rules { display: flex !important; flex-direction: column; gap: 3px !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .promo-card .coin-rule { font-size: 14px !important; justify-content: space-between; }
+  html body.fs.fsd.fsd-heavens-light #page-home .promo-card .coin-rule small { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .right-sidebar > .card:not(.promo-card):not(.suggestions-card):not(.groups-card) { display: none !important; }
+
+  /* the nave: stories, composer, tabs, then each post in an ornate gold + marble frame */
+  html body.fs.fsd.fsd-heavens-light #page-home .center-feed > .stories-bar { justify-content: center; gap: 14px !important; margin: 0 0 4px !important; padding: 0 !important; background: none !important; border: 0 !important; border-image: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .center-feed > .post-create-bar {
+    margin: 0 0 6px !important; padding: 0 8px !important; min-height: 0 !important; background: none !important; box-shadow: none !important; border-radius: 0 !important;
+    border: 16px solid transparent !important; border-image: var(--fsd-input-bar) 36 44 fill / 16px 20px stretch !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home .center-feed > .post-create-bar::before, html body.fs.fsd.fsd-heavens-light #page-home .center-feed > .post-create-bar::after { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .center-feed > .post-create-bar .post-create-avatar { width: 26px !important; height: 26px !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .center-feed > .post-create-bar .post-input-fake { background: none !important; border: 0 !important; border-image: none !important; font-size: 15px !important; padding: 0 !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #feedTabs { display: flex !important; gap: 10px !important; justify-content: center; margin: 0 0 6px !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #feedTabs .search-tab {
+    flex: 1 1 0 !important; height: 30px !important; justify-content: center !important; border-radius: 0 !important; box-shadow: none !important; background: none !important;
+    border: 12px solid transparent !important; border-image: var(--fsd-chip) 24 28 fill / 12px 14px stretch !important; padding: 0 !important;
+    font-family: var(--hl-title) !important; font-size: 12px !important; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: #6e4c16 !important;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home #feedTabs .search-tab.active { border-image-source: var(--fsd-chip-active) !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #feedTabs .search-tab > i { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light :is(#feedContainer, #pvPostsFeed) .feed-post {
+    background: none !important; box-shadow: none !important; border-radius: 0 !important; margin: 0 0 8px !important;
+    border-style: solid !important; border-color: transparent !important; border-width: 30px 34px 30px 34px !important;
+    border-image: var(--fsd-post-card) 64 72 64 72 fill / 30px 34px 30px 34px stretch !important;
+    padding: 0 2px !important;
+  }
+  html body.fs.fsd.fsd-heavens-light :is(#feedContainer, #pvPostsFeed) .feed-post::before,
+  html body.fs.fsd.fsd-heavens-light :is(#feedContainer, #pvPostsFeed) .feed-post::after { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light :is(#feedContainer, #pvPostsFeed) .post-username { font-size: 15px !important; font-weight: 700; }
+  html body.fs.fsd.fsd-heavens-light :is(#feedContainer, #pvPostsFeed) .post-time { font-size: 12px !important; }
+  html body.fs.fsd.fsd-heavens-light :is(#feedContainer, #pvPostsFeed) .post-description p { font-size: 15px !important; }
+  html body.fs.fsd.fsd-heavens-light :is(#feedContainer, #pvPostsFeed) .post-actions .action-btn { font-size: 13px !important; }
+
+  /* ---- fixes over the phone skin's own Heaven's Light rules ---- */
+  html body.fs.fsd.fsd-heavens-light #page-home .quest-item { flex-direction: row !important; grid-template-columns: none !important; height: auto !important; min-height: 0 !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .quest-item > * { grid-column: auto !important; grid-row: auto !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home :is(.suggestion-item, .group-item) { height: auto !important; min-height: 0 !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .right-sidebar > .suggestions-card { order: 1; }
+  html body.fs.fsd.fsd-heavens-light #page-home .right-sidebar > .groups-card { order: 2; }
+  html body.fs.fsd.fsd-heavens-light #page-home .right-sidebar > .promo-card { order: 3; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-stats { height: auto !important; min-height: 0 !important; line-height: 1.2 !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-stats .stat { height: auto !important; min-height: 0 !important; width: auto !important; align-items: baseline; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-stats .stat > * { line-height: 1.2 !important; margin: 0 !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-links { height: auto !important; min-height: 0 !important; padding: 0 !important; background: none !important; border: 0 !important; border-image: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-links .edit-profile-btn { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .fs-namecard { height: auto !important; min-height: 0 !important; }
+  html body.fs.fsd.fsd-heavens-light .navbar #navUserDropdown :is(.nav-username, .fa-chevron-down) { display: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-stats { aspect-ratio: auto !important; width: auto !important; padding: 0 !important; background: none !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-stats { margin: 0 !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-info::after { top: 112px; height: 108px; }
+  html body.fs.fsd.fsd-heavens-light .page.active, html body.fs.fsd.fsd-heavens-light #page-home.page.active { padding-top: var(--fsd-bar-h) !important; margin-top: 0 !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .suggestion-item .suggestion-info { flex: 1 1 auto !important; width: auto !important; min-width: 0 !important; display: block !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #profileCard .profile-stats .stat { flex: none !important; white-space: nowrap; }
+  html body.fs.fsd.fsd-heavens-light #page-home .right-sidebar .suggestions-card .suggestion-list .suggestion-item {
+    flex: none !important; width: 100% !important; max-width: none !important; height: auto !important; min-height: 0 !important; box-sizing: border-box;
+  }
+  html body.fs.fsd.fsd-heavens-light #page-home .right-sidebar .suggestions-card .suggestion-list .suggestion-item .suggestion-avatar { width: 32px !important; height: 32px !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .right-sidebar .suggestions-card .suggestion-list .suggestion-item .suggestion-info { flex: 1 1 0 !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home #feedTabs .search-tab.active { color: #fffaf0 !important; text-shadow: 0 1px 2px rgba(110, 76, 22, .6); }
+  html body.fs.fsd.fsd-heavens-light #page-home .featured-skin-banner .featured-body { display: flex !important; flex-direction: column !important; }
+  html body.fs.fsd.fsd-heavens-light #page-home .featured-skin-banner .featured-buy-btn {
+    position: static !important; margin: 2px auto 0 !important; height: 24px; font-size: 12px !important; padding: 0 14px !important; border-radius: 0 !important;
+    background: none !important; border: 8px solid transparent !important; border-image: var(--fsd-primary-button) 24 28 fill / 8px 9px stretch !important; color: #6e4c16 !important;
+  }
+}

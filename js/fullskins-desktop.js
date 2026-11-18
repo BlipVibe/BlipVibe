@@ -22,8 +22,18 @@
   // (the root rendition has no variant folder, like the phone kit)
   var ART = {
     scrapbook: ['polaroid-wide', 'polaroid-wide-b', 'desk-bg', 'topbar-wide', 'hero-wide', 'sheet9-tall', 'notepad9',
-      'tab-paper', 'tab-paper-active', 'corner-flowers-l', 'corner-flowers-r']
+      'tab-paper', 'tab-paper-active', 'corner-flowers-l', 'corner-flowers-r'],
+    // Heaven's Light: symmetrical temple (desktop concepts images/skins/heavens-light/desktop/, kit/desktop/day + twilight)
+    'heavens-light': ['bg', 'nav-pediment', 'nav-tab', 'nav-tab-active', 'search-field', 'coin-pill', 'avatar-ring',
+      'icon-button', 'rendition-track', 'profile-frame', 'name-plate', 'side-altar', 'side-card', 'quests-card',
+      'post-card', 'feed-sheet', 'chip', 'chip-active', 'primary-button', 'input-bar', 'people-row', 'list-row',
+      'list-row-active', 'progress-track', 'progress-fill', 'halo-0', 'halo-50', 'halo-100', 'photo-frame-square',
+      'photo-frame-portrait', 'photo-frame-wide', 'chat-panel', 'chat-header', 'bubble-received', 'bubble-sent',
+      'notification-row', 'group-card-frame', 'skin-card-frame', 'search-dropdown', 'decor-laurels', 'decor-coins',
+      'decor-floral-corner', 'bg-groups', 'bg-skins']
   };
+  // where each skin's concept puts the side panels (default: quests + coin goal top-left, featured skin top-right)
+  var PLACE = { 'heavens-light': { featured: 'left-end' } };
   var NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
   var BASE = new URL(window.FS_BASE || (NATIVE ? 'https://blipvibe.com/images/skins/' : 'images/skins/'), document.baseURI).href;
   var artSet = [];
@@ -83,8 +93,9 @@
       moveTo($('questPanel'), left, first);
       moveTo($('coinGoalBar'), left, first);
     }
-    // right column: featured skin first
-    if (right) moveTo($('featuredSkinBanner'), right, right.firstElementChild);
+    var place = PLACE[skin] || {};
+    if (place.featured === 'left-end' && left) moveTo($('featuredSkinBanner'), left, null);
+    else if (right) moveTo($('featuredSkinBanner'), right, right.firstElementChild);   // featured skin top-right
   }
 
   function setArt(id) {
@@ -116,11 +127,19 @@
     var hadFrames = on;
     if (on) { restore(); b.classList.remove('fsd'); if (skin) b.classList.remove('fsd-' + skin); }
     on = want; skin = want ? id : null;
-    if (on) { ensureCSS(skin); b.classList.add('fsd', 'fsd-' + skin); arrange(); }
+    if (on) { ensureCSS(skin); b.classList.add('fsd', 'fsd-' + skin); arrange(); clearHomePad(); }
+    else if (hadFrames && typeof window.syncNavPadding === 'function') window.syncNavPadding();
     setArt(on ? skin : null);
     scale();
     // phone and desktop may show a different number of cover frames: redraw them
     if ((on || hadFrames) && window.BlipFullSkins && window.BlipFullSkins.render) window.BlipFullSkins.render();
+  }
+
+  // app.js syncNavPadding() writes the measured navbar height inline on #page-home (!important); desktop layouts
+  // size their own bar, so drop that while a desktop layout is on, and let the app measure again when it turns off
+  function clearHomePad() {
+    var h = $('page-home');
+    if (on && h && h.style.getPropertyValue('padding-top')) h.style.removeProperty('padding-top');
   }
 
   window.BlipFullSkinsDesk = { on: function () { return on; }, sync: sync };
@@ -131,6 +150,8 @@
     new MutationObserver(function () { sync(); }).observe(document.body, { attributes: true, attributeFilter: ['class', 'data-fs-variant'] });
     if (mq.addEventListener) mq.addEventListener('change', sync); else mq.addListener(sync);
     window.addEventListener('resize', scale);
+    var home = $('page-home');
+    if (home) new MutationObserver(clearHomePad).observe(home, { attributes: true, attributeFilter: ['style'] });
   }
   if (document.body) start(); else document.addEventListener('DOMContentLoaded', start);
 })();
