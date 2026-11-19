@@ -9278,3 +9278,8 @@ html body.fs.fs-superhero :is(#shopTabs, #skinPageToggle, #mySkinsTabs, .fsk-fil
 /* Pass 6: Blood Moon store — "Coming soon" sat left-aligned across the start of the empty plate, its first letters cut by
    the plate's frame ("ming soon"); centred in the plate like Equip. */
 html body.fs.fs-blood-moon .fsk-soon:not(#_) { display: flex !important; align-items: center; justify-content: center; text-align: center !important; width: 100%; box-sizing: border-box; min-height: 34px; padding: 0 22px !important; }
+
+/* Skin QA pass 7 (owner, Nov 19): Vaporwave panels are one bevel picture whose grey fades top→bottom. The generic profile-card
+   rule tiles it ("round"), so a tall card repeated the fade 2–3× and each restart showed as a line through the card
+   (Home #profileCard, #pvProfileCard, old group card). Vaporwave = solid Windows panels: always stretch the art once. */
+html body.fs.fs-vaporwave :is(*, *::before, *::after):not(#_):not(#_):not(#_) { border-image-repeat: stretch !important; }

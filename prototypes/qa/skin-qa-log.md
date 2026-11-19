@@ -77,6 +77,16 @@ Commits: 7d78031, 88f1231, 94e8360.
 | Rendition toggle + swap | n/a | pass | pass | pass | pass | pass | n/a | pass | pass | pass | pass | pass | pass | pass | pass | AB lightning, GW day→night sweep, VW "Updating BlipVibe" pixel swap, HL sun→moon (one white flash frame at the start — by design?) |
 | Equip transition | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | Scrapbook paper collage, AB comic burst, WC moon ring + smoke, GW owl + constellations, VW BIOS boot, HL temple gates |
 
+## Pass 7 (Nov 19, owner: retro group card "3 lines through it", then Home profile card, "don't forget the XP version")
+Cause: Vaporwave panel art (panel.webp, every variant) fades light→dark top to bottom. The generic `.profile-card` /
+`.profile-card-item` rule draws it with `border-image … round`, so a card taller than the art repeated the fade 2–3 times and
+each restart was a hard line (owner's screenshot: fade resets at y 816 and 996). Hit: Home #profileCard, #pvProfileCard
+(someone's / own profile, settings), the old group card. Fix: every Vaporwave element stretches its border art once
+(`border-image-repeat: stretch`) — Vaporwave is plain Windows panels, nothing in it needs tiling.
+Checked: retro, modern (XP), retro-dark, modern-dark × 23 screens with a probe for any tiled border art or tiled skin
+backgrounds → none left (store featured banner = one picture + colour layer, no seam); pixel scan down each profile card →
+no steps; screenshots sent. The new group page (group-concepts build, 930db60) already stretches its art.
+
 ## Pass 6 (Nov 18, owner: "I'm still finding stuff … I feel like you're not looking at everything")
 
 What pass 5 missed and why: it checked fixed screens with automatic measurements, and treated sideways-scrolling tab rows
@@ -260,6 +270,7 @@ so nothing comes back. Re-check column: date of the last pass that confirmed it.
 | 34 | Nov 18 | #Basic | skin store | "the #basic art for the skin shop is weird" (vignette cut-out on black) | pass 6, new art | ✓ Nov 18 pass 6 |
 | 35 | Nov 18 | all | someone's profile | "some of the pictures are out of their frame when you go to view profile" | pass 6 | ✓ Nov 18 pass 6 (21 renditions, top/mid/bottom) |
 | 36 | Nov 18 | Scrapbook + others | someone's profile ⋯ menu | "the little pop up under the options … sometimes nothing shows up" | pass 6 (fullskins.js) | ✓ Nov 18 pass 6 (21 renditions) |
+| 37 | Nov 19 | Vaporwave Retro + XP (all 4) | group card, Home profile card | "3 lines through it … it should be one solid color" (panel fade tiled 2–3×) | pass 7 (fullskins.css) | ✓ Nov 19 pass 7 (4 variants × 23 screens) |
 
 ## Queued for the next pass
 
