@@ -282,3 +282,36 @@ html body.fs #page-group-view.gp-on:not(#_):is([data-gp="superhero"], [data-gp="
 html body.fs #page-group-view.gp-on:not(#_)[data-gp="superhero villains"] { --gp-pic-x: 17%; --gp-pic-y: 94%; --gp-pic-w: 34%; --gp-pic-r: 6px; --gp-name-size: 29px; --gp-name-font: "Comic Neue", sans-serif; --gp-name-weight: 700; --gp-desc-style: italic; --gp-desc-size: 15px; --gp-ink: #f2f0f5;
   --gp-name-ink: #fff; --gp-head-ink: #fff; --gp-join-ink: #10200a; --gp-leave-ink: #fff; --gp-small-ink: #fff; --gp-tab-ink: #fff; --gp-tab-on-ink: #10200a; --gp-mt-ink: #fff; --gp-ph-ink: #fff; --gp-post-ink: #f2f0f5; }
 html body.fs #page-group-view.gp-on:not(#_)[data-gp="superhero villains"] .gp-id { margin-left: 36% !important; margin-top: 0 !important; text-align: left !important; padding: 0 !important; min-height: 64px !important; }
+
+/* ---------- #Basic (Rosé + Pumpkin Spice): cover photo runs edge to edge, round dish picture at its lower left, name beside it;
+   the header is plain linen with the skin's REAL barista cup (and, on Pumpkin Spice, the coin pill) at the right */
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="basic"], [data-gp="basic pumpkin"]) { --gp-hero-bleed: 12px; --gp-pic-x: 22%; --gp-pic-y: 96%; --gp-pic-w: 33%; --gp-name-size: 24px; --gp-name-weight: 700;
+  --gp-desc-font: 'Lora', serif; --gp-desc-style: italic; --gp-desc-size: 16px; --gp-head-size: 21px; --gp-head-weight: 600; --gp-num-size: 20px; --gp-btn-weight: 600; --gp-btn-size: 18px; --gp-tab-size: 17px;
+  --gp-mt-size: 19px; --gp-mt-weight: 600; --gp-card-pad: 4% 6%; --gp-ph-size: 21px; --gp-ph-weight: 600; --gp-ph-justify: flex-start; --gp-ph-pad: 0 0 0 2%; --gp-post-slice: 50; --gp-post-bw: 14px;
+  --gp-ink: #3a2a22; --gp-name-ink: #3a2a22; --gp-head-ink: #3a2a22; --gp-leave-ink: #3a2a22; --gp-photo-r: 10px; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="basic"] { --gp-join-ink: #3a2a22; --gp-tab-on-ink: #3a2a22; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="basic pumpkin"] { --gp-join-ink: #fff; --gp-tab-on-ink: #fff; --gp-leave-ink: #a24a1c; }
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="basic"], [data-gp="basic pumpkin"]) .gp-frame { display: none !important; }
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="basic"], [data-gp="basic pumpkin"]) .gp-hero { aspect-ratio: 1290 / 690 !important; }
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="basic"], [data-gp="basic pumpkin"]) .gp-cover { inset: 0 !important; }
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="basic"], [data-gp="basic pumpkin"]) .gp-head { background: none !important; --gp-head-ar: 1290 / 190; }
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="basic"], [data-gp="basic pumpkin"]) .gp-head-title { text-align: left !important; margin-right: 56px !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="basic pumpkin"] .gp-head-title { margin-right: 118px !important; }
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="basic"], [data-gp="basic pumpkin"]) :is(.gp-stat-l, .gp-btn, .gp-small, .gp-tab, .gp-members-title, .pv-posts-heading, .gp-more) { text-transform: none !important; }
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="basic"], [data-gp="basic pumpkin"]) .gp-id { margin-left: 36% !important; text-align: left !important; padding: 0 !important; min-height: 58px !important; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="basic"] #gvPostsFeed > .card:first-child { background: none !important; aspect-ratio: auto !important; padding: 6px 0 !important; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="basic pumpkin"] #gvPostsFeed > .card:first-child { aspect-ratio: auto !important; padding: 6px 0 6px 40px !important; background-size: auto 30px !important; background-position: 4px center !important; }
+html body.fs.fs-basic:has(#page-group-view.gp-on.active) .navbar:not(#_) :is(.nav-left, .nav-right) { display: contents !important; }
+html body.fs.fs-basic:has(#page-group-view.gp-on.active) .navbar:not(#_) :is(.nav-left, .nav-right) > *:not(#fsBarista):not(.nav-coins) { display: none !important; }
+html body.fs.fs-basic:has(#page-group-view.gp-on.active) .navbar:not(#_) #fsBarista { position: fixed !important; z-index: 40 !important; top: calc(env(safe-area-inset-top) + 10px) !important; right: 10px !important; }
+html body.fs.fs-basic:not([data-fs-variant="pumpkin"]):has(#page-group-view.gp-on.active) .navbar:not(#_) .nav-coins { display: none !important; }
+html body.fs.fs-basic[data-fs-variant="pumpkin"]:has(#page-group-view.gp-on.active) .navbar:not(#_) .nav-coins { position: fixed !important; z-index: 40 !important; top: calc(env(safe-area-inset-top) + 16px) !important; right: 68px !important; }
+
+/* Heroes: round winged picture over the comic cover, the group name lettered on a red ribbon plate */
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="superhero"] { --gp-pic-y: 80%; --gp-pic-w: 44%; --gp-name-size: 30px; --gp-name-ink: #fff; --gp-name-tt: uppercase;
+  --gp-name-shadow: 2px 2px 0 #1a1a1a, -1px -1px 0 #1a1a1a, 1px -1px 0 #1a1a1a, -1px 1px 0 #1a1a1a; --gp-head-ink: #fff; --gp-head-shadow: 2px 2px 0 #1a1a1a, -1px -1px 0 #1a1a1a, 1px -1px 0 #1a1a1a, -1px 1px 0 #1a1a1a;
+  --gp-ink: #1a1a1a; --gp-desc-style: italic; --gp-desc-weight: 700; --gp-join-ink: #1a1a1a; --gp-leave-ink: #1a1a1a; --gp-small-ink: #1a1a1a; --gp-tab-ink: #1a1a1a; --gp-tab-on-ink: #1a1a1a;
+  --gp-mt-ink: #fff; --gp-mt-margin: 0 0 6px; --gp-card-justify: flex-start; --gp-card-pad: 1.5% 6% 3%; --gp-ph-ink: #fff; --gp-deco-inset: -6px -4px; --gp-id-pad: 8px 30px 0; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="superhero"] .gp-name { padding: 6px 0 2px !important; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="superhero"] .gp-desc { margin-top: 10px !important; }
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="superhero"], [data-gp="superhero villains"]) { --gp-small-font: var(--fs-title-font); --gp-tab-font: var(--fs-title-font); --gp-btn-weight: 400; --gp-small-weight: 400; --gp-tab-weight: 400; --gp-tab-on-weight: 400; --gp-mt-weight: 400; --gp-ph-weight: 400; }
