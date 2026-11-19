@@ -112,7 +112,7 @@
       join && (join.textContent + join.className), !!leave, !!edit, shown(coverCam), !!picCam, !!rules, !!invite,
       members.map(function (m) { return m.src + m.title; }).join(','), text(more), text(empty),
       tabBtns.map(function (t) { return t.dataset.gvmode + t.classList.contains('active'); }).join(',')].join('|');
-    if (sig === lastSig && head && gp) return;
+    if (sig === lastSig && head && gp) { measureHead(); return; }
     lastSig = sig;
     building = true;
 
@@ -178,8 +178,22 @@
     h += '</div></div>';
 
     gp.innerHTML = h;
+    measureHead();
     building = false;
   }
+
+  // the title banner is fixed (the skins clip the page, so sticky would not hold); the mirror starts below it
+  function measureHead() {
+    var page = document.getElementById('page-group-view'), head = page && $('.gp-head', page);
+    if (head && head.offsetHeight) page.style.setProperty('--gp-head-h', head.offsetHeight + 'px');
+    // behind the banner art: the skin's own page background, so posts never show through the banner's open parts
+    var bg = document.getElementById('premiumBgLayer'), cs = bg && getComputedStyle(bg);
+    if (cs && page) {
+      var v = (cs.backgroundImage !== 'none' ? cs.backgroundImage + ' ' + cs.backgroundPosition + ' / ' + cs.backgroundSize + ' no-repeat, ' : '') + cs.backgroundColor;
+      page.style.setProperty('--gp-page-bg', v);
+    }
+  }
+  window.addEventListener('resize', measureHead);
 
   // taps on the mirror → the app's own buttons
   document.addEventListener('click', function (e) {
@@ -202,7 +216,7 @@
         var n = list[i].target;
         if (n.nodeType !== 1) n = n.parentNode;
         if (n && n.closest && (n.closest('.gp') || n.closest('.gp-head'))) continue;
-        if (list[i].target === page && list[i].attributeName) continue;
+        if (list[i].target === page && list[i].attributeName) { if (list[i].attributeName === 'class') setTimeout(measureHead, 30); continue; }
         queue(); return;
       }
     }).observe(page, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['class', 'style', 'src'] });
