@@ -9,6 +9,15 @@ the direction's art style and posed: waving, peeking, listening, sleeping, cheer
 
 Concept art only. Nothing is built from this pass until the owner picks a direction.
 
+**Owner rule: it must look different from ALL other skins too.** Open `images/skins/default/_ref/existing-skins.jpg`
+(Home screens of every premium skin: Vaporwave light + dark, Good Witch night + day, Heaven's Light, Anime Blaze,
+#Basic, Superhero, Blood Moon, Witchcraft, Vaporwave retro, Scrapbook) and make sure your screen shares NONE of their
+palettes, textures, frame styles, fonts or layouts. In particular: no glossy sky-blue/cyan glass panels or neon
+(Vaporwave), no pastel lilac/purple fairy glow (Good Witch), no gold/marble/laurels (Heaven's Light), no flame/speed
+streaks or black-red (Anime Blaze), no beige café neutrals or oak shelves (#Basic), no comic yellow-red-blue with
+thick outlines/halftone/bursts (Superhero), no dark navy + silver filigree (Blood Moon), no dark purple candles/potions
+(Witchcraft), no torn paper/tape/florals (Scrapbook). The mascot's blue is an ACCENT, not a whole blue-screen theme.
+
 ## Output (one image per job)
 - Use your image generation tool (gpt-image). Save as PNG to the path the job names (relative to this worktree).
 - `home`: **1024 x 1536** portrait. ONE iPhone portrait screen, large, centered on a plain soft backdrop, label small
@@ -39,11 +48,14 @@ Concept art only. Nothing is built from this pass until the owner picks a direct
 5. **Stories row**: first bubble `Your Story` (user avatar with a + badge), then 4 friends' round story bubbles with first
    names under them (ring = unseen, faded ring = seen).
 6. **Post bar**: small user avatar + field text `What are we posting today?`.
-7. Feed tabs: `Following` (active) · `Discover` · `My Posts`.
-8. One **post** (may be cut off by the bottom nav): author avatar, author name, time (`2h ago`), `⋯` menu, post text
+7. **Daily Quests** panel: heading `Daily Quests` + small `Resets daily`; 3 quests, each = icon, label, progress bar +
+   count, coin reward: `React to 5 posts` 3/5 +5 · `Send 3 messages` 2/3 +10 · `Like 5 posts` 4/5 +5.
+   Then a slim **coin goal** bar: `1,240 / 300 coins` and the next skin name (e.g. `Heaven's Light`) over a progress track.
+8. Feed tabs: `Following` (active) · `Discover` · `My Posts`.
+9. One **post** (may be cut off by the bottom nav): author avatar, author name, time (`2h ago`), `⋯` menu, post text
    (1–2 lines), one photo, action row: like (thumbs-up, active) `128`, dislike (thumbs-down) `2`, react (smiley),
    comment `14`, share `5`.
-9. **Bottom nav** (5 items, icon + label): `Home` (active) · `Groups` · `Skins` · `Network` · `Messages` (badge `2`).
+10. **Bottom nav** (5 items, icon + label): `Home` (active) · `Groups` · `Skins` · `Network` · `Messages` (badge `2`).
 
 ### GROUP PAGE (phone) — `#page-group-view`
 1. Top bar: back arrow `←`, page title = group name.
@@ -64,7 +76,8 @@ Concept art only. Nothing is built from this pass until the owner picks a direct
 2. **Timeline cover** photo banner.
 3. **Left column**: the profile card (cover strip, avatar + camera badge, name, `Living my best life`, about line,
    `Following 248` / `Followers 1,032`, `View Profile`, edit pencil) and a `Photos` card (6 small photo thumbnails + `View All`).
-4. **Center column**: stories row (`Your Story` + 5 friends), post bar `What are we posting today?`, feed tabs
+4. **Center column**: stories row (`Your Story` + 5 friends), post bar `What are we posting today?`, the `Daily Quests`
+   panel + coin goal bar (as in Home), feed tabs
    `Following` · `Discover` · `My Posts`, two posts (as in Home; one with a photo).
 5. **Right column**: `Earn Coins on BlipVibe` card (subtitle `Earn coins by interacting and spend them in the Skin Shop
    to customize your profile!`, rules `Daily Login +5`, `Post +5 (5/day)`, `Comment +2 (15/day)`, `Like +1 (30/day)`);
@@ -72,63 +85,64 @@ Concept art only. Nothing is built from this pass until the owner picks a direct
    (3 groups: picture, name, member count); a `Trending Hashtags` button.
    The direction may rearrange these blocks into its OWN desktop structure (see each direction) — but keep every block.
 
-## The 5 directions (each must look clearly different from the other four AND from all premium skins:
-no scrapbook paper/tape, no witch/magic, no anime, no clouds/temples/gold laurels, no gothic, no comic halftone,
-no vaporwave neon grids/Windows-95, no beige café neutrals)
+## The 5 directions (each clearly different from the other four AND from every premium skin — see rule above)
 
 ### 1. `bubble-pop` — "BUBBLE POP"
-Mood: sunny, bouncy, toy-like. Palette: bright sky blue #3BA3FF, deep mascot blue #1E5BDB, sunshine yellow #FFD23F,
-white, soft mint accents. Light background (pale blue with big soft polka bubbles).
-Shapes: everything is a glossy, inflated 3D speech bubble — cards are puffy bubbles with little tails, buttons are
-jelly pills with highlights, avatars sit in glossy bubble rings. Rounded chunky font (like a heavy rounded sans).
-Mascot: big glossy 3D mascot floats out of the timeline cover waving; tiny mascot is the active-tab dot in the nav.
-Phone layout: profile card is a giant speech bubble whose tail points at the avatar; stats are two little bubbles.
-Desktop structure: three floating bubble columns over a sky of bubbles; navbar is a floating jelly pill.
+Mood: sunny, bouncy, toy-like. Palette: SUNSHINE YELLOW #FFD23F background with cream-white bubbles, mascot blue
+#1E5BDB only for accents/active states, fresh mint #4ADBA8 secondary, warm coral for likes. NOT a sky-blue screen.
+Shapes: everything is an inflated, squishy speech bubble — cards are puffy white bubbles with little tails, buttons are
+jelly pills, avatars sit in fat white bubble rings. Rounded heavy font (bubbly rounded sans), dark navy text.
+Mascot: big 3D mascot pops out of the timeline cover waving; a tiny mascot is the active-tab marker in the nav.
+Phone layout: profile card = giant speech bubble whose tail points at the avatar; stats are two small bubbles.
+Desktop structure: three floating bubble columns on a yellow field of soft bubbles; navbar is a floating white jelly pill.
 
-### 2. `lofi-room` — "LO-FI LISTENING ROOM"
-Mood: cozy late-night listening session, calm, warm. Palette: deep ink blue #121A33, warm lamp amber #FFB547,
-cream #F6EBD9, mascot blue glow, muted coral for likes. Dark but WARM (not neon, not purple).
-Shapes: soft felt/fabric panels, rounded speaker-grille textures, sound-wave lines, vinyl and knob details,
-small equalizer bars. Friendly rounded serif headings + clean sans body.
-Mascot: wearing its headphones, curled up on a beanbag with a lamp beside it in the cover; it "listens" next to the
-post bar; sleeping mascot = feed end.
-Phone layout: profile shown as a "Now Playing" card — avatar is centered on a vinyl record, name is the track title,
-title line is the artist line, Following/Followers as two knob-style dials; bottom nav is a radio-dial strip.
-Desktop structure: LEFT vertical nav rail styled like a tall speaker cabinet (icons + labels), center feed,
-right column as a stacked hi-fi unit (coins card = cassette deck, People You May Know = playlist, Trending Groups = stations).
+### 2. `lofi-room` — "WALNUT HI-FI"
+Mood: cozy record-room / listening session, calm and warm. Palette: warm walnut wood #6B4226, cream #F6EBD9,
+burnt orange #E8742A, olive #7A8B4A, mascot blue as the glowing VU-meter/indicator light. Warm mid-tones, not dark navy,
+not purple, not neon.
+Shapes: walnut wood cabinet panels, woven speaker-grille cloth cards, brushed aluminium knobs and toggle switches,
+analogue VU meters, vinyl records. Friendly rounded serif headings + clean sans body.
+Mascot: wearing its headphones, nodding to a turntable in the cover; it "listens" next to the post bar; Daily Quests
+progress shown as little VU meters.
+Phone layout: profile shown as a "Now Playing" card — avatar centered on a vinyl record label, name = track title,
+title line = artist line, Following/Followers as two knob dials; bottom nav = a row of aluminium push-buttons in a wood strip.
+Desktop structure: LEFT vertical nav rail = tall walnut speaker cabinet (icons + labels), center feed on grille cloth,
+right column = stacked hi-fi components (coins card = cassette deck, People You May Know = playlist, Trending Groups = radio stations).
 
 ### 3. `clay-town` — "CLAY TOWN"
-Mood: handmade claymation, playful and tactile. Palette: matte clay pastels — mascot blue, butter yellow, peach,
-mint, lilac, on a warm off-white clay table. Visible thumbprints/soft clay edges, everything slightly wobbly 3D.
-Font: chunky soft display (like it was cut from clay) + friendly sans body.
-Mascot: a clay figurine of the mascot (same design), standing on the profile card holding a sign / building posts.
-Phone layout: the profile card is a little clay stage/platform with the avatar in a clay frame; stories are clay
-pebbles; the bottom nav is a row of clay buttons, the active one pressed in.
-Desktop structure: a clay diorama table seen from the front — top navbar is a clay shelf, columns are clay slabs of
-different heights, decorative clay sparkles and a clay mascot walking along the top.
+Mood: handmade claymation, playful and tactile. Palette: matte clay — terracotta table #D9825B, butter yellow, peach,
+mint green, mascot blue; NO lilac/purple. Visible thumbprints, soft wobbly 3D clay edges, matte (never glossy).
+Font: chunky soft display (as if cut from clay) + friendly sans body.
+Mascot: a clay figurine of the mascot (same design) standing on the profile card holding a little sign.
+Phone layout: profile card = little clay stage/platform, avatar in a clay frame; stories are clay pebbles; quests are
+clay jars filling up; the bottom nav is a row of clay buttons, the active one pressed in.
+Desktop structure: a clay diorama seen from the front — navbar is a clay shelf, columns are clay slabs of different
+heights, clay sparkles, a clay mascot walking along the top.
 
-### 4. `glass-aurora` — "GLASS AURORA"
-Mood: sleek, premium, calm tech. Palette: deep ocean-to-electric-blue gradient background with soft aurora ribbons
-(blue → cyan → a touch of yellow sparkle light — NO pink/magenta, NO grid lines), frosted white glass panels, white text.
-Shapes: frosted translucent glass cards with thin bright edges and soft blur, floating with depth; tiny star sparkles.
-Clean geometric sans font.
-Mascot: a softly glowing translucent glass mascot hovering beside the profile card, sparkles drifting off it.
-Phone layout: timeline cover fades into the aurora; the profile card floats overlapping the cover, centered avatar;
-the bottom nav is a floating frosted glass capsule detached from the edge.
-Desktop structure: a centered feed column with glass panels floating at different depths on both sides; navbar is a
-slim floating glass bar; a big glowing mascot sits low in the background aurora.
+### 4. `space-age` — "SPACE-AGE POP"
+Mood: optimistic 1960s atomic/space-age, mid-century modern. Palette: warm cream #F4E9D4, tangerine #F28C28,
+teal #2A9D8F, mustard, mascot blue accents, charcoal text. Light and warm.
+Shapes: boomerang and kidney shapes, rounded "TV-screen" cards, atomic starbursts (the mascot's yellow sparkles become
+starbursts), orbit rings, tiny rocket and planet doodles, mid-century geometric patterns. Font: retro space-age display
+headings (wide, rounded) + clean sans body. No neon, no grids, no pixel art, no palm trees.
+Mascot: in a clear bubble space helmet, flying a little rocket around the cover; mascot astronaut floats in empty space.
+Phone layout: avatar in a porthole window on the profile card, stats on orbit rings; bottom nav = a curved control
+console with round dial buttons.
+Desktop structure: a mid-century "mission control" console — top navbar is a curved console strip, profile card is a
+big porthole on the left, feed in TV-screen cards in the middle, right column as stacked boomerang panels.
 
-### 5. `bold-poster` — "BOLD POSTER"
-Mood: confident graphic-design poster, flat and punchy. Palette: electric mascot blue #1F4DFF, signal yellow #FFE14A,
-paper white, ink black. FLAT colour blocks, thick black outlines, no gradients, no glossy.
-Font: huge heavy grotesk headlines (name in very large type), small mono labels for times/counts.
-Mascot: flat vector mascot in thick outlines, used big and cropped (peeking from the edge of the cover), plus small
-mascot stickers/badges; sparkles as flat yellow 4-point stars.
-Phone layout: name set huge across a yellow block under the cover, Following/Followers as giant numerals;
-cards are hard-edged blocks with thick outlines and offset black shadows; bottom nav is a solid blue bar with
-square tabs, active tab yellow.
-Desktop structure: a magazine/poster grid — masthead navbar with the huge wordmark, asymmetric blocks
-(profile block tall on the left, feed in the middle, coins/people/groups as stacked colour blocks on the right).
+### 5. `swiss-grid` — "SWISS GRID"
+Mood: minimal international typographic style, calm and confident. Palette: mostly paper white #FAFAF7 and ink black,
+with ONE electric mascot blue #1F4DFF for blocks/active states and tiny yellow sparkle stars. No red, no thick
+cartoon outlines, no offset shadows, no halftone, no italics, no bursts.
+Shapes: strict modular grid, thin black rules, sharp rectangles, generous white space, big flush-left headlines.
+Font: huge clean neo-grotesk headlines (name set very large), small monospace labels for times and counts.
+Mascot: flat geometric line-art version of the mascot (thin strokes, solid blue fill), used large in one grid cell and
+small as the logo mark.
+Phone layout: name set huge under the cover, Following/Followers as big numerals in a 2-column grid; quests as a
+clean table with thin progress lines; bottom nav = thin-ruled tab row with the active tab as a blue block.
+Desktop structure: an editorial grid — masthead navbar with the wordmark, asymmetric columns separated by thin rules
+(profile tall on the left, feed center, coins/people/groups as rule-separated lists on the right).
 
 ## Jobs (id → output)
 | id | screen | Output |
@@ -142,12 +156,12 @@ Desktop structure: a magazine/poster grid — masthead navbar with the huge word
 | clay-town-home | home | images/skins/default/clay-town/home.png |
 | clay-town-group | group | images/skins/default/clay-town/group.png |
 | clay-town-desktop | desktop | images/skins/default/clay-town/desktop.png |
-| glass-aurora-home | home | images/skins/default/glass-aurora/home.png |
-| glass-aurora-group | group | images/skins/default/glass-aurora/group.png |
-| glass-aurora-desktop | desktop | images/skins/default/glass-aurora/desktop.png |
-| bold-poster-home | home | images/skins/default/bold-poster/home.png |
-| bold-poster-group | group | images/skins/default/bold-poster/group.png |
-| bold-poster-desktop | desktop | images/skins/default/bold-poster/desktop.png |
+| space-age-home | home | images/skins/default/space-age/home.png |
+| space-age-group | group | images/skins/default/space-age/group.png |
+| space-age-desktop | desktop | images/skins/default/space-age/desktop.png |
+| swiss-grid-home | home | images/skins/default/swiss-grid/home.png |
+| swiss-grid-group | group | images/skins/default/swiss-grid/group.png |
+| swiss-grid-desktop | desktop | images/skins/default/swiss-grid/desktop.png |
 
 Raw PNGs stay local (git-ignored under images/skins/**). Contact sheets: images/skins/default/_sheets/ (local).
 
