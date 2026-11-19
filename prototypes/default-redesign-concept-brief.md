@@ -210,3 +210,14 @@ The built default animates every switch and state change: toggle switches slide 
 and the bottom nav get a sliding active indicator, page changes fade/slide in, cards stagger in, like/dislike/react pop,
 Join/Joined and follow buttons morph, coin goal + quest bars fill, badges bounce in, the mascot reacts (wave/bounce).
 Short (150–300 ms), eased, and disabled under `prefers-reduced-motion`.
+
+### Build requirement — "Blip" button + menu (owner, Nov 19)
+"Make a little start like the retro button but name it Blip … popup menu similar to retro but in the corresponding blip
+style. The options will be all the blip styles." → owner clarified: options = **every skin the user owns**.
+- Default (Logo Classic) gets a small `Blip` button (mascot head + "Blip") in the navbar, the same way Vaporwave Retro has
+  its `Start` button (`vaporStart()` in js/fullskins.js ~846, CSS css/fullskins.css ~4222).
+- Tap → popup menu in Logo Classic style (white card, navy outline, royal-blue side strip with mascot + "BlipVibe"),
+  listing `Default` + each owned skin (owned basic skins + owned premium/full skins: Scrapbook, Witchcraft, Vaporwave …)
+  with a small preview swatch and a check on the equipped one. Tap → equips that skin through the app's normal equip path
+  (look changes only via set_skin_look — never a raw skin_data write), with a switch animation. Closes on outside tap.
+- Only on the default look (each full skin keeps its own chrome). Read-only QA never equips anything.
