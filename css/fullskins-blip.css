@@ -446,7 +446,7 @@ html body.fs.fs-blip .post-media-grid:not(.pm-count-1) .pm-thumb :is(img, video)
   html body.fs.fs-blip #gvProfileCard .stat-label > i, html body.fs.fs-blip #gvProfileCard .stat-count > i { width: 18px; height: 18px; font-size: 0 !important; background: var(--fs-coin) center / contain no-repeat; color: transparent !important; display: inline-block; }
   html body.fs.fs-blip #gvProfileCard .pv-actions { grid-column: 1 / -1; grid-row: 4; display: grid !important; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 0 !important; }
   html body.fs.fs-blip #gvProfileCard .pv-actions .btn { height: 42px; padding: 0 8px !important; display: flex !important; align-items: center; justify-content: center; gap: 6px; font: 800 15.5px var(--fs-font) !important; width: auto !important; margin: 0 !important; }
-  html body.fs.fs-blip #gvLeaveBtn { background-image: var(--fs-btn-danger) !important; color: #d93025 !important; }
+  html body.fs.fs-blip #gvLeaveBtn { color: #d93025 !important; }
   html body.fs.fs-blip #gvLeaveBtn > i { width: 20px; height: 20px; font-size: 0 !important; background: var(--fs-icon-exit) center / contain no-repeat; color: transparent !important; }
   html body.fs.fs-blip #gvEditBtn { grid-column: 1 / -1; }
   html body.fs.fs-blip #gvProfileCard .pv-back-link { position: absolute; left: 4px; bottom: -30px; display: flex !important; align-items: center; gap: 6px;
@@ -647,4 +647,132 @@ html body.fs.fs-blip:is(*) :is(#profileCard, #gvProfileCard)::after { width: 43p
 @media (max-width: 768px) {
   html body.fs.fs-blip #profileCard { min-height: 143px !important; }
   html body.fs.fs-blip #page-home .left-sidebar { gap: 14px !important; }
+}
+
+/* ===== GROUP PAGE (phone) — measured on the overlay (ref/ov-group-a.png) ===== */
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-group-view.page.active { padding: calc(62px + env(safe-area-inset-top, 0px)) 0 0 !important; }
+  html body.fs.fs-blip #gvCoverBanner { height: 150px !important; margin: 0 !important; width: auto !important; }
+  html body.fs.fs-blip #page-group-view .gv-layout { margin-top: 0 !important; padding: 0 9px !important; }
+  html body.fs.fs-blip #gvProfileCard { margin: -8px 0 44px !important; min-height: 205px; }
+  html body.fs.fs-blip #gvProfileCard .profile-info { grid-template-columns: 112px 1fr !important; column-gap: 8px !important; padding: 8px 14px 0 12px !important; }
+  html body.fs.fs-blip #gvProfileCard .profile-avatar-wrap { width: 110px !important; height: 110px !important; margin: -45px 0 0 -2px !important; }
+  html body.fs.fs-blip #gvProfileCard .profile-name { font-size: 27px !important; line-height: 30px !important; margin: 4px 0 2px !important; }
+  html body.fs.fs-blip #gvProfileCard .profile-title { font-size: 15.5px !important; line-height: 19px !important; font-weight: 500 !important; }
+  html body.fs.fs-blip #gvProfileCard .profile-stats { margin-top: 8px !important; }
+  html body.fs.fs-blip #gvProfileCard .stat-count { font-size: 20px !important; line-height: 22px; }
+  html body.fs.fs-blip #gvProfileCard .stat-label { font-size: 15px !important; white-space: nowrap; display: flex; align-items: center; gap: 4px; }
+  html body.fs.fs-blip #gvProfileCard .pv-actions { margin-top: 12px !important; gap: 16px !important; }
+  html body.fs.fs-blip #gvProfileCard .pv-actions .btn { height: 46px !important; border-image-width: 0 23px !important; font-size: 17px !important; }
+  html body.fs.fs-blip #gvProfileCard .pv-back-link { bottom: -38px !important; left: 2px !important; font-size: 16px !important; }
+  html body.fs.fs-blip #gvMobileRight { gap: 6px !important; }
+  html body.fs.fs-blip #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn) { height: 46px !important; font-size: 18px !important; }
+  html body.fs.fs-blip #page-group-view .gv-center { gap: 8px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-group-view #gvProfileCard { margin: -8px 0 46px !important; }
+  html body.fs.fs-blip #page-group-view #gvProfileCard .profile-avatar-wrap { width: 118px !important; height: 118px !important; margin: -58px 0 0 -6px !important; }
+  html body.fs.fs-blip #page-group-view #gvProfileCard .profile-info { grid-template-columns: 116px 1fr !important; }
+  html body.fs.fs-blip #page-group-view #gvProfileCard .profile-stats { margin-top: 18px !important; }
+  html body.fs.fs-blip #page-group-view #gvProfileCard .pv-actions { margin-top: 10px !important; }
+  html body.fs.fs-blip #gvMobileRight .gv-members-preview { display: flex !important; align-items: center; gap: 4px; flex-wrap: nowrap; }
+  html body.fs.fs-blip #gvMobileRight .gv-members-preview img { width: 50px !important; height: 50px !important; border-radius: 50% !important; padding: 2px; box-sizing: border-box;
+    background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; border: 0 !important; margin: 0 !important; object-fit: cover; }
+  html body.fs.fs-blip #gvMobileRight .gv-members-more { font: 800 16px/1.1 var(--fs-font) !important; color: var(--bl-ink) !important; margin-left: 4px; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-group-view #gvProfileCard .profile-stats { margin-top: 31px !important; }
+  html body.fs.fs-blip #page-group-view #gvProfileCard { margin-bottom: 36px !important; }
+  html body.fs.fs-blip #gvMobileRight .card-heading { margin: 0 0 4px !important; padding: 0 !important; border: 0 !important; line-height: 24px; }
+  html body.fs.fs-blip #gvMobileRight .gv-members-preview { margin: 0 !important; padding: 0 !important; }
+  html body.fs.fs-blip #gvMobileRight .gv-members-more { white-space: nowrap; }
+}
+@media (max-width: 768px) { html body.fs.fs-blip #page-group-view #gvProfileCard { margin-bottom: 41px !important; } }
+/* group page, scrolled (concept group-scrolled): Feed / Chat strip, post bar, one pale-blue "Group Posts" frame holding the posts */
+@media (max-width: 768px) {
+  html body.fs.fs-blip #gvModeTabs { display: flex !important; gap: 0 !important; height: 40px; padding: 2px !important; box-sizing: border-box; margin: 0 !important;
+    background: none !important; border: 0 solid transparent !important; border-image: var(--fs-tabs-track) 0 70 fill / 0 20px stretch !important; }
+  html body.fs.fs-blip #gvModeTabs .search-tab { flex: 1; height: 36px !important; display: flex !important; align-items: center; justify-content: center; font-size: 17px !important; border-image-width: 0 18px !important; }
+  html body.fs.fs-blip #gvModeTabs .search-tab:not(.active) { border-image-source: none !important; }
+  html body.fs.fs-blip #gvModeTabs .search-tab > i { display: none !important; }
+  html body.fs.fs-blip #gvPostBar .post-create-bar { margin: 0 !important; }
+  html body.fs.fs-blip #gvPostsFeed { display: flex; flex-direction: column; gap: 8px; padding: 0 !important; border: 10px solid transparent !important;
+    border-image: var(--fs-panel-card-active-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 11px 0 stretch !important; }
+  html body.fs.fs-blip #gvPostsFeed > .card:first-child { border: 0 !important; border-image: none !important; background: none !important; padding: 2px 4px 0 !important; margin: 0 !important; }
+  html body.fs.fs-blip .pv-posts-heading { font: 800 21px var(--fs-title-font) !important; color: var(--bl-ink) !important; margin: 0 !important; }
+  html body.fs.fs-blip .pv-posts-heading > i { display: none !important; }
+  html body.fs.fs-blip #gvPostsFeed .feed-post { margin: 0 !important; }
+  html body.fs.fs-blip .post-badges .badge { font: 700 11px var(--fs-font) !important; padding: 1px 8px !important; border-radius: 0 !important; background: none !important; color: var(--bl-blue) !important;
+    border: 0 solid transparent !important; border-image: var(--fs-chip) 0 80 fill / 0 9px stretch !important; }
+  html body.fs.fs-blip .post-badges .badge > i { display: none !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #gvPostsFeed > .card:first-child, html body.fs.fs-blip .pv-posts-heading { text-align: left !important; border-bottom: 0 !important; justify-content: flex-start !important; }
+  html body.fs.fs-blip #gvPostsFeed > .card:first-child { padding: 4px 6px 0 !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #gvPostsFeed { border-width: 6px 5px 8px !important; gap: 7px !important; }
+  html body.fs.fs-blip #gvPostsFeed > .card:first-child { padding: 0 0 0 8px !important; margin-top: -2px !important; }
+  html body.fs.fs-blip #gvPostsFeed .post-header .post-avatar { width: 46px !important; height: 46px !important; flex-basis: 46px !important; }
+  html body.fs.fs-blip #gvPostsFeed .post-username { font-size: 17.5px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #gvPostsFeed .post-actions { justify-content: flex-start !important; gap: 62px !important; padding-left: 8px !important; }
+  html body.fs.fs-blip #gvPostsFeed .action-btn > i { width: 27px !important; height: 27px !important; }
+}
+@media (max-width: 768px) {
+  /* cover: rounded like the concept (9-slice mask on the banner itself) */
+  html body.fs.fs-blip #gvCoverBanner::before { display: none !important; }
+  html body.fs.fs-blip #gvCoverBanner { -webkit-mask-box-image: var(--fs-cover-mask) 40 / 14px stretch; mask-border: var(--fs-cover-mask) 40 / 14px stretch; overflow: visible !important; }
+  /* room under the buttons for the card's tail (concept) */
+  html body.fs.fs-blip #page-group-view #gvProfileCard .profile-info { padding-bottom: 20px !important; }
+  html body.fs.fs-blip #page-group-view #gvProfileCard { margin-bottom: 33px !important; }
+  /* coin before the Group Coins number */
+  html body.fs.fs-blip #gvProfileCard .stat-label > i { display: none !important; }
+  html body.fs.fs-blip #gvProfileCard .stat:nth-child(3) .stat-count::before { content: ""; width: 21px; height: 21px; background: var(--fs-coin) center / contain no-repeat; display: inline-block; }
+  html body.fs.fs-blip #gvProfileCard .stat-count { color: var(--bl-ink) !important; }
+  /* groups without a photo: the painted groups icon on their colour */
+  html body.fs.fs-blip #gvProfileCard .gv-icon-wrap > i:not(.avatar-edit-btn i) { font-size: 0 !important; width: 52%; height: 52%; background: var(--fs-icon-groups-on) center / contain no-repeat; }
+  html body.fs.fs-blip #gvMobileRight .gv-members-preview img { width: 46px !important; height: 46px !important; }
+  html body.fs.fs-blip #gvMobileRight .gv-members-more { font-size: 15px !important; }
+}
+/* pill art is cut tight to the pill (blip_convert input), so each end slice = half the art's height */
+html body.fs.fs-blip :is(.btn-primary, .featured-buy-btn, .mobile-pill, .fsk-buy) { border-image-slice: 0 67 fill !important; }
+html body.fs.fs-blip :is(.btn-outline, .view-group-btn) { border-image-slice: 0 74 fill !important; }
+html body.fs.fs-blip #gvLeaveBtn { border-image-slice: 0 74 fill !important; }
+html body.fs.fs-blip .btn-disabled { border-image-slice: 0 75 fill !important; }
+html body.fs.fs-blip :is(.search-tab, .stat) { border-image-slice: 0 76 fill !important; }
+html body.fs.fs-blip .search-tab.active { border-image-slice: 0 75 fill !important; }
+html body.fs.fs-blip .navbar .nav-coins { border-image-slice: 0 63 fill !important; }
+html body.fs.fs-blip :is(.post-input-fake, .page-search) { border-image-slice: 0 64 fill !important; }
+html body.fs.fs-blip .quest-reward { border-image-slice: 0 64 fill !important; }
+html body.fs.fs-blip :is(#feedTabs, #gvModeTabs) { border-image-slice: 0 64 fill !important; }
+html body.fs.fs-blip :is(.quest-bar, .coin-goal-track) { border-image-slice: 0 27 fill !important; }
+html body.fs.fs-blip #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn) { border-image-slice: 0 67 fill !important; }
+@media (min-width: 769px) { html body.fs.fs-blip .blip-start-btn { border-image-slice: 0 71 fill !important; } html body.fs.fs-blip .blip-start-btn.is-on { border-image-slice: 0 77 fill !important; } }
+@media (max-width: 768px) {
+  html body.fs.fs-blip #gvMobileRight .gv-members-preview { gap: 3px !important; overflow: hidden; }
+  html body.fs.fs-blip #gvMobileRight .gv-members-preview img { width: 45px !important; height: 45px !important; flex: 0 0 45px; }
+  html body.fs.fs-blip #gvMobileRight .gv-members-more { font-size: 14.5px !important; flex: 0 0 auto; margin-left: 6px !important; }
+}
+/* group page type sizes read off its concept (drawn ~10% larger than the Home concept) */
+@media (max-width: 768px) {
+  html body.fs.fs-blip #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn) { font-size: 19.5px !important; }
+  html body.fs.fs-blip #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn) > i { width: 27px !important; height: 27px !important; }
+  html body.fs.fs-blip #gvMobileRight .card-heading { font-size: 21px !important; }
+  html body.fs.fs-blip #gvProfileCard .pv-actions .btn { font-size: 18px !important; }
+  html body.fs.fs-blip .pv-posts-heading { font-size: 23px !important; }
+  html body.fs.fs-blip #gvPostsFeed :is(.post-description, .post-description p) { font-size: 16.5px !important; }
+  html body.fs.fs-blip #gvPostsFeed .post-username { font-size: 18px !important; }
+  html body.fs.fs-blip #gvPostsFeed .action-btn { font-size: 17px !important; }
+  html body.fs.fs-blip #gvPostsFeed .action-btn > i { width: 29px !important; height: 29px !important; }
+  html body.fs.fs-blip #gvModeTabs .search-tab { font-size: 19px !important; }
+  /* bottom nav: the concept's labels are ~13.5px and fit "Messages" */
+  html body.fs.fs-blip .nav-center { padding-left: 2px !important; padding-right: 2px !important; }
+  html body.fs.fs-blip .nav-center .nav-link, html body.fs.fs-blip .blip-start-btn { margin: 0 !important; font-size: 13.5px !important; letter-spacing: -.35px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip .nav-center .nav-link > span:not(.notif-badge) { overflow: visible !important; text-overflow: clip !important; white-space: nowrap !important; max-width: none !important; }
+  html body.fs.fs-blip .nav-center .nav-link[data-page="messages"] { flex: 1.3 1 0 !important; }
+  html body.fs.fs-blip .nav-center .nav-link[data-page="profiles"] { flex: 1.15 1 0 !important; }
 }
