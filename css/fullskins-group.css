@@ -1,0 +1,203 @@
+/* Full skins — Group page, 1 for 1 with the approved concepts (images/skins/<skin>/group-concept[-<r>].png).
+ * Markup: js/fullskins-group.js (a mirror of the app's group page in the concept's order; taps go to the app's buttons).
+ * Art: --gp-<piece> (url), --gp-<piece>-ar (aspect), --gp-<piece>-wl/wt/wr/wb (transparent window, % of the piece),
+ * set on #page-group-view by the script from the generated GP_ART table. CSS only places the art.
+ * Selector prefix everywhere: html body.fs #page-group-view.gp-on:not(#_) — beats the older per-skin group rules. */
+
+/* ---------- the app's own blocks hide while the mirror is on (they stay in the DOM: the mirror reads + clicks them) */
+html body.fs #page-group-view.gp-on:not(#_) > #gvCoverBanner,
+html body.fs #page-group-view.gp-on:not(#_) #gvProfileCard,
+html body.fs #page-group-view.gp-on:not(#_) #gvMobileRight,
+html body.fs #page-group-view.gp-on:not(#_) #gvModeTabs,
+html body.fs #page-group-view.gp-on:not(#_) .gv-left,
+html body.fs #page-group-view.gp-on:not(#_) .gv-right { display: none !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gv-layout,
+html body.fs #page-group-view.gp-on:not(#_) .gv-center { display: block !important; margin: 0 !important; padding: 0 !important; max-width: none !important; width: auto !important;
+  background: none !important; border: 0 !important; box-shadow: none !important; transform: none !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gv-layout::before, html body.fs #page-group-view.gp-on:not(#_) .gv-layout::after,
+html body.fs #page-group-view.gp-on:not(#_) .gv-center::before, html body.fs #page-group-view.gp-on:not(#_) .gv-center::after,
+html body.fs #page-group-view.gp-on:not(#_)::before, html body.fs #page-group-view.gp-on:not(#_)::after { content: none !important; display: none !important; }
+html body.fs #page-group-view.gp-on:not(#_) { padding: 0 0 calc(var(--gp-nav-space, 96px) + env(safe-area-inset-bottom)) !important; margin: 0 !important;
+  --gp-side: 12px; --gp-gap: 10px; --gp-ink: var(--fs-ink); --gp-muted: var(--fs-muted); --gp-title: var(--fs-title-font); --gp-font: var(--fs-font); }
+
+/* the app's top bar gives way to the concept's own title banner on this page */
+html body.fs:has(#page-group-view.gp-on.active) .navbar:not(#_) { height: 0 !important; min-height: 0 !important; padding: 0 !important; border: 0 !important;
+  background: none !important; box-shadow: none !important; border-image: none !important; overflow: visible !important; }
+html body.fs:has(#page-group-view.gp-on.active) .navbar:not(#_) :is(.nav-left, .nav-right) { display: none !important; }
+html body.fs:has(#page-group-view.gp-on.active) .navbar:not(#_)::before { display: none !important; }
+
+/* ---------- title banner (sticky, as on both concept phones) */
+html body.fs #page-group-view.gp-on:not(#_) .gp-head { position: sticky !important; top: 0 !important; z-index: 30 !important; display: flex !important; align-items: center !important; gap: 8px !important;
+  box-sizing: border-box !important; width: 100% !important; aspect-ratio: var(--gp-head-ar, 1290 / 300) !important; max-height: calc(var(--gp-head-max, 104px) + env(safe-area-inset-top)) !important;
+  min-height: calc(64px + env(safe-area-inset-top)) !important; padding: env(safe-area-inset-top) var(--gp-head-pad, 14px) var(--gp-head-pb, 8px) !important;
+  background: var(--gp-head) center bottom / 100% 100% no-repeat !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-back { flex: 0 0 auto !important; width: var(--gp-back-w, 40px) !important; aspect-ratio: var(--gp-back-ar, 1) !important; padding: 0 !important; border: 0 !important;
+  background: var(--gp-back) center / contain no-repeat !important; cursor: pointer !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-head-title { flex: 1 1 auto !important; margin: 0 var(--gp-back-w, 40px) 0 0 !important; text-align: center !important; font: var(--gp-head-weight, 700) var(--gp-head-size, 22px)/1.05 var(--gp-title) !important;
+  color: var(--gp-head-ink, var(--gp-ink)) !important; white-space: normal !important; overflow-wrap: anywhere !important; text-shadow: var(--gp-head-shadow, none) !important; letter-spacing: var(--gp-head-ls, 0) !important; text-transform: var(--gp-head-tt, none) !important; }
+
+/* ---------- the mirror */
+html body.fs #page-group-view.gp-on:not(#_) .gp { display: flex !important; flex-direction: column !important; gap: var(--gp-gap) !important; padding: var(--gp-top, 4px) var(--gp-side) 0 !important;
+  font-family: var(--gp-font) !important; color: var(--gp-ink) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp button { font-family: inherit !important; cursor: pointer !important; -webkit-tap-highlight-color: transparent !important; }
+
+/* hero: cover photo in the frame's window, frame art on top, group picture placed over it */
+html body.fs #page-group-view.gp-on:not(#_) .gp-hero { position: relative !important; order: 1 !important; width: calc(100% + var(--gp-hero-bleed, 0px) * 2) !important; margin: var(--gp-hero-mt, 0) calc(var(--gp-hero-bleed, 0px) * -1) var(--gp-hero-mb, 0) !important;
+  aspect-ratio: var(--gp-frame-ar, 1290 / 800) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-cover { position: absolute !important; left: var(--gp-frame-wl, 4%) !important; top: var(--gp-frame-wt, 4%) !important; right: var(--gp-frame-wr, 4%) !important; bottom: var(--gp-frame-wb, 4%) !important;
+  background: var(--gp-cover-img, none) center / cover no-repeat, var(--gp-cover-bg, #555) !important; border-radius: var(--gp-cover-r, 0) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-frame { position: absolute !important; inset: 0 !important; background: var(--gp-frame) center / 100% 100% no-repeat !important; pointer-events: none !important; z-index: 1 !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-pic { position: absolute !important; z-index: 2 !important; left: var(--gp-pic-x, 50%) !important; top: var(--gp-pic-y, 70%) !important; width: var(--gp-pic-w, 34%) !important;
+  aspect-ratio: var(--gp-pic-frame-ar, 1) !important; transform: translate(-50%, -50%) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-pic-img { position: absolute !important; left: var(--gp-pic-frame-wl, 12%) !important; top: var(--gp-pic-frame-wt, 12%) !important; right: var(--gp-pic-frame-wr, 12%) !important; bottom: var(--gp-pic-frame-wb, 12%) !important;
+  width: calc(100% - var(--gp-pic-frame-wl, 12%) - var(--gp-pic-frame-wr, 12%)) !important; height: calc(100% - var(--gp-pic-frame-wt, 12%) - var(--gp-pic-frame-wb, 12%)) !important; max-width: none !important; object-fit: cover !important; border-radius: var(--gp-pic-r, 50%) !important; margin: 0 !important; border: 0 !important; box-shadow: none !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-pic-icon { background: var(--gp-icon-bg, #777) !important; display: flex !important; align-items: center !important; justify-content: center !important; color: #fff !important; font-size: 34px !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-pic-frame { position: absolute !important; inset: 0 !important; background: var(--gp-pic-frame) center / 100% 100% no-repeat !important; pointer-events: none !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-cam { position: absolute !important; z-index: 3 !important; width: 34px !important; height: 34px !important; border-radius: 50% !important; border: 0 !important; padding: 0 !important;
+  background: rgba(0, 0, 0, .55) !important; color: #fff !important; font-size: 14px !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-cover-cam { right: calc(var(--gp-frame-wr, 4%) + 8px) !important; top: calc(var(--gp-frame-wt, 4%) + 8px) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-pic-cam { right: 4% !important; bottom: 4% !important; width: 28px !important; height: 28px !important; font-size: 12px !important; }
+
+/* name + description (optional decoration behind them) */
+html body.fs #page-group-view.gp-on:not(#_) .gp-id { position: relative !important; order: 2 !important; text-align: var(--gp-id-align, center) !important; margin: var(--gp-id-mt, 0) 0 0 !important; padding: var(--gp-id-pad, 0 8px) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-id::before { content: '' !important; position: absolute !important; inset: var(--gp-deco-inset, 0) !important; z-index: -1 !important; background: var(--gp-name-deco, none) center / 100% 100% no-repeat !important; pointer-events: none !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-name { margin: 0 !important; font: var(--gp-name-weight, 700) var(--gp-name-size, 30px)/1.05 var(--gp-title) !important; color: var(--gp-name-ink, var(--gp-ink)) !important;
+  text-shadow: var(--gp-name-shadow, none) !important; letter-spacing: var(--gp-name-ls, 0) !important; text-transform: var(--gp-name-tt, none) !important; overflow-wrap: anywhere !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-desc { margin: 4px 0 0 !important; font: var(--gp-desc-style, normal) var(--gp-desc-weight, 400) var(--gp-desc-size, 16px)/1.25 var(--gp-desc-font, var(--gp-font)) !important; color: var(--gp-desc-ink, var(--gp-ink)) !important; }
+
+/* stats plate: three equal cells laid over the plate art */
+html body.fs #page-group-view.gp-on:not(#_) .gp-stats { order: 3 !important; display: grid !important; grid-template-columns: repeat(3, 1fr) !important; align-items: center !important; width: 100% !important;
+  aspect-ratio: var(--gp-stats-ar, 1200 / 250) !important; padding: var(--gp-stats-pad, 0 3%) !important; box-sizing: border-box !important; background: var(--gp-stats) center / 100% 100% no-repeat !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-stat { display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; text-align: center !important; min-width: 0 !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-stat-n { display: inline-flex !important; align-items: center !important; gap: 5px !important; font: var(--gp-num-weight, 700) var(--gp-num-size, 22px)/1.05 var(--gp-num-font, var(--gp-title)) !important; color: var(--gp-num-ink, var(--gp-ink)) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-stat-l { font: var(--gp-lab-weight, 400) var(--gp-lab-size, 14px)/1.2 var(--gp-font) !important; color: var(--gp-lab-ink, var(--gp-ink)) !important; white-space: nowrap !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-coin { display: inline-block !important; width: 1.05em !important; height: 1.05em !important; background: var(--gp-coin) center / contain no-repeat !important; }
+
+/* Join / Leave (primary + secondary), Invite / Rules (small) */
+html body.fs #page-group-view.gp-on:not(#_) .gp-actions, html body.fs #page-group-view.gp-on:not(#_) .gp-links { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: var(--gp-btn-gap, 10px) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-actions { order: 4 !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-links { order: 5 !important; padding: var(--gp-links-pad, 0 3%) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-actions > :only-child { grid-column: 1 / -1 !important; justify-self: center !important; width: 50% !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-links > :only-child { grid-column: 1 / -1 !important; justify-self: center !important; width: 50% !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-btn, html body.fs #page-group-view.gp-on:not(#_) .gp-small {
+  display: flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important; width: 100% !important; margin: 0 !important; padding: 0 6px !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; min-width: 0 !important; white-space: nowrap !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-btn { aspect-ratio: var(--gp-btn-join-ar, 600 / 140) !important; font: var(--gp-btn-weight, 700) var(--gp-btn-size, 19px)/1 var(--gp-btn-font, var(--gp-title)) !important;
+  color: var(--gp-join-ink, #fff) !important; background: var(--gp-btn-join) center / 100% 100% no-repeat !important; text-shadow: var(--gp-btn-shadow, none) !important; text-transform: var(--gp-btn-tt, none) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-btn.is-joined { filter: var(--gp-joined-filter, saturate(.75)) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-leave, html body.fs #page-group-view.gp-on:not(#_) .gp-edit { aspect-ratio: var(--gp-btn-leave-ar, 600 / 140) !important; color: var(--gp-leave-ink, var(--gp-ink)) !important; background-image: var(--gp-btn-leave) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-small { aspect-ratio: var(--gp-btn-small-ar, 600 / 110) !important; font: var(--gp-small-weight, 400) var(--gp-small-size, 16px)/1 var(--gp-small-font, var(--gp-font)) !important;
+  color: var(--gp-small-ink, var(--gp-ink)) !important; background: var(--gp-btn-small) center / 100% 100% no-repeat !important; text-transform: var(--gp-btn-tt, none) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-ico { flex: 0 0 auto !important; display: inline-block !important; width: 1.4em !important; height: 1.4em !important; background: center / contain no-repeat !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-ico-invite { background-image: var(--gp-icon-invite) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-ico-rules { background-image: var(--gp-icon-rules) !important; }
+
+/* Feed / Chat / Group Shop */
+html body.fs #page-group-view.gp-on:not(#_) .gp-tabs { order: 6 !important; display: grid !important; grid-auto-flow: column !important; grid-auto-columns: 1fr !important; gap: var(--gp-tab-gap, 8px) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-tab { display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; margin: 0 !important; padding: var(--gp-tab-pt, 0) 4px var(--gp-tab-pb, 0) !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; min-width: 0 !important; white-space: nowrap !important;
+  aspect-ratio: var(--gp-tab-ar, 420 / 110) !important; background: var(--gp-tab) center / 100% 100% no-repeat !important; font: var(--gp-tab-weight, 400) var(--gp-tab-size, 17px)/1 var(--gp-tab-font, var(--gp-font)) !important;
+  color: var(--gp-tab-ink, var(--gp-ink)) !important; text-transform: var(--gp-btn-tt, none) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-tab.is-active { background-image: var(--gp-tab-active) !important; color: var(--gp-tab-on-ink, var(--gp-ink)) !important; font-weight: var(--gp-tab-on-weight, 700) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-tab .gp-ico { display: none !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-tab-feed .gp-ico { background-image: var(--gp-icon-feed) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-tab-chat .gp-ico { background-image: var(--gp-icon-chat) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-tab-shop .gp-ico { background-image: var(--gp-icon-shop) !important; }
+html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-icon-feed"] .gp-tab .gp-ico { display: inline-block !important; width: 1.3em !important; height: 1.3em !important; }
+
+/* Members card */
+html body.fs #page-group-view.gp-on:not(#_) .gp-members { order: 7 !important; position: relative !important; box-sizing: border-box !important; width: 100% !important; aspect-ratio: var(--gp-card-ar, 1200 / 380) !important;
+  display: flex !important; flex-direction: column !important; justify-content: var(--gp-card-justify, center) !important; padding: var(--gp-card-pad, 4% 7%) !important; background: var(--gp-card) center / 100% 100% no-repeat !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-members-title { margin: var(--gp-mt-margin, 0 0 6px) !important; text-align: var(--gp-mt-align, left) !important; font: var(--gp-mt-weight, 700) var(--gp-mt-size, 20px)/1 var(--gp-mt-font, var(--gp-title)) !important;
+  color: var(--gp-mt-ink, var(--gp-ink)) !important; text-transform: var(--gp-mt-tt, none) !important; letter-spacing: var(--gp-mt-ls, 0) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-members-row { display: flex !important; align-items: center !important; gap: var(--gp-av-gap, 4px) !important; flex-wrap: var(--gp-av-wrap, nowrap) !important; justify-content: var(--gp-av-justify, flex-start) !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-member { position: relative !important; flex: 0 0 auto !important; width: var(--gp-av, 13.5%) !important; aspect-ratio: 1 !important; padding: 0 !important; margin: 0 !important; border: 0 !important; background: none !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-member img { position: absolute !important; left: var(--gp-ring-wl, 8%) !important; top: var(--gp-ring-wt, 8%) !important; right: var(--gp-ring-wr, 8%) !important; bottom: var(--gp-ring-wb, 8%) !important;
+  width: calc(100% - var(--gp-ring-wl, 8%) - var(--gp-ring-wr, 8%)) !important; height: calc(100% - var(--gp-ring-wt, 8%) - var(--gp-ring-wb, 8%)) !important; max-width: none !important; object-fit: cover !important; border-radius: 50% !important; border: 0 !important; margin: 0 !important; box-shadow: none !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-ring { position: absolute !important; inset: 0 !important; background: var(--gp-ring) center / 100% 100% no-repeat !important; pointer-events: none !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-more { flex: 0 0 auto !important; margin: 0 0 0 2px !important; padding: 0 !important; border: 0 !important; background: none !important; text-align: center !important; font: var(--gp-more-weight, 400) var(--gp-more-size, 15px)/1.1 var(--gp-font) !important; color: var(--gp-more-ink, var(--gp-ink)) !important; }
+/* "+N more" on its own line under the avatars (concepts that draw it there) */
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="witchcraft"], [data-gp="scrapbook"], [data-gp="heavens-light twilight"], [data-gp="blood-moon"], [data-gp="blood-moon silver"], [data-gp="superhero"], [data-gp="superhero villains"], [data-gp="vaporwave modern-dark"]) .gp-members-row { flex-wrap: wrap !important; justify-content: var(--gp-av-justify, center) !important; row-gap: 0 !important; }
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="witchcraft"], [data-gp="scrapbook"], [data-gp="heavens-light twilight"], [data-gp="blood-moon"], [data-gp="blood-moon silver"], [data-gp="superhero"], [data-gp="superhero villains"], [data-gp="vaporwave modern-dark"]) .gp-more { flex: 0 0 100% !important; margin: 2px 0 0 !important; }
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="witchcraft"], [data-gp="scrapbook"], [data-gp="heavens-light twilight"], [data-gp="blood-moon"], [data-gp="blood-moon silver"], [data-gp="superhero"], [data-gp="superhero villains"], [data-gp="vaporwave modern-dark"]) .gp-more br { display: none !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-members-empty { margin: 0 !important; font-size: 14px !important; color: var(--gp-muted) !important; }
+
+/* ---------- the app's post bar + feed, dressed with the kit (scrolled phone) */
+html body.fs #page-group-view.gp-on:not(#_) #gvPostBar, html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed,
+html body.fs #page-group-view.gp-on:not(#_) #gvShopSection, html body.fs #page-group-view.gp-on:not(#_) #gvChatSection { margin: 0 var(--gp-side) !important; }
+html body.fs #page-group-view.gp-on:not(#_) #gvPostBar:not(:empty) { margin-top: var(--gp-gap) !important; }
+html body.fs #page-group-view.gp-on:not(#_) #gvOpenPostModal { display: flex !important; align-items: center !important; gap: 8px !important; margin: 0 !important; padding: var(--gp-bar-pad, 6px 8px) !important;
+  background: var(--gp-bar-bg, none) !important; border: 0 !important; box-shadow: none !important; border-image: none !important; border-radius: var(--gp-bar-r, 0) !important; }
+html body.fs #page-group-view.gp-on:not(#_) #gvOpenPostModal .post-create-avatar { width: var(--gp-bar-av, 44px) !important; height: var(--gp-bar-av, 44px) !important; flex: 0 0 auto !important; border-radius: 50% !important; }
+html body.fs #page-group-view.gp-on:not(#_) #gvOpenPostModal .post-input-fake { flex: 1 1 auto !important; display: flex !important; align-items: center !important; aspect-ratio: var(--gp-field-ar, 1000 / 130) !important; height: auto !important; min-height: 0 !important;
+  padding: 0 0 0 5% !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; border-image: none !important; background: var(--gp-field) center / 100% 100% no-repeat !important;
+  font: var(--gp-field-style, normal) 400 var(--gp-field-size, 16px)/1 var(--gp-font) !important; color: var(--gp-field-ink, var(--gp-muted)) !important; }
+html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed > .card:first-child { display: flex !important; align-items: center !important; justify-content: var(--gp-ph-justify, center) !important; margin: var(--gp-gap) 0 !important; padding: 0 !important;
+  aspect-ratio: var(--gp-heading-ar, 1200 / 170) !important; background: var(--gp-heading) center / 100% 100% no-repeat !important; border: 0 !important; box-shadow: none !important; border-image: none !important; border-radius: 0 !important; }
+html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed > .card:first-child .pv-posts-heading { margin: 0 !important; padding: var(--gp-ph-pad, 0) !important; font: var(--gp-ph-weight, 700) var(--gp-ph-size, 26px)/1 var(--gp-ph-font, var(--gp-title)) !important;
+  color: var(--gp-ph-ink, var(--gp-ink)) !important; text-transform: var(--gp-ph-tt, none) !important; letter-spacing: var(--gp-ph-ls, 0) !important; text-shadow: var(--gp-ph-shadow, none) !important; background: none !important; border: 0 !important; }
+html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed > .card:first-child .pv-posts-heading i { display: none !important; }
+html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed > .card:first-child::before, html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed > .card:first-child::after { content: none !important; display: none !important; }
+
+/* group posts: the concept's post card (stretchable border art), avatar ring, photo frame */
+html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed .feed-post { position: relative !important; margin: 0 0 var(--gp-gap) !important; padding: var(--gp-post-pad, 16px 16px 8px) !important;
+  background: none !important; box-shadow: none !important; border-radius: 0 !important; border-style: solid !important; border-width: var(--gp-post-bw, 24px) !important;
+  border-image: var(--gp-post) var(--gp-post-slice, 90) fill / var(--gp-post-bw, 24px) / var(--gp-post-out, 0) stretch !important; }
+html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-post"] #gvPostsFeed .feed-post { padding: var(--gp-post-pad2, 2px 4px 0) !important; }
+html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-post"] #gvPostsFeed .feed-post::before,
+html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-post"] #gvPostsFeed .feed-post::after { content: none !important; display: none !important; }
+html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-ring"] #gvPostsFeed .feed-post .post-avatar { box-sizing: border-box !important; padding: var(--gp-pav-pad, 3px) !important;
+  background: var(--gp-ring) center / 100% 100% no-repeat !important; border: 0 !important; box-shadow: none !important; border-image: none !important; outline: 0 !important; }
+html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-photo-frame"] #gvPostsFeed .feed-post .pm-thumb { position: relative !important; overflow: visible !important; }
+html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-photo-frame"] #gvPostsFeed .feed-post .post-media-grid { overflow: visible !important; border: 0 !important; box-shadow: none !important; border-image: none !important; background: none !important; }
+html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-photo-frame"] #gvPostsFeed .feed-post .post-media-grid::before,
+html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-photo-frame"] #gvPostsFeed .feed-post .post-media-grid::after { content: none !important; display: none !important; }
+html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-photo-frame"] #gvPostsFeed .feed-post .pm-thumb::after { content: '' !important; display: block !important; position: absolute !important; z-index: 2 !important; pointer-events: none !important;
+  left: var(--gp-photo-frame-ol) !important; right: var(--gp-photo-frame-or) !important; top: var(--gp-photo-frame-ot) !important; bottom: var(--gp-photo-frame-ob) !important; background: var(--gp-photo-frame) center / 100% 100% no-repeat !important; border: 0 !important; transform: none !important; }
+
+/* ======================================================================================================================
+ * PER SKIN / RENDITION — geometry and type measured from each concept (data-gp="<skin>[ <rendition folder>]")
+ * ==================================================================================================================== */
+
+/* ---------- Scrapbook */
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="scrapbook"] { --gp-pic-y: 66%; --gp-pic-w: 30%; --gp-name-size: 31px; --gp-desc-size: 17px; --gp-num-size: 21px; --gp-lab-size: 14px;
+  --gp-btn-size: 19px; --gp-small-size: 16px; --gp-tab-size: 17px; --gp-head-size: 21px; --gp-join-ink: #fff; --gp-leave-ink: #3b2a1f; --gp-ph-size: 25px; --gp-post-slice: 40; --gp-post-bw: 14px;
+  --gp-deco-inset: -4px -14px; --gp-head-pad: 12px; --gp-back-w: 42px; }
+
+/* ---------- Witchcraft */
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="witchcraft"] { --gp-pic-y: 63%; --gp-pic-w: 31%; --gp-name-size: 32px; --gp-name-ink: #f0d9a6; --gp-head-ink: #e8c98d; --gp-desc-style: italic;
+  --gp-desc-ink: #efe3d0; --gp-stats-pad: 7% 3% 0; --gp-num-size: 21px; --gp-tab-pt: 11%; --gp-join-ink: #fff; --gp-leave-ink: #f0e2c8; --gp-small-ink: #efe3d0; --gp-tab-ink: #efe3d0; --gp-tab-on-ink: #fff;
+  --gp-mt-ink: #efe3d0; --gp-mt-weight: 600; --gp-ph-ink: #f0d9a6; --gp-ph-pad: 4% 0 0; --gp-post-slice: 60; --gp-post-bw: 18px; --gp-deco-inset: 0 -6px; }
+
+/* ---------- Anime Blaze (all colours share the geometry) */
+html body.fs #page-group-view.gp-on:not(#_)[data-gp^="anime-blaze"] { --gp-pic-y: 62%; --gp-pic-w: 34%; --gp-name-size: 34px; --gp-name-weight: 800; --gp-name-ink: #fff; --gp-head-ink: #fff;
+  --gp-head-size: 23px; --gp-desc-ink: #f3f3f3; --gp-num-weight: 800; --gp-join-ink: #fff; --gp-leave-ink: #fff; --gp-small-ink: #fff; --gp-tab-ink: #fff; --gp-tab-on-ink: #fff; --gp-mt-ink: #fff;
+  --gp-mt-size: 22px; --gp-card-pad: 5% 7% 4% 9%; --gp-ph-ink: #fff; --gp-ph-size: 28px; --gp-ph-justify: flex-start; --gp-ph-pad: 0 0 0 9%; --gp-post-slice: 70; --gp-post-bw: 20px; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp^="anime-blaze"] :is(.gp-name, .gp-head-title, .gp-btn, .gp-small, .gp-tab, .gp-members-title, .gp-stat-n) { font-style: italic !important; }
+
+/* concepts that put Group Rules / Invite Link under the Members card (Good Witch Day, Heaven's Light Day, Superhero Heroes) */
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="good-witch"], [data-gp="heavens-light"], [data-gp="superhero"]) .gp-links { order: 8 !important; }
+
+/* ---------- Good Witch (Day + Night) */
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="good-witch"], [data-gp="good-witch night"]) { --gp-pic-y: 66%; --gp-pic-w: 32%; --gp-name-size: 31px; --gp-desc-style: italic; --gp-desc-size: 17px;
+  --gp-head-size: 22px; --gp-head-pad: 10px 22px; --gp-back-w: 36px; --gp-num-size: 21px; --gp-tab-gap: 0px; --gp-mt-weight: 600; --gp-post-slice: 70; --gp-post-bw: 18px; --gp-deco-inset: -6px -10px; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="good-witch"] { --gp-ink: #4a2160; --gp-name-ink: #4a1d5c; --gp-head-ink: #4a1d5c; --gp-join-ink: #3d1458; --gp-leave-ink: #4a2160; --gp-tab-on-ink: #3d1458; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="good-witch night"] { --gp-ink: #f3e9ff; --gp-name-ink: #fbf3ff; --gp-head-ink: #fbf3ff; --gp-join-ink: #fff; --gp-leave-ink: #fff; --gp-tab-on-ink: #fff; }
+
+/* ---------- Vaporwave Retro: square group picture in its own little window at the cover's lower left, name beside/below,
+   "Members" written in the card's navy title bar */
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave"] { --gp-pic-x: 19%; --gp-pic-y: 68%; --gp-pic-w: 34%; --gp-pic-r: 0; --gp-name-size: 31px; --gp-name-ink: #14123a;
+  --gp-head-ink: #fff; --gp-head-size: 25px; --gp-head-shadow: 0 2px 0 #3a0a5c, 0 0 6px rgba(80, 0, 120, .6); --gp-num-size: 22px; --gp-join-ink: #fff; --gp-leave-ink: #e0218a;
+  --gp-mt-ink: #fff; --gp-mt-size: 15px; --gp-mt-weight: 500; --gp-card-justify: flex-start; --gp-card-pad: 1.3% 7% 3% 3%; --gp-mt-margin: 0 0 4.5%; --gp-ph-ink: #fff; --gp-ph-size: 16px; --gp-ph-weight: 500;
+  --gp-ph-justify: flex-start; --gp-ph-pad: 0 0 0 3%; --gp-post-slice: 60; --gp-post-bw: 14px; --gp-ink: #14123a; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave"] .gp-head-title { font-style: italic !important; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave"] #gvPostsFeed > .card:first-child { align-items: flex-start !important; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave"] #gvPostsFeed > .card:first-child .pv-posts-heading { margin-top: 1.5% !important; }
+
+/* ---------- Vaporwave Modern: centred round picture with chrome flourishes, chrome italic name, frosted glass */
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave modern"] { --gp-pic-y: 74%; --gp-pic-w: 44%; --gp-name-size: 31px; --gp-name-ink: #f4f6ff; --gp-head-ink: #fff; --gp-head-size: 25px;
+  --gp-name-shadow: 0 2px 0 #26306e, 0 3px 6px rgba(20, 30, 90, .45); --gp-head-shadow: 0 2px 0 #1b1f5e, 0 0 6px rgba(20, 20, 90, .6); --gp-num-size: 22px; --gp-join-ink: #0b2a6b; --gp-leave-ink: #e0218a;
+  --gp-mt-ink: #fff; --gp-mt-size: 18px; --gp-card-justify: flex-start; --gp-card-pad: 2% 7% 3% 5%; --gp-mt-margin: 0 0 4%; --gp-ph-ink: #fff; --gp-ph-size: 20px; --gp-ph-justify: flex-start; --gp-ph-pad: 0 0 0 4%;
+  --gp-post-slice: 60; --gp-post-bw: 16px; --gp-ink: #13204f; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave modern"] :is(.gp-name, .gp-head-title, .gp-members-title, .gp-btn, .pv-posts-heading) { font-style: italic !important; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave modern"] .gp-name { -webkit-text-stroke: 1px #2a3478; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave modern"] .gp-head { justify-content: flex-start !important; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave modern"] .gp-head-title { text-align: left !important; max-width: 52% !important; }
