@@ -1507,9 +1507,13 @@
     if (!page || !follow || !host || !page.contains(follow)) return;
     // the app redraws the buttons (follow/unfollow, mute…): re-hide each time, build the ⋯ once per render
     PV_MENU.forEach(function (id) { var b = document.getElementById(id); if (b) b.classList.add('fs-pv-hidden'); });
-    if (page.querySelector('.fs-pv-more')) return;
+    // the look can change after the ⋯ was built (someone else's skin on their profile, a skin switch): a ⋯ built for the
+    // other placement is hidden by this skin's CSS and the menu never shows, so rebuild it where this skin wants it
+    var built = page.querySelector('.fs-pv-more');
+    if (built && built.getAttribute('data-row') === (inRow ? '1' : '0') && built.parentNode === host) return;
+    if (built) built.remove();
     var wrap = document.createElement('div'), btn = document.createElement('button'), menu = document.createElement('div');
-    wrap.className = 'fs-pv-more';
+    wrap.className = 'fs-pv-more'; wrap.setAttribute('data-row', inRow ? '1' : '0');
     btn.type = 'button'; btn.className = 'fs-pv-more-btn' + (inRow ? ' btn btn-outline' : ''); btn.setAttribute('aria-label', 'More: mute, block, report');
     if (inRow) btn.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
     menu.className = 'post-dropdown fs-pv-menu';
