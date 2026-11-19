@@ -77,6 +77,36 @@ Commits: 7d78031, 88f1231, 94e8360.
 | Rendition toggle + swap | n/a | pass | pass | pass | pass | pass | n/a | pass | pass | pass | pass | pass | pass | pass | pass | AB lightning, GW day→night sweep, VW "Updating BlipVibe" pixel swap, HL sun→moon (one white flash frame at the start — by design?) |
 | Equip transition | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | Scrapbook paper collage, AB comic burst, WC moon ring + smoke, GW owl + constellations, VW BIOS boot, HL temple gates |
 
+## Pass 6 (Nov 18, owner: "I'm still finding stuff … I feel like you're not looking at everything")
+
+What pass 5 missed and why: it checked fixed screens with automatic measurements, and treated sideways-scrolling tab rows
+as fine ("they scroll"). It never opened the People You May Know / Trending pop-ups, never scrolled down a group page,
+never looked at the store's lower rows, and never opened the profile ⋯ menu after a look change. Pass 6 adds those
+screens (pills, pymk, trending, network-discover, group-mid, group-low, shop-mid, shop-low, the My Profile pop-up,
+someone's profile top/middle/bottom and its ⋯ menu) and every capture was looked at by eye, not only measured.
+
+| Found | Skins | Fix |
+|---|---|---|
+| Profile ⋯ menu (Mute/Block/Report): tapping showed nothing — the ⋯ was built for the skin active when the profile first drew (Vaporwave puts it in the button row, the rest at the cover's corner); after a look change (someone else's skin on their profile, a skin switch) that skin's CSS hid it | every skin except the one it was built for | fullskins.js rebuilds the ⋯ wherever the current skin wants it |
+| Profile ⋯ menu hung 84 px off the left edge ("rt" of Report showing) | Vaporwave (all 4) | drops down from the button's left edge |
+| Tab / chip rows cut off at the right edge: Network "People Y…", store "Premium Skins / Font Styles", filter chips "Natur…" | most skins | rows wrap onto a second line, centred, nothing cut |
+| Group page: odd panels — tall window with coins on its own row, three stacked buttons of different widths, composer and posts inset deeper than the panels above | Vaporwave (all 4) | one header window, stats in one row, actions in one row, Rules / Invite side by side, one Feed / Chat / Group Shop bar, every panel on the same 8 px gutter |
+| Group page Feed / Chat / Group Shop showed as bare words, no tab art | Good Witch, Heaven's Light, Blood Moon | the skin's own tab art |
+| Group posts showed "undefined" under the poster's name (the time) | all skins and the default look | real post time (app.js used the demo-index timer on a date) |
+| #Basic store card: a vignette cut-out on black / blob edges instead of a full picture | #Basic (seen in every skin's store) | new full-bleed Rosé + Pumpkin store art (Codex), same scene |
+| Someone's "● Online" sat on the bottom edge of the profile-card frame | Superhero Villains | in the name column under the bio |
+| Someone's longer name cut with "…" on their profile ("VIDEOGAMES B…", "JENNIFER HUB…") | Superhero (both) | name steps down in size and wraps between words, never cut |
+| Home pill "People You May Know": the "w" ran into the pill's right bevel | Vaporwave retro + retro-dark | same fit as modern |
+| Network → People You May Know: the mutuals badge took the button's column, Follow dropped to a 46 px box ("F…") | Vaporwave (all 4) | mutuals under the name, Follow on the right |
+| People You May Know "+" clipped to a sliver (16 px painted sides in a 36 px button) | #Basic (both) | pill wide enough for its icon |
+| Group page "Leave Group" cut to "Leave Grou" | Vaporwave (all 4) | buttons size to their words |
+| Group page Feed / Chat / Group Shop bare words | #Basic (both) | the skin's chip art |
+| Group post text near-invisible — a group with a dark group theme forced #e2e8f0 on post paragraphs | every skin with light cards | post paragraphs follow the post's ink |
+| Group composer "Post in …" dark ink on dark field; "You" badge dark on dark | Blood Moon (both) | light title ink |
+| Store "Coming soon" left-aligned over the plate's frame ("ming soon") | Blood Moon (both) | centred in the plate |
+| Store chips: words stuck to the left edge of the stretched chip | Superhero (both) | centred |
+| Profiles checked with four different people (with and without timeline photos / cover) × every skin: every photo inside its frame | all | — |
+
 ## Pass 5 (Nov 18, owner: "do the full things … all the pictures where they're supposed to be, no out of bounds")
 
 Every page × 21 renditions, 23 screens (pass 4's 18 plus Home stories, Home quests, the store top, the **story viewer**
@@ -225,6 +255,11 @@ so nothing comes back. Re-check column: date of the last pass that confirmed it.
 | 29 | Nov 17 | all | posts | like/dislike row and other text/boxes still flow out of bounds | pass 4 (this commit) | ✓ Nov 17 pass 4 (qaOverflow clean on the post rows in all 21 renditions) |
 | 30 | Nov 17 | Scrapbook | group page | "Group Coins" runs out of the stats box (screenshot) | pass 4 (this commit) | ✓ Nov 17 pass 4 |
 | 31 | Nov 17 | all | every page incl. story viewer + account menu | "do the full things … pictures where they're supposed to be, no out of bounds" | pass 5 | ✓ Nov 18 pass 5 (3 sweeps) |
+| 32 | Nov 18 | all (seen on Vaporwave) | Home pill / Network tab "People You May Know" | "out of alignment and being cut off" | pass 6 | ✓ Nov 18 pass 6 |
+| 33 | Nov 18 | Vaporwave retro | group page | "odd panneling issue and spacing issue" | pass 6 | ✓ Nov 18 pass 6 |
+| 34 | Nov 18 | #Basic | skin store | "the #basic art for the skin shop is weird" (vignette cut-out on black) | pass 6, new art | ✓ Nov 18 pass 6 |
+| 35 | Nov 18 | all | someone's profile | "some of the pictures are out of their frame when you go to view profile" | pass 6 | ✓ Nov 18 pass 6 (21 renditions, top/mid/bottom) |
+| 36 | Nov 18 | Scrapbook + others | someone's profile ⋯ menu | "the little pop up under the options … sometimes nothing shows up" | pass 6 (fullskins.js) | ✓ Nov 18 pass 6 (21 renditions) |
 
 ## Queued for the next pass
 

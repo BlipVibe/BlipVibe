@@ -3701,7 +3701,7 @@ async function showProfileView(person){
     // Online status
     if(!isMe&&person.last_seen){
         var onlineInfo=getOnlineStatus(person.last_seen);
-        cardHtml+='<div style="font-size:11px;margin-top:2px;color:'+(onlineInfo.online?'#10b981':'var(--gray)')+';">'+(onlineInfo.online?'<i class="fas fa-circle" style="font-size:8px;margin-right:4px;"></i>':'')+onlineInfo.text+'</div>';
+        cardHtml+='<div class="pv-online-line" style="font-size:11px;margin-top:2px;color:'+(onlineInfo.online?'#10b981':'var(--gray)')+';">'+(onlineInfo.online?'<i class="fas fa-circle" style="font-size:8px;margin-right:4px;"></i>':'')+onlineInfo.text+'</div>';
     }
     if(person.status) cardHtml+='<p class="profile-title">'+escapeHtml(person.status)+'</p>';
     if(person.bio) cardHtml+='<p class="profile-about">'+escapeHtml(person.bio)+'</p>';
@@ -4693,7 +4693,7 @@ async function showGroupView(group){
                 var name=author.display_name||author.username||'User';
                 var avatar=author.avatar_url||DEFAULT_AVATAR;
                 var isMe=currentUser&&author.id===currentUser.id;
-                var timeStr=p.created_at?timeAgo(p.created_at):'just now';
+                var timeStr=p.created_at?timeAgoReal(p.created_at):'just now';
                 var commentCount=p.comments&&p.comments[0]?p.comments[0].count:0;
                 var gvMenuId='gvmenu-'+p.id;
                 feedHtml+='<div class="card feed-post" data-post-id="'+p.id+'" data-author-id="'+author.id+'"><div class="post-header"><img src="'+avatar+'" alt="'+escapeHtml(name)+'" class="post-avatar gv-post-author" data-uid="'+author.id+'" style="cursor:pointer;"><div class="post-user-info"><div class="post-user-top"><h4 class="post-username gv-post-author" data-uid="'+author.id+'" style="cursor:pointer;">'+escapeHtml(name)+'</h4><span class="post-time">'+timeStr+'</span></div>';
