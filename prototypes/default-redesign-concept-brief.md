@@ -20,70 +20,93 @@ thick outlines/halftone/bursts (Superhero), no dark navy + silver filigree (Bloo
 
 ## Output (one image per job)
 - Use your image generation tool (gpt-image). Save as PNG to the path the job names (relative to this worktree).
-- `home`: **1024 x 1536** portrait. ONE iPhone portrait screen, large, centered on a plain soft backdrop, label small
-  underneath: `<DIRECTION NAME> — HOME`.
-- `group`: **1024 x 1536** portrait. ONE iPhone portrait screen, label `<DIRECTION NAME> — GROUP PAGE`.
+- `home` and `group`: **1536 x 1024** landscape, plain soft backdrop, **two iPhone portrait screens side by side** of the
+  SAME page — Phone A scrolled to the top, Phone B scrolled down — so every field of that page fits. Labels small
+  underneath: `<DIRECTION> — HOME (TOP)` / `<DIRECTION> — HOME (SCROLLED)` (or `GROUP PAGE`).
 - `desktop`: **1536 x 1024** landscape. ONE desktop browser window (thin generic browser chrome, URL `blipvibe.com`)
-  filling most of the image, label `<DIRECTION NAME> — DESKTOP HOME`.
-- Real app fields ONLY (listed below) with plausible real-looking content. NO lorem ipsum, no placeholder bars, no
-  gibberish, no extra features the app does not have (no reels, no stories carousel beyond the one listed, no
-  marketplace, no "trending now" widgets other than those listed). Every word readable and spelled right.
-  No real brands, logos, celebrities or copyrighted characters. People's photos = generic stock-like photos.
-- The mascot appears in every screen, in the direction's style: the `BlipVibe` wordmark with the mascot head, plus
-  at least one bigger mascot moment (peeking from the cover, sitting on the profile card, cheering in the empty-ish
-  space, as a loading/"you're all caught up" sprite, as nav active-tab indicator, etc.). Yellow sparkles are a
-  recurring accent everywhere.
+  filling most of the image, label `<DIRECTION> — DESKTOP HOME`.
+- Content: plausible real-looking values. NO lorem ipsum, no placeholder bars, no gibberish, every word readable and
+  spelled right. No real brands, logos, celebrities or copyrighted characters. People = generic stock-like photos.
+- The mascot appears on every screen in the direction's style: the `BlipVibe` wordmark with the mascot head, plus at
+  least one bigger mascot moment (decoration only — it never adds a feature or text field). Yellow sparkles recur.
 
-## Fields per screen (from index.html / js/app.js — use exactly these, nothing more)
+## Page-by-page fields (owner rule: "do it by page and fields that are actually available on those pages")
+Each job is fed ONLY its own page's list below (prompt files are built per job from these sections). Lists were read
+from index.html + js/app.js (+ css/style.css for what the phone layout shows/hides). Nothing from other pages, nothing invented.
 
-### HOME (phone) — `#page-home`, mobile layout
-1. Top bar: `BlipVibe` wordmark (mascot head + word), search icon button, bell icon (badge `3`), coin pill with coin
-   icon + count (e.g. `1,240`), small round user avatar.
-2. **Timeline cover** — the user's wide cover photo across the top (a real-looking photo, e.g. a beach sunset).
-3. **Profile card** — profile cover strip, round **avatar** (with small camera edit badge), **name** (e.g. `Maya Rivera`),
-   **title** line (`Living my best life`), **about** text (1 line, e.g. `Coffee addict, sunset chaser, part-time adventurer.`),
-   two stats `Following 248` and `Followers 1,032`, link `View Profile` + a small pencil edit button.
-   The profile must stay prominent on Home (never removed or tiny).
-4. Two pill buttons: `People You May Know` and `Trending Groups`.
-5. **Stories row**: first bubble `Your Story` (user avatar with a + badge), then 4 friends' round story bubbles with first
-   names under them (ring = unseen, faded ring = seen).
-6. **Post bar**: small user avatar + field text `What are we posting today?`.
-7. **Daily Quests** panel: heading `Daily Quests` + small `Resets daily`; 3 quests, each = icon, label, progress bar +
-   count, coin reward: `React to 5 posts` 3/5 +5 · `Send 3 messages` 2/3 +10 · `Like 5 posts` 4/5 +5.
-   Then a slim **coin goal** bar: `1,240 / 300 coins` and the next skin name (e.g. `Heaven's Light`) over a progress track.
-8. Feed tabs: `Following` (active) · `Discover` · `My Posts`.
-9. One **post** (may be cut off by the bottom nav): author avatar, author name, time (`2h ago`), `⋯` menu, post text
-   (1–2 lines), one photo, action row: like (thumbs-up, active) `128`, dislike (thumbs-down) `2`, react (smiley),
-   comment `14`, share `5`.
-10. **Bottom nav** (5 items, icon + label): `Home` (active) · `Groups` · `Skins` · `Network` · `Messages` (badge `2`).
+<!-- PAGE:home -->
+### PAGE: HOME (phone) — `#page-home` at phone width
+Top bar (global navbar, phone): `BlipVibe` wordmark (mascot head + word) · search icon button · bell icon (badge `3`) ·
+coin pill (coin icon + `1,240`) · small round user avatar. (No search field, no username on phone.)
+Phone A (top):
+1. **Timeline cover** — wide cover photo (e.g. beach sunset) with a small round camera button (change cover).
+2. **Profile card** — profile cover strip · round **avatar** + small camera edit badge · **name** `Maya Rivera` ·
+   **title** `Living my best life` · **about** `Coffee addict, sunset chaser, part-time adventurer.` ·
+   stats `Following 248` and `Followers 1,032` · link `View Profile` · small pencil edit button. Prominent, never tiny.
+3. **Photos** card — heading `Photos`, a row/grid of 6 small photo thumbnails, link `View All`.
+4. Two pill buttons: `People You May Know` · `Trending Groups`.
+5. **Stories** row — `Your Story` (user avatar + `+` badge), then 4 friends' round story bubbles with first names
+   (bright ring = unseen, faded ring = seen).
+Phone B (scrolled):
+6. **Post bar** — small user avatar + field text `What are we posting today?`.
+7. **Featured Skin** banner — heading `Featured Skin` + timer `5h 12m left`; a small skin preview picture, skin name
+   `Good Witch`, one-line skin description, button `Buy · 300` (coin icon).
+8. **Daily Quests** panel — heading `Daily Quests` + `Resets daily`; 3 quests, each = icon, label, progress bar, count,
+   coin reward: `React to 5 posts` 3/5 +5 · `Send 3 messages` 2/3 +10 · `Like 5 posts` 4/5 +5.
+9. **Coin goal** bar — `180 / 300 coins` + next skin name `Heaven's Light` over a progress track.
+10. Feed tabs: `Following` (active) · `Discover` · `My Posts`.
+11. One **post**: author avatar · author name · `2h ago` · `⋯` menu · 1–2 lines of text · one photo · action row:
+    like (thumbs-up, active) `128` · dislike (thumbs-down) `2` · react (smiley) · comment `14` · share `5`.
+Both phones: **bottom nav** (icon + label) `Home` (active) · `Groups` · `Skins` · `Network` · `Messages` (badge `2`).
+(The `Earn Coins` card and `Trending Hashtags` button render only after the whole feed on phone — leave them out.)
+<!-- /PAGE -->
 
-### GROUP PAGE (phone) — `#page-group-view`
-1. Top bar: back arrow `←`, page title = group name.
-2. **Group cover** (wide banner photo) + **group picture** (its own photo, overlapping the cover).
-3. **Group name** (e.g. `Weekend Hikers`) + one-line **description** (`Trails, views and trail snacks every Saturday.`).
-4. Stats: `Members 12,430` · `Posts 318` · `Group Coins 2,450` (coin icon).
-5. Buttons: `Join Group` (primary) · `Leave Group` (secondary, danger tint); small `Invite Link` and `Group Rules` buttons.
-6. Mode tabs: `Feed` (active) · `Chat` · `Group Shop`.
-7. **Members** card: heading `Members`, 6 round member avatars + `+42 more`.
-8. **Post bar**: small avatar + `Post in Weekend Hikers...`.
-9. Heading `Group Posts` + one group post (avatar, name, time, `⋯`, text, photo, like/dislike/comment/share counts).
-10. Same bottom nav as Home, `Groups` active.
+<!-- PAGE:group -->
+### PAGE: GROUP PAGE (phone) — `#page-group-view` at phone width, viewer is a MEMBER of the group
+Top bar: the same global navbar as Home (wordmark · search icon · bell · coin pill · avatar). There is no separate
+page-title bar.
+Phone A (top):
+1. **Group cover** — wide banner photo of the group's topic (e.g. a mountain trail).
+2. **Group card** — cover strip · round **group picture** (the group's own photo) · **group name** `Weekend Hikers` ·
+   **description** `Trails, views and trail snacks every Saturday.` · three stats `12,430 Members` · `318 Posts` ·
+   `2,450 Group Coins` (coin icon) · buttons `Joined` (greyed/disabled, already a member) and `Leave Group`
+   (outline, red/danger tint, exit icon) · small link `← Back to Groups`.
+3. `Group Rules` button (scroll icon) and `Invite Link` button (link icon), full width, stacked.
+4. **Members** card — heading `Members`, 6 round member avatars + `+42 more`.
+Phone B (scrolled):
+5. Mode tabs: `Feed` (active) · `Chat`.
+6. **Post bar** — small user avatar + field text `Post in Weekend Hikers...`.
+7. Heading card `Group Posts`.
+8. Two group **posts**: author avatar · author name · time (`3h ago`) · `⋯` menu · 1–2 lines of on-topic text ·
+   one post with a photo · action row: like (thumbs-up, active on one) `86` · dislike `1` · comment `12`
+   (group posts have NO react and NO share buttons).
+Both phones: bottom nav `Home` · `Groups` (active) · `Skins` · `Network` · `Messages` (badge `2`).
+<!-- /PAGE -->
 
-### DESKTOP HOME — `#page-home`, ≥1100px
-1. **Top navbar**: `BlipVibe` wordmark with mascot, search field `Search...`, nav links with icons `Home` (active) ·
-   `Groups` · `Skins` · `Network` · `Saved` · `Messages` (badge) · `Notification` (badge), coin pill `1,240`,
+<!-- PAGE:desktop -->
+### PAGE: DESKTOP HOME — `#page-home` on a wide screen
+1. **Top navbar**: `BlipVibe` wordmark with mascot · search field `Search...` · nav links (icon + label) `Home` (active) ·
+   `Groups` · `Skins` · `Network` · `Saved` · `Messages` (badge `2`) · `Notification` (badge `3`) · coin pill `1,240` ·
    user avatar + `Maya Rivera` + chevron.
-2. **Timeline cover** photo banner.
-3. **Left column**: the profile card (cover strip, avatar + camera badge, name, `Living my best life`, about line,
-   `Following 248` / `Followers 1,032`, `View Profile`, edit pencil) and a `Photos` card (6 small photo thumbnails + `View All`).
-4. **Center column**: stories row (`Your Story` + 5 friends), post bar `What are we posting today?`, the `Daily Quests`
-   panel + coin goal bar (as in Home), feed tabs
-   `Following` · `Discover` · `My Posts`, two posts (as in Home; one with a photo).
-5. **Right column**: `Earn Coins on BlipVibe` card (subtitle `Earn coins by interacting and spend them in the Skin Shop
-   to customize your profile!`, rules `Daily Login +5`, `Post +5 (5/day)`, `Comment +2 (15/day)`, `Like +1 (30/day)`);
-   `People You May Know` card (3 people: avatar, name, `Follow` button, `View More`); `Trending Groups` card
-   (3 groups: picture, name, member count); a `Trending Hashtags` button.
-   The direction may rearrange these blocks into its OWN desktop structure (see each direction) — but keep every block.
+2. **Timeline cover** — wide cover photo banner (small `Add Cover Photo` camera button).
+3. **Profile card**: cover strip · avatar + camera badge · `Maya Rivera` · `Living my best life` · about line ·
+   `Following 248` / `Followers 1,032` · `View Profile` · pencil edit button.
+4. **Photos** card: heading `Photos`, 6 small thumbnails, `View All`.
+5. **Stories** row: `Your Story` + 5 friends (first names).
+6. **Post bar**: avatar + `What are we posting today?`.
+7. **Featured Skin** banner (`Featured Skin`, `5h 12m left`, preview picture, `Good Witch`, description, `Buy · 300`).
+8. **Daily Quests** panel (as on Home: 3 quests with progress + rewards, `Resets daily`) + **coin goal** bar
+   (`180 / 300 coins`, `Heaven's Light`).
+9. Feed tabs `Following` · `Discover` · `My Posts`, then two posts (as on Home; one with a photo; like · dislike ·
+   react · comment · share).
+10. **Earn Coins on BlipVibe** card: subtitle `Earn coins by interacting and spend them in the Skin Shop to customize
+    your profile!`, rules `Daily Login +5` · `Post +5 (5/day)` · `Comment +2 (15/day)` · `Like +1 (30/day)`.
+11. **People You May Know** card: 3 people (avatar, name, `Follow` button) + `View More`.
+12. **Trending Groups** card: 3 groups (picture, name, member count).
+13. `Trending Hashtags` button (fire icon).
+Standard placement is 3 columns (left: 3–4 · center: 5–9 · right: 10–13) under the navbar and cover; the direction
+may rearrange the blocks into its own desktop structure, but every block stays.
+<!-- /PAGE -->
 
 ## The 5 directions (each clearly different from the other four AND from every premium skin — see rule above)
 
@@ -166,4 +189,4 @@ Desktop structure: an editorial grid — masthead navbar with the wordmark, asym
 Raw PNGs stay local (git-ignored under images/skins/**). Contact sheets: images/skins/default/_sheets/ (local).
 
 ## Status
-- Nov 19 2026: brief written; concepts painting.
+- Nov 19 2026: brief written. Rev 2: differ from every premium skin. Rev 3: page-by-page field lists (owner rule), each job fed only its page list via per-job prompt files; Home + Group = two phones (top + scrolled) so every field fits. Painting.
