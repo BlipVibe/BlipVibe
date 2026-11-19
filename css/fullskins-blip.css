@@ -1,0 +1,650 @@
+/* Logo Classic ("blip") — the BlipVibe DEFAULT look (js/fullskins.js FULL_SKINS.blip, applied when nothing is equipped).
+ * Every visual is painted art from images/skins/blip/assets (prototypes/blip-kit-brief.md); this file only places it.
+ * Concepts: images/skins/default/logo-classic/{home,group,desktop,menu,groups,groupsdesk}.png (local only). */
+
+/* ---------- page + type ---------- */
+body.fs-blip { --bl-ink: #0b1f6b; --bl-soft: #5068a8; --bl-blue: #2669e4; --bl-deep: #1e51ca; --bl-navy: #00008b;
+  background: #eef5ff !important; font-family: var(--fs-font) !important; color: var(--bl-ink) !important; }
+body.fs-blip :is(h1, h2, h3, h4, .profile-name, .post-username, .card-heading, .stat-count, .msg-contact-name, .group-card-body h4,
+  .fsk-name, .profile-card-name) { font-family: var(--fs-title-font) !important; font-weight: 800 !important; color: var(--bl-ink) !important; font-style: normal !important; }
+body.fs-blip :is(.page, .main-container, .center-feed, .page-container) { background: transparent !important; }
+body.fs-blip * { border-image-repeat: stretch !important; }
+/* the user's shop extras that full skins override (templates paint their own bars/cards) */
+body.fs-blip[class*="tpl-"] :is(.card, .feed-post)::before { display: none !important; }
+
+/* ---------- cards: the white outlined card (panel-card, 9-slice) ---------- */
+html body.fs.fs-blip :is(.card, .feed-post, .quest-panel, .coin-goal-bar, .featured-skin-banner, .group-card, .comment-item,
+  .msg-contact, .notif-item, .user-dropdown, .post-dropdown, .modal-content) {
+  border: 14px solid transparent !important; border-image: var(--fs-panel-card) 12% fill / 14px stretch !important;
+  background: none !important; box-shadow: none !important; border-radius: 0 !important; color: var(--bl-ink) !important; }
+html body.fs.fs-blip :is(.msg-contact.active, .notif-item.unread) { border-image-source: var(--fs-panel-card-active) !important; }
+
+/* ---------- buttons + pills ---------- */
+html body.fs.fs-blip :is(.btn-primary, .featured-buy-btn, .join-group-btn.btn-primary, .mobile-pill, .fsk-buy) {
+  
+  color: #fff !important; box-shadow: none !important; border-radius: 0 !important; font-weight: 800 !important; text-shadow: none !important; }
+html body.fs.fs-blip :is(.btn-outline, .view-group-btn) {  color: var(--bl-blue) !important; box-shadow: none !important; font-weight: 800 !important; }
+html body.fs.fs-blip :is(.btn-disabled, .join-group-btn.btn-disabled) {  color: #4d5a73 !important; box-shadow: none !important; opacity: 1 !important; }
+html body.fs.fs-blip :is(.btn-primary, .btn-outline, .btn-disabled, .mobile-pill, .featured-buy-btn) i { color: inherit !important; }
+html body.fs.fs-blip :is(.btn, .mobile-pill, .search-tab, .action-btn, .nav-link) { transition: transform .18s cubic-bezier(.3,1.5,.5,1), filter .18s, color .2s, background-color .2s !important; }
+html body.fs.fs-blip :is(.btn, .mobile-pill, .search-tab, .action-btn):active { transform: scale(.94); filter: brightness(.94); }
+
+/* tabs: white pill with a navy outline, the active one solid blue */
+html body.fs.fs-blip .search-tab {
+  color: var(--bl-ink) !important; font-weight: 800 !important; box-shadow: none !important; border-radius: 0 !important; text-shadow: none !important; }
+html body.fs.fs-blip .search-tab.active { color: #fff !important; }
+html body.fs.fs-blip .search-tab i { color: inherit !important; }
+
+/* fields */
+html body.fs.fs-blip :is(.post-input-fake, .page-search, #globalSearch, .msg-search input) {  color: var(--bl-soft) !important; box-shadow: none !important; border-radius: 0 !important; }
+html body.fs.fs-blip .page-search input { background: transparent !important; border: 0 !important; color: var(--bl-ink) !important; font-size: 16px !important; }
+
+/* progress bars (quests, coin goal) */
+html body.fs.fs-blip :is(.quest-bar, .coin-goal-track) { background: var(--fs-bar-track) center / 100% 100% no-repeat !important; border-radius: 0 !important; border: 0 !important; overflow: hidden; }
+html body.fs.fs-blip :is(.quest-bar-fill, .coin-goal-fill) { background: var(--fs-bar-fill) left center / auto 100% no-repeat !important; border-radius: 0 !important;
+  -webkit-mask: var(--fs-bar-fill) left center / 100% 100% no-repeat; mask: var(--fs-bar-fill) left center / 100% 100% no-repeat; transition: width .8s cubic-bezier(.2,.8,.2,1) !important; }
+
+/* ---------- avatars: round, in the white ring ---------- */
+html body.fs.fs-blip :is(.post-avatar, .post-create-avatar, .nav-avatar, .suggestion-avatar, .msg-contact-avatar, .comment-avatar) {
+  -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; border: 0 !important; box-shadow: none !important;
+  padding: 2px; box-sizing: border-box; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; object-fit: cover; }
+
+/* ---------- icons the generic layer doesn't swap ---------- */
+html body.fs.fs-blip .edit-profile-btn > i, html body.fs.fs-blip .post-menu-btn > i { display: inline-block; width: 20px; height: 20px; color: transparent !important; background: center / contain no-repeat; }
+html body.fs.fs-blip .edit-profile-btn > i::before, html body.fs.fs-blip .post-menu-btn > i::before { content: "" !important; }
+html body.fs.fs-blip .edit-profile-btn > i { background-image: var(--fs-icon-edit); }
+html body.fs.fs-blip .post-menu-btn > i { background-image: var(--fs-icon-more); }
+
+/* ======================================================================================================== PHONE */
+@media (max-width: 768px) {
+  /* top bar: royal-blue band, wordmark with the original mascot, white icons, white coin pill, ringed avatar */
+  html body.fs.fs-blip .navbar { border: 0 !important; border-image: none !important; box-shadow: none !important; overflow: visible !important;
+    background: var(--fs-header-bar) center bottom / 100% 100% no-repeat !important; height: calc(62px + env(safe-area-inset-top, 0px)) !important;
+    max-height: none !important; padding: env(safe-area-inset-top, 0px) 0 0 !important; }
+  html body.fs.fs-blip .page.active { padding-top: calc(66px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-blip .nav-container { display: grid !important; grid-template-columns: 1fr 38px 38px auto 46px; align-items: center; column-gap: 6px; padding: 0 12px !important; height: 100%; }
+  html body.fs.fs-blip .navbar :is(.nav-left, .nav-right) { display: contents !important; }
+  html body.fs.fs-blip .navbar .search-bar { display: none !important; }
+  html body.fs.fs-blip .navbar .nav-logo { grid-column: 1; grid-row: 1; justify-self: start; display: flex !important; align-items: center; gap: 6px;
+    font: 900 26px var(--fs-title-font) !important; color: #fff !important; background: none !important; padding: 0 !important; text-shadow: none !important; letter-spacing: -.3px; }
+  html body.fs.fs-blip .navbar .nav-logo::before { content: ""; width: 42px; height: 42px; flex: 0 0 42px; background: var(--fs-mascot-head) center / contain no-repeat; }
+  html body.fs.fs-blip .navbar .nav-logo.nav-logo-image::after { content: none; }
+  html body.fs.fs-blip .navbar .mobile-search-btn { grid-column: 2; grid-row: 1; }
+  html body.fs.fs-blip .navbar .mobile-notif-btn { grid-column: 3; grid-row: 1; position: relative; }
+  html body.fs.fs-blip .navbar .nav-music-wrap { display: none !important; }
+  html body.fs.fs-blip .navbar .nav-coins { grid-column: 4; grid-row: 1; }
+  html body.fs.fs-blip .navbar .nav-user { grid-column: 5; grid-row: 1; margin: 0 !important; }
+  html body.fs.fs-blip .navbar .nav-user > i, html body.fs.fs-blip .navbar .nav-username { display: none !important; }
+  html body.fs.fs-blip .navbar :is(.mobile-search-btn, .mobile-notif-btn) { width: 38px !important; height: 38px !important; display: flex !important; align-items: center; justify-content: center; background: none !important; border: 0 !important; padding: 0 !important; }
+  html body.fs.fs-blip .navbar :is(.mobile-search-btn, .mobile-notif-btn) > i { width: 27px !important; height: 27px !important; font-size: 0 !important; background-size: contain !important; background-repeat: no-repeat !important; background-position: center !important; }
+  html body.fs.fs-blip .navbar .notif-badge, html body.fs.fs-blip .nav-center .notif-badge { position: absolute; top: -1px; right: -2px; min-width: 19px; height: 19px; border-radius: 0 !important; padding: 0 4px;
+    background: var(--fs-badge-count) center / 100% 100% no-repeat !important; color: #fff !important; font: 800 11px/19px var(--fs-font) !important; text-align: center; border: 0 !important; box-shadow: none !important; animation: blBadge .45s cubic-bezier(.3,1.7,.5,1) both; }
+  html body.fs.fs-blip .navbar .nav-coins { height: 36px !important; padding: 0 12px 0 7px !important; display: flex !important; align-items: center; gap: 5px; margin: 0 !important;
+    border-radius: 0 !important; box-shadow: none !important; }
+  html body.fs.fs-blip .navbar .nav-coins > i { width: 24px !important; height: 24px !important; font-size: 0 !important; background: var(--fs-coin) center / contain no-repeat !important; }
+  html body.fs.fs-blip .navbar .nav-coins .coin-count { color: var(--bl-ink) !important; font: 800 16px var(--fs-font) !important; }
+  html body.fs.fs-blip .navbar .nav-avatar { width: 44px !important; height: 44px !important; padding: 3px; }
+
+  /* bottom nav: white bar; the active tab is the blue tile with a white icon + label; Blip first */
+  html body.fs.fs-blip .nav-center { background: var(--fs-nav-bar) center top / 100% 100% no-repeat !important; border: 0 !important; box-shadow: none !important;
+    justify-content: space-around !important; padding: 6px 6px calc(env(safe-area-inset-bottom, 0px) + 6px) !important; height: auto !important; min-height: 74px; align-items: center !important; }
+  html body.fs.fs-blip .nav-center .nav-link { position: relative; display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    min-width: 0; flex: 1 1 0; height: 60px; padding: 0 !important; margin: 0 2px !important; border: 0 !important; border-image: none !important; background: none !important;
+    color: var(--bl-ink) !important; font: 800 12.5px var(--fs-font) !important; }
+  html body.fs.fs-blip .nav-center .nav-link > span:not(.notif-badge) { font: inherit !important; color: inherit !important; display: block !important; }
+  html body.fs.fs-blip .nav-center .nav-link > i { width: 28px !important; height: 28px !important; min-width: 28px; font-size: 0 !important; transition: transform .25s cubic-bezier(.3,1.6,.5,1); }
+  html body.fs.fs-blip .nav-center .nav-link.active { background: var(--fs-nav-active) center / 100% 100% no-repeat !important; color: #fff !important; animation: blTab .35s cubic-bezier(.3,1.5,.5,1); }
+  html body.fs.fs-blip .nav-center .nav-link.active > i { transform: translateY(-1px) scale(1.06); }
+  html body.fs.fs-blip .nav-center .nav-link.active[data-page="home"] > i { background-image: var(--fs-icon-home-on) !important; }
+  html body.fs.fs-blip .nav-center .nav-link.active[data-page="groups"] > i { background-image: var(--fs-icon-groups-on) !important; }
+  html body.fs.fs-blip .nav-center .nav-link.active[data-page="shop"] > i { background-image: var(--fs-icon-skins-on) !important; }
+  html body.fs.fs-blip .nav-center .nav-link.active[data-page="profiles"] > i { background-image: var(--fs-icon-network-on) !important; }
+  html body.fs.fs-blip .nav-center .nav-link.active[data-page="messages"] > i { background-image: var(--fs-icon-messages-on) !important; }
+  html body.fs.fs-blip .nav-center .notif-badge { top: 2px; right: 14%; }
+}
+
+/* ---------- the Blip button (js blipStart) ---------- */
+.blip-start-btn { display: none; }
+body.fs-blip .blip-start-btn { display: flex; align-items: center; justify-content: center; border: 0; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  font: 900 15px var(--fs-font); color: #fff; padding: 0; background: none; position: relative; transition: transform .2s cubic-bezier(.3,1.6,.5,1), filter .2s; }
+body.fs-blip .blip-start-head { display: block; width: 34px; height: 34px; background: var(--fs-mascot-head) center / contain no-repeat; transition: transform .35s cubic-bezier(.3,1.7,.5,1); }
+body.fs-blip .blip-start-btn:hover .blip-start-head { transform: rotate(-10deg) scale(1.08); }
+body.fs-blip .blip-start-btn.is-on .blip-start-head { animation: blHop .5s cubic-bezier(.3,1.6,.5,1); }
+body.fs-blip .blip-start-btn:active { transform: scale(.92); }
+@media (max-width: 768px) {
+  body.fs-blip .blip-start-btn { order: -1; flex: 1 1 0; flex-direction: column; gap: 1px; height: 60px; margin: 0 2px; min-width: 0;
+    background: var(--fs-blip-btn) center / 100% 100% no-repeat; border-radius: 0; font-size: 12.5px; }
+  body.fs-blip .blip-start-btn .blip-start-head { width: 30px; height: 30px; }
+  body.fs-blip .blip-start-btn.is-on { background-image: var(--fs-blip-btn-on); }
+}
+@media (min-width: 769px) {
+  body.fs-blip .blip-start-btn { order: -1; height: 40px; padding: 0 16px 0 6px; gap: 4px; margin-right: 10px;
+    background: var(--fs-blip-btn) center / 100% 100% no-repeat; }
+  body.fs-blip .blip-start-btn.is-on { background-image: var(--fs-blip-btn-on); }
+}
+
+/* ---------- the Blip menu ---------- */
+.blip-menu { position: fixed; z-index: 10050; left: 8px; bottom: calc(86px + env(safe-area-inset-bottom, 0px)); width: min(300px, calc(100vw - 16px));
+  display: flex; min-height: 220px; visibility: hidden; opacity: 0; transform-origin: 30px 100%; transform: translateY(14px) scale(.86);
+  transition: opacity .2s, transform .28s cubic-bezier(.3,1.45,.5,1), visibility 0s .28s;
+  background: var(--fs-menu-panel) center / 100% 100% no-repeat; padding: 10px 12px 12px 0; box-sizing: border-box; font-family: var(--fs-font); }
+.blip-menu.is-down { bottom: auto; transform-origin: 30px 0; transform: translateY(-10px) scale(.9); }
+.blip-menu.is-open { visibility: visible; opacity: 1; transform: none; transition: opacity .18s, transform .32s cubic-bezier(.3,1.45,.5,1); }
+.blip-menu-side { width: 56px; flex: 0 0 56px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 12px 0 2px; }
+.blip-menu-side span { writing-mode: vertical-rl; transform: rotate(180deg); color: #fff; font: 900 26px var(--fs-title-font); letter-spacing: .3px; }
+.blip-menu-side i { width: 46px; height: 46px; background: var(--fs-mascot-head) center / contain no-repeat; animation: blBob 2.4s ease-in-out infinite; }
+.blip-menu-list { flex: 1; min-width: 0; display: flex; flex-direction: column; padding-left: 10px; max-height: min(64vh, 520px); overflow-y: auto; }
+.blip-menu-list h4 { margin: 4px 6px 6px; font: 900 21px var(--fs-title-font); color: #0b1f6b; }
+.blip-row { display: flex; align-items: center; gap: 10px; min-height: 46px; padding: 4px 8px; border: 0; background: none; text-align: left; cursor: pointer;
+  color: #0b1f6b; font: 800 16px var(--fs-font); -webkit-tap-highlight-color: transparent; border-radius: 0; transition: transform .15s, background-color .15s;
+  opacity: 0; transform: translateX(-8px); }
+.blip-menu.is-open .blip-row { animation: blRowIn .3s cubic-bezier(.2,.9,.3,1.2) both; animation-delay: calc(var(--i) * 35ms + 60ms); }
+.blip-row span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.blip-row.is-on { background: var(--fs-menu-row-on) center / 100% 100% no-repeat; }
+.blip-row:active { transform: scale(.97); }
+.blip-sw { width: 38px; height: 38px; flex: 0 0 38px; border-radius: 50%; background: center / cover no-repeat; position: relative; }
+.blip-sw::after { content: ""; position: absolute; inset: -3px; background: var(--fs-swatch-ring) center / 100% 100% no-repeat; }
+.blip-sw-default { background-image: var(--fs-mascot-head); background-size: 86%; background-color: #e3eeff; }
+.blip-sw-bag { background: var(--fs-icon-bag) center / 62% no-repeat; }
+.blip-sw-bag::after { display: none; }
+.blip-check { width: 26px; height: 26px; flex: 0 0 26px; background: var(--fs-menu-check) center / contain no-repeat; animation: blPop .4s cubic-bezier(.3,1.7,.5,1) .2s both; }
+.blip-menu hr { border: 0; height: 6px; margin: 4px 6px; background: var(--fs-divider) center / 100% 2px no-repeat; }
+
+/* switching to a colour skin: the swatch circle grows out of the Blip button */
+.blip-wipe { position: fixed; inset: 0; z-index: 2147482000; pointer-events: none; }
+.blip-wipe-fill { position: absolute; inset: 0; clip-path: circle(0 at var(--x) var(--y)); transition: clip-path .6s cubic-bezier(.6,0,.3,1); }
+.blip-wipe.is-in .blip-wipe-fill { clip-path: circle(150% at var(--x) var(--y)); }
+.blip-wipe-mascot { position: absolute; left: 50%; top: 40%; width: 46vmin; height: 46vmin; margin: -23vmin 0 0 -23vmin; background: var(--fs-mascot-jump) center / contain no-repeat;
+  opacity: 0; transform: scale(.4) translateY(30px); transition: opacity .25s .25s, transform .5s cubic-bezier(.3,1.7,.5,1) .25s; }
+.blip-wipe.is-in .blip-wipe-mascot { opacity: 1; transform: none; animation: blBob .6s ease-in-out .7s infinite; }
+.blip-toast { position: absolute; left: 50%; top: calc(40% + 26vmin); transform: translate(-50%, 10px); opacity: 0; transition: opacity .25s .35s, transform .35s .35s;
+  padding: 10px 20px; background: #fdfefa; border: 2px solid #00008b; border-radius: 22px; font: 800 17px var(--fs-font, sans-serif); color: #0b1f6b; white-space: nowrap; }
+.blip-wipe.is-in .blip-toast { opacity: 1; transform: translate(-50%, 0); }
+.blip-wipe.is-out { opacity: 0; transition: opacity .4s; }
+
+/* ---------- motion (owner: "make sure to make animations for the switches and changes") ---------- */
+@keyframes blTab { 0% { transform: scale(.82); } 60% { transform: scale(1.06); } 100% { transform: none; } }
+@keyframes blHop { 0% { transform: none; } 40% { transform: translateY(-6px) rotate(-8deg); } 100% { transform: none; } }
+@keyframes blBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes blPop { 0% { transform: scale(0); } 70% { transform: scale(1.2); } 100% { transform: scale(1); } }
+@keyframes blBadge { 0% { transform: scale(0); } 70% { transform: scale(1.25); } 100% { transform: scale(1); } }
+@keyframes blRowIn { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+@keyframes blRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes blPage { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+body.fs-blip .page.active { animation: blPage .32s cubic-bezier(.2,.8,.2,1); }
+body.fs-blip .page.active :is(.left-sidebar > .card, .center-feed > .card, .featured-skin-banner, .quest-panel, .coin-goal-bar, .feed-post, .group-card) { animation: blRise .42s cubic-bezier(.2,.8,.2,1) both; }
+body.fs-blip .page.active .center-feed > :nth-child(3) { animation-delay: .04s; } body.fs-blip .page.active .center-feed > :nth-child(4) { animation-delay: .08s; }
+body.fs-blip .page.active .center-feed > :nth-child(5) { animation-delay: .12s; } body.fs-blip .page.active .center-feed > :nth-child(6) { animation-delay: .16s; }
+@media (prefers-reduced-motion: reduce) {
+  body.fs-blip *, .blip-menu, .blip-menu *, .blip-wipe * { animation: none !important; transition: none !important; }
+  .blip-row { opacity: 1; transform: none; }
+}
+
+/* ======================================================================================================== HOME (phone) */
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-home { padding-left: 10px !important; padding-right: 10px !important; }
+  html body.fs.fs-blip #page-home .main-container { padding: 0 !important; gap: 10px !important; }
+  /* cover: one rounded photo under the top bar, camera button bottom-right, the mascot peeking at its right */
+  html body.fs.fs-blip :is(#timelineCover, #pvCoverBanner) { position: relative; height: 178px !important; aspect-ratio: auto !important; margin: 0 0 0 !important;
+    width: auto !important; max-width: none !important; border-radius: 0 !important; background-color: transparent !important; overflow: visible !important; z-index: 1; }
+  html body.fs.fs-blip .fs-timeline { position: absolute; inset: 0; z-index: 0; }
+  html body.fs.fs-blip .fs-tl-slot-1 { position: absolute; inset: 0 !important; width: auto !important; height: auto !important;
+    -webkit-mask: var(--fs-cover-mask) center / 100% 100% no-repeat; mask: var(--fs-cover-mask) center / 100% 100% no-repeat; background: #cfe0fb; }
+  html body.fs.fs-blip .fs-tl-slot:not(.fs-tl-slot-1) { display: none !important; }
+  html body.fs.fs-blip .fs-tl-slot-1 img { width: 100% !important; height: 100% !important; object-fit: cover; }
+  html body.fs.fs-blip .fs-tl-slot::before, html body.fs.fs-blip .fs-tl-slot::after { display: none !important; }
+  html body.fs.fs-blip :is(#timelineCover, #pvCoverBanner)::after { content: ""; position: absolute; z-index: 2; pointer-events: none;
+    right: 12px; top: 6px; width: 128px; height: 128px; background: var(--fs-mascot-peek) center / contain no-repeat; animation: blBob 3.2s ease-in-out infinite; }
+  html body.fs.fs-blip #page-home #timelineCover::after { background-image: var(--fs-mascot-wave); }
+  html body.fs.fs-blip :is(#coverEditBtn, #pvCoverEditBtn) { position: absolute !important; right: 10px !important; bottom: 50px !important; top: auto !important; left: auto !important;
+    width: 40px !important; height: 40px !important; padding: 0 !important; font-size: 0 !important; z-index: 3 !important; display: flex !important; align-items: center; justify-content: center;
+    background: var(--fs-btn-round) center / contain no-repeat !important; border: 0 !important; box-shadow: none !important; color: transparent !important; }
+  html body.fs.fs-blip :is(#coverEditBtn, #pvCoverEditBtn) > i { width: 20px !important; height: 20px !important; }
+
+  /* profile card overlaps the cover: avatar left, name / status / bio right, pencil top-right, chips + View Profile, tail */
+  html body.fs.fs-blip #profileCard { position: relative; z-index: 2; margin: -44px 0 0 !important; padding: 0 !important; overflow: visible !important;
+    border: 0 !important; border-image: none !important; }
+  html body.fs.fs-blip #profileCard .profile-cover { display: none !important; }
+  html body.fs.fs-blip #profileCard .profile-info { display: grid !important; grid-template-columns: 122px 1fr; grid-template-rows: auto auto; column-gap: 10px; row-gap: 10px;
+    padding: 12px 14px 30px 12px !important; text-align: left !important; align-items: start; }
+  html body.fs.fs-blip #profileCard .profile-avatar-wrap { grid-column: 1; grid-row: 1; width: 122px !important; height: 122px !important; margin: -34px 0 0 !important;
+    border-radius: 50% !important; position: relative; z-index: 3; }
+  html body.fs.fs-blip #profileCard .profile-avatar-wrap::after { inset: -2% !important; background: var(--fs-avatar-frame) center / 100% 100% no-repeat !important; display: block !important; content: ""; position: absolute; z-index: 2; pointer-events: none; }
+  html body.fs.fs-blip #profileCard #profileAvatarImg { width: 100% !important; height: 100% !important; -webkit-mask: var(--fs-avatar-mask) center / 100% 100% no-repeat !important;
+    mask: var(--fs-avatar-mask) center / 100% 100% no-repeat !important; border-radius: 0 !important; object-fit: cover; border: 0 !important; }
+  html body.fs.fs-blip #profileCard .avatar-edit-btn { position: absolute !important; right: 4% !important; bottom: 4% !important; left: auto !important; top: auto !important;
+    width: 34px !important; height: 34px !important; padding: 0 !important; z-index: 4 !important; border: 0 !important; box-shadow: none !important;
+    background: var(--fs-camera-badge) center / contain no-repeat !important; }
+  html body.fs.fs-blip #profileCard .avatar-edit-btn > i { opacity: 0 !important; }
+  html body.fs.fs-blip #profileCard .fs-namecard { grid-column: 2; grid-row: 1; padding: 2px 40px 0 0 !important; margin: 0 !important; border: 0 !important; border-image: none !important;
+    background: none !important; transform: none !important; text-align: left !important; min-width: 0; }
+  html body.fs.fs-blip #profileCard .fs-namecard::before { display: none !important; }
+  html body.fs.fs-blip #profileCard .profile-name { font-size: 23px !important; line-height: 1.1 !important; margin: 0 0 2px !important; text-align: left !important; overflow-wrap: anywhere; background: none !important; border: 0 !important; padding: 0 !important; }
+  html body.fs.fs-blip #profileCard .profile-title { font: 600 15.5px var(--fs-font) !important; color: var(--bl-ink) !important; margin: 0 0 6px !important; text-align: left !important; font-style: normal !important; }
+  html body.fs.fs-blip #profileCard .profile-about { font: 600 13.5px/1.3 var(--fs-font) !important; color: var(--bl-ink) !important; margin: 0 !important; text-align: left !important; display: block !important;
+    -webkit-line-clamp: 3; overflow: hidden; }
+  html body.fs.fs-blip #profileCard .profile-stats { grid-column: 1 / -1; grid-row: 2; display: flex !important; align-items: center; gap: 8px; margin: 0 !important; padding: 0 !important; border: 0 !important; justify-content: flex-start !important; }
+  html body.fs.fs-blip #profileCard .stat { display: flex !important; flex-direction: row-reverse !important; align-items: center; gap: 5px; height: 34px; padding: 0 13px !important;
+    flex: 0 0 auto !important; }
+  html body.fs.fs-blip #profileCard .stat-count { font: 900 15.5px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip #profileCard .stat-label { font: 700 15px var(--fs-font) !important; color: var(--bl-ink) !important; font-style: normal !important; }
+  html body.fs.fs-blip #profileCard .profile-info { position: static !important; }
+  html body.fs.fs-blip #profileCard .profile-links { display: contents !important; }
+  html body.fs.fs-blip #profileCard .view-profile-link { position: absolute; right: 14px; bottom: 37px; font: 800 15.5px var(--fs-font) !important; color: var(--bl-blue) !important;
+    font-style: normal !important; text-decoration: none !important; z-index: 3; }
+  html body.fs.fs-blip #profileCard .edit-profile-btn { position: absolute !important; right: 12px; top: 12px; width: 38px; height: 38px; display: flex !important; align-items: center; justify-content: center;
+    background: var(--fs-btn-round) center / contain no-repeat !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; z-index: 3; padding: 0 !important; }
+  html body.fs.fs-blip #profileCard .edit-profile-btn > i { width: 19px !important; height: 19px !important; background-image: var(--fs-icon-edit) !important; filter: hue-rotate(0deg); }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip .nav-center :is(.nav-saved-link, .nav-notif-link) { display: none !important; }
+  html body.fs.fs-blip #page-home #timelineCover { margin-top: 8px !important; }
+  html body.fs.fs-blip #profileCard .stat { height: 31px; padding: 0 11px !important; }
+  html body.fs.fs-blip #profileCard .stat-count { font-size: 14.5px !important; }
+  html body.fs.fs-blip #profileCard .stat-label { font-size: 14px !important; }
+  html body.fs.fs-blip #profileCard .view-profile-link { font-size: 14.5px !important; bottom: 39px; }
+  html body.fs.fs-blip #profileCard .profile-avatar-wrap { width: 112px !important; height: 112px !important; margin: -30px 0 0 4px !important; }
+  html body.fs.fs-blip #profileCard .profile-info { grid-template-columns: 116px 1fr; }
+
+  /* Photos: heading left, View All top-right, a 3 x 2 grid of rounded photos */
+  html body.fs.fs-blip .photos-card { position: relative; padding: 4px 4px 6px !important; }
+  html body.fs.fs-blip .photos-card .card-heading { font-size: 20px !important; margin: 0 0 8px !important; padding: 0 !important; border: 0 !important; }
+  html body.fs.fs-blip .photos-card .card-heading > i { display: none !important; }
+  html body.fs.fs-blip .photos-card .view-more-link { position: absolute; top: 6px; right: 6px; margin: 0 !important; padding: 0 !important; border: 0 !important;
+    font: 800 15px var(--fs-font) !important; color: var(--bl-blue) !important; }
+  html body.fs.fs-blip .photos-preview { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 8px !important; }
+  html body.fs.fs-blip .photos-preview > :nth-child(n+7) { display: none !important; }
+  html body.fs.fs-blip .photos-preview > * { width: auto !important; height: auto !important; aspect-ratio: 1.3; border-radius: 0 !important; overflow: hidden;
+    -webkit-mask: var(--fs-photo-mask) center / 100% 100% no-repeat; mask: var(--fs-photo-mask) center / 100% 100% no-repeat; }
+  html body.fs.fs-blip .photos-preview img { width: 100% !important; height: 100% !important; object-fit: cover; border-radius: 0 !important; }
+
+  /* pills: two royal-blue pills with the white people icon */
+  html body.fs.fs-blip .mobile-pills-bar { display: flex !important; gap: 10px !important; padding: 0 !important; margin: 0 0 10px !important; }
+  html body.fs.fs-blip .mobile-pill { flex: 1 1 0; height: 42px; display: flex !important; align-items: center; justify-content: center; gap: 7px; padding: 0 10px !important; font: 800 14.5px var(--fs-font) !important; white-space: nowrap; }
+  html body.fs.fs-blip .mobile-pill > i { width: 22px; height: 22px; font-size: 0 !important; color: transparent !important; background: var(--fs-icon-groups-on) center / contain no-repeat; flex: 0 0 22px; }
+}
+/* measured against the concept phone (home-top crop: 455px screen = 402pt) */
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-home { padding-left: 4px !important; padding-right: 4px !important; }
+  html body.fs.fs-blip #page-home #timelineCover { height: 146px !important; margin-top: 4px !important; }
+  html body.fs.fs-blip #page-home #timelineCover::after { right: 22px; top: 6px; width: 136px; height: 136px; }
+  html body.fs.fs-blip #page-home #coverEditBtn { right: 12px !important; bottom: 12px !important; }
+  html body.fs.fs-blip #page-home .main-container { padding: 0 8px !important; }
+  html body.fs.fs-blip #profileCard { margin-top: -12px !important; }
+  html body.fs.fs-blip #profileCard .profile-avatar-wrap { width: 114px !important; height: 114px !important; margin: -24px 0 0 2px !important; }
+  html body.fs.fs-blip #profileCard .profile-info { padding: 10px 14px 32px 10px !important; row-gap: 8px; }
+  html body.fs.fs-blip #profileCard .view-profile-link { right: 18px; bottom: 41px; font-size: 14.5px !important; }
+  html body.fs.fs-blip .photos-card { padding: 2px 0 2px !important; }
+  html body.fs.fs-blip .photos-card .card-heading { margin: 0 0 8px 2px !important; }
+  html body.fs.fs-blip .photos-card .view-more-link { top: 4px; right: 2px; }
+  html body.fs.fs-blip .photos-preview { padding: 0 !important; margin: 0 !important; gap: 7px !important; }
+  html body.fs.fs-blip .mobile-pill { font-size: 13.5px !important; gap: 6px; padding: 0 6px !important; }
+  html body.fs.fs-blip .nav-center .nav-link, html body.fs.fs-blip .blip-start-btn { margin: 0 1px !important; font-size: 11.5px !important; letter-spacing: -.1px; }
+  html body.fs.fs-blip .nav-center { padding-left: 4px !important; padding-right: 4px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #profileCard .view-profile-link { right: 30px; }
+  html body.fs.fs-blip #profileCard .edit-profile-btn { right: 22px; top: 14px; }
+  html body.fs.fs-blip #page-home .left-sidebar { gap: 6px !important; display: flex; flex-direction: column; }
+  html body.fs.fs-blip #page-home .left-sidebar > .card { margin-bottom: 0 !important; }
+}
+
+/* ---------- Home, scrolled (concept home-scrolled) ---------- */
+html body.fs.fs-blip .center-feed > :is(.card, .featured-skin-banner, .quest-panel, .coin-goal-bar, .search-tabs, .stories-bar, .mobile-pills-bar) { margin-bottom: 0 !important; margin-top: 0 !important; }
+/* stories: gradient ring (unseen) / pale ring (seen), blue + badge on Your Story */
+html body.fs.fs-blip .stories-bar { gap: 12px !important; padding: 2px 2px 4px !important; background: none !important; border: 0 !important; }
+html body.fs.fs-blip .story-ring { width: 64px !important; height: 64px !important; padding: 5px !important; border: 0 !important; box-sizing: border-box; border-radius: 50% !important;
+  background: var(--fs-story-ring) center / 100% 100% no-repeat !important; box-shadow: none !important; }
+html body.fs.fs-blip :is(.story-ring.story-viewed, .story-add .story-ring:not(.story-has)) { background-image: var(--fs-avatar-ring) !important; padding: 3px !important; }
+html body.fs.fs-blip .story-ring.story-viewed { background-image: var(--fs-story-ring-seen) !important; }
+html body.fs.fs-blip .story-ring img { width: 100% !important; height: 100% !important; border-radius: 50% !important; border: 0 !important; object-fit: cover; }
+html body.fs.fs-blip .story-name { font: 700 13px var(--fs-font) !important; color: var(--bl-ink) !important; }
+html body.fs.fs-blip .story-plus { width: 24px !important; height: 24px !important; border: 0 !important; border-radius: 0 !important; background: var(--fs-story-add) center / contain no-repeat !important; box-shadow: none !important; }
+html body.fs.fs-blip .story-plus > i { display: none !important; }
+html body.fs.fs-blip .story-item { transition: transform .2s cubic-bezier(.3,1.6,.5,1); }
+html body.fs.fs-blip .story-item:active { transform: scale(.92); }
+/* post bar */
+html body.fs.fs-blip .post-create-bar { display: flex !important; align-items: center; gap: 10px; padding: 0 2px !important; min-height: 46px; }
+html body.fs.fs-blip .post-create-bar .post-create-avatar { width: 42px !important; height: 42px !important; flex: 0 0 42px; }
+html body.fs.fs-blip .post-input-fake { flex: 1; height: 38px; display: flex !important; align-items: center; padding: 0 16px !important; font: 600 15.5px var(--fs-font) !important; color: var(--bl-ink) !important; }
+/* Featured Skin: heading + timer, preview, name, description, Buy pill */
+html body.fs.fs-blip .featured-skin-banner { padding: 0 2px !important; }
+html body.fs.fs-blip .featured-header { margin: 0 0 6px !important; display: flex !important; justify-content: space-between; align-items: center; }
+html body.fs.fs-blip .featured-header h4 { font-size: 19px !important; margin: 0 !important; }
+html body.fs.fs-blip :is(.featured-header h4, .quest-panel-header h4, .groups-card .card-heading, .suggestions-card .card-heading) > i { display: none !important; }
+html body.fs.fs-blip .featured-timer { display: flex; align-items: center; gap: 5px; font: 700 14.5px var(--fs-font) !important; color: var(--bl-ink) !important; }
+html body.fs.fs-blip .featured-timer > i { width: 17px; height: 17px; font-size: 0 !important; background: var(--fs-icon-calendar) center / contain no-repeat; }
+html body.fs.fs-blip .featured-body { display: flex !important; align-items: center; gap: 10px; }
+html body.fs.fs-blip .featured-preview { width: 96px !important; height: 62px !important; flex: 0 0 96px; border-radius: 0 !important;
+  -webkit-mask: var(--fs-skin-card-mask) center / 100% 100% no-repeat; mask: var(--fs-skin-card-mask) center / 100% 100% no-repeat; }
+html body.fs.fs-blip .featured-info h5 { font: 800 16.5px var(--fs-title-font) !important; color: var(--bl-ink) !important; margin: 0 0 2px !important; }
+html body.fs.fs-blip .featured-info p { font: 600 12.5px/1.3 var(--fs-font) !important; color: var(--bl-ink) !important; margin: 0 !important; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+html body.fs.fs-blip .featured-body .btn { flex: 0 0 auto; height: 38px; padding: 0 16px !important; font: 800 15px var(--fs-font) !important; display: flex !important; align-items: center; gap: 4px; }
+/* Daily Quests: line icon · label + bar · count · yellow reward chip */
+html body.fs.fs-blip .quest-panel { padding: 0 2px !important; }
+html body.fs.fs-blip .quest-panel-header { margin: 0 0 6px !important; display: flex !important; justify-content: space-between; align-items: center; border: 0 !important; padding: 0 !important; }
+html body.fs.fs-blip .quest-panel-header h4 { font-size: 19px !important; margin: 0 !important; }
+html body.fs.fs-blip .quest-reset { font: 700 14px var(--fs-font) !important; color: var(--bl-ink) !important; }
+html body.fs.fs-blip .quest-item { display: grid !important; grid-template-columns: 34px 1fr auto; align-items: center; column-gap: 10px; padding: 3px 0 !important; border: 0 !important; background: none !important; }
+html body.fs.fs-blip .quest-icon { width: 30px !important; height: 30px !important; background: var(--fs-icon-comment) center / contain no-repeat !important; }
+html body.fs.fs-blip .quest-icon:has(.fa-heart) { background-image: var(--fs-icon-heart) !important; }
+html body.fs.fs-blip .quest-icon:has(.fa-comment) { background-image: var(--fs-icon-comment) !important; }
+html body.fs.fs-blip .quest-icon:has(.fa-pen) { background-image: var(--fs-icon-edit) !important; }
+html body.fs.fs-blip .quest-icon:has(.fa-thumbs-up) { background-image: var(--fs-icon-like) !important; }
+html body.fs.fs-blip .quest-icon:has(.fa-bookmark) { background-image: var(--fs-icon-bookmark) !important; }
+html body.fs.fs-blip .quest-icon:has(.fa-eye) { background-image: var(--fs-quest-view) !important; }
+html body.fs.fs-blip .quest-icon:has(.fa-paper-plane) { background-image: var(--fs-icon-send) !important; }
+html body.fs.fs-blip .quest-icon:has(.fa-share-nodes) { background-image: var(--fs-icon-share) !important; }
+html body.fs.fs-blip .quest-info { display: grid !important; grid-template-columns: 1fr auto; grid-template-rows: auto auto; column-gap: 10px; align-items: center; min-width: 0; }
+html body.fs.fs-blip .quest-info p { grid-column: 1 / -1; font: 800 14px var(--fs-font) !important; color: var(--bl-ink) !important; margin: 0 0 3px !important; }
+html body.fs.fs-blip .quest-bar { grid-column: 1; height: 9px !important; margin: 0 !important; }
+html body.fs.fs-blip .quest-progress { grid-column: 2; font: 700 13.5px var(--fs-font) !important; color: var(--bl-ink) !important; margin: 0 !important; }
+html body.fs.fs-blip .quest-reward { display: flex !important; align-items: center; gap: 4px; height: 32px; padding: 0 12px 0 9px !important; 
+  font: 900 15px var(--fs-font) !important; color: var(--bl-ink) !important; }
+html body.fs.fs-blip .quest-reward > i { width: 18px; height: 18px; font-size: 0 !important; background: var(--fs-coin) center / contain no-repeat; color: transparent !important; }
+/* coin goal: coin stack · "180 / 300 coins" · next skin · bar */
+html body.fs.fs-blip .coin-goal-bar { padding: 0 2px 0 52px !important; position: relative; }
+html body.fs.fs-blip .coin-goal-bar::before { content: ""; position: absolute; left: 0; top: 50%; width: 42px; height: 38px; margin-top: -19px; background: var(--fs-coin-stack) center / contain no-repeat; }
+html body.fs.fs-blip .coin-goal-bar p { display: flex !important; justify-content: space-between; margin: 0 0 4px !important; font: 800 15px var(--fs-font) !important; color: var(--bl-ink) !important; }
+html body.fs.fs-blip .coin-goal-bar p strong { color: var(--bl-ink) !important; font-weight: 700 !important; }
+html body.fs.fs-blip .coin-goal-track { height: 10px !important; }
+/* feed tabs: one outlined strip, the active tab a blue pill inside it */
+html body.fs.fs-blip #feedTabs { display: flex !important; gap: 0 !important; padding: 3px !important; background: var(--fs-tabs-track) center / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-blip #feedTabs .search-tab { flex: 1; height: 36px; background: none !important; display: flex !important; align-items: center; justify-content: center; font-size: 15px !important; }
+
+html body.fs.fs-blip #feedTabs .search-tab > i { display: none !important; }
+/* spacing measured from the concept (home-scrolled): 10pt between cards, card padding ~10pt */
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-home :is(.center-feed, .main-container, .left-sidebar) { gap: 10px !important; row-gap: 10px !important; }
+  html body.fs.fs-blip .center-feed > * { margin-bottom: 0 !important; }
+  html body.fs.fs-blip #page-home :is(.post-create-bar, .featured-skin-banner, .quest-panel, .coin-goal-bar, .photos-card) { border-width: 10px !important; border-image-width: 14px !important; }
+  html body.fs.fs-blip .post-create-bar { min-height: 0; }
+  html body.fs.fs-blip .post-create-bar .post-create-avatar { width: 38px !important; height: 38px !important; flex-basis: 38px; }
+  html body.fs.fs-blip .post-input-fake { height: 34px; font-size: 15px !important; }
+  html body.fs.fs-blip .featured-header { margin-bottom: 4px !important; }
+  html body.fs.fs-blip .featured-preview { width: 92px !important; height: 58px !important; flex-basis: 92px; }
+  html body.fs.fs-blip .quest-panel-header { margin-bottom: 2px !important; }
+  html body.fs.fs-blip .quest-item { padding: 1px 0 !important; min-height: 40px; }
+  html body.fs.fs-blip .quest-info p { margin-bottom: 1px !important; font-size: 13.5px !important; }
+  html body.fs.fs-blip .quest-reward { height: 28px; font-size: 14px !important; }
+  html body.fs.fs-blip .stories-bar { padding: 0 2px !important; }
+  html body.fs.fs-blip .story-item { gap: 3px !important; }
+}
+/* the skip-link anchor is an empty flex item: keep it out of the gap rhythm */
+html body.fs.fs-blip #main-content { position: absolute !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-blip .featured-info { min-width: 0; padding-bottom: 2px; }
+  html body.fs.fs-blip .featured-info p { font-size: 12px !important; line-height: 1.25 !important; }
+}
+/* ---------- posts (concept): avatar, name with the time under it, ⋯, text, one rounded photo, icon + count row ---------- */
+html body.fs.fs-blip .feed-post { border-width: 10px !important; border-image-width: 14px !important; padding: 0 2px !important; }
+html body.fs.fs-blip .post-header { display: flex !important; align-items: center !important; gap: 9px; margin: 0 0 4px !important; }
+html body.fs.fs-blip .post-header .post-avatar { width: 40px !important; height: 40px !important; flex: 0 0 40px; }
+html body.fs.fs-blip .post-user-top { display: flex !important; flex-direction: column !important; align-items: flex-start !important; gap: 0 !important; }
+html body.fs.fs-blip .post-username { font-size: 16px !important; line-height: 1.15 !important; margin: 0 !important; }
+html body.fs.fs-blip .post-time { font: 600 13px var(--fs-font) !important; color: var(--bl-soft) !important; }
+html body.fs.fs-blip .post-menu-btn { margin-left: auto !important; background: none !important; border: 0 !important; padding: 4px !important; }
+html body.fs.fs-blip .post-description, html body.fs.fs-blip .post-description p { font: 600 15px/1.35 var(--fs-font) !important; color: var(--bl-ink) !important; margin: 0 0 6px !important; }
+html body.fs.fs-blip .post-media-grid { border-radius: 0 !important; overflow: hidden; background: none !important; margin: 0 0 4px !important;
+  -webkit-mask: var(--fs-photo-mask) center / 100% 100% no-repeat; mask: var(--fs-photo-mask) center / 100% 100% no-repeat; }
+html body.fs.fs-blip .post-media-grid :is(img, video) { border-radius: 0 !important; }
+html body.fs.fs-blip .post-actions { border: 0 !important; padding: 2px 0 0 !important; margin: 0 !important; }
+html body.fs.fs-blip .post-actions :is(.action-left, .action-right) { display: contents !important; }
+html body.fs.fs-blip .post-actions { display: flex !important; justify-content: space-between !important; align-items: center; }
+html body.fs.fs-blip .action-btn { display: flex !important; align-items: center; gap: 5px; padding: 4px 6px !important; background: none !important; border: 0 !important;
+  font: 700 15px var(--fs-font) !important; color: var(--bl-ink) !important; }
+html body.fs.fs-blip .action-btn > i { width: 24px !important; height: 24px !important; }
+html body.fs.fs-blip .action-btn > span:empty, html body.fs.fs-blip .action-btn > span:not([class*="count"]) { display: none !important; }
+/* concept details: clock before the timer, square pencil button, quest icons as painted (react = bubble) */
+html body.fs.fs-blip .featured-timer > i { background-image: var(--fs-icon-clock) !important; }
+html body.fs.fs-blip #profileCard .edit-profile-btn { background-image: var(--fs-btn-square) !important; width: 36px; height: 36px; }
+html body.fs.fs-blip .quest-icon:has(.fa-thumbs-up) { background-image: var(--fs-icon-comment) !important; }
+/* post photo: the concept's wide rounded banner (tap opens the full photo, as before) */
+html body.fs.fs-blip .post-media-grid.pm-count-1 { aspect-ratio: 5 / 1 !important; height: auto !important; max-height: none !important; display: block !important; }
+html body.fs.fs-blip .post-media-grid.pm-count-1 .pm-thumb { width: 100% !important; height: 100% !important; max-height: none !important; }
+html body.fs.fs-blip .post-media-grid.pm-count-1 .pm-thumb :is(img, video) { width: 100% !important; height: 100% !important; max-height: none !important; object-fit: cover !important; }
+html body.fs.fs-blip .post-media-grid:not(.pm-count-1) { aspect-ratio: 3 / 1 !important; height: auto !important; max-height: none !important; }
+html body.fs.fs-blip .post-media-grid:not(.pm-count-1) .pm-thumb :is(img, video) { object-fit: cover !important; }
+
+/* ======================================================================================================== GROUP PAGE (phone) */
+@media (max-width: 768px) {
+  html body.fs.fs-blip:has(#page-group-view.active) .nav-center .nav-link[data-page="groups"] { background: var(--fs-nav-active) center / 100% 100% no-repeat !important; color: #fff !important; }
+  html body.fs.fs-blip:has(#page-group-view.active) .nav-center .nav-link[data-page="groups"] > i { background-image: var(--fs-icon-groups-on) !important; }
+  html body.fs.fs-blip:has(#page-group-view.active) .nav-center .nav-link.active:not([data-page="groups"]) { background: none !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip #page-group-view { padding-left: 4px !important; padding-right: 4px !important; }
+  html body.fs.fs-blip #gvCoverBanner { position: relative; height: 146px !important; margin: 4px 0 0 !important; border-radius: 0 !important; overflow: visible !important; background-color: #cfe0fb;
+    -webkit-mask: none; }
+  html body.fs.fs-blip #gvCoverBanner::before { content: ""; position: absolute; inset: 0; background: inherit; -webkit-mask: var(--fs-cover-mask) center / 100% 100% no-repeat; mask: var(--fs-cover-mask) center / 100% 100% no-repeat; }
+  html body.fs.fs-blip #gvCoverBanner { background-clip: content-box; }
+  html body.fs.fs-blip #gvCoverBanner::after { content: ""; position: absolute; z-index: 2; pointer-events: none; right: 22px; top: 14px; width: 132px; height: 132px;
+    background: var(--fs-mascot-wave) center / contain no-repeat; animation: blBob 3.2s ease-in-out infinite; }
+  html body.fs.fs-blip #gvCoverEditBtn { position: absolute !important; right: 12px !important; bottom: 12px !important; top: auto !important; width: 40px !important; height: 40px !important; padding: 0 !important;
+    font-size: 0 !important; z-index: 3 !important; background: var(--fs-btn-round) center / contain no-repeat !important; border: 0 !important; box-shadow: none !important; justify-content: center; align-items: center; }
+  html body.fs.fs-blip #page-group-view .gv-layout { padding: 0 8px !important; gap: 10px !important; }
+  html body.fs.fs-blip #page-group-view .gv-center { display: flex !important; flex-direction: column; gap: 10px !important; }
+  html body.fs.fs-blip #page-group-view .gv-center > * { margin: 0 !important; }
+  html body.fs.fs-blip #gvProfileCard { position: relative; z-index: 2; margin: -12px 0 30px !important; padding: 0 !important; overflow: visible !important;
+    border: 0 !important; border-image: none !important; }
+  html body.fs.fs-blip #gvProfileCard .profile-cover { display: none !important; }
+  html body.fs.fs-blip #gvProfileCard .profile-info { display: grid !important; grid-template-columns: 116px 1fr; column-gap: 10px; row-gap: 0; align-items: start;
+    padding: 10px 14px 32px 10px !important; text-align: left !important; position: static !important; }
+  html body.fs.fs-blip #gvProfileCard .profile-avatar-wrap { grid-column: 1; grid-row: 1 / span 2; width: 114px !important; height: 114px !important; margin: -24px 0 0 2px !important; border-radius: 50% !important; position: relative; z-index: 3; }
+  html body.fs.fs-blip #gvProfileCard .profile-avatar-wrap::after { content: ""; display: block !important; position: absolute; inset: -2%; z-index: 2; pointer-events: none; background: var(--fs-group-avatar-frame) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip #gvProfileCard :is(.profile-avatar, .gv-icon-wrap) { width: 100% !important; height: 100% !important; border-radius: 0 !important; border: 0 !important;
+    -webkit-mask: var(--fs-avatar-mask) center / 100% 100% no-repeat !important; mask: var(--fs-avatar-mask) center / 100% 100% no-repeat !important; object-fit: cover; }
+  html body.fs.fs-blip #gvProfileCard .gv-icon-wrap { display: flex !important; align-items: center; justify-content: center; font-size: 44px; color: #fff; }
+  html body.fs.fs-blip #gvProfileCard .avatar-edit-btn { position: absolute !important; right: 4% !important; bottom: 4% !important; width: 34px !important; height: 34px !important; z-index: 4 !important;
+    background: var(--fs-camera-badge) center / contain no-repeat !important; border: 0 !important; box-shadow: none !important; }
+  html body.fs.fs-blip #gvProfileCard .avatar-edit-btn > i { opacity: 0 !important; }
+  html body.fs.fs-blip #gvProfileCard .profile-name { grid-column: 2; grid-row: 1; font-size: 25px !important; line-height: 1.1 !important; margin: 4px 0 2px !important; text-align: left !important; overflow-wrap: anywhere; }
+  html body.fs.fs-blip #gvProfileCard .profile-title { grid-column: 2; grid-row: 2; font: 600 15px/1.3 var(--fs-font) !important; color: var(--bl-ink) !important; margin: 0 !important; text-align: left !important; font-style: normal !important; }
+  html body.fs.fs-blip #gvProfileCard .profile-stats { grid-column: 1 / -1; grid-row: 3; display: grid !important; grid-template-columns: repeat(3, 1fr); margin: 12px 0 0 !important; padding: 0 !important; border: 0 !important; }
+  html body.fs.fs-blip #gvProfileCard .stat { display: flex !important; flex-direction: column; align-items: center; padding: 0 !important; background: none !important; position: relative; }
+  html body.fs.fs-blip #gvProfileCard .stat + .stat::before { content: ""; position: absolute; left: 0; top: 10%; bottom: 10%; width: 6px; background: var(--fs-divider) center / 2px 100% no-repeat; transform: rotate(0); }
+  html body.fs.fs-blip #gvProfileCard .stat-count { font: 900 19px var(--fs-font) !important; color: var(--bl-ink) !important; display: flex; align-items: center; gap: 5px; }
+  html body.fs.fs-blip #gvProfileCard .stat-label { font: 600 14.5px var(--fs-font) !important; color: var(--bl-ink) !important; font-style: normal !important; }
+  html body.fs.fs-blip #gvProfileCard .stat-label > i, html body.fs.fs-blip #gvProfileCard .stat-count > i { width: 18px; height: 18px; font-size: 0 !important; background: var(--fs-coin) center / contain no-repeat; color: transparent !important; display: inline-block; }
+  html body.fs.fs-blip #gvProfileCard .pv-actions { grid-column: 1 / -1; grid-row: 4; display: grid !important; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 0 !important; }
+  html body.fs.fs-blip #gvProfileCard .pv-actions .btn { height: 42px; padding: 0 8px !important; display: flex !important; align-items: center; justify-content: center; gap: 6px; font: 800 15.5px var(--fs-font) !important; width: auto !important; margin: 0 !important; }
+  html body.fs.fs-blip #gvLeaveBtn { background-image: var(--fs-btn-danger) !important; color: #d93025 !important; }
+  html body.fs.fs-blip #gvLeaveBtn > i { width: 20px; height: 20px; font-size: 0 !important; background: var(--fs-icon-exit) center / contain no-repeat; color: transparent !important; }
+  html body.fs.fs-blip #gvEditBtn { grid-column: 1 / -1; }
+  html body.fs.fs-blip #gvProfileCard .pv-back-link { position: absolute; left: 4px; bottom: -30px; display: flex !important; align-items: center; gap: 6px;
+    font: 800 15px var(--fs-font) !important; color: var(--bl-ink) !important; text-decoration: none !important; }
+  html body.fs.fs-blip #gvProfileCard .pv-back-link > i { width: 16px; height: 16px; font-size: 0 !important; background: var(--fs-icon-back) center / contain no-repeat; color: transparent !important; }
+  /* Group Rules / Invite Link: full-width blue pills with white icons; Members card */
+  html body.fs.fs-blip #gvMobileRight { display: flex !important; flex-direction: column; gap: 8px; }
+  html body.fs.fs-blip #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn) { height: 46px; margin: 0 !important; background: var(--fs-btn-primary) center / 100% 100% no-repeat !important;
+    color: #fff !important; font: 800 17px var(--fs-font) !important; border: 0 !important; }
+  html body.fs.fs-blip #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn) > i { width: 24px; height: 24px; font-size: 0 !important; color: transparent !important; filter: brightness(0) invert(1); }
+  html body.fs.fs-blip #gvMobileRight .gv-rules-btn > i { background: var(--fs-icon-scroll) center / contain no-repeat; }
+  html body.fs.fs-blip #gvMobileRight .gv-invite-link-btn > i { background: var(--fs-icon-link) center / contain no-repeat; }
+  html body.fs.fs-blip #gvMobileRight .card { border-width: 10px !important; border-image-width: 14px !important; padding: 0 2px !important; margin: 0 !important; }
+  html body.fs.fs-blip #gvMobileRight .card-heading { font-size: 19px !important; margin: 0 0 8px !important; }
+  html body.fs.fs-blip #gvMobileRight .card-heading > i { display: none !important; }
+}
+
+/* ===== HOME (phone) — EXACT positions measured by overlaying the concept (ref/ov-home-a.png, 402pt wide) ===== */
+@media (max-width: 768px) {
+  html body.fs.fs-blip .navbar { height: calc(60px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-blip #page-home.page.active { padding: calc(62px + env(safe-area-inset-top, 0px)) 0 0 !important; }
+  html body.fs.fs-blip #page-home #timelineCover { height: 146px !important; margin: 0 !important; }
+  html body.fs.fs-blip #page-home .main-container { padding: 0 8.5px !important; }
+  html body.fs.fs-blip #profileCard { margin: -9px 0 0 !important; min-height: 140px; }
+  html body.fs.fs-blip #profileCard .profile-info { grid-template-columns: 114px 1fr !important; column-gap: 3px !important; padding: 6px 12px 14px 10px !important; row-gap: 0 !important; }
+  html body.fs.fs-blip #profileCard .profile-avatar-wrap { width: 114px !important; height: 114px !important; margin: -27px 0 0 -6px !important; }
+  html body.fs.fs-blip #profileCard .fs-namecard { padding: 0 40px 0 0 !important; }
+  html body.fs.fs-blip #profileCard .profile-name { font-size: 25px !important; line-height: 30px !important; margin: 0 !important; }
+  html body.fs.fs-blip #profileCard .profile-title { font-size: 15px !important; line-height: 20px !important; margin: 1px 0 3px !important; }
+  html body.fs.fs-blip #profileCard .profile-about { font-size: 13.5px !important; line-height: 16px !important; }
+  html body.fs.fs-blip #profileCard .profile-stats { position: absolute; left: 30px; top: 87px; gap: 15px !important; }
+  html body.fs.fs-blip #profileCard .stat { height: 26px !important; padding: 0 12px !important; }
+  html body.fs.fs-blip #profileCard .stat-count, html body.fs.fs-blip #profileCard .stat-label { font-size: 14px !important; }
+  html body.fs.fs-blip #profileCard .view-profile-link { right: 13px !important; bottom: auto !important; top: 89px; font-size: 15px !important; }
+  html body.fs.fs-blip #profileCard .edit-profile-btn { right: 12px !important; top: 8px !important; width: 32px !important; height: 32px !important; }
+  html body.fs.fs-blip #page-home .left-sidebar { gap: 0 !important; }
+  html body.fs.fs-blip #page-home .photos-card { margin-top: 0 !important; height: 186px; box-sizing: border-box; border-width: 10px 15px 9px !important; border-image-width: 14px !important; padding: 0 !important; }
+  html body.fs.fs-blip #page-home .photos-card .card-heading { font-size: 21px !important; line-height: 22px !important; margin: 0 0 4px 2px !important; }
+  html body.fs.fs-blip #page-home .photos-card .view-more-link { top: 10px !important; right: 15px !important; font-size: 16px !important; }
+  html body.fs.fs-blip #page-home .photos-preview { gap: 7px 8px !important; }
+  html body.fs.fs-blip #page-home .photos-preview > * { aspect-ratio: auto !important; height: 68px !important; }
+  html body.fs.fs-blip #page-home :is(.main-container, .center-feed) { gap: 11px !important; row-gap: 11px !important; }
+  html body.fs.fs-blip #page-home .main-container { row-gap: 11px !important; }
+  html body.fs.fs-blip .mobile-pill { height: 38px !important; font-size: 14.5px !important; }
+  html body.fs.fs-blip .mobile-pills-bar { gap: 8px !important; }
+  html body.fs.fs-blip .stories-bar { gap: 13px !important; padding: 0 !important; }
+  html body.fs.fs-blip .story-ring { width: 64px !important; height: 64px !important; }
+}
+@media (max-width: 768px) { html body.fs.fs-blip #profileCard .profile-stats { left: 21px !important; } }
+@media (max-width: 768px) {
+  html body.fs.fs-blip #profileCard { min-height: 155px !important; }
+  html body.fs.fs-blip #profileCard .profile-stats { top: 100px !important; }
+  html body.fs.fs-blip #profileCard .view-profile-link { top: 102px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-home .photos-card .view-more-link { top: 0 !important; }
+  html body.fs.fs-blip #profileCard .profile-name { line-height: 24px !important; margin-top: 3px !important; }
+}
+/* scrolled half, from the overlay (ref/ov-home-b.png): 8pt between cards, headings tight to the card top */
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-home .center-feed { gap: 8px !important; row-gap: 8px !important; }
+  html body.fs.fs-blip #page-home .mobile-pills-bar { margin-bottom: 4px !important; }
+  html body.fs.fs-blip #page-home .stories-bar { margin-bottom: 3px !important; }
+  html body.fs.fs-blip :is(.featured-header h4, .quest-panel-header h4) { line-height: 22px !important; }
+  html body.fs.fs-blip .featured-header, html body.fs.fs-blip .quest-panel-header { margin: -3px 0 2px !important; }
+  html body.fs.fs-blip .quest-item { min-height: 38px !important; }
+  html body.fs.fs-blip .feed-post .post-header { margin-bottom: 2px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip .quest-item { min-height: 34px !important; }
+  html body.fs.fs-blip .quest-panel-header { margin-bottom: 0 !important; }
+  html body.fs.fs-blip #page-home .coin-goal-bar { border-width: 8px 10px !important; }
+  html body.fs.fs-blip .coin-goal-bar p { margin: 0 0 3px !important; line-height: 18px; }
+  html body.fs.fs-blip .coin-goal-track { height: 9px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip .quest-item { height: 38px !important; min-height: 0 !important; padding: 0 !important; }
+  html body.fs.fs-blip .quest-info p { line-height: 17px !important; margin: 0 0 2px !important; }
+  html body.fs.fs-blip .quest-progress { line-height: 14px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #feedTabs { height: 34px; padding: 2px !important; box-sizing: border-box; }
+  html body.fs.fs-blip #feedTabs .search-tab { height: 30px !important; font-size: 14.5px !important; }
+  html body.fs.fs-blip .post-description, html body.fs.fs-blip .post-description p { margin-bottom: 4px !important; line-height: 1.25 !important; }
+}
+/* rounded photo windows keep the same corner at any size: 9-slice the mask (the art's corner is 30px of 300) */
+html body.fs.fs-blip :is(.post-media-grid, .photos-preview > *, .featured-preview) { -webkit-mask: none !important; mask: none !important;
+  -webkit-mask-box-image: var(--fs-photo-mask) 30 / 10px stretch; mask-border: var(--fs-photo-mask) 30 / 10px stretch; }
+html body.fs.fs-blip .fs-tl-slot-1 { -webkit-mask: none !important; mask: none !important; -webkit-mask-box-image: var(--fs-cover-mask) 40 / 14px stretch; mask-border: var(--fs-cover-mask) 40 / 14px stretch; }
+html body.fs.fs-blip #feedTabs { -webkit-mask: none !important; mask: none !important; overflow: visible !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-home .photos-card { height: auto !important; }
+  html body.fs.fs-blip #page-home .photos-preview > * { height: 66px !important; }
+  html body.fs.fs-blip #profileCard .view-profile-link { right: 22px !important; font-size: 14.5px !important; }
+  html body.fs.fs-blip .mobile-pill { font-size: 13.5px !important; gap: 5px !important; padding: 0 4px !important; letter-spacing: -.2px; }
+  html body.fs.fs-blip .mobile-pill > i { width: 20px !important; height: 20px !important; flex-basis: 20px !important; }
+}
+/* lettering weights read off the concept: body text ~500, names / numbers / links bold */
+html body.fs.fs-blip #profileCard :is(.profile-title, .profile-about) { font-weight: 500 !important; }
+html body.fs.fs-blip #profileCard .stat-label, html body.fs.fs-blip #gvProfileCard .stat-label { font-weight: 500 !important; }
+html body.fs.fs-blip :is(.post-description, .post-description p, .featured-info p, .post-input-fake, .group-card-body p) { font-weight: 500 !important; }
+html body.fs.fs-blip :is(.quest-info p) { font-weight: 700 !important; }
+html body.fs.fs-blip :is(.quest-progress, .quest-reset, .featured-timer, .post-time, .story-name) { font-weight: 600 !important; }
+@media (max-width: 768px) { html body.fs.fs-blip #page-home .photos-card { border-bottom-width: 15px !important; } }
+
+/* ===== the painted art is never squashed: cards + pills are 9-sliced (corners/outline keep their painted size) ===== */
+/* profile / group card = the 9-slice card + the painted tail piece at its bottom-right (concept) */
+html body.fs.fs-blip :is(#profileCard, #gvProfileCard) { background: none !important; }
+html body.fs.fs-blip:is(*) :is(#profileCard, #gvProfileCard)::before { content: "" !important; display: block !important; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  border: 14px solid transparent; border-image: var(--fs-panel-card) 12% fill / 14px stretch; background: none !important; opacity: 1 !important; }
+html body.fs.fs-blip:is(*) :is(#profileCard, #gvProfileCard)::after { content: "" !important; display: block !important; position: absolute; right: 24px; bottom: -3px; width: 32px; height: 18px;
+  z-index: 0; pointer-events: none; background: var(--fs-card-tailtip) center bottom / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-blip :is(#profileCard, #gvProfileCard) { isolation: isolate; }
+
+/* pills / chips / buttons: left + right ends kept round (the art's ends are half its height), only the middle stretches */
+html body.fs.fs-blip :is(.btn-primary, .featured-buy-btn, .mobile-pill, .fsk-buy, .btn-outline, .view-group-btn, .btn-disabled, .btn,
+  .search-tab, .stat, .nav-coins, .post-input-fake, .page-search, .quest-reward, .blip-start-btn) {
+  background-image: none !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important;
+  border-image-slice: 0 80 fill !important; border-image-width: 0 1.2em !important; border-image-repeat: stretch !important; border-image-outset: 0 !important; }
+html body.fs.fs-blip :is(.btn-primary, .featured-buy-btn, .mobile-pill, .fsk-buy) { border-image-source: var(--fs-btn-primary) !important; }
+html body.fs.fs-blip :is(.btn-outline, .view-group-btn) { border-image-source: var(--fs-btn-secondary) !important; }
+html body.fs.fs-blip .btn-disabled { border-image-source: var(--fs-btn-disabled) !important; }
+html body.fs.fs-blip #gvLeaveBtn { border-image-source: var(--fs-btn-danger) !important; }
+html body.fs.fs-blip .search-tab, html body.fs.fs-blip #profileCard .stat { border-image-source: var(--fs-chip) !important; }
+html body.fs.fs-blip .search-tab.active { border-image-source: var(--fs-chip-active) !important; }
+html body.fs.fs-blip #feedTabs .search-tab:not(.active) { border-image-source: none !important; }
+html body.fs.fs-blip .navbar .nav-coins { border-image-source: var(--fs-coin-pill) !important; border-image-slice: 0 70 fill !important; }
+html body.fs.fs-blip :is(.post-input-fake, .page-search) { border-image-source: var(--fs-field) !important; border-image-slice: 0 70 fill !important; }
+html body.fs.fs-blip .quest-reward { border-image-source: var(--fs-reward-chip) !important; border-image-slice: 0 70 fill !important; }
+@media (max-width: 768px) { html body.fs.fs-blip .blip-start-btn { border-image-source: var(--fs-nav-active) !important; border-image-slice: 60 fill !important; border-image-width: 14px !important; } }
+@media (min-width: 769px) { html body.fs.fs-blip .blip-start-btn { border-image-source: var(--fs-blip-btn) !important; border-image-slice: 0 85 fill !important; border-image-width: 0 20px !important; } }
+html body.fs.fs-blip .blip-start-btn.is-on { border-image-source: var(--fs-blip-btn-on) !important; }
+/* feed tab strip + bars: same idea */
+html body.fs.fs-blip #feedTabs { background: none !important; border: 0 solid transparent !important; border-image: var(--fs-tabs-track) 0 70 fill / 0 17px stretch !important; }
+html body.fs.fs-blip :is(.quest-bar, .coin-goal-track) { background: none !important; border: 0 solid transparent !important; border-image: var(--fs-bar-track) 0 30 fill / 0 5px stretch !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-blip .nav-center .nav-link.active { background: none !important; border: 0 solid transparent !important; border-image: var(--fs-nav-active) 60 fill / 14px stretch !important; }
+  html body.fs.fs-blip:has(#page-group-view.active) .nav-center .nav-link[data-page="groups"] { background: none !important; border-image: var(--fs-nav-active) 60 fill / 14px stretch !important; }
+}
+/* end width = half the pill's height, so the round ends stay round */
+html body.fs.fs-blip #profileCard .stat { border-image-width: 0 13px !important; }
+html body.fs.fs-blip .mobile-pill, html body.fs.fs-blip .featured-body .btn { border-image-width: 0 19px !important; }
+html body.fs.fs-blip #gvProfileCard .pv-actions .btn { border-image-width: 0 21px !important; }
+html body.fs.fs-blip #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn) { background: none !important; border: 0 solid transparent !important; border-image: var(--fs-btn-primary) 0 80 fill / 0 23px stretch !important; }
+html body.fs.fs-blip .search-tab { border-image-width: 0 18px !important; }
+html body.fs.fs-blip #feedTabs .search-tab { border-image-width: 0 15px !important; }
+html body.fs.fs-blip .navbar .nav-coins { border-image-width: 0 18px !important; }
+html body.fs.fs-blip :is(.post-input-fake, .page-search) { border-image-width: 0 17px !important; }
+html body.fs.fs-blip .quest-reward { border-image-width: 0 14px !important; }
+/* the group card's stats are plain text (no chip) */
+html body.fs.fs-blip #gvProfileCard .stat { border-image-source: none !important; }
+html body.fs.fs-blip :is(.nav-coins, .post-input-fake, .page-search, .mobile-pill, .btn, .search-tab, .stat, .quest-reward) { background-color: transparent !important; box-shadow: none !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-blip .nav-center .nav-link.active, html body.fs.fs-blip:has(#page-group-view.active) .nav-center .nav-link[data-page="groups"] { border-image-width: 20px !important; }
+  html body.fs.fs-blip .blip-start-btn { border-image-width: 20px !important; }
+}
+/* no frosted blur anywhere in the concept: the app's blur would smear the painted pieces */
+html body.fs.fs-blip :is(.search-tab, .search-tabs, .btn, .card, .feed-post, .mobile-pill, .nav-center, .navbar, .stat, .nav-coins, .quest-panel, .featured-skin-banner, .coin-goal-bar, .group-card, .stories-bar) { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+/* side-by-side pass 1: the painted pills carry shadow padding, so their boxes are taller than the visible pill */
+@media (max-width: 768px) {
+  html body.fs.fs-blip .mobile-pill { height: 46px !important; border-image-width: 0 23px !important; font-size: 14.5px !important; }
+  html body.fs.fs-blip #profileCard .stat { height: 30px !important; border-image-width: 0 15px !important; }
+  html body.fs.fs-blip #profileCard .profile-stats { top: 98px !important; }
+  html body.fs.fs-blip .featured-body .btn { height: 44px !important; border-image-width: 0 22px !important; }
+  html body.fs.fs-blip .navbar .nav-logo { font-size: 23px !important; }
+  html body.fs.fs-blip .navbar .nav-logo::before { width: 40px; height: 40px; flex-basis: 40px; }
+  html body.fs.fs-blip .navbar :is(.mobile-search-btn, .mobile-notif-btn) > i { width: 29px !important; height: 29px !important; }
+  html body.fs.fs-blip .nav-center { min-height: 78px; }
+  html body.fs.fs-blip .nav-center .nav-link, html body.fs.fs-blip .blip-start-btn { height: 62px !important; font-size: 13px !important; }
+  html body.fs.fs-blip .nav-center .nav-link > i { width: 31px !important; height: 31px !important; }
+  html body.fs.fs-blip .blip-start-btn .blip-start-head { width: 34px !important; height: 34px !important; }
+  html body.fs.fs-blip :is(.quest-bar, .coin-goal-track) { height: 11px !important; border-image-width: 0 6px !important; }
+  html body.fs.fs-blip :is(.quest-bar-fill, .coin-goal-fill) { height: 100% !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip .nav-center .nav-link, html body.fs.fs-blip .blip-start-btn { font-size: 12.5px !important; letter-spacing: -.25px !important; }
+  html body.fs.fs-blip :is(.quest-bar, .coin-goal-track) { height: 13px !important; }
+}
+/* outline weight = the concept's ~2px navy line and ~16px corners: the card art's 6px outline sits in a 92px slice,
+   so the slice is drawn 31px wide (6 x 31/92 ≈ 2px line, 48 x 31/92 ≈ 16px radius) */
+html body.fs.fs-blip :is(.card, .feed-post, .quest-panel, .coin-goal-bar, .featured-skin-banner, .group-card, .comment-item, .msg-contact, .notif-item, .user-dropdown, .post-dropdown, .modal-content),
+html body.fs.fs-blip #page-home :is(.post-create-bar, .featured-skin-banner, .quest-panel, .coin-goal-bar, .photos-card),
+html body.fs.fs-blip #gvMobileRight .card, html body.fs.fs-blip .feed-post { border-image-width: 31px !important; }
+html body.fs.fs-blip:is(*) :is(#profileCard, #gvProfileCard)::before { border-image-width: 31px !important; border-width: 31px !important; }
+html body.fs.fs-blip:is(*) :is(#profileCard, #gvProfileCard)::after { width: 44px !important; height: 25px !important; right: 30px !important; bottom: -6px !important; }
+
+/* ===== cards, final: the card art cut tight to its outline (panel-card-tight 721x712: outline on the edge, soft shadow
+   below). 1/3 scale gives the concept's 2px navy line and 16px corners; the shadow hangs outside the box (outset). ===== */
+html body.fs.fs-blip :is(.card, .feed-post, .quest-panel, .coin-goal-bar, .featured-skin-banner, .group-card, .comment-item, .msg-contact, .notif-item, .user-dropdown, .post-dropdown, .modal-content),
+html body.fs.fs-blip #page-home :is(.post-create-bar, .featured-skin-banner, .quest-panel, .coin-goal-bar, .photos-card),
+html body.fs.fs-blip #gvMobileRight .card, html body.fs.fs-blip .feed-post {
+  border-image-source: var(--fs-panel-card-tight) !important; border-image-slice: 60 60 98 60 fill !important;
+  border-image-width: 17px 17px 28px 17px !important; border-image-outset: 0 0 11px 0 !important; border-image-repeat: stretch !important; }
+html body.fs.fs-blip :is(.msg-contact.active, .notif-item.unread) { border-image-source: var(--fs-panel-card-active-tight) !important; }
+html body.fs.fs-blip:is(*) :is(#profileCard, #gvProfileCard)::before { border-width: 0 !important;
+  border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 11px 0 stretch !important; }
+html body.fs.fs-blip:is(*) :is(#profileCard, #gvProfileCard)::after { width: 43px !important; height: 24px !important; right: 26px !important; bottom: -19px !important; z-index: 1 !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-blip #profileCard { min-height: 143px !important; }
+  html body.fs.fs-blip #page-home .left-sidebar { gap: 14px !important; }
+}
