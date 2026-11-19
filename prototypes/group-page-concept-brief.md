@@ -77,3 +77,6 @@ Paths: `MAIN` = /Users/danemuller/Developer/BlipVibe, `WT` = MAIN/.claude/worktr
 `{...}` = group-page.png, home.png, groups.png, profile.png in that folder (they are 3x crops of the approved concept phones).
 Anime Blaze's other colours (blue/purple/green/pink) are hue-shifted from red in production, so only red is painted here.
 Raw PNGs stay local (git-ignored under images/skins/**).
+
+## Status
+- Nov 19 2026: owner approved all 17 concepts ("Approve all 17"). Next: per-skin art kit + CSS build (not started).
