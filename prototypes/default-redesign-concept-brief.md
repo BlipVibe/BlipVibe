@@ -190,3 +190,8 @@ Raw PNGs stay local (git-ignored under images/skins/**). Contact sheets: images/
 
 ## Status
 - Nov 19 2026: brief written. Rev 2: differ from every premium skin. Rev 3: page-by-page field lists (owner rule), each job fed only its page list via per-job prompt files; Home + Group = two phones (top + scrolled) so every field fits. Painting.
+- Nov 19 2026: all 15 painted; reviewed against each page list + every skin. 5 repainted (space-age group: invented
+  sticky header; swiss desktop: worded action buttons + "Stories" label; clay desktop: "Stories"/"Rules" labels;
+  bubble-pop desktop: cartoon people + heart likes; walnut desktop: cover photo replaced by room art).
+  Known nits left: Clay Town phone Home shows a small "Stories" heading; Swiss desktop shows a react count.
+  Sheets images/skins/default/_sheets/{_overview,<dir>}.jpg (local) sent to owner. Waiting on the pick. No CSS yet.
