@@ -23,6 +23,7 @@ DIRS = {
     'superhero': {'heroes': '', 'villains': 'villains'},
     'basic': {'rose': '', 'pumpkin': 'pumpkin'},
 }
+NOTRIM = {'gp-name-deco'}   # its ornaments sit at fixed spots beside the text: keep the canvas
 WINDOWED = {'gp-frame', 'gp-pic-frame', 'gp-ring', 'gp-photo-frame'}
 MAXW = {'gp-head': 1290, 'gp-frame': 1200, 'gp-post': 1100, 'gp-photo-frame': 1100, 'gp-card': 1100, 'gp-heading': 1100,
         'gp-stats': 1100, 'gp-field': 900, 'gp-name-deco': 1100}
@@ -122,7 +123,8 @@ def main(only):
             pieces = {}
             for f in files:
                 name = os.path.splitext(os.path.basename(f))[0]
-                im = trim(keyed(Image.open(f)))
+                im = keyed(Image.open(f))
+                if name not in NOTRIM: im = trim(im)
                 out = save(im, os.path.join(SKINS, skin, 'assets', sub, name + '.webp'), name)
                 rec = [out.width, out.height]
                 if name in WINDOWED:

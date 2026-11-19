@@ -60,8 +60,8 @@ html body.fs #page-group-view.gp-on:not(#_) .gp-pic-cam { right: 4% !important; 
 
 /* name + description (optional decoration behind them) */
 html body.fs #page-group-view.gp-on:not(#_) .gp-id { position: relative !important; order: 2 !important; text-align: var(--gp-id-align, center) !important; margin: var(--gp-id-mt, 0) 0 0 !important; padding: var(--gp-id-pad, 0 8px) !important; }
-html body.fs #page-group-view.gp-on:not(#_) .gp-id::before { content: '' !important; position: absolute !important; inset: var(--gp-deco-inset, 0) !important; z-index: -1 !important; background: var(--gp-name-deco, none) center / 100% 100% no-repeat !important; pointer-events: none !important; }
-html body.fs #page-group-view.gp-on:not(#_) .gp-name { margin: 0 !important; font: var(--gp-name-weight, 700) var(--gp-name-size, 30px)/1.05 var(--gp-title) !important; color: var(--gp-name-ink, var(--gp-ink)) !important;
+html body.fs #page-group-view.gp-on:not(#_) .gp-id::before { content: '' !important; position: absolute !important; inset: var(--gp-deco-inset, 0) !important; z-index: -1 !important; background: var(--gp-name-deco, none) center / var(--gp-deco-size, 100% 100%) no-repeat !important; pointer-events: none !important; }
+html body.fs #page-group-view.gp-on:not(#_) .gp-name { margin: 0 !important; font: var(--gp-name-weight, 700) var(--gp-name-size, 30px)/1.05 var(--gp-name-font, var(--gp-title)) !important; color: var(--gp-name-ink, var(--gp-ink)) !important;
   text-shadow: var(--gp-name-shadow, none) !important; letter-spacing: var(--gp-name-ls, 0) !important; text-transform: var(--gp-name-tt, none) !important; overflow-wrap: anywhere !important; }
 html body.fs #page-group-view.gp-on:not(#_) .gp-desc { margin: 4px 0 0 !important; font: var(--gp-desc-style, normal) var(--gp-desc-weight, 400) var(--gp-desc-size, 16px)/1.25 var(--gp-desc-font, var(--gp-font)) !important; color: var(--gp-desc-ink, var(--gp-ink)) !important; }
 
@@ -122,7 +122,7 @@ html body.fs #page-group-view.gp-on:not(#_) .gp-members-empty { margin: 0 !impor
 
 /* ---------- the app's post bar + feed, dressed with the kit (scrolled phone) */
 html body.fs #page-group-view.gp-on:not(#_) #gvPostBar, html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed,
-html body.fs #page-group-view.gp-on:not(#_) #gvShopSection, html body.fs #page-group-view.gp-on:not(#_) #gvChatSection { margin: 0 var(--gp-side) !important; }
+html body.fs #page-group-view.gp-on:not(#_) #gvShopSection, html body.fs #page-group-view.gp-on:not(#_) #gvChatSection { margin: 0 var(--gp-side) !important; width: auto !important; max-width: none !important; box-sizing: border-box !important; left: auto !important; transform: none !important; }
 html body.fs #page-group-view.gp-on:not(#_) #gvPostBar:not(:empty) { margin-top: var(--gp-gap) !important; }
 html body.fs #page-group-view.gp-on:not(#_) #gvOpenPostModal { display: flex !important; align-items: center !important; gap: 8px !important; margin: 0 !important; padding: var(--gp-bar-pad, 6px 8px) !important;
   background: var(--gp-bar-bg, none) !important; border: 0 !important; box-shadow: none !important; border-image: none !important; border-radius: var(--gp-bar-r, 0) !important; }
@@ -138,7 +138,7 @@ html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed > .card:first-child .pv
 html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed > .card:first-child::before, html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed > .card:first-child::after { content: none !important; display: none !important; }
 
 /* group posts: the concept's post card (stretchable border art), avatar ring, photo frame */
-html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed .feed-post { position: relative !important; margin: 0 0 var(--gp-gap) !important; padding: var(--gp-post-pad, 16px 16px 8px) !important;
+html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed .feed-post { position: relative !important; box-sizing: border-box !important; width: auto !important; max-width: none !important; left: auto !important; transform: none !important; margin: 0 0 var(--gp-gap) !important; padding: var(--gp-post-pad, 16px 16px 8px) !important;
   background: none !important; box-shadow: none !important; border-radius: 0 !important; border-style: solid !important; border-width: var(--gp-post-bw, 24px) !important;
   border-image: var(--gp-post) var(--gp-post-slice, 90) fill / var(--gp-post-bw, 24px) / var(--gp-post-out, 0) stretch !important; }
 html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-post"] #gvPostsFeed .feed-post { padding: var(--gp-post-pad2, 2px 4px 0) !important; }
@@ -153,6 +153,19 @@ html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-photo-frame"] #gvPo
 html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-photo-frame"] #gvPostsFeed .feed-post .pm-thumb::after { content: '' !important; display: block !important; position: absolute !important; z-index: 2 !important; pointer-events: none !important;
   left: var(--gp-photo-frame-ol) !important; right: var(--gp-photo-frame-or) !important; top: var(--gp-photo-frame-ot) !important; bottom: var(--gp-photo-frame-ob) !important; background: var(--gp-photo-frame) center / 100% 100% no-repeat !important; border: 0 !important; transform: none !important; }
 
+html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed .feed-post .post-description :is(p, span) { font-family: var(--gp-post-font, inherit) !important; font-size: var(--gp-post-size, 16px) !important; color: var(--gp-post-ink, inherit) !important; }
+
+/* the skins' own Home-feed photo decorations (arches, tapes, frames) are not on the group concepts: off here */
+html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed .feed-post :is(.post-media-grid, .pm-thumb)::before,
+html body.fs #page-group-view.gp-on:not(#_):not([style*="--gp-has-photo-frame"]) #gvPostsFeed .feed-post .pm-thumb::after,
+html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed .feed-post .post-media-grid::after { content: none !important; display: none !important; }
+html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed .feed-post .post-media-grid { border: 0 !important; box-shadow: none !important; border-image: none !important; background: none !important; padding: 0 !important;
+  margin: var(--gp-photo-m, 8px 0 4px) !important; border-radius: var(--gp-photo-r, 8px) !important; overflow: visible !important; }
+html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed .feed-post .pm-count-1 .pm-thumb { height: auto !important; aspect-ratio: auto !important; max-height: none !important; padding: 0 !important; margin: 0 !important; }
+html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed .feed-post .pm-count-1 .pm-thumb img { position: static !important; display: block !important; width: 100% !important; height: auto !important; max-height: 70vh !important; object-fit: contain !important; }
+html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed .feed-post .pm-thumb { border: 0 !important; box-shadow: none !important; border-image: none !important; mask: none !important; -webkit-mask: none !important; clip-path: none !important; }
+html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed .feed-post .pm-thumb img { border-radius: var(--gp-photo-r, 8px) !important; border: 0 !important; mask: none !important; -webkit-mask: none !important; clip-path: none !important; }
+
 /* ======================================================================================================================
  * PER SKIN / RENDITION — geometry and type measured from each concept (data-gp="<skin>[ <rendition folder>]")
  * ==================================================================================================================== */
@@ -160,7 +173,7 @@ html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-photo-frame"] #gvPo
 /* ---------- Scrapbook */
 html body.fs #page-group-view.gp-on:not(#_)[data-gp="scrapbook"] { --gp-pic-y: 66%; --gp-pic-w: 30%; --gp-name-size: 31px; --gp-desc-size: 17px; --gp-num-size: 21px; --gp-lab-size: 14px;
   --gp-btn-size: 19px; --gp-small-size: 16px; --gp-tab-size: 17px; --gp-head-size: 21px; --gp-join-ink: #fff; --gp-leave-ink: #3b2a1f; --gp-ph-size: 25px; --gp-post-slice: 40; --gp-post-bw: 14px;
-  --gp-deco-inset: -4px -14px; --gp-head-pad: 12px; --gp-back-w: 42px; }
+  --gp-deco-inset: -4px -14px; --gp-head-pad: 12px; --gp-back-w: 42px; --gp-photo-m: 22px 12px 10px; --gp-photo-r: 0; --gp-post-font: Georgia, 'Times New Roman', serif; --gp-post-ink: #3b2a1f; }
 
 /* ---------- Witchcraft */
 html body.fs #page-group-view.gp-on:not(#_)[data-gp="witchcraft"] { --gp-pic-y: 63%; --gp-pic-w: 31%; --gp-name-size: 32px; --gp-name-ink: #f0d9a6; --gp-head-ink: #e8c98d; --gp-desc-style: italic;
@@ -201,3 +214,41 @@ html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave modern"] :is(.gp-
 html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave modern"] .gp-name { -webkit-text-stroke: 1px #2a3478; }
 html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave modern"] .gp-head { justify-content: flex-start !important; }
 html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave modern"] .gp-head-title { text-align: left !important; max-width: 52% !important; }
+
+/* ---------- Blood Moon (Crimson + Silver): parchment Members card with a centred title, joined tab bar */
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="blood-moon"], [data-gp="blood-moon silver"]) { --gp-pic-y: 74%; --gp-pic-w: 33%; --gp-name-size: 32px; --gp-desc-style: italic;
+  --gp-head-size: 23px; --gp-num-size: 21px; --gp-tab-gap: 0px; --gp-mt-align: center; --gp-mt-size: 20px; --gp-mt-weight: 600; --gp-card-pad: 3% 7% 3%; --gp-av-justify: center;
+  --gp-post-slice: 70; --gp-post-bw: 18px; --gp-ph-size: 24px; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="blood-moon"] { --gp-ink: #f6e7d6; --gp-name-ink: #f8ecdc; --gp-head-ink: #f3e3cf; --gp-join-ink: #fff; --gp-leave-ink: #f1e2d0;
+  --gp-mt-ink: #5b1416; --gp-more-ink: #5b1416; --gp-post-ink: #2e1a17; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="blood-moon silver"] { --gp-ink: #eef2fb; --gp-name-ink: #f4f7ff; --gp-head-ink: #eef2fb; --gp-join-ink: #fff; --gp-leave-ink: #e9eef9;
+  --gp-mt-ink: #16244a; --gp-more-ink: #16244a; --gp-post-ink: #16203c; }
+
+/* ---------- Heaven's Light (Day + Twilight): marble + gold; names in title case (the skin's headings are small caps elsewhere) */
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="heavens-light"], [data-gp="heavens-light twilight"]) { --gp-pic-y: 72%; --gp-pic-w: 40%; --gp-name-size: 31px; --gp-num-size: 22px;
+  --gp-head-size: 19px; --gp-head-ls: .02em; --gp-head-tt: uppercase; --gp-head-pad: 10px 18px; --gp-mt-align: center; --gp-mt-size: 21px; --gp-mt-weight: 600; --gp-card-pad: 3% 7% 4%;
+  --gp-av-justify: center; --gp-ph-size: 26px; --gp-post-slice: 70; --gp-post-bw: 18px; --gp-deco-inset: -8px -6px;
+  --gp-name-font: 'Cormorant Garamond', serif; --gp-mt-font: 'Cormorant Garamond', serif; --gp-ph-font: 'Cormorant Garamond', serif; --gp-num-font: 'Cormorant Garamond', serif; --gp-btn-font: 'Cormorant Garamond', serif; --gp-name-size: 34px; }
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="heavens-light"], [data-gp="heavens-light twilight"]) :is(.gp-name, .gp-members-title, .gp-btn, .gp-small, .gp-tab, .gp-stat-n, .pv-posts-heading, .gp-head-title) {
+  font-variant: normal !important; font-variant-caps: normal !important; }
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="heavens-light"], [data-gp="heavens-light twilight"]) :is(.gp-name, .gp-members-title, .pv-posts-heading) { text-transform: none !important; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="heavens-light"] { --gp-ink: #4a2e14; --gp-name-ink: #4a2a12; --gp-head-ink: #4a2a12; --gp-join-ink: #fff; --gp-leave-ink: #5a3414; --gp-tab-on-ink: #fff; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="heavens-light twilight"] { --gp-ink: #f6eedd; --gp-name-ink: #fbf3e2; --gp-head-ink: #f6e7c4; --gp-join-ink: #4a2a12; --gp-leave-ink: #f6e7d6; --gp-tab-on-ink: #4a2a12; }
+
+/* ---------- Vaporwave Retro Dark: same layout as Retro (square picture window at the cover's lower left), dark marble */
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave retro-dark"] { --gp-pic-x: 18%; --gp-pic-y: 84%; --gp-pic-w: 32%; --gp-pic-r: 0; --gp-name-size: 25px; --gp-desc-size: 15px; --gp-ink: #f2ecff; --gp-name-ink: #fff;
+  --gp-name-shadow: 0 2px 0 #3a0a5c; --gp-head-ink: #fff; --gp-head-size: 22px; --gp-head-shadow: 0 2px 0 #3a0a5c, 0 0 6px rgba(255, 60, 200, .5); --gp-num-size: 22px; --gp-join-ink: #fff; --gp-leave-ink: #ff3fb0;
+  --gp-mt-ink: #fff; --gp-mt-size: 15px; --gp-mt-weight: 500; --gp-card-justify: flex-start; --gp-card-pad: 1.3% 7% 3% 3%; --gp-mt-margin: 0 0 4.5%; --gp-ph-ink: #fff; --gp-ph-size: 16px; --gp-ph-weight: 500;
+  --gp-ph-justify: flex-start; --gp-ph-pad: 0 0 0 3%; --gp-post-slice: 60; --gp-post-bw: 14px; --gp-post-ink: #f2ecff; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave retro-dark"] :is(.gp-head-title, .gp-name) { font-style: italic !important; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave retro-dark"] .gp-id { margin-left: 34% !important; margin-top: 0 !important; text-align: left !important; padding: 0 !important; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave retro-dark"] #gvPostsFeed > .card:first-child { align-items: flex-start !important; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave retro-dark"] #gvPostsFeed > .card:first-child .pv-posts-heading { margin-top: 1.5% !important; }
+
+/* ---------- Vaporwave Modern Dark: square picture at the cover's lower left, name beside it, dark blue glass */
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave modern-dark"] { --gp-pic-x: 15%; --gp-pic-y: 88%; --gp-pic-w: 28%; --gp-pic-r: 8px; --gp-name-size: 23px; --gp-desc-size: 15px; --gp-ink: #eaf6ff; --gp-name-ink: #fff;
+  --gp-name-shadow: 0 2px 0 #0a1a4a; --gp-head-ink: #fff; --gp-head-size: 25px; --gp-head-shadow: 0 2px 0 #0a1a4a, 0 0 8px rgba(0, 220, 255, .5); --gp-num-size: 22px; --gp-join-ink: #062a4a; --gp-leave-ink: #ff4fb8;
+  --gp-mt-ink: #fff; --gp-mt-size: 18px; --gp-card-pad: 3% 7% 3%; --gp-ph-ink: #fff; --gp-ph-size: 22px; --gp-ph-justify: flex-start; --gp-ph-pad: 0 0 0 3%; --gp-post-slice: 60; --gp-post-bw: 14px; --gp-post-ink: #eaf6ff; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave modern-dark"] :is(.gp-head-title, .gp-name, .pv-posts-heading) { font-style: italic !important; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave modern-dark"] .gp-head-title { text-align: left !important; max-width: 52% !important; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave modern-dark"] .gp-id { margin-left: 30% !important; margin-top: 0 !important; text-align: left !important; padding: 0 !important; }
