@@ -47,6 +47,9 @@ Phone B (scrolled):
 - Every visual is painted art in the skin's style (no flat web-UI boxes), but text stays crisp and readable on its art.
 - Phone portrait proportions, comfortable tap sizes, nothing cramped or cut off by the phone frame.
 - The group's topic, name, cover and post photos fit the skin's world (see the job's group name).
+- Vaporwave: NO Windows or Apple logos anywhere. The taskbar Start button uses a small pixel palm-tree-over-sunset
+  emblem (as in the reference), never a four-colour flag.
+- Blood Moon Silver: NO red or pink anywhere (Leave Group uses frosty silver/ice-blue text, white roses only).
 
 ## Jobs (rendition id → group, references, output)
 Paths: `MAIN` = /Users/danemuller/Developer/BlipVibe, `WT` = MAIN/.claude/worktrees. Output paths are relative to this worktree.
