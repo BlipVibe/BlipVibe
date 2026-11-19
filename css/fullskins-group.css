@@ -126,7 +126,7 @@ html body.fs #page-group-view.gp-on:not(#_) #gvShopSection, html body.fs #page-g
 html body.fs #page-group-view.gp-on:not(#_) #gvPostBar:not(:empty) { margin-top: var(--gp-gap) !important; }
 html body.fs #page-group-view.gp-on:not(#_) #gvOpenPostModal { display: flex !important; align-items: center !important; gap: 8px !important; margin: 0 !important; padding: var(--gp-bar-pad, 6px 8px) !important;
   background: var(--gp-bar-bg, none) !important; border: 0 !important; box-shadow: none !important; border-image: none !important; border-radius: var(--gp-bar-r, 0) !important; }
-html body.fs #page-group-view.gp-on:not(#_) #gvOpenPostModal .post-create-avatar { width: var(--gp-bar-av, 44px) !important; height: var(--gp-bar-av, 44px) !important; flex: 0 0 auto !important; border-radius: 50% !important; }
+html body.fs #page-group-view.gp-on:not(#_) #gvOpenPostModal .post-create-avatar { display: block !important; visibility: visible !important; opacity: 1 !important; object-fit: cover !important; width: var(--gp-bar-av, 44px) !important; height: var(--gp-bar-av, 44px) !important; flex: 0 0 auto !important; border-radius: 50% !important; }
 html body.fs #page-group-view.gp-on:not(#_) #gvOpenPostModal .post-input-fake { flex: 1 1 auto !important; display: flex !important; align-items: center !important; aspect-ratio: var(--gp-field-ar, 1000 / 130) !important; height: auto !important; min-height: 0 !important;
   padding: 0 0 0 5% !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; border-image: none !important; background: var(--gp-field) center / 100% 100% no-repeat !important;
   font: var(--gp-field-style, normal) 400 var(--gp-field-size, 16px)/1 var(--gp-font) !important; color: var(--gp-field-ink, var(--gp-muted)) !important; }
@@ -144,7 +144,7 @@ html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed .feed-post { position: 
 html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-post"] #gvPostsFeed .feed-post { padding: var(--gp-post-pad2, 2px 4px 0) !important; }
 html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-post"] #gvPostsFeed .feed-post::before,
 html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-post"] #gvPostsFeed .feed-post::after { content: none !important; display: none !important; }
-html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-ring"] #gvPostsFeed .feed-post .post-avatar { box-sizing: border-box !important; padding: var(--gp-pav-pad, 3px) !important;
+html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-ring"] :is(#gvPostsFeed .feed-post .post-avatar, #gvOpenPostModal .post-create-avatar) { box-sizing: border-box !important; padding: var(--gp-pav-pad, 3px) !important;
   background: var(--gp-ring) center / 100% 100% no-repeat !important; border: 0 !important; box-shadow: none !important; border-image: none !important; outline: 0 !important; }
 html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-photo-frame"] #gvPostsFeed .feed-post .pm-thumb { position: relative !important; overflow: visible !important; }
 html body.fs #page-group-view.gp-on:not(#_)[style*="--gp-has-photo-frame"] #gvPostsFeed .feed-post .post-media-grid { overflow: visible !important; border: 0 !important; box-shadow: none !important; border-image: none !important; background: none !important; }
@@ -165,6 +165,11 @@ html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed .feed-post .pm-count-1 
 html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed .feed-post .pm-count-1 .pm-thumb img { position: static !important; display: block !important; width: 100% !important; height: auto !important; max-height: 70vh !important; object-fit: contain !important; }
 html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed .feed-post .pm-thumb { border: 0 !important; box-shadow: none !important; border-image: none !important; mask: none !important; -webkit-mask: none !important; clip-path: none !important; }
 html body.fs #page-group-view.gp-on:not(#_) #gvPostsFeed .feed-post .pm-thumb img { border-radius: var(--gp-photo-r, 8px) !important; border: 0 !important; mask: none !important; -webkit-mask: none !important; clip-path: none !important; }
+
+/* wider screens: the concepts are phone pages, so the page keeps a phone-like column (the desktop-skins work can replace this) */
+@media (min-width: 769px) {
+  html body.fs #page-group-view.gp-on:not(#_) { max-width: 560px !important; margin: 0 auto !important; }
+}
 
 /* ======================================================================================================================
  * PER SKIN / RENDITION — geometry and type measured from each concept (data-gp="<skin>[ <rendition folder>]")
@@ -187,7 +192,7 @@ html body.fs #page-group-view.gp-on:not(#_)[data-gp^="anime-blaze"] { --gp-pic-y
 html body.fs #page-group-view.gp-on:not(#_)[data-gp^="anime-blaze"] :is(.gp-name, .gp-head-title, .gp-btn, .gp-small, .gp-tab, .gp-members-title, .gp-stat-n) { font-style: italic !important; }
 
 /* concepts that put Group Rules / Invite Link under the Members card (Good Witch Day, Heaven's Light Day, Superhero Heroes) */
-html body.fs #page-group-view.gp-on:not(#_):is([data-gp="good-witch"], [data-gp="heavens-light"], [data-gp="superhero"]) .gp-links { order: 8 !important; }
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="good-witch"], [data-gp="heavens-light"], [data-gp="superhero"], [data-gp="blood-moon silver"]) .gp-links { order: 8 !important; }
 
 /* ---------- Good Witch (Day + Night) */
 html body.fs #page-group-view.gp-on:not(#_):is([data-gp="good-witch"], [data-gp="good-witch night"]) { --gp-pic-y: 66%; --gp-pic-w: 32%; --gp-name-size: 31px; --gp-desc-style: italic; --gp-desc-size: 17px;
@@ -252,3 +257,28 @@ html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave modern-dark"] { -
 html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave modern-dark"] :is(.gp-head-title, .gp-name, .pv-posts-heading) { font-style: italic !important; }
 html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave modern-dark"] .gp-head-title { text-align: left !important; max-width: 52% !important; }
 html body.fs #page-group-view.gp-on:not(#_)[data-gp="vaporwave modern-dark"] .gp-id { margin-left: 30% !important; margin-top: 0 !important; text-align: left !important; padding: 0 !important; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="heavens-light twilight"] { --gp-field-ink: #4b4466; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="heavens-light"] { --gp-field-ink: #7a6448; }
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="heavens-light"], [data-gp="heavens-light twilight"]) #gvPostsFeed .post-username { font-variant: normal !important; font-variant-caps: normal !important; text-transform: none !important; font-family: 'Cormorant Garamond', serif !important; font-size: 20px !important; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="blood-moon"] { --gp-field-ink: #6e4a40; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="blood-moon silver"] { --gp-field-ink: #3a4766; }
+html body.fs #page-group-view.gp-on:not(#_) #gvOpenPostModal::before, html body.fs #page-group-view.gp-on:not(#_) #gvOpenPostModal::after,
+html body.fs #page-group-view.gp-on:not(#_) #gvOpenPostModal .post-input-fake::before, html body.fs #page-group-view.gp-on:not(#_) #gvOpenPostModal .post-input-fake::after { content: none !important; display: none !important; }
+html body.fs #page-group-view.gp-on:not(#_) #gvOpenPostModal .post-input-fake { outline: 0 !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background-color: transparent !important; }
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="good-witch"], [data-gp="good-witch night"]) { --gp-ph-pad: 0; }
+/* Good Witch: "Group Posts" sits UNDER the moon flourish */
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="good-witch"], [data-gp="good-witch night"]) #gvPostsFeed > .card:first-child { aspect-ratio: auto !important; height: auto !important; overflow: visible !important;
+  padding: 9% 0 0 !important; background-size: 100% auto !important; background-position: center top !important; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp^="anime-blaze"] { --gp-post-pad2: 4px 8px 0 14px; --gp-photo-m: 10px 6px 6px; --gp-photo-r: 0; }
+/* Good Witch: the header title wraps onto two centred lines between the gold vines, as drawn */
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="good-witch"], [data-gp="good-witch night"]) .gp-head-title { max-width: 60% !important; margin: 0 auto !important; padding-right: var(--gp-back-w, 36px) !important; box-sizing: content-box !important; }
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="good-witch"], [data-gp="good-witch night"]) .gp-head { --gp-head-size: 21px; }
+
+/* ---------- Superhero (Heroes + Villains): comic lettering, uppercase italic */
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="superhero"], [data-gp="superhero villains"]) { --gp-head-tt: uppercase; --gp-name-tt: none; --gp-btn-tt: uppercase; --gp-mt-tt: uppercase; --gp-ph-tt: uppercase;
+  --gp-mt-align: center; --gp-av-justify: center; --gp-card-pad: 3% 6% 3%; --gp-num-size: 22px; --gp-post-slice: 70; --gp-post-bw: 18px; --gp-head-size: 23px; --gp-ph-size: 24px; }
+html body.fs #page-group-view.gp-on:not(#_):is([data-gp="superhero"], [data-gp="superhero villains"]) :is(.gp-head-title, .gp-name, .gp-btn, .gp-small, .gp-tab, .gp-members-title, .pv-posts-heading, .gp-stat-n) { font-style: italic !important; }
+/* Villains: square picture at the cover's lower left with the name + description beside it */
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="superhero villains"] { --gp-pic-x: 17%; --gp-pic-y: 94%; --gp-pic-w: 34%; --gp-pic-r: 6px; --gp-name-size: 29px; --gp-name-font: "Comic Neue", sans-serif; --gp-name-weight: 700; --gp-desc-style: italic; --gp-desc-size: 15px; --gp-ink: #f2f0f5;
+  --gp-name-ink: #fff; --gp-head-ink: #fff; --gp-join-ink: #10200a; --gp-leave-ink: #fff; --gp-small-ink: #fff; --gp-tab-ink: #fff; --gp-tab-on-ink: #10200a; --gp-mt-ink: #fff; --gp-ph-ink: #fff; --gp-post-ink: #f2f0f5; }
+html body.fs #page-group-view.gp-on:not(#_)[data-gp="superhero villains"] .gp-id { margin-left: 36% !important; margin-top: 0 !important; text-align: left !important; padding: 0 !important; min-height: 64px !important; }
