@@ -195,3 +195,18 @@ Raw PNGs stay local (git-ignored under images/skins/**). Contact sheets: images/
   bubble-pop desktop: cartoon people + heart likes; walnut desktop: cover photo replaced by room art).
   Known nits left: Clay Town phone Home shows a small "Stories" heading; Swiss desktop shows a react count.
   Sheets images/skins/default/_sheets/{_overview,<dir>}.jpg (local) sent to owner. Waiting on the pick. No CSS yet.
+
+## Round 2 (Nov 19 2026) — owner: "make 2 more, 1 should have the original BlipVibe logo and the color scheme the logo uses" + "the one that uses the logo color scheme should be the default one"
+6. `logo-classic` "LOGO CLASSIC" — **owner's pick for the new default.** Original logo mascot used unchanged; palette sampled
+   from `images/blipvibe-logo.png`: royal blue #2669E4, deep blue #1E51CA, bright blue #409AF9, sky #7FCDFD, outline navy
+   #00008B (text), bubble white #FDFEFA (cards), sparkle yellow #FDF26D (coins/badges). Airy blue-white page #EEF5FF,
+   white rounded cards with thin navy outline, royal-blue pills. No glass/neon/cyan-pink gradients (keeps it off Vaporwave).
+7. `pixel-pal` "PIXEL PAL" — cosy 8-bit handheld: pea green #E4F2C4, forest green #1F3B2D, pumpkin #FF8A3D, cream cards,
+   pixel dialog-box cards, pixel-sprite mascot. No neon/CRT/scanlines.
+Same page field lists as above; jobs `<dir>-<home|group|desktop>`.
+
+### Build requirement — animations (owner: "make sure to make animations for the switches and changes")
+The built default animates every switch and state change: toggle switches slide (knob + track color), feed/group/mode tabs
+and the bottom nav get a sliding active indicator, page changes fade/slide in, cards stagger in, like/dislike/react pop,
+Join/Joined and follow buttons morph, coin goal + quest bars fill, badges bounce in, the mascot reacts (wave/bounce).
+Short (150–300 ms), eased, and disabled under `prefers-reduced-motion`.
