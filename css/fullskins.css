@@ -3172,10 +3172,10 @@ html body.fs.fs-good-witch .search-tab { border: 0 !important; border-image: non
 html body.fs.fs-good-witch .search-tab > i { display: none !important; }
 html body.fs.fs-good-witch #feedTabs .search-tab.active { background: radial-gradient(ellipse at 50% 45%, rgba(214, 190, 255, .75), transparent 70%), var(--fs-tab-underline) center bottom / 86% 16px no-repeat !important; color: var(--gw-accent) !important; font-weight: 700 !important; }
 /* filter chips + segmented tabs */
-html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, .fsk-filters) { display: flex !important; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding: 2px 0 !important; border: 0 !important; background: none !important; scrollbar-width: none; }
-html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab, html body.fs.fs-good-witch .fsk-filter {
+html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs, #profilesTabs, #searchTabs, .fsk-filters) { display: flex !important; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding: 2px 0 !important; border: 0 !important; background: none !important; scrollbar-width: none; }
+html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab, html body.fs.fs-good-witch .fsk-filter {
   flex: 0 0 auto; padding: 6px 14px !important; font-size: 15px !important; border-radius: 0 !important; background: var(--fs-chip) center / 100% 100% no-repeat !important; color: var(--gw-title) !important; }
-html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.active, html body.fs.fs-good-witch .fsk-filter.active { background-image: var(--fs-chip-active) !important; color: #fff !important; }
+html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab.active, html body.fs.fs-good-witch .fsk-filter.active { background-image: var(--fs-chip-active) !important; color: #fff !important; }
 html body.fs.fs-good-witch :is(#profilesTabs, #searchTabs) .search-tab { flex: 1 1 0; min-height: 46px; padding: 4px 6px !important; font-size: 15px !important; line-height: 1.1; white-space: normal; text-align: center;
   background: var(--fs-seg-tab) center / 100% 100% no-repeat !important; }
 html body.fs.fs-good-witch :is(#profilesTabs, #searchTabs) .search-tab.active { background-image: var(--fs-seg-tab-active) !important; color: #fff !important; }
@@ -3359,7 +3359,7 @@ html body.fs.fs-good-witch .fs-tl-slot-2 { z-index: 3 !important; }
   html body.fs.fs-good-witch .nav-center { background: var(--fs-nav-bar) center top / 100% 100% no-repeat, linear-gradient(var(--gw-barfill, #f4ecfd), var(--gw-barfill, #f4ecfd)) bottom / 100% calc(100% - 8px) no-repeat !important; }
   html body.fs.fs-good-witch[data-fs-variant="night"] { --gw-barfill: #1d1438; }
 }
-html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs) .search-tab.active,
+html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs, #profilesTabs, #searchTabs) .search-tab.active,
 html body.fs.fs-good-witch .fsk-filter.active { color: var(--gw-deep) !important; font-weight: 700 !important; }
 html body.fs.fs-good-witch #groupsSections .group-card-actions .btn .gc-btn-text { display: inline !important; font-size: 16px !important; color: var(--gw-title) !important; }
 html body.fs.fs-good-witch .page-header .page-search { margin-top: 6px !important; }
@@ -3636,13 +3636,13 @@ html body.fs.fs-good-witch .fsk-color.is-on { box-shadow: 0 0 0 2px #fff, 0 0 0 
 html body.fs.fs-good-witch .fsk-body .btn { height: 40px !important; font-size: 15px !important; }
 html body.fs.fs-good-witch :is(.fsk-soon, .fsk-takeoff) { font-size: 14px !important; }
 /* chips / filter buttons: 9-slice so the end curls keep their shape on long labels */
-html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab, html body.fs.fs-good-witch .fsk-filter {
+html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab, html body.fs.fs-good-witch .fsk-filter {
   background: none !important; border: solid transparent !important; border-width: 10px 18px !important; border-image: var(--fs-chip) 55 85 fill / 10px 18px stretch !important;
   padding: 2px 4px !important; font-size: 15px !important; min-height: 0 !important; }
-html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.active, html body.fs.fs-good-witch .fsk-filter.active { border-image-source: var(--fs-chip-active) !important; }
-html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.search-tab, html body.fs.fs-good-witch .fsk-filter.fsk-filter {
+html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab.active, html body.fs.fs-good-witch .fsk-filter.active { border-image-source: var(--fs-chip-active) !important; }
+html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab.search-tab, html body.fs.fs-good-witch .fsk-filter.fsk-filter {
   background-image: none !important; background-color: transparent !important; box-shadow: none !important; border-width: 7px 14px !important; font-size: 14px !important; padding: 1px 2px !important; line-height: 1.2 !important; }
-html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) { gap: 6px !important; margin: 4px 0 !important; }
+html body.fs.fs-good-witch :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) { gap: 6px !important; margin: 4px 0 !important; }
 html body.fs.fs-good-witch .fsk-badge { background-color: transparent !important; box-shadow: none !important; }
 /* list rows (network/search/groups/messages/notifications): 9-slice matched to the art's corners, compact sizes */
 html body.fs.fs-good-witch :is(.msg-contact, .notif-item, .profile-card-item, .follow-list-item, #groupsSections .group-card) {
@@ -4574,10 +4574,10 @@ html body.fs.fs-heavens-light .search-tab { border: 0 !important; border-image: 
 html body.fs.fs-heavens-light .search-tab > i { display: none !important; }
 html body.fs.fs-heavens-light #feedTabs .search-tab.active { background: radial-gradient(ellipse at 50% 45%, rgba(255, 226, 160, .75), transparent 70%), var(--fs-tab-active) center bottom / 86% 16px no-repeat !important; color: var(--hl-accent) !important; font-weight: 700 !important; }
 /* filter chips + segmented tabs */
-html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, .fsk-filters) { display: flex !important; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding: 2px 0 !important; border: 0 !important; background: none !important; scrollbar-width: none; }
-html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab, html body.fs.fs-heavens-light .fsk-filter {
+html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs, #profilesTabs, #searchTabs, .fsk-filters) { display: flex !important; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding: 2px 0 !important; border: 0 !important; background: none !important; scrollbar-width: none; }
+html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab, html body.fs.fs-heavens-light .fsk-filter {
   flex: 0 0 auto; padding: 6px 14px !important; font-size: 15px !important; border-radius: 0 !important; background: var(--fs-chip) center / 100% 100% no-repeat !important; color: var(--hl-title) !important; }
-html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.active, html body.fs.fs-heavens-light .fsk-filter.active { background-image: var(--fs-chip-active) !important; color: #fff !important; }
+html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab.active, html body.fs.fs-heavens-light .fsk-filter.active { background-image: var(--fs-chip-active) !important; color: #fff !important; }
 html body.fs.fs-heavens-light :is(#profilesTabs, #searchTabs) .search-tab { flex: 1 1 0; min-height: 46px; padding: 4px 6px !important; font-size: 15px !important; line-height: 1.1; white-space: normal; text-align: center;
   background: var(--fs-seg-tab) center / 100% 100% no-repeat !important; }
 html body.fs.fs-heavens-light :is(#profilesTabs, #searchTabs) .search-tab.active { background-image: var(--fs-seg-tab-active) !important; color: #fff !important; }
@@ -4756,7 +4756,7 @@ html body.fs.fs-heavens-light .fs-tl-slot-2 { z-index: 3 !important; }
   html body.fs.fs-heavens-light .navbar { background: var(--fs-top-bar) center bottom / 100% 100% no-repeat, linear-gradient(var(--hl-barfill, #f4ecfd), var(--hl-barfill, #f4ecfd)) top / 100% calc(100% - 6px) no-repeat !important; }
   html body.fs.fs-heavens-light .nav-center { background: var(--fs-nav-bar) center top / 100% 100% no-repeat, linear-gradient(var(--hl-barfill, #f4ecfd), var(--hl-barfill, #f4ecfd)) bottom / 100% calc(100% - 8px) no-repeat !important; }
 }
-html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs) .search-tab.active,
+html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs, #profilesTabs, #searchTabs) .search-tab.active,
 html body.fs.fs-heavens-light .fsk-filter.active { color: var(--hl-deep) !important; font-weight: 700 !important; }
 html body.fs.fs-heavens-light #groupsSections .group-card-actions .btn .gc-btn-text { display: inline !important; font-size: 16px !important; color: var(--hl-title) !important; }
 html body.fs.fs-heavens-light .page-header .page-search { margin-top: 6px !important; }
@@ -4946,13 +4946,13 @@ html body.fs.fs-heavens-light .fsk-color.is-on { box-shadow: 0 0 0 2px #fff, 0 0
 html body.fs.fs-heavens-light .fsk-body .btn { height: 40px !important; font-size: 15px !important; }
 html body.fs.fs-heavens-light :is(.fsk-soon, .fsk-takeoff) { font-size: 14px !important; }
 /* chips / filter buttons: 9-slice so the end curls keep their shape on long labels */
-html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab, html body.fs.fs-heavens-light .fsk-filter {
+html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab, html body.fs.fs-heavens-light .fsk-filter {
   background: none !important; border: solid transparent !important; border-width: 10px 18px !important; border-image: var(--fs-chip) 55 85 fill / 10px 18px stretch !important;
   padding: 2px 4px !important; font-size: 15px !important; min-height: 0 !important; }
-html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.active, html body.fs.fs-heavens-light .fsk-filter.active { border-image-source: var(--fs-chip-active) !important; }
-html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.search-tab, html body.fs.fs-heavens-light .fsk-filter.fsk-filter {
+html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab.active, html body.fs.fs-heavens-light .fsk-filter.active { border-image-source: var(--fs-chip-active) !important; }
+html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab.search-tab, html body.fs.fs-heavens-light .fsk-filter.fsk-filter {
   background-image: none !important; background-color: transparent !important; box-shadow: none !important; border-width: 7px 14px !important; font-size: 14px !important; padding: 1px 2px !important; line-height: 1.2 !important; }
-html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) { gap: 6px !important; margin: 4px 0 !important; }
+html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) { gap: 6px !important; margin: 4px 0 !important; }
 html body.fs.fs-heavens-light .fsk-badge { background-color: transparent !important; box-shadow: none !important; }
 /* list rows (network/search/groups/messages/notifications): 9-slice matched to the art's corners, compact sizes */
 html body.fs.fs-heavens-light :is(.msg-contact, .notif-item, .profile-card-item, .follow-list-item, #groupsSections .group-card) {
@@ -5171,7 +5171,7 @@ html body.fs.fs-heavens-light :is(.quest-reward, .quest-check) { font-size: 16px
 /* feed tabs: marble pills / glowing gold active pill (concept) */
 html body.fs.fs-heavens-light #feedTabs .search-tab { background: var(--fs-tab) center / 100% 100% no-repeat !important; padding: 8px 4px !important; font: 600 14px var(--fs-title-font) !important; text-transform: uppercase; }
 html body.fs.fs-heavens-light #feedTabs .search-tab.active { background: var(--fs-tab-active) center / 100% 100% no-repeat !important; color: #fff !important; text-shadow: 0 1px 2px rgba(90, 58, 14, .6); }
-html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs) .search-tab, html body.fs.fs-heavens-light .fsk-filter { font-family: var(--fs-title-font) !important; text-transform: uppercase; font-size: 13px !important; }
+html body.fs.fs-heavens-light :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs, #profilesTabs, #searchTabs) .search-tab, html body.fs.fs-heavens-light .fsk-filter { font-family: var(--fs-title-font) !important; text-transform: uppercase; font-size: 13px !important; }
 html body.fs.fs-heavens-light :is(.search-tab.active, .fsk-filter.active) { text-shadow: 0 1px 2px rgba(90, 58, 14, .6); }
 
 /* posts (owner: "make the posts have something around them"): ornate gold frame on all four sides, three looks */
@@ -6288,10 +6288,10 @@ html body.fs.fs-blood-moon .search-tab { border: 0 !important; border-image: non
 html body.fs.fs-blood-moon .search-tab > i { display: none !important; }
 html body.fs.fs-blood-moon #feedTabs .search-tab.active { background: radial-gradient(ellipse at 50% 45%, rgba(255, 226, 160, .75), transparent 70%), var(--fs-tab-active) center bottom / 86% 16px no-repeat !important; color: var(--bm-accent) !important; font-weight: 700 !important; }
 /* filter chips + segmented tabs */
-html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, .fsk-filters) { display: flex !important; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding: 2px 0 !important; border: 0 !important; background: none !important; scrollbar-width: none; }
-html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab, html body.fs.fs-blood-moon .fsk-filter {
+html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs, #profilesTabs, #searchTabs, .fsk-filters) { display: flex !important; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding: 2px 0 !important; border: 0 !important; background: none !important; scrollbar-width: none; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab, html body.fs.fs-blood-moon .fsk-filter {
   flex: 0 0 auto; padding: 6px 14px !important; font-size: 15px !important; border-radius: 0 !important; background: var(--fs-chip) center / 100% 100% no-repeat !important; color: var(--bm-title) !important; }
-html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.active, html body.fs.fs-blood-moon .fsk-filter.active { background-image: var(--fs-chip-active) !important; color: #fff !important; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab.active, html body.fs.fs-blood-moon .fsk-filter.active { background-image: var(--fs-chip-active) !important; color: #fff !important; }
 html body.fs.fs-blood-moon :is(#profilesTabs, #searchTabs) .search-tab { flex: 1 1 0; min-height: 46px; padding: 4px 6px !important; font-size: 15px !important; line-height: 1.1; white-space: normal; text-align: center;
   background: var(--fs-seg-tab) center / 100% 100% no-repeat !important; }
 html body.fs.fs-blood-moon :is(#profilesTabs, #searchTabs) .search-tab.active { background-image: var(--fs-seg-tab-active) !important; color: #fff !important; }
@@ -6470,7 +6470,7 @@ html body.fs.fs-blood-moon .fs-tl-slot-2 { z-index: 3 !important; }
   html body.fs.fs-blood-moon .navbar { background: var(--fs-top-bar) center bottom / 100% 100% no-repeat, linear-gradient(var(--bm-barfill, #f4ecfd), var(--bm-barfill, #f4ecfd)) top / 100% calc(100% - 6px) no-repeat !important; }
   html body.fs.fs-blood-moon .nav-center { background: var(--fs-nav-bar) center top / 100% 100% no-repeat, linear-gradient(var(--bm-barfill, #f4ecfd), var(--bm-barfill, #f4ecfd)) bottom / 100% calc(100% - 8px) no-repeat !important; }
 }
-html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs) .search-tab.active,
+html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs, #profilesTabs, #searchTabs) .search-tab.active,
 html body.fs.fs-blood-moon .fsk-filter.active { color: var(--bm-deep) !important; font-weight: 700 !important; }
 html body.fs.fs-blood-moon #groupsSections .group-card-actions .btn .gc-btn-text { display: inline !important; font-size: 16px !important; color: var(--bm-title) !important; }
 html body.fs.fs-blood-moon .page-header .page-search { margin-top: 6px !important; }
@@ -6660,13 +6660,13 @@ html body.fs.fs-blood-moon .fsk-color.is-on { box-shadow: 0 0 0 2px #fff, 0 0 0 
 html body.fs.fs-blood-moon .fsk-body .btn { height: 40px !important; font-size: 15px !important; }
 html body.fs.fs-blood-moon :is(.fsk-soon, .fsk-takeoff) { font-size: 14px !important; }
 /* chips / filter buttons: 9-slice so the end curls keep their shape on long labels */
-html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab, html body.fs.fs-blood-moon .fsk-filter {
+html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab, html body.fs.fs-blood-moon .fsk-filter {
   background: none !important; border: solid transparent !important; border-width: 10px 18px !important; border-image: var(--fs-chip) 55 85 fill / 10px 18px stretch !important;
   padding: 2px 4px !important; font-size: 15px !important; min-height: 0 !important; }
-html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.active, html body.fs.fs-blood-moon .fsk-filter.active { border-image-source: var(--fs-chip-active) !important; }
-html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.search-tab, html body.fs.fs-blood-moon .fsk-filter.fsk-filter {
+html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab.active, html body.fs.fs-blood-moon .fsk-filter.active { border-image-source: var(--fs-chip-active) !important; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab.search-tab, html body.fs.fs-blood-moon .fsk-filter.fsk-filter {
   background-image: none !important; background-color: transparent !important; box-shadow: none !important; border-width: 7px 14px !important; font-size: 14px !important; padding: 1px 2px !important; line-height: 1.2 !important; }
-html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) { gap: 6px !important; margin: 4px 0 !important; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) { gap: 6px !important; margin: 4px 0 !important; }
 html body.fs.fs-blood-moon .fsk-badge { background-color: transparent !important; box-shadow: none !important; }
 /* list rows (network/search/groups/messages/notifications): 9-slice matched to the art's corners, compact sizes */
 html body.fs.fs-blood-moon :is(.msg-contact, .notif-item, .profile-card-item, .follow-list-item, #groupsSections .group-card) {
@@ -6885,7 +6885,7 @@ html body.fs.fs-blood-moon :is(.quest-reward, .quest-check) { font-size: 16px !i
 /* feed tabs: marble pills / glowing gold active pill (concept) */
 html body.fs.fs-blood-moon #feedTabs .search-tab { background: var(--fs-tab) center / 100% 100% no-repeat !important; padding: 8px 4px !important; font: 600 14px var(--fs-title-font) !important; text-transform: uppercase; }
 html body.fs.fs-blood-moon #feedTabs .search-tab.active { background: var(--fs-tab-active) center / 100% 100% no-repeat !important; color: #fff !important; text-shadow: 0 1px 2px rgba(90, 58, 14, .6); }
-html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs) .search-tab, html body.fs.fs-blood-moon .fsk-filter { font-family: var(--fs-title-font) !important; text-transform: uppercase; font-size: 13px !important; }
+html body.fs.fs-blood-moon :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs, #profilesTabs, #searchTabs) .search-tab, html body.fs.fs-blood-moon .fsk-filter { font-family: var(--fs-title-font) !important; text-transform: uppercase; font-size: 13px !important; }
 html body.fs.fs-blood-moon :is(.search-tab.active, .fsk-filter.active) { text-shadow: 0 1px 2px rgba(90, 58, 14, .6); }
 
 /* posts (owner: "make the posts have something around them"): ornate gold frame on all four sides, three looks */
@@ -7596,9 +7596,9 @@ html body.fs.fs-basic #feedTabs { display: grid !important; grid-template-column
 html body.fs.fs-basic .search-tab { border: 0 !important; border-image: none !important; border-radius: 22px !important; box-shadow: none !important; background: none !important; color: var(--bs-title) !important; font: 600 18px var(--fs-font) !important; padding: 8px 6px 14px !important; white-space: nowrap; display: flex !important; align-items: center; justify-content: center; }
 html body.fs.fs-basic .search-tab > i { display: none !important; }
 html body.fs.fs-basic #feedTabs .search-tab.active { background: radial-gradient(ellipse at 50% 45%, rgba(255, 226, 160, .75), transparent 70%), var(--fs-tab-active) center bottom / 86% 16px no-repeat !important; color: var(--bs-accent) !important; font-weight: 700 !important; }
-html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, .fsk-filters) { display: flex !important; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding: 2px 0 !important; border: 0 !important; background: none !important; scrollbar-width: none; }
-html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab, html body.fs.fs-basic .fsk-filter { flex: 0 0 auto; padding: 6px 14px !important; font-size: 15px !important; border-radius: 0 !important; background: var(--fs-chip) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; }
-html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.active, html body.fs.fs-basic .fsk-filter.active { background-image: var(--fs-chip-active) !important; color: #fff !important; }
+html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs, #profilesTabs, #searchTabs, .fsk-filters) { display: flex !important; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding: 2px 0 !important; border: 0 !important; background: none !important; scrollbar-width: none; }
+html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab, html body.fs.fs-basic .fsk-filter { flex: 0 0 auto; padding: 6px 14px !important; font-size: 15px !important; border-radius: 0 !important; background: var(--fs-chip) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; }
+html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab.active, html body.fs.fs-basic .fsk-filter.active { background-image: var(--fs-chip-active) !important; color: #fff !important; }
 html body.fs.fs-basic :is(#profilesTabs, #searchTabs) .search-tab { flex: 1 1 0; min-height: 46px; padding: 4px 6px !important; font-size: 15px !important; line-height: 1.1; white-space: normal; text-align: center; background: var(--fs-seg-tab) center / 100% 100% no-repeat !important; }
 html body.fs.fs-basic :is(#profilesTabs, #searchTabs) .search-tab.active { background-image: var(--fs-seg-tab-active) !important; color: #fff !important; }
 html body.fs.fs-basic .story-ring { background: var(--fs-story-ring) center / contain no-repeat !important; padding: 4px !important; }
@@ -7740,7 +7740,7 @@ html body.fs.fs-basic .fs-tl-slot-2 { z-index: 3 !important; }
 @media (max-width: 768px) {
   html body.fs.fs-basic .navbar { background: var(--fs-top-bar) center bottom / 100% 100% no-repeat, linear-gradient(var(--bs-barfill, #f4ecfd), var(--bs-barfill, #f4ecfd)) top / 100% calc(100% - 6px) no-repeat !important; }
 }
-html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs) .search-tab.active,
+html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs, #profilesTabs, #searchTabs) .search-tab.active,
 html body.fs.fs-basic .fsk-filter.active { color: var(--bs-deep) !important; font-weight: 700 !important; }
 html body.fs.fs-basic #groupsSections .group-card-actions .btn .gc-btn-text { display: inline !important; font-size: 16px !important; color: var(--bs-title) !important; }
 html body.fs.fs-basic .page-header .page-search { margin-top: 6px !important; }
@@ -7842,10 +7842,10 @@ html body.fs.fs-basic .fsk-color { outline: none !important; box-shadow: 0 0 0 2
 html body.fs.fs-basic .fsk-color.is-on { box-shadow: 0 0 0 2px #fff, 0 0 0 4px #c9a35c !important; }
 html body.fs.fs-basic .fsk-body .btn { height: 40px !important; font-size: 15px !important; }
 html body.fs.fs-basic :is(.fsk-soon, .fsk-takeoff) { font-size: 14px !important; }
-html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab, html body.fs.fs-basic .fsk-filter { background: none !important; border: solid transparent !important; border-width: 10px 18px !important; border-image: var(--fs-chip) 55 85 fill / 10px 18px stretch !important; padding: 2px 4px !important; font-size: 15px !important; min-height: 0 !important; }
-html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.active, html body.fs.fs-basic .fsk-filter.active { border-image-source: var(--fs-chip-active) !important; }
-html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab.search-tab, html body.fs.fs-basic .fsk-filter.fsk-filter { background-image: none !important; background-color: transparent !important; box-shadow: none !important; border-width: 7px 14px !important; font-size: 14px !important; padding: 1px 2px !important; line-height: 1.2 !important; }
-html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) { gap: 6px !important; margin: 4px 0 !important; }
+html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab, html body.fs.fs-basic .fsk-filter { background: none !important; border: solid transparent !important; border-width: 10px 18px !important; border-image: var(--fs-chip) 55 85 fill / 10px 18px stretch !important; padding: 2px 4px !important; font-size: 15px !important; min-height: 0 !important; }
+html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab.active, html body.fs.fs-basic .fsk-filter.active { border-image-source: var(--fs-chip-active) !important; }
+html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab.search-tab, html body.fs.fs-basic .fsk-filter.fsk-filter { background-image: none !important; background-color: transparent !important; box-shadow: none !important; border-width: 7px 14px !important; font-size: 14px !important; padding: 1px 2px !important; line-height: 1.2 !important; }
+html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) { gap: 6px !important; margin: 4px 0 !important; }
 html body.fs.fs-basic .fsk-badge { background-color: transparent !important; box-shadow: none !important; }
 html body.fs.fs-basic :is(.msg-contact, .notif-item, .profile-card-item, .follow-list-item, #groupsSections .group-card) { border-width: 16px 24px !important; border-image: var(--fs-list-row) 95 150 fill / 16px 24px stretch !important; padding: 0 !important; margin: 0 0 8px !important; }
 html body.fs.fs-basic :is(#page-profiles, #page-search) .profile-card-item { grid-template-columns: 50px minmax(0, 1fr) auto !important; column-gap: 10px !important; }
@@ -7959,7 +7959,7 @@ html body.fs.fs-basic .quest-progress { position: absolute; left: 6px; top: 50%;
 html body.fs.fs-basic :is(.quest-reward, .quest-check) { font-size: 16px !important; }
 html body.fs.fs-basic #feedTabs .search-tab { background: var(--fs-tab) center / 100% 100% no-repeat !important; padding: 8px 4px !important; font: 600 14px var(--fs-title-font) !important; text-transform: uppercase; }
 html body.fs.fs-basic #feedTabs .search-tab.active { background: var(--fs-tab-active) center / 100% 100% no-repeat !important; color: #fff !important; text-shadow: 0 1px 2px rgba(90, 58, 14, .6); }
-html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs) .search-tab, html body.fs.fs-basic .fsk-filter { font-family: var(--fs-title-font) !important; text-transform: uppercase; font-size: 13px !important; }
+html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs, #profilesTabs, #searchTabs) .search-tab, html body.fs.fs-basic .fsk-filter { font-family: var(--fs-title-font) !important; text-transform: uppercase; font-size: 13px !important; }
 html body.fs.fs-basic :is(.search-tab.active, .fsk-filter.active) { text-shadow: 0 1px 2px rgba(90, 58, 14, .6); }
 html body.fs.fs-basic .feed-post.feed-post.feed-post { border-width: 30px !important; border-image-source: var(--fs-post-card) !important; border-image-slice: 180 fill !important; border-image-width: 54px !important; border-image-outset: 10px !important; border-image-repeat: stretch !important; margin: 14px 10px 30px !important; }
 html body.fs.fs-basic .feed-post.feed-post.feed-post:is([data-fs-v="2"], [data-fs-v="5"]) { border-image-source: var(--fs-post-card-b) !important; }
@@ -8112,7 +8112,7 @@ html body.fs.fs-basic :is(input, textarea, .post-content-text, .post-text, .post
 html body.fs.fs-basic :is(h1, h2, h3, h4, .profile-name, .post-username, .card-heading, .nav-logo, .stat-count, .msg-contact-name, .profile-card-name, .fsk-name, .group-card-body h4) { font-family: var(--fs-title-font) !important; font-weight: 700 !important; color: var(--bs-title) !important; }
 html body.fs.fs-basic :is(.profile-title, .profile-about) { font-family: 'Lora', serif !important; font-style: italic !important; font-weight: 500 !important; text-transform: none !important; }
 html body.fs.fs-basic :is(.search-tab.active, .fsk-filter.active) { text-shadow: none !important; }
-html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs) .search-tab.active,
+html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs, #profilesTabs, #searchTabs) .search-tab.active,
 html body.fs.fs-basic .fsk-filter.active, html body.fs.fs-basic #feedTabs .search-tab.active { color: var(--bs-on-fill) !important; }
 html body.fs.fs-basic :is(.page-header h2, .msg-sidebar-header h3, .quest-panel-header h4) { background: none !important; padding: 0 !important; text-transform: lowercase !important; }
 html body.fs.fs-basic .nav-logo::first-letter { color: inherit; }
@@ -8214,7 +8214,7 @@ html body.fs.fs-basic #groupsSections .group-card-banner img { border-radius: 12
 html body.fs.fs-basic #groupsSections .group-card { border-image: var(--fs-list-row) 70 fill / 18px stretch !important; border-width: 18px !important; }
 html body.fs.fs-basic :is(#groupsSections .group-card-actions .btn, .join-group-btn, .suggestion-follow-btn, .follow-btn, .profile-follow-btn) { background-image: var(--fs-join-btn) !important; color: var(--bs-on-fill) !important; font: 700 15px var(--fs-font) !important; }
 html body.fs.fs-basic :is(#groupsSections .group-card-actions .btn, .profile-follow-btn, .follow-btn):is(.joined, .following, .btn-joined, .btn-outline, [data-joined="1"]) { background-image: var(--fs-ghost-btn) !important; color: var(--bs-title) !important; }
-html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs) .search-tab, html body.fs.fs-basic .fsk-filter { font: 600 14px var(--fs-font) !important; text-transform: lowercase !important; color: var(--bs-title) !important; padding: 7px 16px !important; }
+html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab, html body.fs.fs-basic .fsk-filter { font: 600 14px var(--fs-font) !important; text-transform: lowercase !important; color: var(--bs-title) !important; padding: 7px 16px !important; }
 @media (max-width: 768px) {
   html body.fs.fs-basic .page.active { padding-top: calc(84px + env(safe-area-inset-top, 0px)) !important; }
   html body.fs.fs-basic #timelineCover { margin-top: -38px !important; }
@@ -9289,3 +9289,174 @@ html body.fs .connections-grid .profile-card-name { white-space: normal !importa
     white-space: nowrap !important; text-overflow: clip !important; justify-content: center; }
   html body.fs.fs-witchcraft #page-profile-view .pv-profile-card:not(#_) #pvEditProfileBtn i { display: none !important; }
 }
+
+/* Owner QA (Nov 17): the post like/dislike row ran out of the post (views "52" past the frame) — the buttons' spacing came
+   from the row's inner group (.action-left, 10px gaps from the phone layout), not the row. The group now fills the row and
+   spreads its buttons evenly; the liked-by avatars only take room when there are some. */
+html body.fs:not(.fs-scrapbook) .post-actions:not(#_) { flex-wrap: nowrap !important; min-width: 0; }
+html body.fs:not(.fs-scrapbook) .post-actions:not(#_) .action-left { flex: 1 1 auto !important; min-width: 0 !important; width: auto !important; gap: 0 !important; justify-content: space-between !important; flex-wrap: nowrap !important; }
+html body.fs:not(.fs-scrapbook) .post-actions:not(#_) .action-btn { flex: 0 1 auto !important; min-width: 0 !important; }
+html body.fs .post-actions:not(#_) .action-right:has(.liked-avatars:empty) { display: none !important; }
+html body.fs:not(.fs-scrapbook) .post-actions:not(#_) .action-right { flex: 0 0 auto; }
+/* Good Witch: the constellation charm on every 5th post sat on the bottom-left corner, right over the like button — it now
+   hangs off the top-right corner (top-left would cover the poster's photo), clear of the ⋯ menu. */
+html body.fs.fs-good-witch .feed-post[data-fs-v="5"]::after { bottom: auto !important; left: auto !important; top: -34px !important; right: -16px !important; width: 70px !important; height: 60px !important; }
+/* Blood Moon (owner QA Nov 17): Notifications has 8 tabs — they ran off the screen ("Follow…") and the "All" pill
+   overlapped "Mentions". The bar now scrolls sideways inside its frame. Network: "Not Following Back" broke into three
+   lines and spilled out of the frame — two lines now. */
+html body.fs.fs-blood-moon #notifTabs:not(#_) { overflow-x: auto !important; overflow-y: hidden !important; scrollbar-width: none; -webkit-overflow-scrolling: touch; justify-content: flex-start !important; padding: 5px 8px !important; }
+html body.fs.fs-blood-moon #notifTabs:not(#_)::-webkit-scrollbar { display: none; }
+html body.fs.fs-blood-moon #notifTabs:not(#_) .search-tab { flex: 0 0 auto !important; margin: 0 !important; padding: 6px 10px !important; font-size: 15px !important; }
+html body.fs.fs-blood-moon #profilesTabs:not(#_) .search-tab { font-size: 14px !important; line-height: 1.1 !important; padding: 4px 6px !important; }
+/* Scrapbook group page: "Group Coins" (with its coin) ran out of the stats box — the three stats share the box evenly and a
+   long label wraps instead. */
+html body.fs.fs-scrapbook #page-group-view .profile-stats:not(#_) .stat { flex: 1 1 0 !important; min-width: 0 !important; }
+html body.fs.fs-scrapbook #page-group-view .profile-stats:not(#_) { width: calc(100% - 36px) !important; max-width: 360px !important; box-sizing: border-box !important; margin-left: auto !important; margin-right: auto !important; }
+html body.fs.fs-scrapbook #page-group-view .profile-stats:not(#_) .stat-label { font-size: 15px !important; white-space: normal !important; word-break: normal !important; overflow-wrap: normal !important; line-height: 1.1 !important; text-align: center; }
+/* Layout template "Cinema" (tpl-cinema) pulls every .card 12px past the column (edge-to-edge) — under a full skin that pushed
+   framed cards (sidebar cards, group "Post in…" bar, profile skin/photo cards) 4px off the screen. Full skins frame their
+   cards, so the pull is dropped; skin rules that set their own card margins still win (higher specificity). */
+body.fs.tpl-cinema .card { margin-left: 0 !important; margin-right: 0 !important; }
+/* Vaporwave + Scrapbook: posts have side margins, but the base "#feedContainer .card { width: 100% }" (id rule) kept them
+   full width, so each post ran 8px (Scrapbook 4px) past the right edge of the screen and its frame was cut off. */
+html body.fs:is(.fs-vaporwave, .fs-scrapbook) :is(#feedContainer, #pvPostsFeed, #gvPostsFeed) > .card { width: auto !important; }
+
+/* Pass 5 (Nov 17): story reply bar — six reaction emoji + the reply field + send in one row pushed the field and send
+   button off the right edge on skins without their own story layout. Every full skin puts the reactions on their own
+   centred row above the field (as Anime Blaze and Superhero already do). */
+html body.fs .story-input-bar:not(#_) { flex-wrap: wrap !important; padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important; }
+html body.fs .story-input-bar:not(#_) .story-reactions-row { order: -1; width: 100%; justify-content: center; margin: 0 0 4px !important; flex-wrap: nowrap; }
+html body.fs .story-input-bar:not(#_) .story-comment-input { flex: 1 1 0; min-width: 0; }
+/* Pass 5: Superhero's story header padding (14px) put the name and close button up under the clock and the camera
+   cutout, which cut the name to "STORY"; it now starts below the safe area like the other skins. */
+html body.fs.fs-superhero .story-header:not(#_) { padding-top: calc(14px + env(safe-area-inset-top, 0px)) !important; }
+/* Pass 5: the story caption sat 40px from the bottom, under the reply bar (reactions + field) on every skin → it rides
+   above the bar; on your own story (Views / delete row only) it keeps clear of that row. */
+html body.fs .story-viewer-overlay:has(.story-input-bar) .story-text:not(#_) { bottom: calc(150px + env(safe-area-inset-bottom, 0px)) !important; }
+html body.fs .story-viewer-overlay:has(.story-viewers) .story-text:not(#_) { bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important; }
+/* Pass 5: account menu text unreadable — a real equip also adds the legacy premium-<id> class, whose style.css theme
+   paints menu links in its pale --ps-text (#fcc / #e0d0ff), on Blood Moon's parchment / silver panel and light Vaporwave's
+   window. Dark ink on those light panels (Admin Panel / Logout keep their red). */
+html body.fs.fs-blood-moon :is(#userDropdownMenu, .post-dropdown) a:not(#_):not(.logout-link):not([style*="color"]) { color: #2a1414 !important; }
+html body.fs.fs-blood-moon[data-fs-variant="silver"] :is(#userDropdownMenu, .post-dropdown) a:not(#_):not(.logout-link):not([style*="color"]) { color: #1d2230 !important; }
+html body.fs.fs-blood-moon :is(#userDropdownMenu, .post-dropdown) a:not(#_) i { color: #8e1b1b !important; }
+html body.fs.fs-blood-moon[data-fs-variant="silver"] :is(#userDropdownMenu, .post-dropdown) a:not(#_) i { color: #3d4a63 !important; }
+html body.fs.fs-vaporwave:is([data-fs-variant="retro"], [data-fs-variant="modern"]) :is(#userDropdownMenu, .post-dropdown) a:not(#_):not(.logout-link):not([style*="color"]) { color: #1b1236 !important; }
+html body.fs.fs-vaporwave:is([data-fs-variant="retro"], [data-fs-variant="modern"]) :is(#userDropdownMenu, .post-dropdown) a:not(#_) i { color: #7a2fd0 !important; }
+html body.fs:is(.fs-blood-moon, .fs-vaporwave) #userDropdownMenu #logoutBtn:not(#_) { color: #b3261e !important; }
+/* Pass 5: Villains — "DAILY QUESTS" ran under the drone on the header art (the S was hidden); the title centres in the
+   plate left of the drone and sizes to fit the wide stencil face. */
+html body.fs.fs-superhero[data-fs-variant="villains"] .quest-panel-header:not(#_) { right: 26% !important; left: 6% !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .quest-panel-header:not(#_) h4 { font-size: 18px !important; letter-spacing: 0 !important; white-space: nowrap; }
+/* Pass 5: Superhero store — the "Equipped" tag sat inside the picture box, under the card's button plate, and had no
+   word on it (the art is a blank plate): the equipped card showed Take off over an empty band. The tag now sits in the
+   plate under Take off with its word, like the concept store card. */
+html body.fs.fs-superhero .fsk-is-equipped .fsk-thumb .fsk-badge:not(#_) { display: none !important; }
+html body.fs.fs-superhero .fsk-is-equipped .fsk-body:not(#_)::after { content: 'Equipped'; position: absolute; left: 50%; bottom: 7px; transform: translateX(-50%); width: 80%; height: 28px;
+  background: var(--fs-equipped-tag) center / 100% 100% no-repeat; color: var(--sh-on, #111); font: 400 14px var(--sh-tfont); letter-spacing: var(--sh-tspace); text-transform: uppercase;
+  display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 3; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .fsk-is-equipped .fsk-body:not(#_)::after { color: #f4ffee; text-shadow: 0 0 2px #000, 0 1px 2px #000; }
+/* Pass 5: Witchcraft group page — "Group Coins" broke into two lines and ran over the plaque's top and bottom frame;
+   one line, sized to the plaque. */
+html body.fs.fs-witchcraft #page-group-view .profile-stats:not(#_) .stat-label { white-space: nowrap !important; font-size: 12px !important; letter-spacing: -.01em !important; }
+html body.fs.fs-witchcraft #page-group-view .profile-stats:not(#_) .stat-label :is(i, img, svg) { font-size: 11px !important; width: 11px !important; height: auto !important; margin-right: 2px !important; }
+html body.fs.fs-witchcraft #page-group-view .profile-stats:not(#_) .stat:last-child { min-width: 100px !important; flex: 0 0 100px !important; padding: 0 8px !important; box-sizing: border-box !important; }
+/* Pass 5: Superhero Network / Search rows — a one-word name ("Bboy_Kooaid") broke mid-word at 19px; names size down
+   so a single word stays whole (two-word names still wrap between words). */
+html body.fs.fs-superhero :is(#page-profiles, #page-search) .profile-card-name:not(#_) { font-size: 16px !important; letter-spacing: 0 !important; overflow-wrap: normal !important; word-break: normal !important; min-width: 0; }
+/* Pass 5: Blood Moon comment box — the 20px painted frame left ~108px inside, so "Write a comment..." was cut; thinner
+   frame sides and a smaller placeholder (typed text stays 16px so iOS doesn't zoom). */
+html body.fs.fs-blood-moon #commentInput:not(#_) { border-left-width: 13px !important; border-right-width: 13px !important; }
+html body.fs.fs-blood-moon #commentInput:not(#_)::placeholder { font-size: 14px !important; }
+/* Pass 5: Vaporwave puts the profile ⋯ on the Timeline.exe window low on the page, so Mute/Block/Report dropped down
+   behind the taskbar; the menu opens upward from the button. */
+html body.fs.fs-vaporwave #page-profile-view .fs-pv-more .fs-pv-menu:not(#_) { top: calc(100% + 4px) !important; bottom: auto !important; left: 0 !important; right: auto !important; }
+/* Pass 6: the ⋯ sits at the left of the button row now (first column), so its menu hung 84px off the left edge with only
+   "rt" of Report showing; it drops down from the button's left edge, on screen. */
+/* Pass 5: Superhero Villains — "ADD CLOSE FRIEND" was cut to "ADD CLOSE FRIENI" on its plaque (wide stencil face). */
+html body.fs.fs-superhero[data-fs-variant="villains"] #page-profile-view .pv-actions .btn:not(#_) { font-size: 11px !important; letter-spacing: 0 !important; white-space: nowrap !important; padding-left: 2px !important; padding-right: 2px !important; border-left-width: 12px !important; border-right-width: 12px !important; }
+/* Pass 5: Vaporwave modern — "People You May Know" was cut to "…Knov" on its Home pill (wider bold face + 26px padding). */
+html body.fs.fs-vaporwave[data-fs-variant^="modern"] :is(#pillPeopleYouKnow, #pillTrendingGroups):not(#_) { padding-left: 8px !important; padding-right: 8px !important; font-size: 12px !important; gap: 5px !important; letter-spacing: 0 !important; }
+/* Pass 5: the settings / notification-preferences "Done" button also carries .modal-close, whose base 36x36 icon-button
+   size squeezed it to a square with "Done" cut ("Donı") and pushed it left on Vaporwave. A text button sizes to its word. */
+html body.fs .btn.modal-close:not(#_) { width: auto !important; min-width: 110px !important; display: inline-flex !important; margin: 0 auto !important; }
+html body.fs.fs-vaporwave .btn.modal-close:not(#_) { padding-left: 18px !important; padding-right: 18px !important; font-size: 14px !important; }
+/* Pass 6 (owner, Nov 18): Vaporwave group page had odd panels and uneven spacing — a tall profile window with the coins
+   stat dropped onto its own row, three stacked buttons of different widths, the post composer and posts inset deeper
+   than the panels above them. Concept group-page: one header window (Avatar.exe photo · name · description · stats in
+   one row), the actions in one row, Rules/Invite side by side, one Feed | Chat | Group Shop bar, and every panel on the
+   same 8px gutter. */
+@media (max-width: 768px) {
+  html body.fs.fs-vaporwave #page-group-view .gv-center:not(#_) { padding: 0 !important; }
+  html body.fs.fs-vaporwave #page-group-view :is(#gvProfileCard, #gvMobileRight > .card, #gvModeTabs, #gvPostBar > .card, #gvPostsFeed > .card, #gvShopSection):not(#_) {
+    margin: 0 8px 10px !important; width: auto !important; max-width: none !important; box-sizing: border-box !important; }
+  html body.fs.fs-vaporwave #page-group-view #gvProfileCard:not(#_) { margin-top: 10px !important; }
+  html body.fs.fs-vaporwave #page-group-view #gvProfileCard .profile-info:not(#_) { grid-template-columns: 104px minmax(0, 1fr) !important; column-gap: 10px !important; }
+  html body.fs.fs-vaporwave #page-group-view #gvProfileCard .profile-avatar-wrap:not(#_) { width: 104px !important; height: 86px !important; grid-row: 1 / 3 !important; }
+  html body.fs.fs-vaporwave #page-group-view #gvProfileCard .profile-name:not(#_) { font-size: 19px !important; line-height: 1.15 !important; overflow-wrap: anywhere; align-self: end; }
+  html body.fs.fs-vaporwave #page-group-view #gvProfileCard .profile-title:not(#_) { align-self: start; font-size: 12px !important; }
+  html body.fs.fs-vaporwave #page-group-view #gvProfileCard .profile-stats:not(#_) { grid-column: 1 / -1 !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; margin: 8px 0 0 !important; }
+  html body.fs.fs-vaporwave #page-group-view #gvProfileCard .profile-stats > .stat:not(#_) { display: flex !important; flex-direction: column; align-items: center; justify-content: flex-start; min-width: 0; }
+  html body.fs.fs-vaporwave #page-group-view #gvProfileCard .stat-label:not(#_) { white-space: nowrap; font-size: 11px !important; display: flex; align-items: center; gap: 3px; }
+  html body.fs.fs-vaporwave #page-group-view #gvProfileCard .stat-label :is(i, img, svg):not(#_) { width: 11px !important; height: auto !important; font-size: 11px !important; margin: 0 !important; }
+  html body.fs.fs-vaporwave #page-group-view #gvProfileCard .pv-actions:not(#_) { grid-column: 1 / -1 !important; display: flex !important; flex-wrap: nowrap !important; gap: 6px !important; margin: 10px 0 0 !important; }
+  html body.fs.fs-vaporwave #page-group-view #gvProfileCard .pv-actions .btn:not(#_) { flex: 1 1 0 !important; width: auto !important; min-width: 0 !important; height: 36px !important; margin: 0 !important;
+    padding: 0 4px !important; font-size: 12px !important; white-space: nowrap !important; overflow: hidden; text-overflow: ellipsis; display: inline-flex !important; align-items: center; justify-content: center; gap: 4px; }
+  html body.fs.fs-vaporwave #page-group-view #gvMobileRight:not(#_) { display: grid !important; grid-template-columns: 1fr 1fr; column-gap: 6px; margin: 0 8px !important; padding: 0 !important; }
+  html body.fs.fs-vaporwave #page-group-view #gvMobileRight > .btn:not(#_) { width: auto !important; margin: 0 0 10px !important; height: 38px !important; font-size: 13px !important; }
+  html body.fs.fs-vaporwave #page-group-view #gvMobileRight > .card:not(#_) { grid-column: 1 / -1; margin: 0 0 10px !important; }
+  html body.fs.fs-vaporwave #page-group-view #gvModeTabs:not(#_) { display: grid !important; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px !important; padding: 0 !important; overflow: visible !important; }
+  html body.fs.fs-vaporwave #page-group-view #gvModeTabs .search-tab:not(#_) { width: 100% !important; margin: 0 !important; min-width: 0 !important; height: 36px; padding: 0 4px !important; justify-content: center; white-space: nowrap; font-size: 13px !important; }
+  html body.fs.fs-vaporwave #page-group-view #gvPostBar .post-create-bar:not(#_) { padding: 8px !important; }
+  html body.fs.fs-vaporwave #page-group-view #gvPostBar .post-input-fake:not(#_) { flex: 1 1 auto; margin: 0 !important; }
+}
+/* Pass 6 (owner, Nov 18: "People You May Know … out of alignment and being cut off"): tab and chip rows ran off the
+   right edge on most skins (Network "People Y…", store "Premium Skins / Font Styles", filter chips "Natur…") because
+   they were sideways scrollers. They wrap onto a second line instead, centred, so every tab shows whole. */
+html body.fs :is(#profilesTabs, #searchTabs, #shopTabs, #skinPageToggle, #mySkinsTabs, .fsk-filters, #groupsTabs, #notifTabs, #gvModeTabs):not(#_):not(#_) {
+  flex-wrap: wrap !important; overflow: visible !important; justify-content: center !important; row-gap: 8px !important; }
+html body.fs :is(#profilesTabs, #searchTabs, #shopTabs, #skinPageToggle, #mySkinsTabs, .fsk-filters, #groupsTabs, #notifTabs, #gvModeTabs) > .search-tab:not(#_) { flex-shrink: 0; }
+/* Pass 6: Superhero Villains — someone's "● Online" line sat on the bottom edge of the profile-card frame (full-width row
+   under the photo, past the card art); it sits in the name column under the bio, inside the card like the concept. */
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .profile-info > .pv-online-line:not(#_):not(#_) { grid-column: 2 / -1 !important; text-align: left !important; margin: 0 !important; align-self: start; }
+/* Pass 6: Superhero — someone's longer name was cut with "…" on their profile ("VIDEOGAMES B…", "JENNIFER HUB…"); it
+   steps down in size and may wrap between words onto a second line, never cut. */
+html body.fs.fs-superhero .pv-profile-card .profile-name:not(#_) { white-space: normal !important; overflow: visible !important; text-overflow: clip !important;
+  font-size: clamp(18px, 5.4vw, 26px) !important; line-height: 1.05 !important; overflow-wrap: normal !important; word-break: normal !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] .pv-profile-card .profile-info > .pv-online-line:not(#_):not(#_) { grid-row: 3 !important; }
+/* Pass 6 (owner row 32): Vaporwave retro + retro-dark — "People You May Know" ran into the pill's right bevel (the "w"
+   touched the frame). Same fit as modern: less side padding, one size down, so the words sit inside the button. */
+html body.fs.fs-vaporwave :is(#pillPeopleYouKnow, #pillTrendingGroups):not(#_):not(#_) { padding-left: 8px !important; padding-right: 8px !important; font-size: 12px !important; gap: 5px !important; letter-spacing: 0 !important; justify-content: center !important; }
+/* Pass 6: #Basic People You May Know / suggestion "+" buttons — the linen pill's 16px painted sides left 4px inside a 36px
+   button, so the "+" was clipped to a sliver ("ł"). The pill is wide enough for its icon. */
+html body.fs.fs-basic .suggestion-follow-btn:not(#_):not(#_) { width: auto !important; min-width: 54px !important; height: 38px !important; border-width: 8px 14px !important; padding: 0 4px !important;
+  display: inline-flex !important; align-items: center; justify-content: center; flex-shrink: 0; }
+/* Pass 6: Vaporwave Network → People You May Know — the "13 mutuals" badge took the button's column, so Follow dropped to
+   a second row squeezed into the 46px photo column ("F…"). Concept network: name with the mutuals line under it, Follow
+   on the right of the row. */
+html body.fs.fs-vaporwave :is(#page-profiles, #page-search) .profile-card-item:has(> .mutual-badge):not(#_) { grid-template-rows: auto auto; row-gap: 0; }
+html body.fs.fs-vaporwave :is(#page-profiles, #page-search) .profile-card-item:has(> .mutual-badge) > .profile-card-avatar:not(#_) { grid-column: 1; grid-row: 1 / 3; }
+html body.fs.fs-vaporwave :is(#page-profiles, #page-search) .profile-card-item:has(> .mutual-badge) > .profile-card-name:not(#_) { grid-column: 2; grid-row: 1; align-self: end; margin: 0 !important; }
+html body.fs.fs-vaporwave :is(#page-profiles, #page-search) .profile-card-item > .mutual-badge:not(#_) { grid-column: 2; grid-row: 2; justify-self: start; align-self: start; margin: 0 !important; text-align: left; }
+html body.fs.fs-vaporwave :is(#page-profiles, #page-search) .profile-card-item:has(> .mutual-badge) > .btn:not(#_) { grid-column: 3; grid-row: 1 / 3; width: auto !important; min-width: 84px; white-space: nowrap; }
+/* Pass 6: Blood Moon group page — the "Post in <group>…" composer kept the dark ink (rgb 42,16,18) on its dark-red field;
+   it uses the same light title ink as the Home composer. */
+html body.fs.fs-blood-moon #gvPostBar .post-input-fake:not(#_):not(#_) { color: var(--bm-title) !important; opacity: .85 !important; }
+/* Pass 6: Vaporwave group page — three equal buttons cut "Leave Group" to "Leave Grou"; each button sizes to its words. */
+html body.fs.fs-vaporwave #page-group-view #gvProfileCard .pv-actions .btn:not(#_):not(#_) { flex: 1 1 auto !important; font-size: 11.5px !important; padding: 0 6px !important; text-overflow: clip !important; }
+/* Pass 6: post text stored with its own <p> (rich paste) nests a second paragraph, which took the app's dark-mode text
+   colour (#e2e8f0) instead of the skin's ink — near-invisible on light cards (Scrapbook, Vaporwave light, …). Every
+   paragraph inside a post's text follows the post's own ink. */
+html body.fs .post-description p:not(#_), html body.fs .post-description p p:not(#_) { color: inherit !important; }
+/* Pass 6: Blood Moon group post "You" badge — dark ink on its dark pill; light ink like the other badges. */
+html body.fs.fs-blood-moon #gvPostsFeed .post-badges .badge:not(#_) { color: var(--bm-title) !important; }
+/* Pass 6: Superhero store chips stretch to half the row; their words sat at the left edge ("ALL", "CUTE") — centred. */
+html body.fs.fs-superhero :is(#shopTabs, #skinPageToggle, #mySkinsTabs, .fsk-filters) .search-tab:not(#_) { justify-content: center !important; text-align: center !important; }
+/* Pass 6: Blood Moon store — "Coming soon" sat left-aligned across the start of the empty plate, its first letters cut by
+   the plate's frame ("ming soon"); centred in the plate like Equip. */
+html body.fs.fs-blood-moon .fsk-soon:not(#_) { display: flex !important; align-items: center; justify-content: center; text-align: center !important; width: 100%; box-sizing: border-box; min-height: 34px; padding: 0 22px !important; }
+
+/* Skin QA pass 7 (owner, Nov 19): Vaporwave panels are one bevel picture whose grey fades top→bottom. The generic profile-card
+   rule tiles it ("round"), so a tall card repeated the fade 2–3× and each restart showed as a line through the card
+   (Home #profileCard, #pvProfileCard, old group card). Vaporwave = solid Windows panels: always stretch the art once. */
+html body.fs.fs-vaporwave :is(*, *::before, *::after):not(#_):not(#_):not(#_) { border-image-repeat: stretch !important; }
