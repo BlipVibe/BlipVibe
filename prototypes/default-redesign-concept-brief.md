@@ -221,3 +221,11 @@ style. The options will be all the blip styles." → owner clarified: options = 
   with a small preview swatch and a check on the equipped one. Tap → equips that skin through the app's normal equip path
   (look changes only via set_skin_look — never a raw skin_data write), with a switch animation. Closes on outside tap.
 - Only on the default look (each full skin keeps its own chrome). Read-only QA never equips anything.
+
+### Round 2 status (Nov 19 2026)
+Painted: logo-classic home/group/desktop (with the Blip button: phone = first item of the bottom nav, desktop = pill
+after the search field) + `logo-classic/menu.png` (phone menu open with owned skins, phone mid-switch circular wipe +
+mascot jump + "Switching to Scrapbook…" toast, desktop drop-down). Pixel Pal home/group/desktop. Repaints done: group
+coin pill/bell badge (both), desktop heart likes + about line (Logo Classic), duplicate Earn Coins card (Pixel Pal).
+Known nit: the desktop crop in menu.png reuses the old about line + heart likes (background only).
+Sheets sent: _sheets/logo-classic.jpg, pixel-pal.jpg, _overview.jpg (7 rows).
