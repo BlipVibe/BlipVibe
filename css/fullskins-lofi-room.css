@@ -656,3 +656,30 @@ html body.fs.fs-blip[data-fs-variant="lofi-room"] .page-search input, html body.
   html body.fs.fs-blip[data-fs-variant="lofi-room"] #sendMsgBtn { width: 46px !important; height: 46px !important; flex-basis: 46px !important; background: #6f7f3f !important; box-shadow: inset 0 2px 0 rgba(255,255,255,.25), 0 0 0 2px #c9b48c, 0 2px 4px rgba(0,0,0,.35) !important; }
   html body.fs.fs-blip[data-fs-variant="lofi-room"] #sendMsgBtn::after { filter: brightness(0) invert(.95) sepia(.3) !important; }
 }
+
+/* ======================================================================================================== COMMENTS sheet + CREATE A POST (phone): rings, chips and lines in walnut colours */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(.comment-post-embed .post-avatar, #commentsList .comment-item > img, .create-post-modal .cpm-scroll > div:first-child > img) {
+    box-shadow: 0 0 0 2px #f6ebd9, 0 0 0 3.5px #6b4226 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #commentsList .comment-item.comment-reply::before { background: rgba(107,66,38,.45) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .modal-content:has(.comment-modal-layout) > .modal-header h3 { font: 700 30px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(#commentsList, .comment-post-embed) :is(strong, .post-username) { font-family: var(--fs-title-font) !important; font-weight: 700 !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #commentsList :is(.comment-text, .comment-actions-row button) { color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #commentsList .comment-text > span { color: var(--wh-orange-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #commentsList :is(.comment-reply-btn, .comment-edit-btn) { color: var(--wh-orange-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #commentsList .comment-delete-btn { color: #b8321f !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .comment-modal-scroll .comment-sort-tab { font: 700 19px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #postCommentBtn, html body.fs.fs-blip[data-fs-variant="lofi-room"] #cpmPublishBtn { font: 700 18px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal .cpm-textarea::placeholder { color: #8a6a50 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal :is(.cpm-remove, .cpm-thumb-remove, [class*="remove"]) { background-color: #f6ebd9 !important; border-color: #6b4226 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal .cpm-tag-chip { background: #e4d6bd !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal #cpmCharCounter { border-right-color: rgba(107,66,38,.35) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal :is(h3, .cpm-name, strong) { font-family: var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #commentsList .comment-actions-row button:is(.comment-reply-btn, .comment-edit-btn) { color: var(--wh-orange-ink) !important; font-family: var(--fs-title-font) !important; font-weight: 700 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #commentsList .comment-actions-row button.comment-delete-btn { color: #b8321f !important; font-family: var(--fs-title-font) !important; font-weight: 700 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .modal-content:has(.comment-modal-layout) > .modal-header { margin: 4px 6px 6px !important; border: 9px solid transparent !important; height: 60px !important; box-sizing: border-box;
+    border-image: var(--fs-grille) 40 fill / 9px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .modal-content:has(.comment-modal-layout) > .modal-header::before { left: -4px !important; top: -4px !important; }
+}
