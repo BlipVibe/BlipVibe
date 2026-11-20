@@ -335,7 +335,7 @@
    premium skin and no basic colour skin equipped (onSkin below). Original logo mascot, logo colours, white outlined
    cards, royal-blue pills, the Blip button + menu (blipStart). Art: images/skins/blip/assets (prototypes/blip-kit-brief.md). */
   FULL_SKINS['blip'] = {
-    name: 'Default', isDefault: true, wip: true,   // wip: not applied for anyone until the owner approves + the art is whitelisted
+    name: 'Default', isDefault: true,   // owner approved + shipped Nov 19 2026
     dark: false, ink: '#000048', muted: '#000034', accent: '#0a2cf0',
     font: "'Nunito', sans-serif", titleFont: "'Nunito', sans-serif",
     timeline: 1, avatar: 'center', slice: 12, edge: 14,

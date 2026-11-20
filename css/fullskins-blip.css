@@ -1254,3 +1254,9 @@ html body.fs.fs-blip .post-media-grid.pm-count-1 .pm-thumb :is(img, video) { wid
 html body.fs.fs-blip .post-media-grid:not(.pm-count-1) { aspect-ratio: auto !important; }
 html body.fs.fs-blip .post-media-grid:not(.pm-count-1) .pm-thumb :is(img, video) { object-fit: cover !important; aspect-ratio: 1; height: auto !important; }
 html body.fs.fs-blip .post-media-grid .pm-thumb :is(img, video) { border-radius: 10px !important; }
+@media (max-width: 768px) { html body.fs.fs-blip #groupsSections .group-card-body h4 { white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; display: block !important; width: 100%; } }
+/* rounded-corner masks must keep their middle ("fill"), or iPhone masks the centre of the photo out */
+html body.fs.fs-blip #gvCoverBanner { -webkit-mask-box-image: var(--fs-cover-mask) 40 fill / 14px stretch !important; mask-border: var(--fs-cover-mask) 40 fill / 14px stretch !important; }
+html body.fs.fs-blip .fs-tl-slot-1 { -webkit-mask-box-image: var(--fs-cover-mask) 40 fill / 14px stretch !important; mask-border: var(--fs-cover-mask) 40 fill / 14px stretch !important; }
+html body.fs.fs-blip :is(.post-media-grid, .photos-preview > *, .featured-preview) { -webkit-mask-box-image: var(--fs-photo-mask) 30 fill / 10px stretch !important; mask-border: var(--fs-photo-mask) 30 fill / 10px stretch !important; }
+@media (min-width: 769px) { html body.fs.fs-blip #page-home .fs-tl-slot-1 { -webkit-mask-box-image: var(--fs-cover-mask) 40 fill / 16px stretch !important; } }
