@@ -342,9 +342,57 @@
      fall back to Logo Classic). `ready:false` = not finished: never listed in the Blip menu. */
     variants: [
       { id: 'classic', name: 'Logo Classic' },
-      { id: 'bubble-pop', name: 'Bubble Pop', ready: false, art: [] },
+      { id: 'bubble-pop', name: 'Bubble Pop', ready: false,
+        art: ['avatar-frame', 'avatar-ring', 'background', 'badge-commenter', 'badge-count', 'badge-early_adopter',
+          'badge-first_post', 'badge-generous', 'badge-group_leader', 'badge-photographer', 'badge-popular',
+          'badge-skin_collector', 'badge-social_butterfly', 'badge-streak_master', 'bar-fill', 'bar-track', 'blip-btn',
+          'blip-btn-on', 'btn-danger', 'btn-disabled', 'btn-primary', 'btn-round', 'btn-secondary', 'btn-square',
+          'bubble-in', 'bubble-out', 'burst', 'camera-badge', 'card-tail', 'card-tail-tight', 'card-tailtip', 'chip',
+          'chip-active', 'coin', 'coin-pill', 'coin-stack', 'divider', 'field', 'group-avatar-frame', 'header-bar',
+          'icon-back', 'icon-bag', 'icon-bell', 'icon-block', 'icon-bookmark', 'icon-calendar', 'icon-camera',
+          'icon-check', 'icon-chevron', 'icon-clock', 'icon-close', 'icon-coin', 'icon-comment', 'icon-compass',
+          'icon-compose', 'icon-crown', 'icon-dislike', 'icon-dislike-on', 'icon-edit', 'icon-emoji', 'icon-envelope',
+          'icon-exit', 'icon-fire', 'icon-flag', 'icon-flag-red', 'icon-font', 'icon-gif', 'icon-gift', 'icon-globe',
+          'icon-groups', 'icon-groups-on', 'icon-hanger', 'icon-heart', 'icon-home', 'icon-home-on', 'icon-image',
+          'icon-info', 'icon-like', 'icon-like-on', 'icon-link', 'icon-logout', 'icon-messages', 'icon-messages-on',
+          'icon-mic', 'icon-more', 'icon-music', 'icon-mute', 'icon-network', 'icon-network-on', 'icon-people',
+          'icon-phone', 'icon-photo', 'icon-plus', 'icon-poll', 'icon-reply', 'icon-scroll', 'icon-search', 'icon-seen',
+          'icon-send', 'icon-settings', 'icon-share', 'icon-skins', 'icon-skins-on', 'icon-star', 'icon-user',
+          'icon-user-plus', 'icon-video', 'mascot', 'mascot-head', 'mascot-head-plain', 'mascot-jump',
+          'mascot-page-happy', 'mascot-page-smile', 'mascot-page-wink', 'mascot-peek', 'mascot-sleep', 'mascot-wave',
+          'menu-check', 'menu-panel', 'menu-row-on', 'nav-active', 'nav-bar', 'notif-comment', 'notif-follow',
+          'notif-group', 'notif-like', 'notif-message', 'notif-purchase', 'panel-card', 'panel-card-active',
+          'panel-card-active-tight', 'panel-card-tight', 'quest-comment', 'quest-like', 'quest-message', 'quest-post',
+          'quest-react', 'quest-save', 'quest-share', 'quest-view', 'reward-chip', 'sheet', 'sparkle-1', 'sparkle-2',
+          'story-add', 'story-ring', 'story-ring-seen', 'swatch-ring', 'tabs-track', 'unread-dot'] },
       { id: 'lofi-room', name: 'Walnut Hi-Fi', ready: false, art: [] },
-      { id: 'clay-town', name: 'Clay Town', ready: false, art: [] },
+      { id: 'clay-town', name: 'Clay Town', ready: false,   // owner approval pending (prototypes/clay-town-kit-brief.md)
+        art: [
+          'avatar-frame', 'avatar-ring', 'background', 'badge-commenter', 'badge-count', 'badge-early_adopter',
+          'badge-first_post', 'badge-generous', 'badge-group_leader', 'badge-photographer', 'badge-popular',
+          'badge-skin_collector', 'badge-social_butterfly', 'badge-streak_master', 'bar-fill', 'bar-track', 'blip-btn',
+          'blip-btn-on', 'btn-danger', 'btn-disabled', 'btn-primary', 'btn-round', 'btn-secondary', 'btn-square',
+          'bubble-in', 'bubble-out', 'burst', 'camera-badge', 'card-tail', 'card-tail-tight', 'card-tailtip', 'chip',
+          'chip-active', 'coin', 'coin-pill', 'coin-stack', 'divider', 'field', 'group-avatar-frame', 'header-bar',
+          'icon-back', 'icon-bag', 'icon-bell', 'icon-block', 'icon-bookmark', 'icon-calendar', 'icon-camera',
+          'icon-check', 'icon-chevron', 'icon-clock', 'icon-close', 'icon-coin', 'icon-comment', 'icon-compass',
+          'icon-compose', 'icon-crown', 'icon-dislike', 'icon-dislike-on', 'icon-edit', 'icon-emoji', 'icon-envelope',
+          'icon-exit', 'icon-fire', 'icon-flag', 'icon-flag-red', 'icon-font', 'icon-gif', 'icon-gift', 'icon-globe',
+          'icon-groups', 'icon-groups-on', 'icon-hanger', 'icon-heart', 'icon-home', 'icon-home-on', 'icon-image',
+          'icon-info', 'icon-like', 'icon-like-on', 'icon-link', 'icon-logout', 'icon-messages', 'icon-messages-on',
+          'icon-mic', 'icon-more', 'icon-music', 'icon-mute', 'icon-network', 'icon-network-on', 'icon-people',
+          'icon-phone', 'icon-photo', 'icon-plus', 'icon-poll', 'icon-reply', 'icon-scroll', 'icon-search', 'icon-seen',
+          'icon-send', 'icon-settings', 'icon-share', 'icon-skins', 'icon-skins-on', 'icon-star', 'icon-user',
+          'icon-user-plus', 'icon-video', 'mascot', 'mascot-head', 'mascot-head-plain', 'mascot-jump',
+          'mascot-page-happy', 'mascot-page-smile', 'mascot-page-wink', 'mascot-peek', 'mascot-sleep', 'mascot-wave',
+          'menu-check', 'menu-panel', 'menu-row-on', 'nav-active', 'nav-bar', 'notif-comment', 'notif-follow',
+          'notif-group', 'notif-like', 'notif-message', 'notif-purchase', 'panel-card', 'panel-card-active',
+          'panel-card-active-tight', 'panel-card-tight', 'quest-comment', 'quest-like', 'quest-message', 'quest-post',
+          'quest-react', 'quest-save', 'quest-share', 'quest-view', 'reward-chip', 'sheet', 'sparkle-1', 'sparkle-2',
+          'story-add', 'story-ring', 'story-ring-seen', 'swatch-ring', 'tabs-track', 'tile-butter', 'tile-cream', 'tile-sage', 'unread-dot'],
+        ink: '#4a1c08', muted: '#7a4a33', accent: '#2f6b34',
+        assets: ['tile-sage', 'tile-butter', 'tile-cream'],
+        font: "'Fredoka', 'Nunito', sans-serif", fonts: 'https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap' },
       { id: 'space-age', name: 'Space-Age Pop', ready: false, art: [] },
       { id: 'swiss-grid', name: 'Swiss Grid', ready: false, art: [] },
       { id: 'pixel-pal', name: 'Pixel Pal', ready: false, lightBar: true,   // pea-green top bar: dark status-bar text
@@ -1399,6 +1447,7 @@
     });
     if (active && FULL_SKINS[active]) {
       (FULL_SKINS[active].assets || []).forEach(function (a) { b.style.removeProperty('--fs-' + a); });
+      (FULL_SKINS[active].variants || []).forEach(function (x) { (x.assets || []).forEach(function (a) { b.style.removeProperty('--fs-' + a); }); });
     }
     if (active && FULL_SKINS[active] && (FULL_SKINS[active].theme || FULL_SKINS[active].variants)) {
       var allTheme = Object.assign({}, FULL_SKINS[active].theme || {});
@@ -1470,13 +1519,14 @@
       b.style.setProperty('--fs-icon-' + n, url(id, (cfg.parts && cfg.parts['icon-' + n]) || 'icon-' + n));
     });
     (cfg.assets || []).forEach(function (a) { b.style.setProperty('--fs-' + a, url(id, a)); });
+    // a Blip Vibe may bring parts the base look doesn't have (its `assets`) and its own type (`font`, `fonts`)
+    (vcfg && vcfg.assets || []).forEach(function (a) { b.style.setProperty('--fs-' + a, url(id, a)); });
+    if (vcfg && vcfg.fonts) loadFonts(vcfg);
     b.style.setProperty('--fs-ink', (vcfg && vcfg.ink) || cfg.ink);
     b.style.setProperty('--fs-muted', (vcfg && vcfg.muted) || cfg.muted);
     b.style.setProperty('--fs-accent', (vcfg && vcfg.accent) || cfg.accent);
-    // a Blip Vibe look may bring its own fonts (vcfg.fonts / font / titleFont)
-    if (vcfg && vcfg.fonts) loadFonts(vcfg);
     b.style.setProperty('--fs-font', (vcfg && vcfg.font) || cfg.font);
-    b.style.setProperty('--fs-title-font', (vcfg && vcfg.titleFont) || cfg.titleFont || (vcfg && vcfg.font) || cfg.font);
+    b.style.setProperty('--fs-title-font', (vcfg && (vcfg.titleFont || vcfg.font)) || cfg.titleFont || cfg.font);
     b.style.setProperty('--fs-slice', String(cfg.slice || 18));
     b.style.setProperty('--fs-edge', (cfg.edge || 16) + 'px');
     var theme = Object.assign({}, cfg.theme || {}, (vcfg && vcfg.theme) || {});
