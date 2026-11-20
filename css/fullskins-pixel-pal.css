@@ -23,3 +23,127 @@ html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(h1, h2, h3, h4, .profile-n
 body.fs-blip[data-fs-variant="pixel-pal"] .blip-menu-list h4, body.fs-blip[data-fs-variant="pixel-pal"] .blip-row { color: #10301f; }
 body.fs-blip[data-fs-variant="pixel-pal"] .blip-sw-default { background-color: #e1f0c3; }
 body.fs-blip[data-fs-variant="pixel-pal"] .blip-toast { background: #fdf4e3; border: 3px solid #10301f; border-radius: 0; color: #10301f; box-shadow: 3px 3px 0 #10301f; }
+
+/* ======================================================================================== PHONE: top bar (concept home.png) */
+@media (max-width: 768px) {
+  /* search + bell sit in cream pixel boxes (btn-square art), forest-green icons */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar :is(.mobile-search-btn, .mobile-notif-btn) { width: 35px !important; height: 35px !important;
+    background: var(--fs-btn-square) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar :is(.mobile-search-btn, .mobile-notif-btn) > i { width: 21px !important; height: 21px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .nav-container { grid-template-columns: 1fr 35px 35px auto 44px !important; column-gap: 7px !important; }
+  /* wordmark: pixel mascot head with its sparkles, heavy forest-green word */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .nav-logo { font: 900 25px var(--fs-title-font) !important; letter-spacing: -.4px; gap: 4px; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .nav-logo::before { width: 46px !important; height: 40px !important; flex-basis: 46px !important;
+    background: var(--fs-sparkle-2) left top / 18px no-repeat, var(--fs-mascot-head-plain) right center / 36px no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .nav-coins { height: 33px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .nav-coins .coin-count { font-size: 15.5px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .nav-avatar { width: 42px !important; height: 42px !important; }
+}
+
+/* ======================================================================================== HOME (phone) — concept home.png (A) */
+@media (max-width: 768px) {
+  /* cover: 7pt under the bar, 123pt tall, framed by the pixel card outline (9-slice, edges only) */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home #timelineCover { margin-top: 7px !important; height: 123px !important; }
+  /* the photo sits ON the pixel card (9-slice), inset 3pt, so only the card's outline + drop edge show around it */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .fs-timeline { border: 0 solid transparent;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 5px 0 stretch; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .fs-tl-slot-1 { inset: 3px 3px 3px 3px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home #timelineCover::after { right: 54px !important; top: 6px !important; width: 108px !important; height: 108px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home #coverEditBtn { right: 10px !important; bottom: 8px !important; width: 34px !important; height: 34px !important;
+    background-image: var(--fs-btn-square) !important; background-size: 100% 100% !important; }
+
+  /* profile card: square pixel-framed photo left, name / status pill / about right, stats in two columns, orange View Profile */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard { margin-top: 4px !important; min-height: 161px !important; height: auto !important; }
+  /* the concept card has no speech tail: plain pixel card */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"]:is(*) #profileCard::before { border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 11px 0 stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-title:empty { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-info { display: grid !important; grid-template-columns: 100px 1fr !important; column-gap: 15px !important;
+    row-gap: 0 !important; padding: 8px 12px 10px 14px !important; position: relative !important; min-height: 161px; box-sizing: border-box; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-avatar-wrap { width: 100px !important; height: 98px !important; margin: 0 !important; border-radius: 0 !important;
+    border: 0 solid transparent; border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 9px 9px 14px 9px / 0 0 4px 0 stretch; box-sizing: border-box; padding: 3px 3px 4px; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-avatar-wrap::after { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard #profileAvatarImg { -webkit-mask: var(--fs-skin-card-mask) center / 100% 100% no-repeat !important;
+    mask: var(--fs-skin-card-mask) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .avatar-edit-btn { right: -6px !important; bottom: -6px !important; width: 30px !important; height: 30px !important;
+    background-image: var(--fs-camera-badge) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .fs-namecard { padding: 1px 40px 0 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-name { font: 900 22.5px/26px var(--fs-title-font) !important; margin: 0 0 3px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-title { display: inline-flex !important; align-items: center; height: 23px; padding: 0 9px !important; margin: 0 0 5px !important;
+    font: 800 15px var(--fs-font) !important; color: var(--bl-ink) !important; border: 0 solid transparent; border-image: var(--fs-menu-row-on) 0 40 fill / 0 9px stretch; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-about { font: 600 14px/17px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-stats { position: static !important; grid-column: 1 / -1; grid-row: 2; display: flex !important; align-items: flex-start;
+    gap: 0 !important; margin: 10px 0 0 !important; padding: 0 !important; width: 230px; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .stat { flex: 1 1 0 !important; height: auto !important; padding: 0 !important; display: flex !important; flex-direction: column !important;
+    align-items: center; gap: 0; border-image-source: none !important; position: relative; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .stat + .stat::before { content: ""; position: absolute; left: 0; top: 4px; width: 2px; height: 32px; background: var(--fs-divider) center / 100% 100%; opacity: .9; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .stat-label { order: 0; font: 700 14.5px/17px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .stat-count { order: 1; font: 900 19px/22px var(--fs-title-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .view-profile-link { position: absolute !important; right: 12px !important; left: auto !important; top: auto !important; bottom: 10px !important;
+    width: 130px; height: 34px; display: flex !important; align-items: center; justify-content: center; gap: 6px; color: #fff !important; font: 800 16px var(--fs-font) !important;
+    border: 0 solid transparent; border-image: var(--fs-btn-primary) 0 80 fill / 0 17px stretch; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .view-profile-link::after, html body.fs.fs-blip[data-fs-variant="pixel-pal"] .mobile-pill::after {
+    content: ""; width: 11px; height: 13px; flex: 0 0 11px; background: #fff; -webkit-mask: var(--fs-icon-chevron) center / contain no-repeat; mask: var(--fs-icon-chevron) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .edit-profile-btn { right: 14px !important; top: 8px !important; width: 33px !important; height: 30px !important;
+    background: var(--fs-nav-active) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .edit-profile-btn > i { width: 17px !important; height: 17px !important; background: #fff !important;
+    -webkit-mask: var(--fs-icon-edit) center / contain no-repeat; mask: var(--fs-icon-edit) center / contain no-repeat; }
+
+  /* Photos card + pills + stories spacing (concept: 11pt gaps) */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .left-sidebar { gap: 11px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .photos-card .card-heading { font: 900 20px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .photos-card .view-more-link { display: flex !important; align-items: center; gap: 4px; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .photos-card .view-more-link::after { content: ""; width: 9px; height: 12px; background: var(--bl-blue);
+    -webkit-mask: var(--fs-icon-chevron) center / contain no-repeat; mask: var(--fs-icon-chevron) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .photos-preview { gap: 7px 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .mobile-pills-bar { margin: 2px 0 12px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .mobile-pill { height: 38px !important; font-size: 14.5px !important; gap: 6px; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .mobile-pill > i { background: #fff !important; -webkit-mask: var(--fs-icon-groups) center / contain no-repeat; mask: var(--fs-icon-groups) center / contain no-repeat; }
+}
+@media (max-width: 768px) {   /* Home (A), pass 2 against the side-by-side */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home #timelineCover { margin: 7px 8px 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home #timelineCover::after { right: 58px !important; top: 2px !important; width: 124px !important; height: 124px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-stats { margin-top: 2px !important; }
+}
+
+/* ======================================================================================== HOME (phone) — concept home.png (B, scrolled) */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(.featured-header h4, .quest-panel-header h4, .card-heading, .pv-posts-heading) { font-weight: 900 !important; }
+/* section icons the concept shows before its headings (sparkle, flag) */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(.featured-header h4, .quest-panel-header h4)::before { content: ""; display: inline-block; width: 22px; height: 22px; margin-right: 6px; vertical-align: -3px;
+  background: var(--fs-sparkle-1) center / contain no-repeat; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-panel-header h4::before { background-image: var(--fs-icon-flag); }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .featured-timer > i { background-image: var(--fs-icon-clock) !important; }
+/* quests: one row each — icon · label · segmented bar · count · reward chip (concept), the painted quest icons */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-item { grid-template-columns: 30px 1fr auto !important; column-gap: 8px !important; height: 40px !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-info { grid-template-columns: minmax(0, 118px) 1fr 34px !important; grid-template-rows: auto !important; column-gap: 8px !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-info p { grid-column: 1 !important; grid-row: 1; margin: 0 !important; font: 800 14px/16px var(--fs-font) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-info .quest-bar { grid-column: 2 !important; grid-row: 1 !important; height: 13px !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-info .quest-progress { grid-column: 3 !important; grid-row: 1 !important; font: 800 14px var(--fs-font) !important; text-align: right; white-space: nowrap; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-icon { width: 28px !important; height: 28px !important; background-image: var(--fs-quest-comment) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-icon:has(.fa-heart) { background-image: var(--fs-quest-like) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-icon:has(.fa-pen) { background-image: var(--fs-quest-post) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-icon:has(.fa-thumbs-up) { background-image: var(--fs-quest-react) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-icon:has(.fa-bookmark) { background-image: var(--fs-quest-save) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-icon:has(.fa-eye) { background-image: var(--fs-quest-view) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-icon:has(.fa-paper-plane) { background-image: var(--fs-quest-message) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-icon:has(.fa-share-nodes) { background-image: var(--fs-quest-share) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-reward { height: 30px !important; min-width: 64px; justify-content: center; }
+/* feed tabs: three separate pills, the active one orange (concept), no shared track */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] #feedTabs { border-image: none !important; gap: 10px !important; display: flex !important; padding: 0 2px !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] #feedTabs .search-tab { flex: 1 1 0; height: 36px !important; border-image-source: var(--fs-chip) !important; border-image-width: 0 16px !important; font-size: 16px !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] #feedTabs .search-tab.active { border-image-source: var(--fs-chip-active) !important; }
+/* post author in the heavy face */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .post-username { font-weight: 900 !important; }
+/* Home (B), pass 2: quest rows 32pt, label sized to its text, bar takes the rest; bold meta text like the concept */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-item { height: 33px !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-info { grid-template-columns: auto minmax(60px, 1fr) 34px !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-info p { max-width: 136px; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(.quest-reset, .featured-timer) { font-weight: 800 !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .featured-info h5 { font-weight: 900 !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .featured-info p { font-weight: 600 !important; }
+/* the active feed tab points down at the feed (concept): a small orange pixel tip under it */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] #feedTabs .search-tab { position: relative; overflow: visible !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] #feedTabs .search-tab.active::after { content: ""; position: absolute; left: 50%; bottom: -9px; width: 18px; height: 10px; margin-left: -9px;
+  background: var(--fs-nav-active) center bottom / 18px 22px no-repeat; clip-path: polygon(0 0, 100% 0, 50% 100%); }
+/* equal bars on every quest row (real labels run longer than the concept's) */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-info { grid-template-columns: 132px minmax(50px, 1fr) 34px !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-info p { max-width: none; font-size: 13.5px !important; }
