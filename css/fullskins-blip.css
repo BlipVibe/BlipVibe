@@ -1134,3 +1134,15 @@ html body.fs.fs-blip .blip-start-btn > span { color: #fff !important; opacity: 1
   html body.fs.fs-blip:has(#page-group-view.active) .nav-center .nav-link[data-page="messages"] > i { background-image: var(--fs-icon-envelope) !important; }
   html body.fs.fs-blip:has(#page-group-view.active) .nav-center .nav-link[data-page="groups"] > i { background-image: var(--fs-mascot-head) !important; width: 34px !important; height: 30px !important; }
 }
+/* tiles keep the concept's near-square size at any width (they no longer stretch with the screen): each tab is a
+   58 x 50 box (wider only when its label needs it), spread evenly across the bar, always inside it */
+@media (max-width: 768px) {
+  html body.fs.fs-blip .nav-center { justify-content: space-between !important; padding: 8px 10px calc(env(safe-area-inset-bottom, 0px) + 8px) !important; min-height: 66px !important; box-sizing: border-box; }
+  html body.fs.fs-blip .nav-center .nav-link, html body.fs.fs-blip .blip-start-btn,
+  html body.fs.fs-blip .nav-center .nav-link[data-page="messages"], html body.fs.fs-blip .nav-center .nav-link[data-page="profiles"] {
+    flex: 0 0 auto !important; width: auto !important; min-width: 58px !important; max-width: 76px; height: 50px !important; padding: 0 5px !important; margin: 0 !important; box-sizing: border-box; }
+}
+/* wider phones / tablets: the tabs keep the concept's phone spacing (a 394pt group, centred) instead of spreading out */
+@media (max-width: 768px) {
+  html body.fs.fs-blip .nav-center { padding-left: max(10px, calc((100% - 394px) / 2)) !important; padding-right: max(10px, calc((100% - 394px) / 2)) !important; }
+}
