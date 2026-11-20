@@ -1848,3 +1848,7 @@ html body.fs.fs-blip :is(.post-media-grid, .photos-preview > *, .featured-previe
 @media (max-width: 768px) {
   html body.fs.fs-blip #pvCoverBanner::after { top: 2px !important; right: 14px !important; width: 176px !important; height: 110px !important; }
 }
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-shop .page-header::after { top: 2px !important; right: 2px !important; width: 140px !important; height: 87px !important; }
+  html body.fs.fs-blip #page-shop .page-subtitle { font-size: 12px !important; letter-spacing: -.2px; }
+}
