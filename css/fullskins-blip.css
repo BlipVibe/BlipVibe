@@ -1146,3 +1146,11 @@ html body.fs.fs-blip .blip-start-btn > span { color: #fff !important; opacity: 1
 @media (max-width: 768px) {
   html body.fs.fs-blip .nav-center { padding-left: max(10px, calc((100% - 394px) / 2)) !important; padding-right: max(10px, calc((100% - 394px) / 2)) !important; }
 }
+/* wider phones / small tablets (403-768): the concept is drawn at phone width, so the page column, the top bar's contents
+   and the nav tabs all stay at that width, centred (the bars themselves still run edge to edge) */
+@media (min-width: 403px) and (max-width: 768px) {
+  html body.fs.fs-blip .page.active { max-width: 402px !important; margin-left: auto !important; margin-right: auto !important; }
+  html body.fs.fs-blip .nav-container { max-width: 402px !important; margin: 0 auto !important; }
+}
+html body.fs.fs-blip .page { scrollbar-width: none; }
+html body.fs.fs-blip .page::-webkit-scrollbar { display: none; width: 0; height: 0; }
