@@ -346,7 +346,35 @@
       { id: 'lofi-room', name: 'Walnut Hi-Fi', ready: false, art: [] },
       { id: 'clay-town', name: 'Clay Town', ready: false, art: [] },
       { id: 'space-age', name: 'Space-Age Pop', ready: false, art: [] },
-      { id: 'swiss-grid', name: 'Swiss Grid', ready: false, art: [] },
+      { id: 'swiss-grid', name: 'Swiss Grid', ready: false,
+        art: ['avatar-frame', 'avatar-mask', 'avatar-ring', 'background', 'badge-commenter', 'badge-count',
+          'badge-early_adopter', 'badge-first_post', 'badge-generous', 'badge-group_leader', 'badge-photographer',
+          'badge-popular', 'badge-skin_collector', 'badge-social_butterfly', 'badge-streak_master', 'bar-fill',
+          'bar-track', 'blip-btn', 'blip-btn-on', 'btn-danger', 'btn-disabled', 'btn-primary', 'btn-round',
+          'btn-secondary', 'btn-square', 'bubble-in', 'bubble-out', 'burst', 'card-tail', 'card-tail-tight',
+          'card-tailtip', 'chip', 'chip-active', 'coin', 'coin-pill', 'coin-stack', 'cover-mask', 'divider', 'field',
+          'group-avatar-frame', 'header-bar', 'icon-back', 'icon-bag', 'icon-bell', 'icon-block', 'icon-bookmark',
+          'icon-calendar', 'icon-camera', 'icon-check', 'icon-chevron', 'icon-clock', 'icon-close', 'icon-coin',
+          'icon-comment', 'icon-compass', 'icon-compose', 'icon-crown', 'icon-dislike', 'icon-dislike-on', 'icon-edit',
+          'icon-emoji', 'icon-envelope', 'icon-exit', 'icon-fire', 'icon-flag', 'icon-flag-red', 'icon-font',
+          'icon-gif', 'icon-gift', 'icon-globe', 'icon-groups', 'icon-groups-on', 'icon-hanger', 'icon-heart',
+          'icon-home', 'icon-home-on', 'icon-image', 'icon-info', 'icon-like', 'icon-like-on', 'icon-link',
+          'icon-logout', 'icon-messages', 'icon-messages-on', 'icon-mic', 'icon-more', 'icon-music', 'icon-mute',
+          'icon-network', 'icon-network-on', 'icon-people', 'icon-phone', 'icon-photo', 'icon-plus', 'icon-poll',
+          'icon-reply', 'icon-scroll', 'icon-search', 'icon-seen', 'icon-send', 'icon-settings', 'icon-share',
+          'icon-skins', 'icon-skins-on', 'icon-star', 'icon-user', 'icon-user-plus', 'icon-video', 'mascot',
+          'mascot-head', 'mascot-head-plain', 'mascot-jump', 'mascot-page-happy', 'mascot-page-smile',
+          'mascot-page-wink', 'mascot-peek', 'mascot-sleep', 'mascot-wave', 'menu-check', 'menu-panel', 'menu-row-on',
+          'nav-active', 'nav-bar', 'notif-comment', 'notif-follow', 'notif-group', 'notif-like', 'notif-message',
+          'notif-purchase', 'panel-card', 'panel-card-active', 'panel-card-active-tight', 'panel-card-tight',
+          'photo-mask', 'quest-comment', 'quest-like', 'quest-message', 'quest-post', 'quest-react', 'quest-save',
+          'quest-share', 'quest-view', 'reward-chip', 'sheet', 'skin-card-mask', 'sparkle-1', 'sparkle-2', 'story-add',
+          'story-ring', 'story-ring-seen', 'swatch-ring', 'tabs-track', 'unread-dot'],   // css/fullskins-swiss-grid.css
+        font: "'Inter', 'Helvetica Neue', Arial, sans-serif", titleFont: "'Inter', 'Helvetica Neue', Arial, sans-serif",
+        ink: '#0a0a0a', muted: '#2a2a2a', accent: '#1f4dff', lightBar: true,   // paper-white top bar: dark status text
+        theme: { '--primary': '#1f4dff', '--primary-hover': '#1636c8', '--dark': '#0a0a0a', '--gray': '#2a2a2a',
+          '--light-bg': '#fafaf7', '--card': '#fafaf7', '--border': 'rgba(10,10,10,.9)', '--nav-bg': '#fafaf7' },
+        fonts: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap' },
       { id: 'pixel-pal', name: 'Pixel Pal', ready: false, art: [] }
     ],
     dark: false, ink: '#000048', muted: '#000034', accent: '#0a2cf0',
@@ -1438,10 +1466,11 @@
     // a variant may change more than the accent (Good Witch Day / Night): dark flag, ink, muted, theme vars
     var vcfg = cfg.variants && cfg.variants.filter(function (x) { return x.id === (variant || cfg.variants[0].id); })[0];
     var isDark = vcfg && vcfg.dark !== undefined ? vcfg.dark : cfg.dark;
+    if (vcfg && vcfg.fonts) loadFonts(vcfg);   // a Blip Vibe look may bring its own type
     b.classList.add('fs', 'fs-' + id, isDark ? 'fs-dark' : 'fs-light');
     // status-bar text follows the rendition (Good Witch Night, Vaporwave dark): light text on dark art
     // Logo Classic paints a royal-blue top bar behind the status bar: keep its text white like the concept
-    if (typeof window._updateStatusBarStyle === 'function') window._updateStatusBarStyle(id === 'blip' ? false : !isDark);
+    if (typeof window._updateStatusBarStyle === 'function') window._updateStatusBarStyle(id === 'blip' && !(vcfg && vcfg.lightBar) ? false : !isDark);
     if (cfg.variants) b.setAttribute('data-fs-variant', variant || cfg.variants[0].id);
     var parts = cfg.extras ? PARTS.concat(EXTRAS) : PARTS;
     parts.forEach(function (p) { b.style.setProperty('--fs-' + p, url(id, (cfg.parts && cfg.parts[p]) || p)); });
@@ -1452,8 +1481,8 @@
     b.style.setProperty('--fs-ink', (vcfg && vcfg.ink) || cfg.ink);
     b.style.setProperty('--fs-muted', (vcfg && vcfg.muted) || cfg.muted);
     b.style.setProperty('--fs-accent', (vcfg && vcfg.accent) || cfg.accent);
-    b.style.setProperty('--fs-font', cfg.font);
-    b.style.setProperty('--fs-title-font', cfg.titleFont || cfg.font);
+    b.style.setProperty('--fs-font', (vcfg && vcfg.font) || cfg.font);
+    b.style.setProperty('--fs-title-font', (vcfg && (vcfg.titleFont || vcfg.font)) || cfg.titleFont || cfg.font);
     b.style.setProperty('--fs-slice', String(cfg.slice || 18));
     b.style.setProperty('--fs-edge', (cfg.edge || 16) + 'px');
     var theme = Object.assign({}, cfg.theme || {}, (vcfg && vcfg.theme) || {});
