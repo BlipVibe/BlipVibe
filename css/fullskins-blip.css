@@ -1260,3 +1260,177 @@ html body.fs.fs-blip #gvCoverBanner { -webkit-mask-box-image: var(--fs-cover-mas
 html body.fs.fs-blip .fs-tl-slot-1 { -webkit-mask-box-image: var(--fs-cover-mask) 40 fill / 14px stretch !important; mask-border: var(--fs-cover-mask) 40 fill / 14px stretch !important; }
 html body.fs.fs-blip :is(.post-media-grid, .photos-preview > *, .featured-preview) { -webkit-mask-box-image: var(--fs-photo-mask) 30 fill / 10px stretch !important; mask-border: var(--fs-photo-mask) 30 fill / 10px stretch !important; }
 @media (min-width: 769px) { html body.fs.fs-blip #page-home .fs-tl-slot-1 { -webkit-mask-box-image: var(--fs-cover-mask) 40 fill / 16px stretch !important; } }
+
+/* ======================================================================================================== MESSAGES (phone) — ref/ov-messages-a.png */
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-messages .page-container { padding: 0 12px !important; margin: 0 !important; height: auto !important; }
+  html body.fs.fs-blip #page-messages .msg-sidebar { background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; padding: 0 !important; width: auto !important; }
+  html body.fs.fs-blip #page-messages .msg-sidebar-header { padding: 10px 6px 6px !important; border: 0 !important; background: none !important; }
+  html body.fs.fs-blip #page-messages .msg-sidebar-header h3 { font: 900 35px/40px var(--fs-title-font) !important; color: var(--bl-ink) !important; margin: 0 !important; }
+  html body.fs.fs-blip #page-messages .msg-search { height: 38px; margin: 6px 0 12px !important; padding: 0 14px !important; display: flex !important; align-items: center; gap: 10px; background: none !important; box-shadow: none !important;
+    border: 0 solid transparent !important; border-image: var(--fs-field) 0 64 fill / 0 19px stretch !important; }
+  html body.fs.fs-blip #page-messages .msg-search > i { width: 22px; height: 22px; font-size: 0 !important; color: transparent !important; background: var(--fs-icon-search) center / contain no-repeat; position: static !important;
+    filter: brightness(0) saturate(100%) invert(9%) sepia(98%) saturate(6000%) hue-rotate(245deg); transform: none !important; }
+  html body.fs.fs-blip #page-messages .msg-search input { font: 600 17px var(--fs-font) !important; color: var(--bl-ink) !important; background: transparent !important; border: 0 !important; padding: 0 !important; flex: 1; height: 100%; }
+  html body.fs.fs-blip #page-messages .msg-contact-list { display: flex !important; flex-direction: column; gap: 8px; padding: 0 0 90px !important; overflow: visible !important; max-height: none !important; }
+  html body.fs.fs-blip #page-messages .msg-contact { display: flex !important; align-items: center; gap: 12px; min-height: 52px; padding: 2px 4px !important; margin: 0 !important; position: relative;
+    border: 8px solid transparent !important; border-bottom-width: 8px !important; }
+  html body.fs.fs-blip #page-messages #newGroupDmBtn { min-height: 64px; }
+  html body.fs.fs-blip #page-messages #newGroupDmBtn > div:first-child { width: 48px !important; height: 48px !important; background: var(--fs-btn-round) center / contain no-repeat !important; border-radius: 0 !important; }
+  html body.fs.fs-blip #page-messages #newGroupDmBtn > div:first-child > i { width: 26px; height: 26px; font-size: 0 !important; color: transparent !important; background: var(--fs-icon-plus) center / contain no-repeat; }
+  html body.fs.fs-blip #page-messages .msg-contact img { width: 50px !important; height: 50px !important; border-radius: 50% !important; padding: 2px; box-sizing: border-box; background: var(--fs-avatar-ring) center / 100% 100% no-repeat; }
+  html body.fs.fs-blip #page-messages .msg-contact-info { flex: 1; min-width: 0; }
+  html body.fs.fs-blip #page-messages .msg-contact-name { font: 900 19px/22px var(--fs-title-font) !important; color: var(--bl-ink) !important; display: flex; align-items: center; gap: 8px; }
+  html body.fs.fs-blip #page-messages #newGroupDmBtn .msg-contact-name { color: var(--bl-ink) !important; font-size: 20px !important; }
+  html body.fs.fs-blip #page-messages .msg-contact-preview { font: 500 16px/20px var(--fs-font) !important; color: var(--bl-text) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip #page-messages .msg-contact-time { position: absolute; right: 6px; top: 6px; font: 600 14.5px var(--fs-font) !important; color: var(--bl-text) !important; }
+  html body.fs.fs-blip #page-messages :is(.msg-unread-badge, .msg-unread, .unread-count) { min-width: 26px; height: 22px; padding: 0 8px; border-radius: 0 !important; font: 800 14px/22px var(--fs-font) !important; color: #fff !important;
+    background: none !important; border: 0 solid transparent; border-image: var(--fs-btn-primary) 0 67 fill / 0 11px stretch; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-messages .msg-sidebar-header { padding: 2px 6px 2px !important; }
+  html body.fs.fs-blip #page-messages .msg-search { margin: 4px 0 10px !important; }
+  html body.fs.fs-blip #page-messages .msg-contact-list { gap: 4px !important; }
+  html body.fs.fs-blip #page-messages .msg-contact { min-height: 0 !important; height: 56px; box-sizing: border-box; border-width: 6px !important; padding: 0 4px !important; }
+  html body.fs.fs-blip #page-messages #newGroupDmBtn { height: 68px; }
+  html body.fs.fs-blip #page-messages .msg-contact img { width: 46px !important; height: 46px !important; }
+  html body.fs.fs-blip #page-messages .msg-contact-name { font-size: 18.5px !important; line-height: 21px !important; }
+  html body.fs.fs-blip #page-messages .msg-contact-preview { font-size: 15.5px !important; line-height: 19px !important; }
+  html body.fs.fs-blip #page-messages .msg-contact-time { top: 4px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-messages .msg-contact { border-style: solid !important; border-color: transparent !important; border-width: 6px !important;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 11px 0 stretch !important; background: none !important; }
+  html body.fs.fs-blip #page-messages .msg-contact.active { border-image-source: var(--fs-panel-card-active-tight) !important; }
+}
+
+/* ======================================================================================================== NOTIFICATIONS (phone) — ref/ov-notifications-a.png */
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-notifications .page-container { padding: 0 12px 90px !important; }
+  html body.fs.fs-blip #page-notifications .page-header { padding: 6px 4px 4px !important; margin: 0 !important; }
+  html body.fs.fs-blip #page-notifications .page-header h2 { font: 900 31px/36px var(--fs-title-font) !important; margin: 0 !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip #page-notifications .page-header h2 > i { display: none !important; }
+  html body.fs.fs-blip #notifTabs { display: grid !important; grid-template-columns: 0.85fr 1.1fr 1.2fr 1fr; gap: 7px 6px; margin: 6px 0 12px !important; padding: 0 !important; overflow: visible !important; }
+  html body.fs.fs-blip #notifTabs .search-tab { height: 30px !important; padding: 0 4px !important; margin: 0 !important; display: flex !important; align-items: center; justify-content: center; gap: 4px;
+    font: 800 15px var(--fs-font) !important; white-space: nowrap; border-image-width: 0 15px !important; }
+  html body.fs.fs-blip #notifTabs .search-tab > i { display: none !important; }
+  html body.fs.fs-blip #notifList { display: flex; flex-direction: column; gap: 8px; }
+  html body.fs.fs-blip #notifList .notif-item { display: flex !important; align-items: center; gap: 10px; min-height: 0; padding: 0 6px !important; margin: 0 !important;
+    border-style: solid !important; border-color: transparent !important; border-width: 6px !important;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 11px 0 stretch !important; background: none !important; }
+  html body.fs.fs-blip #notifList .notif-icon { width: 28px !important; height: 28px !important; flex: 0 0 28px; border-radius: 0 !important; background: center / contain no-repeat !important; font-size: 0 !important; }
+  html body.fs.fs-blip #notifList .notif-icon > i { display: none !important; }
+  html body.fs.fs-blip #notifList .notif-icon:has(.fa-heart) { background-image: var(--fs-icon-like-on) !important; }
+  html body.fs.fs-blip #notifList .notif-icon:has(.fa-comment) { background-image: var(--fs-icon-comment) !important; }
+  html body.fs.fs-blip #notifList .notif-icon:has(.fa-reply) { background-image: var(--fs-icon-comment) !important; }
+  html body.fs.fs-blip #notifList .notif-icon:has(.fa-user-plus) { background-image: var(--fs-icon-people) !important; }
+  html body.fs.fs-blip #notifList .notif-icon:has(.fa-at) { background-image: var(--fs-icon-user) !important; }
+  html body.fs.fs-blip #notifList .notif-icon:has(:is(.fa-envelope, .fa-envelope-open)) { background-image: var(--fs-icon-envelope) !important; }
+  html body.fs.fs-blip #notifList .notif-icon:has(.fa-coins) { background-image: var(--fs-coin-stack) !important; }
+  html body.fs.fs-blip #notifList .notif-icon:has(.fa-palette) { background-image: var(--fs-icon-skins) !important; }
+  html body.fs.fs-blip #notifList .notif-icon:has(:is(.fa-users, .fa-cog, .fa-bell)) { background-image: var(--fs-icon-groups) !important; }
+  html body.fs.fs-blip #notifList .notif-text { display: flex !important; align-items: center; gap: 8px; min-height: 30px; }
+  html body.fs.fs-blip #notifList .notif-text p { flex: 1; min-width: 0; margin: 0 !important; font: 800 15.5px/19px var(--fs-font) !important; color: var(--bl-ink) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block !important; }
+  html body.fs.fs-blip #notifList .notif-text > span { flex: 0 0 auto; font: 600 14px var(--fs-font) !important; color: var(--bl-text) !important; }
+  html body.fs.fs-blip #notifList :is(.notif-new, .badge-new) { height: 20px; padding: 0 9px; font: 800 12px/20px var(--fs-font) !important; color: #fff !important; background: none !important;
+    border: 0 solid transparent; border-image: var(--fs-btn-primary) 0 67 fill / 0 10px stretch; border-radius: 0 !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #notifList { gap: 3px; }
+  html body.fs.fs-blip #notifList .notif-item { height: 36px !important; border-width: 4px !important; padding: 0 4px !important; }
+  html body.fs.fs-blip #notifList .notif-text { min-height: 0; flex: 1; min-width: 0; }
+}
+
+/* ======================================================================================================== NETWORK (phone) — ref/ov-network-a.png (css y = ref y − 36) */
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-profiles .page-container { padding: 0 10px 90px !important; position: relative; }
+  html body.fs.fs-blip #page-profiles .page-header { display: block !important; position: relative; padding: 0 !important; margin: 0 !important; height: 122px; }
+  html body.fs.fs-blip #page-profiles .page-header::after { content: ""; position: absolute; right: -2px; top: 2px; width: 156px; height: 80px; background: var(--fs-mascot-wave) center / contain no-repeat; pointer-events: none; }
+  html body.fs.fs-blip #page-profiles .page-header h2 { position: absolute; left: 8px; top: 34px; margin: 0 !important; display: flex !important; align-items: center; gap: 12px;
+    font: 900 34px/40px var(--fs-title-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip #page-profiles .page-header h2 > i { width: 42px; height: 42px; font-size: 0 !important; background: var(--fs-icon-network) center / contain no-repeat; }
+  html body.fs.fs-blip #page-profiles .page-actions { position: absolute; left: 2px; top: 86px; width: 250px; margin: 0 !important; }
+  html body.fs.fs-blip #page-profiles .page-search { height: 36px !important; width: 250px !important; padding: 0 12px 0 40px !important; position: relative; display: flex !important; align-items: center;
+    border: 0 solid transparent !important; border-image: var(--fs-field) 0 64 fill / 0 18px stretch !important; background: none !important; border-radius: 0 !important; box-shadow: none !important; }
+  html body.fs.fs-blip #page-profiles .page-search > i { position: absolute; left: 14px; top: 9px; width: 18px; height: 18px; font-size: 0 !important; background: var(--fs-icon-search) center / contain no-repeat; filter: brightness(0) saturate(100%) invert(9%) sepia(60%) saturate(5000%) hue-rotate(238deg); }
+  html body.fs.fs-blip #profileSearch { font: 600 16px var(--fs-font) !important; color: var(--bl-ink) !important; background: none !important; border: 0 !important; padding: 0 !important; width: 100%; box-shadow: none !important; }
+  html body.fs.fs-blip #profileSearch::placeholder { color: #2a2f5a !important; }
+  html body.fs.fs-blip #profilesTabs { display: grid !important; grid-template-columns: 128fr 118fr 124fr; gap: 7px; margin: 13px 0 17px !important; padding: 0 !important; overflow: visible !important; }
+  html body.fs.fs-blip #profilesTabs .search-tab { height: 58px !important; padding: 0 8px !important; margin: 0 !important; white-space: normal !important; text-align: center; line-height: 18px !important;
+    display: flex !important; align-items: center; justify-content: center; font: 800 16px/18px var(--fs-font) !important; border-image-width: 0 22px !important; }
+  html body.fs.fs-blip #profilesTabs .search-tab > i { display: none !important; }
+  html body.fs.fs-blip #page-profiles .connections-wrap { margin: 0 -10px !important; }
+  html body.fs.fs-blip #page-profiles .connections-columns { gap: 8px !important; padding: 0 10px !important; scroll-padding: 0 10px; }
+  html body.fs.fs-blip #page-profiles .connections-col { flex: 0 0 382px !important; width: 382px !important; min-width: 382px !important; }
+  html body.fs.fs-blip #page-profiles .connections-heading { height: 36px !important; width: 276px; margin: 0 0 7px !important; padding: 0 0 0 20px !important; display: flex !important; align-items: center; gap: 8px;
+    font: 900 20px var(--fs-title-font) !important; color: var(--bl-ink) !important; border: 0 solid transparent !important; border-image: var(--fs-chip) 0 76 fill / 0 18px stretch !important;
+    background: none !important; filter: hue-rotate(0deg); }
+  html body.fs.fs-blip #page-profiles .connections-heading { border-image: none !important; background: #cfe2fb !important; border-radius: 18px !important; }
+  html body.fs.fs-blip #page-profiles .connections-heading > i { display: none !important; }
+  html body.fs.fs-blip #page-profiles .connections-count { font: inherit !important; color: inherit !important; background: none !important; padding: 0 !important; }
+  html body.fs.fs-blip #page-profiles .connections-scroll { max-height: none !important; overflow: visible !important; padding: 0 !important; }
+  html body.fs.fs-blip #page-profiles .connections-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+  html body.fs.fs-blip #page-profiles .profile-card-item { height: 159px !important; padding: 2px 6px 0 !important; margin: 0 !important; display: flex !important; flex-direction: column; align-items: center; justify-content: flex-start;
+    border-style: solid !important; border-color: transparent !important; border-width: 6px !important; box-shadow: none !important; border-radius: 0 !important;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 11px 0 stretch !important; background: none !important; }
+  html body.fs.fs-blip #page-profiles .profile-card-avatar { width: 86px !important; height: 86px !important; border-radius: 50% !important; object-fit: cover; margin: 0 0 6px !important;
+    border: 0 !important; box-shadow: 0 0 0 3px #fff, 0 0 0 4.5px #00008b !important; }
+  html body.fs.fs-blip #page-profiles .profile-card-name { font: 900 19px/22px var(--fs-title-font) !important; color: var(--bl-ink) !important; margin: 0 0 4px !important; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip #page-profiles .profile-follow-btn { width: 130px !important; height: 32px !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important; font: 800 17px var(--fs-font) !important; }
+  html body.fs.fs-blip #page-profiles .connections-dots { margin: 16px 0 0 !important; gap: 8px !important; }
+  html body.fs.fs-blip #page-profiles .connections-dot { width: 12px !important; height: 12px !important; border-radius: 50% !important; background: #b9d3f6 !important; border: 0 !important; }
+  html body.fs.fs-blip #page-profiles .connections-dot.active { background: #fff !important; box-shadow: inset 0 0 0 3px #1650d6 !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-profiles#page-profiles .connections-col { padding: 0 !important; overflow: visible !important; max-height: none !important; background: none !important; border: 0 !important; box-shadow: none !important; }
+  html body.fs.fs-blip #page-profiles#page-profiles .connections-heading { justify-content: flex-start !important; }
+  html body.fs.fs-blip #page-profiles#page-profiles .profile-card-name { white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; display: block !important; text-align: center; width: 100%; }
+  html body.fs.fs-blip #page-profiles .page-header::after { right: -14px; top: -10px; width: 200px; height: 104px; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-profiles#page-profiles .page-header { margin-top: -31px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-profiles#page-profiles .connections-heading { margin-bottom: -2px !important; }
+  html body.fs.fs-blip #page-profiles#page-profiles .profile-follow-btn { height: 32px !important; margin-top: -4px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-profiles#page-profiles .connections-count { margin: 0 !important; }
+  html body.fs.fs-blip #page-profiles#page-profiles .profile-card-avatar { margin-bottom: 0 !important; }
+  html body.fs.fs-blip #page-profiles#page-profiles .profile-card-name { margin: 0 0 6px !important; }
+}
+
+/* ======================================================================================================== SEARCH (phone) — ref/ov-search-a.png (css y = ref y − 36) */
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-search .page-container { padding: 0 10px 90px !important; }
+  html body.fs.fs-blip #page-search .page-header { display: block !important; position: relative; height: 190px; padding: 0 !important; margin: -31px 0 0 !important; }
+  html body.fs.fs-blip #page-search .page-header::after { content: ""; position: absolute; right: -14px; top: -10px; width: 200px; height: 104px; background: var(--fs-mascot-wave) center / contain no-repeat; pointer-events: none; }
+  html body.fs.fs-blip #page-search .page-header h2 { position: absolute; left: 6px; top: 36px; margin: 0 !important; display: flex !important; align-items: center; gap: 14px;
+    font: 900 31px/38px var(--fs-title-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip #page-search .page-header h2 > i { width: 34px; height: 34px; font-size: 0 !important; background: var(--fs-icon-search) center / contain no-repeat;
+    filter: brightness(0) saturate(100%) invert(9%) sepia(60%) saturate(5000%) hue-rotate(238deg); }
+  html body.fs.fs-blip #searchPageInput { position: absolute !important; left: 5px; right: 5px; top: 110px; width: auto !important; height: 36px !important; padding: 0 14px 0 50px !important; display: flex !important; align-items: center; margin: 0 !important;
+    border: 0 solid transparent !important; border-image: var(--fs-tabs-track) 0 64 fill / 0 18px stretch !important; background: none !important; border-radius: 0 !important; box-shadow: none !important; }
+  html body.fs.fs-blip #searchPageInput::before { content: "Search people, groups, posts..."; position: absolute; left: 9px; top: -24px; font: 800 15px var(--fs-font); color: var(--bl-ink); white-space: nowrap; }
+  html body.fs.fs-blip #searchPageInput > i { position: absolute; left: 18px; top: 8px; width: 20px; height: 20px; font-size: 0 !important; background: var(--fs-icon-search) center / contain no-repeat;
+    filter: brightness(0) saturate(100%) invert(9%) sepia(60%) saturate(5000%) hue-rotate(238deg); }
+  html body.fs.fs-blip #searchPageQuery { font: 800 19px var(--fs-font) !important; color: var(--bl-ink) !important; background: none !important; border: 0 !important; padding: 0 !important; width: 100%; box-shadow: none !important; }
+  html body.fs.fs-blip #searchQuery { position: absolute; left: 6px; top: 158px; margin: 0 !important; font: 900 22px/28px var(--fs-title-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip #page-search .search-tabs { display: grid !important; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin: 0 2px 14px !important; padding: 0 !important; overflow: visible !important; }
+  html body.fs.fs-blip #page-search .search-tab { height: 36px !important; padding: 0 6px !important; margin: 0 !important; display: flex !important; align-items: center; justify-content: center; gap: 6px;
+    font: 800 17px var(--fs-font) !important; white-space: nowrap; border-image-width: 0 18px !important; }
+  html body.fs.fs-blip #page-search .search-tab > i { display: none !important; }
+  html body.fs.fs-blip #page-search .search-tab .tab-count { font: inherit !important; color: inherit !important; background: none !important; padding: 0 !important; margin: 0 !important; min-width: 0 !important; }
+  html body.fs.fs-blip #searchResults .search-results-grid { display: flex !important; flex-direction: column; gap: 10px !important; }
+  html body.fs.fs-blip #searchResults .profile-card-item { display: grid !important; grid-template-columns: 76px 1fr 106px; grid-template-rows: auto auto; column-gap: 14px; align-items: center; align-content: center;
+    height: 88px !important; padding: 0 2px 0 6px !important; margin: 0 !important; text-align: left !important;
+    border-style: solid !important; border-color: transparent !important; border-width: 6px !important; box-shadow: none !important; border-radius: 0 !important;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 11px 0 stretch !important; background: none !important; }
+  html body.fs.fs-blip #searchResults .profile-card-avatar { grid-row: 1 / 3; width: 76px !important; height: 76px !important; border-radius: 50% !important; object-fit: cover; margin: 0 !important; border: 0 !important;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #00008b !important; }
+  html body.fs.fs-blip #searchResults .profile-card-name { grid-column: 2; align-self: end; margin: 0 !important; font: 900 21px/25px var(--fs-title-font) !important; color: var(--bl-ink) !important; text-align: left !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip #searchResults .profile-card-bio { grid-column: 2; align-self: start; margin: 0 !important; font: 600 16px/20px var(--fs-font) !important; color: var(--bl-text) !important; text-align: left !important;
+    display: -webkit-box !important; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  html body.fs.fs-blip #searchResults .profile-follow-btn { grid-column: 3; grid-row: 1 / 3; width: 106px !important; height: 36px !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important; font: 800 18px var(--fs-font) !important; }
+  html body.fs.fs-blip #searchResults :is(.post-card, .group-card) { margin-bottom: 10px; }
+}
