@@ -10772,7 +10772,7 @@ window.BlipFullSkinsData={
                 applyPremiumSkin(null);applySkin(null);done();
                 if(window.BlipFullSkins&&BlipFullSkins.active()==='blip') BlipFullSkins.apply('blip');
             };
-            if(window.BlipFullSkins&&BlipFullSkins.equipTransition) BlipFullSkins.equipTransition('blip',back); else back();
+            if(window.BlipFullSkins&&BlipFullSkins.equipTransition) BlipFullSkins.equipTransition('blip',back,look); else back();   // each Vibe plays its own animation
         }
     },
     openShop:function(){var e=document.querySelector('.nav-link[data-page="shop"]');if(e)e.click();}

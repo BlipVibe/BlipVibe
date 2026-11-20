@@ -2878,8 +2878,12 @@
 
   var EQUIP_FX = { 'blip': equipBlip, 'basic': equipBasic, 'scrapbook': equipScrapbook, 'anime-blaze': equipBlaze, 'witchcraft': equipWitchcraft, 'good-witch': equipGoodWitch, 'vaporwave': equipVaporwave, 'heavens-light': equipHeaven, 'blood-moon': equipBloodMoon, 'superhero': equipSuperhero };
   // app.js calls this from the Equip buttons: equipTransition(id, function () { ...apply + save... })
-  function equipTransition(id, applyFn) {
-    var fx = EQUIP_FX[id], reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* Blip Vibes switch animations (owner, Nov 20 2026: "everyone of them need to have a themed animation not just one for
+     all"): each Vibe registers its own, one line each, e.g. VIBE_FX['pixel-pal'] = equipPixelPal; (fn(id, swap) → Promise,
+     same contract as EQUIP_FX; load its art with fxArt('blip', '<vibe>/<part>')). Logo Classic keeps equipBlip. */
+  var VIBE_FX = {};
+  function equipTransition(id, applyFn, vibe) {
+    var fx = (vibe && VIBE_FX[vibe]) || EQUIP_FX[id], reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!fx || reduce || equipBusy) { applyFn(); return; }
     equipBusy = true;
     var swapP = null;
