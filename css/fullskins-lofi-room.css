@@ -523,3 +523,109 @@ html body.fs.fs-blip[data-fs-variant="lofi-room"] .page-search input, html body.
   html body.fs.fs-blip[data-fs-variant="lofi-room"] #searchPageInput::before { left: 10px !important; }
   html body.fs.fs-blip[data-fs-variant="lofi-room"] #searchQuery { top: 160px !important; }
 }
+
+/* ======================================================================================================== MY PROFILE / PROFILE VIEW (phone) — ref/lofi-room/ov-profile-a.png */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvCoverBanner { height: 126px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvCoverBanner::after { background-image: var(--fs-mascot-page-happy) !important; right: 8px !important; top: 4px !important; width: 150px !important; height: 94px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvCoverEditBtn { background-image: var(--fs-camera-badge) !important; top: 86px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvCoverEditBtn > i { opacity: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-profile-view .pv-layout { padding: 0 6px 90px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:not(:has(#pvFollowBtn)) { margin-top: -6px !important; min-height: 254px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:not(:has(#pvFollowBtn)) .profile-info { min-height: 242px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard .profile-avatar-wrap { left: 0; top: -34px; width: 136px !important; height: 136px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard .profile-avatar-wrap::after { inset: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard .profile-name { left: 142px; top: 0 !important; font: 700 24px/30px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard .badge-row { left: 144px; top: 32px; height: 56px; gap: 18px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard .user-badge { width: 44px !important; height: 56px !important; }
+  /* three info rows with line icons: status, about, website */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:not(:has(#pvFollowBtn)) :is(.profile-title, .profile-about, .profile-website) { position: absolute !important; left: 16px !important; right: 6px !important; margin: 0 !important;
+    padding: 0 0 0 30px !important; display: block !important; text-align: left !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-style: normal !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:not(:has(#pvFollowBtn)) .profile-title { top: 98px !important; font: 500 16px/22px var(--fs-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:not(:has(#pvFollowBtn)) .profile-about { top: 121px !important; font: 500 14.5px/22px var(--fs-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:not(:has(#pvFollowBtn)) .profile-website { top: 144px !important; font: 700 16px/22px var(--fs-title-font) !important; color: var(--wh-olive) !important; text-decoration: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:not(:has(#pvFollowBtn)) .profile-website > i { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:not(:has(#pvFollowBtn)) :is(.profile-title, .profile-about, .profile-website)::before { content: ""; position: absolute; left: 0; top: 0; width: 22px; height: 22px;
+    background: var(--fs-icon-comment) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:not(:has(#pvFollowBtn)) .profile-about::before { background-image: var(--fs-icon-info) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:not(:has(#pvFollowBtn)) .profile-website::before { background-image: var(--fs-icon-link) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:not(:has(#pvFollowBtn)) .profile-stats { top: 172px !important; gap: 20px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard .stat { background: none !important; border-radius: 0 !important; border: 0 solid transparent !important;
+    border-image: var(--fs-btn-disabled) 0 70 fill / 0 15px stretch !important; height: 31px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard :is(.stat-count, .stat-label) { font: 700 17px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard .stat-label { font-weight: 600 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:not(:has(#pvFollowBtn)) .pv-actions { top: 210px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard .pv-actions .btn { font: 700 20px var(--fs-title-font) !important; height: 32px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard .pv-back-link { font: italic 700 17px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard .pv-back-link > i { filter: none !important; }
+  /* photos: grille heading strip with the Photos | Albums track at its right */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvPhotosCard .card-heading { margin: -2px -2px 6px !important; padding: 0 10px !important; height: 40px !important; border: 7px solid transparent !important;
+    border-image: var(--fs-grille) 40 fill / 7px stretch !important; font: 700 25px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvPhotoTabs { top: 6px !important; right: 12px !important; width: 190px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvPhotoTabs .search-tab { font: 700 16px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvPhotoContent .photo-menu-btn { background-color: #f6ebd9 !important; }
+  /* What Skin Am I?: grille heading, three cream rows */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvSkinCard h4 { color: var(--wh-ink) !important; font: 700 23px var(--fs-title-font) !important; }
+}
+@media (max-width: 768px) {
+  /* Back to Home sits inside the card's bottom (concept), the Photos card follows 8pt below */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:not(:has(#pvFollowBtn)) { min-height: 282px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:not(:has(#pvFollowBtn)) .profile-info { min-height: 270px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:not(:has(#pvFollowBtn)) .profile-links { bottom: 2px !important; left: 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvPhotosCard { margin-top: 8px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(#pvProfileCard, #gvProfileCard) .pv-back-link > i { display: inline-block !important; width: 18px !important; height: 18px !important; font-size: 0 !important; color: transparent !important;
+    background: var(--fs-icon-back) center / contain no-repeat !important; filter: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(#pvProfileCard, #gvProfileCard) .pv-back-link > i::before { content: none !important; }
+}
+
+/* ======================================================================================================== SOMEONE ELSE'S PROFILE (phone) — ref/lofi-room/ov-otherprofile-a.png */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) { margin-top: -10px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .profile-avatar-wrap { left: -2px; top: -22px; width: 150px !important; height: 150px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .fs-namecard { padding-left: 152px !important; min-height: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .profile-info { padding: 2px 6px 34px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .profile-name { font: 700 28px/34px var(--fs-title-font) !important; color: var(--wh-ink) !important; margin-left: 152px !important; }
+  /* the lines right of the record: streak, online, about, website — each indented past it */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .profile-info > :is(div[style*="f59e0b"], .pv-online-line, .profile-title, .profile-about, .profile-website) { margin-left: 152px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .profile-info > div[style*="f59e0b"] { font: 700 18px/24px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .profile-info > div[style*="f59e0b"] > i { color: #e8742a !important; margin-right: 6px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard .pv-online-line { font: 700 18px/24px var(--fs-title-font) !important; color: var(--wh-ink) !important; margin-top: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard .pv-online-line::before { background: #3fb24a !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) :is(.profile-title, .profile-about) { font: 500 16.5px/22px var(--fs-font) !important; color: var(--wh-ink) !important; margin-top: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .profile-website { display: flex !important; align-items: center; gap: 6px; font: 700 17px/24px var(--fs-title-font) !important; color: var(--wh-orange-ink) !important; text-decoration: underline !important; text-underline-offset: 3px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .profile-website > i { width: 18px; height: 18px; font-size: 0 !important; background: var(--fs-icon-link) center / contain no-repeat; color: transparent !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvMutualFollowers { margin: 12px 0 0 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvMutualFollowers .mutual-followers > img { width: 42px !important; height: 42px !important; box-shadow: 0 0 0 2px #f6ebd9, 0 0 0 3px #6b4226 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvMutualFollowers .mutual-followers > span { border-left-color: rgba(59,36,20,.4) !important; font: 700 16px/22px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .stat { border-image-source: var(--fs-chip) !important; height: 38px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) :is(.stat-count, .stat-label) { font-size: 20px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .pv-actions { gap: 10px 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .pv-actions .btn { font: 700 17px var(--fs-title-font) !important; color: var(--wh-ink) !important; border-image-source: var(--fs-chip) !important; height: 40px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .pv-actions :is(#pvFollowBtn, #pvMsgBtn) { font: 700 21px var(--fs-title-font) !important; color: #fff8ec !important; height: 44px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .pv-actions #pvFollowBtn { border-image-source: var(--fs-btn-primary) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .pv-actions #pvFollowBtn.btn-disabled { border-image-source: var(--fs-btn-disabled) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .pv-actions #pvMsgBtn { border-image-source: var(--fs-btn-secondary) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .pv-actions #pvReportUserBtn { border-image-source: var(--fs-btn-danger) !important; color: #b8321f !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard .pv-actions :is(.btn-primary) > i { filter: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvFollowBtn > i:not(.fa-check) { background-image: var(--fs-icon-user-plus) !important; filter: brightness(0) invert(1) sepia(.2) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvMsgBtn > i { background-image: var(--fs-icon-messages-on) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .profile-links { bottom: 6px !important; left: 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .pv-back-link { font: 700 18px var(--fs-title-font) !important; font-style: normal !important; color: var(--wh-orange-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-profile-view:has(#pvFollowBtn) #pvPhotosCard { margin-top: 8px !important; }
+}
+@media (max-width: 768px) {
+  /* concept order right of the record: name, streak, online, status, about, website */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .fs-namecard { display: contents !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .profile-name { order: 1; margin: 0 0 2px 152px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .profile-info > div[style*="f59e0b"] { order: 2; margin-top: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .pv-online-line { order: 3; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .profile-title { order: 4; margin-left: 152px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .profile-about { order: 5; margin-left: 152px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .profile-website { order: 6; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) #pvMutualFollowers { order: 7; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .profile-stats { order: 8; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .pv-actions { order: 9; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .badge-row { order: 1; }
+}
