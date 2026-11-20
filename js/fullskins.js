@@ -400,8 +400,39 @@
         ink: '#4a1c08', muted: '#7a4a33', accent: '#2f6b34',
         assets: ['tile-sage', 'tile-butter', 'tile-cream'],
         font: "'Fredoka', 'Nunito', sans-serif", fonts: 'https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap' },
-      { id: 'space-age', name: 'Space-Age Pop', ready: false, art: [] },
-      { id: 'swiss-grid', name: 'Swiss Grid', ready: false, art: [] },
+      { id: 'space-age', name: 'Space-Age Pop', ready: false, lightBar: true,
+        titleFont: "'Baloo 2', 'Nunito', sans-serif", fonts: 'https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap',
+        assets: ['btn-teal', 'heading-tab', 'nav-btn', 'orbit-orange', 'orbit-teal', 'panel-teal', 'panel-teal-tight', 'planet'],
+        art: ['avatar-frame', 'avatar-mask', 'avatar-ring', 'background', 'badge-commenter', 'badge-count', 'badge-early_adopter', 'badge-first_post', 'badge-generous', 'badge-group_leader', 'badge-photographer', 'badge-popular', 'badge-skin_collector', 'badge-social_butterfly', 'badge-streak_master', 'bar-fill', 'bar-track', 'blip-btn', 'blip-btn-on', 'btn-danger', 'btn-disabled', 'btn-primary', 'btn-round', 'btn-secondary', 'btn-square', 'btn-teal', 'bubble-in', 'bubble-out', 'burst', 'camera-badge', 'card-tail', 'card-tail-tight', 'chip', 'chip-active', 'coin', 'coin-pill', 'coin-stack', 'divider', 'field', 'group-avatar-frame', 'header-bar', 'heading-tab', 'icon-back', 'icon-bag', 'icon-bell', 'icon-block', 'icon-bookmark', 'icon-calendar', 'icon-camera', 'icon-check', 'icon-chevron', 'icon-clock', 'icon-close', 'icon-coin', 'icon-comment', 'icon-compass', 'icon-compose', 'icon-crown', 'icon-dislike', 'icon-dislike-on', 'icon-edit', 'icon-emoji', 'icon-envelope', 'icon-exit', 'icon-fire', 'icon-flag', 'icon-flag-red', 'icon-font', 'icon-gif', 'icon-gift', 'icon-globe', 'icon-groups', 'icon-groups-on', 'icon-hanger', 'icon-heart', 'icon-home', 'icon-home-on', 'icon-image', 'icon-info', 'icon-like', 'icon-like-on', 'icon-link', 'icon-logout', 'icon-messages', 'icon-messages-on', 'icon-mic', 'icon-more', 'icon-music', 'icon-mute', 'icon-network', 'icon-network-on', 'icon-people', 'icon-phone', 'icon-photo', 'icon-plus', 'icon-poll', 'icon-reply', 'icon-scroll', 'icon-search', 'icon-seen', 'icon-send', 'icon-settings', 'icon-share', 'icon-skins', 'icon-skins-on', 'icon-star', 'icon-user', 'icon-user-plus', 'icon-video', 'mascot', 'mascot-head', 'mascot-head-plain', 'mascot-jump', 'mascot-page-happy', 'mascot-page-smile', 'mascot-page-wink', 'mascot-peek', 'mascot-sleep', 'mascot-wave', 'menu-check', 'menu-panel', 'menu-row-on', 'nav-active', 'nav-bar', 'nav-btn', 'notif-comment', 'notif-follow', 'notif-group', 'notif-like', 'notif-message', 'notif-purchase', 'orbit-orange', 'orbit-teal', 'panel-card', 'panel-card-active', 'panel-card-active-tight', 'panel-card-tight', 'panel-teal', 'panel-teal-tight', 'planet', 'quest-comment', 'quest-like', 'quest-message', 'quest-post', 'quest-react', 'quest-save', 'quest-share', 'quest-view', 'reward-chip', 'sparkle-1', 'sparkle-2', 'story-add', 'story-ring', 'story-ring-seen', 'swatch-ring', 'tabs-track', 'unread-dot'] },
+      { id: 'swiss-grid', name: 'Swiss Grid', ready: false,
+        art: ['avatar-frame', 'avatar-mask', 'avatar-ring', 'background', 'badge-commenter', 'badge-count',
+          'badge-early_adopter', 'badge-first_post', 'badge-generous', 'badge-group_leader', 'badge-photographer',
+          'badge-popular', 'badge-skin_collector', 'badge-social_butterfly', 'badge-streak_master', 'bar-fill',
+          'bar-track', 'blip-btn', 'blip-btn-on', 'btn-danger', 'btn-disabled', 'btn-primary', 'btn-round',
+          'btn-secondary', 'btn-square', 'bubble-in', 'bubble-out', 'burst', 'card-tail', 'card-tail-tight',
+          'card-tailtip', 'chip', 'chip-active', 'coin', 'coin-pill', 'coin-stack', 'cover-mask', 'divider', 'field',
+          'group-avatar-frame', 'header-bar', 'icon-back', 'icon-bag', 'icon-bell', 'icon-block', 'icon-bookmark',
+          'icon-calendar', 'icon-camera', 'icon-check', 'icon-chevron', 'icon-clock', 'icon-close', 'icon-coin',
+          'icon-comment', 'icon-compass', 'icon-compose', 'icon-crown', 'icon-dislike', 'icon-dislike-on', 'icon-edit',
+          'icon-emoji', 'icon-envelope', 'icon-exit', 'icon-fire', 'icon-flag', 'icon-flag-red', 'icon-font',
+          'icon-gif', 'icon-gift', 'icon-globe', 'icon-groups', 'icon-groups-on', 'icon-hanger', 'icon-heart',
+          'icon-home', 'icon-home-on', 'icon-image', 'icon-info', 'icon-like', 'icon-like-on', 'icon-link',
+          'icon-logout', 'icon-messages', 'icon-messages-on', 'icon-mic', 'icon-more', 'icon-music', 'icon-mute',
+          'icon-network', 'icon-network-on', 'icon-people', 'icon-phone', 'icon-photo', 'icon-plus', 'icon-poll',
+          'icon-reply', 'icon-scroll', 'icon-search', 'icon-seen', 'icon-send', 'icon-settings', 'icon-share',
+          'icon-skins', 'icon-skins-on', 'icon-star', 'icon-user', 'icon-user-plus', 'icon-video', 'mascot',
+          'mascot-head', 'mascot-head-plain', 'mascot-jump', 'mascot-page-happy', 'mascot-page-smile',
+          'mascot-page-wink', 'mascot-peek', 'mascot-sleep', 'mascot-wave', 'menu-check', 'menu-panel', 'menu-row-on',
+          'nav-active', 'nav-bar', 'notif-comment', 'notif-follow', 'notif-group', 'notif-like', 'notif-message',
+          'notif-purchase', 'panel-card', 'panel-card-active', 'panel-card-active-tight', 'panel-card-tight',
+          'photo-mask', 'quest-comment', 'quest-like', 'quest-message', 'quest-post', 'quest-react', 'quest-save',
+          'quest-share', 'quest-view', 'reward-chip', 'sheet', 'skin-card-mask', 'sparkle-1', 'sparkle-2', 'story-add',
+          'story-ring', 'story-ring-seen', 'swatch-ring', 'tabs-track', 'unread-dot'],   // css/fullskins-swiss-grid.css
+        font: "'Inter', 'Helvetica Neue', Arial, sans-serif", titleFont: "'Inter', 'Helvetica Neue', Arial, sans-serif",
+        ink: '#0a0a0a', muted: '#2a2a2a', accent: '#1f4dff', lightBar: true,   // paper-white top bar: dark status text
+        theme: { '--primary': '#1f4dff', '--primary-hover': '#1636c8', '--dark': '#0a0a0a', '--gray': '#2a2a2a',
+          '--light-bg': '#fafaf7', '--card': '#fafaf7', '--border': 'rgba(10,10,10,.9)', '--nav-bg': '#fafaf7' },
+        fonts: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap' },
       { id: 'pixel-pal', name: 'Pixel Pal', ready: true, lightBar: true,   // owner approved Nov 20 2026; pea-green top bar: dark status-bar text
         // every part is painted (prototypes/pixel-pal-kit-brief.md, tools/pixel_pal_convert.py)
         art: ['avatar-frame', 'avatar-mask', 'avatar-ring', 'background', 'badge-commenter', 'badge-count', 'badge-early_adopter', 'badge-first_post', 'badge-generous', 'badge-group_leader', 'badge-photographer', 'badge-popular', 'badge-skin_collector', 'badge-social_butterfly', 'badge-streak_master', 'bar-fill', 'bar-track', 'blip-btn', 'blip-btn-on', 'btn-danger', 'btn-disabled', 'btn-primary', 'btn-round', 'btn-secondary', 'btn-square', 'bubble-in', 'bubble-out', 'burst', 'camera-badge', 'card-tail', 'card-tail-tight', 'card-tailtip', 'chip', 'chip-active', 'coin', 'coin-pill', 'coin-stack', 'cover-mask', 'divider', 'field', 'group-avatar-frame', 'header-bar', 'icon-back', 'icon-bag', 'icon-bell', 'icon-block', 'icon-bookmark', 'icon-calendar', 'icon-camera', 'icon-check', 'icon-chevron', 'icon-clock', 'icon-close', 'icon-coin', 'icon-comment', 'icon-compass', 'icon-compose', 'icon-crown', 'icon-dislike', 'icon-dislike-on', 'icon-edit', 'icon-emoji', 'icon-envelope', 'icon-exit', 'icon-fire', 'icon-flag', 'icon-flag-red', 'icon-font', 'icon-gif', 'icon-gift', 'icon-globe', 'icon-groups', 'icon-groups-on', 'icon-hanger', 'icon-heart', 'icon-home', 'icon-home-on', 'icon-image', 'icon-info', 'icon-like', 'icon-like-on', 'icon-link', 'icon-logout', 'icon-messages', 'icon-messages-on', 'icon-mic', 'icon-more', 'icon-music', 'icon-mute', 'icon-network', 'icon-network-on', 'icon-people', 'icon-phone', 'icon-photo', 'icon-plus', 'icon-poll', 'icon-reply', 'icon-scroll', 'icon-search', 'icon-seen', 'icon-send', 'icon-settings', 'icon-share', 'icon-skins', 'icon-skins-on', 'icon-star', 'icon-user', 'icon-user-plus', 'icon-video', 'mascot', 'mascot-head', 'mascot-head-plain', 'mascot-jump', 'mascot-page-happy', 'mascot-page-smile', 'mascot-page-wink', 'mascot-peek', 'mascot-sleep', 'mascot-wave', 'menu-check', 'menu-panel', 'menu-row-on', 'nav-active', 'nav-bar', 'notif-comment', 'notif-follow', 'notif-group', 'notif-like', 'notif-message', 'notif-purchase', 'panel-card', 'panel-card-active', 'panel-card-active-tight', 'panel-card-tight', 'photo-mask', 'quest-comment', 'quest-like', 'quest-message', 'quest-post', 'quest-react', 'quest-save', 'quest-share', 'quest-view', 'reward-chip', 'sheet', 'skin-card-mask', 'sparkle-1', 'sparkle-2', 'story-add', 'story-ring', 'story-ring-seen', 'swatch-ring', 'tabs-track', 'unread-dot'],
@@ -2923,6 +2954,94 @@
     });
   }
 
+  // BUBBLE POP (Blip Vibe) — soap bubbles: little bubbles float up from the bottom while one big glossy bubble swells out
+  // of the Blip corner until the sunshine-yellow fills the screen; the toy mascot bounces inside it ("Switching to Bubble
+  // Pop…" on the cream jelly pill) while the look changes underneath; then the big bubble POPS — a splash ring, sparkles
+  // and a burst of small bubbles drifting away — and the new look is there. Art: assets/bubble-pop (fx-bubble, fx-pop).
+  function equipBubblePop(id, swap) {
+    var A = function (n) { return fxArt('blip', 'bubble-pop/' + n); };
+    return Promise.all([A('fx-bubble'), A('fx-pop'), A('background'), A('mascot-jump'), A('sparkle-1'), A('coin-pill'), A('mascot')]).then(function (r) {
+      var c = fxCanvas('bubble-pop'), g = c.g, W = c.W, H = c.H, bub = r[0], pop = r[1], sun = r[2], jump = r[3] || r[6], spk = r[4], pill = r[5];
+      var ox = W * .12, oy = H * .94, R = Math.hypot(W, H) * 1.05, cx = W / 2, cy = H * .42, rise = [], burst = [];
+      for (var i = 0; i < 16; i++) rise.push({ x: Math.random() * W, s: 18 + Math.random() * 46, v: .18 + Math.random() * .3, w: Math.random() * 6, t: Math.random() * 500 });
+      for (var j = 0; j < 22; j++) burst.push({ a: Math.random() * Math.PI * 2, d: 90 + Math.random() * Math.max(W, H) * .45, s: 26 + Math.random() * 54, t: Math.random() * 120 });
+      function risers(t, al) {   // small soap bubbles drifting up, wobbling side to side
+        if (!bub) return; rise.forEach(function (b) { var tt = t - b.t; if (tt < 0) return;
+          var y = H + b.s - tt * b.v, x = b.x + Math.sin(tt / 260 + b.w) * 14; if (y < -b.s) return;
+          g.save(); g.globalAlpha = al; g.drawImage(bub, x - b.s / 2, y - b.s / 2, b.s, b.s); g.restore(); });
+      }
+      function big(rad, al) {    // the big bubble: sunshine inside, the painted bubble rim/sheen over it
+        if (rad <= 0) return;
+        g.save(); g.globalAlpha = al; g.beginPath(); g.arc(ox, oy, rad, 0, Math.PI * 2); g.clip();
+        if (sun) g.drawImage(sun, 0, 0, W, W * sun.height / sun.width); else { g.fillStyle = '#ffd23f'; g.fillRect(0, 0, W, H); }
+        g.restore();
+        if (bub) { g.save(); g.globalAlpha = al; g.drawImage(bub, ox - rad, oy - rad, rad * 2, rad * 2); g.restore(); }
+      }
+      function mascot(t, al, grow) {
+        if (!jump || al <= 0) return; var sz = Math.min(W, H) * .5 * (grow || 1), bob = Math.abs(Math.sin(t / 170)) * 24, sq = 1 + Math.sin(t / 85) * .03;
+        g.save(); g.globalAlpha = al; g.translate(cx, cy - bob); g.scale(1 / sq, sq); g.drawImage(jump, -sz / 2, -sz / 2, sz, sz * jump.height / jump.width); g.restore();
+        g.save(); g.globalAlpha = al; g.font = '800 19px Nunito, sans-serif'; g.textAlign = 'center';
+        var tw = 276, th = 54, tx = cx - tw / 2, ty = cy + sz * .6;
+        if (pill) g.drawImage(pill, tx, ty, tw, th);
+        g.fillStyle = '#14215a'; g.fillText('Switching to Bubble Pop…', cx, ty + 33); g.restore();
+      }
+      function popped(t, al) {   // splash ring + bubbles flying out and floating up + sparkles
+        var k = clamp01(t / 750);
+        if (pop) { var ps = Math.min(W, H) * (.7 + ease(k) * 1.3); g.save(); g.globalAlpha = al * (1 - k * k); g.drawImage(pop, cx - ps / 2, cy - ps / 2, ps, ps); g.restore(); }
+        burst.forEach(function (b, n) { var kk = clamp01((t - b.t) / 800), d = b.d * ease(kk), x = cx + Math.cos(b.a) * d, y = cy + Math.sin(b.a) * d - kk * 60;
+          if (bub) { g.save(); g.globalAlpha = al * (1 - kk * kk); g.drawImage(bub, x - b.s / 2, y - b.s / 2, b.s, b.s); g.restore(); }
+          if (spk && n % 2 === 0) drawRot(g, spk, x + b.s * .4, y - b.s * .3, b.s * .5, b.s * .5, kk * 3, al * (1 - kk)); });
+      }
+      return fxRun(700, function (t, k) { g.clearRect(0, 0, W, H); risers(t, 1); big(R * ease(k), 1); mascot(t, clamp01((k - .55) * 2.2)); })
+        .then(function () { return Promise.all([swap(), fxRun(900, function (t) { g.clearRect(0, 0, W, H); big(R, 1); risers(700 + t, .9); mascot(700 + t, 1); })]); })
+        .then(function () { return fxRun(800, function (t, k) { g.clearRect(0, 0, W, H);
+          big(R, 1 - clamp01(k * 3.5));                       // the skin of the bubble is gone almost at once: pop!
+          mascot(1600 + t, 1 - clamp01(k * 2.4), 1 + ease(k) * .25); popped(t, 1); }); })
+        .then(function () { c.o.remove(); });
+    });
+  }
+
+  // SPACE-AGE POP (Blip Vibe): a brass porthole irises open from the Blip button onto the cream atomic sky, the mascot's
+  // retro rocket launches across it on a curved trail past a ringed planet while orange + teal starbursts spin and a cream
+  // pill reads "Switching to Space-Age Pop…"; the look changes underneath, then the porthole closes on the new screen.
+  function equipSpaceAge(id, swap) {
+    var A = 'space-age/';
+    return Promise.all([fxArt('blip', A + 'background'), fxArt('blip', A + 'avatar-frame'), fxArt('blip', A + 'mascot-peek'),
+      fxArt('blip', A + 'planet'), fxArt('blip', A + 'sparkle-1'), fxArt('blip', A + 'sparkle-2'), fxArt('blip', A + 'coin-pill')]).then(function (r) {
+      var c = fxCanvas('space-age'), g = c.g, W = c.W, H = c.H, sky = r[0], ring = r[1], rocket = r[2], planet = r[3], pill = r[6];
+      var bb = document.getElementById('blipStart'), br = bb && bb.getBoundingClientRect();
+      var ox = br && br.width ? br.left + br.width / 2 : W * .1, oy = br && br.width ? br.top + br.height / 2 : H * .93;
+      var R = Math.hypot(Math.max(ox, W - ox), Math.max(oy, H - oy)) * 1.08, stars = [];
+      for (var i = 0; i < 16; i++) stars.push({ x: Math.random() * W, y: Math.random() * H * .85, s: 18 + Math.random() * 26, t: Math.random() * 700, im: r[4 + (i % 2)], v: (Math.random() - .5) * 3 });
+      function porthole(rad) {   // the cream sky inside a circle, the painted brass porthole ring on its edge
+        if (rad <= 0) return;
+        g.save(); g.beginPath(); g.arc(ox, oy, rad, 0, Math.PI * 2); g.clip();
+        if (sky) { var sh = W * sky.height / sky.width; g.drawImage(sky, 0, H - sh, W, sh); g.drawImage(sky, 0, H - sh * 2, W, sh); } else { g.fillStyle = '#fbebd3'; g.fillRect(0, 0, W, H); }
+        g.restore();
+        if (ring) { var d = rad * 2 / .70; g.drawImage(ring, ox - d / 2, oy - d / 2, d, d); }   // ring window = 70% of its canvas
+      }
+      function scene(t, al) {
+        g.save(); g.globalAlpha = al;
+        stars.forEach(function (p) { var k = clamp01((t - p.t) / 400); if (k > 0) drawRot(g, p.im, p.x, p.y, p.s * ease(k), p.s * ease(k), t / 600 * p.v, .9); });
+        var m = Math.min(W, H);
+        if (planet) { var pw = m * .34; g.drawImage(planet, W * .24 - pw / 2, H * .2 - pw / 3 + Math.sin(t / 500) * 6, pw, pw * planet.height / planet.width); }
+        if (rocket) {   // curved launch: bottom-left → upper-right, nose along the path
+          var k2 = clamp01(t / 1900), x = -m * .2 + (W + m * .4) * k2, y = H * .78 - Math.sin(k2 * Math.PI * .9) * H * .42 - k2 * H * .1, rs = m * .46;
+          drawRot(g, rocket, x, y + Math.sin(t / 90) * 2, rs, rs * rocket.height / rocket.width, .08 - k2 * .22, 1);
+        }
+        g.font = "800 19px 'Baloo 2', Nunito, sans-serif"; g.textAlign = 'center';
+        var tw = Math.min(290, W - 40), th = 50, tx = W / 2 - tw / 2, ty = H * .6;
+        if (pill) g.drawImage(pill, tx, ty, tw, th); else { g.fillStyle = '#fff4e2'; g.fillRect(tx, ty, tw, th); }
+        g.fillStyle = '#2a2233'; g.fillText('Switching to Space-Age Pop…', W / 2, ty + 32);
+        g.restore();
+      }
+      return fxRun(650, function (t, k) { g.clearRect(0, 0, W, H); porthole(R * ease(k)); scene(t, clamp01((k - .45) * 2)); })
+        .then(function () { return Promise.all([swap(), fxRun(1050, function (t) { g.clearRect(0, 0, W, H); porthole(R); scene(650 + t, 1); })]); })
+        .then(function () { return fxRun(560, function (t, k) { var e = ease(k); g.clearRect(0, 0, W, H); porthole(R * (1 - e)); scene(1700 + t, 1 - k); }); })
+        .then(function () { c.o.remove(); });
+    });
+  }
+
   var EQUIP_FX = { 'blip': equipBlip, 'basic': equipBasic, 'scrapbook': equipScrapbook, 'anime-blaze': equipBlaze, 'witchcraft': equipWitchcraft, 'good-witch': equipGoodWitch, 'vaporwave': equipVaporwave, 'heavens-light': equipHeaven, 'blood-moon': equipBloodMoon, 'superhero': equipSuperhero };
   // app.js calls this from the Equip buttons: equipTransition(id, function () { ...apply + save... })
   /* Blip Vibes switch animations (owner, Nov 20 2026: "everyone of them need to have a themed animation not just one for
@@ -2930,6 +3049,179 @@
      same contract as EQUIP_FX; load its art with fxArt('blip', '<vibe>/<part>')). Logo Classic keeps equipBlip. */
   var VIBE_FX = {};
   VIBE_FX['lofi-room'] = equipLofiRoom;
+  VIBE_FX['bubble-pop'] = equipBubblePop;
+
+  // CLAY TOWN — slap-down: lumps of painted clay (terracotta, cream, sage, butter) drop from the top, stretch as they
+  // fall and splat flat with a squash until the clay page covers the screen; the clay mascot plops in with a
+  // squash-and-stretch bounce over a butter "Switching to Clay Town…" pill; the look changes underneath, then the whole
+  // slab is pressed flat downwards like dough under a palm and the new look shows.
+  function equipClayTown(id, swap) {
+    var P = 'clay-town/', kinds = ['fx-splat-terra', 'fx-splat-cream', 'fx-splat-sage', 'fx-splat-butter'];
+    return Promise.all(kinds.concat(['fx-ball-terra', 'background', 'mascot-jump', 'chip-active', 'sparkle-1', 'mascot'])
+      .map(function (n) { return fxArt('blip', P + n); })).then(function (r) {
+      var c = fxCanvas('clay-town'), g = c.g, W = c.W, H = c.H;
+      var splat = r.slice(0, 4), ball = r[4], bg = r[5], jump = r[6] || r[9], pill = r[7], spk = r[8];
+      var cols = 3, rows = Math.max(4, Math.round(H / W * 3)), cw = W / cols, ch = H / rows, S = Math.max(cw, ch) * 1.75, lumps = [];
+      for (var y = 0; y < rows; y++) for (var x = 0; x < cols; x++)
+        lumps.push({ x: (x + .5 + (Math.random() - .5) * .4) * cw, y: (y + .5 + (Math.random() - .5) * .4) * ch, im: splat[(x + y * 3) % 4] || ball,
+          s: S * (.85 + Math.random() * .3), rot: (Math.random() - .5) * .9, t: 0 });
+      lumps.sort(function () { return Math.random() - .5; }).forEach(function (l, i) { l.t = i * 38; });
+      var drops = [];
+      for (var i = 0; i < 10; i++) drops.push({ a: Math.random() * Math.PI * 2, d: 50 + Math.random() * 120, s: 12 + Math.random() * 14, t: Math.random() * 220 });
+      function lump(l, t) {   // fall (stretched tall), splat (squashed wide), wobble to rest
+        var k = t - l.t; if (k <= 0 || !l.im) return;
+        var fall = 240, yy = l.y, sx = 1, sy = 1;
+        if (k < fall) { var f = k / fall; yy = -S + (l.y + S) * f * f; sx = .7; sy = 1.35; }
+        else { var w = (k - fall) / 380; if (w < 1) { var e = Math.exp(-5 * w) * Math.cos(w * 14); sx = 1 + .28 * e; sy = 1 - .28 * e; } }
+        var h = l.s * l.im.height / l.im.width;
+        g.save(); g.translate(l.x, yy); g.rotate(l.rot); g.scale(sx, sy); g.drawImage(l.im, -l.s / 2, -h / 2, l.s, h); g.restore();
+      }
+      function page(al) { if (!bg || al <= 0) return; g.save(); g.globalAlpha = al; var h = W * bg.height / bg.width; for (var yy = 0; yy < H; yy += h) g.drawImage(bg, 0, yy, W, h); g.restore(); }
+      function scene(t) {   // t ms since start; slab = page + lumps
+        page(clamp01((t - 380) / 320));
+        lumps.forEach(function (l) { lump(l, t); });
+      }
+      function mascot(t, al) {   // t ms since the mascot started: plop down, squash on landing, small bounces
+        if (!jump || al <= 0) return;
+        var sz = Math.min(W, H) * .58, cy = H * .38, yy = cy, sx = 1, sy = 1;
+        if (t < 260) { var f = t / 260; yy = -sz + (cy + sz) * f * f; sx = .82; sy = 1.2; }
+        else { var u = (t - 260) / 1000, b = Math.abs(Math.sin(u * Math.PI * 2.2)) * Math.exp(-2.4 * u);
+          yy = cy - b * 46; var sq = Math.exp(-4 * u) * Math.cos(u * 22); sx = 1 + .16 * sq; sy = 1 - .16 * sq; }
+        var h = sz * jump.height / jump.width;
+        g.save(); g.globalAlpha = al; g.translate(W / 2, yy + h / 2); g.scale(sx, sy); g.drawImage(jump, -sz / 2, -h, sz, h); g.restore();
+        if (spk && t > 260) drops.forEach(function (p) { var k = clamp01((t - 260 - p.t) / 520);
+          drawRot(g, spk, W / 2 + Math.cos(p.a) * p.d * ease(k), cy + h * .45 + Math.sin(p.a) * p.d * .5 * ease(k), p.s, p.s, k * 2, al * (1 - k)); });
+        var tw = Math.min(270, W - 48), th = 56, tx = W / 2 - tw / 2, ty = cy + h * .62 + 18;
+        g.save(); g.globalAlpha = al * clamp01((t - 200) / 200);
+        if (pill) g.drawImage(pill, tx, ty, tw, th);
+        g.font = "600 18px Fredoka, Nunito, sans-serif"; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#4a1c08';
+        g.fillText('Switching to Clay Town…', W / 2, ty + th / 2 + 1); g.restore();
+      }
+      return fxRun(760, function (t) { g.clearRect(0, 0, W, H); scene(t); })
+        .then(function () { return Promise.all([swap(), fxRun(1050, function (t) { g.clearRect(0, 0, W, H); scene(760 + t); mascot(t, 1); })]); })
+        .then(function () { return fxRun(560, function (t, k) {   // pressed flat towards the bottom, a little wider
+          var e = ease(k); g.clearRect(0, 0, W, H);
+          g.save(); g.translate(W / 2, H); g.scale(1 + .18 * e, 1 - e); g.translate(-W / 2, -H);
+          scene(2000); mascot(1310 + t, 1 - k); g.restore(); }); })
+        .then(function () { c.o.remove(); });
+    });
+  }
+  VIBE_FX['clay-town'] = equipClayTown;
+  /* Swiss Grid switch (Blip Vibe 'swiss-grid'): a Swiss poster assembles itself — paper columns drop in on a ruled
+     6-column grid, electric-blue blocks slide into their cells, the line-art mascot steps into the centre cell with its
+     sparkles and a monospace caption; the look is swapped underneath, then the columns lift away one by one (crisp,
+     no bounce: the look's motion). Painted art: swiss-grid background / nav-active / mascot-peek / sparkle-1. */
+  function equipSwissGrid(id, swap) {
+    var A = 'swiss-grid/';
+    return Promise.all([fxArt('blip', A + 'background'), fxArt('blip', A + 'nav-active'),
+      fxArt('blip', A + 'mascot-peek'), fxArt('blip', A + 'sparkle-1')]).then(function (r) {
+      var c = fxCanvas('swiss-grid'), g = c.g, W = c.W, H = c.H, paper = r[0], blue = r[1], mascot = r[2], spk = r[3];
+      var N = 6, cw = W / N, sm = function (x) { return x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; };
+      // blue blocks: [column, row from top as a fraction of H, width in columns, height fraction, delay]
+      var blocks = [[0, .08, 2, .16, 0], [4, .62, 2, .22, 90], [1, .74, 1, .1, 170], [5, .12, 1, .3, 240]];
+      function col(i, k) {   // paper column i covering k (0..1) of the height, its rule on the right
+        var h = H * k; if (h <= 0) return;
+        if (paper) g.drawImage(paper, 0, 0, paper.width, paper.height * Math.max(.01, k), i * cw, 0, cw + 1, h); else { g.fillStyle = '#fafaf7'; g.fillRect(i * cw, 0, cw + 1, h); }
+        if (i < N - 1) { g.fillStyle = '#0a0a0a'; g.fillRect((i + 1) * cw - .75, 0, 1.5, h); }
+      }
+      function hrules(al) { g.save(); g.globalAlpha = al; g.fillStyle = '#0a0a0a'; [.08, .24, .5, .62, .84].forEach(function (y) { g.fillRect(0, H * y - .75, W * al, 1.5); }); g.restore(); }
+      function block(b, k) {
+        var x = b[0] * cw, y = H * b[1], w = b[2] * cw, h = H * b[3], ww = w * sm(k); if (ww <= 0) return;
+        if (blue) g.drawImage(blue, x, y, ww, h); else { g.fillStyle = '#1f4dff'; g.fillRect(x, y, ww, h); }
+      }
+      function hero(t, al) {
+        if (al <= 0) return; var sz = Math.min(W * .62, 300), y = H * .3 + (1 - al) * 18;
+        g.save(); g.globalAlpha = al;
+        if (mascot) g.drawImage(mascot, W / 2 - sz / 2, y, sz, sz * mascot.height / mascot.width);
+        if (spk) { var tw = .8 + .2 * Math.sin(t / 140); g.drawImage(spk, W / 2 + sz * .3, y - sz * .02, sz * .14 * tw, sz * .14 * tw); g.drawImage(spk, W / 2 - sz * .46, y + sz * .62, sz * .09, sz * .09); }
+        g.fillStyle = '#0a0a0a'; g.font = '600 15px "IBM Plex Mono", ui-monospace, Menlo, monospace'; g.textAlign = 'left';
+        g.fillText('SWITCHING TO', cw * .3, y + sz * 1.06); g.font = '900 34px Inter, "Helvetica Neue", Arial, sans-serif'; g.fillText('Swiss Grid', cw * .3, y + sz * 1.06 + 38);
+        g.restore();
+      }
+      function frame(dropK, blockT, heroT, heroA, ruleA) {
+        g.clearRect(0, 0, W, H);
+        g.save(); g.beginPath();
+        for (var i = 0; i < N; i++) { var k = dropK(i); col(i, k); g.rect(i * cw, 0, cw + 1, H * Math.max(0, k)); }
+        g.clip();   // rules, blocks and the mascot live on the paper: they leave with their columns
+        hrules(ruleA); blocks.forEach(function (b) { block(b, clamp01((blockT - b[4]) / 320)); }); hero(heroT, heroA);
+        g.restore();
+      }
+      var full = function () { return 1; };
+      return fxRun(560, function (t) { frame(function (i) { return sm(clamp01((t - i * 45) / 330)); }, -1, 0, 0, clamp01((t - 260) / 300)); })
+        .then(function () { return fxRun(420, function (t) { frame(full, t, t, clamp01((t - 160) / 260), 1); }); })
+        .then(function () { return Promise.all([swap(), fxRun(820, function (t) { frame(full, 420 + t, 420 + t, 1, 1); })]); })
+        .then(function () { return fxRun(560, function (t, k) {
+          frame(function (i) { return 1 - sm(clamp01((t - i * 45) / 320)); }, 9999, 1240 + t, 1 - clamp01(k * 2.2), 1 - k);
+        }); })
+        .then(function () { c.o.remove(); });
+    });
+  }
+  VIBE_FX['swiss-grid'] = equipSwissGrid;
+  /* PIXEL PAL — 8-bit "level load": the screen fills tile by tile with pea-green pixel blocks (the look's painted page), the
+     pixel mascot hops in over a pixel dialog box "Switching to Pixel Pal…" with a segmented orange loading bar that fills
+     while the look is applied underneath, then the blocks clear tile by tile in a burst of yellow pixel sparkles.
+     All painted Pixel Pal art (assets/pixel-pal); drawn with smoothing off so the pixels stay crisp. */
+  function equipPixelPal(id, swap) {
+    var P = 'pixel-pal/';
+    return Promise.all(['background', 'mascot-jump', 'panel-card-tight', 'bar-track', 'bar-fill', 'sparkle-1', 'coin', 'header-bar'].map(function (n) { return fxArt('blip', P + n); })).then(function (r) {
+      var c = fxCanvas('pixel-pal'), g = c.g, W = c.W, H = c.H, bg = r[0], hop = r[1], box = r[2], trk = r[3], fil = r[4], spk = r[5], coin = r[6], alt = r[7];
+      g.imageSmoothingEnabled = false;
+      var T = Math.max(26, Math.round(W / 11)), cols = Math.ceil(W / T), rows = Math.ceil(H / T), tiles = [];
+      for (var y = 0; y < rows; y++) for (var x = 0; x < cols; x++) {
+        // a diagonal sweep from the Blip corner (bottom-left) with a little 8-bit jitter
+        var d = (x + (rows - 1 - y)) / (cols + rows - 2);
+        tiles.push({ x: x * T, y: y * T, at: d * .75 + Math.random() * .25, odd: (x + y) % 2 });
+      }
+      var sp = [];
+      for (var i = 0; i < 16; i++) sp.push({ a: Math.random() * Math.PI * 2, d: 70 + Math.random() * 150, s: 12 + Math.round(Math.random() * 3) * 6, t: Math.random() * 220 });
+      function blocks(k) {   // k 0..1 = share of tiles shown; each tile is that piece of the painted page
+        tiles.forEach(function (t) {
+          if (t.at > k) return;
+          var im = t.odd && alt ? alt : bg;   // checkered in the look's two painted greens (page + top bar), like an 8-bit wipe
+          var vh = im === alt ? im.height * .6 : (im ? im.height : 0);   // the top bar's band only (not its dark bottom edge)
+          if (im) g.drawImage(im, t.x / W * im.width, t.y / H * vh, T / W * im.width, T / H * vh, t.x, t.y, T + 1, T + 1);
+          else { g.fillStyle = '#e1f0c3'; g.fillRect(t.x, t.y, T + 1, T + 1); }
+        });
+      }
+      function nine(im, x, y, w, h) {   // the pixel dialog card, 9-sliced so its stepped corners keep their size
+        if (!im) return; var s = 60, sb = 98, d = 17, db = 28, iw = im.width, ih = im.height;
+        var sx = [0, s, iw - s, iw], sy = [0, s, ih - sb, ih], dx = [x, x + d, x + w - d, x + w], dy = [y, y + d, y + h - db, y + h];
+        for (var a = 0; a < 3; a++) for (var bI = 0; bI < 3; bI++)
+          g.drawImage(im, sx[a], sy[bI], sx[a + 1] - sx[a], sy[bI + 1] - sy[bI], dx[a], dy[bI], dx[a + 1] - dx[a], dy[bI + 1] - dy[bI]);
+      }
+      var bw = Math.min(300, W - 48), bh = 112, bx = (W - bw) / 2, by = H * .5;
+      function dialog(t, k, al) {   // k = loading progress 0..1
+        g.save(); g.globalAlpha = al;
+        // the mascot hops in steps (8-bit: whole-pixel jumps, no smooth easing)
+        if (hop) { var sz = Math.min(W, H) * .36, hy = Math.round(Math.abs(Math.sin(t / 160)) * 4) * 6;
+          g.drawImage(hop, W / 2 - sz / 2, by - sz * .98 - hy, sz, sz * hop.height / hop.width); }
+        nine(box, bx, by, bw, bh);
+        g.fillStyle = '#10301f'; g.font = '900 19px Nunito, sans-serif'; g.textAlign = 'center';
+        g.fillText('Switching to Pixel Pal…', W / 2, by + 40);
+        var tx = bx + 22, tw = bw - 44 - 34, ty = by + 58, th = 16;
+        if (trk) g.drawImage(trk, tx, ty, tw, th);
+        if (fil) { var n = 10, seg = Math.floor(k * n + .001);   // the bar fills one pixel segment at a time
+          if (seg > 0) g.drawImage(fil, 0, 0, fil.width * seg / n, fil.height, tx, ty, tw * seg / n, th); }
+        if (coin) g.drawImage(coin, tx + tw + 8, ty - 5, 26, 26);
+        g.restore();
+      }
+      function sparks(t, al) {
+        if (!spk) return; sp.forEach(function (p) { var q = clamp01((t - p.t) / 520), rr = Math.round(p.d * ease(q) / 6) * 6;
+          g.save(); g.globalAlpha = al * (1 - q * .5);
+          g.drawImage(spk, Math.round((W / 2 + Math.cos(p.a) * rr) / 3) * 3 - p.s / 2, Math.round((by - 40 + Math.sin(p.a) * rr) / 3) * 3 - p.s / 2, p.s, p.s);
+          g.restore(); });
+      }
+      return fxRun(620, function (t, k) { g.clearRect(0, 0, W, H); blocks(k * 1.02); dialog(t, 0, clamp01((k - .55) / .45)); })
+        .then(function () {
+          return Promise.all([swap(), fxRun(1000, function (t, k) { g.clearRect(0, 0, W, H); blocks(1.1); dialog(620 + t, k, 1); })]);
+        })
+        .then(function () { return fxRun(240, function (t) { g.clearRect(0, 0, W, H); blocks(1.1); dialog(1620 + t, 1, 1); sparks(t, 1); }); })
+        .then(function () { return fxRun(560, function (t, k) { g.clearRect(0, 0, W, H); blocks(1.05 - k * 1.1); dialog(1860 + t, 1, 1 - k); sparks(240 + t, 1 - k); }); })
+        .then(function () { c.o.remove(); });
+    });
+  }
+  VIBE_FX['pixel-pal'] = equipPixelPal;
+  VIBE_FX['space-age'] = equipSpaceAge;
   function equipTransition(id, applyFn, vibe) {
     var fx = (vibe && VIBE_FX[vibe]) || EQUIP_FX[id], reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!fx || reduce || equipBusy) { applyFn(); return; }

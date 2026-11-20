@@ -1,0 +1,39 @@
+/* SWISS GRID — a Blip Vibe look of the default skin (js/fullskins.js FULL_SKINS.blip.variants 'swiss-grid', saved as fsVariants.blip).
+ * Overrides css/fullskins-blip.css only where the Swiss Grid concepts differ. Every rule is scoped under
+ * html body.fs.fs-blip[data-fs-variant="swiss-grid"] (the attribute also out-ranks Logo Classic's equal selectors).
+ * Art: images/skins/blip/assets/swiss-grid (kit: prototypes/tools/swiss_grid_geom.py + Codex-painted parts, swiss_grid_convert.py).
+ * Concepts: images/skins/default/swiss-grid/<page>.png (local only); overlay crops images/skins/blip/ref/swiss-grid/ov-<page>-<a|b>.png.
+ * Look: paper white #FAFAF7, ink #0A0A0A, ONE electric blue #1F4DFF; sharp rectangles + 1.5pt ink rules; heavy neo-grotesk
+ * headlines (Inter 800/900), small monospace labels (IBM Plex Mono) for times / counts / captions. */
+
+/* ---------- palette + type ---------- */
+html body.fs.fs-blip[data-fs-variant="swiss-grid"] {
+  --bl-ink: #0a0a0a; --bl-soft: #3a3a3a; --bl-blue: #1f4dff; --bl-deep: #1636c8; --bl-navy: #0a0a0a;
+  --sg-paper: #fafaf7; --sg-ink: #0a0a0a; --sg-blue: #1f4dff; --sg-grey: #d9d9d4; --sg-rule: 1.5px; --sg-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  background: var(--sg-paper) !important; color: var(--sg-ink) !important; }
+html body.fs.fs-blip[data-fs-variant="swiss-grid"] :is(h1, h2, h3, h4, .profile-name, .post-username, .card-heading, .stat-count, .msg-contact-name,
+  .group-card-body h4, .fsk-name, .profile-card-name) { color: var(--sg-ink) !important; letter-spacing: -.02em; }
+html body.fs.fs-blip[data-fs-variant="swiss-grid"] :is(.post-time, .notif-time, .msg-time, .quest-count, .quest-resets, .featured-timer, .comment-time) {
+  font-family: var(--sg-mono) !important; font-weight: 500 !important; letter-spacing: 0 !important; }
+
+/* ---------- 9-slice pieces: every Swiss piece is a sharp rectangle with a 1.5pt ink rule (art 96x96, rule 6px, slice 16 / 4px) ---------- */
+html body.fs.fs-blip[data-fs-variant="swiss-grid"] :is(.card, .feed-post, .quest-panel, .coin-goal-bar, .featured-skin-banner, .group-card, .comment-item,
+  .msg-contact, .notif-item, .user-dropdown, .post-dropdown, .modal-content) {
+  border-image: var(--fs-panel-card) 16 fill / 4px stretch !important; border-image-outset: 0 !important; }
+html body.fs.fs-blip[data-fs-variant="swiss-grid"] :is(.msg-contact.active, .notif-item.unread) { border-image-source: var(--fs-panel-card-active) !important; }
+html body.fs.fs-blip[data-fs-variant="swiss-grid"] :is(.btn-primary, .featured-buy-btn, .mobile-pill, .fsk-buy, .btn-outline, .view-group-btn, .btn-disabled, #gvLeaveBtn,
+  .search-tab, #profileCard .stat, .navbar .nav-coins, .post-input-fake, .page-search, .quest-reward) {
+  border-image-slice: 16 fill !important; border-image-width: 4px !important; border-image-outset: 0 !important; }
+html body.fs.fs-blip[data-fs-variant="swiss-grid"] .navbar .nav-coins { border-image-slice: 40 fill !important; border-image-width: 10px !important; }
+html body.fs.fs-blip[data-fs-variant="swiss-grid"] :is(.btn-outline, .view-group-btn, #gvLeaveBtn) { color: var(--sg-ink) !important; }
+html body.fs.fs-blip[data-fs-variant="swiss-grid"] :is(.btn-disabled, .join-group-btn.btn-disabled) { color: #6b6b66 !important; }
+html body.fs.fs-blip[data-fs-variant="swiss-grid"] #feedTabs { border-image: var(--fs-tabs-track) 16 fill / 4px stretch !important; }
+html body.fs.fs-blip[data-fs-variant="swiss-grid"] :is(.quest-bar, .coin-goal-track) { border-image: none !important; background: var(--fs-bar-track) center / 100% 100% no-repeat !important; }
+html body.fs.fs-blip[data-fs-variant="swiss-grid"] :is(.post-input-fake, .page-search, #globalSearch, .msg-search input) { color: #55554f !important; }
+
+/* ---------- motion: Swiss = crisp slides, no bounce ---------- */
+@keyframes sgSlide { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes sgBlock { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+html body.fs.fs-blip[data-fs-variant="swiss-grid"] .page.active { animation: sgSlide .24s cubic-bezier(.2,.8,.2,1); }
+html body.fs.fs-blip[data-fs-variant="swiss-grid"] :is(.btn, .mobile-pill, .search-tab, .action-btn):active { transform: none; filter: none; opacity: .75; }
+@media (prefers-reduced-motion: reduce) { html body.fs.fs-blip[data-fs-variant="swiss-grid"] * { animation: none !important; transition: none !important; } }
