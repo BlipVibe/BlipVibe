@@ -434,3 +434,28 @@ html body.fs.fs-blip[data-fs-variant="lofi-room"] .page-search input, html body.
   html body.fs.fs-blip[data-fs-variant="lofi-room"] #notifList .notif-text { gap: 6px !important; }
   html body.fs.fs-blip[data-fs-variant="lofi-room"] .notif-new-badge { padding: 0 7px !important; font-size: 12.5px !important; }
 }
+
+/* ======================================================================================================== MESSAGES (phone) — ref/lofi-room/ov-messages-a.png */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-messages .page-container { padding: 0 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-messages .msg-sidebar { position: relative; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-messages .msg-sidebar::before { content: ""; position: absolute; left: 0; right: 0; top: 4px; height: 118px; z-index: 0; pointer-events: none;
+    border: 10px solid transparent; border-image: var(--fs-grille) 40 fill / 10px stretch; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-messages .msg-sidebar > * { position: relative; z-index: 1; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-messages .msg-sidebar-header { padding: 14px 20px 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-messages .msg-sidebar-header h3 { font: 700 38px/44px var(--fs-title-font) !important; color: var(--wh-ink) !important; letter-spacing: -.5px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-messages .msg-search { margin: 4px 12px 22px !important; height: 40px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-messages .msg-search > i { filter: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-messages .msg-search input { font: 500 17px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-messages .msg-contact-name { font: 700 20px/23px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-messages .msg-contact-name > span { min-width: 24px; height: 24px; line-height: 24px !important; padding: 0 7px !important; border-radius: 0 !important; font: 700 14px/24px var(--fs-title-font) !important;
+    background: none !important; color: #fff8ec !important; border: 0 solid transparent; border-image: var(--fs-badge-count) 0 fill / 0 stretch; text-align: center; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-messages .msg-contact-preview { font: 500 17px/21px var(--fs-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-messages .msg-contact-time { right: 16px !important; top: 6px !important; font: 600 16px var(--fs-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-messages #newGroupDmBtn > div:first-child { background: var(--fs-story-add) center / contain no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-messages #newGroupDmBtn > div:first-child > i { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-messages #newGroupDmBtn .msg-contact-name { color: var(--wh-ink) !important; font-size: 21px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-messages .msg-contact { height: 62px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-messages .msg-contact img { width: 50px !important; height: 50px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .online-dot { background: #3fb24a !important; border-color: #f6ebd9 !important; }
+}
