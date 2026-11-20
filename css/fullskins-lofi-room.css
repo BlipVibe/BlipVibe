@@ -255,3 +255,117 @@ html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .photos-card .view-
   html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-reward { width: 56px !important; min-width: 56px !important; box-sizing: border-box; justify-content: flex-start; }
   html body.fs.fs-blip[data-fs-variant="lofi-room"] .feed-post .post-menu-btn { margin-right: 10px !important; }
 }
+
+/* ======================================================================================================== GROUP PAGE (phone) — ref/lofi-room/ov-group-a.png */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link[data-page="groups"]:is(*) { border-image: none !important; background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"]:has(#page-group-view.active) .nav-center .nav-link[data-page="groups"] { border-image: none !important; background: none !important; }
+  /* cover: edge to edge, square corners, the mascot nodding behind its turntable at the right */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvCoverBanner { height: 144px !important; margin: 0 !important; -webkit-mask-box-image: none !important; mask-border: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvCoverBanner::after { background-image: var(--fs-mascot-turntable) !important; right: 30px !important; top: auto !important; bottom: -2px !important;
+    width: 180px !important; height: 112px !important; animation: whNod 1.6s ease-in-out infinite !important; transform-origin: 50% 100%; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view .gv-layout { padding: 0 6px !important; }
+  /* the card: Back to Groups on top, the group's cover again as a rounded strip, the vinyl group picture over it,
+     name + description at the right, the stats on a raised plate, Joined | Leave Group, then Rules / Invite inside the same card */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard { margin: 0 !important; min-height: 0 !important; border-image-width: 17px 17px 0 17px !important; border-image-outset: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"]:is(*) #gvProfileCard::before { border-image-width: 17px 17px 0 17px !important; border-image-outset: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"]:is(*) #gvProfileCard::after { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvProfileCard .profile-cover { display: block !important; position: absolute; left: 8px; right: 8px; top: 30px; height: 54px; z-index: 0;
+    background: var(--wh-gv-cover, #8a5a36) center / cover !important; -webkit-mask-box-image: var(--fs-photo-mask) 30 / 8px stretch; mask-border: var(--fs-photo-mask) 30 / 8px stretch; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-info { position: relative; grid-template-columns: 150px 1fr !important; column-gap: 4px !important; padding: 52px 8px 0 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-avatar-wrap { width: 150px !important; height: 150px !important; margin: 4px 0 0 -2px !important; z-index: 2; border-radius: 50% !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-avatar-wrap::after { content: "" !important; display: block !important; position: absolute; inset: 0 !important; z-index: 3;
+    background: var(--fs-group-avatar-frame) center / 100% 100% no-repeat !important; pointer-events: none; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-avatar-wrap > :is(img, .gv-icon-wrap) { position: absolute; inset: 17.5% !important; width: 65% !important; height: 65% !important;
+    border-radius: 50% !important; -webkit-mask: none !important; mask: none !important; border: 0 !important; object-fit: cover; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .fs-namecard { grid-column: 2; padding: 38px 0 0 !important; position: relative; z-index: 1; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvProfileCard .profile-name { font-size: 29px !important; line-height: 34px !important; margin: 0 !important; letter-spacing: -.4px; white-space: nowrap; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvProfileCard .profile-title { font: 500 14.5px/19px var(--fs-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-stats { position: absolute !important; left: 0; right: 0; top: 165px; margin: 0 !important; height: 52px; z-index: 1;
+    display: grid !important; grid-template-columns: 1fr 1fr 1fr; padding: 0 6px 0 140px !important; box-sizing: border-box;
+    border: 0 solid transparent !important; border-image: var(--fs-chip) 0 70 fill / 0 18px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvProfileCard .stat { display: flex !important; flex-direction: column !important; align-items: center; justify-content: center; gap: 0 !important; height: 52px !important;
+    padding: 0 !important; border: 0 !important; border-image: none !important; background: none !important; position: relative; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvProfileCard .stat + .stat::before { content: ""; position: absolute; left: 0; top: 13px; bottom: 13px; width: 1px; background: rgba(59,36,20,.45); }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvProfileCard .stat-count { font: 700 20px/22px var(--fs-title-font) !important; color: var(--wh-ink) !important; display: flex; align-items: center; gap: 4px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvProfileCard .stat-label { font: 500 14px/17px var(--fs-font) !important; color: var(--wh-ink) !important; white-space: nowrap; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .pv-actions { position: relative; margin: 74px 0 0 !important; padding: 0 0 0 8px; gap: 6px !important; display: grid !important; grid-template-columns: 174px 1fr; grid-column: 1 / -1; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .pv-actions .btn { height: 37px !important; min-height: 0 !important; font: 700 19px var(--fs-title-font) !important; border-image-width: 0 18px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvLeaveBtn > i { width: 22px; height: 22px; font-size: 0 !important; background: var(--fs-icon-exit) center / contain no-repeat; display: inline-block; margin-right: 6px; vertical-align: -4px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvProfileCard .pv-back-link { position: absolute !important; left: 16px !important; top: 8px !important; bottom: auto !important; z-index: 2;
+    font: 700 15px var(--fs-title-font) !important; color: var(--wh-ink) !important; text-decoration: underline !important; text-underline-offset: 3px; }
+  /* Rules + Invite: greige brushed pills inside the card (the card's lower half is painted behind them) */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight { position: relative; gap: 8px !important; padding: 10px 8px 0 !important; margin-top: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 102px; z-index: 0; pointer-events: none;
+    border: 0 solid transparent; border-image: var(--fs-panel-card-tight) 0 60 98 60 fill / 0 17px 28px 17px / 0 0 11px 0 stretch; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight > * { position: relative; z-index: 1; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn) { height: 32px !important; min-height: 0 !important; margin: 0 !important;
+    border-image-source: var(--fs-btn-disabled) !important; border-image-width: 0 16px !important; font: 700 19px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn) * { color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn) > i { width: 26px; height: 26px; font-size: 0 !important; background: var(--fs-icon-scroll) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight .gv-invite-link-btn > i { background-image: var(--fs-icon-link); }
+  /* Members: grille card, cream-ringed avatars, "+42 more" after a divider */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight > .card { margin-top: 14px !important; border-image-source: var(--fs-grille) !important; border-image-slice: 40 fill !important;
+    border-image-width: 10px !important; border-image-outset: 0 !important; border-width: 8px 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight .card-heading { font-size: 23px !important; line-height: 26px !important; margin: 0 0 4px 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight .gv-members-preview img { width: 52px !important; height: 52px !important; padding: 3px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight .gv-members-more { font: 700 17px/1.1 var(--fs-title-font) !important; color: var(--wh-ink) !important; padding-left: 8px; border-left: 1px solid rgba(59,36,20,.45); text-align: center; }
+  /* scrolled: post bar with the listening mascot, "Group Posts" grille heading strip, posts */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvPostBar .post-create-bar::after { content: ""; position: absolute; right: -2px; top: -16px; width: 100px; height: 84px; pointer-events: none;
+    background: var(--fs-mascot-listen) center / contain no-repeat; animation: whNod 1.8s ease-in-out infinite; transform-origin: 50% 90%; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvPostsFeed { border-image: none !important; border: 0 !important; gap: 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvPostsFeed > .card:first-child { border: 9px solid transparent !important; border-image: var(--fs-grille) 40 fill / 9px stretch !important; padding: 2px 16px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .pv-posts-heading { font: 700 26px/34px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+}
+/* group card, final: every piece placed on the card as in the concept (card-relative y: back link 8, picture 50-200,
+   name 70, description 106, stats plate 163-215, buttons 225-262) */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard { position: relative !important; height: 272px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-cover { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-info { display: block !important; position: static !important; padding: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-avatar-wrap { position: absolute !important; left: 0; top: 40px; margin: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-name { position: absolute; left: 152px; right: 6px; top: 62px; text-align: left !important; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-title { position: absolute; left: 154px; right: 8px; top: 100px; margin: 0 !important; text-align: left !important;
+    display: -webkit-box !important; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-stats { top: 148px !important; left: -6px !important; right: -6px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvProfileCard .stat-count, html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvProfileCard .stat-label { white-space: nowrap !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .pv-actions { position: absolute !important; left: -8px; right: -8px; top: 212px; margin: 0 !important; padding: 0 !important; grid-template-columns: 45% 1fr; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard { height: 266px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-avatar-wrap { left: 6px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-name { left: 158px; right: 10px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-title { left: 160px; right: 12px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-stats { left: 8px !important; right: 8px !important; padding-left: 146px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .pv-actions { left: 8px; right: 8px; top: 214px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvProfileCard .pv-back-link { left: 26px !important; top: 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight { margin-top: -8px !important; padding-top: 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight::before { height: 92px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight > .card { margin-top: 16px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight .gv-members-preview { gap: 3px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight .gv-members-preview img { width: calc((100vw - 120px) / 6) !important; height: auto !important; aspect-ratio: 1; max-width: 52px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight .gv-members-more { flex: 0 0 auto; font-size: 16px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-name { font-size: 27px !important; letter-spacing: -.6px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-stats { grid-template-columns: 1.1fr .75fr 1.3fr !important; padding-left: 138px !important; padding-right: 2px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvProfileCard .stat-label { font-size: 13.5px !important; letter-spacing: -.2px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight::before { border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 0 17px 28px 17px / 0 0 11px 0 stretch; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"]:is(*) #page-group-view #gvProfileCard::before { border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 0 17px / 0 stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight .gv-members-more { white-space: normal !important; width: 46px; line-height: 1.05 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight .gv-members-preview img { width: calc((100vw - 132px) / 6) !important; }
+}
+@media (max-width: 768px) { html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvMobileRight { margin-top: -12px !important; padding-top: 8px !important; } }
+/* group page, scrolled: Feed | Chat = two separate pills (orange active, cream other), no track */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvModeTabs { border-image: none !important; height: 46px !important; gap: 10px !important; padding: 0 2px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvModeTabs .search-tab { height: 46px !important; min-height: 0 !important; border: 0 solid transparent !important; border-image: var(--fs-chip) 0 74 fill / 0 23px stretch !important;
+    font: 700 21px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvModeTabs .search-tab.active { border-image-source: var(--fs-chip-active) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvModeTabs .search-tab:not(.active) { border-image-source: var(--fs-chip) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvPostsFeed .post-actions { gap: 0 !important; justify-content: space-around !important; padding-left: 0 !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvPostsFeed > .card:first-child { padding: 0 16px !important; min-height: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .pv-posts-heading { line-height: 32px !important; margin: 0 !important; padding: 0 !important; }
+}
