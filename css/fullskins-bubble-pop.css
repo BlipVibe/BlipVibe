@@ -1,0 +1,36 @@
+/* Bubble Pop — a Blip Vibe look of the default skin (js/fullskins.js FULL_SKINS.blip.variants 'bubble-pop').
+ * Picked from the Blip menu, saved as fsVariants.blip = 'bubble-pop'. Overrides css/fullskins-blip.css only where the
+ * Bubble Pop concepts differ (images/skins/default/bubble-pop/<page>.png, local only). Every visual is painted art from
+ * images/skins/blip/assets/bubble-pop (prototypes/bubble-pop-kit-brief.md); this file only places it. */
+
+/* ---------- page + type ---------- */
+html body.fs.fs-blip[data-fs-variant="bubble-pop"] { --bl-ink: #14215a; --bl-soft: #5a5f7a; --bl-blue: #1e5bdb; --bl-deep: #1748b8; --bl-navy: #14215a;
+  --bp-mint: #1f9e74; background: #ffd23f var(--fs-background) center top / 100% auto repeat-y !important; }
+
+/* ======================================================================================================== PHONE */
+@media (max-width: 768px) {
+  /* top bar: no band, the wordmark sits on the yellow page in navy; search + bell sit in cream jelly circles */
+  html body.fs.fs-blip[data-fs-variant="bubble-pop"] .navbar { background: #ffd23f var(--fs-header-bar) center bottom / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="bubble-pop"] .navbar .nav-logo { color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="bubble-pop"] .navbar :is(.mobile-search-btn, .mobile-notif-btn) { background: var(--fs-btn-round) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="bubble-pop"] .navbar :is(.mobile-search-btn, .mobile-notif-btn) > i { width: 21px !important; height: 21px !important; }
+  html body.fs.fs-blip[data-fs-variant="bubble-pop"] .navbar .nav-avatar { background-image: var(--fs-avatar-ring) !important; padding: 3px; }
+
+  /* profile card: the status line is a mint jelly pill; View Profile is an underlined link; pencil in a cream jelly circle */
+  html body.fs.fs-blip[data-fs-variant="bubble-pop"] #profileCard .profile-title { display: inline-block !important; width: auto !important; align-self: flex-start;
+    padding: 1px 13px 2px !important; border: 0 solid transparent !important; border-image: var(--fs-btn-secondary) 0 74 fill / 0 12px stretch !important;
+    font-weight: 800 !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="bubble-pop"] #profileCard .view-profile-link { text-decoration: underline !important; text-decoration-thickness: 2px !important; text-underline-offset: 3px; }
+  html body.fs.fs-blip[data-fs-variant="bubble-pop"] #profileCard .edit-profile-btn { background-image: var(--fs-btn-round) !important; background-size: 100% 100% !important; }
+  /* the concept's profile bubble has a second little tail at its bottom-left (under Following) */
+  html body.fs.fs-blip[data-fs-variant="bubble-pop"]:is(*) #profileCard::after { display: block !important; content: "" !important; left: 30px !important; right: auto !important;
+    bottom: -17px !important; width: 40px !important; height: 22px !important; transform: scaleX(-1); z-index: -1 !important;
+    background: var(--fs-card-tailtip) center bottom / 100% 100% no-repeat !important; }
+
+  /* Photos: View All is a mint jelly pill */
+  html body.fs.fs-blip[data-fs-variant="bubble-pop"] .photos-card .view-more-link { padding: 2px 14px 3px !important; border: 0 solid transparent !important;
+    border-image: var(--fs-btn-secondary) 0 74 fill / 0 13px stretch !important; color: var(--bl-ink) !important; font-size: 14.5px !important; }
+
+  /* pills: People You May Know blue, Trending Groups mint (navy-free white text on both, like the concept) */
+  html body.fs.fs-blip[data-fs-variant="bubble-pop"] .mobile-pill:nth-child(2) { border-image-source: var(--fs-btn-secondary) !important; border-image-slice: 0 74 fill !important; }
+}
