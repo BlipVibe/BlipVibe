@@ -751,3 +751,92 @@ html body.fs.fs-blip[data-fs-variant="lofi-room"] .blip-toast { background: #f6e
   /* the Blip key while its menu is open = the orange glowing push-button (concept) */
   html body.fs.fs-blip[data-fs-variant="lofi-room"] .blip-start-btn.is-on .blip-start-head { background: var(--fs-mascot-head) center / 30px no-repeat, var(--fs-nav-active) center / 50px 44px no-repeat !important; width: 46px !important; height: 44px !important; margin-top: -4px; }
 }
+
+/* ======================================================================================================== DESKTOP — ref: images/skins/default/lofi-room/desktop.png (window 1536 → 1440 viewport, x 0.9375)
+   the nav is a tall walnut speaker cabinet down the LEFT (grille cloth top + bottom, push-button rows between), the top bar
+   and every page sit to its right */
+@media (min-width: 769px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] { --wh-rail: 156px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar { left: var(--wh-rail) !important; width: auto !important; right: 0 !important; height: 66px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-container { padding: 0 24px 0 18px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar .nav-logo { font: italic 700 38px var(--fs-title-font) !important; color: #fbefd9 !important; text-shadow: 0 2px 0 rgba(30,12,2,.55) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar .nav-logo::before { width: 66px; height: 58px; flex-basis: 66px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-left { gap: 120px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar .search-bar { width: min(380px, 26vw) !important; height: 38px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar .search-bar > i { filter: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar .nav-coins { height: 38px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar .nav-coins .coin-count { color: var(--wh-ink) !important; font: 700 20px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar .nav-username { color: #fbefd9 !important; font: 700 20px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar .nav-user > i.fa-chevron-down { color: #fbefd9 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar .nav-coins { margin-right: 24px !important; padding-right: 24px !important; }
+
+  /* the cabinet rail */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center { position: fixed !important; left: 0; top: 0; bottom: 0; width: var(--wh-rail); height: auto !important; margin: 0 !important; z-index: 1001;
+    display: flex !important; flex-direction: column !important; justify-content: flex-start !important; align-items: stretch !important; gap: 6px !important; padding: 196px 10px 0 !important; box-sizing: border-box;
+    background: #5a361e var(--fs-background) center / 400px auto repeat !important; border: 0 !important; box-shadow: inset -3px 0 0 rgba(30,12,2,.45), 2px 0 8px rgba(0,0,0,.35) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center::before, html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center::after { content: ""; position: absolute; left: 12px; right: 12px; pointer-events: none;
+    border: 9px solid transparent; border-image: var(--fs-grille) 40 fill / 9px stretch; box-sizing: border-box; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center::before { top: 12px; height: 160px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center::after { bottom: 12px; height: min(300px, calc(100vh - 640px)); background: var(--fs-knob) center / 70% auto no-repeat; background-origin: content-box; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link { flex: 0 0 auto !important; width: auto !important; height: 50px !important; margin: 0 !important; padding: 0 12px !important;
+    flex-direction: row !important; justify-content: flex-start !important; gap: 12px !important; font: 700 19px var(--fs-title-font) !important; color: #f6ebd9 !important; border-image: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link > span:not(.notif-badge) { color: #f6ebd9 !important; text-shadow: 0 1px 0 rgba(30,12,2,.7); }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link > i { width: 28px !important; height: 28px !important; filter: brightness(0) invert(.93) sepia(.35) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link.active { border: 0 solid transparent !important; border-image: var(--fs-chip-active) 0 74 fill / 0 24px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link.active > i { filter: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link[data-page="messages"] > i { background-image: var(--fs-icon-envelope) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link[data-page="notifications"] > i { background-image: var(--fs-icon-bell) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-saved-link { margin-right: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link .notif-badge { top: 2px !important; right: auto !important; left: 30px; background: var(--fs-badge-count) center / 100% 100% no-repeat !important; color: #fff8ec !important; }
+  /* the Blip key sits in the top bar after the search field (concept) */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .blip-start-btn { position: fixed !important; top: 14px; left: calc(var(--wh-rail) + 18px + 330px + min(380px, 26vw) + 16px); z-index: 1002; margin: 0 !important;
+    width: 104px; height: 40px; color: #fbefd9 !important; font: 700 19px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .blip-start-btn > span { color: #fbefd9 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .blip-menu { left: calc(var(--wh-rail) + 18px + 330px + min(380px, 26vw) + 16px) !important; }
+
+  /* every page to the right of the rail */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .page.active { padding-left: var(--wh-rail) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home #timelineCover { width: auto !important; max-width: none !important; margin: 0 14px !important; height: 136px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .fs-tl-slot-1 { -webkit-mask-box-image: none !important; mask-border: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home #timelineCover::after { background-image: var(--fs-mascot-turntable) !important; left: 46% !important; top: auto !important; bottom: -6px !important; width: 230px !important; height: 144px !important;
+    animation: whNod 1.6s ease-in-out infinite !important; transform-origin: 50% 100%; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home #coverEditBtn { left: auto !important; right: 20px !important; top: auto !important; bottom: 14px !important; height: 38px !important;
+    border-image-source: var(--fs-chip) !important; color: var(--wh-ink) !important; font: 700 18px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home #coverEditBtn > i { filter: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .main-container { width: auto !important; max-width: none !important; margin: 8px 14px 0 !important;
+    grid-template-columns: 23.5fr 45.5fr 25.5fr !important; column-gap: 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .right-sidebar { margin-left: 0 !important; }
+}
+@media (min-width: 769px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .page.active:is(#page-home, #page-groups, #page-group-view, #page-profile-view, #page-profiles, #page-messages, #page-notifications, #page-search, #page-shop, #page-saved, #page-photos) {
+    padding-left: var(--wh-rail) !important; }
+  /* Daily Quests on the walnut card: cream type, orange tiles, VU meters */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-panel :is(h4, p, span, strong, .quest-progress, .quest-reset, .quest-reward) { color: #fbefd9 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-panel .quest-reset { color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-panel :is(h4, .quest-panel-header h4) { font-family: var(--fs-title-font) !important; font-weight: 700 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-icon { background-image: var(--fs-quest-comment) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-icon:has(.fa-heart) { background-image: var(--fs-quest-like) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-icon:has(.fa-paper-plane) { background-image: var(--fs-quest-message) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-icon:has(.fa-pen) { background-image: var(--fs-quest-post) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-icon:has(.fa-bookmark) { background-image: var(--fs-quest-save) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-icon:has(.fa-eye) { background-image: var(--fs-quest-view) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-icon:has(.fa-share-nodes) { background-image: var(--fs-quest-share) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-bar { height: 34px !important; border-image: none !important; background: var(--fs-vu-meter) center / 100% 100% no-repeat !important; overflow: hidden; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-bar-fill { background: none !important; -webkit-mask: none !important; mask: none !important; position: relative; height: 100% !important; min-width: 14px; max-width: 86%; margin-left: 7%; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-bar-fill::after { content: ""; position: absolute; right: -2px; bottom: 2px; width: 4px; height: 26px; transform-origin: 50% 100%; transform: rotate(18deg);
+    background: var(--fs-vu-needle) center / 100% 100% no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-reward { border-image: none !important; }
+  /* desktop profile card + side cards: walnut colours */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .profile-title { color: var(--wh-ink) !important; font-style: italic !important; font-family: var(--fs-title-font) !important; font-weight: 700 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .suggestion-follow-btn { border-image-source: var(--fs-btn-secondary) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .right-sidebar :is(h3, h4, h5, .card-heading, .promo-title) { font-family: var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+}
+@media (min-width: 769px) {
+  /* desktop profile card: olive View Profile pill with cream lettering, cream square pencil key */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .view-profile-link { color: #fff8ec !important; text-decoration: none !important; border-image-source: var(--fs-btn-secondary) !important; font: 700 20px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .view-profile-link::after { content: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .edit-profile-btn { border-image-source: var(--fs-chip) !important; background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .stat::before { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard :is(.stat-count, .stat-label) { white-space: nowrap; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .stat-count { font: 700 22px var(--fs-title-font) !important; }
+}
