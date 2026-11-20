@@ -1852,3 +1852,24 @@ html body.fs.fs-blip :is(.post-media-grid, .photos-preview > *, .featured-previe
   html body.fs.fs-blip #page-shop .page-header::after { top: 2px !important; right: 2px !important; width: 140px !important; height: 87px !important; }
   html body.fs.fs-blip #page-shop .page-subtitle { font-size: 12px !important; letter-spacing: -.2px; }
 }
+
+/* ======================================================================================================== concept: inactive tab pills and search
+   fields are WHITE with the navy outline (the tabs-track piece), not the pale-blue chip / field. Notifications keeps its pale chips. */
+html body.fs.fs-blip:is(*) :is(#groupsTabs, #profilesTabs, #page-search .search-tabs, #shopTabs) .search-tab:not(.active),
+html body.fs.fs-blip:is(*) #shopGrid .fsk-filter:not(.active) {
+  border-image-source: var(--fs-tabs-track) !important; border-image-slice: 0 64 fill !important; background: none !important; color: var(--bl-ink) !important; }
+html body.fs.fs-blip:is(*) :is(#page-messages .msg-search, #page-groups .page-search, #page-profiles .page-search, #msgInput, #commentInput) {
+  border-image-source: var(--fs-tabs-track) !important; border-image-slice: 0 64 fill !important; }
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-groups .page-header::after { background-image: var(--fs-mascot-page-smile) !important; background-size: contain !important; background-position: center !important;
+    animation: none !important; transform: none !important; top: -8px !important; right: 8px !important; width: 160px !important; height: 100px !important; }
+  /* New Group Chat: solid royal-blue disc with a white plus (concept) */
+  html body.fs.fs-blip #page-messages #newGroupDmBtn > div:first-child { background: var(--fs-story-add) center / contain no-repeat !important; }
+  html body.fs.fs-blip #page-messages #newGroupDmBtn > div:first-child > i { opacity: 0 !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-groups .page-header::after { top: -7px !important; right: -4px !important; width: 116px !important; height: 72px !important; z-index: 2; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-groups .page-header::after { right: 30px !important; width: 128px !important; height: 80px !important; top: -10px !important; }
+}
