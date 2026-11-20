@@ -271,6 +271,7 @@ so nothing comes back. Re-check column: date of the last pass that confirmed it.
 | 35 | Nov 18 | all | someone's profile | "some of the pictures are out of their frame when you go to view profile" | pass 6 | ✓ Nov 18 pass 6 (21 renditions, top/mid/bottom) |
 | 36 | Nov 18 | Scrapbook + others | someone's profile ⋯ menu | "the little pop up under the options … sometimes nothing shows up" | pass 6 (fullskins.js) | ✓ Nov 18 pass 6 (21 renditions) |
 | 37 | Nov 19 | Vaporwave Retro + XP (all 4) | group card, Home profile card | "3 lines through it … it should be one solid color" (panel fade tiled 2–3×) | pass 7 (fullskins.css) | ✓ Nov 19 pass 7 (4 variants × 23 screens) |
+| 38 | Nov 19 | BlipVibe default + #Basic | Skins shop / My Skins store cards | "the picture for #basic and blipvibe don't match the others in the skins store" (both were app screenshots; the rest are full-bleed painted scenes) | new painted cards (Codex): BlipVibe = mascot in a blue sky, #Basic = cream "basic girl" flat-lay | pending phone re-check |
 
 ## Queued for the next pass
 
