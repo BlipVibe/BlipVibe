@@ -2910,6 +2910,56 @@
      all"): each Vibe registers its own, one line each, e.g. VIBE_FX['pixel-pal'] = equipPixelPal; (fn(id, swap) → Promise,
      same contract as EQUIP_FX; load its art with fxArt('blip', '<vibe>/<part>')). Logo Classic keeps equipBlip. */
   var VIBE_FX = {};
+  /* Swiss Grid switch (Blip Vibe 'swiss-grid'): a Swiss poster assembles itself — paper columns drop in on a ruled
+     6-column grid, electric-blue blocks slide into their cells, the line-art mascot steps into the centre cell with its
+     sparkles and a monospace caption; the look is swapped underneath, then the columns lift away one by one (crisp,
+     no bounce: the look's motion). Painted art: swiss-grid background / nav-active / mascot-peek / sparkle-1. */
+  function equipSwissGrid(id, swap) {
+    var A = 'swiss-grid/';
+    return Promise.all([fxArt('blip', A + 'background'), fxArt('blip', A + 'nav-active'),
+      fxArt('blip', A + 'mascot-peek'), fxArt('blip', A + 'sparkle-1')]).then(function (r) {
+      var c = fxCanvas('swiss-grid'), g = c.g, W = c.W, H = c.H, paper = r[0], blue = r[1], mascot = r[2], spk = r[3];
+      var N = 6, cw = W / N, sm = function (x) { return x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; };
+      // blue blocks: [column, row from top as a fraction of H, width in columns, height fraction, delay]
+      var blocks = [[0, .08, 2, .16, 0], [4, .62, 2, .22, 90], [1, .74, 1, .1, 170], [5, .12, 1, .3, 240]];
+      function col(i, k) {   // paper column i covering k (0..1) of the height, its rule on the right
+        var h = H * k; if (h <= 0) return;
+        if (paper) g.drawImage(paper, 0, 0, paper.width, paper.height * Math.max(.01, k), i * cw, 0, cw + 1, h); else { g.fillStyle = '#fafaf7'; g.fillRect(i * cw, 0, cw + 1, h); }
+        if (i < N - 1) { g.fillStyle = '#0a0a0a'; g.fillRect((i + 1) * cw - .75, 0, 1.5, h); }
+      }
+      function hrules(al) { g.save(); g.globalAlpha = al; g.fillStyle = '#0a0a0a'; [.08, .24, .5, .62, .84].forEach(function (y) { g.fillRect(0, H * y - .75, W * al, 1.5); }); g.restore(); }
+      function block(b, k) {
+        var x = b[0] * cw, y = H * b[1], w = b[2] * cw, h = H * b[3], ww = w * sm(k); if (ww <= 0) return;
+        if (blue) g.drawImage(blue, x, y, ww, h); else { g.fillStyle = '#1f4dff'; g.fillRect(x, y, ww, h); }
+      }
+      function hero(t, al) {
+        if (al <= 0) return; var sz = Math.min(W * .62, 300), y = H * .3 + (1 - al) * 18;
+        g.save(); g.globalAlpha = al;
+        if (mascot) g.drawImage(mascot, W / 2 - sz / 2, y, sz, sz * mascot.height / mascot.width);
+        if (spk) { var tw = .8 + .2 * Math.sin(t / 140); g.drawImage(spk, W / 2 + sz * .3, y - sz * .02, sz * .14 * tw, sz * .14 * tw); g.drawImage(spk, W / 2 - sz * .46, y + sz * .62, sz * .09, sz * .09); }
+        g.fillStyle = '#0a0a0a'; g.font = '600 15px "IBM Plex Mono", ui-monospace, Menlo, monospace'; g.textAlign = 'left';
+        g.fillText('SWITCHING TO', cw * .3, y + sz * 1.06); g.font = '900 34px Inter, "Helvetica Neue", Arial, sans-serif'; g.fillText('Swiss Grid', cw * .3, y + sz * 1.06 + 38);
+        g.restore();
+      }
+      function frame(dropK, blockT, heroT, heroA, ruleA) {
+        g.clearRect(0, 0, W, H);
+        g.save(); g.beginPath();
+        for (var i = 0; i < N; i++) { var k = dropK(i); col(i, k); g.rect(i * cw, 0, cw + 1, H * Math.max(0, k)); }
+        g.clip();   // rules, blocks and the mascot live on the paper: they leave with their columns
+        hrules(ruleA); blocks.forEach(function (b) { block(b, clamp01((blockT - b[4]) / 320)); }); hero(heroT, heroA);
+        g.restore();
+      }
+      var full = function () { return 1; };
+      return fxRun(560, function (t) { frame(function (i) { return sm(clamp01((t - i * 45) / 330)); }, -1, 0, 0, clamp01((t - 260) / 300)); })
+        .then(function () { return fxRun(420, function (t) { frame(full, t, t, clamp01((t - 160) / 260), 1); }); })
+        .then(function () { return Promise.all([swap(), fxRun(820, function (t) { frame(full, 420 + t, 420 + t, 1, 1); })]); })
+        .then(function () { return fxRun(560, function (t, k) {
+          frame(function (i) { return 1 - sm(clamp01((t - i * 45) / 320)); }, 9999, 1240 + t, 1 - clamp01(k * 2.2), 1 - k);
+        }); })
+        .then(function () { c.o.remove(); });
+    });
+  }
+  VIBE_FX['swiss-grid'] = equipSwissGrid;
   function equipTransition(id, applyFn, vibe) {
     var fx = (vibe && VIBE_FX[vibe]) || EQUIP_FX[id], reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!fx || reduce || equipBusy) { applyFn(); return; }
