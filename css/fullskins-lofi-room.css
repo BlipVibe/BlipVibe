@@ -683,3 +683,26 @@ html body.fs.fs-blip[data-fs-variant="lofi-room"] .page-search input, html body.
     border-image: var(--fs-grille) 40 fill / 9px stretch !important; }
   html body.fs.fs-blip[data-fs-variant="lofi-room"] .modal-content:has(.comment-modal-layout) > .modal-header::before { left: -4px !important; top: -4px !important; }
 }
+/* CREATE A POST (phone) — ref/lofi-room/ov-createpost-a.png: grille header strip, olive tag chips, walnut footer with cream keys */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal:has(#cpmText) > .modal-header { margin: 4px 6px 6px !important; height: 70px !important; box-sizing: border-box; border: 9px solid transparent !important;
+    border-image: var(--fs-grille) 40 fill / 9px stretch !important; padding-left: 92px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal:has(#cpmText) > .modal-header::before { left: -4px !important; top: -10px !important; width: 96px !important; height: 72px !important; background-image: var(--fs-mascot-page-happy) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal:has(#cpmText) > .modal-header h3 { font: 700 30px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal:has(#cpmText) .modal-close { background-image: var(--fs-coin-pill) !important; background-size: 100% 100% !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal .cpm-tag-chip { background: none !important; color: #fff8ec !important; border-radius: 0 !important; border: 0 solid transparent !important;
+    border-image: var(--fs-btn-secondary) 0 70 fill / 0 18px stretch !important; font: 700 18px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal .cpm-tag-chip * { color: #fff8ec !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal .cpm-footer { background: var(--fs-nav-bar) center / 100% 100% no-repeat !important; margin: 0 -2px -2px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal #cpmCharCounter { color: #f6ebd9 !important; border-right-color: rgba(246,235,217,.5) !important; font: 700 16px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal .cpm-emoji-btn { background: var(--fs-reward-chip) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal #cpmPublish { font: 700 20px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal .cpm-scroll > div:first-child strong { font: 700 26px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal:has(#cpmText) > .modal-header { padding: 0 6px 0 84px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal:has(#cpmText) > .modal-header h3 { font-size: min(27px, 6.6vw) !important; letter-spacing: -.4px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal #cpmCharCounter { font-size: 14px !important; padding-left: 4px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal .cpm-emoji-btn { width: 34px !important; height: 34px !important; flex-basis: 34px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal #cpmPublish { min-width: 92px; font-size: 18px !important; padding: 0 6px !important; }
+}
