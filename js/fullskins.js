@@ -1529,6 +1529,12 @@
   var PV_MENU = ['pvMuteBtn', 'pvBlockBtn', 'pvReportUserBtn'];
   function wrapPvMore() {
     var page = document.getElementById('page-profile-view'), follow = document.getElementById('pvFollowBtn');
+    // Logo Classic's concept shows Mute · Block · Report as a row of their own: no ⋯ menu, buttons stay visible
+    if (active === 'blip') {
+      PV_MENU.concat(['pvCloseFriendBtn', 'pvInviteGroupBtn']).forEach(function (id) { var b = document.getElementById(id); if (b) b.classList.remove('fs-pv-hidden'); });
+      var stale = page && page.querySelector('.fs-pv-more'); if (stale) stale.remove();
+      return;
+    }
     // most concepts put ⋯ at the cover's top right; Vaporwave's puts it in the button row
     var inRow = active === 'vaporwave' || active === 'basic', acts = follow && follow.closest('.pv-actions');
     // (cover mode: the ⋯ hangs off the page at the cover's top right, so it stacks above the profile picture too)

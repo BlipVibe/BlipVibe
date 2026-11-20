@@ -1434,3 +1434,168 @@ html body.fs.fs-blip :is(.post-media-grid, .photos-preview > *, .featured-previe
   html body.fs.fs-blip #searchResults .profile-follow-btn { grid-column: 3; grid-row: 1 / 3; width: 106px !important; height: 36px !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important; font: 800 18px var(--fs-font) !important; }
   html body.fs.fs-blip #searchResults :is(.post-card, .group-card) { margin-bottom: 10px; }
 }
+
+/* ======================================================================================================== MY PROFILE / PROFILE VIEW (phone) — ref/ov-profile-a.png, ov-otherprofile-a.png (css y = ref y − 36) */
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-profile-view { padding: 0 !important; }
+  html body.fs.fs-blip #pvCoverBanner { position: relative; height: 138px !important; margin: 0 !important; border-radius: 0 !important; overflow: visible !important; background-color: #cfe0fb; }
+  html body.fs.fs-blip #pvCoverBanner > .fs-timeline { overflow: hidden; }
+  html body.fs.fs-blip #pvCoverBanner::after { content: ""; position: absolute; z-index: 2; pointer-events: none; right: 14px; top: 2px; width: 140px; height: 104px;
+    background: var(--fs-mascot-wave) center / contain no-repeat; animation: blBob 3.2s ease-in-out infinite; }
+  html body.fs.fs-blip #pvCoverEditBtn { position: absolute !important; right: 14px !important; top: 82px !important; bottom: auto !important; width: 34px !important; height: 34px !important; padding: 0 !important; z-index: 3 !important;
+    font-size: 0 !important; background: var(--fs-btn-round) center / contain no-repeat !important; border: 0 !important; box-shadow: none !important; display: flex !important; justify-content: center; align-items: center; }
+  html body.fs.fs-blip #pvCoverEditBtn > i { width: 18px; height: 18px; font-size: 0 !important; background: var(--fs-icon-camera) center / contain no-repeat; color: transparent !important; }
+  html body.fs.fs-blip #page-profile-view .pv-layout { padding: 0 10px 90px !important; gap: 0 !important; display: flex !important; flex-direction: column; }
+  html body.fs.fs-blip #page-profile-view .pv-col-left { margin: 0 !important; padding: 0 !important; }
+  html body.fs.fs-blip #pvProfileCard { position: relative; z-index: 2; margin: -23px 0 0 !important; padding: 0 !important; overflow: visible !important; min-height: 257px;
+    border-style: solid !important; border-color: transparent !important; border-width: 6px !important; box-shadow: none !important; border-radius: 0 !important;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 11px 0 stretch !important; background: none !important; }
+  html body.fs.fs-blip #pvProfileCard::before, html body.fs.fs-blip #pvProfileCard::after { display: none !important; }
+  html body.fs.fs-blip #pvProfileCard .profile-cover { display: none !important; }
+  html body.fs.fs-blip #pvProfileCard .profile-info { display: block !important; position: relative !important; padding: 0 !important; min-height: 245px; text-align: left !important; }
+  html body.fs.fs-blip #pvProfileCard .profile-avatar-wrap { position: absolute !important; left: 4px; top: -25px; width: 110px !important; height: 110px !important; margin: 0 !important; border-radius: 50% !important; z-index: 3; }
+  html body.fs.fs-blip #pvProfileCard .profile-avatar-wrap::after { content: ""; display: block !important; position: absolute; inset: -3%; z-index: 2; pointer-events: none; background: var(--fs-avatar-frame) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip #pvProfileCard .profile-avatar { width: 100% !important; height: 100% !important; border-radius: 0 !important; border: 0 !important; object-fit: cover;
+    -webkit-mask: var(--fs-avatar-mask) center / 100% 100% no-repeat !important; mask: var(--fs-avatar-mask) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip #pvProfileCard .avatar-edit-btn { position: absolute !important; right: 2% !important; bottom: 2% !important; width: 30px !important; height: 30px !important; z-index: 4 !important;
+    background: var(--fs-camera-badge) center / contain no-repeat !important; border: 0 !important; box-shadow: none !important; }
+  html body.fs.fs-blip #pvProfileCard .avatar-edit-btn > i { opacity: 0 !important; }
+  html body.fs.fs-blip #pvProfileCard .fs-namecard { position: static !important; background: none !important; border: 0 !important; padding: 0 !important; margin: 0 !important; box-shadow: none !important; }
+  html body.fs.fs-blip #pvProfileCard .profile-name { position: absolute; left: 126px; right: 4px; top: 6px; margin: 0 !important; padding: 0 !important; background: none !important; border: 0 !important;
+    font: 900 26px/30px var(--fs-title-font) !important; color: var(--bl-ink) !important; text-align: left !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip #pvProfileCard .badge-row { position: absolute; left: 130px; right: 2px; top: 38px; height: 48px; display: flex !important; flex-wrap: nowrap; gap: 0; margin: 0 !important; padding: 0 !important; justify-content: flex-start !important; overflow: hidden; }
+  html body.fs.fs-blip #pvProfileCard .user-badge { flex: 0 0 auto; width: 39px !important; height: 48px !important; margin: 0 2px 0 0 !important; padding: 0 !important; border-radius: 0 !important; border: 0 !important; box-shadow: none !important;
+    background: center / contain no-repeat !important; font-size: 0 !important; }
+  html body.fs.fs-blip #pvProfileCard .user-badge > i { display: none !important; }
+  html body.fs.fs-blip #pvProfileCard .user-badge:has(.fa-seedling) { background-image: var(--fs-badge-early_adopter) !important; }
+  html body.fs.fs-blip #pvProfileCard .user-badge:has(.fa-pen) { background-image: var(--fs-badge-first_post) !important; }
+  html body.fs.fs-blip #pvProfileCard .user-badge:has(.fa-users) { background-image: var(--fs-badge-social_butterfly) !important; }
+  html body.fs.fs-blip #pvProfileCard .user-badge:has(.fa-fire) { background-image: var(--fs-badge-popular) !important; }
+  html body.fs.fs-blip #pvProfileCard .user-badge:has(.fa-comment) { background-image: var(--fs-badge-commenter) !important; }
+  html body.fs.fs-blip #pvProfileCard .user-badge:has(.fa-crown) { background-image: var(--fs-badge-group_leader) !important; }
+  html body.fs.fs-blip #pvProfileCard .user-badge:has(.fa-palette) { background-image: var(--fs-badge-skin_collector) !important; }
+  html body.fs.fs-blip #pvProfileCard .user-badge:has(.fa-fire-flame-curved) { background-image: var(--fs-badge-streak_master) !important; }
+  html body.fs.fs-blip #pvProfileCard .user-badge:has(.fa-camera) { background-image: var(--fs-badge-photographer) !important; }
+  html body.fs.fs-blip #pvProfileCard .user-badge:has(.fa-heart) { background-image: var(--fs-badge-generous) !important; }
+  html body.fs.fs-blip #pvProfileCard .profile-about { position: absolute; left: 16px; right: 6px; top: 96px; margin: 0 !important; padding: 0 0 0 32px !important; text-align: left !important;
+    font: 600 17px/22px var(--fs-font) !important; color: var(--bl-ink) !important; font-style: normal !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip #pvProfileCard .profile-about::before { content: ""; position: absolute; left: 0; top: 0; width: 22px; height: 22px; background: var(--fs-icon-comment) center / contain no-repeat; }
+  html body.fs.fs-blip #pvProfileCard .profile-stats { position: absolute; left: 14px; right: 14px; top: 170px; display: grid !important; grid-template-columns: 1fr 1fr; gap: 26px; margin: 0 !important; padding: 0 !important; border: 0 !important; }
+  html body.fs.fs-blip #pvProfileCard .stat { height: 30px; display: flex !important; flex-direction: row-reverse; align-items: center; justify-content: center; gap: 5px; padding: 0 !important; margin: 0 !important;
+    background: #d3e4fb !important; border-radius: 15px !important; border: 0 !important; box-shadow: none !important; }
+  html body.fs.fs-blip #pvProfileCard .stat::before { display: none !important; }
+  html body.fs.fs-blip #pvProfileCard .stat-count { font: 900 17px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip #pvProfileCard .stat-label { font: 600 17px var(--fs-font) !important; color: var(--bl-ink) !important; font-style: normal !important; }
+  html body.fs.fs-blip #pvProfileCard .pv-actions { position: absolute; left: 14px; right: 11px; top: 209px; display: grid !important; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 !important; }
+  html body.fs.fs-blip #pvProfileCard .pv-actions .btn { height: 33px !important; min-height: 0 !important; padding: 0 8px !important; margin: 0 !important; width: auto !important; display: flex !important; align-items: center; justify-content: center; gap: 8px;
+    font: 900 19px var(--fs-font) !important; border-image-width: 0 16px !important; }
+  html body.fs.fs-blip #pvEditProfileBtn { grid-column: 1 / -1; }
+  html body.fs.fs-blip #pvEditProfileBtn > i { display: none !important; }
+  html body.fs.fs-blip #pvProfileCard .profile-links { position: absolute; left: 6px; bottom: -42px; margin: 0 !important; padding: 0 !important; }
+  html body.fs.fs-blip #pvProfileCard .pv-back-link { display: flex !important; align-items: center; gap: 8px; font: 800 17px var(--fs-font) !important; color: var(--bl-link) !important; text-decoration: none !important; }
+  html body.fs.fs-blip #pvProfileCard .pv-back-link > i { width: 18px; height: 18px; font-size: 0 !important; background: var(--fs-icon-back) center / contain no-repeat; color: transparent !important;
+    filter: brightness(0) saturate(100%) invert(14%) sepia(95%) saturate(6000%) hue-rotate(232deg); }
+  /* photos card */
+  html body.fs.fs-blip #pvPhotosCard { margin: 56px 0 0 !important; padding: 0 !important; }
+  html body.fs.fs-blip #pvPhotosCard .photos-card { position: relative; padding: 0 4px 4px !important; margin: 0 !important; border-width: 6px !important; }
+  html body.fs.fs-blip #pvPhotosCard .card-heading { height: 34px; display: flex !important; align-items: center; margin: 2px 0 6px 6px !important; padding: 0 !important; border: 0 !important; font: 900 24px var(--fs-title-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip #pvPhotosCard .card-heading > i { display: none !important; }
+  html body.fs.fs-blip #pvPhotoTabs { position: absolute; right: 2px; top: 0; width: 196px; height: 30px; display: grid !important; grid-template-columns: 1fr 1fr; gap: 0; margin: 0 !important; padding: 0 !important;
+    border: 0 solid transparent !important; border-image: var(--fs-tabs-track) 0 64 fill / 0 15px stretch !important; overflow: visible !important; }
+  html body.fs.fs-blip #pvPhotoTabs .search-tab { height: 30px !important; padding: 0 !important; margin: 0 !important; font: 800 16px var(--fs-font) !important; display: flex !important; align-items: center; justify-content: center; border-image-width: 0 15px !important; }
+  html body.fs.fs-blip #pvPhotoTabs .search-tab:not(.active) { border-image: none !important; background: none !important; }
+  html body.fs.fs-blip #pvPhotoTabs .search-tab > i { display: none !important; }
+  html body.fs.fs-blip #pvPhotoContent .photos-preview { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 8px 7px; overflow: visible !important; padding: 0 4px !important; margin: 0 !important; }
+  html body.fs.fs-blip #pvPhotoContent .photo-wrap { width: auto !important; height: 72px !important; margin: 0 !important; border-radius: 10px !important; overflow: hidden; position: relative; flex: none !important; }
+  html body.fs.fs-blip #pvPhotoContent .photo-wrap :is(img, video) { width: 100% !important; height: 100% !important; object-fit: cover; border-radius: 0 !important; }
+  html body.fs.fs-blip #pvPhotoContent .photo-menu-btn { position: absolute !important; right: 4px !important; top: 4px !important; width: 26px !important; height: 16px !important; padding: 0 !important; border-radius: 8px !important;
+    background: #fff var(--fs-icon-more) center / 18px no-repeat !important; font-size: 0 !important; border: 0 !important; opacity: 1 !important; }
+  html body.fs.fs-blip #pvPhotoContent .photo-menu-btn > i { display: none !important; }
+  html body.fs.fs-blip #pvPhotosCard .pv-photos-link { display: none !important; }
+  html body.fs.fs-blip #page-profile-view .pv-col-feed { margin-top: 12px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-profile-view#page-profile-view { padding-top: 54px !important; }
+  html body.fs.fs-blip #page-profile-view .pv-layout { margin-top: 0 !important; }
+  html body.fs.fs-blip #page-profile-view :is(.pv-col-left, #pvPhotosCard, .pv-col-feed, .pv-col-skin) { width: 100% !important; max-width: none !important; }
+  html body.fs.fs-blip #pvPhotosCard { margin-top: 34px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #pvProfileCard .profile-name { top: 0 !important; }
+  html body.fs.fs-blip #pvProfileCard .profile-links { bottom: -34px !important; }
+  html body.fs.fs-blip #pvPhotosCard .card-heading { margin-bottom: 2px !important; }
+}
+
+/* ======================================================================================================== SOMEONE ELSE'S PROFILE (phone) — ref/ov-otherprofile-a.png */
+@media (max-width: 768px) {
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) { margin-top: -2px !important; min-height: 0; }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .profile-info { min-height: 0; padding: 4px 4px 8px !important; display: flex !important; flex-direction: column; }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .profile-avatar-wrap { left: -4px; top: -32px; width: 127px !important; height: 127px !important; }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .fs-namecard { padding: 0 0 0 128px !important; min-height: 100px; }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) :is(.profile-name, .profile-about) { position: static !important; }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .profile-name { margin: 0 0 2px !important; }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .profile-title { margin: 0 !important; padding: 0 !important; font: 800 17px/24px var(--fs-font) !important; color: var(--bl-ink) !important; font-style: normal !important; text-align: left !important; background: none !important; }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .profile-about { padding: 0 !important; white-space: normal !important; font: 600 16px/23px var(--fs-font) !important; display: -webkit-box !important; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .profile-about::before { display: none !important; }
+  html body.fs.fs-blip #pvProfileCard .pv-online-line { order: 0; margin: -2px 0 0 128px !important; padding: 0 0 0 24px !important; position: relative; font: 800 17px/24px var(--fs-font) !important; color: var(--bl-ink) !important; text-align: left !important; background: none !important; }
+  html body.fs.fs-blip #pvProfileCard .pv-online-line::before { content: ""; position: absolute; left: 0; top: 5px; width: 15px; height: 15px; border-radius: 50%; background: #9aa6bd; }
+  html body.fs.fs-blip #pvProfileCard .pv-online-line:is(.online, .is-online) { }
+  html body.fs.fs-blip #pvProfileCard .pv-online-line > i { display: none !important; }
+  html body.fs.fs-blip #pvMutualFollowers { margin: 14px 0 0 8px !important; }
+  html body.fs.fs-blip #pvMutualFollowers .mutual-followers { display: flex !important; align-items: center; gap: 0; margin: 0 !important; padding: 0 !important; background: none !important; border: 0 !important; }
+  html body.fs.fs-blip #pvMutualFollowers .mutual-followers > img { width: 38px !important; height: 38px !important; border-radius: 50% !important; margin: 0 -8px 0 0 !important; border: 0 !important; box-shadow: 0 0 0 2px #fff !important; object-fit: cover; }
+  html body.fs.fs-blip #pvMutualFollowers .mutual-followers > span { margin-left: 26px !important; padding-left: 14px !important; border-left: 2px solid #c7d6ee !important; font: 800 16px/22px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .profile-stats { position: static !important; margin: 16px 0 0 !important; gap: 10px; }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .stat { height: 32px; }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .pv-actions { position: static !important; margin: 16px 0 0 !important; grid-template-columns: repeat(6, 1fr) !important; gap: 10px 10px !important; }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .pv-actions .btn { grid-column: span 2; height: 39px !important; font: 800 16px var(--fs-font) !important; gap: 7px; padding: 0 4px !important; white-space: nowrap; border-image-width: 0 19px !important; }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .pv-actions :is(#pvFollowBtn, #pvMsgBtn, #pvCloseFriendBtn, #pvInviteGroupBtn) { grid-column: span 3; }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .pv-actions :is(#pvFollowBtn, #pvMsgBtn) { height: 41px !important; font: 900 19px var(--fs-font) !important; border-image-width: 0 20px !important; }
+  html body.fs.fs-blip #pvProfileCard .pv-actions .btn > i { width: 22px; height: 22px; flex: 0 0 22px; font-size: 0 !important; color: transparent !important; background: center / contain no-repeat; }
+  html body.fs.fs-blip #pvProfileCard .pv-actions :is(.btn-primary) > i { filter: brightness(0) invert(1); }
+  html body.fs.fs-blip #pvFollowBtn > i.fa-check { background-image: var(--fs-icon-check); }
+  html body.fs.fs-blip #pvFollowBtn > i:not(.fa-check) { background-image: var(--fs-icon-user-plus, var(--fs-icon-plus)); }
+  html body.fs.fs-blip #pvMsgBtn > i { background-image: var(--fs-icon-comment); }
+  html body.fs.fs-blip #pvMuteBtn > i { background-image: var(--fs-icon-mute, var(--fs-icon-bell)); }
+  html body.fs.fs-blip #pvBlockBtn > i { background-image: var(--fs-icon-block, var(--fs-icon-close)); }
+  html body.fs.fs-blip #pvReportUserBtn > i { background-image: var(--fs-icon-flag-red, var(--fs-icon-flag)); }
+  html body.fs.fs-blip #pvReportUserBtn { color: #d93025 !important; border-image-source: var(--fs-btn-danger) !important; }
+  html body.fs.fs-blip #pvCloseFriendBtn > i { background-image: var(--fs-icon-star); }
+  html body.fs.fs-blip #pvInviteGroupBtn > i { background-image: var(--fs-icon-people); }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .profile-info > div:has(#pvAdminSuspend) { margin: 10px 0 0 !important; display: flex !important; align-items: center; gap: 8px; flex-wrap: wrap; font: 700 13px var(--fs-font); color: var(--bl-text); }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .profile-info > div:has(#pvAdminSuspend) .btn { height: 30px !important; padding: 0 12px !important; font: 800 13px var(--fs-font) !important; }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .profile-links { position: absolute !important; bottom: -34px !important; }
+}
+
+/* ======================================================================================================== CHAT (phone) — ref/ov-chat-a.png */
+@media (max-width: 768px) {
+  html body.fs.fs-blip .messages-layout.chat-open .msg-chat { background: var(--fs-background) center top / cover no-repeat !important; }
+  html body.fs.fs-blip .msg-chat-header { height: 60px !important; margin: 10px 12px 6px !important; padding: 0 12px 0 10px !important; display: flex !important; align-items: center; gap: 12px;
+    background: none !important; border-style: solid !important; border-color: transparent !important; border-width: 6px !important; border-radius: 0 !important; box-shadow: none !important;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 11px 0 stretch !important; }
+  html body.fs.fs-blip .msg-chat-header .msg-back-btn { width: 26px !important; height: 26px !important; padding: 0 !important; margin: 0 !important; background: var(--fs-icon-back) center / contain no-repeat !important; border: 0 !important; font-size: 0 !important; }
+  html body.fs.fs-blip .msg-chat-header .msg-back-btn > i { display: none !important; }
+  html body.fs.fs-blip .msg-chat-header img { width: 50px !important; height: 50px !important; box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #00008b; }
+  html body.fs.fs-blip .msg-chat-header h4 { font: 900 24px var(--fs-title-font) !important; color: var(--bl-ink) !important; margin: 0 !important; }
+  html body.fs.fs-blip .msg-chat-messages { padding: 12px 12px 8px !important; display: flex !important; flex-direction: column; gap: 14px; }
+  html body.fs.fs-blip .msg-bubble { max-width: 82% !important; padding: 6px 14px 8px !important; margin: 0 !important; font: 600 19px/24px var(--fs-font) !important; color: var(--bl-ink) !important;
+    border-style: solid !important; border-color: transparent !important; border-width: 4px 6px 12px !important; border-radius: 0 !important; background: none !important; box-shadow: none !important;
+    border-image: var(--fs-bubble-in, var(--fs-panel-card-tight)) 60 60 98 60 fill / 17px 17px 28px 17px stretch !important; align-self: flex-start; }
+  html body.fs.fs-blip .msg-bubble.sent { align-self: flex-end; color: #fff !important; font-weight: 700 !important;
+    border-image: var(--fs-bubble-out, var(--fs-btn-primary)) 0 67 fill / 0 22px stretch !important; }
+  html body.fs.fs-blip .msg-bubble :is(img, video) { max-width: 240px !important; width: 240px; border-radius: 14px !important; display: block; }
+  html body.fs.fs-blip .msg-bubble .msg-edit-btn { display: none !important; }
+  html body.fs.fs-blip .msg-chat-input { height: 64px !important; padding: 0 12px !important; display: flex !important; align-items: center; gap: 10px; background: none !important; border: 0 !important; box-shadow: none !important; }
+  html body.fs.fs-blip .msg-chat-input .msg-media-btn { width: 34px !important; height: 34px !important; flex: 0 0 34px; padding: 0 !important; margin: 0 !important; border: 0 !important; font-size: 0 !important; background: center / contain no-repeat !important; }
+  html body.fs.fs-blip .msg-chat-input .msg-media-btn > i { display: none !important; }
+  html body.fs.fs-blip #msgImgBtn { background-image: var(--fs-icon-image, var(--fs-icon-photo)) !important; }
+  html body.fs.fs-blip #msgGifBtn { background-image: var(--fs-icon-gif, var(--fs-icon-video)) !important; }
+  html body.fs.fs-blip #msgVoiceBtn { background-image: var(--fs-icon-mic, var(--fs-icon-music)) !important; }
+  html body.fs.fs-blip #msgInput { flex: 1; min-width: 0; height: 40px !important; padding: 0 16px !important; margin: 0 !important; font: 600 17px var(--fs-font) !important; color: var(--bl-ink) !important;
+    border: 0 solid transparent !important; border-image: var(--fs-field) 0 64 fill / 0 20px stretch !important; background: none !important; border-radius: 0 !important; box-shadow: none !important; }
+  html body.fs.fs-blip #sendMsgBtn { width: 44px !important; height: 44px !important; flex: 0 0 44px; padding: 0 !important; margin: 0 !important; border: 0 !important; border-radius: 50% !important; font-size: 0 !important;
+    background: var(--fs-icon-send) center / 22px no-repeat, #1e5fe0 !important; box-shadow: 0 2px 4px rgba(20,60,160,.3) !important; }
+  html body.fs.fs-blip #sendMsgBtn { background: #1e5fe0 !important; position: relative; }
+  html body.fs.fs-blip #sendMsgBtn::after { content: ""; position: absolute; inset: 11px; background: var(--fs-icon-send) center / contain no-repeat; filter: brightness(0) invert(1); }
+  html body.fs.fs-blip #sendMsgBtn > i { display: none !important; }
+}
