@@ -397,3 +397,40 @@ html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .photos-card .view-
 }
 html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(input, textarea)::placeholder { color: #8a6a50 !important; opacity: 1; }
 html body.fs.fs-blip[data-fs-variant="lofi-room"] .page-search input, html body.fs.fs-blip[data-fs-variant="lofi-room"] .page-search > i { color: var(--wh-ink) !important; }
+
+/* ======================================================================================================== page headers (phone): the title strip is grille cloth in a walnut frame */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-notifications .page-header { margin: 4px 0 0 !important; padding: 0 12px !important; border: 9px solid transparent !important;
+    border-image: var(--fs-grille) 40 fill / 9px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-notifications .page-header h2 { font-size: 34px !important; line-height: 40px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-notifications .page-container { padding: 0 6px 90px !important; }
+}
+/* NOTIFICATIONS (phone) — ref/lofi-room/ov-notifications-a.png: tabs + list sit in one cream panel; rows are slim cream bars */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #notifTabs { margin: 4px 0 0 !important; padding: 10px 6px 8px !important; border: 0 solid transparent !important; border-width: 12px 12px 0 !important;
+    border-image: var(--fs-panel-card-tight) 60 60 0 60 fill / 17px 17px 0 17px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #notifTabs .search-tab { font: 700 16px var(--fs-title-font) !important; height: 32px !important; min-height: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #notifList { gap: 6px !important; padding: 4px 12px 16px !important; border: 0 solid transparent !important; border-width: 0 12px 12px !important; min-height: 380px;
+    border-image: var(--fs-panel-card-tight) 0 60 98 60 fill / 0 17px 28px 17px / 0 0 11px 0 stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #notifList .notif-item { height: 40px !important; border-width: 0 14px !important; padding: 0 !important;
+    border-image: var(--fs-chip) 0 74 fill / 0 14px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #notifList .notif-text p { font: 700 16.5px/20px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #notifList .notif-text > span { font: 700 15px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #notifList .notif-icon:has(.fa-heart) { background-image: var(--fs-icon-heart) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #notifList .notif-icon:has(.fa-user-plus) { background-image: var(--fs-icon-user-plus) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .notif-new-badge { height: 21px; padding: 0 9px !important; font: 700 13px/21px var(--fs-title-font) !important; color: #fff8ec !important; background: none !important;
+    border-radius: 0 !important; border: 0 solid transparent !important; border-image: var(--fs-btn-primary) 0 67 fill / 0 10px stretch !important; flex: 0 0 auto; margin-left: auto; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #notifList .empty-state { color: var(--wh-ink) !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #notifTabs { margin-bottom: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #notifList { margin-top: 0 !important; border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 0 17px 28px 17px / 0 0 11px 0 stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #notifList .notif-text p { overflow: visible !important; text-overflow: clip !important; display: flex !important; font-size: 15.5px !important; letter-spacing: -.25px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #notifList .notif-icon { width: 26px !important; height: 26px !important; flex-basis: 26px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #notifList { padding: 2px 0 16px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #notifList .notif-item { border-width: 0 10px !important; gap: 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #notifList .notif-text { gap: 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .notif-new-badge { padding: 0 7px !important; font-size: 12.5px !important; }
+}
