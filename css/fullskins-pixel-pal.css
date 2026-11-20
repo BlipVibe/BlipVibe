@@ -1,0 +1,25 @@
+/* Pixel Pal — a Blip Vibe look of the default skin (js/fullskins.js FULL_SKINS.blip.variants 'pixel-pal').
+ * Overrides css/fullskins-blip.css only where the Pixel Pal concepts differ. Art: images/skins/blip/assets/pixel-pal
+ * (prototypes/pixel-pal-kit-brief.md). Concepts: images/skins/default/pixel-pal/<page>.png (local only).
+ * Every rule is scoped to html body.fs.fs-blip[data-fs-variant="pixel-pal"]. */
+
+/* ---------- palette sampled from the concepts (home.png): pea-green page, cream cards, forest-green ink, pumpkin ---------- */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] { --bl-ink: #10301f !important; --bl-text: #111b12 !important; --bl-soft: #2e4a36 !important;
+  --bl-blue: #f0550a !important; --bl-deep: #c9500f; --bl-navy: #10301f; --bl-red: #d93025 !important; --pp-orange: #fe7c12; --pp-page: #e1f0c3;
+  background: #e1f0c3 var(--fs-background) center top / 100% auto no-repeat !important; }
+/* top bar is pea green: wordmark + icons forest green (Logo Classic paints them white on blue) */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .nav-logo { color: var(--bl-ink) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar :is(.nav-username, .nav-user > i.fa-chevron-down) { color: var(--bl-ink) !important; }
+/* inactive text: Logo Classic's navy literals -> forest green */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .nav-center .nav-link:not(.active) { color: var(--bl-ink) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(.btn-outline, .view-group-btn), html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(.btn-outline, .view-group-btn) * { color: var(--bl-ink) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .search-tab:not(.active), html body.fs.fs-blip[data-fs-variant="pixel-pal"] .search-tab:not(.active) * { color: var(--bl-ink) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .btn-disabled, html body.fs.fs-blip[data-fs-variant="pixel-pal"] .btn-disabled * { color: #4b5a48 !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .post-input-fake { color: #33443a !important; }
+@media (min-width: 769px) { html body.fs.fs-blip[data-fs-variant="pixel-pal"] .blip-start-btn > span { color: #fff !important; } }
+/* headings in the pixel display face */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(h1, h2, h3, h4, .profile-name, .card-heading, .page-header h2, .featured-info h5) { font-family: var(--fs-title-font) !important; font-weight: 700 !important; letter-spacing: .2px; }
+/* Blip menu + switch toast in Pixel Pal ink */
+body.fs-blip[data-fs-variant="pixel-pal"] .blip-menu-list h4, body.fs-blip[data-fs-variant="pixel-pal"] .blip-row { color: #10301f; }
+body.fs-blip[data-fs-variant="pixel-pal"] .blip-sw-default { background-color: #e1f0c3; }
+body.fs-blip[data-fs-variant="pixel-pal"] .blip-toast { background: #fdf4e3; border: 3px solid #10301f; border-radius: 0; color: #10301f; box-shadow: 3px 3px 0 #10301f; }

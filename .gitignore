@@ -79,3 +79,5 @@ __pycache__/
 !images/skins/blip/
 !images/skins/blip/assets/
 !images/skins/blip/assets/**
+!images/skins/blip/pixel-pal/
+!images/skins/blip/pixel-pal/card.webp
