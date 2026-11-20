@@ -1,0 +1,197 @@
+/* Walnut Hi-Fi — a Blip Vibes look of the default skin (FULL_SKINS.blip variant 'lofi-room', saved as fsVariants.blip).
+ * Overrides css/fullskins-blip.css only where the Walnut concepts differ. Every rule is scoped to the variant.
+ * Concepts: images/skins/default/lofi-room/<page>.png (local only). Art: images/skins/blip/assets/lofi-room/ (kit brief
+ * prototypes/lofi-room-kit-brief.md). Parts not in the variant's `art` list fall back to Logo Classic art. */
+
+/* ---------- page + type: walnut page, dark-brown ink, rounded serif headings (Fraunces) + Nunito body ---------- */
+html body.fs.fs-blip[data-fs-variant="lofi-room"] { --bl-ink: #3b2414; --bl-soft: #7a5a40; --bl-blue: #c8561a; --bl-deep: #6b4226; --bl-navy: #3b2414;
+  --wh-ink: #3b2414; --wh-orange: #e8742a; --wh-orange-ink: #c8561a; --wh-olive: #6f7f3f; --wh-cream: #f6ebd9; --wh-wood: #6b4226;
+  background: #5a361e var(--fs-background) center top / 100% auto repeat-y !important; color: var(--wh-ink) !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(h1, h2, h3, h4, .profile-name, .post-username, .card-heading, .stat-count, .msg-contact-name, .group-card-body h4,
+  .fsk-name, .profile-card-name) { font-family: var(--fs-title-font) !important; font-weight: 700 !important; color: var(--wh-ink) !important; font-variation-settings: "SOFT" 100, "WONK" 0; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(.btn, .mobile-pill, .search-tab, .nav-link, .view-profile-link, .view-more-link) { font-family: var(--fs-title-font) !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] .btn-outline, html body.fs.fs-blip[data-fs-variant="lofi-room"] .view-group-btn { color: var(--wh-ink) !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(.btn-primary, .featured-buy-btn, .mobile-pill, .fsk-buy) { color: #fff8ec !important; text-shadow: 0 1px 0 rgba(90,30,0,.35) !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] .search-tab.active { color: #fff8ec !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(.post-input-fake, .page-search, #globalSearch, .msg-search input) { color: #7a5a40 !important; }
+
+/* ======================================================================================================== PHONE chrome */
+@media (max-width: 768px) {
+  /* top bar (concept ov-home-a): walnut band, mascot + cream italic serif wordmark, cream square icon keys, cream coin pill, ringed avatar */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar .nav-logo { font: italic 700 26px var(--fs-title-font) !important; color: #fbefd9 !important; letter-spacing: -.2px;
+    text-shadow: 0 2px 0 rgba(40,18,4,.55) !important; gap: 4px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar .nav-logo::before { width: 46px; height: 46px; flex-basis: 46px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-container { grid-template-columns: 1fr 34px 34px auto 40px; column-gap: 9px; padding: 0 13px 0 14px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar :is(.mobile-search-btn, .mobile-notif-btn) { width: 34px !important; height: 32px !important;
+    background: var(--fs-btn-square) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar :is(.mobile-search-btn, .mobile-notif-btn) > i { width: 20px !important; height: 20px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar .notif-badge { top: -6px; right: -7px; min-width: 18px; height: 18px; line-height: 18px !important; color: #fff8ec !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar .nav-coins { height: 30px !important; padding: 0 10px 0 6px !important; gap: 5px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar .nav-coins > i { width: 21px !important; height: 21px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar .nav-coins .coin-count { color: var(--wh-ink) !important; font: 700 15px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .navbar .nav-avatar { width: 38px !important; height: 38px !important; padding: 2px; }
+
+  /* bottom nav: walnut strip, six round aluminium push-buttons with cream serif labels; active = the glowing orange button */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center { min-height: 72px !important; padding: 7px max(6px, calc((100% - 400px) / 2)) calc(env(safe-area-inset-bottom, 0px) + 6px) !important;
+    justify-content: space-between !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link, html body.fs.fs-blip[data-fs-variant="lofi-room"] .blip-start-btn,
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link[data-page="messages"], html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link[data-page="profiles"] {
+    flex: 1 1 0 !important; min-width: 0 !important; max-width: none !important; height: 60px !important; padding: 0 !important; margin: 0 !important; gap: 3px !important;
+    background: none !important; border: 0 !important; border-image: none !important; justify-content: flex-start !important;
+    font: 700 13px var(--fs-title-font) !important; letter-spacing: -.2px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link > span:not(.notif-badge), html body.fs.fs-blip[data-fs-variant="lofi-room"] .blip-start-btn > span {
+    color: #f6ebd9 !important; text-shadow: 0 1px 0 rgba(30,12,2,.7); white-space: nowrap; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link > i { width: 38px !important; height: 38px !important; min-width: 38px; flex: 0 0 38px;
+    background-size: 21px 21px, 100% 100% !important; background-position: center, center !important; background-repeat: no-repeat !important; transform: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link[data-page="home"] > i { background-image: var(--fs-icon-home), var(--fs-btn-round) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link[data-page="groups"] > i { background-image: var(--fs-icon-groups), var(--fs-btn-round) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link[data-page="shop"] > i { background-image: var(--fs-icon-skins), var(--fs-btn-round) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link[data-page="profiles"] > i { background-image: var(--fs-icon-network), var(--fs-btn-round) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link[data-page="messages"] > i { background-image: var(--fs-icon-envelope), var(--fs-btn-round) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link.active > i { width: 46px !important; height: 46px !important; flex-basis: 46px; margin-top: -4px; margin-bottom: -2px; background-size: 22px 22px, 53px 46px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link.active[data-page="home"] > i,
+  html body.fs.fs-blip[data-fs-variant="lofi-room"]:has(#page-home.active) .nav-center .nav-link[data-page="home"] > i { background-image: var(--fs-icon-home-on), var(--fs-nav-active) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link.active[data-page="groups"] > i,
+  html body.fs.fs-blip[data-fs-variant="lofi-room"]:has(#page-group-view.active) .nav-center .nav-link[data-page="groups"] > i { background-image: var(--fs-icon-groups-on), var(--fs-nav-active) !important; width: 46px !important; height: 46px !important; background-size: 22px 22px, 53px 46px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link.active[data-page="shop"] > i { background-image: var(--fs-icon-skins-on), var(--fs-nav-active) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link.active[data-page="profiles"] > i { background-image: var(--fs-icon-network-on), var(--fs-nav-active) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link.active[data-page="messages"] > i { background-image: var(--fs-icon-messages-on), var(--fs-nav-active) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"]:has(#page-group-view.active) .nav-center .nav-link[data-page="shop"] > i { background-image: var(--fs-icon-hanger), var(--fs-btn-round) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"]:has(#page-group-view.active) .nav-center .nav-link[data-page="messages"] > i { background-image: var(--fs-icon-envelope), var(--fs-btn-round) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link.active { animation: whKey .3s cubic-bezier(.3,1.5,.5,1); }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .blip-start-btn .blip-start-head { width: 40px !important; height: 38px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .notif-badge { top: -4px !important; right: calc(50% - 26px) !important; color: #fff8ec !important; }
+}
+@keyframes whKey { 0% { transform: translateY(2px) scale(.9); } 60% { transform: translateY(-1px) scale(1.04); } 100% { transform: none; } }
+
+/* ======================================================================================================== HOME (phone) — ref/lofi-room/ov-home-a.png (402 wide) */
+@media (max-width: 768px) {
+  /* cover: edge to edge under the walnut bar (square corners), the mascot nodding behind its turntable, dark camera key */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home #timelineCover { height: 110px !important; margin: 0 -8.5px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .main-container { padding: 0 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home #timelineCover { margin: 0 -6px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .fs-tl-slot-1 { -webkit-mask-box-image: none !important; mask-border: none !important; background: #8a5a36 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home #timelineCover::after { background-image: var(--fs-mascot-turntable) !important; right: 62px !important; top: auto !important; bottom: -4px;
+    width: 184px !important; height: 115px !important; animation: whNod 1.6s ease-in-out infinite; transform-origin: 50% 100%; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(#coverEditBtn, #pvCoverEditBtn) { background-image: var(--fs-camera-badge) !important; width: 38px !important; height: 38px !important;
+    right: 12px !important; bottom: 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(#coverEditBtn, #pvCoverEditBtn) > i { opacity: 0 !important; }
+
+  /* profile = "Now Playing": the vinyl record (avatar) at the left, track title / artist line / about at the right,
+     Following + Followers as two aluminium knob dials, View Profile as an orange underlined link, pencil key bottom-right */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard { margin: 6px 0 0 !important; min-height: 190px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard::after { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .profile-info { grid-template-columns: 168px 1fr !important; column-gap: 0 !important; padding: 9px 12px 14px 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .profile-avatar-wrap { width: 162px !important; height: 162px !important; margin: -19px 0 0 0 !important; border-radius: 50% !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .profile-avatar-wrap::after { inset: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard #profileAvatarImg { -webkit-mask: var(--fs-avatar-mask) center / 100% 100% no-repeat !important; mask: var(--fs-avatar-mask) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .avatar-edit-btn { right: 15% !important; bottom: 17% !important; width: 32px !important; height: 32px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .fs-namecard { padding: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .profile-name { font-size: 25px !important; line-height: 30px !important; margin: 0 !important; letter-spacing: -.3px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .profile-title { font: italic 700 16px/21px var(--fs-title-font) !important; margin: 0 0 4px !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .profile-about { font: 500 13.5px/18px var(--fs-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .profile-stats { position: absolute !important; left: 169px !important; top: 106px !important; gap: 0 !important; display: grid !important;
+    grid-template-columns: 107px 107px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .stat { display: grid !important; grid-template-columns: 44px auto; grid-template-rows: 18px 24px; column-gap: 4px; align-items: center;
+    height: auto !important; padding: 0 !important; background: none !important; border: 0 !important; border-image: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .stat::before { content: ""; grid-column: 1; grid-row: 1 / 3; width: 44px; height: 44px; margin-top: 4px;
+    background: var(--fs-knob) center / contain no-repeat; transition: transform .5s cubic-bezier(.3,1.4,.5,1); }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .stat:active::before { transform: rotate(40deg); }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .stat-label { grid-column: 2; grid-row: 1; font: 700 12.5px var(--fs-title-font) !important; color: var(--wh-ink) !important; text-align: center; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .stat-count { grid-column: 2; grid-row: 2; font: 700 21px var(--fs-title-font) !important; color: var(--wh-ink) !important; text-align: center; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .view-profile-link { left: 38px !important; right: auto !important; top: auto !important; bottom: 12px !important;
+    font: 700 16.5px var(--fs-title-font) !important; color: var(--wh-orange-ink) !important; text-decoration: underline !important; text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .view-profile-link::after { content: " \203A"; text-decoration: none; display: inline-block; margin-left: 4px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .edit-profile-btn { right: 22px !important; top: auto !important; bottom: 14px !important; width: 34px !important; height: 32px !important;
+    background-image: var(--fs-coin-pill) !important; background-size: 100% 100% !important; }
+
+  /* Photos: grille-cloth heading strip, View All in olive, 3 x 2 thumbnails */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .photos-card { margin-top: 7px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .photos-card .card-heading { position: relative; font-size: 22px !important; line-height: 30px !important; margin: -4px -6px 6px !important;
+    padding: 0 10px !important; background: var(--fs-grille) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .photos-card .view-more-link { top: 4px !important; right: 18px !important; color: var(--wh-olive) !important; font: 700 15px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .photos-card .view-more-link::after { content: " \203A"; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .photos-preview > * { height: 60px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(.post-media-grid, .photos-preview > *, .featured-preview) { -webkit-mask-box-image: var(--fs-photo-mask) 30 / 6px stretch !important; }
+
+  /* pills: olive (People You May Know) + orange (Trending Groups), cream serif labels with icons */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .mobile-pills-bar { gap: 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .mobile-pill { height: 36px !important; font: 700 15px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .mobile-pill:first-child { border-image-source: var(--fs-btn-secondary) !important; background-image: none; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .mobile-pill:nth-child(2) > i { background-image: var(--fs-icon-skins-on) !important; }
+
+  /* stories sit on a cream card */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .stories-bar { border: 12px solid transparent !important; border-image: var(--fs-panel-card) 12% fill / 12px stretch !important; padding: 0 2px !important; justify-content: space-between; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .story-name { font: 700 13.5px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+}
+@keyframes whNod { 0%, 100% { transform: rotate(0); } 30% { transform: rotate(-2deg) translateY(-2px); } 60% { transform: rotate(1.5deg); } }
+@media (prefers-reduced-motion: reduce) { html body.fs.fs-blip[data-fs-variant="lofi-room"] * { animation: none !important; } }
+
+/* ---------- Home, scrolled — ref/lofi-room/ov-home-b.png ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .center-feed { gap: 6px !important; row-gap: 6px !important; }
+  /* post bar: avatar, cream field, the mascot listening on its headphones at the right (over the card edge) */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .post-create-bar { position: relative; min-height: 34px !important; padding: 0 84px 0 2px !important; overflow: visible !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .post-create-bar .post-create-avatar { width: 40px !important; height: 40px !important; flex-basis: 40px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .post-input-fake { height: 34px !important; font: 500 15px var(--fs-font) !important; color: #7a5a40 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .post-create-bar::after { content: ""; position: absolute; right: -4px; top: -18px; width: 92px; height: 77px; pointer-events: none;
+    background: var(--fs-mascot-listen) center / contain no-repeat; animation: whNod 1.8s ease-in-out infinite; transform-origin: 50% 90%; }
+
+  /* Featured Skin: grille-cloth card, heading + cream timer chip, wide preview at the left, name / line / Buy at the right */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .featured-skin-banner { position: relative; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .featured-skin-banner::before { content: ""; position: absolute; inset: -6px; z-index: -1; pointer-events: none; opacity: .9;
+    background: var(--fs-grille) center / 100% 100% no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .featured-header h4 { font-size: 21px !important; line-height: 26px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .featured-timer { height: 22px; padding: 0 9px !important; font: 700 13px var(--fs-title-font) !important;
+    border: 0 solid transparent !important; border-image: var(--fs-chip) 0 70 fill / 0 11px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .featured-timer > i { background-image: var(--fs-icon-clock) !important; width: 14px; height: 14px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .featured-body { display: grid !important; grid-template-columns: 156px 1fr; grid-template-rows: auto auto auto; column-gap: 9px; align-items: start; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .featured-preview { grid-row: 1 / 4; width: 156px !important; height: 73px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .featured-info h5 { font: 700 21px/24px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .featured-info p { font: 500 13.5px/17px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .featured-body .btn { grid-column: 2; height: 31px !important; justify-content: center; font: 700 17px var(--fs-title-font) !important; margin-top: 5px; }
+
+  /* Daily Quests: the walnut panel with cream type; each row = orange tile · label · VU meter · count | coin + reward */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-panel { border-image-source: var(--fs-panel-wood) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-panel-header h4 { color: #fbefd9 !important; font-size: 21px !important; text-shadow: 0 1px 0 rgba(30,12,2,.6); }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-panel-header h4::after { content: ""; display: inline-block; width: 22px; height: 22px; margin-left: 4px; vertical-align: -3px; background: var(--fs-sparkle-2) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-reset { height: 22px; display: flex; align-items: center; padding: 0 10px !important; font: 700 13px var(--fs-title-font) !important; color: var(--wh-ink) !important;
+    border: 0 solid transparent !important; border-image: var(--fs-chip) 0 70 fill / 0 11px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-item { grid-template-columns: 32px 1fr auto !important; column-gap: 9px !important; height: 35px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-icon { width: 32px !important; height: 30px !important; background-image: var(--fs-quest-comment) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-icon:has(.fa-heart) { background-image: var(--fs-quest-like) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-icon:has(.fa-comment) { background-image: var(--fs-quest-comment) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-icon:has(.fa-pen) { background-image: var(--fs-quest-post) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-icon:has(.fa-thumbs-up) { background-image: var(--fs-quest-comment) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-icon:has(.fa-bookmark) { background-image: var(--fs-quest-save) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-icon:has(.fa-eye) { background-image: var(--fs-quest-view) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-icon:has(.fa-paper-plane) { background-image: var(--fs-quest-message) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-icon:has(.fa-share-nodes) { background-image: var(--fs-quest-share) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-info { grid-template-columns: 1fr 98px 34px !important; grid-template-rows: 30px !important; column-gap: 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-info p { grid-column: 1 !important; grid-row: 1; margin: 0 !important; font: 700 14px/17px var(--fs-title-font) !important; color: #fbefd9 !important;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-bar { grid-column: 2 !important; grid-row: 1; height: 30px !important; border-image: none !important; overflow: hidden;
+    background: var(--fs-vu-meter) center / 100% 100% no-repeat !important; }
+  /* the VU needle rides on the end of the progress (the fill itself is invisible) */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-bar-fill { background: none !important; -webkit-mask: none !important; mask: none !important; position: relative; height: 100% !important; min-width: 14px; max-width: 86%; margin-left: 7%; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-bar-fill::after { content: ""; position: absolute; right: -2px; bottom: 2px; width: 4px; height: 24px; transform-origin: 50% 100%; transform: rotate(18deg);
+    background: var(--fs-vu-needle) center / 100% 100% no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-progress { grid-column: 3 !important; grid-row: 1; font: 700 15px var(--fs-title-font) !important; color: #fbefd9 !important; text-align: right; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-reward { border-image: none !important; height: 30px !important; padding: 0 2px 0 10px !important; border-left: 1px solid rgba(251,239,217,.35) !important;
+    font: 700 15px var(--fs-title-font) !important; color: #fbefd9 !important; min-width: 52px; }
+
+  /* coin goal: coin + "180 / 300 coins" | next skin, olive track with the orange fill */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .coin-goal-bar { padding: 0 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .coin-goal-bar::before { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .coin-goal-bar p { justify-content: flex-start !important; gap: 0; font: 700 15px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .coin-goal-bar p span { display: flex; align-items: center; gap: 6px; padding-right: 16px; margin-right: 16px; border-right: 1px solid rgba(59,36,20,.4); }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .coin-goal-bar p span::before { content: ""; width: 22px; height: 22px; background: var(--fs-coin) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .coin-goal-bar p strong { font: 700 15px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .coin-goal-track { height: 14px !important; }
+
+  /* feed tabs: cream track, the active tab the orange enamel pill */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #feedTabs .search-tab { font: 700 16px var(--fs-title-font) !important; }
+  /* posts: serif names, warm ink */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .post-username { font-size: 17px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(.post-time, .post-description, .post-description p, .action-btn) { color: var(--wh-ink) !important; }
+}
