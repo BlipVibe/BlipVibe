@@ -1040,7 +1040,7 @@ async function _enforceMfaIfRequired() {
                 initApp();
             } else {
                 // User cancelled or failed too many times — sign out and bounce
-                sb.auth.signOut().catch(function () {});
+                sb.auth.signOut({ scope: 'local' }).catch(function () {});
                 showLogin();
                 if (loginError) {
                     loginError.textContent = result === 'failed'
