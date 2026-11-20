@@ -1599,3 +1599,29 @@ html body.fs.fs-blip :is(.post-media-grid, .photos-preview > *, .featured-previe
   html body.fs.fs-blip #sendMsgBtn::after { content: ""; position: absolute; inset: 11px; background: var(--fs-icon-send) center / contain no-repeat; filter: brightness(0) invert(1); }
   html body.fs.fs-blip #sendMsgBtn > i { display: none !important; }
 }
+@media (max-width: 768px) {
+  html body.fs.fs-blip .msg-chat-header { box-sizing: border-box !important; height: 66px !important; margin-top: calc(env(safe-area-inset-top, 0px) + 6px) !important; }
+  html body.fs.fs-blip .msg-chat-header img { width: 44px !important; height: 44px !important; }
+  html body.fs.fs-blip .msg-chat-input { box-sizing: content-box !important; padding-bottom: env(safe-area-inset-bottom, 0px) !important; }
+  html body.fs.fs-blip #msgVoiceBtn { filter: brightness(0) saturate(100%) invert(9%) sepia(60%) saturate(5000%) hue-rotate(238deg); }
+}
+@media (max-width: 768px) {
+  /* the mascot sat under the top bar on device: keep it fully below the bar, as in the concept */
+  html body.fs.fs-blip :is(#page-profiles, #page-search) .page-header::after { top: 4px !important; height: 92px !important; width: 176px !important; right: -6px !important; }
+}
+@media (max-width: 768px) {
+  /* top bar height differs per device (safe area): sit the cover right under it everywhere */
+  html body.fs.fs-blip #page-profile-view#page-profile-view { padding-top: calc(env(safe-area-inset-top, 0px) + 56px) !important; }
+  html body.fs.fs-blip #pvProfileCard .pv-actions .btn > i { display: inline-block !important; background-size: contain !important; background-repeat: no-repeat !important; background-position: center !important; }
+  html body.fs.fs-blip #pvFollowBtn > i.fa-check { background-image: var(--fs-icon-check) !important; }
+  html body.fs.fs-blip #pvFollowBtn > i:not(.fa-check) { background-image: var(--fs-icon-user-plus, var(--fs-icon-plus)) !important; }
+  html body.fs.fs-blip #pvMsgBtn > i { background-image: var(--fs-icon-comment) !important; }
+  html body.fs.fs-blip #pvMuteBtn > i { background-image: var(--fs-icon-mute, var(--fs-icon-bell)) !important; }
+  html body.fs.fs-blip #pvBlockBtn > i { background-image: var(--fs-icon-block, var(--fs-icon-close)) !important; }
+  html body.fs.fs-blip #pvReportUserBtn > i { background-image: var(--fs-icon-flag-red, var(--fs-icon-flag)) !important; }
+  html body.fs.fs-blip #pvCloseFriendBtn > i { background-image: var(--fs-icon-star) !important; }
+  html body.fs.fs-blip #pvInviteGroupBtn > i { background-image: var(--fs-icon-people) !important; }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .fs-namecard { min-height: 0 !important; }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .pv-online-line { margin-top: 2px !important; }
+  html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .profile-info { min-height: 100px; }
+}
