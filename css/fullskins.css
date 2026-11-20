@@ -8935,7 +8935,10 @@ html body.fs.fs-basic.fs-basic.fs-basic :is(#page-profiles, #page-search) .profi
 html body.fs.fs-basic.fs-basic.fs-basic :is(.msg-contact-name, .profile-card-name, .notif-item strong, #groupsSections .group-card-body h4) { font-size: 18px !important; font-weight: 700 !important; }
 html body.fs.fs-basic.fs-basic.fs-basic :is(.msg-contact-preview, .profile-card-bio, .profile-card-handle, .notif-time, .notif-text, .group-members) { font-size: 15px !important; }
 html body.fs.fs-basic.fs-basic.fs-basic :is(#page-profiles, #page-search) .profile-follow-btn, html body.fs.fs-basic.fs-basic.fs-basic #groupsSections .group-card-actions .btn { height: 36px !important; min-width: 92px; font: 600 16px var(--fs-font) !important; }
-html body.fs.fs-basic.fs-basic.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, #gvModeTabs, #pvPhotoTabs, #feedTabs, .fs-bp-chips) :is(.search-tab, .fs-bp-chip) { filter: drop-shadow(0 1.5px 2px rgba(74, 52, 38, .14)); }
+/* scrolling (owner: "the home page takes like 2 / 3 times to scroll down"): no filters on the chips (repaint cost while
+   scrolling); vertical panning is declared up front so iOS starts the scroll without waiting on the page */
+html body.fs.fs-basic.fs-basic.fs-basic :is(#profileCard, #pvProfileCard, #timelineCover, #pvCoverBanner, .fs-tl-slot, .profile-avatar-wrap) { touch-action: pan-y pinch-zoom; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(#profileCard, #pvProfileCard, #timelineCover, #pvCoverBanner) img { -webkit-user-drag: none !important; -webkit-touch-callout: none !important; user-select: none; -webkit-user-select: none; }
 /* v3 chat (concept): calm cream wallpaper, header with a round back button + photo + name, input = pill field */
 html body.fs.fs-basic.fs-basic.fs-basic #msgChat { background: var(--fs-wallpaper) center top / cover no-repeat !important; }
 html body.fs.fs-basic.fs-basic.fs-basic #msgChat .msg-back-btn { background: var(--fs-btn-round) center / 100% 100% no-repeat !important; border-radius: 50% !important; }
@@ -8946,8 +8949,10 @@ html body.fs.fs-basic.fs-basic.fs-basic #msgChat .msg-chat-input { border-image-
 html body.fs.fs-basic.fs-basic.fs-basic #msgChat #msgInput { font-size: 17px !important; }
 /* v3 sub-page top bar: "‹ page name" in place of the wordmark (fullskins.js basicTitle sets data-fs-title) */
 html body.fs.fs-basic.fs-basic.fs-basic .navbar[data-fs-title] .nav-logo { font-size: 0 !important; display: flex !important; align-items: center; gap: 2px; }
-html body.fs.fs-basic.fs-basic.fs-basic .navbar[data-fs-title] .nav-logo::before { content: ""; flex: 0 0 18px; width: 18px; height: 18px; background: var(--fs-icon-back) center / contain no-repeat; }
-html body.fs.fs-basic.fs-basic.fs-basic .navbar[data-fs-title] .nav-logo::after { content: attr(data-fs-title); font: 700 18px var(--fs-title-font); color: var(--bs-title); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html body.fs.fs-basic.fs-basic.fs-basic .navbar[data-fs-title] .nav-container { position: relative !important; padding-left: 30px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic .navbar[data-fs-title] .nav-container::before { content: ""; position: absolute; left: 8px; top: 50%; width: 20px; height: 20px; margin-top: -10px; background: var(--fs-icon-back) center / contain no-repeat; pointer-events: none; }
+html body.fs.fs-basic.fs-basic.fs-basic .navbar[data-fs-title] .nav-logo { padding-left: 6px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic .navbar[data-fs-title] .nav-logo::after { content: attr(data-fs-title); font: 700 17px var(--fs-title-font); color: var(--bs-title); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* v3 create post (concept): big writing well, round tool buttons, a full-width accent "post" pill */
 html body.fs.fs-basic.fs-basic.fs-basic #modalOverlay .modal-header h3 { font: 700 22px var(--fs-title-font) !important; text-transform: lowercase; }
 html body.fs.fs-basic.fs-basic.fs-basic #modalOverlay .cpm-textarea { min-height: 130px !important; padding: 14px !important; font: 500 17px var(--fs-font) !important; color: var(--bs-ink) !important; background: none !important; box-shadow: none !important;
@@ -8983,6 +8988,9 @@ html body.fs-basic[data-fs-variant="pumpkin"] { --bs-barfill: #f2eae1; }
     height: calc(82px + max(6px, calc(env(safe-area-inset-bottom, 0px) - 18px)) + 16px) !important;
     background: linear-gradient(rgba(0, 0, 0, 0), var(--bs-barfill) 16px, var(--bs-barfill)) !important; }
 }
+/* v3 composer: photo icon at the right end of the "what's on your mind?" pill (concept) */
+html body.fs.fs-basic.fs-basic.fs-basic #openPostModal { position: relative !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #openPostModal::after { content: "" !important; display: block !important; position: absolute !important; right: 16px; top: 50%; width: 24px; height: 24px; margin-top: -12px; background: var(--fs-icon-photo) center / contain no-repeat !important; pointer-events: none; }
 /* v3 top bar: round cream buttons (concept), not square tiles */
 html body.fs.fs-basic.fs-basic.fs-basic .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn), html body.fs.fs-basic.fs-basic.fs-basic :is(.fs-barista-btn, .fs-bs-season) {
   background: var(--fs-btn-round) center / 100% 100% no-repeat !important; border-radius: 50% !important; }
