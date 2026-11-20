@@ -2882,6 +2882,70 @@
      all"): each Vibe registers its own, one line each, e.g. VIBE_FX['pixel-pal'] = equipPixelPal; (fn(id, swap) → Promise,
      same contract as EQUIP_FX; load its art with fxArt('blip', '<vibe>/<part>')). Logo Classic keeps equipBlip. */
   var VIBE_FX = {};
+  /* PIXEL PAL — 8-bit "level load": the screen fills tile by tile with pea-green pixel blocks (the look's painted page), the
+     pixel mascot hops in over a pixel dialog box "Switching to Pixel Pal…" with a segmented orange loading bar that fills
+     while the look is applied underneath, then the blocks clear tile by tile in a burst of yellow pixel sparkles.
+     All painted Pixel Pal art (assets/pixel-pal); drawn with smoothing off so the pixels stay crisp. */
+  function equipPixelPal(id, swap) {
+    var P = 'pixel-pal/';
+    return Promise.all(['background', 'mascot-jump', 'panel-card-tight', 'bar-track', 'bar-fill', 'sparkle-1', 'coin', 'header-bar'].map(function (n) { return fxArt('blip', P + n); })).then(function (r) {
+      var c = fxCanvas('pixel-pal'), g = c.g, W = c.W, H = c.H, bg = r[0], hop = r[1], box = r[2], trk = r[3], fil = r[4], spk = r[5], coin = r[6], alt = r[7];
+      g.imageSmoothingEnabled = false;
+      var T = Math.max(26, Math.round(W / 11)), cols = Math.ceil(W / T), rows = Math.ceil(H / T), tiles = [];
+      for (var y = 0; y < rows; y++) for (var x = 0; x < cols; x++) {
+        // a diagonal sweep from the Blip corner (bottom-left) with a little 8-bit jitter
+        var d = (x + (rows - 1 - y)) / (cols + rows - 2);
+        tiles.push({ x: x * T, y: y * T, at: d * .75 + Math.random() * .25, odd: (x + y) % 2 });
+      }
+      var sp = [];
+      for (var i = 0; i < 16; i++) sp.push({ a: Math.random() * Math.PI * 2, d: 70 + Math.random() * 150, s: 12 + Math.round(Math.random() * 3) * 6, t: Math.random() * 220 });
+      function blocks(k) {   // k 0..1 = share of tiles shown; each tile is that piece of the painted page
+        tiles.forEach(function (t) {
+          if (t.at > k) return;
+          var im = t.odd && alt ? alt : bg;   // checkered in the look's two painted greens (page + top bar), like an 8-bit wipe
+          var vh = im === alt ? im.height * .6 : (im ? im.height : 0);   // the top bar's band only (not its dark bottom edge)
+          if (im) g.drawImage(im, t.x / W * im.width, t.y / H * vh, T / W * im.width, T / H * vh, t.x, t.y, T + 1, T + 1);
+          else { g.fillStyle = '#e1f0c3'; g.fillRect(t.x, t.y, T + 1, T + 1); }
+        });
+      }
+      function nine(im, x, y, w, h) {   // the pixel dialog card, 9-sliced so its stepped corners keep their size
+        if (!im) return; var s = 60, sb = 98, d = 17, db = 28, iw = im.width, ih = im.height;
+        var sx = [0, s, iw - s, iw], sy = [0, s, ih - sb, ih], dx = [x, x + d, x + w - d, x + w], dy = [y, y + d, y + h - db, y + h];
+        for (var a = 0; a < 3; a++) for (var bI = 0; bI < 3; bI++)
+          g.drawImage(im, sx[a], sy[bI], sx[a + 1] - sx[a], sy[bI + 1] - sy[bI], dx[a], dy[bI], dx[a + 1] - dx[a], dy[bI + 1] - dy[bI]);
+      }
+      var bw = Math.min(300, W - 48), bh = 112, bx = (W - bw) / 2, by = H * .5;
+      function dialog(t, k, al) {   // k = loading progress 0..1
+        g.save(); g.globalAlpha = al;
+        // the mascot hops in steps (8-bit: whole-pixel jumps, no smooth easing)
+        if (hop) { var sz = Math.min(W, H) * .36, hy = Math.round(Math.abs(Math.sin(t / 160)) * 4) * 6;
+          g.drawImage(hop, W / 2 - sz / 2, by - sz * .98 - hy, sz, sz * hop.height / hop.width); }
+        nine(box, bx, by, bw, bh);
+        g.fillStyle = '#10301f'; g.font = '900 19px Nunito, sans-serif'; g.textAlign = 'center';
+        g.fillText('Switching to Pixel Pal…', W / 2, by + 40);
+        var tx = bx + 22, tw = bw - 44 - 34, ty = by + 58, th = 16;
+        if (trk) g.drawImage(trk, tx, ty, tw, th);
+        if (fil) { var n = 10, seg = Math.floor(k * n + .001);   // the bar fills one pixel segment at a time
+          if (seg > 0) g.drawImage(fil, 0, 0, fil.width * seg / n, fil.height, tx, ty, tw * seg / n, th); }
+        if (coin) g.drawImage(coin, tx + tw + 8, ty - 5, 26, 26);
+        g.restore();
+      }
+      function sparks(t, al) {
+        if (!spk) return; sp.forEach(function (p) { var q = clamp01((t - p.t) / 520), rr = Math.round(p.d * ease(q) / 6) * 6;
+          g.save(); g.globalAlpha = al * (1 - q * .5);
+          g.drawImage(spk, Math.round((W / 2 + Math.cos(p.a) * rr) / 3) * 3 - p.s / 2, Math.round((by - 40 + Math.sin(p.a) * rr) / 3) * 3 - p.s / 2, p.s, p.s);
+          g.restore(); });
+      }
+      return fxRun(620, function (t, k) { g.clearRect(0, 0, W, H); blocks(k * 1.02); dialog(t, 0, clamp01((k - .55) / .45)); })
+        .then(function () {
+          return Promise.all([swap(), fxRun(1000, function (t, k) { g.clearRect(0, 0, W, H); blocks(1.1); dialog(620 + t, k, 1); })]);
+        })
+        .then(function () { return fxRun(240, function (t) { g.clearRect(0, 0, W, H); blocks(1.1); dialog(1620 + t, 1, 1); sparks(t, 1); }); })
+        .then(function () { return fxRun(560, function (t, k) { g.clearRect(0, 0, W, H); blocks(1.05 - k * 1.1); dialog(1860 + t, 1, 1 - k); sparks(240 + t, 1 - k); }); })
+        .then(function () { c.o.remove(); });
+    });
+  }
+  VIBE_FX['pixel-pal'] = equipPixelPal;
   function equipTransition(id, applyFn, vibe) {
     var fx = (vibe && VIBE_FX[vibe]) || EQUIP_FX[id], reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!fx || reduce || equipBusy) { applyFn(); return; }
