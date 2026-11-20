@@ -342,7 +342,7 @@
     parts: { 'post-frame': 'panel-card', 'timeline-frame': 'cover-mask', 'thumb': 'photo-mask', 'icon-coin': 'coin',
       'quest-0': 'quest-react', 'quest-50': 'quest-react', 'quest-100': 'quest-react',
       'deco-1': 'sparkle-1', 'deco-2': 'sparkle-2', 'deco-3': 'burst', 'deco-4': 'mascot-wave', 'deco-5': 'mascot-peek', 'deco-6': 'mascot-head' },
-    assets: ['coin', 'sheet', 'icon-crown', 'icon-compass', 'panel-card-tight', 'panel-card-active-tight', 'card-tailtip', 'icon-clock', 'btn-square', 'card-tail', 'btn-danger', 'btn-disabled', 'tabs-track', 'coin-stack', 'coin-pill', 'reward-chip', 'badge-count',
+    assets: ['coin', 'icon-hanger', 'icon-envelope', 'sheet', 'icon-crown', 'icon-compass', 'panel-card-tight', 'panel-card-active-tight', 'card-tailtip', 'icon-clock', 'btn-square', 'card-tail', 'btn-danger', 'btn-disabled', 'tabs-track', 'coin-stack', 'coin-pill', 'reward-chip', 'badge-count',
       'unread-dot', 'icon-home-on', 'icon-groups-on', 'icon-skins-on', 'icon-network-on', 'icon-messages-on',
       'icon-like-on', 'icon-dislike-on', 'icon-compose', 'icon-close', 'icon-check', 'icon-chevron', 'icon-photo', 'icon-settings',
       'icon-user', 'icon-bookmark', 'icon-video', 'icon-phone', 'icon-heart', 'icon-star', 'icon-gift', 'icon-flag', 'icon-globe',
@@ -2691,23 +2691,23 @@
   // back to Default: a royal-blue speech bubble swells from the Blip corner, the original mascot bounces in the middle
   // with sparkles and a pill "Switching to Default…", the look changes underneath, then the bubble pops into sparkles.
   function equipBlip(id, swap) {
-    return Promise.all([fxArt('blip', 'mascot-jump'), fxArt('blip', 'sparkle-1'), fxArt('blip', 'mascot')]).then(function (r) {
+    return Promise.all([fxArt('blip', 'mascot-jump'), fxArt('blip', 'sparkle-1'), fxArt('blip', 'mascot'), fxArt('blip', 'header-bar'), fxArt('blip', 'coin-pill')]).then(function (r) {
       var c = fxCanvas('blip'), g = c.g, W = c.W, H = c.H, jump = r[0] || r[2], spk = r[1];
       var ox = W * .12, oy = H * .94, R = Math.hypot(W, H) * 1.05, sp = [];
       for (var i = 0; i < 14; i++) sp.push({ a: Math.random() * Math.PI * 2, d: 60 + Math.random() * 140, s: 14 + Math.random() * 18, t: Math.random() * 200 });
+      var blue = r[3], pill = r[4];   // painted pieces: the top bar's royal-blue band and the white pill
       function bubble(rad, al) {
-        g.save(); g.globalAlpha = al; var gr = g.createRadialGradient(ox, oy, 0, ox, oy, rad);
-        gr.addColorStop(0, '#409af9'); gr.addColorStop(.7, '#2669e4'); gr.addColorStop(1, '#1e51ca');
-        g.fillStyle = gr; g.beginPath(); g.arc(ox, oy, rad, 0, Math.PI * 2); g.fill(); g.restore();
+        if (!blue) return;
+        g.save(); g.globalAlpha = al; g.beginPath(); g.arc(ox, oy, rad, 0, Math.PI * 2); g.clip();
+        g.drawImage(blue, 0, 0, W, H); g.restore();
       }
       function mascot(t, al) {
         if (!jump) return; var sz = Math.min(W, H) * .42, bob = Math.abs(Math.sin(t / 180)) * 26;
         g.save(); g.globalAlpha = al; g.drawImage(jump, W / 2 - sz / 2, H * .42 - sz / 2 - bob, sz, sz * jump.height / jump.width); g.restore();
         g.save(); g.globalAlpha = al; g.font = '800 18px Nunito, sans-serif'; g.textAlign = 'center';
-        var tw = 230, th = 44, tx = W / 2 - tw / 2, ty = H * .42 + sz * .62;
-        g.fillStyle = '#fdfefa'; g.strokeStyle = '#00008b'; g.lineWidth = 2; g.beginPath();
-        if (g.roundRect) g.roundRect(tx, ty, tw, th, 22); else g.rect(tx, ty, tw, th); g.fill(); g.stroke();
-        g.fillStyle = '#0b1f6b'; g.fillText('Switching to Default…', W / 2, ty + 28); g.restore();
+        var tw = 240, th = 50, tx = W / 2 - tw / 2, ty = H * .42 + sz * .62;
+        if (pill) g.drawImage(pill, tx, ty, tw, th);
+        g.fillStyle = '#000048'; g.fillText('Switching to Default…', W / 2, ty + 31); g.restore();
       }
       function sparks(t, al) {
         if (!spk) return; sp.forEach(function (p) { var k = clamp01((t - p.t) / 500);
