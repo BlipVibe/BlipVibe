@@ -8091,7 +8091,7 @@ html body.fs.fs-basic .fs-tl-slot { top: 16.4% !important; height: 69.1% !import
 html body.fs.fs-basic .fs-tl-slot-1 { left: 8.5% !important; --bs-mx: 11.333%; }
 html body.fs.fs-basic .fs-tl-slot-2 { left: 37.2% !important; --bs-mx: 49.6%; }
 html body.fs.fs-basic .fs-tl-slot-3 { left: 65.9% !important; right: auto !important; --bs-mx: 87.867%; }
-html body.fs.fs-basic .fs-tl-slot :is(img, .fs-tl-img), html body.fs.fs-basic .fs-tl-slot.fs-tl-empty::after { border-radius: 0 !important; inset: 0 !important; width: 100% !important; height: 100% !important; -webkit-mask: var(--fs-shelf-mask) var(--bs-mx) 53.07% / 400% 144.718% no-repeat !important; mask: var(--fs-shelf-mask) var(--bs-mx) 53.07% / 400% 144.718% no-repeat !important; }
+html body.fs.fs-basic .fs-tl-slot :is(img, .fs-tl-img), html body.fs.fs-basic .fs-tl-slot.fs-tl-empty::after { border-radius: 0 !important; inset: 0 !important; width: 100% !important; height: 100% !important; }
 html body.fs.fs-basic #clearAllHistory { color: var(--bs-accent) !important; font-weight: 700 !important; }
 html body.fs.fs-basic :is(.navbar, .nav-center) { animation: none !important; box-shadow: none !important; }
 @media (max-width: 768px) {
