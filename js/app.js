@@ -1040,7 +1040,7 @@ async function _enforceMfaIfRequired() {
                 initApp();
             } else {
                 // User cancelled or failed too many times — sign out and bounce
-                sb.auth.signOut().catch(function () {});
+                sb.auth.signOut({ scope: 'local' }).catch(function () {});
                 showLogin();
                 if (loginError) {
                     loginError.textContent = result === 'failed'
@@ -1433,6 +1433,7 @@ async function loadSkinDataFromSupabase(){
 function reapplyCustomizations(){
     if(state.activePremiumSkin) applyPremiumSkin(state.activePremiumSkin,true);
     else if(state.activeSkin) applySkin(state.activeSkin,true);
+    else if(window.BlipFullSkins) BlipFullSkins.onSkin(null);   // nothing equipped: the default look (Logo Classic)
     // If in group view, apply group font instead of personal font
     if(_activeGroupId&&state.groupActiveFont[_activeGroupId]) applyFont(state.groupActiveFont[_activeGroupId],true);
     else if(state.activeFont) applyFont(state.activeFont,true);
@@ -10715,7 +10716,37 @@ window.BlipFullSkinsData={
             // then zoom / move it inside the frame
             if(window.BlipPhotoPos) setTimeout(function(){BlipPhotoPos.editSlot(slot,$('#page-profile-view.active')?'pvCoverBanner':'timelineCover');},350);
         });});
-    }
+    },
+    // Blip menu (default look, js/fullskins.js blipStart): ONLY the Blip family of looks (owner, Nov 19 2026: "should only
+    // include the other blip options") = the default (Logo Classic) + the Vibes looks you own, never basic/other skins
+    VIBES:['bubble-pop','lofi-room','clay-town','space-age','swiss-grid','pixel-pal'],
+    ownedSkins:function(){
+        var out=[{kind:'default',id:'default',name:'Default',on:!state.activePremiumSkin&&!state.activeSkin}];
+        var vibes=this.VIBES;
+        var fcat={};_fskCatalog().forEach(function(c){fcat[c.id]=c;});
+        Object.keys(state.ownedPremiumSkins||{}).forEach(function(id){
+            if(!state.ownedPremiumSkins[id]||vibes.indexOf(id)<0) return;
+            var c=fcat[id],p=premiumSkins.find(function(s){return s.id===id;});
+            if(c&&!c.ready) return;                       // full skin not finished yet: can't be equipped
+            if(!c&&!p) return;
+            out.push({kind:'premium',id:id,name:(c&&c.name)||p.name,preview:p&&!c?p.preview:null,card:c?c.card:null,on:state.activePremiumSkin===id});
+        });
+        return out;
+    },
+    // equip from the Blip menu: same path as the shop / My Skins (look keys go through set_skin_look in the sync)
+    equipSkin:function(kind,id){
+        revertTryOn();
+        var done=function(){saveState();syncSkinDataToSupabase(true);if($('#page-shop.active'))renderShop();};
+        if(kind==='premium'){
+            var go=function(){applyPremiumSkin(id);done();};
+            if(window.BlipFullSkins&&BlipFullSkins.equipTransition) BlipFullSkins.equipTransition(id,go); else go();
+        } else if(kind==='skin'){ applySkin(id); done(); }
+        else {
+            var back=function(){applyPremiumSkin(null);applySkin(null);done();};
+            if(window.BlipFullSkins&&BlipFullSkins.equipTransition) BlipFullSkins.equipTransition('blip',back); else back();
+        }
+    },
+    openShop:function(){var e=document.querySelector('.nav-link[data-page="shop"]');if(e)e.click();}
 };
 function renderPhotosCard(){
     if(window.BlipFullSkins) BlipFullSkins.render(); // timeline photo slots use your latest photos

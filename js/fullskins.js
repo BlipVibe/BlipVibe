@@ -330,6 +330,33 @@
       '--border': 'rgba(201,143,134,.3)', '--nav-bg': '#f6eee6' },
     fonts: 'https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Lora:ital,wght@1,500;1,600&family=Caveat+Brush&display=swap'
   };
+  /* LOGO CLASSIC ("blip") — the BlipVibe DEFAULT look (owner, Nov 19 2026: "the one that uses the logo color scheme
+   should be the default one"). Not sold in the shop: it is applied automatically whenever you are signed in with no
+   premium skin and no basic colour skin equipped (onSkin below). Original logo mascot, logo colours, white outlined
+   cards, royal-blue pills, the Blip button + menu (blipStart). Art: images/skins/blip/assets (prototypes/blip-kit-brief.md). */
+  FULL_SKINS['blip'] = {
+    name: 'Default', isDefault: true,   // owner approved + shipped Nov 19 2026
+    dark: false, ink: '#000048', muted: '#000034', accent: '#0a2cf0',
+    font: "'Nunito', sans-serif", titleFont: "'Nunito', sans-serif",
+    timeline: 1, avatar: 'center', slice: 12, edge: 14,
+    parts: { 'post-frame': 'panel-card', 'timeline-frame': 'cover-mask', 'thumb': 'photo-mask', 'icon-coin': 'coin',
+      'quest-0': 'quest-react', 'quest-50': 'quest-react', 'quest-100': 'quest-react',
+      'deco-1': 'sparkle-1', 'deco-2': 'sparkle-2', 'deco-3': 'burst', 'deco-4': 'mascot-wave', 'deco-5': 'mascot-peek', 'deco-6': 'mascot-head' },
+    assets: ['mascot-page-smile', 'mascot-page-wink', 'mascot-page-happy', 'mascot-head-plain', 'badge-early_adopter', 'badge-first_post', 'badge-social_butterfly', 'badge-popular', 'badge-commenter', 'badge-group_leader', 'badge-skin_collector', 'badge-streak_master', 'badge-photographer', 'badge-generous', 'icon-info', 'icon-user-plus', 'icon-mute', 'icon-block', 'icon-gif', 'icon-mic', 'icon-poll', 'icon-font', 'icon-seen', 'icon-reply', 'icon-image', 'icon-fire', 'icon-flag-red', 'bubble-in', 'bubble-out', 'coin', 'card-tail-tight', 'icon-hanger', 'icon-envelope', 'sheet', 'icon-crown', 'icon-compass', 'panel-card-tight', 'panel-card-active-tight', 'card-tailtip', 'icon-clock', 'btn-square', 'card-tail', 'btn-danger', 'btn-disabled', 'tabs-track', 'coin-stack', 'coin-pill', 'reward-chip', 'badge-count',
+      'unread-dot', 'icon-home-on', 'icon-groups-on', 'icon-skins-on', 'icon-network-on', 'icon-messages-on',
+      'icon-like-on', 'icon-dislike-on', 'icon-compose', 'icon-close', 'icon-check', 'icon-chevron', 'icon-photo', 'icon-settings',
+      'icon-user', 'icon-bookmark', 'icon-video', 'icon-phone', 'icon-heart', 'icon-star', 'icon-gift', 'icon-flag', 'icon-globe',
+      'icon-calendar', 'icon-bag', 'icon-logout', 'icon-scroll', 'icon-link', 'icon-exit', 'icon-people',
+      'quest-like', 'quest-comment', 'quest-post', 'quest-react', 'quest-save', 'quest-view', 'quest-message', 'quest-share',
+      'notif-like', 'notif-follow', 'notif-comment', 'notif-message', 'notif-group', 'notif-purchase',
+      'mascot', 'mascot-head', 'mascot-wave', 'mascot-peek', 'mascot-jump', 'mascot-sleep', 'sparkle-1', 'sparkle-2', 'burst',
+      'blip-btn', 'blip-btn-on', 'menu-panel', 'menu-row-on', 'menu-check', 'swatch-ring',
+      'avatar-ring', 'story-ring', 'story-ring-seen', 'story-add', 'camera-badge', 'cover-mask', 'photo-mask',
+      'group-avatar-frame', 'skin-card-mask', 'divider', 'field', 'bar-track', 'bar-fill'],
+    theme: { '--primary': '#0c64f0', '--primary-hover': '#0044c4', '--dark': '#000048', '--gray': '#000034',
+      '--light-bg': '#eef5ff', '--card': '#fdfefa', '--border': 'rgba(0,0,139,.18)', '--nav-bg': '#2669e4' },
+    fonts: 'https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap'
+  };
   window.FULL_SKINS = FULL_SKINS;
 
   // Absolute: a relative url() inside a custom property resolves against the stylesheet that
@@ -1338,6 +1365,7 @@
     if (dn) dn.remove();
     removeVaporStart();
     removeBasicBar();
+    removeBlipStart();
     var lamp = document.getElementById('fsLamp');
     if (lamp) lamp.remove();
     var wasActive = active;
@@ -1395,7 +1423,8 @@
     var isDark = vcfg && vcfg.dark !== undefined ? vcfg.dark : cfg.dark;
     b.classList.add('fs', 'fs-' + id, isDark ? 'fs-dark' : 'fs-light');
     // status-bar text follows the rendition (Good Witch Night, Vaporwave dark): light text on dark art
-    if (typeof window._updateStatusBarStyle === 'function') window._updateStatusBarStyle(!isDark);
+    // Logo Classic paints a royal-blue top bar behind the status bar: keep its text white like the concept
+    if (typeof window._updateStatusBarStyle === 'function') window._updateStatusBarStyle(id === 'blip' ? false : !isDark);
     if (cfg.variants) b.setAttribute('data-fs-variant', variant || cfg.variants[0].id);
     var parts = cfg.extras ? PARTS.concat(EXTRAS) : PARTS;
     parts.forEach(function (p) { b.style.setProperty('--fs-' + p, url(id, (cfg.parts && cfg.parts[p]) || p)); });
@@ -1416,6 +1445,7 @@
     dayNightToggle(id, cfg);
     if (id === 'vaporwave') vaporStart(); else removeVaporStart();
     if (id === 'basic') { basicBar(); basicPills(); basicTitle(); } else { removeBasicBar(); basicPills(); basicTitle(); }
+    if (id === 'blip') blipStart(); else removeBlipStart();
     startSuspending();
     watchPosts();
     render();
@@ -1552,6 +1582,12 @@
   var PV_MENU = ['pvMuteBtn', 'pvBlockBtn', 'pvReportUserBtn'];
   function wrapPvMore() {
     var page = document.getElementById('page-profile-view'), follow = document.getElementById('pvFollowBtn');
+    // Logo Classic's concept shows Mute · Block · Report as a row of their own: no ⋯ menu, buttons stay visible
+    if (active === 'blip') {
+      PV_MENU.concat(['pvCloseFriendBtn', 'pvInviteGroupBtn']).forEach(function (id) { var b = document.getElementById(id); if (b) b.classList.remove('fs-pv-hidden'); });
+      var stale = page && page.querySelector('.fs-pv-more'); if (stale) stale.remove();
+      return;
+    }
     // most concepts put ⋯ at the cover's top right; Vaporwave's puts it in the button row
     var inRow = active === 'vaporwave' || active === 'basic', acts = follow && follow.closest('.pv-actions');
     // (cover mode: the ⋯ hangs off the page at the cover's top right, so it stacks above the profile picture too)
@@ -1650,8 +1686,27 @@
     // app.js only strips premium-<id> classes for skins in its legacy premiumSkins list, so drop any
     // left over from a full skin (e.g. after a try-on is reverted)
     Object.keys(FULL_SKINS).forEach(function (k) { if (k !== id) document.body.classList.remove('premium-' + k); });
-    if (id && FULL_SKINS[id]) apply(id); else clear();
+    if (id && FULL_SKINS[id]) apply(id);
+    else if (wantsDefaultLook()) { if (active !== 'blip') apply('blip'); }
+    else clear();
   }
+  // the default look shows only when signed in (the app shell is up) with no basic colour skin (body.skin-<id>)
+  function wantsDefaultLook() {
+    if (FULL_SKINS.blip.wip) return false;
+    var b = document.body, shell = document.getElementById('appShell');
+    if (!b || !shell || !shell.classList.contains('active')) return false;
+    for (var i = 0; i < b.classList.length; i++) if (b.classList[i].indexOf('skin-') === 0) return false;
+    return !Array.prototype.some.call(b.classList, function (c) { return c.indexOf('premium-') === 0 && c !== 'premium-dark'; });
+  }
+  // sign in / out flips the app shell: follow it (the app may pick the look before the shell is shown)
+  (function watchShell() {
+    var shell = document.getElementById('appShell');
+    if (!shell) { document.addEventListener('DOMContentLoaded', watchShell); return; }
+    new MutationObserver(function () {
+      if (shell.classList.contains('active')) { if (!active && wantsDefaultLook()) apply('blip'); }
+      else if (active === 'blip') clear();
+    }).observe(shell, { attributes: true, attributeFilter: ['class'] });
+  })();
 
   // app data the engine reads (exposed by app.js as window.BlipFullSkinsData)
   function data() {
@@ -2609,7 +2664,123 @@
       }).then(function () { c.o.remove(); swapping = false; }, function () { c.o.remove(); swapping = false; });
     });
   }
-  var EQUIP_FX = { 'basic': equipBasic, 'scrapbook': equipScrapbook, 'anime-blaze': equipBlaze, 'witchcraft': equipWitchcraft, 'good-witch': equipGoodWitch, 'vaporwave': equipVaporwave, 'heavens-light': equipHeaven, 'blood-moon': equipBloodMoon, 'superhero': equipSuperhero };
+  /* ---------- Logo Classic: the Blip button (owner, Nov 19: "a little start like the retro button but name it Blip …
+     popup menu … in the corresponding blip style. The options will be all the blip styles" = every skin you own).
+     Phone: first item of the bottom nav (where Retro's Start sits). Desktop: before Home in the top bar.
+     Tap → the Blip menu pops out of the button: a royal-blue side strip with the mascot, "My Skins" rows (a preview,
+     the name, a check on the one you wear) and "Get more skins". Picking a skin equips it through the app's normal
+     path (data().equipSkin → set_skin_look); a full skin plays its own equip animation, a colour skin gets the Blip
+     wipe, going back to Default plays the Blip bubble. ---------- */
+  function removeBlipStart() {
+    ['blipStart', 'blipMenu', 'blipWipe'].forEach(function (i) { var e = document.getElementById(i); if (e) e.remove(); });
+  }
+  function closeBlipMenu() {
+    var m = document.getElementById('blipMenu'), b = document.getElementById('blipStart');
+    if (m) m.classList.remove('is-open'); if (b) b.classList.remove('is-on');
+  }
+  function blipStart() {
+    var bar = document.querySelector('.nav-center');
+    if (!bar || document.getElementById('blipStart')) return;
+    var btn = document.createElement('button');
+    btn.id = 'blipStart'; btn.type = 'button'; btn.className = 'blip-start-btn';
+    btn.innerHTML = '<i class="blip-start-head" aria-hidden="true"></i><span>Blip</span>';
+    btn.setAttribute('aria-label', 'Blip menu: your skins'); btn.setAttribute('aria-haspopup', 'menu'); btn.setAttribute('aria-expanded', 'false');
+    bar.insertBefore(btn, bar.firstChild);
+    var m = document.createElement('div');
+    m.id = 'blipMenu'; m.className = 'blip-menu'; m.setAttribute('role', 'menu');
+    document.body.appendChild(m);
+    function fill() {
+      var list = data().ownedSkins ? data().ownedSkins() : [{ kind: 'default', id: 'default', name: 'Default', on: true }];
+      var h = '<div class="blip-menu-side" aria-hidden="true"><span>BlipVibe</span><i></i></div><div class="blip-menu-list"><h4>My Skins</h4>';
+      list.forEach(function (it, k) {
+        var sw = it.kind === 'default' ? 'class="blip-sw blip-sw-default"'
+          : it.card ? 'class="blip-sw" style="background-image:url(\'' + it.card + '\')"'
+          : 'class="blip-sw" style="background:' + (it.preview || '#2669e4') + '"';
+        h += '<button type="button" role="menuitemradio" aria-checked="' + (it.on ? 'true' : 'false') + '" class="blip-row' + (it.on ? ' is-on' : '') +
+          '" data-k="' + k + '" style="--i:' + k + '"><i ' + sw + '></i><span>' + String(it.name).replace(/[<>&]/g, '') + '</span>' +
+          (it.on ? '<b class="blip-check" aria-hidden="true"></b>' : '') + '</button>';
+      });
+      h += '<hr><button type="button" role="menuitem" class="blip-row blip-more" style="--i:' + list.length + '"><i class="blip-sw blip-sw-bag"></i><span>Get more skins</span></button></div>';
+      m.innerHTML = h;
+      m._list = list;
+    }
+    function place() {   // desktop: drop down under the button; phone: pop up above the bottom nav (CSS)
+      var r = btn.getBoundingClientRect();
+      if (r.top < innerHeight / 2) { m.classList.add('is-down'); m.style.left = Math.max(8, Math.min(r.left, innerWidth - 300)) + 'px'; m.style.top = (r.bottom + 8) + 'px'; }
+      else { m.classList.remove('is-down'); m.style.left = ''; m.style.top = ''; }
+    }
+    btn.addEventListener('click', function (e) {
+      e.preventDefault(); e.stopPropagation();
+      var open = !m.classList.contains('is-open');
+      if (open) { fill(); place(); }
+      m.classList.toggle('is-open', open); btn.classList.toggle('is-on', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    m.addEventListener('click', function (e) {
+      var row = e.target.closest('.blip-row'); if (!row) return;
+      e.preventDefault(); e.stopPropagation();
+      closeBlipMenu();
+      if (row.classList.contains('blip-more')) { if (data().openShop) data().openShop(); return; }
+      var it = m._list[+row.getAttribute('data-k')]; if (!it || it.on) return;
+      if (!data().equipSkin) return;
+      if (it.kind === 'skin') blipWipe(row, it).then(function () { data().equipSkin(it.kind, it.id); });
+      else data().equipSkin(it.kind, it.id);   // full skins play their own equip animation; Default plays equipBlip
+    });
+    if (!blipStart._doc) {
+      blipStart._doc = true;
+      document.addEventListener('click', function (e) { if (!e.target.closest('#blipMenu, #blipStart')) closeBlipMenu(); }, true);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeBlipMenu(); });
+    }
+  }
+  // colour skins: the picked row's preview grows from the Blip button into a circle that covers the screen, the
+  // mascot jumps with sparkles and a "Switching to …" pill shows; the new colours are put on under it, then it fades.
+  function blipWipe(row, it) {
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return Promise.resolve();
+    var b = document.getElementById('blipStart'), r = (b || row).getBoundingClientRect();
+    var o = document.createElement('div'); o.id = 'blipWipe'; o.className = 'blip-wipe';
+    o.style.setProperty('--x', (r.left + r.width / 2) + 'px'); o.style.setProperty('--y', (r.top + r.height / 2) + 'px');
+    o.innerHTML = '<div class="blip-wipe-fill"></div><i class="blip-wipe-mascot"></i><div class="blip-toast">Switching to ' +
+      String(it.name).replace(/[<>&]/g, '') + '…</div>';
+    o.querySelector('.blip-wipe-fill').style.background = it.preview || '#2669e4';
+    document.documentElement.appendChild(o);
+    requestAnimationFrame(function () { o.classList.add('is-in'); });
+    return fxWait(650).then(function () {
+      setTimeout(function () { o.classList.add('is-out'); setTimeout(function () { o.remove(); }, 450); }, 250);
+    });
+  }
+  // back to Default: a royal-blue speech bubble swells from the Blip corner, the original mascot bounces in the middle
+  // with sparkles and a pill "Switching to Default…", the look changes underneath, then the bubble pops into sparkles.
+  function equipBlip(id, swap) {
+    return Promise.all([fxArt('blip', 'mascot-jump'), fxArt('blip', 'sparkle-1'), fxArt('blip', 'mascot'), fxArt('blip', 'header-bar'), fxArt('blip', 'coin-pill')]).then(function (r) {
+      var c = fxCanvas('blip'), g = c.g, W = c.W, H = c.H, jump = r[0] || r[2], spk = r[1];
+      var ox = W * .12, oy = H * .94, R = Math.hypot(W, H) * 1.05, sp = [];
+      for (var i = 0; i < 14; i++) sp.push({ a: Math.random() * Math.PI * 2, d: 60 + Math.random() * 140, s: 14 + Math.random() * 18, t: Math.random() * 200 });
+      var blue = r[3], pill = r[4];   // painted pieces: the top bar's royal-blue band and the white pill
+      function bubble(rad, al) {
+        if (!blue) return;
+        g.save(); g.globalAlpha = al; g.beginPath(); g.arc(ox, oy, rad, 0, Math.PI * 2); g.clip();
+        g.drawImage(blue, 0, 0, W, H); g.restore();
+      }
+      function mascot(t, al) {
+        if (!jump) return; var sz = Math.min(W, H) * .42, bob = Math.abs(Math.sin(t / 180)) * 26;
+        g.save(); g.globalAlpha = al; g.drawImage(jump, W / 2 - sz / 2, H * .42 - sz / 2 - bob, sz, sz * jump.height / jump.width); g.restore();
+        g.save(); g.globalAlpha = al; g.font = '800 18px Nunito, sans-serif'; g.textAlign = 'center';
+        var tw = 240, th = 50, tx = W / 2 - tw / 2, ty = H * .42 + sz * .62;
+        if (pill) g.drawImage(pill, tx, ty, tw, th);
+        g.fillStyle = '#000048'; g.fillText('Switching to Default…', W / 2, ty + 31); g.restore();
+      }
+      function sparks(t, al) {
+        if (!spk) return; sp.forEach(function (p) { var k = clamp01((t - p.t) / 500);
+          drawRot(g, spk, W / 2 + Math.cos(p.a) * p.d * ease(k), H * .42 + Math.sin(p.a) * p.d * ease(k), p.s, p.s, k * 2, al * (1 - k * .4)); });
+      }
+      return fxRun(650, function (t, k) { g.clearRect(0, 0, W, H); bubble(R * ease(k), 1); mascot(t, clamp01((k - .5) * 2)); })
+        .then(function () { return Promise.all([swap(), fxRun(900, function (t) { g.clearRect(0, 0, W, H); bubble(R, 1); mascot(650 + t, 1); sparks(t, 1); })]); })
+        .then(function () { return fxRun(520, function (t, k) { g.clearRect(0, 0, W, H); bubble(R * (1 - ease(k)), 1 - k * .3); mascot(1550 + t, 1 - k); sparks(900 + t, 1 - k); }); })
+        .then(function () { c.o.remove(); });
+    });
+  }
+
+  var EQUIP_FX = { 'blip': equipBlip, 'basic': equipBasic, 'scrapbook': equipScrapbook, 'anime-blaze': equipBlaze, 'witchcraft': equipWitchcraft, 'good-witch': equipGoodWitch, 'vaporwave': equipVaporwave, 'heavens-light': equipHeaven, 'blood-moon': equipBloodMoon, 'superhero': equipSuperhero };
   // app.js calls this from the Equip buttons: equipTransition(id, function () { ...apply + save... })
   function equipTransition(id, applyFn) {
     var fx = EQUIP_FX[id], reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;

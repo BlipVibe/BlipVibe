@@ -76,3 +76,6 @@ images/skins/**
 !images/skins/blood-moon/assets/
 !images/skins/blood-moon/assets/**
 __pycache__/
+!images/skins/blip/
+!images/skins/blip/assets/
+!images/skins/blip/assets/**
