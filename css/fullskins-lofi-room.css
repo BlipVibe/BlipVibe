@@ -738,3 +738,16 @@ html body.fs.fs-blip[data-fs-variant="lofi-room"] #groupsTabs .search-tab:not(.a
   html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-shop .page-header::after { width: 112px !important; height: 74px !important; top: -4px !important; right: 0 !important; }
   html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-shop .page-subtitle { font-size: 12.5px !important; }
 }
+
+/* ======================================================================================================== BLIP MENU — ref/lofi-room/ov-menu-a.png */
+html body.fs.fs-blip[data-fs-variant="lofi-room"] .blip-menu-side span { color: #fbefd9 !important; text-shadow: 0 2px 0 rgba(30,12,2,.6); font-style: italic; font-weight: 700 !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] .blip-menu-list h4 { color: var(--wh-ink) !important; font: 700 25px var(--fs-title-font) !important; margin: 0 0 8px !important; padding: 4px 10px; border: 7px solid transparent;
+  border-image: var(--fs-grille) 40 fill / 7px stretch; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] .blip-row { color: var(--wh-ink) !important; font: 700 18px var(--fs-title-font) !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] .blip-sw-default { background-color: #e9dcc5 !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"]::after { background: rgba(40, 20, 6, .32) !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] .blip-toast { background: #f6ebd9 !important; border-color: #6b4226 !important; color: var(--wh-ink) !important; font-family: var(--fs-title-font, serif) !important; }
+@media (max-width: 768px) {
+  /* the Blip key while its menu is open = the orange glowing push-button (concept) */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .blip-start-btn.is-on .blip-start-head { background: var(--fs-mascot-head) center / 30px no-repeat, var(--fs-nav-active) center / 50px 44px no-repeat !important; width: 46px !important; height: 44px !important; margin-top: -4px; }
+}
