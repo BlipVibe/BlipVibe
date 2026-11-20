@@ -10738,7 +10738,9 @@ window.BlipFullSkinsData={
     // listed only once its art is finished (ready). Ownership: ownedPremiumSkins[<vibe id>] until the owner settles how
     // Premium Vibe looks are bought.
     VIBES:['bubble-pop','lofi-room','clay-town','space-age','swiss-grid','pixel-pal'],
+    FREE_VIBES:true,
     ownedSkins:function(){
+        var self=this;
         var onDefault=!state.activePremiumSkin&&!state.activeSkin;
         var cur=(state.fsVariants||{}).blip||'classic';
         var vs=(window.BlipFullSkins&&BlipFullSkins.variants('blip'))||[];
@@ -10746,7 +10748,10 @@ window.BlipFullSkinsData={
         var own=state.ownedPremiumSkins||{};
         var base=(_fskCatalog()[0]||{}).card||'';
         vs.forEach(function(v){
-            if(v.id==='classic'||v.ready===false||!own[v.id]) return;
+            if(v.id==='classic'||v.ready===false) return;
+            // owner, Nov 20 2026: "Everyone, free for now" — every finished Vibe is listed for everyone until the Premium Vibe
+            // shop exists; then set FREE_VIBES false and the menu lists only owned ones
+            if(!self.FREE_VIBES&&!own[v.id]) return;
             out.push({kind:'vibe',id:v.id,name:v.name,card:base?base.replace(/[^\/]+\/card\.webp$/,'blip/'+v.id+'/card.webp'):null,on:onDefault&&cur===v.id});
         });
         return out;
