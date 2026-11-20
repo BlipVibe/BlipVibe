@@ -706,3 +706,35 @@ html body.fs.fs-blip[data-fs-variant="lofi-room"] .page-search input, html body.
   html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal .cpm-emoji-btn { width: 34px !important; height: 34px !important; flex-basis: 34px !important; }
   html body.fs.fs-blip[data-fs-variant="lofi-room"] .create-post-modal #cpmPublish { min-width: 92px; font-size: 18px !important; padding: 0 6px !important; }
 }
+
+/* outline buttons are the cream pill in Walnut (the olive pill is kept for Following / Joined / Message, set per page) */
+html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(.btn-outline, .view-group-btn) { border-image-source: var(--fs-chip) !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] #groupsTabs .search-tab:not(.active) { border-image-source: var(--fs-chip) !important; }
+
+/* ======================================================================================================== SKINS SHOP (phone) — ref/lofi-room/ov-shop-a.png */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-shop .page-container { padding: 0 6px 90px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-shop .page-header { margin: 4px 0 8px !important; height: 86px !important; border: 10px solid transparent !important; box-sizing: border-box;
+    border-image: var(--fs-grille) 40 fill / 10px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-shop .page-header h2 { left: 4px !important; top: -2px !important; font: 700 36px/42px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-shop .page-subtitle { left: 6px !important; top: 42px !important; font: 600 13.5px var(--fs-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-shop .page-header::after { background-image: var(--fs-mascot-page-happy) !important; right: 4px !important; top: -8px !important; width: 140px !important; height: 86px !important; }
+  /* Skin Shop | My Skins = two separate pills */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #skinPageToggle { border-image: none !important; gap: 8px !important; height: 44px !important; margin: 0 0 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #skinPageToggle .search-tab { height: 44px !important; font: 700 22px var(--fs-title-font) !important; border: 0 solid transparent !important;
+    border-image: var(--fs-chip) 0 74 fill / 0 22px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #skinPageToggle .search-tab.active { border-image-source: var(--fs-chip-active) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #shopTabs { border-bottom: 0 !important; padding-bottom: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #shopTabs .search-tab { font: 700 15px var(--fs-title-font) !important; height: 32px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #shopGrid .fsk-name { font: 700 21px/25px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #shopGrid .skin-price { font: 700 16px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #shopGrid .btn { font: 700 16.5px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #shopGrid :is(.fsk-equipped, .btn-disabled.fsk-equipped) { border-image-source: var(--fs-btn-secondary) !important; color: #fff8ec !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #shopGrid :is(.fsk-equipped, .btn-disabled.fsk-equipped) * { color: #fff8ec !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #shopGrid .fsk-owned { background: #f6ebd9 !important; color: var(--wh-ink) !important; border: 1.5px solid #6b4226 !important; font-family: var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #shopGrid .fsk-badge { background-image: var(--fs-menu-check) !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-shop .page-header::after { width: 112px !important; height: 74px !important; top: -4px !important; right: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-shop .page-subtitle { font-size: 12.5px !important; }
+}
