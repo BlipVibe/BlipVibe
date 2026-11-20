@@ -81,3 +81,9 @@ __pycache__/
 !images/skins/blip/assets/**
 !images/skins/blip/swiss-grid/
 !images/skins/blip/swiss-grid/card.webp
+!images/skins/blip/pixel-pal/
+!images/skins/blip/pixel-pal/card.webp
+!images/skins/blip/clay-town/
+!images/skins/blip/clay-town/card.webp
+!images/skins/blip/bubble-pop/
+!images/skins/blip/bubble-pop/card.webp

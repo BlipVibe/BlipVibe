@@ -1,0 +1,423 @@
+/* Pixel Pal — a Blip Vibe look of the default skin (js/fullskins.js FULL_SKINS.blip.variants 'pixel-pal').
+ * Overrides css/fullskins-blip.css only where the Pixel Pal concepts differ. Art: images/skins/blip/assets/pixel-pal
+ * (prototypes/pixel-pal-kit-brief.md). Concepts: images/skins/default/pixel-pal/<page>.png (local only).
+ * Every rule is scoped to html body.fs.fs-blip[data-fs-variant="pixel-pal"]. */
+
+/* ---------- palette sampled from the concepts (home.png): pea-green page, cream cards, forest-green ink, pumpkin ---------- */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] { --bl-ink: #10301f !important; --bl-text: #111b12 !important; --bl-soft: #2e4a36 !important;
+  --bl-blue: #f0550a !important; --bl-deep: #c9500f; --bl-navy: #10301f; --bl-red: #d93025 !important; --pp-orange: #fe7c12; --pp-page: #e1f0c3;
+  background: #e1f0c3 var(--fs-background) center top / 100% auto no-repeat !important; }
+/* top bar is pea green: wordmark + icons forest green (Logo Classic paints them white on blue) */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .nav-logo { color: var(--bl-ink) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar :is(.nav-username, .nav-user > i.fa-chevron-down) { color: var(--bl-ink) !important; }
+/* inactive text: Logo Classic's navy literals -> forest green */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .nav-center .nav-link:not(.active) { color: var(--bl-ink) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(.btn-outline, .view-group-btn), html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(.btn-outline, .view-group-btn) * { color: var(--bl-ink) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .search-tab:not(.active), html body.fs.fs-blip[data-fs-variant="pixel-pal"] .search-tab:not(.active) * { color: var(--bl-ink) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .btn-disabled, html body.fs.fs-blip[data-fs-variant="pixel-pal"] .btn-disabled * { color: #4b5a48 !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .post-input-fake { color: #33443a !important; }
+@media (min-width: 769px) { html body.fs.fs-blip[data-fs-variant="pixel-pal"] .blip-start-btn > span { color: #fff !important; } }
+/* headings in the pixel display face */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(h1, h2, h3, h4, .profile-name, .card-heading, .page-header h2, .featured-info h5) { font-family: var(--fs-title-font) !important; font-weight: 700 !important; letter-spacing: .2px; }
+/* Blip menu + switch toast in Pixel Pal ink */
+body.fs-blip[data-fs-variant="pixel-pal"] .blip-menu-list h4, body.fs-blip[data-fs-variant="pixel-pal"] .blip-row { color: #10301f; }
+body.fs-blip[data-fs-variant="pixel-pal"] .blip-sw-default { background-color: #e1f0c3; }
+body.fs-blip[data-fs-variant="pixel-pal"] .blip-toast { background: #fdf4e3; border: 3px solid #10301f; border-radius: 0; color: #10301f; box-shadow: 3px 3px 0 #10301f; }
+
+/* ======================================================================================== PHONE: top bar (concept home.png) */
+@media (max-width: 768px) {
+  /* search + bell sit in cream pixel boxes (btn-square art), forest-green icons */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar :is(.mobile-search-btn, .mobile-notif-btn) { width: 35px !important; height: 35px !important;
+    background: var(--fs-btn-square) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar :is(.mobile-search-btn, .mobile-notif-btn) > i { width: 21px !important; height: 21px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .nav-container { grid-template-columns: 1fr 35px 35px auto 44px !important; column-gap: 7px !important; }
+  /* wordmark: pixel mascot head with its sparkles, heavy forest-green word */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .nav-logo { font: 900 25px var(--fs-title-font) !important; letter-spacing: -.4px; gap: 4px; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .nav-logo::before { width: 46px !important; height: 40px !important; flex-basis: 46px !important;
+    background: var(--fs-sparkle-2) left top / 18px no-repeat, var(--fs-mascot-head-plain) right center / 36px no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .nav-coins { height: 33px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .nav-coins .coin-count { font-size: 15.5px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .nav-avatar { width: 42px !important; height: 42px !important; }
+}
+
+/* ======================================================================================== HOME (phone) — concept home.png (A) */
+@media (max-width: 768px) {
+  /* cover: 7pt under the bar, 123pt tall, framed by the pixel card outline (9-slice, edges only) */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home #timelineCover { margin-top: 7px !important; height: 123px !important; }
+  /* the photo sits ON the pixel card (9-slice), inset 3pt, so only the card's outline + drop edge show around it */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .fs-timeline { border: 0 solid transparent;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 5px 0 stretch; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .fs-tl-slot-1 { inset: 3px 3px 3px 3px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home #timelineCover::after { right: 54px !important; top: 6px !important; width: 108px !important; height: 108px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home #coverEditBtn { right: 10px !important; bottom: 8px !important; width: 34px !important; height: 34px !important;
+    background-image: var(--fs-btn-square) !important; background-size: 100% 100% !important; }
+
+  /* profile card: square pixel-framed photo left, name / status pill / about right, stats in two columns, orange View Profile */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard { margin-top: 4px !important; min-height: 161px !important; height: auto !important; }
+  /* the concept card has no speech tail: plain pixel card */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"]:is(*) #profileCard::before { border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 11px 0 stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-title:empty { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-info { display: grid !important; grid-template-columns: 100px 1fr !important; column-gap: 15px !important;
+    row-gap: 0 !important; padding: 8px 12px 10px 14px !important; position: relative !important; min-height: 161px; box-sizing: border-box; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-avatar-wrap { width: 100px !important; height: 98px !important; margin: 0 !important; border-radius: 0 !important;
+    border: 0 solid transparent; border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 9px 9px 14px 9px / 0 0 4px 0 stretch; box-sizing: border-box; padding: 3px 3px 4px; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-avatar-wrap::after { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard #profileAvatarImg { -webkit-mask: var(--fs-skin-card-mask) center / 100% 100% no-repeat !important;
+    mask: var(--fs-skin-card-mask) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .avatar-edit-btn { right: -6px !important; bottom: -6px !important; width: 30px !important; height: 30px !important;
+    background-image: var(--fs-camera-badge) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .fs-namecard { padding: 1px 40px 0 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-name { font: 900 22.5px/26px var(--fs-title-font) !important; margin: 0 0 3px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-title { display: inline-flex !important; align-items: center; height: 23px; padding: 0 9px !important; margin: 0 0 5px !important;
+    font: 800 15px var(--fs-font) !important; color: var(--bl-ink) !important; border: 0 solid transparent; border-image: var(--fs-menu-row-on) 0 40 fill / 0 9px stretch; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-about { font: 600 14px/17px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-stats { position: static !important; grid-column: 1 / -1; grid-row: 2; display: flex !important; align-items: flex-start;
+    gap: 0 !important; margin: 10px 0 0 !important; padding: 0 !important; width: 230px; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .stat { flex: 1 1 0 !important; height: auto !important; padding: 0 !important; display: flex !important; flex-direction: column !important;
+    align-items: center; gap: 0; border-image-source: none !important; position: relative; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .stat + .stat::before { content: ""; position: absolute; left: 0; top: 4px; width: 2px; height: 32px; background: var(--fs-divider) center / 100% 100%; opacity: .9; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .stat-label { order: 0; font: 700 14.5px/17px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .stat-count { order: 1; font: 900 19px/22px var(--fs-title-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .view-profile-link { position: absolute !important; right: 12px !important; left: auto !important; top: auto !important; bottom: 10px !important;
+    width: 130px; height: 34px; display: flex !important; align-items: center; justify-content: center; gap: 6px; color: #fff !important; font: 800 16px var(--fs-font) !important;
+    border: 0 solid transparent; border-image: var(--fs-btn-primary) 0 80 fill / 0 17px stretch; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .view-profile-link::after, html body.fs.fs-blip[data-fs-variant="pixel-pal"] .mobile-pill::after {
+    content: ""; width: 11px; height: 13px; flex: 0 0 11px; background: #fff; -webkit-mask: var(--fs-icon-chevron) center / contain no-repeat; mask: var(--fs-icon-chevron) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .edit-profile-btn { right: 14px !important; top: 8px !important; width: 33px !important; height: 30px !important;
+    background: var(--fs-nav-active) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .edit-profile-btn > i { width: 17px !important; height: 17px !important; background: #fff !important;
+    -webkit-mask: var(--fs-icon-edit) center / contain no-repeat; mask: var(--fs-icon-edit) center / contain no-repeat; }
+
+  /* Photos card + pills + stories spacing (concept: 11pt gaps) */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .left-sidebar { gap: 11px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .photos-card .card-heading { font: 900 20px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .photos-card .view-more-link { display: flex !important; align-items: center; gap: 4px; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .photos-card .view-more-link::after { content: ""; width: 9px; height: 12px; background: var(--bl-blue);
+    -webkit-mask: var(--fs-icon-chevron) center / contain no-repeat; mask: var(--fs-icon-chevron) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .photos-preview { gap: 7px 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .mobile-pills-bar { margin: 2px 0 12px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .mobile-pill { height: 38px !important; font-size: 14.5px !important; gap: 6px; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .mobile-pill > i { background: #fff !important; -webkit-mask: var(--fs-icon-groups) center / contain no-repeat; mask: var(--fs-icon-groups) center / contain no-repeat; }
+}
+@media (max-width: 768px) {   /* Home (A), pass 2 against the side-by-side */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home #timelineCover { margin: 7px 8px 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home #timelineCover::after { right: 58px !important; top: 2px !important; width: 124px !important; height: 124px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-stats { margin-top: 2px !important; }
+}
+
+/* ======================================================================================== HOME (phone) — concept home.png (B, scrolled) */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(.featured-header h4, .quest-panel-header h4, .card-heading, .pv-posts-heading) { font-weight: 900 !important; }
+/* section icons the concept shows before its headings (sparkle, flag) */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(.featured-header h4, .quest-panel-header h4)::before { content: ""; display: inline-block; width: 22px; height: 22px; margin-right: 6px; vertical-align: -3px;
+  background: var(--fs-sparkle-1) center / contain no-repeat; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-panel-header h4::before { background-image: var(--fs-icon-flag); }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .featured-timer > i { background-image: var(--fs-icon-clock) !important; }
+/* quests: one row each — icon · label · segmented bar · count · reward chip (concept), the painted quest icons */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-item { grid-template-columns: 30px 1fr auto !important; column-gap: 8px !important; height: 40px !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-info { grid-template-columns: minmax(0, 118px) 1fr 34px !important; grid-template-rows: auto !important; column-gap: 8px !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-info p { grid-column: 1 !important; grid-row: 1; margin: 0 !important; font: 800 14px/16px var(--fs-font) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-info .quest-bar { grid-column: 2 !important; grid-row: 1 !important; height: 13px !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-info .quest-progress { grid-column: 3 !important; grid-row: 1 !important; font: 800 14px var(--fs-font) !important; text-align: right; white-space: nowrap; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-icon { width: 28px !important; height: 28px !important; background-image: var(--fs-quest-comment) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-icon:has(.fa-heart) { background-image: var(--fs-quest-like) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-icon:has(.fa-pen) { background-image: var(--fs-quest-post) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-icon:has(.fa-thumbs-up) { background-image: var(--fs-quest-react) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-icon:has(.fa-bookmark) { background-image: var(--fs-quest-save) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-icon:has(.fa-eye) { background-image: var(--fs-quest-view) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-icon:has(.fa-paper-plane) { background-image: var(--fs-quest-message) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-icon:has(.fa-share-nodes) { background-image: var(--fs-quest-share) !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-reward { height: 30px !important; min-width: 64px; justify-content: center; }
+/* feed tabs: three separate pills, the active one orange (concept), no shared track */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] #feedTabs { border-image: none !important; gap: 10px !important; display: flex !important; padding: 0 2px !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] #feedTabs .search-tab { flex: 1 1 0; height: 36px !important; border-image-source: var(--fs-chip) !important; border-image-width: 0 16px !important; font-size: 16px !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] #feedTabs .search-tab.active { border-image-source: var(--fs-chip-active) !important; }
+/* post author in the heavy face */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .post-username { font-weight: 900 !important; }
+/* Home (B), pass 2: quest rows 32pt, label sized to its text, bar takes the rest; bold meta text like the concept */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-item { height: 33px !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-info { grid-template-columns: auto minmax(60px, 1fr) 34px !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-info p { max-width: 136px; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(.quest-reset, .featured-timer) { font-weight: 800 !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .featured-info h5 { font-weight: 900 !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .featured-info p { font-weight: 600 !important; }
+/* the active feed tab points down at the feed (concept): a small orange pixel tip under it */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] #feedTabs .search-tab { position: relative; overflow: visible !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] #feedTabs .search-tab.active::after { content: ""; position: absolute; left: 50%; bottom: -9px; width: 18px; height: 10px; margin-left: -9px;
+  background: var(--fs-nav-active) center bottom / 18px 22px no-repeat; clip-path: polygon(0 0, 100% 0, 50% 100%); }
+/* equal bars on every quest row (real labels run longer than the concept's) */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-info { grid-template-columns: 132px minmax(50px, 1fr) 34px !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-info p { max-width: none; font-size: 13.5px !important; }
+
+/* ======================================================================================== GROUP PAGE (phone) — concept group.png */
+@media (max-width: 768px) {
+  /* nav on the group page: the concept keeps the plain icons (Logo Classic swaps in mascot / hanger / envelope) */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"]:has(#page-group-view.active) .nav-center .nav-link[data-page="groups"] > i { background-image: var(--fs-icon-groups-on) !important; width: 31px !important; height: 31px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"]:has(#page-group-view.active) .nav-center .nav-link[data-page="shop"] > i { background-image: var(--fs-icon-skins) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"]:has(#page-group-view.active) .nav-center .nav-link[data-page="messages"] > i { background-image: var(--fs-icon-messages) !important; }
+  /* cover: 5pt under the bar, 135pt, sitting on a pixel card (the card is the page's ::before, the photo inset 3pt over it) */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-group-view { position: relative; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-group-view::before { content: ""; position: absolute; z-index: 0; pointer-events: none; left: 8px; right: 8px;
+    top: calc(62px + env(safe-area-inset-top, 0px) + 5px); height: 135px; border: 0 solid transparent;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 5px 0 stretch; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvCoverBanner { margin: 8px 11px 0 !important; height: 129px !important; z-index: 1; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvCoverBanner::after { right: 34px !important; top: 4px !important; width: 124px !important; height: 124px !important; }
+  /* group card: plain pixel card (no tail), Back to Groups inside at the bottom-left */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"]:is(*) #gvProfileCard::before { border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 11px 0 stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvProfileCard { margin: 13px 0 12px !important; padding-bottom: 40px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvProfileCard .pv-back-link { bottom: 12px !important; left: 16px !important; font: 600 16px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvProfileCard .profile-name { font-weight: 900 !important; }
+  /* Group Rules / Invite Link: cream pixel cards, icon + label left, chevron right */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn) { height: 44px !important; justify-content: flex-start !important; gap: 14px !important;
+    padding: 0 16px 0 14px !important; color: var(--bl-ink) !important; font: 900 17px var(--fs-title-font) !important; position: relative; margin-bottom: 4px !important;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 5px 0 stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn) > i { filter: none !important; width: 26px !important; height: 26px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn)::after { content: ""; position: absolute; right: 16px; top: 50%; width: 12px; height: 16px; margin-top: -8px;
+    background: var(--bl-ink); -webkit-mask: var(--fs-icon-chevron) center / contain no-repeat; mask: var(--fs-icon-chevron) center / contain no-repeat; }
+}
+@media (max-width: 768px) {   /* Group page pass 2: group picture inside the card (concept), 10pt under the cover, 8pt gaps below */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-group-view #gvProfileCard { margin: 10px 0 8px !important; min-height: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-group-view #gvProfileCard .profile-info { padding: 12px 14px 0 12px !important; grid-template-columns: 92px 1fr !important; column-gap: 12px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-group-view #gvProfileCard .profile-avatar-wrap { width: 92px !important; height: 92px !important; margin: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvMobileRight { gap: 8px !important; margin-top: 0 !important; padding-top: 0 !important; }
+}
+@media (max-width: 768px) {   /* Group page (B): Feed / Chat (/ Group Shop) as separate pixel pills, the active one orange */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvModeTabs { border-image: none !important; gap: 10px !important; height: 44px !important; padding: 0 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvModeTabs .search-tab { height: 42px !important; border-image-source: var(--fs-chip) !important; border-image-width: 0 18px !important; font: 900 18px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvModeTabs .search-tab.active { border-image-source: var(--fs-chip-active) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvModeTabs .search-tab > i { display: none !important; }
+}
+@media (max-width: 768px) {   /* Group page (B): no shared sheet around the posts (Logo Classic's); heading + each post are their own pixel cards */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvPostsFeed { border: 0 !important; border-image: none !important; background: none !important; gap: 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvPostsFeed > .card:first-child { padding: 4px 16px 6px !important; margin: 0 !important; min-height: 0; height: 44px; box-sizing: border-box; display: flex !important; align-items: center;
+    border: 0 solid transparent !important; border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 5px 0 stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvPostsFeed .pv-posts-heading { font: 900 21px var(--fs-title-font) !important; margin: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvPostsFeed .pv-posts-heading > i { display: none !important; }
+}
+
+/* ======================================================================================== NOTIFICATIONS (phone) — concept notifications.png */
+@media (max-width: 768px) {
+  /* title + filter chips sit on one pixel card (concept); rows are their own cards below */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-notifications .page-container { position: relative; padding: 0 10px 90px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-notifications .page-container::before { content: ""; position: absolute; z-index: 0; left: 4px; right: 4px; top: 4px; height: 136px; pointer-events: none;
+    border: 0 solid transparent; border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 6px 0 stretch; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-notifications :is(.page-header, #notifTabs) { position: relative; z-index: 1; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-notifications .page-header { padding: 12px 8px 2px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-notifications .page-header h2 { font-size: 30px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #notifTabs { padding: 0 2px !important; margin: 6px 0 16px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #notifTabs .search-tab { height: 32px !important; font-size: 15.5px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #notifList .notif-item { padding: 0 10px 0 6px !important; height: 37px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #notifList .notif-icon:has(.fa-heart) { background-image: var(--fs-quest-like) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #notifList .notif-icon:has(.fa-user-plus) { background-image: var(--fs-icon-user-plus) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #notifList .notif-text > span { font-weight: 700 !important; font-size: 13.5px !important; }
+}
+
+/* ======================================================================================== NETWORK (phone) — concept network.png */
+@media (max-width: 768px) {
+  /* the whole page sits on the cream pixel sheet (concept), like the Groups tab */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-profiles .page-container { min-height: calc(100vh - 62px); box-sizing: border-box; padding: 0 10px 90px !important; margin: 0 4px !important;
+    border: 0 solid transparent !important; border-image: var(--fs-sheet) 70 70 0 70 fill / 22px 22px 0 22px stretch !important; }
+  /* Mutual / Followers headings: pixel chips, not Logo Classic's blue bar */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-profiles .connections-heading { background: none !important; border-radius: 0 !important;
+    border-image: var(--fs-btn-disabled) 0 76 fill / 0 18px stretch !important; }
+  /* avatars in the painted ring, not a CSS outline */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-profiles .profile-card-avatar { box-shadow: none !important; padding: 3px; box-sizing: border-box;
+    background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; width: 78px !important; height: 78px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-profiles .connections-dot { background: var(--fs-swatch-ring) center / 100% 100% no-repeat !important; box-shadow: none !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-profiles .connections-dot.active { background: var(--fs-unread-dot) center / 100% 100% no-repeat !important; box-shadow: none !important; }
+}
+
+/* ======================================================================================== avatars: Logo Classic draws white+navy CSS rings on
+   these; Pixel Pal uses its painted pixel ring (avatar-ring art) everywhere */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(#searchResults .profile-card-avatar, .msg-chat-header img, .comment-post-embed .post-avatar, #commentsList .comment-item > img,
+  .create-post-modal .cpm-scroll > div:first-child > img) {
+  box-shadow: none !important; padding: 3px !important; box-sizing: border-box; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; border-radius: 50% !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .create-post-modal .remove-thumb { background: var(--fs-btn-square) center / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .create-post-modal .remove-thumb::after { content: ""; position: absolute; inset: 6px; background: var(--fs-icon-close) center / contain no-repeat; }
+
+/* ======================================================================================== SEARCH (phone) — concept search.png: on the cream sheet */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-search .page-container { min-height: calc(100vh - 62px); box-sizing: border-box; padding: 0 10px 90px !important; margin: 0 4px !important;
+    border: 0 solid transparent !important; border-image: var(--fs-sheet) 70 70 0 70 fill / 22px 22px 0 22px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #searchResults .profile-card-avatar { width: 74px !important; height: 74px !important; }
+}
+/* Messages + Skins shop: on the cream sheet too (concept messages.png / shop.png) */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(#page-messages, #page-shop) .page-container { min-height: calc(100vh - 62px); box-sizing: border-box; margin: 0 4px !important;
+    border: 0 solid transparent !important; border-image: var(--fs-sheet) 70 70 0 70 fill / 22px 22px 0 22px stretch !important; }
+}
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] #searchResults .profile-card .btn { margin-right: 8px !important; }
+
+/* ======================================================================================== MY PROFILE / PROFILE VIEW (phone) — concepts profile.png, otherprofile.png */
+@media (max-width: 768px) {
+  /* cover on a pixel card, photo inset 3pt (concept) */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvCoverBanner { margin: 6px 8px 0 !important; background-color: transparent !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvCoverBanner > .fs-timeline { overflow: visible !important; border: 0 solid transparent;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 5px 0 stretch; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvCoverBanner .fs-tl-slot-1 { inset: 3px !important; }
+  /* Following / Followers: cream pixel chips (Logo Classic paints a blue CSS pill) */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvProfileCard .stat { background: none !important; border-radius: 0 !important; border: 0 solid transparent !important;
+    border-image: var(--fs-chip) 0 76 fill / 0 15px stretch !important; height: 32px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvProfileCard .stat :is(.stat-count, .stat-label) { color: var(--bl-ink) !important; font-weight: 800 !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvProfileCard .stat .stat-count { font-weight: 900 !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvProfileCard .pv-back-link { color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvProfileCard .pv-back-link > i { filter: none !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvPhotoContent .photo-menu-btn { background: var(--fs-btn-square) center / 100% 100% no-repeat !important; border-radius: 0 !important; width: 28px !important; height: 18px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvPhotoContent .photo-menu-btn::after { content: ""; position: absolute; inset: 2px 5px; background: var(--fs-icon-more) center / contain no-repeat; }
+}
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .pv-back-link, html body.fs.fs-blip[data-fs-variant="pixel-pal"] .pv-back-link * { color: var(--bl-ink) !important; } html body.fs.fs-blip[data-fs-variant="pixel-pal"] .pv-back-link > i { filter: none !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(.fs-tl-slot-1, #pvCoverBanner, #gvCoverBanner) { background-color: #e9f2d2 !important; }
+
+/* ======================================================================================== CHAT (phone) — concept chat.png */
+@media (max-width: 768px) {
+  /* send = orange pixel tile with a white plane (Logo Classic: blue CSS circle) */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #sendMsgBtn { border-radius: 0 !important; box-shadow: none !important; width: 46px !important; height: 44px !important; flex-basis: 46px !important;
+    background: var(--fs-nav-active) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #sendMsgBtn::after { filter: brightness(0) invert(1) !important; inset: 11px !important; }
+  /* the composer row sits on a cream pixel card */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .msg-chat-input { background: none !important; border: 0 solid transparent !important; margin: 0 8px 8px !important; padding: 6px 10px !important;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 5px 0 stretch !important; box-shadow: none !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .msg-chat-header h4 { font-weight: 900 !important; }
+}
+
+/* round buttons (cover camera, modal close, …) are square pixel boxes in every Pixel Pal concept */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] { --fs-btn-round: var(--fs-btn-square) !important; }
+/* COMMENTS (phone) — concept comments.png: Top / Newest / Oldest as separate pills */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .comment-modal-scroll .search-tabs { border-image: none !important; gap: 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .comment-modal-scroll .search-tabs .search-tab { border-image-source: var(--fs-chip) !important; border-image-slice: 0 76 fill !important; border-image-width: 0 17px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .comment-modal-scroll .search-tabs .search-tab.active { border-image-source: var(--fs-chip-active) !important; }
+}
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .post-views i, html body.fs.fs-blip[data-fs-variant="pixel-pal"] .post-views { color: var(--bl-ink) !important; }
+body.fs-blip[data-fs-variant="pixel-pal"] .blip-menu-list h4 { font-weight: 900; }
+
+/* ======================================================================================== DESKTOP HOME — concept desktop.png
+   Four columns (concept x 0.9375, scaled to a 1350 page): profile + photos | cover, stories, post bar, featured, tabs, posts |
+   Daily Quests + coin goal | Earn Coins, People, Trending Groups, Hashtags. The cover lives in the second column. */
+@media (min-width: 769px) {
+  /* top bar: pea green, forest-green word + icons, the active tab the orange tile */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .nav-logo { color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .nav-logo::before { background: var(--fs-sparkle-2) left top / 20px no-repeat, var(--fs-mascot-head-plain) right center / 50px no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .nav-center .nav-link, html body.fs.fs-blip[data-fs-variant="pixel-pal"] .nav-center .nav-link > span:not(.notif-badge) { color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .nav-center .nav-link > i { filter: none !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .nav-center .nav-link.active, html body.fs.fs-blip[data-fs-variant="pixel-pal"] .nav-center .nav-link.active > span:not(.notif-badge) { color: #fff !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .nav-center .nav-link .notif-badge { background: var(--fs-badge-count) center / 100% 100% no-repeat !important; color: #fff !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar :is(.nav-username, .nav-user > i.fa-chevron-down) { color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .search-bar > i { filter: none !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .blip-start-btn > span { color: #fff !important; }
+
+  /* the four columns; the cover moves into column 2 (page grid: the cover sits over column 2 of the main grid) */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home.page.active { padding-top: 76px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home #timelineCover { width: 585px !important; max-width: none !important; height: 159px !important;
+    margin: 0 0 0 calc(50% - 675px + 295px) !important; position: relative; z-index: 2; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .fs-timeline { border: 0 solid transparent; border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 6px 0 stretch; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .fs-tl-slot-1 { inset: 4px !important; -webkit-mask-box-image: var(--fs-cover-mask) 40 / 12px stretch; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home #timelineCover::after { left: 190px !important; top: 2px !important; width: 170px !important; height: 150px !important; background-image: var(--fs-mascot-wave) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home #coverEditBtn { left: auto !important; right: 12px !important; top: auto !important; bottom: 12px !important; color: var(--bl-ink) !important;
+    border-image: var(--fs-btn-secondary) 0 74 fill / 0 16px stretch !important; font-size: 13px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home #coverEditBtn > i { filter: none !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .main-container { width: 1350px !important; margin-top: -159px !important;
+    grid-template-columns: 285px 585px 204px 246px !important; column-gap: 10px !important; }
+  /* column 2 + 3 are the centre feed split in two: feed items on the left, quests + coin goal on the right */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .center-feed { grid-column: 2 / span 2; display: grid !important; grid-template-columns: 585px 204px; column-gap: 10px; row-gap: 10px !important;
+    align-items: start; grid-auto-flow: row dense; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .center-feed::before { content: ""; grid-column: 1; grid-row: 1; height: 159px; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .center-feed > * { grid-column: 1; min-width: 0; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .center-feed > .quest-panel { grid-column: 2; grid-row: 1 / span 4; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .center-feed > .coin-goal-bar { grid-column: 2; grid-row: 5 / span 3; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .right-sidebar { grid-column: 4; margin-left: 0 !important; }
+
+  /* profile card: centred (concept), strip photo on top, framed avatar, centred name / title / about, stats row, View Profile + pencil */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard { min-height: 0; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"]:is(*) #profileCard::before { transform: none !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-cover { height: 110px; -webkit-mask-box-image: var(--fs-photo-mask) 30 30 0 30 / 8px 8px 0 8px stretch; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-info { padding: 46px 16px 18px !important; text-align: center !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-avatar-wrap { width: 124px !important; height: 124px !important; margin: 0 auto 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard :is(.fs-namecard, .profile-name, .profile-title, .profile-about) { text-align: center !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-name { font-size: 30px !important; font-weight: 900 !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-title { color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-title::before, html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-title::after {
+    content: ""; display: inline-block; width: 16px; height: 16px; margin: 0 6px; vertical-align: -2px; background: var(--fs-sparkle-1) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-title:empty { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .stat { flex-direction: column-reverse !important; gap: 0; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .stat-label { font: 700 14px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .stat-count { font-size: 19px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .view-profile-link { position: static !important; width: auto; height: 40px; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .edit-profile-btn { border-image: none !important; background: var(--fs-btn-square) center / 100% 100% no-repeat !important; width: 44px !important; flex-basis: 44px; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .edit-profile-btn > i { background: var(--fs-icon-edit) center / contain no-repeat !important; -webkit-mask: none; mask: none; }
+
+  /* Daily Quests column: heading, then per quest: icon + label, segmented bar + count + reward; Resets daily at the foot */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-panel { display: block !important; padding: 8px 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-panel-header { display: flex !important; flex-direction: column; align-items: flex-start; margin: 0 0 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-panel-header::before { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-panel-header h4 { font-size: 22px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-panel-header h4::before { background-image: var(--fs-icon-crown) !important; width: 26px; height: 26px; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-item { display: grid !important; grid-template-columns: 24px 1fr; grid-template-rows: auto auto; height: auto !important; row-gap: 4px; column-gap: 6px; padding: 8px 0 !important;
+    border-top: 0 !important; position: relative; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-item + .quest-item::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--fs-divider) center / 100% 100%; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-icon { width: 22px !important; height: 22px !important; grid-row: 1; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-info { display: contents !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-info p { grid-column: 2 !important; grid-row: 1 !important; font-size: 14px !important; max-width: none; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-info .quest-bar { grid-column: 1 / span 2 !important; grid-row: 2 !important; width: calc(100% - 96px); }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-info .quest-progress { grid-column: 2 !important; grid-row: 2 !important; justify-self: end; margin-right: 52px; font-size: 14px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-reward { position: absolute; right: 0; bottom: 6px; height: 26px !important; min-width: 46px; font-size: 13px !important; padding: 0 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-reset { order: 9; }
+
+  /* right column: Earn Coins heading in ink on the card (no colour band) */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .promo-card { padding: 6px 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .promo-card .promo-title { color: var(--bl-ink) !important; border-image: none !important; padding: 0 2px !important; font-size: 19px !important; height: 32px; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .coin-rule { height: 28px; border-image: none !important; border-bottom: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .coin-rule span { font-size: 14px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .coin-rule > i.fa-heart { background-image: var(--fs-quest-like); }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(.suggestions-card, .groups-card) .card-heading { font-size: 19px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(.suggestions-card, .groups-card) .card-heading::before { content: ""; display: inline-block; width: 22px; height: 22px; margin-right: 6px; vertical-align: -3px;
+    background: var(--fs-icon-groups) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .suggestion-info h4 { font-size: 15px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .suggestion-follow-btn { width: 70px !important; height: 26px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .suggestion-follow-btn::after { font-size: 13px; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(.suggestions-card, .groups-card) .view-more-link { color: #fff !important; height: 34px; display: flex !important; align-items: center; justify-content: center;
+    border: 0 solid transparent !important; border-image: var(--fs-btn-primary) 0 67 fill / 0 17px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .group-icon { width: 60px !important; flex-basis: 60px; height: 42px !important; background: var(--fs-icon-groups-on) center / 22px no-repeat, var(--pp-orange) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .group-icon:has(img) { background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #trendingHashtagsBtn { height: 46px; font-size: 19px !important; border-image-width: 0 23px !important; }
+}
+@media (min-width: 769px) {   /* desktop pass 2 */
+  /* Daily Quests column: no mascot / side divider (Logo Classic's wide panel); heading on top, rows: icon + label / bar · count · reward */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-panel::before, html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-panel-header::before { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-panel-header { display: block !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-panel-header h4 { width: auto !important; white-space: nowrap; font-size: 21px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-panel-header .quest-reset { display: block; margin-top: 4px; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-item { grid-column: auto; grid-template-columns: 22px minmax(0, 1fr) auto auto !important; column-gap: 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-info p { grid-column: 2 / 5 !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-info .quest-bar { grid-column: 1 / 3 !important; width: auto; align-self: center; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-info .quest-progress { grid-column: 3 !important; margin: 0 !important; display: block !important; white-space: nowrap; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-home .quest-reward { position: static !important; grid-column: 4; grid-row: 2; }
+  /* right column text fits its 246px (concept sizes) */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .promo-card .promo-title { height: auto !important; min-height: 32px; font-size: 17px !important; white-space: nowrap; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .promo-card .promo-title::before { width: 28px; flex-basis: 28px; height: 26px; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .promo-card .promo-subtitle { font-size: 13px !important; line-height: 16px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .coin-rule { padding: 0 4px !important; gap: 6px; white-space: nowrap; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .coin-rule span { font-size: 13px !important; white-space: nowrap; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .coin-rule small { font-size: 11px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(.suggestions-card, .groups-card) .card-heading { font-size: 17px !important; white-space: nowrap; display: flex !important; align-items: center; padding: 0 !important; }
+}
+
+/* ======================================================================================== EVERY PHONE WIDTH (375 / 390 / 402 / 430):
+   sizes follow the screen (vw), never a 402-only number */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .nav-logo { font-size: min(25px, 6.1vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .nav-logo::before { width: min(46px, 11vw) !important; flex-basis: min(46px, 11vw) !important;
+    background-size: min(18px, 4.3vw), min(36px, 8.6vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .nav-container { grid-template-columns: minmax(0, 1fr) min(35px, 8.6vw) min(35px, 8.6vw) auto min(44px, 10.6vw) !important;
+    column-gap: min(7px, 1.4vw) !important; padding: 0 min(12px, 2.5vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar :is(.mobile-search-btn, .mobile-notif-btn) { width: min(35px, 8.6vw) !important; height: min(35px, 8.6vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .nav-avatar { width: min(42px, 10.4vw) !important; height: min(42px, 10.4vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .navbar .nav-coins { padding: 0 min(12px, 2.6vw) 0 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .nav-center .nav-link, html body.fs.fs-blip[data-fs-variant="pixel-pal"] .blip-start-btn { font-size: min(12.5px, 3.05vw) !important; letter-spacing: -.3px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .profile-stats { width: calc(100% - 150px) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .stat-label { font-size: min(14.5px, 3.5vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #profileCard .view-profile-link { width: min(130px, 32vw); font-size: min(16px, 3.9vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .mobile-pill { font-size: min(14.5px, 3.45vw) !important; padding: 0 4px !important; gap: 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .mobile-pill > i { width: min(22px, 5vw) !important; height: min(22px, 5vw) !important; flex-basis: min(22px, 5vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-info { grid-template-columns: min(132px, 31vw) minmax(40px, 1fr) 34px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #feedTabs .search-tab { font-size: min(16px, 3.9vw) !important; }
+}
