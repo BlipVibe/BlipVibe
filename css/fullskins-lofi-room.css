@@ -629,3 +629,30 @@ html body.fs.fs-blip[data-fs-variant="lofi-room"] .page-search input, html body.
   html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .pv-actions { order: 9; }
   html body.fs.fs-blip[data-fs-variant="lofi-room"] #pvProfileCard:has(#pvFollowBtn) .badge-row { order: 1; }
 }
+
+/* ======================================================================================================== CHAT (phone) — ref/lofi-room/ov-chat-a.png */
+@media (max-width: 768px) {
+  /* walnut frame top + bottom, a cream sheet behind the bubbles, grille strip header */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .messages-layout.chat-open .msg-chat { background: #5a361e var(--fs-background) center top / 100% auto repeat-y !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .msg-chat-header { margin: calc(env(safe-area-inset-top, 0px) + 6px) 6px 0 !important; height: 64px !important; border-width: 9px !important;
+    border-image: var(--fs-grille) 40 fill / 9px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .msg-chat-header .msg-back-btn { width: 34px !important; height: 34px !important; background: var(--fs-icon-back) center / 18px no-repeat, var(--fs-coin-pill) center / 100% 100% no-repeat !important; border-radius: 50% !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .msg-chat-header img { width: 48px !important; height: 48px !important; box-shadow: 0 0 0 2px #f6ebd9, 0 0 0 3.5px #6b4226 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .msg-chat-header h4 { font: 700 27px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .msg-chat-messages { margin: 6px 6px 0 !important; border-radius: 0; background: #f3e6cf var(--fs-sheet) center / 100% 100% !important; gap: 16px !important; padding: 14px 10px 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .msg-bubble { font: 700 19px/24px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .msg-bubble.sent { color: #fff8ec !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .msg-read-receipt { font: 700 15px var(--fs-title-font) !important; color: var(--wh-ink) !important; position: absolute; right: 4px; bottom: -26px; white-space: nowrap; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .msg-read-receipt i { color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .msg-bubble.sent:has(.msg-read-receipt) { position: relative; margin-bottom: 22px !important; }
+  /* input: walnut strip, cream square keys, cream field, olive round send */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .msg-chat-input { background: var(--fs-nav-bar) center top / 100% 100% no-repeat !important; border-top: 0 !important; height: 66px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .msg-chat-input .msg-media-btn { width: 40px !important; height: 38px !important; flex-basis: 40px !important; filter: none !important;
+    background-size: 22px 22px, 100% 100% !important; background-position: center !important; background-repeat: no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #msgImgBtn { background-image: var(--fs-icon-image), var(--fs-reward-chip) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #msgGifBtn { background-image: var(--fs-icon-gif), var(--fs-reward-chip) !important; background-size: 26px 26px, 100% 100% !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #msgVoiceBtn { background-image: var(--fs-icon-mic), var(--fs-reward-chip) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #msgInput { height: 40px !important; font: 500 17px var(--fs-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #sendMsgBtn { width: 46px !important; height: 46px !important; flex-basis: 46px !important; background: #6f7f3f !important; box-shadow: inset 0 2px 0 rgba(255,255,255,.25), 0 0 0 2px #c9b48c, 0 2px 4px rgba(0,0,0,.35) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #sendMsgBtn::after { filter: brightness(0) invert(.95) sepia(.3) !important; }
+}
