@@ -1923,3 +1923,23 @@ html body.fs.fs-blip:is(*) #msgVoiceBtn { filter: none !important; }
   html body.fs.fs-blip #mySkinsGrid .fsk-body { padding: 4px 0 0 !important; display: flex !important; flex-direction: column; align-items: center; gap: 3px; background: none !important; }
   html body.fs.fs-blip #mySkinsGrid :is(.fsk-body .btn, .fsk-takeoff) { width: 100% !important; height: 30px !important; min-height: 0 !important; padding: 0 6px !important; margin: 0 !important; font: 800 15px var(--fs-font) !important; border-image-width: 0 15px !important; }
 }
+/* the app hides the cover camera on other people's profiles (inline display:none) — never force it back */
+html body.fs.fs-blip:is(*) #pvCoverEditBtn[style*="none"] { display: none !important; }
+@media (max-width: 768px) {
+  /* badge medals shrink to fit the row on narrower phones (7 medals cut off at 390pt) */
+  html body.fs.fs-blip:is(*) #pvProfileCard .user-badge { flex: 0 1 39px !important; width: auto !important; min-width: 0 !important; height: auto !important; aspect-ratio: 39 / 48; max-height: 48px; }
+  html body.fs.fs-blip:is(*) #pvProfileCard .badge-row { align-items: flex-start; }
+}
+@media (max-width: 768px) {
+  /* Create a Post at narrower phones: header + footer scale instead of running off the sheet */
+  html body.fs.fs-blip:is(*) .create-post-modal:has(#cpmText) > .modal-header { padding-left: min(122px, 27vw) !important; gap: 6px; }
+  html body.fs.fs-blip:is(*) .create-post-modal:has(#cpmText) > .modal-header::before { width: min(125px, 27vw) !important; height: auto !important; aspect-ratio: 900 / 560; }
+  html body.fs.fs-blip:is(*) .create-post-modal:has(#cpmText) > .modal-header h3 { font-size: clamp(21px, 6.4vw, 29px) !important; min-width: 0; }
+  html body.fs.fs-blip:is(*) .create-post-modal:has(#cpmText) .modal-close { flex: 0 0 38px; }
+  html body.fs.fs-blip:is(*) .create-post-modal .cpm-footer { padding-left: 8px !important; padding-right: 8px !important; }
+  html body.fs.fs-blip:is(*) .create-post-modal .cpm-emoji-btn { width: min(34px, 8.4vw) !important; height: min(34px, 8.4vw) !important; flex: 0 0 min(34px, 8.4vw) !important; }
+  html body.fs.fs-blip:is(*) .create-post-modal .cpm-emoji-btn::after { inset: 22% !important; }
+  html body.fs.fs-blip:is(*) .create-post-modal .cpm-footer > div[style*="display:flex"] { gap: 5px !important; }
+  html body.fs.fs-blip:is(*) .create-post-modal #cpmCharCounter { font-size: 12.5px !important; margin-right: 6px !important; padding-right: 6px; }
+  html body.fs.fs-blip:is(*) .create-post-modal #cpmPublish { flex: 1 1 auto !important; min-width: 0 !important; padding: 0 6px !important; font-size: clamp(14px, 4.2vw, 18px) !important; overflow: hidden; }
+}
