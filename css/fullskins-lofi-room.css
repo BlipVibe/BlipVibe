@@ -857,3 +857,50 @@ html body.fs.fs-blip[data-fs-variant="lofi-room"] .blip-toast { background: #f6e
   html body.fs.fs-blip[data-fs-variant="lofi-room"] #groupsSections .join-group-btn.btn-disabled, html body.fs.fs-blip[data-fs-variant="lofi-room"] #groupsSections .join-group-btn.btn-disabled * { color: #fff8ec !important; }
   html body.fs.fs-blip[data-fs-variant="lofi-room"] #groupsSections .group-card-body h4 { font-family: var(--fs-title-font) !important; font-weight: 700 !important; }
 }
+
+/* ======================================================================================================== EVERY PHONE WIDTH (375-430): the Home record + dials scale with the screen */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .profile-info { grid-template-columns: min(168px, 41.8vw) 1fr !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .profile-avatar-wrap { width: min(162px, 40.3vw) !important; height: min(162px, 40.3vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .profile-stats { left: min(169px, 42vw) !important; grid-template-columns: repeat(2, calc((100vw - 12px - min(169px, 42vw) - 14px) / 2)) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .stat { grid-template-columns: min(40px, 10vw) auto !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .stat::before { width: min(40px, 10vw) !important; height: min(40px, 10vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .stat-count { font-size: min(21px, 5.2vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .profile-name { font-size: min(25px, 6.2vw) !important; }
+}
+@media (min-width: 403px) and (max-width: 768px) {
+  /* wider phones keep the 402pt concept column (the base look centres the page at 402) */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .profile-stats { grid-template-columns: repeat(2, 107px) !important; left: 169px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .profile-info { grid-template-columns: 168px 1fr !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .profile-avatar-wrap { width: 162px !important; height: 162px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home #timelineCover { margin: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home.page.active { padding-left: 0 !important; padding-right: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .mobile-pill { font-size: min(15px, 3.75vw) !important; letter-spacing: -.3px; padding: 0 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .mobile-pill > i { width: min(20px, 5vw) !important; height: min(20px, 5vw) !important; flex-basis: min(20px, 5vw) !important; }
+  /* stories: five across (as drawn), more scroll sideways */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .stories-bar { overflow-x: auto !important; overflow-y: hidden !important; scrollbar-width: none; justify-content: flex-start !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .stories-bar::-webkit-scrollbar { display: none; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .stories-bar .story-item { flex: 0 0 20% !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .story-name { font-size: min(13.5px, 3.4vw) !important; overflow: hidden !important; text-overflow: ellipsis !important; max-width: 100% !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .story-ring { width: min(58px, 14.4vw) !important; height: min(58px, 14.4vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .nav-center .nav-link, html body.fs.fs-blip[data-fs-variant="lofi-room"] .blip-start-btn { font-size: min(13px, 3.25vw) !important; }
+}
+@media (max-width: 768px) {
+  /* group stats plate + Groups header at narrow phones */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-stats { padding-left: min(138px, 34vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvProfileCard .stat-count { font-size: min(20px, 5vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #gvProfileCard .stat-label { font-size: min(13.5px, 3.4vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-avatar-wrap { width: min(150px, 37vw) !important; height: min(150px, 37vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-name { left: min(158px, 39vw) !important; font-size: min(27px, 6.7vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-group-view #gvProfileCard .profile-title { left: min(160px, 39.5vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-groups .page-header h2 { font-size: min(34px, 8.5vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-groups .page-header { padding-left: 4px !important; padding-right: 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #createGroupBtn { font-size: min(17px, 4.2vw) !important; padding: 0 10px !important; max-width: 46vw; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-groups .page-actions { width: auto !important; max-width: 100% !important; display: grid !important; grid-template-columns: minmax(0, 1fr) auto !important; gap: 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-groups .page-actions .page-search { width: auto !important; min-width: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-groups #createGroupBtn { width: auto !important; margin: 0 !important; }
+}
