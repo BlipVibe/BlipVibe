@@ -336,6 +336,19 @@
    cards, royal-blue pills, the Blip button + menu (blipStart). Art: images/skins/blip/assets (prototypes/blip-kit-brief.md). */
   FULL_SKINS['blip'] = {
     name: 'Default', isDefault: true,   // owner approved + shipped Nov 19 2026
+    /* Blip Vibes (owner, Nov 19 2026: "these are not new skins these are options in the blipvibe start menu only within
+     the skin"): looks of THIS skin, picked from the Blip menu, saved as fsVariants.blip. Art in assets/<id>/, CSS in
+     css/fullskins-blip.css under body[data-fs-variant="<id>"]. `art` = the parts that look has painted so far (others
+     fall back to Logo Classic). `ready:false` = not finished: never listed in the Blip menu. */
+    variants: [
+      { id: 'classic', name: 'Logo Classic' },
+      { id: 'bubble-pop', name: 'Bubble Pop', ready: false, art: [] },
+      { id: 'lofi-room', name: 'Walnut Hi-Fi', ready: false, art: [] },
+      { id: 'clay-town', name: 'Clay Town', ready: false, art: [] },
+      { id: 'space-age', name: 'Space-Age Pop', ready: false, art: [] },
+      { id: 'swiss-grid', name: 'Swiss Grid', ready: false, art: [] },
+      { id: 'pixel-pal', name: 'Pixel Pal', ready: false, art: [] }
+    ],
     dark: false, ink: '#000048', muted: '#000034', accent: '#0a2cf0',
     font: "'Nunito', sans-serif", titleFont: "'Nunito', sans-serif",
     timeline: 1, avatar: 'center', slice: 12, edge: 14,
@@ -372,6 +385,9 @@
   var variant = null;
   function url(id, part) {
     var dir = variant ? variant + '/' : '';
+    // a variant with an `art` list (the Blip Vibes looks) paints only those parts; the rest stay the base look's art
+    var vc = variant && FULL_SKINS[id] && FULL_SKINS[id].variants && FULL_SKINS[id].variants.filter(function (x) { return x.id === variant; })[0];
+    if (vc && vc.art && vc.art.indexOf(part) < 0) dir = '';
     return 'url("' + BASE + id + '/assets/' + dir + part + '.webp")';
   }
   // the colour option to show for skin `id`: yours, or the viewed person's while on their profile
@@ -435,6 +451,7 @@
     if (oldLamp) oldLamp.remove();
     var ids = (cfg && cfg.variants || []).map(function (x) { return x.id; });
     if (ids.length < 2) return;
+    if (cfg.isDefault) return;   // Blip Vibes are picked from the Blip menu, not a top-bar swatch
     var search = document.getElementById('mobileSearchBtn');
     if (!search || !search.parentNode) return;
     if (ids.indexOf('retro') >= 0 && ids.indexOf('modern') >= 0) {

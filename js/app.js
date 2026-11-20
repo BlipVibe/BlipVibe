@@ -10733,18 +10733,21 @@ window.BlipFullSkinsData={
         });});
     },
     // Blip menu (default look, js/fullskins.js blipStart): ONLY the Blip family of looks (owner, Nov 19 2026: "should only
-    // include the other blip options") = the default (Logo Classic) + the Vibes looks you own, never basic/other skins
+    // include the other blip options"; "these are not new skins these are options in the blipvibe start menu only within
+    // the skin") = Logo Classic + the Blip Vibes looks you own. A Vibe is a variant of the default skin (fsVariants.blip),
+    // listed only once its art is finished (ready). Ownership: ownedPremiumSkins[<vibe id>] until the owner settles how
+    // Premium Vibe looks are bought.
     VIBES:['bubble-pop','lofi-room','clay-town','space-age','swiss-grid','pixel-pal'],
     ownedSkins:function(){
-        var out=[{kind:'default',id:'default',name:'Default',on:!state.activePremiumSkin&&!state.activeSkin}];
-        var vibes=this.VIBES;
-        var fcat={};_fskCatalog().forEach(function(c){fcat[c.id]=c;});
-        Object.keys(state.ownedPremiumSkins||{}).forEach(function(id){
-            if(!state.ownedPremiumSkins[id]||vibes.indexOf(id)<0) return;
-            var c=fcat[id],p=premiumSkins.find(function(s){return s.id===id;});
-            if(c&&!c.ready) return;                       // full skin not finished yet: can't be equipped
-            if(!c&&!p) return;
-            out.push({kind:'premium',id:id,name:(c&&c.name)||p.name,preview:p&&!c?p.preview:null,card:c?c.card:null,on:state.activePremiumSkin===id});
+        var onDefault=!state.activePremiumSkin&&!state.activeSkin;
+        var cur=(state.fsVariants||{}).blip||'classic';
+        var vs=(window.BlipFullSkins&&BlipFullSkins.variants('blip'))||[];
+        var out=[{kind:'default',id:'default',name:'Logo Classic',on:onDefault&&(cur==='classic'||!vs.some(function(v){return v.id===cur&&v.ready!==false;}))}];
+        var own=state.ownedPremiumSkins||{};
+        var base=(_fskCatalog()[0]||{}).card||'';
+        vs.forEach(function(v){
+            if(v.id==='classic'||v.ready===false||!own[v.id]) return;
+            out.push({kind:'vibe',id:v.id,name:v.name,card:base?base.replace(/[^\/]+\/card\.webp$/,'blip/'+v.id+'/card.webp'):null,on:onDefault&&cur===v.id});
         });
         return out;
     },
@@ -10757,7 +10760,13 @@ window.BlipFullSkinsData={
             if(window.BlipFullSkins&&BlipFullSkins.equipTransition) BlipFullSkins.equipTransition(id,go); else go();
         } else if(kind==='skin'){ applySkin(id); done(); }
         else {
-            var back=function(){applyPremiumSkin(null);applySkin(null);done();};
+            // Logo Classic or a Blip Vibe: take off any skin, then pick the look of the default skin
+            var look=kind==='vibe'?id:'classic';
+            var back=function(){
+                state.fsVariants=Object.assign({},state.fsVariants||{});state.fsVariants.blip=look;
+                applyPremiumSkin(null);applySkin(null);done();
+                if(window.BlipFullSkins&&BlipFullSkins.active()==='blip') BlipFullSkins.apply('blip');
+            };
             if(window.BlipFullSkins&&BlipFullSkins.equipTransition) BlipFullSkins.equipTransition('blip',back); else back();
         }
     },
