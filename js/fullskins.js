@@ -2882,6 +2882,63 @@
      all"): each Vibe registers its own, one line each, e.g. VIBE_FX['pixel-pal'] = equipPixelPal; (fn(id, swap) → Promise,
      same contract as EQUIP_FX; load its art with fxArt('blip', '<vibe>/<part>')). Logo Classic keeps equipBlip. */
   var VIBE_FX = {};
+
+  // CLAY TOWN — slap-down: lumps of painted clay (terracotta, cream, sage, butter) drop from the top, stretch as they
+  // fall and splat flat with a squash until the clay page covers the screen; the clay mascot plops in with a
+  // squash-and-stretch bounce over a butter "Switching to Clay Town…" pill; the look changes underneath, then the whole
+  // slab is pressed flat downwards like dough under a palm and the new look shows.
+  function equipClayTown(id, swap) {
+    var P = 'clay-town/', kinds = ['fx-splat-terra', 'fx-splat-cream', 'fx-splat-sage', 'fx-splat-butter'];
+    return Promise.all(kinds.concat(['fx-ball-terra', 'background', 'mascot-jump', 'chip-active', 'sparkle-1', 'mascot'])
+      .map(function (n) { return fxArt('blip', P + n); })).then(function (r) {
+      var c = fxCanvas('clay-town'), g = c.g, W = c.W, H = c.H;
+      var splat = r.slice(0, 4), ball = r[4], bg = r[5], jump = r[6] || r[9], pill = r[7], spk = r[8];
+      var cols = 3, rows = Math.max(4, Math.round(H / W * 3)), cw = W / cols, ch = H / rows, S = Math.max(cw, ch) * 1.75, lumps = [];
+      for (var y = 0; y < rows; y++) for (var x = 0; x < cols; x++)
+        lumps.push({ x: (x + .5 + (Math.random() - .5) * .4) * cw, y: (y + .5 + (Math.random() - .5) * .4) * ch, im: splat[(x + y * 3) % 4] || ball,
+          s: S * (.85 + Math.random() * .3), rot: (Math.random() - .5) * .9, t: 0 });
+      lumps.sort(function () { return Math.random() - .5; }).forEach(function (l, i) { l.t = i * 38; });
+      var drops = [];
+      for (var i = 0; i < 10; i++) drops.push({ a: Math.random() * Math.PI * 2, d: 50 + Math.random() * 120, s: 12 + Math.random() * 14, t: Math.random() * 220 });
+      function lump(l, t) {   // fall (stretched tall), splat (squashed wide), wobble to rest
+        var k = t - l.t; if (k <= 0 || !l.im) return;
+        var fall = 240, yy = l.y, sx = 1, sy = 1;
+        if (k < fall) { var f = k / fall; yy = -S + (l.y + S) * f * f; sx = .7; sy = 1.35; }
+        else { var w = (k - fall) / 380; if (w < 1) { var e = Math.exp(-5 * w) * Math.cos(w * 14); sx = 1 + .28 * e; sy = 1 - .28 * e; } }
+        var h = l.s * l.im.height / l.im.width;
+        g.save(); g.translate(l.x, yy); g.rotate(l.rot); g.scale(sx, sy); g.drawImage(l.im, -l.s / 2, -h / 2, l.s, h); g.restore();
+      }
+      function page(al) { if (!bg || al <= 0) return; g.save(); g.globalAlpha = al; var h = W * bg.height / bg.width; for (var yy = 0; yy < H; yy += h) g.drawImage(bg, 0, yy, W, h); g.restore(); }
+      function scene(t) {   // t ms since start; slab = page + lumps
+        page(clamp01((t - 380) / 320));
+        lumps.forEach(function (l) { lump(l, t); });
+      }
+      function mascot(t, al) {   // t ms since the mascot started: plop down, squash on landing, small bounces
+        if (!jump || al <= 0) return;
+        var sz = Math.min(W, H) * .58, cy = H * .38, yy = cy, sx = 1, sy = 1;
+        if (t < 260) { var f = t / 260; yy = -sz + (cy + sz) * f * f; sx = .82; sy = 1.2; }
+        else { var u = (t - 260) / 1000, b = Math.abs(Math.sin(u * Math.PI * 2.2)) * Math.exp(-2.4 * u);
+          yy = cy - b * 46; var sq = Math.exp(-4 * u) * Math.cos(u * 22); sx = 1 + .16 * sq; sy = 1 - .16 * sq; }
+        var h = sz * jump.height / jump.width;
+        g.save(); g.globalAlpha = al; g.translate(W / 2, yy + h / 2); g.scale(sx, sy); g.drawImage(jump, -sz / 2, -h, sz, h); g.restore();
+        if (spk && t > 260) drops.forEach(function (p) { var k = clamp01((t - 260 - p.t) / 520);
+          drawRot(g, spk, W / 2 + Math.cos(p.a) * p.d * ease(k), cy + h * .45 + Math.sin(p.a) * p.d * .5 * ease(k), p.s, p.s, k * 2, al * (1 - k)); });
+        var tw = Math.min(270, W - 48), th = 56, tx = W / 2 - tw / 2, ty = cy + h * .62 + 18;
+        g.save(); g.globalAlpha = al * clamp01((t - 200) / 200);
+        if (pill) g.drawImage(pill, tx, ty, tw, th);
+        g.font = "600 18px Fredoka, Nunito, sans-serif"; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#4a1c08';
+        g.fillText('Switching to Clay Town…', W / 2, ty + th / 2 + 1); g.restore();
+      }
+      return fxRun(760, function (t) { g.clearRect(0, 0, W, H); scene(t); })
+        .then(function () { return Promise.all([swap(), fxRun(1050, function (t) { g.clearRect(0, 0, W, H); scene(760 + t); mascot(t, 1); })]); })
+        .then(function () { return fxRun(560, function (t, k) {   // pressed flat towards the bottom, a little wider
+          var e = ease(k); g.clearRect(0, 0, W, H);
+          g.save(); g.translate(W / 2, H); g.scale(1 + .18 * e, 1 - e); g.translate(-W / 2, -H);
+          scene(2000); mascot(1310 + t, 1 - k); g.restore(); }); })
+        .then(function () { c.o.remove(); });
+    });
+  }
+  VIBE_FX['clay-town'] = equipClayTown;
   function equipTransition(id, applyFn, vibe) {
     var fx = (vibe && VIBE_FX[vibe]) || EQUIP_FX[id], reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!fx || reduce || equipBusy) { applyFn(); return; }
