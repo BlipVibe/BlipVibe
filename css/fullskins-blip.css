@@ -1229,3 +1229,28 @@ html body.fs.fs-blip .page::-webkit-scrollbar { display: none; width: 0; height:
 html body.fs.fs-blip #page-groups .page-search > i { align-self: center !important; margin: 0 !important; top: auto !important; left: auto !important; }
 @media (min-width: 769px) { html body.fs.fs-blip #groupsSections .group-card-body p { min-height: 43px; } }
 html body.fs.fs-blip .page-search > i { transform: none !important; }
+/* phone app: tiles tall enough for icon + label (nothing clipped), content centred in the tile; bar keeps its padding */
+@media (max-width: 768px) {
+  html body.fs.fs-blip .nav-center { min-height: 74px !important; padding-top: 8px !important; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 8px) !important; }
+  html body.fs.fs-blip .nav-center .nav-link, html body.fs.fs-blip .blip-start-btn,
+  html body.fs.fs-blip .nav-center .nav-link[data-page="messages"], html body.fs.fs-blip .nav-center .nav-link[data-page="profiles"] {
+    height: 58px !important; justify-content: center !important; gap: 2px !important; line-height: 16px !important; overflow: visible !important; }
+  html body.fs.fs-blip .nav-center .nav-link > span:not(.notif-badge), html body.fs.fs-blip .blip-start-btn > span { line-height: 16px !important; display: block; padding-bottom: 1px; }
+}
+
+/* profile / group card = ONE painting (card + tail) 9-sliced with the tail inside the bottom-right corner slice, so the outline and the
+   tail join exactly as painted (no separate tail piece). Same 0.283 scale as every card: 2px outline, 16px corners. */
+html body.fs.fs-blip:is(*) :is(#profileCard, #gvProfileCard)::before { border-width: 0 !important;
+  border-image: var(--fs-card-tail-tight) 60 210 142 60 fill / 17px 59px 40px 17px / 0 0 23px 0 stretch !important; }
+html body.fs.fs-blip:is(*) :is(#profileCard, #gvProfileCard)::after { display: none !important; }
+@media (min-width: 769px) { html body.fs.fs-blip:is(*) #profileCard::before { transform: scaleX(-1); } }
+/* the painted band is very slightly translucent: back it with its own blue so nothing scrolling underneath shows through */
+html body.fs.fs-blip .navbar { background-color: #1650d6 !important; }
+/* post photos show WHOLE (owner: "the pictures are all cut"): natural shape, full width, rounded corners kept; very tall photos
+   are capped and shown whole inside the frame (no crop) */
+html body.fs.fs-blip .post-media-grid.pm-count-1, html body.fs.fs-blip #page-home .post-media-grid.pm-count-1 { aspect-ratio: auto !important; height: auto !important; max-height: none !important; }
+html body.fs.fs-blip .post-media-grid.pm-count-1 .pm-thumb { height: auto !important; }
+html body.fs.fs-blip .post-media-grid.pm-count-1 .pm-thumb :is(img, video) { width: 100% !important; height: auto !important; max-height: 560px !important; object-fit: contain !important; display: block; }
+html body.fs.fs-blip .post-media-grid:not(.pm-count-1) { aspect-ratio: auto !important; }
+html body.fs.fs-blip .post-media-grid:not(.pm-count-1) .pm-thumb :is(img, video) { object-fit: cover !important; aspect-ratio: 1; height: auto !important; }
+html body.fs.fs-blip .post-media-grid .pm-thumb :is(img, video) { border-radius: 10px !important; }

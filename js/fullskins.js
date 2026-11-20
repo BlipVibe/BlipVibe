@@ -342,7 +342,7 @@
     parts: { 'post-frame': 'panel-card', 'timeline-frame': 'cover-mask', 'thumb': 'photo-mask', 'icon-coin': 'coin',
       'quest-0': 'quest-react', 'quest-50': 'quest-react', 'quest-100': 'quest-react',
       'deco-1': 'sparkle-1', 'deco-2': 'sparkle-2', 'deco-3': 'burst', 'deco-4': 'mascot-wave', 'deco-5': 'mascot-peek', 'deco-6': 'mascot-head' },
-    assets: ['coin', 'icon-hanger', 'icon-envelope', 'sheet', 'icon-crown', 'icon-compass', 'panel-card-tight', 'panel-card-active-tight', 'card-tailtip', 'icon-clock', 'btn-square', 'card-tail', 'btn-danger', 'btn-disabled', 'tabs-track', 'coin-stack', 'coin-pill', 'reward-chip', 'badge-count',
+    assets: ['coin', 'card-tail-tight', 'icon-hanger', 'icon-envelope', 'sheet', 'icon-crown', 'icon-compass', 'panel-card-tight', 'panel-card-active-tight', 'card-tailtip', 'icon-clock', 'btn-square', 'card-tail', 'btn-danger', 'btn-disabled', 'tabs-track', 'coin-stack', 'coin-pill', 'reward-chip', 'badge-count',
       'unread-dot', 'icon-home-on', 'icon-groups-on', 'icon-skins-on', 'icon-network-on', 'icon-messages-on',
       'icon-like-on', 'icon-dislike-on', 'icon-compose', 'icon-close', 'icon-check', 'icon-chevron', 'icon-photo', 'icon-settings',
       'icon-user', 'icon-bookmark', 'icon-video', 'icon-phone', 'icon-heart', 'icon-star', 'icon-gift', 'icon-flag', 'icon-globe',
@@ -1370,7 +1370,8 @@
     var isDark = vcfg && vcfg.dark !== undefined ? vcfg.dark : cfg.dark;
     b.classList.add('fs', 'fs-' + id, isDark ? 'fs-dark' : 'fs-light');
     // status-bar text follows the rendition (Good Witch Night, Vaporwave dark): light text on dark art
-    if (typeof window._updateStatusBarStyle === 'function') window._updateStatusBarStyle(!isDark);
+    // Logo Classic paints a royal-blue top bar behind the status bar: keep its text white like the concept
+    if (typeof window._updateStatusBarStyle === 'function') window._updateStatusBarStyle(id === 'blip' ? false : !isDark);
     if (cfg.variants) b.setAttribute('data-fs-variant', variant || cfg.variants[0].id);
     var parts = cfg.extras ? PARTS.concat(EXTRAS) : PARTS;
     parts.forEach(function (p) { b.style.setProperty('--fs-' + p, url(id, (cfg.parts && cfg.parts[p]) || p)); });
