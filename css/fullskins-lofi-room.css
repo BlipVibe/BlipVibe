@@ -195,3 +195,63 @@ html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(.post-input-fake, .page-se
   html body.fs.fs-blip[data-fs-variant="lofi-room"] .post-username { font-size: 17px !important; }
   html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(.post-time, .post-description, .post-description p, .action-btn) { color: var(--wh-ink) !important; }
 }
+/* Home fixes after the first render: stat labels on one line, grille strip 9-sliced across the card top, five stories fit */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .stat { grid-template-columns: 40px auto; column-gap: 3px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .stat::before { width: 40px; height: 40px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .stat-label { font-size: 12px !important; white-space: nowrap; letter-spacing: -.2px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .profile-about { -webkit-line-clamp: 2 !important; display: -webkit-box !important; -webkit-box-orient: vertical; max-height: 36px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .photos-card .card-heading { background: none !important; border: 7px solid transparent !important;
+    border-image: var(--fs-grille) 40 fill / 7px stretch !important; margin: -8px -9px 7px !important; padding: 0 8px !important; line-height: 24px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .photos-card .view-more-link { top: 3px !important; right: 12px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .stories-bar { gap: 0 !important; overflow: hidden !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .stories-bar .story-item { flex: 1 1 0 !important; min-width: 0 !important; width: auto !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .story-ring { width: 58px !important; height: 58px !important; margin: 0 auto !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .story-name { max-width: none !important; overflow: visible !important; text-overflow: clip !important; white-space: nowrap; font-size: 13px !important; }
+}
+/* Daily Quests = the walnut card; Featured Skin = grille cloth in a walnut frame (both 9-sliced, beating the base card rule's #page-home) */
+html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(#page-home, #page-profile, .page) .quest-panel { border-image-source: var(--fs-panel-wood) !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(#page-home, .page) .featured-skin-banner { border-image-source: var(--fs-grille) !important; border-image-slice: 40 fill !important;
+  border-image-width: 12px !important; border-image-outset: 0 !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] .featured-skin-banner::before { display: none !important; }
+
+/* ---------- colours: the base pins its navy palette with !important custom properties; Walnut re-pins them ---------- */
+html body.fs.fs-blip[data-fs-variant="lofi-room"] { --bl-ink: #3b2414 !important; --bl-text: #3b2414 !important; --bl-soft: #7a5a40 !important; --bl-blue: #c8561a !important; --bl-red: #b8321f !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(.btn-outline, .view-group-btn), html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(.btn-outline, .view-group-btn) * { color: #3b2414 !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] .search-tab:not(.active), html body.fs.fs-blip[data-fs-variant="lofi-room"] .search-tab:not(.active) * { color: #3b2414 !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] .btn-disabled, html body.fs.fs-blip[data-fs-variant="lofi-room"] .btn-disabled * { color: #6e6152 !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] .post-input-fake { color: #7a5a40 !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(.btn-primary, .mobile-pill, .featured-buy-btn, .search-tab.active), html body.fs.fs-blip[data-fs-variant="lofi-room"] :is(.btn-primary, .mobile-pill, .featured-buy-btn, .search-tab.active) * { color: #fff8ec !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .view-profile-link { color: var(--wh-orange-ink) !important; }
+html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .photos-card .view-more-link { color: var(--wh-olive) !important; }
+/* Featured: thicker walnut frame + inner padding, Buy pill the concept's 29pt; quests: narrower meter so labels fit */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .featured-skin-banner { border-image-width: 14px !important; border-width: 14px 16px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .featured-body .btn { height: 29px !important; width: auto !important; justify-self: stretch !important; font-size: 17px !important; border-image-width: 0 15px !important; margin-top: 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-info { grid-template-columns: 1fr 88px 32px !important; column-gap: 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-info p { font-size: 13.5px !important; letter-spacing: -.2px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-reward { min-width: 48px; padding-left: 8px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .featured-body .btn { min-height: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-progress { white-space: nowrap; font-size: 14px !important; letter-spacing: -.3px; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-info { grid-template-columns: 1fr 84px 36px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .profile-stats { top: 100px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .edit-profile-btn { bottom: 8px !important; right: 18px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #profileCard .view-profile-link { bottom: 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .photos-preview > * { height: 58px !important; }
+}
+@media (max-width: 768px) {
+  /* concept spacing: 7pt between the Home cards */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .left-sidebar { gap: 7px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .photos-card { margin-top: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home :is(.main-container, .center-feed) { gap: 7px !important; row-gap: 7px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .photos-card .card-heading { line-height: 22px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-home .photos-card .view-more-link { top: 0 !important; line-height: 22px; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .quest-reward { width: 56px !important; min-width: 56px !important; box-sizing: border-box; justify-content: flex-start; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] .feed-post .post-menu-btn { margin-right: 10px !important; }
+}
