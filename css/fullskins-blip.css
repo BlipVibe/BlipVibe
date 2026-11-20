@@ -1625,3 +1625,84 @@ html body.fs.fs-blip :is(.post-media-grid, .photos-preview > *, .featured-previe
   html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .pv-online-line { margin-top: 2px !important; }
   html body.fs.fs-blip #pvProfileCard:has(#pvFollowBtn) .profile-info { min-height: 100px; }
 }
+
+/* ======================================================================================================== COMMENTS sheet (phone) — ref/ov-comments-a.png */
+@media (max-width: 768px) {
+  html body.fs.fs-blip .modal-content:has(.comment-modal-layout) { padding: 0 !important; }
+  html body.fs.fs-blip .modal-content:has(.comment-modal-layout) > .modal-header { height: 64px; padding: 0 12px 0 64px !important; margin: 0 !important; position: relative; display: flex !important; align-items: center; justify-content: space-between;
+    border: 0 !important; background: none !important; }
+  html body.fs.fs-blip .modal-content:has(.comment-modal-layout) > .modal-header::before { content: ""; position: absolute; left: 6px; top: 6px; width: 54px; height: 50px; background: var(--fs-mascot-head) center / contain no-repeat; }
+  html body.fs.fs-blip .modal-content:has(.comment-modal-layout) > .modal-header h3 { font: 900 29px var(--fs-title-font) !important; color: var(--bl-ink) !important; margin: 0 !important; }
+  html body.fs.fs-blip .modal-content:has(.comment-modal-layout) .modal-close { width: 38px !important; height: 38px !important; padding: 0 !important; border: 0 !important; border-radius: 50% !important; font-size: 0 !important;
+    background: var(--fs-btn-round) center / contain no-repeat !important; position: relative; box-shadow: none !important; }
+  html body.fs.fs-blip .modal-content:has(.comment-modal-layout) .modal-close::after { content: ""; position: absolute; inset: 11px; background: var(--fs-icon-close) center / contain no-repeat; }
+  html body.fs.fs-blip .modal-content:has(.comment-modal-layout) .modal-close > i { display: none !important; }
+  html body.fs.fs-blip .comment-modal-layout { padding: 0 8px !important; gap: 8px; }
+  /* the post at the top: its own outlined card */
+  html body.fs.fs-blip .comment-post-embed { margin: 0 !important; padding: 2px 6px 0 !important; border-style: solid !important; border-color: transparent !important; border-width: 6px !important; background: none !important; border-radius: 0 !important;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 11px 0 stretch !important; }
+  html body.fs.fs-blip .comment-post-embed .post-header { margin: 0 0 4px !important; display: flex; align-items: center; gap: 10px; }
+  html body.fs.fs-blip .comment-post-embed .post-avatar { width: 46px !important; height: 46px !important; box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #00008b; }
+  html body.fs.fs-blip .comment-post-embed .post-user-top { display: flex !important; flex-direction: column; align-items: flex-start !important; gap: 0 !important; }
+  html body.fs.fs-blip .comment-post-embed .post-username { font: 900 21px/24px var(--fs-title-font) !important; }
+  html body.fs.fs-blip .comment-post-embed .post-time { font: 600 16px/20px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip .comment-post-embed .post-description p { font: 600 17px/22px var(--fs-font) !important; color: var(--bl-ink) !important; margin: 0 0 6px !important; }
+  html body.fs.fs-blip .comment-post-embed .post-media-grid { border-radius: 14px !important; overflow: hidden; margin: 0 !important; }
+  html body.fs.fs-blip .comment-post-embed .post-actions { padding: 8px 6px 6px !important; border: 0 !important; }
+  html body.fs.fs-blip .comment-post-embed .action-left { display: flex !important; justify-content: space-between; width: 100%; }
+  html body.fs.fs-blip .comment-post-embed .action-btn { font: 800 19px var(--fs-font) !important; color: var(--bl-ink) !important; display: flex !important; align-items: center; gap: 8px; }
+  html body.fs.fs-blip .comment-post-embed .action-btn > i { width: 26px; height: 26px; font-size: 0 !important; background: center / contain no-repeat; }
+  html body.fs.fs-blip .comment-post-embed .action-btn > i.fa-thumbs-up { background-image: var(--fs-icon-like-on); }
+  html body.fs.fs-blip .comment-post-embed .action-btn > i.fa-comment { background-image: var(--fs-icon-comment); }
+  html body.fs.fs-blip .comment-post-embed .action-btn > i.fa-share-from-square { background-image: var(--fs-icon-share); }
+  /* Top / Newest / Oldest: one track, the active pill inside it */
+  html body.fs.fs-blip .comment-modal-scroll .search-tabs { height: 38px; display: grid !important; grid-template-columns: 1fr 1fr 1fr; gap: 0; margin: 4px 0 8px !important; padding: 0 !important;
+    border: 0 solid transparent !important; border-image: var(--fs-tabs-track) 0 64 fill / 0 19px stretch !important; overflow: visible !important; }
+  html body.fs.fs-blip .comment-modal-scroll .comment-sort-tab { height: 38px !important; padding: 0 !important; margin: 0 !important; font: 800 19px var(--fs-font) !important; display: flex !important; align-items: center; justify-content: center; border-image-width: 0 19px !important; }
+  html body.fs.fs-blip .comment-modal-scroll .comment-sort-tab:not(.active) { border-image: none !important; background: none !important; color: var(--bl-ink) !important; }
+  /* comments: outlined cards; replies indented with the thread line */
+  html body.fs.fs-blip #commentsList { display: flex; flex-direction: column; gap: 10px; }
+  html body.fs.fs-blip #commentsList .comment-item { display: flex !important; gap: 12px; margin: 0 !important; padding: 2px 6px 0 !important;
+    border-style: solid !important; border-color: transparent !important; border-width: 6px !important; background: none !important; border-radius: 0 !important; }
+  html body.fs.fs-blip #commentsList .comment-item.comment-reply { margin: -6px 0 0 26px !important; position: relative; }
+  html body.fs.fs-blip #commentsList .comment-item.comment-reply::before { content: ""; position: absolute; left: -16px; top: -4px; bottom: 24px; width: 2px; background: #9db8e6; border-radius: 1px; }
+  html body.fs.fs-blip #commentsList .comment-item > img { width: 50px !important; height: 50px !important; box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #00008b; }
+  html body.fs.fs-blip #commentsList .comment-item.comment-reply > img { width: 44px !important; height: 44px !important; }
+  html body.fs.fs-blip #commentsList .comment-item strong { font: 900 19px/22px var(--fs-title-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip #commentsList .comment-text { font: 600 17px/22px var(--fs-font) !important; color: var(--bl-ink) !important; margin: 2px 0 0 !important; }
+  html body.fs.fs-blip #commentsList .comment-text > span:first-child { color: var(--bl-link) !important; font: 800 17px var(--fs-font) !important; }
+  html body.fs.fs-blip #commentsList .comment-actions-row { gap: 14px !important; margin: 6px 0 6px !important; align-items: center; flex-wrap: wrap; }
+  html body.fs.fs-blip #commentsList .comment-actions-row button { font: 800 17px var(--fs-font) !important; color: var(--bl-ink) !important; padding: 0 !important; display: flex !important; align-items: center; gap: 5px; }
+  html body.fs.fs-blip #commentsList .comment-actions-row button > i { width: 22px; height: 22px; font-size: 0 !important; background: center / contain no-repeat; display: inline-block; }
+  html body.fs.fs-blip #commentsList .comment-like-btn > i.far { background-image: var(--fs-icon-like); }
+  html body.fs.fs-blip #commentsList .comment-like-btn > i.fas { background-image: var(--fs-icon-like-on); }
+  html body.fs.fs-blip #commentsList .comment-dislike-btn > i.far { background-image: var(--fs-icon-dislike); }
+  html body.fs.fs-blip #commentsList .comment-dislike-btn > i.fas { background-image: var(--fs-icon-dislike-on); }
+  html body.fs.fs-blip #commentsList .comment-react-btn > i { background-image: var(--fs-icon-emoji); }
+  html body.fs.fs-blip #commentsList :is(.comment-reply-btn, .comment-edit-btn, .comment-delete-btn) { color: var(--bl-link) !important; }
+  html body.fs.fs-blip #commentsList :is(.comment-reply-btn, .comment-edit-btn, .comment-delete-btn) > i { display: none !important; }
+  /* write bar */
+  html body.fs.fs-blip .comment-modal-input { padding: 8px 4px calc(8px + env(safe-area-inset-bottom, 0px)) !important; border: 0 !important; background: none !important; }
+  html body.fs.fs-blip #commentInput { height: 40px !important; padding: 0 16px !important; font: 600 17px var(--fs-font) !important; color: var(--bl-ink) !important;
+    border: 0 solid transparent !important; border-image: var(--fs-field) 0 64 fill / 0 20px stretch !important; background: none !important; border-radius: 0 !important; box-shadow: none !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip .comment-post-embed .post-media-grid, html body.fs.fs-blip .comment-post-embed .post-media-grid .pm-thumb { max-height: 104px !important; height: 104px !important; aspect-ratio: auto !important; }
+  html body.fs.fs-blip .comment-post-embed .post-media-grid :is(img, video) { height: 104px !important; max-height: 104px !important; width: 100% !important; object-fit: cover !important; }
+  html body.fs.fs-blip .comment-post-embed { max-height: none !important; overflow: visible !important; flex-shrink: 0; }
+  html body.fs.fs-blip #commentGifBtn { height: 40px !important; padding: 0 14px !important; font: 800 16px var(--fs-font) !important; color: var(--bl-ink) !important; background: none !important;
+    border: 0 solid transparent !important; border-image: var(--fs-btn-secondary) 0 74 fill / 0 20px stretch !important; border-radius: 0 !important; }
+  html body.fs.fs-blip #postCommentBtn { height: 40px !important; padding: 0 18px !important; font: 900 17px var(--fs-font) !important; border-image-width: 0 20px !important; }
+  html body.fs.fs-blip .modal-overlay:has(.comment-modal-layout) { align-items: flex-start !important; padding-top: calc(env(safe-area-inset-top, 0px) + 60px) !important; }
+}
+@media (max-width: 768px) {
+  /* chat bubbles: painted bubbles 9-sliced (tail kept inside its corner slice) */
+  html body.fs.fs-blip .msg-bubble.received { border-width: 6px 8px 10px 10px !important; padding: 6px 12px 6px !important;
+    border-image: var(--fs-bubble-in) 80 80 100 90 fill / 26px 26px 32px 30px / 6px 6px 7px 6px stretch !important; }
+  html body.fs.fs-blip .msg-bubble.sent { border-width: 6px 10px 10px 8px !important; padding: 6px 12px 6px !important;
+    border-image: var(--fs-bubble-out) 80 90 100 80 fill / 26px 30px 32px 26px / 6px 6px 7px 6px stretch !important; }
+  html body.fs.fs-blip #pvProfileCard .profile-about::before { background-image: var(--fs-icon-comment); }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip .msg-bubble :is(img, video) { width: 240px !important; max-width: 100% !important; height: 160px !important; object-fit: cover !important; }
+}
