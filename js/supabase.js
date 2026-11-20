@@ -120,7 +120,9 @@ async function sbSignIn(email, password) {
 }
 
 async function sbSignOut() {
-  const { error } = await sb.auth.signOut();
+  // 'local' = end only THIS device's session. The default ('global') revoked every session on the account, so logging
+  // out on one phone/simulator signed the same person out everywhere (owner, Nov 19: "stop signing out").
+  const { error } = await sb.auth.signOut({ scope: 'local' });
   if (error) throw error;
 }
 
