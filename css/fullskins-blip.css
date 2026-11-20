@@ -1873,3 +1873,24 @@ html body.fs.fs-blip:is(*) :is(#page-messages .msg-search, #page-groups .page-se
 @media (max-width: 768px) {
   html body.fs.fs-blip #page-groups .page-header::after { right: 30px !important; width: 128px !important; height: 80px !important; top: -10px !important; }
 }
+
+/* ======================================================================================================== EVERY PHONE WIDTH (owner, Nov 19: Network
+   cut off on his phone — QA had only run at 402pt). Nothing on phones may assume 402: columns follow the screen, and
+   the line icons are tinted with a mask (filters rendered purple on real iPhones). */
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-profiles#page-profiles .connections-col { flex: 0 0 calc(100vw - 20px) !important; width: calc(100vw - 20px) !important; min-width: 0 !important; max-width: 382px !important; }
+  html body.fs.fs-blip #page-profiles .page-header::after, html body.fs.fs-blip #page-search .page-header::after { max-width: 41vw; }
+  html body.fs.fs-blip #page-profiles .page-header h2, html body.fs.fs-blip #page-search .page-header h2 { font-size: clamp(28px, 8.4vw, 34px) !important; }
+}
+html body.fs.fs-blip:is(*) :is(#page-groups .page-search > i, .navbar .search-bar > i, #page-messages .msg-search > i, #page-profiles .page-search > i,
+  #page-search .page-header h2 > i, #searchPageInput > i) {
+  filter: none !important; background: #000048 !important; -webkit-mask: var(--fs-icon-search) center / contain no-repeat; mask: var(--fs-icon-search) center / contain no-repeat; }
+html body.fs.fs-blip:is(*) #pvProfileCard .pv-back-link > i { filter: none !important; background: #0a2cf0 !important; -webkit-mask: var(--fs-icon-back) center / contain no-repeat; mask: var(--fs-icon-back) center / contain no-repeat; }
+html body.fs.fs-blip:is(*) #msgVoiceBtn { filter: none !important; }
+@media (max-width: 768px) {
+  /* page mascots scale with the screen (right-anchored, so on narrower phones a fixed size slid onto the title) */
+  html body.fs.fs-blip:is(*) #page-profiles .page-header::after { width: min(150px, 36vw) !important; height: auto !important; aspect-ratio: 900 / 560; max-width: none; top: 22px !important; right: -4px !important; }
+  html body.fs.fs-blip:is(*) #page-search .page-header::after { width: min(146px, 35vw) !important; height: auto !important; aspect-ratio: 900 / 560; max-width: none; top: 22px !important; right: 0 !important; }
+  html body.fs.fs-blip:is(*) #page-shop .page-header::after { width: min(140px, 34vw) !important; height: auto !important; aspect-ratio: 900 / 560; }
+  html body.fs.fs-blip:is(*) #page-groups .page-header::after { width: min(128px, 31vw) !important; height: auto !important; aspect-ratio: 900 / 560; }
+}
