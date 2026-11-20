@@ -2881,12 +2881,53 @@
     });
   }
 
+  // WALNUT HI-FI (Blip Vibe lofi-room) — "drop the needle": a walnut cabinet lid slides up over the screen, a big vinyl
+  // record spins in with the mascot on its label, a VU meter swings while "Now playing" shows; the look is applied under
+  // the lid, then the record spins down and the lid slides away. Painted Walnut art only (assets/lofi-room/).
+  function equipLofiRoom(id, swap) {
+    var P = ['background', 'avatar-frame', 'mascot-listen', 'coin-pill', 'vu-meter', 'vu-needle', 'sparkle-2', 'grille'];
+    return Promise.all(P.map(function (n) { return fxArt('blip', 'lofi-room/' + n); })).then(function (r) {
+      var c = fxCanvas('lofi-room'), g = c.g, W = c.W, H = c.H;
+      var wood = r[0], disc = r[1], head = r[2], pill = r[3], vu = r[4], needle = r[5], spk = r[6], grille = r[7];
+      var D = Math.min(W * .78, H * .42), cx = W / 2, cy = H * .4, spin = 0;
+      function lid(cover) {   // cover 0..1: walnut panel rising from the bottom, a grille band along its top edge
+        var y = H * (1 - cover);
+        if (wood) { g.save(); g.beginPath(); g.rect(0, y, W, H - y); g.clip(); g.drawImage(wood, 0, 0, W, Math.max(H, W * wood.height / wood.width)); g.restore(); }
+        else { g.fillStyle = '#5a361e'; g.fillRect(0, y, W, H - y); }
+        if (grille && cover > 0 && cover < 1) g.drawImage(grille, -8, y - 14, W + 16, 28);
+      }
+      function record(t, al, sc) {
+        if (al <= 0) return; spin += .09; var d = D * sc;
+        g.save(); g.globalAlpha = al; g.translate(cx, cy);
+        g.fillStyle = '#e8742a'; g.beginPath(); g.arc(0, 0, d * .34, 0, Math.PI * 2); g.fill();   // label behind the painted disc's window
+        g.save(); g.rotate(spin); if (disc) g.drawImage(disc, -d / 2, -d / 2, d, d); g.restore();   // only the record turns
+        if (head) { var hs = d * .56, bob = Math.sin(t / 160) * d * .015; g.rotate(Math.sin(t / 320) * .08); g.drawImage(head, -hs / 2, -hs * .44 + bob, hs, hs * head.height / head.width); }
+        g.restore();
+      }
+      function meter(t, al) {
+        if (!vu || al <= 0) return; var mw = Math.min(W * .62, 300), mh = mw * vu.height / vu.width, mx = cx - mw / 2, my = cy + D * .62;
+        g.save(); g.globalAlpha = al; g.drawImage(vu, mx, my, mw, mh);
+        if (needle) { var a = -.6 + .55 * (1 + Math.sin(t / 140) * .6 + Math.sin(t / 53) * .25); g.translate(cx, my + mh * .92); g.rotate(a); g.drawImage(needle, -2, -mh * .8, 4, mh * .8); }
+        g.restore();
+        g.save(); g.globalAlpha = al; var tw = Math.min(W * .8, 300), th = 46, ty = my + mh + 16;
+        if (pill) g.drawImage(pill, cx - tw / 2, ty, tw, th);
+        g.font = 'italic 700 18px Fraunces, Georgia, serif'; g.textAlign = 'center'; g.fillStyle = '#3b2414'; g.fillText('Now playing: Walnut Hi-Fi', cx, ty + 29); g.restore();
+        if (spk) { g.save(); g.globalAlpha = al * (.6 + .4 * Math.sin(t / 120)); g.drawImage(spk, cx + D * .36, cy - D * .52, 42, 42); g.restore(); }
+      }
+      return fxRun(620, function (t, k) { g.clearRect(0, 0, W, H); lid(ease(k)); record(t, clamp01((k - .35) / .65), .6 + .4 * ease(clamp01((k - .35) / .65))); })
+        .then(function () { return Promise.all([swap(), fxRun(1100, function (t, k) { g.clearRect(0, 0, W, H); lid(1); record(620 + t, 1, 1); meter(t, clamp01(t / 250)); })]); })
+        .then(function () { return fxRun(560, function (t, k) { g.clearRect(0, 0, W, H); var e = ease(k); g.save(); g.translate(0, -H * e); lid(1); record(1720 + t, 1 - k * .5, 1); meter(1100 + t, 1 - k); g.restore(); }); })
+        .then(function () { c.o.remove(); });
+    });
+  }
+
   var EQUIP_FX = { 'blip': equipBlip, 'basic': equipBasic, 'scrapbook': equipScrapbook, 'anime-blaze': equipBlaze, 'witchcraft': equipWitchcraft, 'good-witch': equipGoodWitch, 'vaporwave': equipVaporwave, 'heavens-light': equipHeaven, 'blood-moon': equipBloodMoon, 'superhero': equipSuperhero };
   // app.js calls this from the Equip buttons: equipTransition(id, function () { ...apply + save... })
   /* Blip Vibes switch animations (owner, Nov 20 2026: "everyone of them need to have a themed animation not just one for
      all"): each Vibe registers its own, one line each, e.g. VIBE_FX['pixel-pal'] = equipPixelPal; (fn(id, swap) → Promise,
      same contract as EQUIP_FX; load its art with fxArt('blip', '<vibe>/<part>')). Logo Classic keeps equipBlip. */
   var VIBE_FX = {};
+  VIBE_FX['lofi-room'] = equipLofiRoom;
   function equipTransition(id, applyFn, vibe) {
     var fx = (vibe && VIBE_FX[vibe]) || EQUIP_FX[id], reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!fx || reduce || equipBusy) { applyFn(); return; }
