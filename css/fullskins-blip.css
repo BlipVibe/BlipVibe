@@ -1813,3 +1813,38 @@ html body.fs.fs-blip :is(.post-media-grid, .photos-preview > *, .featured-previe
   html body.fs.fs-blip #shopGrid .fsk-equipped { font-size: 13.5px !important; gap: 3px; }
   html body.fs.fs-blip #shopGrid .fsk-equipped > i { display: none !important; }
 }
+
+/* ======================================================================================================== PAGE MASCOTS — the concept's own poses
+   (upright logo mascot, 3 burst lines left, 2 sparkles right), sized from the concept crops. The art's content box is
+   747x476 inside 900x560, centred, so each element is the full art box and the drawing lands on the concept's spot. */
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-profiles .page-header::after { background-image: var(--fs-mascot-page-wink) !important; background-size: contain !important; animation: none;
+    top: 28px !important; right: -14px !important; width: 163px !important; height: 101px !important; }
+  html body.fs.fs-blip #page-search .page-header::after { background-image: var(--fs-mascot-page-smile) !important; background-size: contain !important;
+    top: 27px !important; right: -6px !important; width: 151px !important; height: 94px !important; }
+  html body.fs.fs-blip #page-shop .page-header { margin-top: -12px !important; }
+  html body.fs.fs-blip #page-shop .page-header::after { background-image: var(--fs-mascot-page-happy) !important; background-size: contain !important;
+    top: -10px !important; right: -6px !important; width: 151px !important; height: 94px !important; }
+  html body.fs.fs-blip #pvCoverBanner::after { background-image: var(--fs-mascot-page-smile) !important; background-size: contain !important;
+    top: 4px !important; right: -4px !important; width: 189px !important; height: 118px !important; }
+  html body.fs.fs-blip #page-profile-view:has(#pvFollowBtn) #pvCoverBanner::after { top: 25px !important; right: -16px !important; width: 212px !important; height: 132px !important; }
+  html body.fs.fs-blip .modal-content:has(.comment-modal-layout) > .modal-header { padding-left: 98px !important; }
+  html body.fs.fs-blip .modal-content:has(.comment-modal-layout) > .modal-header::before { background-image: var(--fs-mascot-page-smile) !important; background-size: contain !important;
+    left: 2px !important; top: 3px !important; width: 95px !important; height: 59px !important; }
+  html body.fs.fs-blip .create-post-modal:has(#cpmText) > .modal-header { padding-left: 122px !important; }
+  html body.fs.fs-blip .create-post-modal:has(#cpmText) > .modal-header::before { background-image: var(--fs-mascot-page-smile) !important; background-size: contain !important;
+    left: -2px !important; top: 1px !important; width: 125px !important; height: 78px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-profiles .page-header::after { top: 15px !important; right: -6px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-search .page-header::after { top: 18px !important; right: -2px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-shop .page-header::after { top: 0 !important; right: 10px !important; }
+  html body.fs.fs-blip #page-shop .page-subtitle { font-size: 13px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #pvCoverBanner::after { top: 2px !important; right: 14px !important; width: 176px !important; height: 110px !important; }
+}
