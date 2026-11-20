@@ -313,7 +313,7 @@
     assets: ['wallpaper', 'widget', 'widget-inner', 'dock', 'tile', 'tile-on', 'pill', 'pill-on', 'ring-track', 'ring-fill', 'photo-shade', 'icon-camera', 'icon-edit', 'icon-bell', 'icon-search',
       'icon-home', 'icon-groups', 'icon-skins', 'icon-network', 'icon-messages', 'icon-more','icon-plus',
       'top-bar', 'icon-home-on', 'icon-groups-on', 'icon-skins-on', 'icon-network-on', 'icon-messages-on',
-      'barista-btn', 'toggle-rose', 'toggle-pumpkin', 'avatar-ring',
+      'barista-btn', 'toggle-rose', 'toggle-pumpkin', 'avatar-ring', 'avatar-bow',
       'icon-video', 'icon-compose', 'icon-phone', 'icon-close', 'icon-like-on', 'icon-dislike-on', 'icon-reply', 'icon-chevron', 'icon-check',
       'icon-clear', 'icon-photo', 'icon-gif', 'icon-poll', 'icon-schedule', 'icon-globe', 'icon-location', 'icon-mute', 'icon-block',
       'icon-report', 'icon-heart', 'icon-star', 'icon-gift', 'icon-calendar', 'icon-bookmark', 'icon-settings', 'icon-user', 'badge-count',
@@ -1008,6 +1008,59 @@
     var m = document.getElementById('fsBaristaMenu'); if (m && m.classList.contains('is-open')) { m.classList.remove('is-open'); m.classList.add('is-closing'); setTimeout(function () { m.classList.remove('is-closing'); }, 320); }
     var b = document.getElementById('fsBarista'); if (b) b.classList.remove('is-on');
   }
+  // #Basic v3 (concept: "people you may know" is a row of little person swatches on Home; owner: "trending groups and
+  // people you may know are filters"): on phones the app hides its sidebar cards behind two pill buttons that open lists —
+  // #Basic shows the two as filter chips above one row of swatches, built from the app's own sidebar cards (moved into the
+  // feed above the tabs, so their follow / open buttons keep working). The ⋯ opens the app's full list.
+  function basicPills() {
+    var home = document.getElementById('page-home'), tabs = document.getElementById('feedTabs'), wrap = document.getElementById('fsBp');
+    var on = active === 'basic' && window.matchMedia('(max-width: 768px)').matches && tabs && home && home.contains(tabs);
+    var cards = [document.querySelector('.suggestions-card'), document.querySelector('.groups-card')].filter(Boolean);
+    if (on) {
+      if (!wrap) {
+        wrap = document.createElement('div'); wrap.id = 'fsBp'; wrap.className = 'fs-bp-wrap'; wrap.setAttribute('data-k', 'people');
+        wrap.innerHTML = '<div class="fs-bp-chips" role="tablist"><button type="button" class="fs-bp-chip is-on" data-k="people">people you may know</button>' +
+          '<button type="button" class="fs-bp-chip" data-k="groups">trending groups</button></div>';
+        wrap.querySelectorAll('.fs-bp-chip').forEach(function (c) { c.addEventListener('click', function () {
+          var k = c.getAttribute('data-k'); wrap.setAttribute('data-k', k);
+          wrap.querySelectorAll('.fs-bp-chip').forEach(function (x) { x.classList.toggle('is-on', x === c); });
+        }); });
+      }
+      if (wrap.nextSibling !== tabs) tabs.parentNode.insertBefore(wrap, tabs);
+      cards.forEach(function (card) {
+        if (!card.__fsHome) card.__fsHome = { parent: card.parentNode, next: card.nextSibling };
+        if (card.parentNode !== wrap) wrap.appendChild(card);
+        card.classList.add('fs-bp');
+      });
+    } else if (wrap) {
+      cards.forEach(function (card) {
+        card.classList.remove('fs-bp'); var h = card.__fsHome; if (!h) return;
+        try { h.parent.insertBefore(card, h.next && h.next.parentNode === h.parent ? h.next : null); } catch (e) { h.parent.appendChild(card); }
+      });
+      wrap.remove();
+    }
+  }
+  // #Basic v3 top bar (concept): on every page but Home the wordmark becomes "‹ page name" and tapping it goes back
+  var BASIC_TITLES = { groups: 'groups', shop: 'skins', profiles: 'network', messages: 'messages', notifications: 'notifications', search: 'search',
+    saved: 'saved posts', photos: 'photos', 'profile-view': 'profile', 'group-view': 'group', admin: 'admin', privacy: 'privacy' };
+  var basicTitleObs = null;
+  function basicTitle() {
+    var bar = document.querySelector('.navbar');
+    if (!bar) return;
+    if (active !== 'basic') { bar.removeAttribute('data-fs-title'); return; }
+    var pg = document.querySelector('.page.active'), id = pg ? pg.id.replace(/^page-/, '') : 'home';
+    var t = BASIC_TITLES[id] || '';
+    if (t) bar.setAttribute('data-fs-title', t); else bar.removeAttribute('data-fs-title');
+    var logo = bar.querySelector('.nav-logo'); if (logo) logo.setAttribute('data-fs-title', t);
+    if (!basicTitleObs && window.MutationObserver) {
+      basicTitleObs = new MutationObserver(function () { if (active === 'basic') basicTitle(); });
+      document.querySelectorAll('.page').forEach(function (p) { basicTitleObs.observe(p, { attributes: true, attributeFilter: ['class'] }); });
+      if (logo) logo.addEventListener('click', function (e) {
+        if (active !== 'basic' || !bar.hasAttribute('data-fs-title')) return;
+        e.preventDefault(); e.stopImmediatePropagation(); history.back();
+      }, true);
+    }
+  }
   function basicBar() {
     var coins = document.querySelector('.navbar .nav-coins');
     if (!coins || document.getElementById('fsBarista')) return;
@@ -1391,7 +1444,7 @@
     active = id;
     dayNightToggle(id, cfg);
     if (id === 'vaporwave') vaporStart(); else removeVaporStart();
-    if (id === 'basic') basicBar(); else removeBasicBar();
+    if (id === 'basic') { basicBar(); basicPills(); basicTitle(); } else { removeBasicBar(); basicPills(); basicTitle(); }
     if (id === 'blip') blipStart(); else removeBlipStart();
     startSuspending();
     watchPosts();
