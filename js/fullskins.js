@@ -342,7 +342,29 @@
      fall back to Logo Classic). `ready:false` = not finished: never listed in the Blip menu. */
     variants: [
       { id: 'classic', name: 'Logo Classic' },
-      { id: 'bubble-pop', name: 'Bubble Pop', ready: false, art: [] },
+      { id: 'bubble-pop', name: 'Bubble Pop', ready: false,
+        art: ['avatar-frame', 'avatar-ring', 'background', 'badge-commenter', 'badge-count', 'badge-early_adopter',
+          'badge-first_post', 'badge-generous', 'badge-group_leader', 'badge-photographer', 'badge-popular',
+          'badge-skin_collector', 'badge-social_butterfly', 'badge-streak_master', 'bar-fill', 'bar-track', 'blip-btn',
+          'blip-btn-on', 'btn-danger', 'btn-disabled', 'btn-primary', 'btn-round', 'btn-secondary', 'btn-square',
+          'bubble-in', 'bubble-out', 'burst', 'camera-badge', 'card-tail', 'card-tail-tight', 'card-tailtip', 'chip',
+          'chip-active', 'coin', 'coin-pill', 'coin-stack', 'divider', 'field', 'group-avatar-frame', 'header-bar',
+          'icon-back', 'icon-bag', 'icon-bell', 'icon-block', 'icon-bookmark', 'icon-calendar', 'icon-camera',
+          'icon-check', 'icon-chevron', 'icon-clock', 'icon-close', 'icon-coin', 'icon-comment', 'icon-compass',
+          'icon-compose', 'icon-crown', 'icon-dislike', 'icon-dislike-on', 'icon-edit', 'icon-emoji', 'icon-envelope',
+          'icon-exit', 'icon-fire', 'icon-flag', 'icon-flag-red', 'icon-font', 'icon-gif', 'icon-gift', 'icon-globe',
+          'icon-groups', 'icon-groups-on', 'icon-hanger', 'icon-heart', 'icon-home', 'icon-home-on', 'icon-image',
+          'icon-info', 'icon-like', 'icon-like-on', 'icon-link', 'icon-logout', 'icon-messages', 'icon-messages-on',
+          'icon-mic', 'icon-more', 'icon-music', 'icon-mute', 'icon-network', 'icon-network-on', 'icon-people',
+          'icon-phone', 'icon-photo', 'icon-plus', 'icon-poll', 'icon-reply', 'icon-scroll', 'icon-search', 'icon-seen',
+          'icon-send', 'icon-settings', 'icon-share', 'icon-skins', 'icon-skins-on', 'icon-star', 'icon-user',
+          'icon-user-plus', 'icon-video', 'mascot', 'mascot-head', 'mascot-head-plain', 'mascot-jump',
+          'mascot-page-happy', 'mascot-page-smile', 'mascot-page-wink', 'mascot-peek', 'mascot-sleep', 'mascot-wave',
+          'menu-check', 'menu-panel', 'menu-row-on', 'nav-active', 'nav-bar', 'notif-comment', 'notif-follow',
+          'notif-group', 'notif-like', 'notif-message', 'notif-purchase', 'panel-card', 'panel-card-active',
+          'panel-card-active-tight', 'panel-card-tight', 'quest-comment', 'quest-like', 'quest-message', 'quest-post',
+          'quest-react', 'quest-save', 'quest-share', 'quest-view', 'reward-chip', 'sheet', 'sparkle-1', 'sparkle-2',
+          'story-add', 'story-ring', 'story-ring-seen', 'swatch-ring', 'tabs-track', 'unread-dot'] },
       { id: 'lofi-room', name: 'Walnut Hi-Fi', ready: false, art: [] },
       { id: 'clay-town', name: 'Clay Town', ready: false,   // owner approval pending (prototypes/clay-town-kit-brief.md)
         art: [
@@ -1465,7 +1487,6 @@
     // a variant may change more than the accent (Good Witch Day / Night): dark flag, ink, muted, theme vars
     var vcfg = cfg.variants && cfg.variants.filter(function (x) { return x.id === (variant || cfg.variants[0].id); })[0];
     var isDark = vcfg && vcfg.dark !== undefined ? vcfg.dark : cfg.dark;
-    if (vcfg && vcfg.fonts) loadFonts(vcfg);   // a look of the skin may bring its own type (Blip Vibes)
     b.classList.add('fs', 'fs-' + id, isDark ? 'fs-dark' : 'fs-light');
     // status-bar text follows the rendition (Good Witch Night, Vaporwave dark): light text on dark art
     // Logo Classic paints a royal-blue top bar behind the status bar: keep its text white like the concept
@@ -1477,8 +1498,9 @@
       b.style.setProperty('--fs-icon-' + n, url(id, (cfg.parts && cfg.parts['icon-' + n]) || 'icon-' + n));
     });
     (cfg.assets || []).forEach(function (a) { b.style.setProperty('--fs-' + a, url(id, a)); });
-    // a look of the skin may add parts of its own (Blip Vibes: listed in its `assets` and `art`)
+    // a Blip Vibe may bring parts the base look doesn't have (its `assets`) and its own type (`font`, `fonts`)
     (vcfg && vcfg.assets || []).forEach(function (a) { b.style.setProperty('--fs-' + a, url(id, a)); });
+    if (vcfg && vcfg.fonts) loadFonts(vcfg);
     b.style.setProperty('--fs-ink', (vcfg && vcfg.ink) || cfg.ink);
     b.style.setProperty('--fs-muted', (vcfg && vcfg.muted) || cfg.muted);
     b.style.setProperty('--fs-accent', (vcfg && vcfg.accent) || cfg.accent);
