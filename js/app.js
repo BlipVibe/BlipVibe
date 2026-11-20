@@ -10717,13 +10717,15 @@ window.BlipFullSkinsData={
             if(window.BlipPhotoPos) setTimeout(function(){BlipPhotoPos.editSlot(slot,$('#page-profile-view.active')?'pvCoverBanner':'timelineCover');},350);
         });});
     },
-    // Blip menu (default look, js/fullskins.js blipStart): every skin you own + which one is on
+    // Blip menu (default look, js/fullskins.js blipStart): ONLY the Blip family of looks (owner, Nov 19 2026: "should only
+    // include the other blip options") = the default (Logo Classic) + the Vibes looks you own, never basic/other skins
+    VIBES:['bubble-pop','lofi-room','clay-town','space-age','swiss-grid','pixel-pal'],
     ownedSkins:function(){
         var out=[{kind:'default',id:'default',name:'Default',on:!state.activePremiumSkin&&!state.activeSkin}];
-        skins.forEach(function(s){if(state.ownedSkins&&state.ownedSkins[s.id]) out.push({kind:'skin',id:s.id,name:s.name,preview:s.preview,on:!state.activePremiumSkin&&state.activeSkin===s.id});});
+        var vibes=this.VIBES;
         var fcat={};_fskCatalog().forEach(function(c){fcat[c.id]=c;});
         Object.keys(state.ownedPremiumSkins||{}).forEach(function(id){
-            if(!state.ownedPremiumSkins[id]) return;
+            if(!state.ownedPremiumSkins[id]||vibes.indexOf(id)<0) return;
             var c=fcat[id],p=premiumSkins.find(function(s){return s.id===id;});
             if(c&&!c.ready) return;                       // full skin not finished yet: can't be equipped
             if(!c&&!p) return;
