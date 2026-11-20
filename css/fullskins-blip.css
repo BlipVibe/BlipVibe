@@ -1894,3 +1894,32 @@ html body.fs.fs-blip:is(*) #msgVoiceBtn { filter: none !important; }
   html body.fs.fs-blip:is(*) #page-shop .page-header::after { width: min(140px, 34vw) !important; height: auto !important; aspect-ratio: 900 / 560; }
   html body.fs.fs-blip:is(*) #page-groups .page-header::after { width: min(128px, 31vw) !important; height: auto !important; aspect-ratio: 900 / 560; }
 }
+@media (max-width: 768px) {
+  /* BlipVibe default card: name / Free / one full-width button, like every other card */
+  html body.fs.fs-blip #shopGrid .fsk-default-card .fsk-body, html body.fs.fs-blip #mySkinsGrid .fsk-default-card .fsk-body { display: flex !important; flex-direction: column; align-items: center; }
+  html body.fs.fs-blip .fsk-default-card .fsk-body > .btn { width: 100% !important; }
+  html body.fs.fs-blip #page-shop #shopTabs .search-tab { font-size: clamp(11.5px, 3.3vw, 13px) !important; }
+}
+
+/* ======================================================================================================== MY SKINS (phone): same chips and cards as the shop */
+@media (max-width: 768px) {
+  html body.fs.fs-blip:is(*) #mySkinsTabs { display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px 5px; margin: 0 2px 12px !important; padding: 0 0 10px !important; overflow: visible !important; border-bottom: 2px solid #d3e1f6 !important; background: none !important; }
+  html body.fs.fs-blip:is(*) #mySkinsTabs .search-tab { height: 30px !important; margin: 0 !important; padding: 0 3px !important; font: 800 clamp(11.5px, 3.3vw, 13px) var(--fs-font) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+    display: flex !important; align-items: center; justify-content: center; border-image-width: 0 15px !important; }
+  html body.fs.fs-blip:is(*) #mySkinsTabs .search-tab:not(.active) { border-image-source: var(--fs-tabs-track) !important; border-image-slice: 0 64 fill !important; background: none !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip:is(*) #mySkinsTabs .search-tab > i { display: none !important; }
+  html body.fs.fs-blip #mySkinsGrid .shop-scroll-row, html body.fs.fs-blip #mySkinsGrid .fsk-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; grid-auto-flow: row !important; grid-auto-columns: auto !important; gap: 10px 8px !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; }
+  html body.fs.fs-blip #mySkinsGrid :is(.skin-card, .fsk-card) { width: auto !important; min-width: 0 !important; max-width: none !important; margin: 0 !important; padding: 0 2px 4px !important; display: flex !important; flex-direction: column; background: none !important; box-shadow: none !important; border-radius: 0 !important;
+    border-style: solid !important; border-color: transparent !important; border-width: 6px !important;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 11px 0 stretch !important; }
+  html body.fs.fs-blip #mySkinsGrid .skin-preview { height: auto !important; aspect-ratio: 178 / 108; border-radius: 10px !important; overflow: hidden; margin: 0 !important; }
+  html body.fs.fs-blip #mySkinsGrid .skin-card-body { background: none !important; padding: 4px 0 0 !important; display: flex !important; flex-direction: column; align-items: center; gap: 3px; text-align: center; }
+  html body.fs.fs-blip #mySkinsGrid .skin-card-body h4 { margin: 0 !important; font: 900 18px/22px var(--fs-title-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip #mySkinsGrid .skin-card-body p { margin: 0 !important; font: 600 12.5px/16px var(--fs-font) !important; color: var(--bl-text) !important; display: -webkit-box !important; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  html body.fs.fs-blip #mySkinsGrid .skin-card-body .btn { width: 100% !important; height: 30px !important; min-height: 0 !important; padding: 0 6px !important; margin: 2px 0 0 !important; font: 800 15px var(--fs-font) !important; border-image-width: 0 15px !important; }
+  html body.fs.fs-blip #mySkinsGrid .fsk-thumb { width: 100% !important; aspect-ratio: 178 / 108 !important; height: auto !important; border-radius: 10px !important; overflow: hidden; }
+  html body.fs.fs-blip #mySkinsGrid .fsk-thumb img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+  html body.fs.fs-blip #mySkinsGrid .fsk-name { margin: 0 !important; font: 900 19px/23px var(--fs-title-font) !important; color: var(--bl-ink) !important; text-align: center; }
+  html body.fs.fs-blip #mySkinsGrid .fsk-body { padding: 4px 0 0 !important; display: flex !important; flex-direction: column; align-items: center; gap: 3px; background: none !important; }
+  html body.fs.fs-blip #mySkinsGrid :is(.fsk-body .btn, .fsk-takeoff) { width: 100% !important; height: 30px !important; min-height: 0 !important; padding: 0 6px !important; margin: 0 !important; font: 800 15px var(--fs-font) !important; border-image-width: 0 15px !important; }
+}
