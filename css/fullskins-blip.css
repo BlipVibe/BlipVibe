@@ -1706,3 +1706,59 @@ html body.fs.fs-blip :is(.post-media-grid, .photos-preview > *, .featured-previe
 @media (max-width: 768px) {
   html body.fs.fs-blip .msg-bubble :is(img, video) { width: 240px !important; max-width: 100% !important; height: 160px !important; object-fit: cover !important; }
 }
+
+/* ======================================================================================================== CREATE A POST (phone) — ref/ov-createpost-a.png */
+@media (max-width: 768px) {
+  html body.fs.fs-blip .modal-overlay:has(.create-post-modal #cpmText) { align-items: flex-start !important; padding-top: calc(env(safe-area-inset-top, 0px) + 10px) !important; }
+  html body.fs.fs-blip .create-post-modal:has(#cpmText) > .modal-header { height: 80px; padding: 0 12px 0 96px !important; position: relative; display: flex !important; align-items: center; justify-content: space-between; border: 0 !important; background: none !important; }
+  html body.fs.fs-blip .create-post-modal:has(#cpmText) > .modal-header::before { content: ""; position: absolute; left: 0; top: 2px; width: 96px; height: 78px; background: var(--fs-mascot-wave) center / contain no-repeat; }
+  html body.fs.fs-blip .create-post-modal:has(#cpmText) > .modal-header h3 { font: 900 29px var(--fs-title-font) !important; color: var(--bl-ink) !important; margin: 0 !important; white-space: nowrap; }
+  html body.fs.fs-blip .create-post-modal:has(#cpmText) .modal-close { width: 38px !important; height: 38px !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; font-size: 0 !important; position: relative;
+    background: var(--fs-btn-square) center / contain no-repeat !important; box-shadow: none !important; }
+  html body.fs.fs-blip .create-post-modal:has(#cpmText) .modal-close::after { content: ""; position: absolute; inset: 10px; background: var(--fs-icon-close) center / contain no-repeat; }
+  html body.fs.fs-blip .create-post-modal:has(#cpmText) .modal-close > i { display: none !important; }
+  html body.fs.fs-blip .create-post-modal .cpm-scroll > div:first-child { padding: 6px 14px 0 !important; gap: 14px !important; }
+  html body.fs.fs-blip .create-post-modal .cpm-scroll > div:first-child > img { width: 76px !important; height: 76px !important; object-fit: cover; box-shadow: 0 0 0 3px #fff, 0 0 0 4.5px #00008b; }
+  html body.fs.fs-blip .create-post-modal .cpm-scroll > div:first-child > strong { font: 900 27px var(--fs-title-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip .create-post-modal .cpm-textarea { display: block; width: calc(100% - 16px) !important; margin: 14px 8px 0 !important; min-height: 128px !important; padding: 8px 12px !important; box-sizing: border-box;
+    font: 600 19px/25px var(--fs-font) !important; color: var(--bl-ink) !important; background: none !important; border-radius: 0 !important; box-shadow: none !important;
+    border-style: solid !important; border-color: transparent !important; border-width: 6px !important;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 11px 0 stretch !important; }
+  html body.fs.fs-blip .create-post-modal .cpm-textarea::placeholder { color: #565b85 !important; }
+  html body.fs.fs-blip .create-post-modal .cpm-media-zone { margin: 18px 8px 0 !important; padding: 0 !important; border: 0 !important; background: none !important; }
+  html body.fs.fs-blip .create-post-modal .cpm-media-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
+  html body.fs.fs-blip .create-post-modal .cpm-media-grid > * { height: 138px !important; border-radius: 12px !important; overflow: hidden; position: relative; aspect-ratio: auto !important; }
+  html body.fs.fs-blip .create-post-modal .cpm-media-grid img { width: 100% !important; height: 100% !important; object-fit: cover; }
+  html body.fs.fs-blip .create-post-modal .remove-thumb { position: absolute !important; top: 6px !important; right: 6px !important; width: 26px !important; height: 26px !important; padding: 0 !important; border-radius: 50% !important;
+    background: #fff var(--fs-icon-close) center / 14px no-repeat !important; border: 1.5px solid #00008b !important; font-size: 0 !important; }
+  html body.fs.fs-blip .create-post-modal .remove-thumb > i { display: none !important; }
+  html body.fs.fs-blip .create-post-modal #cpmDropZone { height: 56px; display: flex !important; align-items: center; justify-content: center; gap: 10px; font: 800 17px var(--fs-font) !important; color: var(--bl-ink) !important;
+    border: 0 solid transparent !important; border-image: var(--fs-btn-secondary) 0 74 fill / 0 28px stretch !important; background: none !important; border-radius: 0 !important; }
+  html body.fs.fs-blip .create-post-modal #cpmDropZone br { display: none; }
+  html body.fs.fs-blip .create-post-modal #cpmDropZone > i { width: 24px; height: 24px; font-size: 0 !important; background: var(--fs-icon-photo) center / contain no-repeat; }
+  html body.fs.fs-blip .create-post-modal .cpm-tags-section { padding: 14px 8px 0 !important; border: 0 !important; }
+  html body.fs.fs-blip .create-post-modal .cpm-tag-chip { height: 36px; padding: 0 12px 0 16px !important; display: inline-flex !important; align-items: center; gap: 8px; border-radius: 18px !important; background: #d3e4fb !important; border: 0 !important;
+    font: 800 19px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip .create-post-modal .cpm-tag-remove { width: 16px; height: 16px; padding: 0 !important; background: var(--fs-icon-close) center / contain no-repeat !important; font-size: 0 !important; border: 0 !important; }
+  html body.fs.fs-blip .create-post-modal .cpm-tag-remove > i { display: none !important; }
+  /* footer: counter · tool squares · Publish */
+  html body.fs.fs-blip .create-post-modal .cpm-footer { flex-wrap: nowrap !important; align-items: center; gap: 0; padding: 10px 10px calc(10px + env(safe-area-inset-bottom, 0px)) !important; border-top: 0 !important; background: none !important; }
+  html body.fs.fs-blip .create-post-modal #cpmCharCounter { width: auto !important; flex: 0 0 auto; margin: 0 10px 0 0 !important; padding-right: 10px; border-right: 2px solid #c7d6ee; font: 600 15px var(--fs-font) !important; color: var(--bl-ink) !important; text-align: left !important; }
+  html body.fs.fs-blip .create-post-modal .cpm-footer > div[style*="display:flex"] { gap: 7px !important; }
+  html body.fs.fs-blip .create-post-modal .cpm-emoji-btn { width: 36px !important; height: 36px !important; flex: 0 0 36px; padding: 0 !important; border: 0 !important; border-radius: 0 !important; font-size: 0 !important; position: relative;
+    background: var(--fs-btn-square) center / contain no-repeat !important; box-shadow: none !important; }
+  html body.fs.fs-blip .create-post-modal .cpm-emoji-btn::after { content: ""; position: absolute; inset: 8px; background: center / contain no-repeat; }
+  html body.fs.fs-blip .create-post-modal .cpm-emoji-btn > i { display: none !important; }
+  html body.fs.fs-blip .create-post-modal #cpmEmojiBtn { display: none !important; }
+  html body.fs.fs-blip .create-post-modal #cpmCameraBtn::after { background-image: var(--fs-icon-camera); }
+  html body.fs.fs-blip .create-post-modal #cpmGifBtn::after { background-image: var(--fs-icon-gif); }
+  html body.fs.fs-blip .create-post-modal #cpmPollBtn::after { background-image: var(--fs-icon-poll); }
+  html body.fs.fs-blip .create-post-modal #cpmScheduleBtn::after { background-image: var(--fs-icon-calendar); }
+  html body.fs.fs-blip .create-post-modal #cpmPublish { height: 42px !important; margin-left: 4px !important; font: 900 18px var(--fs-font) !important; border-image-width: 0 21px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip .create-post-modal .cpm-footer > div[style*="display:flex"] { width: auto !important; flex: 1 1 auto; min-width: 0; gap: 6px !important; }
+  html body.fs.fs-blip .create-post-modal .cpm-emoji-btn { width: 34px !important; height: 34px !important; flex: 0 0 34px; }
+  html body.fs.fs-blip .create-post-modal #cpmPublish { min-width: 0; padding: 0 10px !important; }
+  html body.fs.fs-blip .create-post-modal #cpmCharCounter { white-space: nowrap; font-size: 14px !important; margin-right: 8px !important; padding-right: 8px; }
+}
