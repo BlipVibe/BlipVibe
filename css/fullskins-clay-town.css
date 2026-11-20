@@ -1,0 +1,74 @@
+/* Clay Town — a Blip Vibe look of the default skin (FULL_SKINS.blip.variants 'clay-town', saved as fsVariants.blip).
+ * Overrides css/fullskins-blip.css only where the Clay Town concepts differ. Every visual is painted clay art from
+ * images/skins/blip/assets/clay-town (prototypes/clay-town-kit-brief.md); this file only places it.
+ * Concepts: images/skins/default/clay-town/<page>.png (local only). */
+
+/* ---------- palette (sampled from the concepts) + page ---------- */
+html body.fs.fs-blip[data-fs-variant="clay-town"] { --bl-ink: #4a1c08 !important; --bl-text: #4a1c08; --bl-soft: #7a4a33 !important; --bl-blue: #2f6b34 !important; --bl-deep: #b9583a; --bl-navy: #5a2e1e; --bl-red: #c9402f;
+  --ct-cream: #fbe6cc; --ct-terra: #d6704e; --ct-sage: #2f6b34; --ct-wordmark: #fbf1e2;
+  background: #d86a43 var(--fs-background) center top / 100% auto repeat-y !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] :is(h1, h2, h3, h4, .profile-name, .post-username, .card-heading, .stat-count, .msg-contact-name, .group-card-body h4,
+  .fsk-name, .profile-card-name) { font-weight: 700 !important; }
+
+/* text on the butter-yellow / sage clay pills is chocolate brown, not white */
+html body.fs.fs-blip[data-fs-variant="clay-town"] :is(.btn-primary, .mobile-pill, .featured-buy-btn, .search-tab.active, .nav-center .nav-link.active, .fsk-buy, .suggestion-follow-btn),
+html body.fs.fs-blip[data-fs-variant="clay-town"] :is(.btn-primary, .mobile-pill, .featured-buy-btn, .search-tab.active) *,
+html body.fs.fs-blip[data-fs-variant="clay-town"] .nav-center .nav-link.active > span:not(.notif-badge),
+html body.fs.fs-blip[data-fs-variant="clay-town"]:has(#page-group-view.active) .nav-center .nav-link[data-page="groups"] > span:not(.notif-badge),
+html body.fs.fs-blip[data-fs-variant="clay-town"] .blip-start-btn, html body.fs.fs-blip[data-fs-variant="clay-town"] .blip-start-btn > span { color: var(--bl-ink) !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] .suggestion-follow-btn::after { color: var(--bl-ink); }
+/* links: deep sage green */
+html body.fs.fs-blip[data-fs-variant="clay-town"] :is(.view-profile-link, .view-more-link, .pv-back-link, .btn-outline, .view-group-btn) { color: var(--ct-sage) !important; }
+/* top bar wordmark: cream on the terracotta band */
+html body.fs.fs-blip[data-fs-variant="clay-town"] .navbar .nav-logo { color: var(--ct-wordmark) !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] .navbar { background-color: #d86a43 !important; }
+/* CSS-drawn rings in Logo Classic (white + navy) become cream + terracotta */
+html body.fs.fs-blip[data-fs-variant="clay-town"] :is(.msg-chat-header img, .comment-post-embed .post-avatar, #commentsList .comment-item > img) { box-shadow: 0 0 0 2px var(--ct-cream), 0 0 0 3.5px var(--ct-terra) !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] .create-post-modal .cpm-scroll > div:first-child > img { box-shadow: 0 0 0 3px var(--ct-cream), 0 0 0 4.5px var(--ct-terra) !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] :is(.fs-tl-slot-1, #gvCoverBanner, #pvCoverBanner) { background-color: #e9b48f !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] .blip-menu-side span { color: var(--ct-wordmark); }
+
+
+/* ---------- feed tabs: three separate clay pills (concept), the active one butter ---------- */
+html body.fs.fs-blip[data-fs-variant="clay-town"] #feedTabs { border-image: none !important; background: none !important; gap: 7px !important; padding: 0 !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] #feedTabs .search-tab { border: 0 solid transparent !important; border-image: var(--fs-chip) 0 76 fill / 0 18px stretch !important; height: 40px; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] #feedTabs .search-tab.active { border-image-source: var(--fs-chip-active) !important; }
+
+@media (max-width: 768px) {
+  /* top bar: search on a sage clay tile, the bell on a butter one (concept) */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .navbar .mobile-search-btn { background: var(--fs-tile-sage) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .navbar .mobile-notif-btn { background: var(--fs-tile-butter) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .navbar :is(.mobile-search-btn, .mobile-notif-btn) > i { width: 23px !important; height: 23px !important; }
+  /* bottom nav: every tab is its own cream clay tile, the active one butter */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .nav-center .nav-link:not(.active) { background: var(--fs-tile-cream) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"]:has(#page-group-view.active) .nav-center .nav-link[data-page="groups"] { background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .nav-center .nav-link, html body.fs.fs-blip[data-fs-variant="clay-town"] .blip-start-btn { margin: 0 2px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .blip-start-btn { background-image: var(--fs-tile-butter); }
+}
+
+/* ---------- Logo Classic's hard-coded navy / white bits, in clay colours ---------- */
+html body.fs.fs-blip[data-fs-variant="clay-town"] .search-tab:not(.active) { color: var(--bl-ink) !important; }
+body.fs-blip[data-fs-variant="clay-town"] :is(.blip-menu-list h4, .blip-menu-list button, .blip-row) { color: var(--bl-ink); }
+body.fs-blip[data-fs-variant="clay-town"] .blip-sw-default { background-color: #fbe6cc; }
+body.fs-blip[data-fs-variant="clay-town"] .blip-toast { color: var(--bl-ink) !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] .navbar .nav-coins .coin-count, html body.fs.fs-blip[data-fs-variant="clay-town"] .navbar .nav-coins > i { color: var(--bl-ink) !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] :is(#page-profiles .profile-card-avatar, #pvMutualFollowers .mutual-followers > img) { box-shadow: 0 0 0 3px var(--ct-cream), 0 0 0 4.5px var(--ct-terra) !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] #searchResults .profile-card-avatar { box-shadow: 0 0 0 2px var(--ct-cream), 0 0 0 3.5px var(--ct-terra) !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] .create-post-modal .remove-thumb { border-color: var(--ct-terra) !important; background-color: var(--ct-cream) !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"]:is(*) :is(#page-groups .page-search > i, .navbar .search-bar > i, #page-messages .msg-search > i, #page-profiles .page-search > i,
+  #page-search .page-header h2 > i, #searchPageInput > i) { background: var(--bl-ink) !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"]:is(*) #pvProfileCard .pv-back-link > i { background: var(--ct-sage) !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] :is(#page-profiles .connections-dot) { background: #e9b48f !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles .connections-dot.active { background: var(--ct-cream) !important; box-shadow: inset 0 0 0 3px var(--ct-terra) !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles .connections-heading { background: #f7dcae !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard .pv-online-line::before { background: #b9a48e; }
+@media (max-width: 768px) {
+  /* Logo Classic draws these with CSS fills; Clay Town paints them with clay art */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard .stat { background: none !important; border: 0 solid transparent !important; border-image: var(--fs-chip) 0 76 fill / 0 15px stretch !important; border-radius: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #sendMsgBtn { background: var(--fs-icon-send) center / 22px no-repeat, var(--fs-tile-butter) center / 100% 100% no-repeat !important; box-shadow: none !important; border-radius: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #commentsList .comment-item.comment-reply::before { background: #e3b48e; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .create-post-modal .cpm-tag-chip { background: none !important; border: 0 solid transparent !important; border-image: var(--fs-chip) 0 76 fill / 0 15px stretch !important; border-radius: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .create-post-modal #cpmCharCounter { border-right-color: #e3b48e !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #shopTabs { border-bottom-color: #e3b48e !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvMutualFollowers .mutual-followers > span { border-left-color: #e3b48e !important; }
+}
