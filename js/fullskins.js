@@ -336,13 +336,13 @@
    cards, royal-blue pills, the Blip button + menu (blipStart). Art: images/skins/blip/assets (prototypes/blip-kit-brief.md). */
   FULL_SKINS['blip'] = {
     name: 'Default', isDefault: true, wip: true,   // wip: not applied for anyone until the owner approves + the art is whitelisted
-    dark: false, ink: '#0b1f6b', muted: '#5068a8', accent: '#2669e4',
+    dark: false, ink: '#000048', muted: '#000034', accent: '#0a2cf0',
     font: "'Nunito', sans-serif", titleFont: "'Nunito', sans-serif",
     timeline: 1, avatar: 'center', slice: 12, edge: 14,
     parts: { 'post-frame': 'panel-card', 'timeline-frame': 'cover-mask', 'thumb': 'photo-mask', 'icon-coin': 'coin',
       'quest-0': 'quest-react', 'quest-50': 'quest-react', 'quest-100': 'quest-react',
       'deco-1': 'sparkle-1', 'deco-2': 'sparkle-2', 'deco-3': 'burst', 'deco-4': 'mascot-wave', 'deco-5': 'mascot-peek', 'deco-6': 'mascot-head' },
-    assets: ['coin', 'panel-card-tight', 'panel-card-active-tight', 'card-tailtip', 'icon-clock', 'btn-square', 'card-tail', 'btn-danger', 'btn-disabled', 'tabs-track', 'coin-stack', 'coin-pill', 'reward-chip', 'badge-count',
+    assets: ['coin', 'sheet', 'icon-crown', 'icon-compass', 'panel-card-tight', 'panel-card-active-tight', 'card-tailtip', 'icon-clock', 'btn-square', 'card-tail', 'btn-danger', 'btn-disabled', 'tabs-track', 'coin-stack', 'coin-pill', 'reward-chip', 'badge-count',
       'unread-dot', 'icon-home-on', 'icon-groups-on', 'icon-skins-on', 'icon-network-on', 'icon-messages-on',
       'icon-like-on', 'icon-dislike-on', 'icon-compose', 'icon-close', 'icon-check', 'icon-chevron', 'icon-photo', 'icon-settings',
       'icon-user', 'icon-bookmark', 'icon-video', 'icon-phone', 'icon-heart', 'icon-star', 'icon-gift', 'icon-flag', 'icon-globe',
@@ -353,7 +353,7 @@
       'blip-btn', 'blip-btn-on', 'menu-panel', 'menu-row-on', 'menu-check', 'swatch-ring',
       'avatar-ring', 'story-ring', 'story-ring-seen', 'story-add', 'camera-badge', 'cover-mask', 'photo-mask',
       'group-avatar-frame', 'skin-card-mask', 'divider', 'field', 'bar-track', 'bar-fill'],
-    theme: { '--primary': '#2669e4', '--primary-hover': '#1e51ca', '--dark': '#0b1f6b', '--gray': '#5068a8',
+    theme: { '--primary': '#0c64f0', '--primary-hover': '#0044c4', '--dark': '#000048', '--gray': '#000034',
       '--light-bg': '#eef5ff', '--card': '#fdfefa', '--border': 'rgba(0,0,139,.18)', '--nav-bg': '#2669e4' },
     fonts: 'https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap'
   };

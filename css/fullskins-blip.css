@@ -776,3 +776,318 @@ html body.fs.fs-blip #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn) { bo
   html body.fs.fs-blip .nav-center .nav-link[data-page="messages"] { flex: 1.3 1 0 !important; }
   html body.fs.fs-blip .nav-center .nav-link[data-page="profiles"] { flex: 1.15 1 0 !important; }
 }
+
+/* ======================================================================================================== GROUPS TAB (phone) — measured on ref/ov-groups-a.png */
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-groups.page.active { padding: calc(62px + env(safe-area-inset-top, 0px)) 0 0 !important; }
+  html body.fs.fs-blip #page-groups .page-container { padding: 0 10px !important; }
+  html body.fs.fs-blip #page-groups .page-header { position: relative; display: grid !important; grid-template-columns: 1fr 152px; column-gap: 15px; row-gap: 14px; margin: 0 0 14px !important; padding: 10px 0 0 !important; }
+  html body.fs.fs-blip #page-groups .page-header h2 { grid-column: 1 / -1; display: flex !important; align-items: center; gap: 10px; margin: 0 0 0 6px !important; font: 900 32px/40px var(--fs-title-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip #page-groups .page-header h2 > i { width: 40px; height: 40px; font-size: 0 !important; color: transparent !important; background: var(--fs-icon-groups) center / contain no-repeat; flex: 0 0 40px; }
+  html body.fs.fs-blip #page-groups .page-header::after { content: ""; position: absolute; right: 2px; top: -6px; width: 118px; height: 98px; pointer-events: none;
+    background: var(--fs-mascot-wave) center / contain no-repeat; animation: blBob 3.2s ease-in-out infinite; }
+  html body.fs.fs-blip #page-groups .page-actions { display: contents !important; }
+  html body.fs.fs-blip #page-groups .page-search { grid-column: 1; height: 38px; display: flex !important; align-items: center; gap: 8px; padding: 0 16px !important; margin: 0 !important; width: auto !important; }
+  html body.fs.fs-blip #page-groups .page-search > i { width: 20px; height: 20px; font-size: 0 !important; color: transparent !important; background: var(--fs-icon-search) center / contain no-repeat; filter: brightness(0) saturate(100%) invert(9%) sepia(98%) saturate(6000%) hue-rotate(245deg); }
+  html body.fs.fs-blip #page-groups .page-search input { font: 600 17px var(--fs-font) !important; color: var(--bl-ink) !important; padding: 0 !important; height: 100%; }
+  html body.fs.fs-blip #createGroupBtn { grid-column: 2; position: relative; z-index: 2; height: 40px; margin: 0 !important; padding: 0 10px !important; display: flex !important; align-items: center; justify-content: center; gap: 6px;
+    font: 800 17px var(--fs-font) !important; white-space: nowrap; border-image-width: 0 20px !important; }
+  html body.fs.fs-blip #createGroupBtn > i { font-size: 15px !important; }
+  /* tabs: three equal pills across, inactive = white with navy outline, active = royal blue */
+  html body.fs.fs-blip #groupsTabs { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 5px; margin: 0 0 16px !important; padding: 0 !important; overflow: visible !important; }
+  html body.fs.fs-blip #groupsTabs .search-tab { height: 38px !important; display: flex !important; align-items: center; justify-content: center; gap: 7px; padding: 0 4px !important; margin: 0 !important;
+    font: 800 16.5px var(--fs-font) !important; white-space: nowrap; border-image-source: var(--fs-btn-secondary) !important; border-image-slice: 0 74 fill !important; border-image-width: 0 19px !important; }
+  html body.fs.fs-blip #groupsTabs .search-tab.active { border-image-source: var(--fs-chip-active) !important; border-image-slice: 0 75 fill !important; }
+  html body.fs.fs-blip #groupsTabs .search-tab > i { width: 22px; height: 22px; font-size: 0 !important; color: transparent !important; background: center / contain no-repeat; }
+  html body.fs.fs-blip #groupsTabs .search-tab > i.fa-crown { background-image: var(--fs-icon-star); }
+  html body.fs.fs-blip #groupsTabs .search-tab > i.fa-users { background-image: var(--fs-icon-groups); }
+  html body.fs.fs-blip #groupsTabs .search-tab > i.fa-compass { background-image: var(--fs-icon-globe); }
+  html body.fs.fs-blip #groupsTabs .search-tab > i.fa-shield-halved { background-image: var(--fs-icon-settings); }
+  html body.fs.fs-blip #groupsTabs .search-tab.active > i { filter: brightness(0) invert(1); }
+  /* cards: two across (third peeking), 180 x 206 */
+  html body.fs.fs-blip #groupsSections .scroll-2row { grid-auto-columns: 180px !important; gap: 11px 8px !important; padding: 0 0 12px !important; margin: 0 -10px 0 0 !important; }
+  html body.fs.fs-blip #groupsSections .group-card { min-width: 180px !important; max-width: 180px !important; height: 206px; box-sizing: border-box; display: flex !important; flex-direction: column; overflow: visible !important;
+    border-width: 6px 6px 8px !important; transform: none !important; }
+  html body.fs.fs-blip #groupsSections .group-card-banner { height: 72px !important; flex: 0 0 72px; position: relative; font-size: 0 !important; overflow: visible !important;
+    -webkit-mask-box-image: var(--fs-photo-mask) 30 30 0 30 / 12px 12px 0 12px stretch; }
+  html body.fs.fs-blip #groupsSections .group-card-banner > i { display: block; position: absolute; left: 50%; bottom: -34px; width: 64px; height: 64px; margin-left: -32px; border-radius: 50%;
+    background: var(--fs-icon-groups-on) center / 48% no-repeat, var(--bl-blue); box-shadow: none; }
+  html body.fs.fs-blip #groupsSections .group-card-banner > img { position: absolute !important; left: 50% !important; bottom: -34px !important; width: 64px !important; height: 64px !important; margin-left: -32px; border: 0 !important; }
+  html body.fs.fs-blip #groupsSections .group-card-banner::after { content: ""; position: absolute; left: 50%; bottom: -38px; width: 72px; height: 72px; margin-left: -36px; z-index: 2; pointer-events: none;
+    background: var(--fs-group-avatar-frame) center / 100% 100% no-repeat; }
+  html body.fs.fs-blip #groupsSections .group-card-body { padding: 38px 4px 0 !important; text-align: center; flex: 1; min-height: 0; }
+  html body.fs.fs-blip #groupsSections .group-card-body h4 { font: 900 18px/21px var(--fs-title-font) !important; margin: 0 0 1px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip #groupsSections .group-card-body p { font: 500 12.5px/15px var(--fs-font) !important; color: var(--bl-ink) !important; margin: 0 0 3px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip #groupsSections .group-members { font: 800 14.5px var(--fs-font) !important; color: var(--bl-ink) !important; display: inline-flex; align-items: center; gap: 5px; }
+  html body.fs.fs-blip #groupsSections .group-members > i { width: 20px; height: 20px; font-size: 0 !important; color: transparent !important; background: var(--fs-icon-groups) center / contain no-repeat; }
+  html body.fs.fs-blip #groupsSections .group-card-actions { padding: 0 2px 2px !important; display: grid !important; grid-template-columns: 1fr 1fr; gap: 6px !important; }
+  html body.fs.fs-blip #groupsSections .group-card-actions .btn { width: auto !important; height: 30px !important; flex: none !important; padding: 0 4px !important; display: flex !important; align-items: center; justify-content: center; gap: 4px;
+    font: 800 14.5px var(--fs-font) !important; border-image-width: 0 15px !important; }
+  html body.fs.fs-blip #groupsSections .gc-btn-text { display: inline !important; }
+  html body.fs.fs-blip #groupsSections .gc-btn-icon { display: none !important; }
+  html body.fs.fs-blip #groupsSections .join-group-btn .gc-btn-icon:is(.fa-check, .fa-plus) { display: inline-block !important; font-size: 12px !important; }
+  html body.fs.fs-blip #groupsSections .gc-icon-edit-btn { position: absolute; top: 5px; right: 5px; width: 28px; height: 28px; padding: 0 !important; border: 0 !important; z-index: 3; opacity: 1 !important; font-size: 0 !important;
+    background: var(--fs-icon-edit) center / 15px no-repeat, var(--fs-btn-square) center / contain no-repeat !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-groups .page-header { margin-bottom: 5px !important; }
+  html body.fs.fs-blip #groupsTabs { margin-bottom: 18px !important; }
+  html body.fs.fs-blip #groupsSections .group-card-body { padding-top: 26px !important; }
+  html body.fs.fs-blip #groupsSections .group-card-banner { height: 64px !important; flex-basis: 64px !important; }
+}
+@media (max-width: 768px) {
+  /* banner: rounded top corners by clipping only the banner photo (a pseudo layer), so the round picture can hang below it */
+  html body.fs.fs-blip #groupsSections .group-card-banner { -webkit-mask-box-image: none !important; mask-border: none !important; height: 70px !important; flex-basis: 70px !important; border-radius: 11px 11px 0 0; }
+  html body.fs.fs-blip #groupsSections .group-card-banner > i, html body.fs.fs-blip #groupsSections .group-card-banner > img { bottom: -28px !important; width: 62px !important; height: 62px !important; margin-left: -31px !important; }
+  html body.fs.fs-blip #groupsSections .group-card-banner::after { bottom: -32px !important; width: 70px !important; height: 70px !important; margin-left: -35px !important; }
+  html body.fs.fs-blip #groupsSections .group-card-body { padding-top: 31px !important; flex: 0 0 auto !important; }
+  html body.fs.fs-blip #groupsSections .group-card-body h4 { line-height: 21px !important; }
+  html body.fs.fs-blip #groupsSections .group-card-body p { margin: 0 0 2px !important; }
+  html body.fs.fs-blip #groupsSections .group-members { line-height: 18px !important; }
+  html body.fs.fs-blip #groupsSections .group-card-actions { margin-top: auto !important; }
+  html body.fs.fs-blip #groupsSections .group-card-actions .btn { height: 28px !important; border-image-width: 0 14px !important; }
+  html body.fs.fs-blip #page-groups .page-search > i { position: static !important; transform: none !important; flex: 0 0 20px; }
+  html body.fs.fs-blip #page-groups .page-search input { padding-left: 0 !important; flex: 1; min-width: 0; background: transparent !important; }
+}
+
+/* ===== colours sampled from the concept's pixels (home / group / groups paintings) ===== */
+body.fs-blip { --bl-ink: #000048 !important; --bl-text: #000032; --bl-soft: #000034 !important; --bl-blue: #0a2cf0 !important; --bl-red: #c40000; }
+html body.fs.fs-blip, html body.fs.fs-blip :is(p, span, small, label, .post-time, .stat-label, .profile-title, .profile-about, .featured-info p, .quest-progress, .quest-reset,
+  .featured-timer, .group-card-body p, .post-description, .post-description p, .story-name, .post-input-fake, .coin-goal-bar p, .page-search input) { color: var(--bl-text) !important; }
+html body.fs.fs-blip :is(h1, h2, h3, h4, h5, .profile-name, .post-username, .card-heading, .stat-count, .group-card-body h4, .group-members, .quest-info p, .pv-posts-heading, .coin-goal-bar p strong) { color: var(--bl-ink) !important; }
+html body.fs.fs-blip :is(.view-profile-link, .view-more-link, .pv-back-link) { color: var(--bl-blue) !important; }
+html body.fs.fs-blip #gvProfileCard .pv-back-link { color: var(--bl-ink) !important; }
+html body.fs.fs-blip #gvLeaveBtn, html body.fs.fs-blip #gvLeaveBtn * { color: var(--bl-red) !important; }
+html body.fs.fs-blip :is(.btn-outline, .view-group-btn) { color: var(--bl-blue) !important; }
+html body.fs.fs-blip .nav-center .nav-link:not(.active) { color: #080848 !important; }
+html body.fs.fs-blip :is(.btn-primary, .mobile-pill, .featured-buy-btn, .search-tab.active, .nav-center .nav-link.active, .blip-start-btn) { color: #fff !important; }
+html body.fs.fs-blip :is(.btn-primary, .mobile-pill, .featured-buy-btn, .search-tab.active) * { color: #fff !important; }
+html body.fs.fs-blip .btn-disabled, html body.fs.fs-blip .btn-disabled * { color: #3c4658 !important; }
+html body.fs.fs-blip .post-input-fake { color: #1a1a4a !important; }
+/* group cards: content decides the height (never clipped) */
+@media (max-width: 768px) { html body.fs.fs-blip #groupsSections .group-card { height: auto !important; min-height: 206px; } }
+/* concept: outline buttons ("View") and inactive tabs use navy text #040454; Joined #202844 */
+html body.fs.fs-blip :is(.btn-outline, .view-group-btn), html body.fs.fs-blip :is(.btn-outline, .view-group-btn) * { color: #040454 !important; }
+html body.fs.fs-blip .search-tab:not(.active), html body.fs.fs-blip .search-tab:not(.active) * { color: #000054 !important; }
+html body.fs.fs-blip .btn-disabled, html body.fs.fs-blip .btn-disabled * { color: #202844 !important; }
+@media (max-width: 768px) { html body.fs.fs-blip #groupsSections .group-card-actions .btn { min-height: 0 !important; height: 29px !important; max-height: 29px; } }
+@media (max-width: 768px) {
+  html body.fs.fs-blip #groupsSections .group-card-body { display: flex !important; flex-direction: column; align-items: center; gap: 0 !important; line-height: 1 !important; padding-bottom: 6px !important; }
+  html body.fs.fs-blip #groupsSections .group-card-body > * { max-width: 100%; }
+}
+/* Groups tab sits on the concept's white sheet (rounded top corners) under the top bar */
+@media (max-width: 768px) {
+  html body.fs.fs-blip #page-groups .page-container { min-height: calc(100vh - 62px); box-sizing: border-box; padding: 0 10px 90px !important; margin: 0 !important;
+    border: 0 solid transparent !important; border-image: var(--fs-sheet) 70 70 0 70 fill / 22px 22px 0 22px stretch !important; }
+  html body.fs.fs-blip #page-groups .page-header::after { right: -2px; top: -12px; width: 140px; height: 104px; }
+  html body.fs.fs-blip #groupsTabs .search-tab > i.fa-crown { background-image: var(--fs-icon-crown) !important; }
+  html body.fs.fs-blip #groupsTabs .search-tab > i.fa-compass { background-image: var(--fs-icon-compass) !important; }
+  html body.fs.fs-blip #groupsSections .group-card-banner::after { bottom: -34px !important; width: 74px !important; height: 74px !important; margin-left: -37px !important; }
+}
+
+/* ======================================================================================================== DESKTOP HOME
+   measured on ref/ov-desktop.png (the concept window scaled to a 1440 viewport, x 0.9375) */
+@media (min-width: 769px) {
+  html body.fs.fs-blip .navbar { height: 64px !important; padding: 0 !important; border: 0 !important; border-image: none !important; box-shadow: none !important;
+    background: var(--fs-header-bar) center bottom / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip .nav-container { height: 64px; max-width: none !important; padding: 0 20px 0 33px !important; display: flex !important; align-items: center; gap: 0; }
+  html body.fs.fs-blip .nav-left { display: flex !important; align-items: center; gap: 22px; flex: 0 0 auto; }
+  html body.fs.fs-blip .navbar .nav-logo { display: flex !important; align-items: center; gap: 6px; font: 900 31px var(--fs-title-font) !important; color: #fff !important; background: none !important; padding: 0 !important; text-shadow: none !important; letter-spacing: -.4px; }
+  html body.fs.fs-blip .navbar .nav-logo::before { content: ""; width: 60px; height: 52px; flex: 0 0 60px; background: var(--fs-mascot-head) center / contain no-repeat; }
+  html body.fs.fs-blip .navbar .search-bar { width: 163px !important; height: 36px; padding: 0 14px !important; display: flex !important; align-items: center; gap: 8px; border: 0 solid transparent !important;
+    border-image: var(--fs-field) 0 64 fill / 0 18px stretch !important; background: none !important; box-shadow: none !important; }
+  html body.fs.fs-blip .navbar .search-bar > i { width: 19px; height: 19px; font-size: 0 !important; color: transparent !important; background: var(--fs-icon-search) center / contain no-repeat; filter: brightness(0) saturate(100%) invert(9%) sepia(98%) saturate(6000%) hue-rotate(245deg); }
+  html body.fs.fs-blip .navbar .search-bar input { font: 600 16px var(--fs-font) !important; color: var(--bl-text) !important; background: transparent !important; border: 0 !important; padding: 0 !important; width: 100%; }
+  html body.fs.fs-blip .nav-center { flex: 1 1 auto; justify-content: flex-start !important; gap: 0 !important; margin-left: 9px; height: 64px; align-items: center !important; }
+  html body.fs.fs-blip .blip-start-btn { width: 97px; height: 38px; margin-right: 18px !important; padding: 0 12px 0 4px !important; font: 900 19px var(--fs-font) !important; color: var(--bl-ink) !important; justify-content: center; }
+  html body.fs.fs-blip .blip-start-btn .blip-start-head { width: 34px; height: 34px; }
+  html body.fs.fs-blip .nav-center .nav-link { height: 52px !important; padding: 0 12px !important; margin: 0 2px !important; display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+    color: #fff !important; font: 800 15px var(--fs-font) !important; background: none !important; border: 0 solid transparent !important; border-image: none !important; border-radius: 0 !important; }
+  html body.fs.fs-blip .nav-center .nav-link > span:not(.notif-badge) { color: #fff !important; font: inherit !important; }
+  html body.fs.fs-blip .nav-center .nav-link > i { width: 28px !important; height: 28px !important; font-size: 0 !important; filter: brightness(0) invert(1); }
+  html body.fs.fs-blip .nav-center .nav-link.active { border-image: var(--fs-nav-active) 60 fill / 14px stretch !important; }
+  html body.fs.fs-blip .nav-center .nav-link.active > i { filter: none; }
+  html body.fs.fs-blip .nav-center .nav-link.active[data-page="home"] > i { background-image: var(--fs-icon-home-on) !important; }
+  html body.fs.fs-blip .nav-center .nav-link[data-page="saved"] > i { background-image: var(--fs-icon-bookmark); }
+  html body.fs.fs-blip .nav-center .nav-saved-link { margin-right: 22px !important; }
+  html body.fs.fs-blip .nav-center .nav-link .notif-badge { position: absolute; top: 2px; right: 14px; min-width: 20px; height: 20px; border-radius: 0 !important; padding: 0 5px; font: 800 12px/20px var(--fs-font) !important;
+    color: #000048 !important; background: var(--fs-coin) center / 100% 100% no-repeat !important; border: 0 !important; }
+  html body.fs.fs-blip .nav-center .nav-link { position: relative; }
+  html body.fs.fs-blip .nav-right { display: flex !important; align-items: center; gap: 0; margin-left: auto; }
+  html body.fs.fs-blip .nav-right :is(.mobile-search-btn, .mobile-notif-btn), html body.fs.fs-blip .nav-music-wrap { display: none !important; }
+  html body.fs.fs-blip .navbar .nav-coins { height: 34px; padding: 0 14px 0 8px !important; margin: 0 30px 0 0 !important; display: flex !important; align-items: center; gap: 8px; }
+  html body.fs.fs-blip .navbar .nav-coins > i { width: 26px !important; height: 26px !important; font-size: 0 !important; background: var(--fs-coin) center / contain no-repeat !important; }
+  html body.fs.fs-blip .navbar .nav-coins .coin-count { color: #000048 !important; font: 800 18px var(--fs-font) !important; }
+  html body.fs.fs-blip .navbar .nav-user { display: flex !important; align-items: center; gap: 10px; padding: 0 !important; background: none !important; border: 0 !important; }
+  html body.fs.fs-blip .navbar .nav-avatar { width: 46px !important; height: 46px !important; padding: 2px; }
+  html body.fs.fs-blip .navbar .nav-username { display: inline !important; color: #fff !important; font: 800 17px var(--fs-font) !important; }
+  html body.fs.fs-blip .navbar .nav-user > i.fa-chevron-down { color: #fff !important; font-size: 13px !important; }
+
+  /* page: cover 45..1395 x 74..193, then three columns 328 | 633 | 364 with 11 / 14 gaps */
+  html body.fs.fs-blip #page-home.page.active { padding: 74px 0 40px !important; }
+  html body.fs.fs-blip #page-home #timelineCover { width: 1350px !important; max-width: calc(100vw - 90px) !important; height: 119px !important; margin: 0 auto !important; border-radius: 0 !important; position: relative; overflow: visible !important; }
+  html body.fs.fs-blip #page-home .fs-tl-slot-1 { position: absolute; inset: 0 !important; width: auto !important; height: auto !important; -webkit-mask-box-image: var(--fs-cover-mask) 40 / 16px stretch; }
+  html body.fs.fs-blip #page-home .fs-tl-slot-1 img { width: 100%; height: 100%; object-fit: cover; }
+  html body.fs.fs-blip #page-home .fs-tl-slot:not(.fs-tl-slot-1), html body.fs.fs-blip #page-home .fs-tl-slot::before, html body.fs.fs-blip #page-home .fs-tl-slot::after { display: none !important; }
+  html body.fs.fs-blip #page-home #timelineCover::after { content: ""; position: absolute; z-index: 2; pointer-events: none; left: 972px; top: -3px; width: 183px; height: 122px;
+    background: var(--fs-mascot-wave) center / contain no-repeat; animation: blBob 3.2s ease-in-out infinite; }
+  html body.fs.fs-blip #page-home #coverEditBtn { position: absolute !important; left: 32px !important; top: 70px !important; right: auto !important; bottom: auto !important; height: 32px !important; padding: 0 14px 0 10px !important;
+    display: flex !important; align-items: center; gap: 8px; font: 700 15px var(--fs-font) !important; color: #fff !important; z-index: 3 !important; width: auto !important;
+    background: none !important; border: 0 solid transparent !important; border-image: var(--fs-btn-primary) 0 67 fill / 0 16px stretch !important; box-shadow: none !important; }
+  html body.fs.fs-blip #page-home #coverEditBtn > i { width: 20px !important; height: 20px !important; filter: brightness(0) invert(1); }
+  html body.fs.fs-blip #page-home .main-container { width: 1350px !important; max-width: calc(100vw - 90px) !important; margin: 12px auto 0 !important; padding: 0 !important;
+    display: grid !important; grid-template-columns: 328px 633px 364px !important; column-gap: 11px !important; align-items: start; }
+  html body.fs.fs-blip #page-home .right-sidebar { margin-left: 3px; }
+  html body.fs.fs-blip #page-home :is(.left-sidebar, .center-feed, .right-sidebar) { display: flex !important; flex-direction: column; gap: 10px !important; position: static !important; top: auto !important; width: auto !important; }
+  html body.fs.fs-blip #page-home :is(.left-sidebar, .center-feed, .right-sidebar) > * { margin: 0 !important; }
+  html body.fs.fs-blip #page-home .mobile-pills-bar { display: none !important; }
+}
+/* ---------- desktop cards (concept desktop, x 0.9375) ---------- */
+@media (min-width: 769px) {
+  html body.fs.fs-blip #page-home .card, html body.fs.fs-blip #page-home :is(.featured-skin-banner, .quest-panel, .coin-goal-bar, .feed-post) { border-width: 8px !important; padding: 0 4px !important; }
+  /* profile card 328 x 382: strip photo, avatar 112 overlapping at left, big name, stats row, View Profile pill + square pencil, tail bottom-left */
+  html body.fs.fs-blip #profileCard { min-height: 382px; margin: 0 !important; padding: 0 !important; border: 0 !important; border-image: none !important; position: relative; }
+  html body.fs.fs-blip:is(*) #profileCard::after { right: auto !important; left: 18px !important; transform: scaleX(-1); }
+  html body.fs.fs-blip #profileCard .profile-cover { display: block !important; position: absolute; left: 7px; right: 7px; top: 7px; height: 100px; border-radius: 0 !important; background-size: cover !important; background-position: center !important;
+    -webkit-mask-box-image: var(--fs-photo-mask) 30 30 0 30 / 11px 11px 0 11px stretch; }
+  html body.fs.fs-blip #profileCard .profile-info { display: block !important; padding: 52px 18px 22px !important; text-align: left !important; position: relative; }
+  html body.fs.fs-blip #profileCard .profile-avatar-wrap { width: 112px !important; height: 112px !important; margin: 0 0 8px 2px !important; border-radius: 50% !important; position: relative; z-index: 3; }
+  html body.fs.fs-blip #profileCard .profile-avatar-wrap::after { content: ""; display: block !important; position: absolute; inset: -3%; z-index: 2; pointer-events: none; background: var(--fs-avatar-frame) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip #profileCard #profileAvatarImg { width: 100% !important; height: 100% !important; -webkit-mask: var(--fs-avatar-mask) center / 100% 100% no-repeat !important; mask: var(--fs-avatar-mask) center / 100% 100% no-repeat !important; border-radius: 0 !important; border: 0 !important; object-fit: cover; }
+  html body.fs.fs-blip #profileCard .avatar-edit-btn { position: absolute !important; right: 2% !important; bottom: 4% !important; width: 32px !important; height: 32px !important; padding: 0 !important; z-index: 4 !important; border: 0 !important;
+    background: var(--fs-camera-badge) center / contain no-repeat !important; box-shadow: none !important; }
+  html body.fs.fs-blip #profileCard .avatar-edit-btn > i { opacity: 0 !important; }
+  html body.fs.fs-blip #profileCard .fs-namecard { padding: 0 !important; margin: 0 !important; border: 0 !important; border-image: none !important; background: none !important; text-align: left !important; }
+  html body.fs.fs-blip #profileCard .fs-namecard::before { display: none !important; }
+  html body.fs.fs-blip #profileCard .profile-name { font-size: 28px !important; line-height: 32px !important; margin: 0 !important; text-align: left !important; }
+  html body.fs.fs-blip #profileCard .profile-title { font: 600 17px/22px var(--fs-font) !important; color: #3a3a64 !important; margin: 2px 0 8px !important; text-align: left !important; }
+  html body.fs.fs-blip #profileCard .profile-about { font: 500 15.5px/20px var(--fs-font) !important; margin: 0 0 12px !important; text-align: left !important; }
+  html body.fs.fs-blip #profileCard .profile-stats { display: grid !important; grid-template-columns: 1fr 1fr; padding: 10px 0 !important; margin: 0 0 14px !important; border: 0 !important; position: relative; }
+  html body.fs.fs-blip #profileCard .profile-stats::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: var(--fs-divider) center / 100% 2px no-repeat; }
+  html body.fs.fs-blip #profileCard .profile-stats::after { content: ""; position: absolute; left: 50%; top: 18%; bottom: 18%; width: 4px; background: var(--fs-divider) center / 2px 100% no-repeat; }
+  html body.fs.fs-blip #profileCard .stat { display: flex !important; flex-direction: row-reverse !important; justify-content: center; align-items: center; gap: 6px; border: 0 !important; border-image: none !important; background: none !important; padding: 0 !important; height: auto !important; }
+  html body.fs.fs-blip #profileCard .stat-count { font: 900 17px var(--fs-font) !important; }
+  html body.fs.fs-blip #profileCard .stat-label { font: 600 17px var(--fs-font) !important; }
+  html body.fs.fs-blip #profileCard .profile-links { display: flex !important; align-items: center; gap: 12px; position: static !important; margin: 0 !important; }
+  html body.fs.fs-blip #profileCard .view-profile-link { flex: 1; position: static !important; height: 40px; display: flex !important; align-items: center; justify-content: center; font: 800 18px var(--fs-font) !important; color: #fff !important;
+    border: 0 solid transparent !important; border-image: var(--fs-btn-primary) 0 67 fill / 0 20px stretch !important; }
+  html body.fs.fs-blip #profileCard .edit-profile-btn { position: static !important; width: 52px !important; height: 40px !important; flex: 0 0 52px; border: 0 solid transparent !important; border-image: var(--fs-btn-secondary) 0 74 fill / 0 20px stretch !important; background: none !important; }
+  html body.fs.fs-blip #profileCard .edit-profile-btn > i { width: 20px !important; height: 20px !important; background-image: var(--fs-icon-edit) !important; }
+  /* Photos: heading + View All, 3 x 2 tiles */
+  html body.fs.fs-blip #page-home .photos-card { padding: 4px 8px 8px !important; position: relative; }
+  html body.fs.fs-blip #page-home .photos-card .card-heading { font-size: 21px !important; margin: 0 0 10px !important; border: 0 !important; padding: 0 !important; }
+  html body.fs.fs-blip #page-home .photos-card .card-heading > i { display: none !important; }
+  html body.fs.fs-blip #page-home .photos-card .view-more-link { position: absolute; top: 4px; right: 10px; margin: 0 !important; padding: 0 !important; border: 0 !important; font: 800 17px var(--fs-font) !important; }
+  html body.fs.fs-blip #page-home .photos-preview { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 6px !important; }
+  html body.fs.fs-blip #page-home .photos-preview > :nth-child(n+7) { display: none !important; }
+  html body.fs.fs-blip #page-home .photos-preview > * { width: auto !important; height: 112px !important; border-radius: 0 !important; -webkit-mask-box-image: var(--fs-photo-mask) 30 / 9px stretch; object-fit: cover; }
+  /* stories: one card, 6 rings spread */
+  html body.fs.fs-blip #page-home .stories-bar { justify-content: space-around !important; gap: 0 !important; padding: 6px 4px !important; border: 8px solid transparent !important;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 11px 0 stretch !important; }
+  html body.fs.fs-blip #page-home .story-ring { width: 80px !important; height: 80px !important; }
+  html body.fs.fs-blip #page-home .story-name { font: 700 16px var(--fs-font) !important; }
+  html body.fs.fs-blip #page-home .post-create-bar { min-height: 46px; }
+  /* Featured: image left with the blue "Featured Skin" tag, timer pill + name + description + Buy on the right */
+  html body.fs.fs-blip #page-home .featured-skin-banner { position: relative; padding: 4px !important; min-height: 117px; }
+  html body.fs.fs-blip #page-home .featured-header { position: absolute; left: 4px; top: 4px; right: 4px; height: 0; margin: 0 !important; z-index: 2; }
+  html body.fs.fs-blip #page-home .featured-header h4 { position: absolute; left: 8px; top: 6px; height: 26px; padding: 0 12px !important; display: flex !important; align-items: center; font: 800 16px var(--fs-font) !important; color: #fff !important;
+    border: 0 solid transparent; border-image: var(--fs-btn-primary) 0 67 fill / 0 13px stretch; }
+  html body.fs.fs-blip #page-home .featured-timer { position: absolute; left: 400px; top: 4px; height: 24px; padding: 0 10px !important; font: 700 15px var(--fs-font) !important;
+    border: 0 solid transparent; border-image: var(--fs-chip) 0 76 fill / 0 12px stretch; }
+  html body.fs.fs-blip #page-home .featured-body { display: grid !important; grid-template-columns: 370px 1fr; grid-template-rows: auto auto auto; column-gap: 16px; align-items: start; }
+  html body.fs.fs-blip #page-home .featured-preview { grid-row: 1 / span 3; width: 370px !important; height: 117px !important; -webkit-mask-box-image: var(--fs-photo-mask) 30 / 11px stretch; }
+  html body.fs.fs-blip #page-home .featured-info { padding-top: 30px; }
+  html body.fs.fs-blip #page-home .featured-info h5 { font-size: 27px !important; line-height: 30px; }
+  html body.fs.fs-blip #page-home .featured-info p { font-size: 16px !important; }
+  html body.fs.fs-blip #page-home .featured-body .btn { grid-column: 2; justify-self: start; width: 190px; height: 34px !important; font-size: 19px !important; margin-top: 6px; border-image-width: 0 17px !important; }
+  /* feed tabs + posts */
+  html body.fs.fs-blip #page-home #feedTabs { height: 32px; padding: 1px !important; }
+  html body.fs.fs-blip #page-home #feedTabs .search-tab { height: 30px !important; font-size: 17px !important; }
+  html body.fs.fs-blip #page-home .post-media-grid.pm-count-1 { aspect-ratio: 7 / 1 !important; }
+  /* right: Earn Coins (blue header band), People, Trending Groups, Trending Hashtags pill */
+  html body.fs.fs-blip .promo-card { padding: 0 !important; text-align: left !important; overflow: hidden; }
+  html body.fs.fs-blip .promo-card .promo-logo { display: none !important; }
+  html body.fs.fs-blip .promo-card .promo-title { margin: 0 0 6px !important; height: 38px; display: flex !important; align-items: center; gap: 10px; padding: 0 14px !important; font: 900 21px var(--fs-title-font) !important; color: #fff !important;
+    border: 0 solid transparent; border-image: var(--fs-header-bar) 40 fill / 12px stretch; }
+  html body.fs.fs-blip .promo-card .promo-title::before { content: ""; width: 34px; height: 30px; background: var(--fs-coin-stack) center / contain no-repeat; flex: 0 0 34px; }
+  html body.fs.fs-blip .promo-card .promo-subtitle { font: 600 15px/19px var(--fs-font) !important; margin: 0 6px 8px !important; text-align: left !important; }
+  html body.fs.fs-blip .coin-rules { display: flex !important; flex-direction: column; gap: 4px; padding: 0 2px 2px !important; }
+  html body.fs.fs-blip .coin-rule { display: flex !important; align-items: center; gap: 10px; height: 32px; padding: 0 12px !important; border: 0 solid transparent !important; border-image: var(--fs-chip) 0 76 fill / 0 16px stretch !important; background: none !important; }
+  html body.fs.fs-blip .coin-rule > i { width: 24px; height: 24px; font-size: 0 !important; color: transparent !important; background: center / contain no-repeat; }
+  html body.fs.fs-blip .coin-rule > i.fa-calendar-check { background-image: var(--fs-icon-calendar); }
+  html body.fs.fs-blip .coin-rule > i.fa-pen-to-square { background-image: var(--fs-icon-edit); }
+  html body.fs.fs-blip .coin-rule > i.fa-comment { background-image: var(--fs-icon-comment); }
+  html body.fs.fs-blip .coin-rule > i.fa-heart { background-image: var(--fs-icon-like-on); }
+  html body.fs.fs-blip .coin-rule span { font: 700 16px var(--fs-font) !important; flex: 1; display: flex; align-items: center; gap: 6px; }
+  html body.fs.fs-blip .coin-rule strong { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; font-weight: 900 !important; }
+  html body.fs.fs-blip .coin-rule strong::before { content: ""; width: 20px; height: 20px; background: var(--fs-coin) center / contain no-repeat; }
+  html body.fs.fs-blip .coin-rule small { font: 600 13px var(--fs-font) !important; }
+  html body.fs.fs-blip :is(.suggestions-card, .groups-card) .card-heading { font-size: 22px !important; margin: 0 0 8px !important; padding: 0 0 0 4px !important; border: 0 !important; }
+  html body.fs.fs-blip .suggestion-list { display: flex !important; flex-direction: column !important; gap: 6px !important; }
+  html body.fs.fs-blip .suggestion-item { display: flex !important; flex-direction: row !important; align-items: center; gap: 12px; padding: 4px 4px !important; text-align: left !important; background: none !important; border: 0 !important; width: auto !important; }
+  html body.fs.fs-blip .suggestion-avatar { width: 40px !important; height: 40px !important; flex: 0 0 40px; }
+  html body.fs.fs-blip .suggestion-info { flex: 1; min-width: 0; text-align: left !important; }
+  html body.fs.fs-blip .suggestion-info h4 { font-size: 17px !important; margin: 0 !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip .suggestion-info p:empty { display: none; }
+  html body.fs.fs-blip .suggestion-follow-btn { width: 92px !important; height: 28px !important; border-radius: 0 !important; padding: 0 !important; font-size: 0 !important; color: #fff !important; background: none !important;
+    border: 0 solid transparent !important; border-image: var(--fs-btn-primary) 0 67 fill / 0 14px stretch !important; box-shadow: none !important; }
+  html body.fs.fs-blip .suggestion-follow-btn > i { display: none !important; }
+  html body.fs.fs-blip .suggestion-follow-btn::after { content: "Follow"; font: 800 15px var(--fs-font); color: #fff; }
+  html body.fs.fs-blip :is(.suggestions-card, .groups-card) .view-more-link { display: block; text-align: center; font: 800 17px var(--fs-font) !important; margin: 6px 0 0 !important; border: 0 !important; }
+  html body.fs.fs-blip .group-list { display: flex !important; flex-direction: column; gap: 4px; }
+  html body.fs.fs-blip .group-item { display: flex !important; align-items: center; gap: 12px; padding: 4px !important; border: 0 !important; background: none !important; }
+  html body.fs.fs-blip .group-item + .group-item { border-top: 0 !important; }
+  html body.fs.fs-blip .group-icon { width: 84px !important; height: 50px !important; flex: 0 0 84px; border-radius: 0 !important; font-size: 0 !important; -webkit-mask-box-image: var(--fs-photo-mask) 30 / 9px stretch;
+    background: var(--fs-icon-groups-on) center / 26px no-repeat, var(--bl-blue) !important; }
+  html body.fs.fs-blip .group-icon > i { display: none !important; }
+  html body.fs.fs-blip .group-icon:has(img) { background: none !important; }
+  html body.fs.fs-blip .group-name { font: 900 17px var(--fs-title-font) !important; margin: 0 !important; }
+  html body.fs.fs-blip .group-desc { display: none !important; }
+  html body.fs.fs-blip .group-item .group-members { font: 600 15px var(--fs-font) !important; display: flex; align-items: center; gap: 6px; }
+  html body.fs.fs-blip .group-item .group-members > i { width: 18px; height: 18px; font-size: 0 !important; color: transparent !important; background: var(--fs-icon-groups) center / contain no-repeat; }
+  html body.fs.fs-blip #page-home .right-sidebar > .card:last-child { padding: 0 !important; border: 0 !important; border-image: none !important; }
+  html body.fs.fs-blip #trendingHashtagsBtn { height: 62px; width: 100%; display: flex !important; align-items: center; justify-content: center; gap: 12px; font: 900 24px var(--fs-title-font) !important; color: #fff !important;
+    border: 0 solid transparent !important; border-image: var(--fs-btn-primary) 0 67 fill / 0 31px stretch !important; background: none !important; }
+  html body.fs.fs-blip #trendingHashtagsBtn > i { color: #ffb020 !important; font-size: 26px !important; }
+  html body.fs.fs-blip #trendingHashtagsBtn::after { content: "›"; font: 900 30px var(--fs-font); margin-left: 4px; }
+}
+@media (min-width: 769px) {
+  html body.fs.fs-blip .suggestion-item { width: 100% !important; max-width: none !important; min-width: 0 !important; flex: 0 0 auto !important; box-sizing: border-box; }
+  html body.fs.fs-blip #profileCard .edit-profile-btn { display: flex !important; align-items: center; justify-content: center; }
+  html body.fs.fs-blip #profileCard .edit-profile-btn > i { display: block !important; background: var(--fs-icon-edit) center / contain no-repeat !important; }
+  /* Daily Quests (concept): left block = mascot + "Daily / Quests" + "Resets daily", divider, then the three rows */
+  html body.fs.fs-blip #page-home .quest-panel { display: grid !important; grid-template-columns: 158px 1fr; column-gap: 14px; row-gap: 0; align-items: center; padding: 4px 6px !important; position: relative; }
+  html body.fs.fs-blip #page-home .quest-panel-header { grid-column: 1; grid-row: 1 / span 3; display: grid !important; grid-template-columns: 50px 1fr; grid-template-rows: auto auto; column-gap: 6px; align-items: center; margin: 0 !important; padding: 0 !important; }
+  html body.fs.fs-blip #page-home .quest-panel-header::before { content: ""; grid-row: 1 / span 2; width: 50px; height: 50px; background: var(--fs-mascot-head) center / contain no-repeat; }
+  html body.fs.fs-blip #page-home .quest-panel-header h4 { font-size: 23px !important; line-height: 24px !important; margin: 0 !important; width: 80px; }
+  html body.fs.fs-blip #page-home .quest-panel-header .quest-reset { grid-column: 2; font-size: 13.5px !important; }
+  html body.fs.fs-blip #page-home .quest-panel::before { content: ""; position: absolute; left: 168px; top: 10%; bottom: 10%; width: 4px; background: var(--fs-divider) center / 2px 100% no-repeat; }
+  html body.fs.fs-blip #page-home .quest-item { grid-column: 2; height: 36px !important; }
+}
+@media (min-width: 769px) {
+  html body.fs.fs-blip #page-home .photos-preview { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; width: 100%; }
+  html body.fs.fs-blip #page-home .photos-preview > * { width: 100% !important; min-width: 0 !important; max-width: none !important; }
+  html body.fs.fs-blip #page-home .story-item { width: auto !important; max-width: none !important; min-width: 84px; }
+  html body.fs.fs-blip #page-home .story-name { white-space: nowrap; overflow: visible !important; text-overflow: clip !important; max-width: none !important; width: auto !important; }
+  html body.fs.fs-blip .promo-card .promo-title { height: 42px; font-size: 20px !important; }
+}
+@media (min-width: 769px) {
+  html body.fs.fs-blip #page-home .featured-skin-banner { min-height: 0 !important; }
+  html body.fs.fs-blip #page-home .featured-info { padding-top: 26px !important; }
+  html body.fs.fs-blip #page-home .featured-info h5 { font-size: 25px !important; line-height: 27px !important; margin: 0 !important; }
+  html body.fs.fs-blip #page-home .featured-info p { font-size: 14.5px !important; line-height: 18px !important; -webkit-line-clamp: 1 !important; }
+  html body.fs.fs-blip #page-home .featured-body .btn { height: 32px !important; margin-top: 2px !important; grid-row: 3; align-self: end; border-image-width: 0 16px !important; font-size: 17px !important; }
+  html body.fs.fs-blip #page-home .featured-body { grid-template-rows: auto 1fr auto; height: 117px; }
+  html body.fs.fs-blip #page-home .quest-item { height: 30px !important; }
+  html body.fs.fs-blip #page-home .quest-info p { font-size: 13.5px !important; line-height: 15px !important; }
+  html body.fs.fs-blip #page-home .quest-bar { height: 10px !important; }
+  html body.fs.fs-blip #page-home .quest-reward { height: 26px !important; }
+  html body.fs.fs-blip .suggestion-item { padding: 1px 4px !important; }
+  html body.fs.fs-blip .suggestion-avatar { width: 36px !important; height: 36px !important; flex-basis: 36px !important; }
+  html body.fs.fs-blip .suggestion-list { gap: 4px !important; }
+}
+@media (min-width: 769px) {
+  html body.fs.fs-blip #page-home .featured-body { height: auto !important; min-height: 117px; grid-template-rows: auto auto auto !important; align-content: start; }
+  html body.fs.fs-blip #page-home .featured-body .btn { align-self: start !important; margin-top: 6px !important; }
+  html body.fs.fs-blip #page-home .featured-skin-banner { padding-bottom: 6px !important; }
+}
