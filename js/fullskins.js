@@ -1448,7 +1448,21 @@
     // a light-bar Blip Vibe (Pixel Pal): app.js's helper isn't global and sets white text for the default look just before
     // onSkin, so set dark status-bar text here directly (Capacitor: 'LIGHT' style = dark text)
     var sbar = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.StatusBar;
-    if (id === 'blip' && sbar && sbar.setStyle) { try { sbar.setStyle({ style: vcfg && vcfg.lightBar ? 'LIGHT' : 'DARK' }); } catch (e) {} }
+    if (id === 'blip' && sbar && sbar.setStyle) {
+      // app.js sets white status-bar text again on page changes (group / profile views): while a light-bar Vibe is on,
+      // every request comes out as dark text
+      if (!sbar.__fsWrapped) {
+        try {
+          var origSet = sbar.setStyle.bind(sbar);
+          sbar.setStyle = function (o) {
+            var vc = active === 'blip' && (FULL_SKINS.blip.variants || []).filter(function (x) { return x.id === variant; })[0];
+            return origSet(vc && vc.lightBar ? { style: 'LIGHT' } : o);
+          };
+          sbar.__fsWrapped = true;
+        } catch (e) {}
+      }
+      try { sbar.setStyle({ style: vcfg && vcfg.lightBar ? 'LIGHT' : 'DARK' }); } catch (e) {}
+    }
     if (cfg.variants) b.setAttribute('data-fs-variant', variant || cfg.variants[0].id);
     var parts = cfg.extras ? PARTS.concat(EXTRAS) : PARTS;
     parts.forEach(function (p) { b.style.setProperty('--fs-' + p, url(id, (cfg.parts && cfg.parts[p]) || p)); });
@@ -1713,8 +1727,14 @@
     // left over from a full skin (e.g. after a try-on is reverted)
     Object.keys(FULL_SKINS).forEach(function (k) { if (k !== id) document.body.classList.remove('premium-' + k); });
     if (id && FULL_SKINS[id]) apply(id);
-    else if (wantsDefaultLook()) { if (active !== 'blip') apply('blip'); }
+    else if (wantsDefaultLook()) { if (active !== 'blip') apply('blip'); else lightBarAgain(); }
     else clear();
+  }
+  // app.js resets the status bar to white text whenever it re-runs the default look; a light-bar Vibe puts dark text back
+  function lightBarAgain() {
+    var vc = (FULL_SKINS.blip.variants || []).filter(function (x) { return x.id === variant; })[0];
+    var sb = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.StatusBar;
+    if (vc && vc.lightBar && sb && sb.setStyle) { try { sb.setStyle({ style: 'LIGHT' }); } catch (e) {} }
   }
   // the default look shows only when signed in (the app shell is up) with no basic colour skin (body.skin-<id>)
   function wantsDefaultLook() {
