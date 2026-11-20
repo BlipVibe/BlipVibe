@@ -494,3 +494,32 @@ html body.fs.fs-blip[data-fs-variant="lofi-room"] .page-search input, html body.
   html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-profiles .connections-columns { overflow-y: visible !important; }
 }
 @media (max-width: 768px) { html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-profiles .connections-columns { padding-bottom: 12px !important; } }
+
+/* ======================================================================================================== SEARCH (phone) — ref/lofi-room/ov-search-a.png */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-search .page-container { padding: 0 6px 90px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-search .page-header { margin: 4px 0 0 !important; height: 150px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-search .page-header::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 146px; z-index: -1; pointer-events: none;
+    border: 10px solid transparent; border-image: var(--fs-grille) 40 fill / 10px stretch; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-search .page-header::after { background-image: var(--fs-mascot-page-wink) !important; right: 6px !important; top: 0 !important; width: 150px !important; height: 94px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-search .page-header h2 { left: 16px !important; top: 12px !important; font-size: 36px !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-search .page-header h2 > i, html body.fs.fs-blip[data-fs-variant="lofi-room"] #searchPageInput > i { filter: none !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #searchPageInput { left: 12px !important; right: 12px !important; top: 92px !important; height: 40px !important; border-image-source: var(--fs-field) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #searchPageInput::before { color: var(--wh-ink) !important; font: 500 16px var(--fs-font) !important; left: 6px !important; top: -30px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #searchPageQuery { font: 700 20px var(--fs-font) !important; color: var(--wh-ink) !important; }
+  /* results: "Results for …" + the three tabs on a cream strip, then the result cards */
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #searchQuery { top: 156px !important; left: 18px !important; font: 700 23px/28px var(--fs-title-font) !important; color: var(--wh-ink) !important; z-index: 1; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-search .search-tabs { position: relative; margin: 0 0 8px !important; padding: 44px 10px 10px !important; gap: 8px !important; border: 0 solid transparent !important;
+    border-image: var(--fs-grille) 40 fill / 10px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #page-search .search-tab { height: 38px !important; min-height: 0 !important; font: 700 19px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #searchResults .profile-card-avatar { box-shadow: 0 0 0 2px #f6ebd9, 0 0 0 3.5px #6b4226 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #searchResults .profile-card-name { font: 700 22px/26px var(--fs-title-font) !important; color: var(--wh-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #searchResults .profile-card-bio { color: var(--wh-ink) !important; font-weight: 500 !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #searchResults .profile-follow-btn { font: 700 19px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #searchResults .profile-follow-btn.btn-primary { border-image-source: var(--fs-btn-secondary) !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #searchResults .profile-follow-btn.btn-outline { border-image-source: var(--fs-chip) !important; color: var(--wh-ink) !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #searchPageInput::before { left: 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="lofi-room"] #searchQuery { top: 160px !important; }
+}
