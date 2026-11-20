@@ -81,3 +81,18 @@ convert with `prototypes/tools/basic_convert.py images/skins/basic`.
   tiles (no cover repeats). Bio shown under the name. Home: featured = picture + "featured" + name + coin chip; daily
   routine = compact one-line rows; posts inset ~7pt. Someone's profile: follow · message · ⋯ (mute, block, report,
   close friend, invite in the ⋯ menu), the widget drawn on `#pvProfileCard::before` so the row sits under it.
+
+## Nov 19 2026 — v3 "basic girl" (owner: redesign around the 3x3, middle "a little bigger", "think basic girl", "literally 1 for 1")
+- Concepts `concept-v3-<r>[-2|-3].png` (ChatGPT, approved "Build it", local only) + `prototypes/basic-v3-concept-brief.md`
+  (every page + field spelled out). Kit `prototypes/basic-v3-kit-brief.md` → kit/<r>/ → assets (cream ribbed-knit cards,
+  blush / caramel pills, bow on the active dock tile and on the profile ring). `avatar-bow` = the profile ring with the bow
+  (hole 340 @ 256,284); `avatar-ring` = the same ring without the bow (bottom half mirrored) for small avatars.
+- Checked by overlaying each concept phone (scaled to the screenshot width) on the simulator screenshot. Grid per rendition:
+  Pumpkin tiles ~121x114, Rosé ~119x97 (`[data-fs-variant="rose"]`), middle photo = 1.1 x tile width in the bow ring.
+- Owner: "no stretch graphics" → every pill / chip / field / bar is a 9-slice border-image (pills: slice = half the art
+  height, width 999px so the round ends always fit); never `100% 100%` on an elongated piece.
+- Owner: "people you may know … trending groups … are filters" → on phones the app's own sidebar cards move above the feed
+  tabs (fullskins.js basicPills) under two filter chips; swatches = photo, name, sub-line, follow / view (app buttons).
+- Sub-pages: the wordmark becomes "‹ page name" (basicTitle, tap = back). Solid cream behind the top bar and under the dock
+  (owner: "top and bottom have gaps"). Pumpkin Barista card is cream now → espresso text + repainted espresso menu icons.
+- QA: own simulator "BlipVibe Basic v3" (read-only guard + RO chip, look-only QA remote via qa-cmd.json — scratch only).

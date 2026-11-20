@@ -7473,7 +7473,7 @@ body.fs-basic :is(p, span, label, small, .post-time, .msg-contact-preview, .stat
 body.fs-basic #premiumBgLayer { display: block !important; background: var(--fs-background) center / cover no-repeat !important; }
 body.fs-basic :is(.page, .main-container, .center-feed, .page-container) { background: transparent !important; }
 @media (max-width: 768px) {
-  html body.fs.fs-basic .navbar { border: 0 !important; border-image: none !important; box-shadow: none !important; overflow: visible !important; background: var(--fs-top-bar) center bottom / 100% 100% no-repeat !important; height: calc(64px + env(safe-area-inset-top, 0px)) !important; max-height: none !important; padding: env(safe-area-inset-top, 0px) 0 0 !important; box-sizing: border-box !important; }
+  html body.fs.fs-basic .navbar {   box-shadow: none !important; overflow: visible !important; background: none !important; border-image: var(--fs-top-bar) 0 140 120 140 fill / 0 34px 30px 34px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; height: calc(64px + env(safe-area-inset-top, 0px)) !important; max-height: none !important; padding: env(safe-area-inset-top, 0px) 0 0 !important; box-sizing: border-box !important; }
   html body.fs.fs-basic .page.active { padding-top: calc(70px + env(safe-area-inset-top, 0px)) !important; }
   html body.fs.fs-basic .nav-container { display: grid !important; grid-template-columns: 50px 1fr 40px 40px 40px auto; align-items: center; column-gap: 4px; padding: 0 10px !important; height: 100%; }
   html body.fs.fs-basic .navbar :is(.nav-left, .nav-right) { display: contents !important; }
@@ -7489,7 +7489,7 @@ body.fs-basic :is(.page, .main-container, .center-feed, .page-container) { backg
   html body.fs.fs-basic .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) { width: 38px !important; height: 38px !important; display: flex !important; align-items: center; justify-content: center; background: none !important; border: 0 !important; padding: 0 !important; }
   html body.fs.fs-basic .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) > i { width: 25px !important; height: 25px !important; font-size: 0 !important; background-size: contain !important; background-repeat: no-repeat !important; background-position: center !important; }
   html body.fs.fs-basic .navbar .mobile-notif-btn .notif-badge { position: absolute; top: 0; right: 0; min-width: 17px; height: 17px; border-radius: 9px; background: #c9962e !important; color: #fff !important; font: 700 11px/17px system-ui !important; text-align: center; padding: 0 4px; }
-  html body.fs.fs-basic .navbar .nav-coins { height: 36px !important; padding: 0 12px 0 8px !important; display: flex !important; align-items: center; gap: 5px; margin: 0 !important; border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; background: var(--fs-coin-pill) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; font: 600 17px var(--fs-font) !important; }
+  html body.fs.fs-basic .navbar .nav-coins { height: 36px !important; padding: 0 12px 0 8px !important; display: flex !important; align-items: center; gap: 5px; margin: 0 !important;   border-radius: 0 !important; box-shadow: none !important; background: none !important; border-image: var(--fs-coin-pill) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: var(--bs-title) !important; font: 600 17px var(--fs-font) !important; }
   html body.fs.fs-basic .navbar .nav-coins > i { width: 22px !important; height: 22px !important; font-size: 0 !important; background: var(--fs-coin) center / contain no-repeat !important; }
   html body.fs.fs-basic .navbar .nav-coins .coin-count { color: var(--bs-title) !important; }
   html body.fs.fs-basic:has(#page-shop.active) .navbar .nav-coins { position: fixed !important; z-index: 60; top: calc(env(safe-area-inset-top, 0px) + 12px); right: 12px; }
@@ -7566,11 +7566,11 @@ html body.fs.fs-basic :is(.pv-profile-card, #profileCard) .profile-stats > .stat
 html body.fs.fs-basic :is(.pv-profile-card, #profileCard) .stat-count { font-size: 30px !important; line-height: 1 !important; }
 html body.fs.fs-basic :is(.pv-profile-card, #profileCard) .stat-label { color: var(--bs-title) !important; font-size: 18px !important; font-weight: 600; }
 html body.fs.fs-basic #pvEditProfileBtn,
-html body.fs.fs-basic #profileCard .profile-links { border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; background: var(--fs-edit-btn) center / 100% 100% no-repeat !important; width: 72% !important; height: 56px; min-height: 0; margin: 14px auto 6px !important; padding: 0 16% 0 0 !important; display: flex !important; align-items: center; justify-content: center; gap: 8px; box-sizing: border-box; }
+html body.fs.fs-basic #profileCard .profile-links {   border-radius: 0 !important; box-shadow: none !important; background: none !important; border-image: var(--fs-edit-btn) 60 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; width: 72% !important; height: 56px; min-height: 0; margin: 14px auto 6px !important; padding: 0 16% 0 0 !important; display: flex !important; align-items: center; justify-content: center; gap: 8px; box-sizing: border-box; }
 html body.fs.fs-basic #profileCard :is(.view-profile-link, .edit-profile-btn) , html body.fs.fs-basic #pvEditProfileBtn { color: var(--bs-title) !important; font: 700 22px var(--fs-title-font) !important; }
 html body.fs.fs-basic #profileCard .edit-profile-btn i, html body.fs.fs-basic #pvEditProfileBtn i { display: none !important; }
 html body.fs.fs-basic .pv-back-link { display: none !important; }
-html body.fs.fs-basic .quest-panel { border: 0 !important; border-image: none !important; box-shadow: none !important; position: relative; background: var(--fs-quests-panel) center / 100% 100% no-repeat !important; padding: 46px 18px 26px !important; display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 4px 0 !important; }
+html body.fs.fs-basic .quest-panel {   box-shadow: none !important; position: relative; background: none !important; border-image: var(--fs-quests-panel) 100 fill / 30px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; padding: 46px 18px 26px !important; display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 4px 0 !important; }
 html body.fs.fs-basic #questPanel[style*="none"] { display: none !important; }
 html body.fs.fs-basic .quest-panel-header { grid-column: 1 / -1; justify-content: center !important; border: 0 !important; margin: 0 !important; }
 html body.fs.fs-basic .quest-panel-header h4 { font-size: 26px !important; }
@@ -7597,19 +7597,19 @@ html body.fs.fs-basic .search-tab { border: 0 !important; border-image: none !im
 html body.fs.fs-basic .search-tab > i { display: none !important; }
 html body.fs.fs-basic #feedTabs .search-tab.active { background: radial-gradient(ellipse at 50% 45%, rgba(255, 226, 160, .75), transparent 70%), var(--fs-tab-active) center bottom / 86% 16px no-repeat !important; color: var(--bs-accent) !important; font-weight: 700 !important; }
 html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs, #profilesTabs, #searchTabs, .fsk-filters) { display: flex !important; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding: 2px 0 !important; border: 0 !important; background: none !important; scrollbar-width: none; }
-html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab, html body.fs.fs-basic .fsk-filter { flex: 0 0 auto; padding: 6px 14px !important; font-size: 15px !important; border-radius: 0 !important; background: var(--fs-chip) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; }
-html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab.active, html body.fs.fs-basic .fsk-filter.active { background-image: var(--fs-chip-active) !important; color: #fff !important; }
-html body.fs.fs-basic :is(#profilesTabs, #searchTabs) .search-tab { flex: 1 1 0; min-height: 46px; padding: 4px 6px !important; font-size: 15px !important; line-height: 1.1; white-space: normal; text-align: center; background: var(--fs-seg-tab) center / 100% 100% no-repeat !important; }
-html body.fs.fs-basic :is(#profilesTabs, #searchTabs) .search-tab.active { background-image: var(--fs-seg-tab-active) !important; color: #fff !important; }
+html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab, html body.fs.fs-basic .fsk-filter { flex: 0 0 auto; padding: 6px 14px !important; font-size: 15px !important; border-radius: 0 !important; background: none !important; border-image: var(--fs-chip) 60 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: var(--bs-title) !important; }
+html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab.active, html body.fs.fs-basic .fsk-filter.active { border-image-source: var(--fs-chip-active) !important; color: #fff !important; }
+html body.fs.fs-basic :is(#profilesTabs, #searchTabs) .search-tab { flex: 1 1 0; min-height: 46px; padding: 4px 6px !important; font-size: 15px !important; line-height: 1.1; white-space: normal; text-align: center; background: none !important; border-image: var(--fs-seg-tab) 65 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; }
+html body.fs.fs-basic :is(#profilesTabs, #searchTabs) .search-tab.active { border-image-source: var(--fs-seg-tab-active) !important; color: #fff !important; }
 html body.fs.fs-basic .story-ring { background: var(--fs-story-ring) center / contain no-repeat !important; padding: 4px !important; }
 html body.fs.fs-basic .story-add .story-ring:not(.story-has) { background-image: var(--fs-story-add) !important; }
 html body.fs.fs-basic :is(.story-name, .story-label) { color: var(--bs-title) !important; }
 html body.fs.fs-basic #openPostModal { border: 0 !important; border-image: none !important; background: none !important; padding: 0 2px !important; display: flex; align-items: center; gap: 8px; }
 html body.fs.fs-basic .post-create-avatar { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; width: 46px !important; height: 46px !important; padding: 3px; box-sizing: border-box; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; }
-html body.fs.fs-basic .post-input-fake { flex: 1; border: 0 !important; border-image: none !important; border-radius: 0 !important; background: var(--fs-composer) center / 100% 100% no-repeat !important; padding: 12px 18px !important; min-height: 0 !important; color: var(--bs-soft) !important; font: 500 16px var(--fs-font) !important; }
-html body.fs.fs-basic .featured-skin-banner { border: 0 !important; border-image: none !important; box-shadow: none !important; background: var(--fs-featured-frame) center / 100% 100% no-repeat !important; padding: 14px 18px !important; color: var(--bs-title) !important; }
+html body.fs.fs-basic .post-input-fake { flex: 1;   border-radius: 0 !important; background: none !important; border-image: var(--fs-composer) 90 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; padding: 12px 18px !important; min-height: 0 !important; color: var(--bs-soft) !important; font: 500 16px var(--fs-font) !important; }
+html body.fs.fs-basic .featured-skin-banner {   box-shadow: none !important; background: none !important; border-image: var(--fs-featured-frame) 100 fill / 30px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; padding: 14px 18px !important; color: var(--bs-title) !important; }
 html body.fs.fs-basic .coin-goal-bar { border: 0 !important; border-image: none !important; box-shadow: none !important; background: var(--fs-coin-goal-bar) center / 100% 100% no-repeat !important; padding: 10px 16px !important; color: var(--bs-title) !important; }
-html body.fs.fs-basic .coin-goal-track { background: var(--fs-goal-track) center / 100% 100% no-repeat !important; border-radius: 0 !important; border: 0 !important; }
+html body.fs.fs-basic .coin-goal-track { background: none !important; border-image: var(--fs-goal-track) 25 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; border-radius: 0 !important;  }
 html body.fs.fs-basic .coin-goal-fill { background: var(--fs-goal-fill) left center / auto 100% no-repeat !important; border-radius: 0 !important; }
 html body.fs.fs-basic .page-header, html body.fs.fs-basic .msg-sidebar-header { display: flex !important; flex-wrap: wrap; align-items: center; gap: 8px; padding: 6px 4px 0 52px !important; border: 0 !important; background: none !important; position: relative; z-index: 1; }
 html body.fs.fs-basic :is(.page-header h2, .msg-sidebar-header h3) { flex: 1 1 auto; margin: 0 !important; text-align: center; font-size: 30px !important; background: none !important; border: 0 !important; padding: 0 !important; }
@@ -7620,12 +7620,12 @@ html body.fs.fs-basic .page-header .page-search { order: 5; flex: 1 1 100%; marg
 html body.fs.fs-basic .page-header .btn:not(.page-search) { width: 42px !important; height: 42px !important; min-width: 0; padding: 0 !important; font-size: 0 !important; border: 0 !important; border-image: none !important; border-radius: 50% !important; box-shadow: none !important; background: none !important; }
 html body.fs.fs-basic .page-header .btn:not(.page-search) i { font-size: 0 !important; width: 26px; height: 26px; display: inline-block; background: var(--fs-icon-plus) center / contain no-repeat; margin: 0 !important; }
 html body.fs.fs-basic .page-header .btn:not(.page-search) i::before { content: "" !important; }
-html body.fs.fs-basic :is(.msg-search, .page-search, .comment-input) { border: 0 !important; border-image: none !important; border-radius: 0 !important; background: var(--fs-field) center / 100% 100% no-repeat !important; padding: 0 10px !important; min-height: 46px; display: flex; align-items: center; box-shadow: none !important; }
+html body.fs.fs-basic :is(.msg-search, .page-search, .comment-input) {   border-radius: 0 !important; background: none !important; border-image: var(--fs-field) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; padding: 0 10px !important; min-height: 46px; display: flex; align-items: center; box-shadow: none !important; }
 html body.fs.fs-basic :is(.msg-search, .page-search) > i { font-size: 0 !important; width: 20px; height: 20px; flex: 0 0 20px; background: var(--fs-icon-search) center / contain no-repeat; position: static !important; transform: none !important; }
 html body.fs.fs-basic :is(.msg-search, .page-search) > i::before { content: "" !important; }
 html body.fs.fs-basic :is(.msg-search, .page-search) input { background: none !important; border: 0 !important; color: var(--bs-ink) !important; font: 500 17px var(--fs-font) !important; padding: 8px !important; height: auto !important; flex: 1; }
 html body.fs.fs-basic :is(.msg-contact, .notif-item, .profile-card-item, .follow-list-item) { border: 16px solid transparent !important; border-image: var(--fs-list-row) 70 fill / 16px stretch !important; background: none !important; box-shadow: none !important; color: var(--bs-ink) !important; margin-bottom: 6px !important; }
-html body.fs.fs-basic :is(.join-group-btn, .suggestion-follow-btn, .follow-btn, .profile-follow-btn) { border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; font: 700 16px var(--fs-font) !important; }
+html body.fs.fs-basic :is(.join-group-btn, .suggestion-follow-btn, .follow-btn, .profile-follow-btn) {   border-radius: 0 !important; box-shadow: none !important; background: none !important; border-image: var(--fs-join-btn) 65 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: var(--bs-title) !important; font: 700 16px var(--fs-font) !important; }
 html body.fs.fs-basic :is(.msg-contact > div > img, .profile-card-item .profile-card-avatar, .notif-item img, #newGroupDmBtn > div:first-child) { -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; border: 0 !important; padding: 3px !important; box-sizing: border-box; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; object-fit: cover; }
 html body.fs.fs-basic .msg-contact-name > span { font-size: 0 !important; width: 20px; height: 20px; padding: 0 !important; display: inline-block; vertical-align: middle; background: var(--fs-unread-dot) center / contain no-repeat !important; border-radius: 0 !important; }
 html body.fs.fs-basic :is(.msg-contact-preview, .msg-contact-time, .profile-card-bio) { color: var(--bs-soft) !important; }
@@ -7639,7 +7639,7 @@ html body.fs.fs-basic #groupsSections .group-card-body h4 { margin: 0; font-size
 html body.fs.fs-basic #groupsSections .group-card-body p:not(.group-members) { display: none; }
 html body.fs.fs-basic #groupsSections .group-members { color: var(--bs-soft) !important; font-size: 15px !important; }
 html body.fs.fs-basic #groupsSections .group-card-actions { padding: 0 !important; }
-html body.fs.fs-basic #groupsSections .group-card-actions .btn { min-width: 84px; height: 40px; padding: 0 12px !important; white-space: nowrap; border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; font: 700 16px var(--fs-font) !important; }
+html body.fs.fs-basic #groupsSections .group-card-actions .btn { min-width: 84px; height: 40px; padding: 0 12px !important; white-space: nowrap;   border-radius: 0 !important; box-shadow: none !important; background: none !important; border-image: var(--fs-join-btn) 65 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: var(--bs-title) !important; font: 700 16px var(--fs-font) !important; }
 html body.fs.fs-basic :is(#page-profiles, #page-search) .profile-card-item { display: grid !important; grid-template-columns: 58px minmax(0, 1fr) auto; column-gap: 12px; align-items: center; text-align: left; min-width: 0 !important; max-width: none !important; width: 100%; transform: none !important; padding: 0 2px !important; }
 html body.fs.fs-basic :is(#page-profiles, #page-search) .profile-card-item > * { grid-column: 2; margin: 0 !important; min-width: 0; text-align: left !important; }
 html body.fs.fs-basic :is(#page-profiles, #page-search) .profile-card-avatar { grid-column: 1; grid-row: 1 / span 3; width: 58px !important; height: 58px !important; }
@@ -7662,11 +7662,11 @@ html body.fs.fs-basic .fsk-thumb { margin: 2% 2.5% 0 2.3% !important; aspect-rat
 html body.fs.fs-basic .fsk-thumb img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
 html body.fs.fs-basic .fsk-body { padding: 4px 12px 0 !important; text-align: left !important; background: none !important; }
 html body.fs.fs-basic .fsk-name { font-size: 18px !important; margin: 0 !important; text-align: left !important; }
-html body.fs.fs-basic .fsk-badge { position: absolute; top: 4px; right: 4px; width: auto !important; height: 24px !important; padding: 0 12px !important; border-radius: 0 !important; background: var(--fs-equipped-tag) center / 100% 100% no-repeat !important; color: #fff !important; font: 700 13px var(--fs-font) !important; display: inline-flex !important; align-items: center; }
+html body.fs.fs-basic .fsk-badge { position: absolute; top: 4px; right: 4px; width: auto !important; height: 24px !important; padding: 0 12px !important; border-radius: 0 !important; background: none !important; border-image: var(--fs-equipped-tag) 55 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: #fff !important; font: 700 13px var(--fs-font) !important; display: inline-flex !important; align-items: center; }
 html body.fs.fs-basic .fsk-badge i { display: none !important; }
 html body.fs.fs-basic .fsk-badge::after { content: "Equipped"; }
-html body.fs.fs-basic .fsk-body .btn { width: 100% !important; height: 38px; margin: 6px 0 0 !important; padding: 0 10px !important; display: flex !important; align-items: center; justify-content: center; gap: 5px; border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; font: 700 16px var(--fs-font) !important; }
-html body.fs.fs-basic .fsk-body .btn.fsk-equipped { background-image: var(--fs-chip-active) !important; color: #fff !important; opacity: 1 !important; }
+html body.fs.fs-basic .fsk-body .btn { width: 100% !important; height: 38px; margin: 6px 0 0 !important; padding: 0 10px !important; display: flex !important; align-items: center; justify-content: center; gap: 5px;   border-radius: 0 !important; box-shadow: none !important; background: none !important; border-image: var(--fs-join-btn) 65 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: var(--bs-title) !important; font: 700 16px var(--fs-font) !important; }
+html body.fs.fs-basic .fsk-body .btn.fsk-equipped { border-image-source: var(--fs-chip-active) !important; color: #fff !important; opacity: 1 !important; }
 html body.fs.fs-basic :is(.fsk-soon, .fsk-takeoff) { color: var(--bs-soft) !important; }
 html body.fs.fs-basic #msgChat { background: var(--fs-background) center / cover no-repeat !important; }
 html body.fs.fs-basic #msgChat .msg-chat-header { background: none !important; border-bottom: 0 !important; position: relative; }
@@ -7678,13 +7678,13 @@ html body.fs.fs-basic .msg-bubble { border: 16px solid transparent !important; b
 html body.fs.fs-basic .msg-bubble.sent { border-image-source: var(--fs-bubble-out) !important; color: #fff !important; }
 html body.fs.fs-basic #msgChat .msg-chat-messages { overflow-x: hidden !important; touch-action: pan-y; }
 html body.fs.fs-basic #msgChat .msg-chat-messages::after { content: ""; display: block; flex: 0 0 auto; height: calc(100vw * 500 / 1290 - 30px); }
-html body.fs.fs-basic #msgChat .msg-chat-input { position: relative !important; z-index: 3; background: var(--fs-input-bar) center / 100% 100% no-repeat !important; border-top: 0 !important; justify-content: center !important; align-items: center !important; gap: 6px !important; padding-left: 10px !important; padding-right: 10px !important; }
+html body.fs.fs-basic #msgChat .msg-chat-input { position: relative !important; z-index: 3; background: none !important; border-image: var(--fs-input-bar) 60 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; border-top: 0 !important; justify-content: center !important; align-items: center !important; gap: 6px !important; padding-left: 10px !important; padding-right: 10px !important; }
 html body.fs.fs-basic #msgChat .msg-media-btn { display: flex !important; align-items: center; justify-content: center; width: 36px !important; height: 36px !important; padding: 0 !important; flex: 0 0 36px; background: none !important; }
 html body.fs.fs-basic #msgChat .msg-media-btn i { font-size: 0 !important; display: block !important; width: 26px; height: 26px; background: center / contain no-repeat !important; }
 html body.fs.fs-basic #msgChat #msgImgBtn i { background-image: var(--fs-round-btn) !important; width: 34px; height: 34px; }
 html body.fs.fs-basic #msgChat #msgGifBtn i { background-image: var(--fs-icon-gif) !important; }
 html body.fs.fs-basic #msgChat #msgVoiceBtn i { background-image: var(--fs-icon-emoji) !important; }
-html body.fs.fs-basic #msgChat #msgInput { flex: 1 1 auto; min-width: 0; margin: 0 !important; border: 0 !important; border-radius: 0 !important; background: var(--fs-field) center / 100% 100% no-repeat !important; padding: 11px 16px !important; color: var(--bs-ink) !important; font: 500 16px var(--fs-font) !important; }
+html body.fs.fs-basic #msgChat #msgInput { flex: 1 1 auto; min-width: 0; margin: 0 !important;  border-radius: 0 !important; background: none !important; border-image: var(--fs-field) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; padding: 11px 16px !important; color: var(--bs-ink) !important; font: 500 16px var(--fs-font) !important; }
 html body.fs.fs-basic #msgChat #sendMsgBtn { flex: 0 0 44px; width: 44px; height: 44px; padding: 0 !important; border: 0 !important; background: var(--fs-send-btn) center / contain no-repeat !important; }
 html body.fs.fs-basic #msgChat #sendMsgBtn i { opacity: 0 !important; }
 @media (max-width: 768px) {
@@ -7699,7 +7699,7 @@ html body.fs.fs-basic .featured-skin-banner :is(h4, h5, .featured-timer, .featur
 html body.fs.fs-basic .featured-skin-banner h5 { font-size: 22px !important; font-weight: 700 !important; margin: 0 !important; }
 html body.fs.fs-basic .featured-skin-banner p { color: var(--bs-soft) !important; }
 html body.fs.fs-basic .featured-skin-banner .featured-preview { border-radius: 14px !important; }
-html body.fs.fs-basic .featured-skin-banner .btn { border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important; min-width: 84px; height: 40px; background: var(--fs-follow-btn) center / 100% 100% no-repeat !important; color: #fff !important; font: 700 16px var(--fs-font) !important; }
+html body.fs.fs-basic .featured-skin-banner .btn {   border-radius: 0 !important; box-shadow: none !important; min-width: 84px; height: 40px; background: none !important; border-image: var(--fs-follow-btn) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: #fff !important; font: 700 16px var(--fs-font) !important; }
 html body.fs.fs-basic #openPostModal { margin: 6px 0 !important; padding: 0 !important; box-sizing: border-box; width: 100% !important; }
 html body.fs.fs-basic .post-create-avatar { flex: 0 0 46px; }
 html body.fs.fs-basic .post-input-fake { min-width: 0; }
@@ -7738,7 +7738,7 @@ html body.fs.fs-basic .fs-tl-slot-2 { z-index: 3 !important; }
   html body.fs.fs-basic .nav-center { padding-top: 16px !important; padding-bottom: calc(env(safe-area-inset-bottom, 0px) - 10px) !important; align-content: center; }
 }
 @media (max-width: 768px) {
-  html body.fs.fs-basic .navbar { background: var(--fs-top-bar) center bottom / 100% 100% no-repeat, linear-gradient(var(--bs-barfill, #f4ecfd), var(--bs-barfill, #f4ecfd)) top / 100% calc(100% - 6px) no-repeat !important; }
+  html body.fs.fs-basic .navbar { background: linear-gradient(var(--bs-barfill, #f4ecfd), var(--bs-barfill, #f4ecfd)) top / 100% calc(100% - 6px) no-repeat !important; border-image: var(--fs-top-bar) 0 140 120 140 fill / 0 34px 30px 34px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; }
 }
 html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs, #profilesTabs, #searchTabs) .search-tab.active,
 html body.fs.fs-basic .fsk-filter.active { color: var(--bs-deep) !important; font-weight: 700 !important; }
@@ -7769,7 +7769,7 @@ html body.fs.fs-basic .quest-item[data-fs-started="1"]:not([data-fs-q="100"]):nt
 html body.fs.fs-basic .quest-item[data-fs-started="1"]:not([data-fs-q="100"]):nth-child(3) .quest-icon { background-image: var(--fs-cup-50) !important; }
 html body.fs.fs-basic .quest-item[data-fs-started="1"]:not([data-fs-q="100"]):nth-child(4) .quest-icon { background-image: var(--fs-cup-50) !important; }
 @media (max-width: 768px) {
-  html body.fs.fs-basic .navbar { height: calc(100vw * 520 / 1290) !important; min-height: calc(env(safe-area-inset-top, 0px) + 96px) !important; padding: calc(100vw * 262 / 1290) 0 calc(100vw * 78 / 1290) !important; background: var(--fs-top-bar) center top / 100% 100% no-repeat !important; }
+  html body.fs.fs-basic .navbar { height: calc(100vw * 520 / 1290) !important; min-height: calc(env(safe-area-inset-top, 0px) + 96px) !important; padding: calc(100vw * 262 / 1290) 0 calc(100vw * 78 / 1290) !important; background: none !important; border-image: var(--fs-top-bar) 0 140 120 140 fill / 0 34px 30px 34px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; }
   html body.fs.fs-basic .nav-container { height: 100% !important; }
   html body.fs.fs-basic .page.active { padding-top: calc(100vw * 500 / 1290 + 4px) !important; }
   html body.fs.fs-basic #timelineCover { margin-top: -10px !important; }
@@ -7789,7 +7789,7 @@ html body.fs.fs-basic .quest-panel-header h4 { font-size: 21px !important; trans
 html body.fs.fs-basic .quest-panel { border-width: 54px 46px 40px !important; border-image-slice: 160 150 110 150 fill !important; padding: 6px 4px 0 !important; }
 html body.fs.fs-basic .quest-panel-header { top: -50px !important; height: 30px !important; }
 html body.fs.fs-basic .quest-panel-header h4 { transform: none !important; font-size: 20px !important; }
-html body.fs.fs-basic .quest-panel { border: 0 !important; border-image: none !important; background: var(--fs-quests-panel) center / 100% 100% no-repeat !important; aspect-ratio: 1290 / 900; height: auto !important; box-sizing: border-box; margin: 0 -6px !important; padding: 14% 13% 14% 13% !important; align-content: start; row-gap: 2px !important; column-gap: 6px !important; }
+html body.fs.fs-basic .quest-panel {   background: none !important; border-image: var(--fs-quests-panel) 100 fill / 30px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; aspect-ratio: 1290 / 900; height: auto !important; box-sizing: border-box; margin: 0 -6px !important; padding: 14% 13% 14% 13% !important; align-content: start; row-gap: 2px !important; column-gap: 6px !important; }
 html body.fs.fs-basic .quest-panel-header { position: static !important; height: auto !important; top: auto !important; margin: 0 0 2px !important; }
 html body.fs.fs-basic .quest-panel-header h4 { font-size: 21px !important; }
 html body.fs.fs-basic .quest-item { border: 0 !important; border-image: none !important; background: none !important; padding: 0 !important; }
@@ -7859,7 +7859,7 @@ html body.fs.fs-basic :is(#profilesTabs, #searchTabs) .search-tab.active { borde
 html body.fs.fs-basic :is(#page-profiles, #page-search) :is(h3, .section-title) { font-size: 17px !important; }
 html body.fs.fs-basic :is(.section-count, .connections-count, .badge-count) { background: rgba(255,255,255,.18) !important; border: 1px solid rgba(201,163,92,.7) !important; color: var(--bs-title) !important; }
 html body.fs.fs-basic .fsk-body .btn.fsk-equipped { display: none !important; }
-html body.fs.fs-basic .fsk-body .fsk-takeoff { width: 100% !important; height: 40px !important; margin: 6px 0 0 !important; padding: 0 10px !important; display: flex !important; align-items: center; justify-content: center; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; background: var(--fs-join-btn) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; font: 700 15px var(--fs-font) !important; text-decoration: none !important; }
+html body.fs.fs-basic .fsk-body .fsk-takeoff { width: 100% !important; height: 40px !important; margin: 6px 0 0 !important; padding: 0 10px !important; display: flex !important; align-items: center; justify-content: center;  border-radius: 0 !important; box-shadow: none !important; background: none !important; border-image: var(--fs-join-btn) 65 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: var(--bs-title) !important; font: 700 15px var(--fs-font) !important; text-decoration: none !important; }
 html body.fs.fs-basic #page-messages .msg-search { margin: 0 7px 12px !important; }
 html body.fs.fs-basic #page-search .search-tabs { display: flex !important; justify-content: center; gap: 8px; border: 0 !important; background: none !important; padding: 2px 0 !important; }
 html body.fs.fs-basic #page-search .search-tab { flex: 0 0 auto; background: none !important; border: solid transparent !important; border-width: 10px 18px !important; border-image: var(--fs-chip) 55 85 fill / 10px 18px stretch !important; border-radius: 0 !important; box-shadow: none !important; padding: 2px 6px !important; font-size: 15px !important; min-height: 0 !important; color: var(--bs-title) !important; }
@@ -7953,12 +7953,12 @@ html body.fs.fs-basic .quest-item[data-fs-q="50"] .quest-icon { background-image
 html body.fs.fs-basic .quest-item[data-fs-q="100"] .quest-icon { background-image: var(--fs-cup-100) !important; }
 html body.fs.fs-basic .quest-info { align-items: stretch !important; min-width: 0; }
 html body.fs.fs-basic .quest-info p { font-size: 16px !important; text-align: left; }
-html body.fs.fs-basic .quest-bar { display: block !important; height: 9px !important; margin-top: 5px; border-radius: 0 !important; background: var(--fs-goal-track) center / 100% 100% no-repeat !important; overflow: hidden; }
+html body.fs.fs-basic .quest-bar { display: block !important; height: 9px !important; margin-top: 5px; border-radius: 0 !important; background: none !important; border-image: var(--fs-goal-track) 25 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; overflow: hidden; }
 html body.fs.fs-basic .quest-bar-fill { height: 100% !important; border-radius: 0 !important; background: var(--fs-goal-fill) left center / auto 100% no-repeat !important; }
 html body.fs.fs-basic .quest-progress { position: absolute; left: 6px; top: 50%; width: 54px; transform: translateY(-50%); text-align: center; font: 700 15px var(--fs-title-font) !important; letter-spacing: -.02em; white-space: nowrap; word-spacing: -3px; }
 html body.fs.fs-basic :is(.quest-reward, .quest-check) { font-size: 16px !important; }
-html body.fs.fs-basic #feedTabs .search-tab { background: var(--fs-tab) center / 100% 100% no-repeat !important; padding: 8px 4px !important; font: 600 14px var(--fs-title-font) !important; text-transform: uppercase; }
-html body.fs.fs-basic #feedTabs .search-tab.active { background: var(--fs-tab-active) center / 100% 100% no-repeat !important; color: #fff !important; text-shadow: 0 1px 2px rgba(90, 58, 14, .6); }
+html body.fs.fs-basic #feedTabs .search-tab { background: none !important; border-image: var(--fs-tab) 60 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; padding: 8px 4px !important; font: 600 14px var(--fs-title-font) !important; text-transform: uppercase; }
+html body.fs.fs-basic #feedTabs .search-tab.active { background: none !important; border-image: var(--fs-tab-active) 60 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: #fff !important; text-shadow: 0 1px 2px rgba(90, 58, 14, .6); }
 html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs, #profilesTabs, #searchTabs) .search-tab, html body.fs.fs-basic .fsk-filter { font-family: var(--fs-title-font) !important; text-transform: uppercase; font-size: 13px !important; }
 html body.fs.fs-basic :is(.search-tab.active, .fsk-filter.active) { text-shadow: 0 1px 2px rgba(90, 58, 14, .6); }
 html body.fs.fs-basic .feed-post.feed-post.feed-post { border-width: 30px !important; border-image-source: var(--fs-post-card) !important; border-image-slice: 180 fill !important; border-image-width: 54px !important; border-image-outset: 10px !important; border-image-repeat: stretch !important; margin: 14px 10px 30px !important; }
@@ -8016,8 +8016,8 @@ html body.fs.fs-basic .fsk-card { background: none !important; }
 html body.fs.fs-basic .fsk-body { position: absolute !important; inset: 0; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; padding: 7% 6% 4% !important; pointer-events: none; }
 html body.fs.fs-basic .fsk-body > * { pointer-events: auto; }
 html body.fs.fs-basic .fsk-name { text-align: center !important; text-transform: uppercase; font-size: 17px !important; line-height: 1.05; color: #fff8e6 !important; text-shadow: 0 1px 2px rgba(60, 35, 5, .9), 0 0 8px rgba(60, 35, 5, .6); }
-html body.fs.fs-basic .fsk-body .btn { height: 34px !important; width: 82% !important; margin: 0 auto !important; background-image: var(--fs-price-pill) !important; font-size: 15px !important; }
-html body.fs.fs-basic .fsk-body .btn.fsk-equipped { background-image: var(--fs-equipped-tag) !important; color: #fff !important; text-transform: uppercase; }
+html body.fs.fs-basic .fsk-body .btn { height: 34px !important; width: 82% !important; margin: 0 auto !important; border-image-source: var(--fs-price-pill) !important; font-size: 15px !important; }
+html body.fs.fs-basic .fsk-body .btn.fsk-equipped { border-image-source: var(--fs-equipped-tag) !important; color: #fff !important; text-transform: uppercase; }
 html body.fs.fs-basic .fsk-badge { top: 8%; right: 7%; z-index: 3; text-transform: uppercase; }
 html body.fs.fs-basic .fsk-card.fsk-card { border: 0 !important; border-image: none !important; box-shadow: none !important; }
 html body.fs.fs-basic .fsk-name { align-self: center; color: var(--bs-title) !important; text-shadow: none !important; font-size: 15px !important; padding: 3px 12px !important; margin-top: 4% !important; background: rgba(255, 248, 232, .88) !important; border-radius: 12px; box-shadow: 0 0 0 1px rgba(201, 150, 46, .6); max-width: 92%; }
@@ -8119,7 +8119,7 @@ html body.fs.fs-basic .nav-logo::first-letter { color: inherit; }
 
 /* top bar on EVERY page (concept): avatar · #blipvibe · search · bell · music · coin pill · barista cup · season drink */
 @media (max-width: 768px) {
-  html body.fs.fs-basic .navbar { background: var(--fs-top-bar) center bottom / 100% 100% no-repeat !important; height: calc(62px + env(safe-area-inset-top, 0px)) !important; padding: env(safe-area-inset-top, 0px) 0 8px !important; }
+  html body.fs.fs-basic .navbar { background: none !important; border-image: var(--fs-top-bar) 0 140 120 140 fill / 0 34px 30px 34px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; height: calc(62px + env(safe-area-inset-top, 0px)) !important; padding: env(safe-area-inset-top, 0px) 0 8px !important; }
   html body.fs.fs-basic .page.active { padding-top: calc(66px + env(safe-area-inset-top, 0px)) !important; }
   html body.fs.fs-basic .nav-container { grid-template-columns: 40px minmax(0, 1fr) 30px 30px 30px auto 34px 34px !important; column-gap: 3px !important; padding: 0 8px !important; }
   html body.fs.fs-basic .navbar .nav-avatar { width: 38px !important; height: 38px !important; padding: 3px !important; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; }
@@ -8167,8 +8167,11 @@ html body.fs.fs-basic :is(.fs-barista-btn, .fs-bs-season):active i { transform: 
 .fs-barista-menu .fs-bm-list button em { flex: 1 1 auto; height: 6px; align-self: center; margin-top: 6px; background: var(--fs-menu-dots) left center / auto 100% repeat-x; opacity: .8; }
 .fs-barista-menu .fs-bm-list button i { flex: 0 0 26px; height: 26px; background: center / contain no-repeat; }
 .fs-barista-menu .fs-bm-list button:active { transform: scale(.97); }
-body[data-fs-variant="pumpkin"] .fs-barista-menu { color: #f7e9d6; }
-body[data-fs-variant="pumpkin"] .fs-barista-menu .fs-bm-head b { color: #e8c48a; }
+/* v3: the Pumpkin barista card is cream now (was dark kraft) — espresso ink like the concept */
+body[data-fs-variant="pumpkin"] .fs-barista-menu { color: #4a3022; }
+body[data-fs-variant="pumpkin"] .fs-barista-menu .fs-bm-head b { color: #4a3022; }
+.fs-barista-menu .fs-bm-head b { color: var(--bs-title, #4a3426) !important; font-size: 26px !important; }
+.fs-barista-menu .fs-bm-list button { font-size: 17px !important; }
 
 /* Latte Break + Last Call overlays */
 .fs-latte, .fs-lastcall { position: fixed; inset: 0; z-index: 2147482000; background: #efe4d8; opacity: 0; transition: opacity .45s ease; }
@@ -8206,13 +8209,13 @@ html body.fs.fs-basic .page-header .page-search { order: 5 !important; flex: 1 1
 html body.fs.fs-basic .page-header .btn:not(.page-search) { order: 6 !important; flex: 0 0 44px !important; width: 44px !important; height: 44px !important; margin: 6px 0 0 !important; position: static !important;
   background: var(--fs-plus-btn) center / contain no-repeat !important; border: 0 !important; box-shadow: none !important; transform: none !important; }
 html body.fs.fs-basic .page-header .btn:not(.page-search) i { display: none !important; }
-html body.fs.fs-basic :is(.msg-search, .page-search, .comment-input) { background: var(--fs-field) center / 100% 100% no-repeat !important; min-height: 46px !important; }
+html body.fs.fs-basic :is(.msg-search, .page-search, .comment-input) { background: none !important; border-image: var(--fs-field) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; min-height: 46px !important; }
 html body.fs.fs-basic :is(.msg-search, .page-search) input, html body.fs.fs-basic input, html body.fs.fs-basic textarea { font-size: 16px !important; }
 /* groups: rounded-square ceramic thumbnails (concept), join = filled pill, joined = plain linen pill */
 html body.fs.fs-basic #groupsSections .group-card-banner { border-radius: 14px !important; padding: 0 !important; background: none !important; position: relative; overflow: visible !important; }
 html body.fs.fs-basic #groupsSections .group-card-banner img { border-radius: 12px !important; }
 html body.fs.fs-basic #groupsSections .group-card { border-image: var(--fs-list-row) 70 fill / 18px stretch !important; border-width: 18px !important; }
-html body.fs.fs-basic :is(#groupsSections .group-card-actions .btn, .join-group-btn, .suggestion-follow-btn, .follow-btn, .profile-follow-btn) { background-image: var(--fs-join-btn) !important; color: var(--bs-on-fill) !important; font: 700 15px var(--fs-font) !important; }
+html body.fs.fs-basic :is(#groupsSections .group-card-actions .btn, .join-group-btn, .suggestion-follow-btn, .follow-btn, .profile-follow-btn) { border-image-source: var(--fs-join-btn) !important; color: var(--bs-on-fill) !important; font: 700 15px var(--fs-font) !important; }
 html body.fs.fs-basic :is(#groupsSections .group-card-actions .btn, .profile-follow-btn, .follow-btn):is(.joined, .following, .btn-joined, .btn-outline, [data-joined="1"]) { background-image: var(--fs-ghost-btn) !important; color: var(--bs-title) !important; }
 html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #gvModeTabs) .search-tab, html body.fs.fs-basic .fsk-filter { font: 600 14px var(--fs-font) !important; text-transform: lowercase !important; color: var(--bs-title) !important; padding: 7px 16px !important; }
 @media (max-width: 768px) {
@@ -8236,8 +8239,8 @@ html body.fs.fs-basic .fsk-thumb { left: 6.7% !important; top: 5.4% !important; 
 html body.fs.fs-basic .fsk-card::after { background: var(--fs-skin-card) center / 100% 100% no-repeat !important; }
 html body.fs.fs-basic .fsk-body { padding: 0 8% 7% !important; justify-content: flex-end !important; gap: 4px; }
 html body.fs.fs-basic .fsk-name { align-self: flex-start !important; text-align: left !important; background: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; font: 700 16px var(--fs-title-font) !important; color: var(--bs-title) !important; text-transform: lowercase !important; }
-html body.fs.fs-basic .fsk-body .btn { width: auto !important; min-width: 70%; height: 30px !important; align-self: center; margin: 0 !important; background-image: var(--fs-price-pill) !important; color: var(--bs-title) !important; font: 700 14px var(--fs-font) !important; }
-html body.fs.fs-basic .fsk-body .btn.fsk-equipped { background-image: var(--fs-equipped-tag) !important; color: #fff !important; text-transform: lowercase !important; }
+html body.fs.fs-basic .fsk-body .btn { width: auto !important; min-width: 70%; height: 30px !important; align-self: center; margin: 0 !important; border-image-source: var(--fs-price-pill) !important; color: var(--bs-title) !important; font: 700 14px var(--fs-font) !important; }
+html body.fs.fs-basic .fsk-body .btn.fsk-equipped { border-image-source: var(--fs-equipped-tag) !important; color: #fff !important; text-transform: lowercase !important; }
 html body.fs.fs-basic .fsk-badge { top: 7% !important; right: 9% !important; height: 22px !important; font-size: 12px !important; }
 html body.fs.fs-basic .fsk-body { inset: 68% 0 0 0 !important; padding: 0 8% 6% !important; justify-content: space-between !important; }
 html body.fs.fs-basic .fsk-name { font-size: 15px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
@@ -8258,8 +8261,8 @@ html body.fs.fs-basic #gvProfileCard .profile-avatar-wrap::after { left: -21% !i
 html body.fs.fs-basic #gvProfileCard :is(.fs-namecard, .profile-stats) { width: auto !important; justify-self: auto; padding: 0 !important; margin: 4px 0 !important; }
 html body.fs.fs-basic #gvProfileCard .profile-name { font-size: 22px !important; }
 html body.fs.fs-basic #gvProfileCard .profile-stats { flex-wrap: wrap; gap: 4px 16px !important; }
-html body.fs.fs-basic #gvProfileCard .btn { background: var(--fs-action-btn) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; height: 40px; font-size: 15px !important; }
-html body.fs.fs-basic #gvProfileCard .btn:is(.btn-primary, .join-group-btn) { background-image: var(--fs-join-btn) !important; color: var(--bs-on-fill) !important; }
+html body.fs.fs-basic #gvProfileCard .btn { background: none !important; border-image: var(--fs-action-btn) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: var(--bs-title) !important; height: 40px; font-size: 15px !important; }
+html body.fs.fs-basic #gvProfileCard .btn:is(.btn-primary, .join-group-btn) { border-image-source: var(--fs-join-btn) !important; color: var(--bs-on-fill) !important; }
 html body.fs.fs-basic :is(.modal-header, .modal-footer, .modal-content hr, .modal-content .divider) { border-color: rgba(74, 52, 38, .14) !important; }
 html body.fs.fs-basic .modal-content :is(.stat-divider, .modal-divider) { background: rgba(74, 52, 38, .14) !important; }
 html body.fs.fs-basic :is(.quest-reward, .quest-check) { justify-content: center !important; text-align: center !important; padding: 5px 8px !important; }
@@ -8300,7 +8303,7 @@ html body.fs.fs-basic :is(h1, h2, h3, h4, h5, .profile-name, .post-username, .ca
 
 /* ---------- top bar: frosted glass strip, every button an app-icon tile ---------- */
 @media (max-width: 768px) {
-  html body.fs.fs-basic .navbar { background: var(--fs-top-bar) center bottom / 100% 100% no-repeat !important; border: 0 !important; border-image: none !important; box-shadow: none !important;
+  html body.fs.fs-basic .navbar { background: none !important; border-image: var(--fs-top-bar) 0 140 120 140 fill / 0 34px 30px 34px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important;   box-shadow: none !important;
     height: calc(54px + env(safe-area-inset-top, 0px)) !important; padding: env(safe-area-inset-top, 0px) 0 6px !important; box-sizing: border-box !important; min-height: 0 !important; max-height: none !important; }
   html body.fs.fs-basic .navbar .nav-container { height: 48px !important; }
   html body.fs.fs-basic .page.active { padding-top: calc(62px + env(safe-area-inset-top, 0px)) !important; padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px)) !important; }
@@ -8312,8 +8315,8 @@ html body.fs.fs-basic :is(h1, h2, h3, h4, h5, .profile-name, .post-username, .ca
   html body.fs.fs-basic .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn) > i { width: 19px !important; height: 19px !important; }
   html body.fs.fs-basic .navbar .mobile-notif-btn .notif-badge { top: -5px !important; right: -5px !important; min-width: 17px !important; height: 17px !important; font: 700 10px/17px var(--fs-font) !important;
     background: var(--fs-badge-count) center / 100% 100% no-repeat !important; color: #fff !important; padding: 0 3px !important; box-sizing: border-box; }
-  html body.fs.fs-basic .navbar .nav-coins { height: 31px !important; padding: 0 9px 0 6px !important; gap: 4px !important; border: 0 !important; border-image: none !important;
-    background: var(--fs-pill) center / 100% 100% no-repeat !important; font: 700 13px var(--fs-font) !important; box-shadow: none !important; }
+  html body.fs.fs-basic .navbar .nav-coins { height: 31px !important; padding: 0 9px 0 6px !important; gap: 4px !important;  
+    background: none !important; border-image: var(--fs-pill) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; font: 700 13px var(--fs-font) !important; box-shadow: none !important; }
   html body.fs.fs-basic .navbar .nav-coins > i { width: 16px !important; height: 16px !important; }
 }
 html body.fs.fs-basic :is(.fs-barista-btn, .fs-bs-season) { width: 31px; height: 31px; background: var(--fs-tile) center / 100% 100% no-repeat; }
@@ -8419,7 +8422,7 @@ html body.fs.fs-basic :is(#profileCard, #pvProfileCard) .profile-about { display
 html body.fs.fs-basic :is(#profileCard, #pvProfileCard) .profile-stats { grid-column: 2 !important; grid-row: 2 !important; display: flex !important; flex-wrap: wrap; gap: 6px !important;
   justify-content: flex-start !important; width: auto !important; padding: 4px 0 0 !important; margin: 0 !important; background: none !important; border: 0 !important; aspect-ratio: auto !important; }
 html body.fs.fs-basic :is(#profileCard, #pvProfileCard) .profile-stats > .stat { flex: 0 0 auto !important; display: inline-flex !important; flex-direction: row !important; align-items: baseline; gap: 4px !important;
-  padding: 6px 11px !important; border: 0 !important; border-image: none !important; background: var(--fs-pill) center / 100% 100% no-repeat !important; text-align: left; }
+  padding: 6px 11px !important;   background: none !important; border-image: var(--fs-pill) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; text-align: left; }
 html body.fs.fs-basic :is(#profileCard, #pvProfileCard) .profile-stats > .stat::before, html body.fs.fs-basic :is(#profileCard, #pvProfileCard) .profile-stats > .stat::after { display: none !important; content: none !important; }
 html body.fs.fs-basic :is(#profileCard, #pvProfileCard) .profile-stats > .stat + .stat { border-left: 0 !important; padding-left: 11px !important; }
 html body.fs.fs-basic :is(#profileCard, #pvProfileCard) .stat-count { font: 700 14px var(--fs-font) !important; line-height: 1 !important; }
@@ -8427,7 +8430,7 @@ html body.fs.fs-basic :is(#profileCard, #pvProfileCard) .stat-label { font: 600 
 /* Home keeps View Profile + edit (never drop a feature): a small glass pill at the top-right of the cover */
 html body.fs.fs-basic #profileCard .profile-links { position: absolute !important; top: -88px !important; right: 4px !important; grid-column: auto !important; z-index: 4 !important; display: flex !important;
   align-items: center; gap: 8px !important; width: auto !important; min-width: 0 !important; height: 30px !important; padding: 0 12px !important; margin: 0 !important;
-  border: 0 !important; border-image: none !important; background: var(--fs-pill) center / 100% 100% no-repeat !important; }
+    background: none !important; border-image: var(--fs-pill) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; }
 html body.fs.fs-basic #profileCard :is(.view-profile-link, .edit-profile-btn) { font: 700 13px var(--fs-font) !important; color: var(--bs-title) !important; text-transform: lowercase !important; }
 html body.fs.fs-basic #profileCard .edit-profile-btn i { display: inline-block !important; font-size: 0 !important; width: 14px; height: 14px; background: var(--fs-icon-edit) center / contain no-repeat; vertical-align: -2px; }
 html body.fs.fs-basic:has(#timelineCover .fs-tl-own) #profileCard .profile-links { right: 46px !important; }
@@ -8439,7 +8442,7 @@ html body.fs.fs-basic .coin-goal-bar p span { font: 700 24px var(--fs-title-font
   background: var(--fs-coin-stack) left center / 28px no-repeat; white-space: nowrap; }
 html body.fs.fs-basic .coin-goal-bar p strong { font: 600 13px var(--fs-font) !important; color: var(--bs-soft) !important; text-transform: lowercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 html body.fs.fs-basic .coin-goal-bar p strong::before { content: "coin goal \00b7  "; }
-html body.fs.fs-basic .coin-goal-track { height: 9px !important; border-radius: 0 !important; border: 0 !important; background: var(--fs-goal-track) center / 100% 100% no-repeat !important; overflow: hidden; box-shadow: none !important; }
+html body.fs.fs-basic .coin-goal-track { height: 9px !important; border-radius: 0 !important;  background: none !important; border-image: var(--fs-goal-track) 25 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; overflow: hidden; box-shadow: none !important; }
 html body.fs.fs-basic .coin-goal-fill { height: 100% !important; border-radius: 9px !important; background: var(--bs-fill) !important; box-shadow: none !important; }
 
 /* featured skin widget: the skin's picture as a rounded tile, name, price chip */
@@ -8454,8 +8457,8 @@ html body.fs.fs-basic .featured-skin-banner .featured-preview { grid-column: 1 !
 html body.fs.fs-basic .featured-skin-banner .featured-info { grid-column: 2 !important; grid-row: 2 !important; min-width: 0; }
 html body.fs.fs-basic .featured-skin-banner .featured-info h5 { font: 700 15px var(--fs-title-font) !important; margin: 0 !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: lowercase; }
 html body.fs.fs-basic .featured-skin-banner .featured-info p { font: italic 500 13px/1.25 'Lora', serif !important; margin: 0 !important; color: var(--bs-soft) !important; white-space: normal !important; overflow: hidden; display: -webkit-box !important; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-html body.fs.fs-basic .featured-skin-banner .btn { grid-column: 2 !important; grid-row: 3 !important; justify-self: start !important; height: 28px !important; padding: 0 12px !important; margin: 3px 0 0 !important; border: 0 !important;
-  border-radius: 0 !important; box-shadow: none !important; background: var(--fs-pill) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; font: 700 13px var(--fs-font) !important; text-transform: lowercase !important; }
+html body.fs.fs-basic .featured-skin-banner .btn { grid-column: 2 !important; grid-row: 3 !important; justify-self: start !important; height: 28px !important; padding: 0 12px !important; margin: 3px 0 0 !important; 
+  border-radius: 0 !important; box-shadow: none !important; background: none !important; border-image: var(--fs-pill) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: var(--bs-title) !important; font: 700 13px var(--fs-font) !important; text-transform: lowercase !important; }
 
 /* daily routine (quests) = a to-do widget: tick · label over a slim bar · 3/5 · latte cup · reward chip */
 html body.fs.fs-basic .quest-panel { padding: 4px 6px 2px !important; margin: 0 !important; gap: 0 !important; display: block; }
@@ -8478,7 +8481,7 @@ html body.fs.fs-basic .quest-item > .quest-info { grid-column: 2 !important; gri
 html body.fs.fs-basic .quest-info p { grid-column: 1 / -1 !important; grid-row: 1 !important; font: 600 15px var(--fs-font) !important; color: var(--bs-title) !important; margin: 0 !important; text-align: left !important;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: lowercase; }
 html body.fs.fs-basic .quest-info .quest-bar { display: block !important; grid-column: 1 !important; grid-row: 2 !important; width: 100%; height: 6px !important; margin: 0 !important; border-radius: 6px !important;
-  background: var(--fs-goal-track) center / 100% 100% no-repeat !important; overflow: hidden; border: 0 !important; }
+  background: none !important; border-image: var(--fs-goal-track) 25 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; overflow: hidden;  }
 html body.fs.fs-basic .quest-info .quest-bar-fill { background: var(--bs-fill) !important; border-radius: 6px !important; }
 html body.fs.fs-basic .quest-info .quest-progress { grid-column: 2 !important; grid-row: 2 !important; position: static !important; transform: none !important; width: auto !important;
   font: 600 12px var(--fs-font) !important; color: var(--bs-soft) !important; text-align: right; letter-spacing: 0 !important; }
@@ -8488,31 +8491,31 @@ html body.fs.fs-basic .quest-item[data-fs-q="50"]::after { background-image: var
 html body.fs.fs-basic .quest-item[data-fs-q="100"]::after { background-image: var(--fs-cup-100); }
 html body.fs.fs-basic .quest-item > :is(.quest-reward, .quest-check) { grid-column: 4 !important; grid-row: 1 !important; justify-self: end !important; display: inline-flex !important; align-items: center;
   justify-content: center !important; min-width: 46px !important; height: 28px; padding: 0 8px !important; box-sizing: border-box; font: 700 13px var(--fs-font) !important; color: var(--bs-title) !important;
-  background: var(--fs-pill) center / 100% 100% no-repeat !important; }
+  background: none !important; border-image: var(--fs-pill) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; }
 html body.fs.fs-basic .quest-reward > i { display: none !important; }
 html body.fs.fs-basic .quest-check i { color: var(--bs-accent) !important; }
 
 /* segmented controls (feed tabs, page tabs, filters): glass track, active segment = accent pill */
-html body.fs.fs-basic #feedTabs { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 4px !important; padding: 4px !important; margin: 0 !important; border: 0 !important;
-  background: var(--fs-widget-inner) center / 100% 100% no-repeat !important; border-radius: 0 !important; }
+html body.fs.fs-basic #feedTabs { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 4px !important; padding: 4px !important; margin: 0 !important; 
+  background: none !important; border-image: var(--fs-widget-inner) 100 fill / 26px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; border-radius: 0 !important; }
 html body.fs.fs-basic #feedTabs .search-tab { background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; padding: 7px 4px !important;
   font: 600 15px var(--fs-font) !important; color: var(--bs-title) !important; text-transform: lowercase !important; text-shadow: none !important; }
 html body.fs.fs-basic #feedTabs .search-tab > i { display: none !important; }
 html body.fs.fs-basic :is(#feedTabs, #groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, .photos-card .search-tabs) .search-tab.active,
 html body.fs.fs-basic .fsk-filter.active, html body.fs.fs-basic .comment-sort-tab.active {
-  background: var(--fs-pill-on) center / 100% 100% no-repeat !important; color: #fff !important; text-shadow: none !important; border: 0 !important; border-image: none !important; }
+  background: none !important; border-image: var(--fs-pill-on) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: #fff !important; text-shadow: none !important;   }
 html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, .photos-card .search-tabs) .search-tab:not(.active),
 html body.fs.fs-basic .fsk-filter:not(.active), html body.fs.fs-basic .comment-sort-tab:not(.active) {
-  background: var(--fs-pill) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; border: 0 !important; border-image: none !important; }
+  background: none !important; border-image: var(--fs-pill) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: var(--bs-title) !important;   }
 html body.fs.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs) .search-tab, html body.fs.fs-basic .fsk-filter {
   padding: 6px 14px !important; font: 600 14px var(--fs-font) !important; text-transform: lowercase !important; border-radius: 0 !important; box-shadow: none !important; }
 
 /* the Home extras (pills, stories, composer): glass pills and a composer widget */
-html body.fs.fs-basic .mobile-pill { border: 0 !important; box-shadow: none !important; background: var(--fs-pill) center / 100% 100% no-repeat !important; color: var(--bs-title) !important;
+html body.fs.fs-basic .mobile-pill {  box-shadow: none !important; background: none !important; border-image: var(--fs-pill) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: var(--bs-title) !important;
   font: 600 14px var(--fs-font) !important; text-transform: lowercase; white-space: nowrap; padding-left: 12px !important; padding-right: 12px !important; }
 html body.fs.fs-basic .mobile-pill i { color: var(--bs-accent) !important; }
 html body.fs.fs-basic :is(.mobile-pills-bar, .stories-bar) { background: none !important; box-shadow: none !important; border: 0 !important; padding: 0 !important; min-height: 0 !important; }
-html body.fs.fs-basic #openPostModal { border: 0 !important; border-image: none !important; box-shadow: none !important; background: var(--fs-field) center / 100% 100% no-repeat !important;
+html body.fs.fs-basic #openPostModal {   box-shadow: none !important; background: none !important; border-image: var(--fs-field) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important;
   padding: 8px 14px 8px 8px !important; border-radius: 0 !important; }
 html body.fs.fs-basic #openPostModal .post-input-fake { background: none !important; border: 0 !important; color: var(--bs-soft) !important; font: 500 15px var(--fs-font) !important; text-transform: lowercase; }
 html body.fs.fs-basic .post-create-avatar { border-radius: 50% !important; -webkit-mask: none !important; mask: none !important; }
@@ -8539,11 +8542,11 @@ html body.fs.fs-basic :is(.msg-contact > div > img, .profile-card-item .profile-
   background: none !important; -webkit-mask: none !important; mask: none !important; }
 html body.fs.fs-basic #groupsSections .group-card-banner, html body.fs.fs-basic #groupsSections .group-card-banner img { border-radius: 14px !important; }
 html body.fs.fs-basic :is(.join-group-btn, .suggestion-follow-btn, .follow-btn, .profile-follow-btn, #groupsSections .group-card-actions .btn, #pvEditProfileBtn, #cpmPublish, #postCommentBtn) {
-  background: var(--fs-pill-on) center / 100% 100% no-repeat !important; color: #fff !important; border: 0 !important; border-image: none !important; border-radius: 0 !important; box-shadow: none !important;
+  background: none !important; border-image: var(--fs-pill-on) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: #fff !important;   border-radius: 0 !important; box-shadow: none !important;
   font: 700 14px var(--fs-font) !important; text-transform: lowercase !important; }
 html body.fs.fs-basic :is(.join-group-btn, .profile-follow-btn, .follow-btn, #groupsSections .group-card-actions .btn):is(.joined, .following, .btn-joined, .btn-outline, [data-joined="1"]),
 html body.fs.fs-basic :is(#pvMsgBtn, #pvCloseFriendBtn, #pvInviteGroupBtn), html body.fs.fs-basic #gvProfileCard .btn:not(.btn-primary):not(.join-group-btn) {
-  background: var(--fs-pill) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; border: 0 !important; border-image: none !important; box-shadow: none !important; }
+  background: none !important; border-image: var(--fs-pill) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: var(--bs-title) !important;   box-shadow: none !important; }
 html body.fs.fs-basic :is(.msg-contact-name > span, .nav-center .notif-badge) { background: var(--fs-badge-count) center / 100% 100% no-repeat !important; color: #fff !important; border: 0 !important; }
 
 /* page headers: icon tile + lowercase title */
@@ -8558,7 +8561,7 @@ html body.fs.fs-basic .msg-sidebar-header h3 { background-image: var(--fs-icon-m
 html body.fs.fs-basic :is(#page-photos, #page-admin, #page-privacy) .page-header h2 { background: none !important; padding-left: 0 !important; }
 html body.fs.fs-basic #page-groups .page-header h2::after { content: "find your people \2661"; display: block !important; font: italic 500 13px/1.2 'Lora', serif; color: var(--bs-soft); }
 html body.fs.fs-basic #page-shop .page-header h2::after { content: "change your vibe \2661"; display: block !important; font: italic 500 13px/1.2 'Lora', serif; color: var(--bs-soft); }
-html body.fs.fs-basic :is(.msg-search, .page-search, .comment-input) { background: var(--fs-field) center / 100% 100% no-repeat !important; border: 0 !important; border-image: none !important; box-shadow: none !important; }
+html body.fs.fs-basic :is(.msg-search, .page-search, .comment-input) { background: none !important; border-image: var(--fs-field) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important;   box-shadow: none !important; }
 html body.fs.fs-basic .page-header .btn:not(.page-search) { background: var(--fs-icon-plus) center / 22px no-repeat, var(--fs-tile-on) center / 100% 100% no-repeat !important; }
 
 /* skins shop: the art fills the top of each widget, name + price chip under it */
@@ -8568,8 +8571,8 @@ html body.fs.fs-basic .fsk-thumb { left: 0 !important; top: 0 !important; right:
 html body.fs.fs-basic .fsk-body { inset: 60% 0 0 0 !important; padding: 2px 2px 0 !important; justify-content: space-between !important; gap: 2px !important; }
 html body.fs.fs-basic .fsk-name { font: 700 15px var(--fs-title-font) !important; text-align: left !important; align-self: flex-start !important; background: none !important; padding: 0 !important; margin: 0 !important; }
 html body.fs.fs-basic .fsk-body .btn { height: 28px !important; min-width: 64% !important; width: auto !important; align-self: flex-start !important; margin: 0 !important; padding: 0 12px !important;
-  background: var(--fs-pill) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; font: 700 13px var(--fs-font) !important; border: 0 !important; box-shadow: none !important; }
-html body.fs.fs-basic .fsk-body .btn.fsk-equipped { background-image: var(--fs-pill-on) !important; color: #fff !important; }
+  background: none !important; border-image: var(--fs-pill) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: var(--bs-title) !important; font: 700 13px var(--fs-font) !important;  box-shadow: none !important; }
+html body.fs.fs-basic .fsk-body .btn.fsk-equipped { border-image-source: var(--fs-pill-on) !important; color: #fff !important; }
 html body.fs.fs-basic .fsk-badge { font-size: 0 !important; width: 24px !important; height: 24px !important; padding: 0 !important; top: 6px !important; right: 6px !important; border-radius: 50% !important;
   background: var(--fs-tick-100) center / contain no-repeat !important; }
 html body.fs.fs-basic .fsk-badge::after { content: none !important; }
@@ -8579,10 +8582,10 @@ html body.fs.fs-basic .msg-bubble { border: 10px solid transparent !important; b
   box-shadow: none !important; color: var(--bs-ink) !important; padding: 0 4px !important; }
 html body.fs.fs-basic .msg-bubble.sent { border-image-source: var(--fs-bubble-out) !important; }
 html body.fs.fs-basic .msg-bubble.sent, html body.fs.fs-basic .msg-bubble.sent * { color: #fff !important; }
-html body.fs.fs-basic #msgChat #msgInput { background: var(--fs-field) center / 100% 100% no-repeat !important; border: 0 !important; border-image: none !important; font-size: 16px !important; }
+html body.fs.fs-basic #msgChat #msgInput { background: none !important; border-image: var(--fs-field) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important;   font-size: 16px !important; }
 html body.fs.fs-basic #msgChat #sendMsgBtn { background: var(--fs-send-btn) center / contain no-repeat !important; border: 0 !important; box-shadow: none !important; }
 html body.fs.fs-basic #msgChat #sendMsgBtn i { opacity: 0 !important; }
-html body.fs.fs-basic #msgChat .msg-chat-header { background: var(--fs-top-bar) center bottom / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-basic #msgChat .msg-chat-header { background: none !important; border-image: var(--fs-top-bar) 0 140 120 140 fill / 0 34px 30px 34px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important;  }
 
 /* profile view (someone's profile, or yours): same profile widget + photo widgets as Home */
 @media (max-width: 768px) {
@@ -8629,7 +8632,7 @@ html body.fs.fs-basic #groupsSections .group-card-actions .btn { height: 32px !i
 html body.fs.fs-basic :is(.btn-primary, .featured-buy-btn, .join-group-btn, .tut-ok) { border: 6px solid transparent !important; border-image: var(--fs-pill-on) 70 fill / 18px stretch !important;
   background: none !important; color: #fff !important; box-shadow: none !important; border-radius: 0 !important; font-family: var(--fs-font) !important; font-weight: 700 !important; }
 html body.fs.fs-basic .tut-modal { border: 12px solid transparent !important; border-image: var(--fs-widget) 100 fill / 30px stretch !important; background: none !important; box-shadow: none !important; border-radius: 0 !important; color: var(--bs-ink) !important; }
-html body.fs.fs-basic .tut-modal .tut-feat { background: var(--fs-widget-inner) center / 100% 100% no-repeat !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+html body.fs.fs-basic .tut-modal .tut-feat { background: none !important; border-image: var(--fs-widget-inner) 100 fill / 26px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important;  border-radius: 0 !important; box-shadow: none !important; }
 html body.fs.fs-basic .tut-modal :is(.tut-logo, .tut-icon) { background: var(--fs-tile-on) center / 100% 100% no-repeat !important; border-radius: 0 !important; box-shadow: none !important; }
 
 /* skins shop cards (concept skins): picture on top, name, price, then the small pill buttons — normal flow inside the widget */
@@ -8646,8 +8649,8 @@ html body.fs.fs-basic .fsk-card .skin-price { font: 600 13px var(--fs-font) !imp
 html body.fs.fs-basic .fsk-card .skin-price i { color: #c9a24a !important; }
 html body.fs.fs-basic .fsk-card .shop-card-actions { display: flex !important; gap: 6px !important; margin: 0 !important; }
 html body.fs.fs-basic .fsk-card .shop-card-actions .btn, html body.fs.fs-basic .fsk-card .fsk-body > .btn { flex: 1 1 0 !important; min-width: 0 !important; width: auto !important; height: 30px !important; padding: 0 6px !important;
-  margin: 0 !important; font: 700 13px var(--fs-font) !important; border: 0 !important; border-image: none !important; background: var(--fs-pill) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; }
-html body.fs.fs-basic .fsk-card :is(.btn-primary, .fsk-equip, .fsk-buy, .fsk-equipped).btn { background-image: var(--fs-pill-on) !important; color: #fff !important; }
+  margin: 0 !important; font: 700 13px var(--fs-font) !important;   background: none !important; border-image: var(--fs-pill) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: var(--bs-title) !important; }
+html body.fs.fs-basic .fsk-card :is(.btn-primary, .fsk-equip, .fsk-buy, .fsk-equipped).btn { border-image-source: var(--fs-pill-on) !important; color: #fff !important; }
 html body.fs.fs-basic .fsk-card .fsk-takeoff { background: none !important; border: 0 !important; color: var(--bs-soft) !important; font: 600 12px var(--fs-font) !important; padding: 0 !important; }
 html body.fs.fs-basic .fsk-card .fsk-soon { font: italic 500 13px 'Lora', serif !important; color: var(--bs-soft) !important; text-align: left !important; background: none !important; }
 html body.fs.fs-basic .fsk-grid { gap: 10px !important; }
@@ -8739,11 +8742,11 @@ html body.fs.fs-basic.fs-basic.fs-basic #pvProfileCard::before { content: "" !im
 html body.fs.fs-basic.fs-basic.fs-basic #pvProfileCard .pv-actions { justify-content: center !important; width: 100% !important; margin-top: 30px !important; gap: 8px !important; flex-wrap: nowrap !important; }
 html body.fs.fs-basic.fs-basic.fs-basic #pvProfileCard .pv-actions > .btn { flex: 1 1 0 !important; }
 html body.fs.fs-basic.fs-basic.fs-basic #pvProfileCard .pv-actions > .fs-pv-more { display: block !important; position: relative !important; flex: 0 0 58px !important; height: 38px; }
-html body.fs.fs-basic.fs-basic.fs-basic #page-profile-view #pvProfileCard .pv-actions .fs-pv-more-btn.fs-pv-more-btn.btn { width: 100% !important; height: 38px !important; border: 0 !important; border-image: none !important; box-shadow: none !important;
-  background: var(--fs-icon-more) center / 22px auto no-repeat, var(--fs-pill) center / 100% 100% no-repeat !important; color: transparent !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #page-profile-view #pvProfileCard .pv-actions .fs-pv-more-btn.fs-pv-more-btn.btn { width: 100% !important; height: 38px !important;   box-shadow: none !important;
+  background: var(--fs-icon-more) center / 22px auto no-repeat !important; border-image: var(--fs-pill) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: transparent !important; }
 html body.fs.fs-basic.fs-basic.fs-basic #pvProfileCard .pv-actions .fs-pv-more-btn i { display: none !important; }
 html body.fs.fs-basic.fs-basic.fs-basic #pvProfileCard .pv-actions .fs-pv-menu { top: calc(100% + 6px) !important; right: 0 !important; }
-html body.fs.fs-basic.fs-basic.fs-basic #pvProfileCard .pv-actions > #pvMsgBtn { border: 0 !important; border-image: none !important; background: var(--fs-pill) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; box-shadow: none !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #pvProfileCard .pv-actions > #pvMsgBtn {   background: none !important; border-image: var(--fs-pill) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; color: var(--bs-title) !important; box-shadow: none !important; }
 html body.fs.fs-basic.fs-basic.fs-basic #pvProfileCard:has(#pvAdminSuspend)::before { bottom: -12px !important; }
 html body.fs.fs-basic.fs-basic.fs-basic #pvProfileCard .pv-actions > .btn i { display: none !important; }
 html body.fs.fs-basic.fs-basic.fs-basic #page-profile-view #pvProfileCard:has(#pvAdminSuspend) .pv-actions { margin-top: 12px !important; }
@@ -8763,7 +8766,7 @@ html body.fs.fs-basic.fs-basic.fs-basic .featured-skin-banner .featured-header h
 html body.fs.fs-basic.fs-basic.fs-basic .featured-skin-banner .featured-info h5 { font: 600 16px var(--fs-title-font) !important; }
 html body.fs.fs-basic.fs-basic.fs-basic .featured-skin-banner .featured-info p { display: none !important; }
 html body.fs.fs-basic.fs-basic.fs-basic .featured-skin-banner .btn { align-self: start !important; height: 30px !important; min-width: 96px; padding: 0 16px !important; margin: 4px 0 0 !important;
-  font: 600 16px var(--fs-font) !important; color: var(--bs-title) !important; border-image: none !important; background: var(--fs-pill) center / 100% 100% no-repeat !important; box-shadow: none !important;
+  font: 600 16px var(--fs-font) !important; color: var(--bs-title) !important;  background: none !important; border-image: var(--fs-pill) 70 fill / 999px stretch !important; border-style: solid !important; border-color: transparent !important; border-width: 0 !important; box-shadow: none !important;
   display: inline-flex !important; align-items: center; justify-content: center; gap: 6px; text-transform: lowercase; }
 html body.fs.fs-basic.fs-basic.fs-basic .featured-skin-banner .btn i { display: none !important; }
 html body.fs.fs-basic.fs-basic.fs-basic .featured-skin-banner .btn:has(i)::before { content: ""; width: 18px; height: 18px; flex: 0 0 18px; background: var(--fs-coin-stack) center / contain no-repeat; order: -1; }
@@ -8799,6 +8802,196 @@ html body.fs.fs-basic.fs-basic.fs-basic .feed-post .post-media-grid[class*="pm-c
 html body.fs.fs-basic.fs-basic.fs-basic .feed-post .post-actions { padding: 2px 6px 0 !important; }
 html body.fs.fs-basic.fs-basic.fs-basic #feedTabs .search-tab.search-tab { font: 600 15px var(--fs-font) !important; height: 32px !important; min-height: 0 !important; padding: 0 8px !important; }
 html body.fs.fs-basic.fs-basic.fs-basic .featured-skin-banner .featured-info h5 { font-weight: 700 !important; }
+
+/* v3 "BASIC GIRL" (owner approved concept-v3-<r>[-2|-3].png, Nov 19 2026: "Build it", "1 for 1 … use the concept as an
+   overlay"): measured on the concept overlay (402pt wide) — card 5pt from the screen edge, tiles ~121x114 with 4pt
+   gutters and ~10pt inset, the middle picture ~17% taller than a tile (134pt) in a cream ring with a satin bow (167pt). */
+@media (max-width: 768px) {
+  html body.fs.fs-basic.fs-basic.fs-basic :is(#page-home, #page-profile-view).active { padding-left: 2px !important; padding-right: 2px !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic :is(#page-home, #page-profile-view) { --bg-w: calc(100vw - 4px); --bg-pad: 14px; --bg-padt: 15px; --bg-gut: 4px;
+    --bg-th: calc(var(--bg-tw) * 114 / 121); --bg-av: calc(var(--bg-tw) * 1.1); --bg-ring: calc(var(--bg-av) * 512 / 340); }
+  /* Rosé's concept draws the squares wider than tall (~119x97); Pumpkin's nearly square (~121x114) */
+  html body.fs.fs-basic.fs-basic.fs-basic[data-fs-variant="rose"] :is(#page-home, #page-profile-view) { --bg-th: calc(var(--bg-tw) * 97 / 119); }
+  html body.fs.fs-basic.fs-basic.fs-basic :is(#profileCard, #pvProfileCard) .profile-info > .profile-avatar-wrap { width: var(--bg-ring) !important; height: var(--bg-ring) !important;
+    top: calc(var(--bg-padt) - 12px + 1.5 * var(--bg-th) + var(--bg-gut) - var(--bg-ring) * 284 / 512) !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic :is(#profileCard, #pvProfileCard) .profile-avatar-wrap .profile-avatar { padding: 22.27% 16.8% 11.33% !important; border-radius: 0 !important;
+    clip-path: circle(33.3% at 50% 55.47%) !important; background: none !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic :is(#profileCard, #pvProfileCard) .profile-avatar-wrap::after { inset: 0 !important; background: var(--fs-avatar-bow) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic :is(#profileCard, #pvProfileCard) .avatar-edit-btn { right: 24% !important; bottom: 13% !important; width: 30px !important; height: 30px !important;
+    background: var(--fs-icon-camera) center / 16px no-repeat, var(--fs-camera-badge) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic :is(#page-home #profileCard, #page-profile-view #pvProfileCard) { padding-top: calc(var(--bg-padt) + var(--bg-gridh) + 12px - 12px) !important; }
+  /* coin goal + featured: two half cards side by side (featured takes the row when the coin card is hidden) */
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home #coinGoalBar { grid-column: 1 / 4 !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home #featuredSkinBanner { grid-column: 4 / 7 !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home:not(:has(#coinGoalBar:not([style*="none"]))) #featuredSkinBanner { grid-column: 1 / -1 !important; }
+}
+/* v3 daily routine: taller rows like the concept (tick 26 · task 16px · bar 8px · 0/5 · iced latte · +5 chip) */
+html body.fs.fs-basic.fs-basic.fs-basic #questPanel .quest-item { grid-template-columns: 26px minmax(0, 1fr) 58px 30px 26px 46px !important; grid-template-rows: 37px !important; height: 37px !important; column-gap: 7px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #questPanel .quest-item > .quest-icon.quest-icon { width: 26px !important; height: 26px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #questPanel .quest-info > p { font-size: 16px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #questPanel .quest-info > .quest-bar { height: 8px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #questPanel .quest-info > .quest-progress { font-size: 15px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #questPanel .quest-item::after { width: 26px !important; height: 32px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #questPanel .quest-item > :is(.quest-reward, .quest-check) { width: 46px !important; height: 28px !important; font-size: 15px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #questPanel .quest-panel-header :is(h3, h4, span) { font-size: 22px !important; }
+/* stories get their little "stories" title (concept) */
+html body.fs.fs-basic.fs-basic.fs-basic #page-home .stories-bar::before { content: "stories"; display: block; flex: 0 0 100%; width: 100%; font: 700 20px var(--fs-title-font); color: var(--bs-title); margin: 0 0 6px 4px; }
+html body.fs.fs-basic.fs-basic.fs-basic #page-home .stories-bar { flex-wrap: wrap !important; }
+/* v3 people you may know + trending groups (concept: a title, ⋯, then little swatches; owner: same for trending groups):
+   the app's own sidebar cards, moved above the feed tabs on phones by fullskins.js (basicPills); ~3 swatches visible, rest scroll */
+@media (max-width: 768px) {
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home #mobilePills { display: none !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home:not(#_) #fsBp { display: block !important; grid-column: 1 / -1 !important; order: 12 !important; position: relative !important; margin: 2px 0 8px !important; padding: 0 !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #fsBp .fs-bp-chips { display: flex; gap: 8px; padding: 0 40px 8px 0; }
+  html body.fs.fs-basic.fs-basic.fs-basic #fsBp .fs-bp-chip { flex: 0 1 auto; height: 34px; padding: 0 15px; font: 600 15px var(--fs-font); color: var(--bs-title); white-space: nowrap; background: none;
+    border: 0 solid transparent; border-image: var(--fs-chip) 60 fill / 999px stretch; min-width: 0; }
+  html body.fs.fs-basic.fs-basic.fs-basic #fsBp .fs-bp-chip.is-on { border-image-source: var(--fs-chip-active); color: #fff; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home:not(#_) #fsBp[data-k="people"] .groups-card, html body.fs.fs-basic.fs-basic.fs-basic #page-home:not(#_) #fsBp[data-k="groups"] .suggestions-card { display: none !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #fsBp .card.fs-bp .card-heading { display: none !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #fsBp .fs-bp .view-more-link { top: 4px !important; right: 2px !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home:not(#_) .card.fs-bp { display: block !important; position: static !important; margin: 0 !important; padding: 0 !important;
+    background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; width: auto !important; min-width: 0 !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .card.fs-bp::before, html body.fs.fs-basic.fs-basic.fs-basic #page-home .card.fs-bp::after { display: none !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp .card-heading { margin: 0 !important; padding: 0 44px 6px 6px !important; font: 700 20px var(--fs-title-font) !important; color: var(--bs-title) !important;
+    text-transform: lowercase !important; background: none !important; border: 0 !important; text-align: left !important; letter-spacing: 0 !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp .card-heading::before, html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp .card-heading::after { display: none !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp .view-more-link { position: absolute !important; right: 4px; top: 0; width: 36px; height: 26px; font-size: 0 !important; color: transparent !important;
+    background: var(--fs-icon-more) center / 22px auto no-repeat !important; border: 0 !important; padding: 0 !important; margin: 0 !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp :is(#suggestionList, #trendingGroupsSidebar) { display: grid !important; grid-auto-flow: column !important; grid-auto-columns: calc((100vw - 4px - 16px) / 3) !important;
+    gap: 8px !important; overflow-x: auto !important; scrollbar-width: none; scroll-snap-type: x mandatory; padding: 0 0 4px !important; margin: 0 !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp :is(#suggestionList, #trendingGroupsSidebar)::-webkit-scrollbar { display: none; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp :is(.suggestion-item, .group-item) { scroll-snap-align: start; display: flex !important; flex-direction: column !important; align-items: center !important;
+    min-width: 0 !important; margin: 0 !important; padding: 10px 6px 9px !important; box-sizing: border-box; text-align: center !important; gap: 0 !important; cursor: pointer;
+    background: none !important; box-shadow: none !important; border: 0 solid transparent !important; border-image: var(--fs-widget-inner) 100 fill / 26px stretch !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp .suggestion-avatar { width: 66px !important; height: 66px !important; min-width: 66px; border-radius: 50% !important; object-fit: cover; margin: 0 0 6px !important; padding: 0 !important;
+    background: none !important; box-shadow: 0 0 0 2px rgba(255, 251, 246, .95), 0 2px 6px rgba(74, 52, 38, .16) !important; -webkit-mask: none !important; mask: none !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp .group-icon { width: 66px !important; height: 66px !important; min-width: 66px; border-radius: 16px !important; margin: 0 0 6px !important; display: flex !important;
+    align-items: center; justify-content: center; font-size: 26px !important; box-shadow: 0 0 0 2px rgba(255, 251, 246, .95), 0 2px 6px rgba(74, 52, 38, .16) !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp :is(.suggestion-info, .group-info) { display: flex !important; flex-direction: column !important; align-items: center !important; min-width: 0; width: 100%; padding: 0 !important; margin: 0 !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp :is(.suggestion-info h4, .group-name) { font: 700 17px/1.2 var(--fs-title-font) !important; color: var(--bs-title) !important; margin: 0 !important; max-width: 100%;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-transform: lowercase; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp :is(.suggestion-info p, .group-members) { font: 500 14px/1.3 var(--fs-font) !important; color: var(--bs-soft) !important; margin: 1px 0 7px !important; max-width: 100%;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-height: 0; display: block !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp .group-members i, html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp .group-desc { display: none !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp .suggestion-follow-btn.suggestion-follow-btn, html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp .group-item::after {
+    width: 88% !important; min-width: 0 !important; height: 30px !important; padding: 0 !important; margin: 4px 0 0 !important; font-size: 0 !important; color: #fff !important; box-shadow: none !important; border-radius: 0 !important;
+    display: flex !important; align-items: center; justify-content: center; background: none !important; border: 0 solid transparent !important; border-image: var(--fs-follow-btn) 70 fill / 999px stretch !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp .suggestion-follow-btn i { display: none !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp .suggestion-follow-btn::before { content: "follow" !important; display: block !important; position: static !important; font: 600 16px var(--fs-font) !important; color: #fff !important;
+    background: none !important; width: auto !important; height: auto !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp :is(.suggestion-item, .group-item) { width: auto !important; max-width: none !important; height: auto !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp .group-icon.group-icon { background: var(--fs-tile) center / 100% 100% no-repeat !important; color: var(--bs-accent) !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp .suggestion-follow-btn:is(.followed, :has(.fa-check)) { border-image-source: var(--fs-pill) !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp .suggestion-follow-btn:is(.followed, :has(.fa-check))::before { content: "following" !important; color: var(--bs-title) !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic #page-home .fs-bp .group-item::after { content: "view" !important; font: 600 16px var(--fs-font) !important; position: static !important; }
+}
+/* v3 profile page: follow / message / ⋯ or "edit profile" sit INSIDE the widget (concept), full-width accent pill, never stretched */
+html body.fs.fs-basic.fs-basic.fs-basic #pvProfileCard::before { bottom: -12px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #page-profile-view #pvProfileCard .pv-actions { margin-top: 12px !important; padding: 0 0 4px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #page-profile-view #pvProfileCard .pv-actions > .btn { height: 40px !important; font: 600 18px var(--fs-font) !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #page-profile-view #pvEditProfileBtn.btn { height: 40px !important; font: 600 18px var(--fs-font) !important; text-transform: lowercase !important; color: #fff !important; border-image-source: var(--fs-pill-on) !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #profileCard .profile-links { border-image-source: var(--fs-pill) !important; }
+/* v3 profile photos card (concept): "📷 photos" title, a photos | albums segmented pill, then photo squares 3 across (the rest scroll) */
+html body.fs.fs-basic.fs-basic.fs-basic :is(#profileCard, #pvProfileCard) .profile-stats > .stat { background: none !important; border: 0 solid transparent !important; border-image: var(--fs-pill) 70 fill / 999px stretch !important; box-shadow: none !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #pvPhotosCard .photos-card { padding: 14px 12px 12px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #pvPhotosCard .card-heading { display: flex !important; align-items: center; gap: 8px; margin: 0 0 8px !important; padding: 0 !important; font: 700 20px var(--fs-title-font) !important; color: var(--bs-title) !important; text-transform: lowercase !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #pvPhotosCard .card-heading i { width: 22px; height: 22px; margin: 0 !important; font-size: 0 !important; background: var(--fs-icon-camera) center / contain no-repeat !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #pvPhotosCard #pvPhotoTabs { display: flex !important; gap: 6px !important; margin: 0 0 8px !important; padding: 0 !important; overflow: visible !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #pvPhotosCard #pvPhotoTabs .search-tab.search-tab { flex: 1 1 0 !important; height: 36px !important; min-height: 0 !important; padding: 0 !important; font: 600 17px var(--fs-font) !important; color: var(--bs-title) !important;
+  text-transform: lowercase !important; background: none !important; border: 0 solid transparent !important; border-image: var(--fs-seg-tab) 65 fill / 999px stretch !important; box-shadow: none !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #pvPhotosCard #pvPhotoTabs .search-tab.search-tab.active { border-image-source: var(--fs-seg-tab-active) !important; color: #fff !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #pvPhotosCard #pvPhotoTabs .search-tab i { display: none !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #pvPhotosCard .photos-preview { display: grid !important; grid-auto-flow: column !important; grid-auto-columns: calc((100% - 12px) / 3) !important; gap: 6px !important; overflow-x: auto !important; scrollbar-width: none; padding: 0 !important; margin: 0 !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #pvPhotosCard .photos-preview .photo-wrap { width: auto !important; height: auto !important; aspect-ratio: 121 / 96 !important; border-radius: 12px !important; overflow: hidden !important; margin: 0 !important;
+  box-shadow: 0 0 0 1.5px rgba(255, 251, 246, .9), 0 2px 6px rgba(74, 52, 38, .13) !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #pvPhotosCard .photos-preview .photo-wrap img { width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 0 !important; }
+/* v3 sub-pages 1:1 with concept-v3 (groups, skins, network, messages, notifications, search): big lowercase title,
+   tall pill search field, chips as real cream / accent pills (network 2x2, notifications 3 across, search + skin shop
+   segmented), roomy list rows (56pt photo, 18px name) */
+html body.fs.fs-basic.fs-basic.fs-basic :is(#page-profiles, #page-notifications, #page-search, #page-saved, #page-photos, #page-messages, #page-groups, #page-shop) :is(.page-header h2, .msg-sidebar-header h3) { font: 700 26px var(--fs-title-font) !important; text-align: left !important; padding-left: 4px !important; line-height: 34px !important; min-height: 34px;
+  background: none !important; text-transform: lowercase !important; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(#page-groups, #page-shop) .page-header h2.page-title, html body.fs.fs-basic.fs-basic.fs-basic :is(#page-groups, #page-shop) .page-header h2 { padding-left: 38px !important; background: var(--fs-icon-groups) 2px center / 28px no-repeat !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #page-shop .page-header h2 { background-image: var(--fs-icon-skins) !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #page-groups .page-header h2::after { content: none !important; display: none !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #page-shop .page-header h2::after { content: " \2014  change your vibe" !important; display: inline !important; font: italic 500 22px 'Lora', serif !important; color: var(--bs-title) !important; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(.msg-search, .page-search) { height: 44px !important; min-height: 44px !important; padding: 0 16px !important; box-sizing: border-box; display: flex !important; align-items: center; gap: 10px; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(.msg-search, .page-search) input { font: 500 17px var(--fs-font) !important; height: 100% !important; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, #gvModeTabs) { display: flex !important; flex-wrap: wrap !important; gap: 8px !important; margin: 8px 0 10px !important; padding: 0 !important; overflow: visible !important; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, #gvModeTabs) .search-tab.search-tab.search-tab.search-tab { flex: 1 1 auto !important; height: 34px !important; min-height: 0 !important; padding: 0 14px !important; font: 600 16px/1 var(--fs-font) !important; color: var(--bs-title) !important;
+  white-space: nowrap !important; text-transform: lowercase !important; background: none !important; box-shadow: none !important; border: 0 solid transparent !important; border-radius: 0 !important;
+  border-image: var(--fs-chip) 60 fill / 999px stretch !important; display: inline-flex !important; align-items: center; justify-content: center; gap: 6px; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, #gvModeTabs) .search-tab.search-tab.search-tab.search-tab.active { border-image-source: var(--fs-chip-active) !important; color: #fff !important; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, #gvModeTabs) .search-tab i { display: none !important; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, #gvModeTabs) .search-tab .tab-count { min-width: 20px; height: 20px; border-radius: 10px; padding: 0 5px; font: 700 12px/20px var(--fs-font); color: #fff; background: var(--bs-accent); box-sizing: border-box; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, #gvModeTabs) .search-tab.active .tab-count { background: #fff; color: var(--bs-accent); }
+html body.fs.fs-basic.fs-basic.fs-basic #profilesTabs, html body.fs.fs-basic.fs-basic.fs-basic :is(#searchTabs, #shopTabs) { display: grid !important; grid-template-columns: 1fr 1fr; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(#searchTabs) { grid-template-columns: repeat(3, 1fr) !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #notifTabs { display: grid !important; grid-template-columns: repeat(3, 1fr); }
+html body.fs.fs-basic.fs-basic.fs-basic #groupsTabs { display: grid !important; grid-auto-flow: column; grid-auto-columns: 1fr; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, #gvModeTabs) .search-tab.search-tab.search-tab.search-tab { min-width: 0 !important; padding: 0 8px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(.msg-contact, .notif-item, .profile-card-item, .follow-list-item) { min-height: 72px !important; box-sizing: border-box; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(.msg-contact > div > img, .profile-card-item .profile-card-avatar, .notif-item img) { width: 56px !important; height: 56px !important; min-width: 56px; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(#page-profiles, #page-search) .profile-card-item { grid-template-columns: 56px minmax(0, 1fr) auto !important; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(.msg-contact-name, .profile-card-name, .notif-item strong, #groupsSections .group-card-body h4) { font-size: 18px !important; font-weight: 700 !important; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(.msg-contact-preview, .profile-card-bio, .profile-card-handle, .notif-time, .notif-text, .group-members) { font-size: 15px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(#page-profiles, #page-search) .profile-follow-btn, html body.fs.fs-basic.fs-basic.fs-basic #groupsSections .group-card-actions .btn { height: 36px !important; min-width: 92px; font: 600 16px var(--fs-font) !important; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(#groupsTabs, #shopTabs, #mySkinsTabs, #skinPageToggle, #notifTabs, #profilesTabs, #searchTabs, #gvModeTabs, #pvPhotoTabs, #feedTabs, .fs-bp-chips) :is(.search-tab, .fs-bp-chip) { filter: drop-shadow(0 1.5px 2px rgba(74, 52, 38, .14)); }
+/* v3 chat (concept): calm cream wallpaper, header with a round back button + photo + name, input = pill field */
+html body.fs.fs-basic.fs-basic.fs-basic #msgChat { background: var(--fs-wallpaper) center top / cover no-repeat !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #msgChat .msg-back-btn { background: var(--fs-btn-round) center / 100% 100% no-repeat !important; border-radius: 50% !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #msgChat .msg-back-btn i { width: 20px !important; height: 20px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #msgChat .msg-chat-header { padding-left: 10px !important; padding-right: 10px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #msgChat .msg-chat-header :is(h4, .msg-chat-name, strong) { font: 700 20px var(--fs-title-font) !important; color: var(--bs-title) !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #msgChat .msg-chat-input { border-image-source: var(--fs-field) !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #msgChat #msgInput { font-size: 17px !important; }
+/* v3 sub-page top bar: "‹ page name" in place of the wordmark (fullskins.js basicTitle sets data-fs-title) */
+html body.fs.fs-basic.fs-basic.fs-basic .navbar[data-fs-title] .nav-logo { font-size: 0 !important; display: flex !important; align-items: center; gap: 2px; }
+html body.fs.fs-basic.fs-basic.fs-basic .navbar[data-fs-title] .nav-logo::before { content: ""; flex: 0 0 18px; width: 18px; height: 18px; background: var(--fs-icon-back) center / contain no-repeat; }
+html body.fs.fs-basic.fs-basic.fs-basic .navbar[data-fs-title] .nav-logo::after { content: attr(data-fs-title); font: 700 18px var(--fs-title-font); color: var(--bs-title); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* v3 create post (concept): big writing well, round tool buttons, a full-width accent "post" pill */
+html body.fs.fs-basic.fs-basic.fs-basic #modalOverlay .modal-header h3 { font: 700 22px var(--fs-title-font) !important; text-transform: lowercase; }
+html body.fs.fs-basic.fs-basic.fs-basic #modalOverlay .cpm-textarea { min-height: 130px !important; padding: 14px !important; font: 500 17px var(--fs-font) !important; color: var(--bs-ink) !important; background: none !important; box-shadow: none !important;
+  border: 0 solid transparent !important; border-radius: 0 !important; border-image: var(--fs-widget-inner) 100 fill / 26px stretch !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #modalOverlay div:has(> #cpmPublish) { flex-wrap: wrap !important; gap: 10px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #modalOverlay :is(#cpmCameraBtn, #cpmGifBtn, #cpmPollBtn, #cpmScheduleBtn, #cpmEmojiBtn) { width: 42px !important; height: 42px !important; flex: 0 0 42px !important; padding: 0 !important; border: 0 !important;
+  border-radius: 50% !important; background: var(--fs-btn-round) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; box-shadow: none !important; display: inline-flex !important; align-items: center; justify-content: center; }
+html body.fs.fs-basic.fs-basic.fs-basic #modalOverlay :is(#cpmCameraBtn, #cpmGifBtn, #cpmPollBtn, #cpmScheduleBtn, #cpmEmojiBtn) i { font-size: 17px !important; color: var(--bs-title) !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #modalOverlay #cpmPublish { flex: 1 1 100% !important; order: 9; width: 100% !important; height: 46px !important; min-width: 0 !important; border-radius: 0 !important; padding: 0 !important;
+  font: 600 18px var(--fs-font) !important; color: #fff !important; text-transform: lowercase !important; border-image: var(--fs-pill-on) 70 fill / 999px stretch !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #modalOverlay .char-counter { font: 500 13px var(--fs-font) !important; color: var(--bs-soft) !important; }
+/* v3 comments (concept): roomy rows, "add a comment…" pill field with the round accent send button */
+html body.fs.fs-basic.fs-basic.fs-basic .comment-modal-input { display: flex !important; align-items: center !important; gap: 8px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic .comment-modal-input #commentInput { flex: 1 1 auto !important; height: 44px !important; padding: 0 16px !important; font: 500 16px var(--fs-font) !important; color: var(--bs-ink) !important; background: none !important; box-shadow: none !important;
+  border: 0 solid transparent !important; border-radius: 0 !important; border-image: var(--fs-field) 70 fill / 999px stretch !important; }
+html body.fs.fs-basic.fs-basic.fs-basic .comment-modal-input #postCommentBtn { width: 44px !important; height: 44px !important; min-width: 44px !important; flex: 0 0 44px !important; padding: 0 !important; font-size: 0 !important; color: transparent !important;
+  border: 0 !important; border-image: none !important; background: var(--fs-send-btn) center / contain no-repeat !important; box-shadow: none !important; }
+html body.fs.fs-basic.fs-basic.fs-basic .comment-modal-input #postCommentBtn i { display: none !important; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(.comment-modal-input) :is(.comment-emoji-btn, .comment-gif-btn) { width: 38px !important; height: 38px !important; flex: 0 0 38px !important; white-space: nowrap !important; overflow: hidden; line-height: 38px !important; text-align: center; border-radius: 50% !important; border: 0 !important;
+  background: var(--fs-btn-round) center / 100% 100% no-repeat !important; color: var(--bs-title) !important; font-size: 13px !important; padding: 0 !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #commentsList .comment-item { padding: 8px 4px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #commentsList .comment-item :is(img, .comment-avatar) { width: 40px !important; height: 40px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #commentsList :is(.comment-author, .comment-item strong) { font: 700 16px var(--fs-title-font) !important; color: var(--bs-title) !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #commentsList :is(.comment-text, .comment-body p) { font: 500 15px var(--fs-font) !important; color: var(--bs-ink) !important; }
+/* v3 no gaps (owner: "top and bottom have gaps"): the top-bar and dock art have soft transparent edges, so a solid cream
+   backing (the art's own centre colour) sits behind the top bar (rounded like it) and behind the dock down to the screen edge */
+html body.fs-basic { --bs-barfill: #efe1d8; }
+html body.fs-basic[data-fs-variant="pumpkin"] { --bs-barfill: #f2eae1; }
+@media (max-width: 768px) {
+  html body.fs.fs-basic.fs-basic.fs-basic .navbar { background: var(--bs-barfill) !important; border-radius: 0 0 30px 30px !important; box-shadow: 0 4px 10px rgba(74, 52, 38, .10) !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic .navbar { z-index: 1002 !important; }
+  html body.fs.fs-basic.fs-basic.fs-basic .navbar::after { content: "" !important; display: block !important; position: fixed !important; left: 0 !important; right: 0 !important; top: auto !important; bottom: 0 !important; width: auto !important; z-index: -1 !important; pointer-events: none !important; border: 0 !important; transform: none !important; opacity: 1 !important;
+    height: calc(82px + max(6px, calc(env(safe-area-inset-bottom, 0px) - 18px)) + 16px) !important;
+    background: linear-gradient(rgba(0, 0, 0, 0), var(--bs-barfill) 16px, var(--bs-barfill)) !important; }
+}
+/* v3 top bar: round cream buttons (concept), not square tiles */
+html body.fs.fs-basic.fs-basic.fs-basic .navbar :is(.mobile-search-btn, .mobile-notif-btn, .nav-music-btn), html body.fs.fs-basic.fs-basic.fs-basic :is(.fs-barista-btn, .fs-bs-season) {
+  background: var(--fs-btn-round) center / 100% 100% no-repeat !important; border-radius: 50% !important; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(#profileCard, #pvProfileCard) .profile-name { font-size: 30px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(#profileCard, #pvProfileCard) .profile-stats { gap: 12px !important; padding: 8px 0 0 !important; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(#profileCard, #pvProfileCard) .profile-stats > .stat { min-width: 140px; height: 32px; padding: 0 16px !important; justify-content: center; }
+html body.fs.fs-basic.fs-basic.fs-basic :is(#profileCard, #pvProfileCard) :is(.stat-count, .stat-label) { font-size: 17px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #profileCard .profile-links { margin: 12px auto 4px !important; height: 32px !important; min-width: 194px !important; }
+html body.fs.fs-basic.fs-basic.fs-basic #profileCard :is(.view-profile-link, .edit-profile-btn) { font-size: 16px !important; }
 
 /* ===== Superhero profile pop-up (owner, Nov 16: "redesigned for the heroes and the villains … not so plain"): a comic
    HERO FILE (Heroes) / a classified VILLAIN DOSSIER (Villains), each from its own painted set
