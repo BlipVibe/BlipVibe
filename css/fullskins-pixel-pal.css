@@ -193,3 +193,98 @@ html body.fs.fs-blip[data-fs-variant="pixel-pal"] .quest-info p { max-width: non
   html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvPostsFeed .pv-posts-heading { font: 900 21px var(--fs-title-font) !important; margin: 0 !important; }
   html body.fs.fs-blip[data-fs-variant="pixel-pal"] #gvPostsFeed .pv-posts-heading > i { display: none !important; }
 }
+
+/* ======================================================================================== NOTIFICATIONS (phone) — concept notifications.png */
+@media (max-width: 768px) {
+  /* title + filter chips sit on one pixel card (concept); rows are their own cards below */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-notifications .page-container { position: relative; padding: 0 10px 90px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-notifications .page-container::before { content: ""; position: absolute; z-index: 0; left: 4px; right: 4px; top: 4px; height: 136px; pointer-events: none;
+    border: 0 solid transparent; border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 6px 0 stretch; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-notifications :is(.page-header, #notifTabs) { position: relative; z-index: 1; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-notifications .page-header { padding: 12px 8px 2px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-notifications .page-header h2 { font-size: 30px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #notifTabs { padding: 0 2px !important; margin: 6px 0 16px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #notifTabs .search-tab { height: 32px !important; font-size: 15.5px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #notifList .notif-item { padding: 0 10px 0 6px !important; height: 37px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #notifList .notif-icon:has(.fa-heart) { background-image: var(--fs-quest-like) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #notifList .notif-icon:has(.fa-user-plus) { background-image: var(--fs-icon-user-plus) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #notifList .notif-text > span { font-weight: 700 !important; font-size: 13.5px !important; }
+}
+
+/* ======================================================================================== NETWORK (phone) — concept network.png */
+@media (max-width: 768px) {
+  /* the whole page sits on the cream pixel sheet (concept), like the Groups tab */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-profiles .page-container { min-height: calc(100vh - 62px); box-sizing: border-box; padding: 0 10px 90px !important; margin: 0 4px !important;
+    border: 0 solid transparent !important; border-image: var(--fs-sheet) 70 70 0 70 fill / 22px 22px 0 22px stretch !important; }
+  /* Mutual / Followers headings: pixel chips, not Logo Classic's blue bar */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-profiles .connections-heading { background: none !important; border-radius: 0 !important;
+    border-image: var(--fs-btn-disabled) 0 76 fill / 0 18px stretch !important; }
+  /* avatars in the painted ring, not a CSS outline */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-profiles .profile-card-avatar { box-shadow: none !important; padding: 3px; box-sizing: border-box;
+    background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; width: 78px !important; height: 78px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-profiles .connections-dot { background: var(--fs-swatch-ring) center / 100% 100% no-repeat !important; box-shadow: none !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-profiles .connections-dot.active { background: var(--fs-unread-dot) center / 100% 100% no-repeat !important; box-shadow: none !important; }
+}
+
+/* ======================================================================================== avatars: Logo Classic draws white+navy CSS rings on
+   these; Pixel Pal uses its painted pixel ring (avatar-ring art) everywhere */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(#searchResults .profile-card-avatar, .msg-chat-header img, .comment-post-embed .post-avatar, #commentsList .comment-item > img,
+  .create-post-modal .cpm-scroll > div:first-child > img) {
+  box-shadow: none !important; padding: 3px !important; box-sizing: border-box; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; border-radius: 50% !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .create-post-modal .remove-thumb { background: var(--fs-btn-square) center / 100% 100% no-repeat !important; border: 0 !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .create-post-modal .remove-thumb::after { content: ""; position: absolute; inset: 6px; background: var(--fs-icon-close) center / contain no-repeat; }
+
+/* ======================================================================================== SEARCH (phone) — concept search.png: on the cream sheet */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #page-search .page-container { min-height: calc(100vh - 62px); box-sizing: border-box; padding: 0 10px 90px !important; margin: 0 4px !important;
+    border: 0 solid transparent !important; border-image: var(--fs-sheet) 70 70 0 70 fill / 22px 22px 0 22px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #searchResults .profile-card-avatar { width: 74px !important; height: 74px !important; }
+}
+/* Messages + Skins shop: on the cream sheet too (concept messages.png / shop.png) */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(#page-messages, #page-shop) .page-container { min-height: calc(100vh - 62px); box-sizing: border-box; margin: 0 4px !important;
+    border: 0 solid transparent !important; border-image: var(--fs-sheet) 70 70 0 70 fill / 22px 22px 0 22px stretch !important; }
+}
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] #searchResults .profile-card .btn { margin-right: 8px !important; }
+
+/* ======================================================================================== MY PROFILE / PROFILE VIEW (phone) — concepts profile.png, otherprofile.png */
+@media (max-width: 768px) {
+  /* cover on a pixel card, photo inset 3pt (concept) */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvCoverBanner { margin: 6px 8px 0 !important; background-color: transparent !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvCoverBanner > .fs-timeline { overflow: visible !important; border: 0 solid transparent;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 5px 0 stretch; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvCoverBanner .fs-tl-slot-1 { inset: 3px !important; }
+  /* Following / Followers: cream pixel chips (Logo Classic paints a blue CSS pill) */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvProfileCard .stat { background: none !important; border-radius: 0 !important; border: 0 solid transparent !important;
+    border-image: var(--fs-chip) 0 76 fill / 0 15px stretch !important; height: 32px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvProfileCard .stat :is(.stat-count, .stat-label) { color: var(--bl-ink) !important; font-weight: 800 !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvProfileCard .stat .stat-count { font-weight: 900 !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvProfileCard .pv-back-link { color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvProfileCard .pv-back-link > i { filter: none !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvPhotoContent .photo-menu-btn { background: var(--fs-btn-square) center / 100% 100% no-repeat !important; border-radius: 0 !important; width: 28px !important; height: 18px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #pvPhotoContent .photo-menu-btn::after { content: ""; position: absolute; inset: 2px 5px; background: var(--fs-icon-more) center / contain no-repeat; }
+}
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .pv-back-link, html body.fs.fs-blip[data-fs-variant="pixel-pal"] .pv-back-link * { color: var(--bl-ink) !important; } html body.fs.fs-blip[data-fs-variant="pixel-pal"] .pv-back-link > i { filter: none !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] :is(.fs-tl-slot-1, #pvCoverBanner, #gvCoverBanner) { background-color: #e9f2d2 !important; }
+
+/* ======================================================================================== CHAT (phone) — concept chat.png */
+@media (max-width: 768px) {
+  /* send = orange pixel tile with a white plane (Logo Classic: blue CSS circle) */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #sendMsgBtn { border-radius: 0 !important; box-shadow: none !important; width: 46px !important; height: 44px !important; flex-basis: 46px !important;
+    background: var(--fs-nav-active) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] #sendMsgBtn::after { filter: brightness(0) invert(1) !important; inset: 11px !important; }
+  /* the composer row sits on a cream pixel card */
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .msg-chat-input { background: none !important; border: 0 solid transparent !important; margin: 0 8px 8px !important; padding: 6px 10px !important;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 0 5px 0 stretch !important; box-shadow: none !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .msg-chat-header h4 { font-weight: 900 !important; }
+}
+
+/* round buttons (cover camera, modal close, …) are square pixel boxes in every Pixel Pal concept */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] { --fs-btn-round: var(--fs-btn-square) !important; }
+/* COMMENTS (phone) — concept comments.png: Top / Newest / Oldest as separate pills */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .comment-modal-scroll .search-tabs { border-image: none !important; gap: 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .comment-modal-scroll .search-tabs .search-tab { border-image-source: var(--fs-chip) !important; border-image-slice: 0 76 fill !important; border-image-width: 0 17px !important; }
+  html body.fs.fs-blip[data-fs-variant="pixel-pal"] .comment-modal-scroll .search-tabs .search-tab.active { border-image-source: var(--fs-chip-active) !important; }
+}
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .post-views i, html body.fs.fs-blip[data-fs-variant="pixel-pal"] .post-views { color: var(--bl-ink) !important; }
