@@ -547,3 +547,28 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
   html body.fs.fs-blip[data-fs-variant="clay-town"] .create-post-modal :is(h3, .modal-header h3) { font: 700 26px var(--fs-font) !important; color: var(--bl-ink) !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] .create-post-modal #cpmCharCounter { font: 600 15px var(--fs-font) !important; color: var(--bl-ink) !important; }
 }
+
+/* ======================================================================================================== SKINS SHOP (phone) — concept shop.png */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-shop .page-container { margin: 0 3px !important; padding: 0 8px 90px !important; min-height: calc(100vh - 60px); box-sizing: border-box;
+    border: 14px solid transparent !important; border-image: var(--fs-sheet) 12% fill / 14px stretch !important; border-bottom: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-shop .page-header h2 { font: 700 38px/44px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-shop .page-header p { font: 600 15px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  /* Skin Shop | My Skins: two separate big pills (active butter), filters = soft cream pills */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #skinPageToggle { border-image: none !important; background: none !important; gap: 8px !important; height: 44px !important; padding: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #skinPageToggle .search-tab { height: 44px !important; font: 700 22px var(--fs-font) !important; color: var(--bl-ink) !important; border-image: var(--fs-pill-cream) 0 66 fill / 0 22px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #skinPageToggle .search-tab.active { border-image-source: var(--fs-btn-primary) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #shopTabs .search-tab, html body.fs.fs-blip[data-fs-variant="clay-town"]:is(*) #shopGrid .fsk-filter:not(.active) { font: 700 16px var(--fs-font) !important; color: var(--bl-ink) !important; border-image-source: var(--fs-pill-cream) !important; border-image-slice: 0 66 fill !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #shopTabs .search-tab.active, html body.fs.fs-blip[data-fs-variant="clay-town"] #shopGrid .fsk-filter.active { border-image-source: var(--fs-btn-primary) !important; }
+  /* store cards: chunky terracotta clay frame, bold name, coin price; Equip sage, Buy butter, Try On soft cream, Equipped sage with a check */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #shopGrid .fsk-card { border: 8px solid transparent !important; border-image: var(--fs-panel-card) 12% fill / 26px stretch !important; background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #shopGrid .fsk-name { font: 700 21px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #shopGrid .skin-price { font: 700 17px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #shopGrid .fsk-body .btn { font: 700 18px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #shopGrid :is(.fsk-equip, .fsk-equipped) { border-image-source: var(--fs-pill-sage) !important; border-image-slice: 0 66 fill !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #shopGrid .fsk-equipped { opacity: 1 !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-shop .page-header::after { width: 104px !important; height: 66px !important; top: 0 !important; right: 0 !important; background-size: contain !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-shop .page-header p { position: relative; z-index: 2; font-size: 14.5px !important; }
+}
