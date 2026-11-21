@@ -88,7 +88,8 @@ Heaven's Light (wings cameo), Good Witch (ornate bubble), Blood Moon (cameo + ro
 Blaze (rim) now use Home's photo shape + frame art at Home's proportions (were bare circles). (3) Good Witch Day pop-ups had no
 gold border — now its own gold-framed panel like Night. (4) Villains own profile EDIT PROFILE text was 11px (visitor fit rule).
 Kept by design: Villains dossier pop-up (left photo, left-aligned command button), Heroes ink divider beside the name.
-Not changed: Superhero hides the Home "View Profile" link (its Home card has no button row) — flagged to owner.
+Superhero Home "View Profile" + edit pencil were hidden (no way from Home to your profile) — owner: "Yes, add it back": back as
+a row under the stats on the painted plaque + round button (Heroes + Villains, 375/402/430 checked, tap opens My Profile).
 
 ## Pass 7 (Nov 19, owner: retro group card "3 lines through it", then Home profile card, "don't forget the XP version")
 Cause: Vaporwave panel art (panel.webp, every variant) fades light→dark top to bottom. The generic `.profile-card` /
@@ -286,6 +287,7 @@ so nothing comes back. Re-check column: date of the last pass that confirmed it.
 | 37 | Nov 19 | Vaporwave Retro + XP (all 4) | group card, Home profile card | "3 lines through it … it should be one solid color" (panel fade tiled 2–3×) | pass 7 (fullskins.css) | ✓ Nov 19 pass 7 (4 variants × 23 screens) |
 | 38 | Nov 21 | all (24 looks) | My Profile pop-up (Home "View Profile", menu "My Profile") → profile page | "qa the view profile button … everything aligned and profile pictures actually show up"; Superhero Heroes photo hidden behind banner (owner screenshot) | pass 8 | ✓ Nov 21 pass 8 (24 looks × 375/402/430) |
 | 39 | Nov 21 | Blip ×3, Scrapbook, #Basic, Heaven's Light, Good Witch, Blood Moon, Vaporwave, Anime Blaze | My Profile pop-up | "some of them … are missing their border art" (bare photo, no Home frame; Good Witch Day no gold border) | pass 8 | ✓ Nov 21 pass 8 |
+| 40 | Nov 21 | Superhero Heroes + Villains | Home profile card | View Profile button missing (hidden) — "Yes, add it back" | pass 8 | ✓ Nov 21 (375/402/430) |
 | 38 | Nov 19 | BlipVibe default + #Basic | Skins shop / My Skins store cards | "the picture for #basic and blipvibe don't match the others in the skins store" (both were app screenshots; the rest are full-bleed painted scenes) | new painted cards (Codex): BlipVibe = mascot in a blue sky, #Basic = cream "basic girl" flat-lay | ✓ Nov 19 on the 390pt phone (Skins shop + My Skins) |
 | 39 | Nov 19 | BlipVibe default | Network (all phone pages) on a narrower phone | "why wasn't this caught in QA?" — Network cards ran off the right edge, mascot slid onto the title, purple search icon (QA had only run at 402pt) | 8324695 + 390pt pass: fluid columns, vw-scaled mascots, mask-tinted icons; Create a Post header/footer, profile medals, cover camera hidden on others' profiles | ✓ Nov 19 on the 390pt phone (all pages) |
 
