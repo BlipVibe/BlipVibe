@@ -133,6 +133,24 @@ def swoosh():
     return im.filter(ImageFilter.GaussianBlur(.5 * SS)).resize((W, H), Image.LANCZOS)
 
 
+def vivid(name, hue_lo, hue_hi, target):
+    """push the painted orange / teal of a Codex piece to the concept's sampled colour, keeping its shading + alpha"""
+    import colorsys
+    im = Image.open(f'{O}/{name}.webp').convert('RGBA'); px = im.load()
+    th, ts, tv = colorsys.rgb_to_hsv(*[c / 255 for c in target])
+    for y in range(im.height):
+        for x in range(im.width):
+            r, g, b, a = px[x, y]
+            if a < 8: continue
+            h, s_, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
+            if s_ > .3 and hue_lo <= h <= hue_hi:
+                k = min(1, (s_ - .3) / .3)
+                nh = h + (th - h) * k; ns = s_ + (max(s_, ts) - s_) * k; nv = v + (min(1, v * tv / .88) - v) * k * .7
+                rr, gg, bb = colorsys.hsv_to_rgb(nh, min(1, ns), min(1, nv))
+                px[x, y] = (round(rr * 255), round(gg * 255), round(bb * 255), a)
+    return im
+
+
 def save(im, name, q=92): im.save(f'{O}/{name}.webp', 'WEBP', quality=q, method=6); return name
 
 
@@ -165,6 +183,8 @@ def build():
     out.append(save(pill((889, 129), (1, 1, 888, 128), 'cream', TE_BODY, 10), 'field'))
     out.append(save(pill((1187, 129), (1, 1, 1186, 128), 'cream', TAN_LINE, 8), 'tabs-track'))
     out.append(save(pill((700, 130), (29, 5, 672, 125), 'cream', (240, 205, 165), 5), 'menu-row-on'))
+    out.append(save(vivid('bubble-out', .02, .13, OR_BODY), 'bubble-out'))
+    out.append(save(vivid('bubble-in', .4, .6, TE_BODY), 'bubble-in'))
     # sheet (300x300, open bottom, 70 70 0 70 / 22px): cream with a thin tan rim
     sh = card((300, 400), (5, 4, 295, 396), 70, 9, 'tan', CREAM).crop((0, 0, 300, 300)); out.append(save(sh, 'sheet'))
     return out

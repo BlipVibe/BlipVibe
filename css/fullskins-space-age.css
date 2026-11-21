@@ -577,3 +577,33 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .inline-comment-bubble p { col
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages #msgContactList > div > div:not(.msg-contact) > i { display: none !important; }
 }
 @media (max-width: 768px) { html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages .msg-sidebar { overflow-x: hidden !important; scrollbar-width: none; } }
+
+/* ======================================================================================================== CHAT (phone) — ref/space-age/chat-a.png
+   header = cream pill with the thick orange rim, brass porthole avatar, 25pt italic name, starburst right; bubbles: received cream /
+   teal rim, sent orange, text 16pt bold italic; the input bar is an orange-rim cream console, send = teal dome with a cream arrow */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] .msg-chat-header { position: relative; border: 0 solid transparent !important; border-image: var(--fs-btn-secondary) 0 74 fill / 0 33px stretch !important; background: none !important; padding: 0 18px 0 14px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .msg-chat-header::after { content: ""; position: absolute; right: 22px; top: 50%; width: 36px; height: 36px; margin-top: -18px; background: var(--fs-sparkle-1) center / contain no-repeat; pointer-events: none; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .msg-chat-header img { width: 56px !important; height: 56px !important; padding: 8px !important; box-sizing: border-box !important; box-shadow: none !important; background: var(--fs-avatar-frame) center / 100% 100% no-repeat !important; margin: -6px 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .msg-chat-header h4 { font: italic 800 25px/30px var(--fs-title-font) !important; color: var(--sa-text) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 44px; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .msg-bubble, html body.fs.fs-blip[data-fs-variant="space-age"] .msg-bubble * { font-style: italic; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .msg-bubble { font: italic 700 16px/20px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .msg-bubble.received { color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .msg-bubble.sent { color: #fff !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .msg-chat-input { margin: 0 6px 6px !important; height: 58px !important; padding: 0 8px 0 18px !important; border: 0 solid transparent !important; border-image: var(--fs-btn-secondary) 0 74 fill / 0 29px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #msgInput { height: 36px !important; font: italic 600 16px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #sendMsgBtn { width: 44px !important; height: 44px !important; background: var(--fs-blip-btn) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #sendMsgBtn::after { filter: none !important; background: #fff4e2 !important; -webkit-mask: var(--fs-icon-send) center / contain no-repeat; mask: var(--fs-icon-send) center / contain no-repeat; inset: 12px !important; }
+}
+@media (max-width: 768px) {
+  /* chat GIF picker (concept chat B): orange-rim cream panel, cream search pill with a teal rim, rounded tiles, teal rules around "Powered by KLIPY" */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #msgGifPicker { background: none !important; box-shadow: none !important; border-radius: 0 !important; border: 0 solid transparent !important; border-width: 8px 8px 12px !important;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #msgGifPicker .gif-picker-header { background: none !important; border: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #msgGifSearch { background: none !important; border: 0 solid transparent !important; border-radius: 0 !important; border-image: var(--fs-field) 0 64 fill / 0 18px stretch !important;
+    font: italic 600 16px var(--fs-font) !important; color: var(--sa-text) !important; padding: 0 16px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #msgGifClose { color: var(--sa-text) !important; background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #msgGifGrid { background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #msgGifGrid img { border-radius: 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #msgGifPicker :is(.gif-picker-footer, .gif-powered, [class*=powered]) { background: none !important; font: italic 800 14px var(--fs-title-font) !important; color: var(--sa-text) !important; }
+}
