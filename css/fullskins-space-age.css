@@ -20,6 +20,8 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .btn-disabled { color: #6b625c
 html body.fs.fs-blip[data-fs-variant="space-age"] #gvLeaveBtn { color: #d7352b !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] .search-tab { color: var(--sa-text) !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] .search-tab.active { color: #fff !important; }
+/* Space-Age icons carry a cream fill: on an active (orange) tab show the painted icon, never Logo Classic's white silhouette filter */
+html body.fs.fs-blip[data-fs-variant="space-age"] :is(.search-tab.active, .search-tab.active *) > i { filter: none !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-input-fake, .page-search) { color: var(--bl-soft) !important; font-style: italic; }
 
 /* ---------- avatars: small ones in the cream ring ---------- */
@@ -286,4 +288,32 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvPostsFeed .pv-posts-heading::after { content: ""; position: absolute; right: -46px; top: -1px; width: 28px; height: 28px; background: var(--fs-sparkle-1) center / contain no-repeat; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvPostsFeed .pv-posts-heading > i { display: none !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvPostsFeed > .feed-post { margin: 0 !important; border-image-source: var(--fs-panel-tan-tight) !important; border-image-width: 10px 10px 16px 10px !important; border-image-outset: 0 0 6px 0 !important; }
+}
+
+/* ======================================================================================================== GROUPS TAB (phone) — ref/space-age/groups-a.png
+   (concept y - 35 = page y): title 83, search + Create Group 113-150, tabs 163-201, cards from 215 (189 wide, 2 rows, scroll right) */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups .page-header { margin-bottom: 4px !important; padding-top: 2px !important; row-gap: 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups .page-header h2 { font: 800 31px/38px var(--fs-title-font) !important; gap: 9px !important; margin: -10px 0 0 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups .page-header h2 > i { width: 38px !important; height: 34px !important; flex-basis: 38px !important; background-image: var(--fs-icon-people) !important; }
+  /* header mascot: the plain bubble head (no helmet) with yellow burst lines left and sparkles right, like the concept */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups .page-header::after { right: 14px !important; top: -8px !important; width: 136px !important; height: 50px !important;
+    background: var(--fs-sparkle-2) right 0 top 4px / 20px no-repeat, var(--fs-burst) left 8px top 2px / 28px no-repeat, var(--fs-mascot-head-plain) center / 64px no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups .page-search { height: 37px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups .page-search input { font: italic 600 16px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups #createGroupBtn { height: 37px !important; min-height: 0 !important; border-image-source: var(--fs-btn-teal) !important; font: 800 17px var(--fs-title-font) !important; color: #fff !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups #groupsTabs { margin: 10px 0 14px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups #groupsTabs .search-tab { height: 38px !important; font: 800 16px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card { min-width: min(189px, 47vw) !important; max-width: min(189px, 47vw) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-banner { height: 75px !important; flex-basis: 75px !important; border-radius: 13px 13px 4px 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-banner > i, html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-banner > img { bottom: -30px !important; width: 62px !important; height: 62px !important; margin-left: -31px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-banner::after { background-image: var(--fs-group-avatar-frame) !important; bottom: -36px !important; width: 74px !important; height: 74px !important; margin-left: -37px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-banner > i { background-color: var(--sa-teal) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-body { padding-top: 34px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-body h4 { font: italic 800 17px/19px var(--fs-title-font) !important; white-space: normal !important; overflow: hidden; display: -webkit-box !important; -webkit-box-orient: vertical; -webkit-line-clamp: 2; text-overflow: clip !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-body p { font: 600 11.5px/14px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-members { font: 800 13.5px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-actions .btn { font: 800 14.5px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .join-group-btn:not(.btn-disabled) { border-image-source: var(--fs-btn-teal) !important; color: #fff !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .view-group-btn { border-image-source: var(--fs-chip) !important; color: var(--sa-teal-deep, #13625e) !important; }
 }

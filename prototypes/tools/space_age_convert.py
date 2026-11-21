@@ -105,4 +105,7 @@ for y in range(pt.height):
             t = min(1, (sat - 0.35) / 0.4); tr, tg, tb = 0xcd, 0xb4, 0x8e
             px[x, y] = (round(r + (tr * v / 0.93 - r) * t), round(g + (tg * v / 0.93 - g) * t), round(b + (tb * v / 0.93 - b) * t), al)
 save(pt, 'panel-tan-tight')
+# sheet (the page sheet behind Groups / Notifications / Network / Search…: open at the bottom, 9-sliced 70 70 0 70) =
+# the top of the tan-rim card, refitted to Logo Classic's sheet box
+top = pt.crop((0, 0, pt.width, int(pt.height * 0.6))); save(refit(top, f'{L}/sheet.webp', 'nine', (70, 70, 70, 0)), 'sheet')
 print('art:', json.dumps(sorted(set(done))))
