@@ -580,3 +580,34 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
   body.fs-blip[data-fs-variant="clay-town"] .blip-menu-list h4 { font: 700 26px var(--fs-font) !important; }
   body.fs-blip[data-fs-variant="clay-town"] .blip-row { font: 700 21px var(--fs-font) !important; min-height: 44px !important; }
 }
+
+/* ======================================================================================================== DESKTOP HOME + GROUPS — concepts desktop.png, groupsdesk.png */
+@media (min-width: 769px) {
+  /* top bar: every nav item its own cream clay tile (Home active = butter), sage search pill */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .nav-center .nav-link:not(.active) { background: var(--fs-tile-cream) center / 100% 100% no-repeat !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .nav-center .nav-link { margin: 0 2px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .nav-center .nav-link > span:not(.notif-badge) { color: var(--bl-ink) !important; font-weight: 700 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .navbar .search-bar { border-image-source: var(--fs-pill-sage) !important; border-image-slice: 0 66 fill !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .navbar .search-bar input::placeholder { color: var(--bl-ink) !important; opacity: 1; }
+  /* profile card: sage pencil tile next to the butter View Profile; Follow buttons sage */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .edit-profile-btn { background: none !important; border: 0 solid transparent !important; border-image: var(--fs-pill-sage) 0 66 fill / 0 18px stretch !important; border-radius: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .edit-profile-btn > i { background: #2c5a2c !important; -webkit-mask: var(--fs-icon-edit) center / contain no-repeat; mask: var(--fs-icon-edit) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .profile-name { font-size: 30px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] :is(.suggestion-follow-btn, .pymk-follow-btn, .right-sidebar .btn-primary) { border-image-source: var(--fs-pill-sage) !important; border-image-slice: 0 66 fill !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .featured-buy-btn { border-image-source: var(--fs-pill-sage) !important; border-image-slice: 0 66 fill !important; }
+}
+@media (min-width: 769px) {   /* the base whitens desktop nav icons for its blue bar; on cream / butter clay tiles they stay clay brown */
+  html body.fs.fs-blip[data-fs-variant="clay-town"]:is(*) .nav-center .nav-link > i { filter: none !important; }
+}
+@media (min-width: 769px) {   /* Desktop Groups (concept groupsdesk.png): the page on one cream clay sheet, soft cream search + idle tabs, terracotta-framed cards, Join sage */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .page-container { margin: 6px 18px 0 !important; padding: 4px 22px 40px !important; min-height: calc(100vh - 80px); box-sizing: border-box;
+    border: 14px solid transparent !important; border-image: var(--fs-sheet) 12% fill / 14px stretch !important; border-bottom: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .page-search { border-image: var(--fs-pill-cream) 0 66 fill / 0 20px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"]:is(*) #groupsTabs .search-tab:not(.active) { border-image-source: var(--fs-pill-cream) !important; border-image-slice: 0 66 fill !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .group-card { border: 8px solid transparent !important; border-image: var(--fs-panel-card) 12% fill / 26px stretch !important; background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .group-card-body h4 { font: 700 19px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .group-card-actions .view-group-btn { border-image-source: var(--fs-pill-cream) !important; border-image-slice: 0 66 fill !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .group-card-actions .join-group-btn.btn-primary { border-image-source: var(--fs-pill-sage) !important; border-image-slice: 0 66 fill !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .page-header h2 { color: var(--bl-ink) !important; font-family: var(--fs-font) !important; font-weight: 700 !important; }
+}
+@media (min-width: 769px) { html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .group-card { height: auto !important; padding-bottom: 8px !important; } }
