@@ -90,3 +90,184 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .stat { border-im
 html body.fs.fs-blip[data-fs-variant="clay-town"] #pillTrendingGroups { border-image-source: var(--fs-pill-sage) !important; color: #24502a !important; }
 html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background: currentColor !important;
   -webkit-mask: var(--fs-icon-groups-on) center / contain no-repeat; mask: var(--fs-icon-groups-on) center / contain no-repeat; }
+
+/* ======================================================================================================== HOME (phone) — overlay ov-home-a (concept crop 512px → 402pt)
+   Cards keep the base 9-slice (panel-card 12% / 14px: ~3pt transparent margin, ~4pt clay lip), so their boxes run edge to edge. */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .navbar { height: calc(54px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home.page.active { padding: calc(55px + env(safe-area-inset-top, 0px)) 0 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .main-container { padding: 0 !important; row-gap: 0 !important; gap: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .left-sidebar { gap: 0 !important; }
+  /* cover (y 55-148): a rounded photo inset under the bar with a thin clay lip; no mascot on it (he stands on the profile pedestal) */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home #timelineCover { height: 93px !important; margin: 0 3px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .fs-tl-slot-1 { -webkit-mask: none !important; mask: none !important; border-radius: 11px !important; overflow: hidden; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home #timelineCover::after { inset: 0 !important; width: auto !important; height: auto !important; background: none !important; animation: none !important;
+    border-radius: 11px; box-shadow: inset 0 0 0 2px rgba(120,48,20,.55), inset 0 -3px 4px rgba(120,48,20,.25); }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home #coverEditBtn { right: 10px !important; bottom: 10px !important; width: 34px !important; height: 34px !important;
+    background: var(--fs-camera-badge) center / contain no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home #coverEditBtn > i { opacity: 0 !important; }
+
+  /* profile card (visible y 150-333; padding box origin x 14, y 161): sage clay blob top-left, avatar in its terracotta ring on a
+     clay stand, the mascot beside it on the wide pedestal; name / butter status pill / bio / Following | Followers /
+     View Profile + sage pencil at the right */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard { position: relative !important; margin: -1px 0 0 !important; height: 189px !important; min-height: 0 !important; box-sizing: border-box; padding: 0 !important; overflow: visible !important;
+    border: 14px solid transparent !important; border-image: var(--fs-panel-card) 12% fill / 14px stretch !important; background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"]:is(*) #profileCard::before { content: "" !important; display: block !important; position: absolute; left: -12px; top: -9px; width: 228px; height: 100px; z-index: 0; pointer-events: none;
+    border: 0 !important; border-image: none !important; transform: none !important; background: var(--fs-stage-blob) left top / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .profile-info { display: block !important; position: static !important; padding: 0 !important; height: 100%; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .profile-info::before { content: ""; position: absolute; left: -6px; top: 77px; width: 220px; height: 75px; z-index: 1; pointer-events: none;
+    background: var(--fs-stage-pedestal) center / 100% 100% no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .profile-info::after { content: ""; position: absolute; left: 82px; top: 20px; width: 112px; height: 112px; z-index: 3; pointer-events: none;
+    background: var(--fs-mascot) center / contain no-repeat; animation: ctBob 3.4s ease-in-out infinite; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .profile-avatar-wrap { position: absolute !important; left: -2px; top: -1px; width: 110px !important; height: 110px !important; margin: 0 !important; z-index: 2; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .profile-avatar-wrap::after { inset: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .avatar-edit-btn { right: 22px !important; bottom: 33px !important; width: 30px !important; height: 30px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .fs-namecard { position: absolute !important; left: 216px; right: -12px; top: -3px; padding: 0 !important; z-index: 2; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .profile-name { font: 700 25px/27px var(--fs-font) !important; margin: 0 !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -.2px; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .profile-title { display: block; width: 155px; box-sizing: border-box; height: 19px; margin: 6px 0 6px 2px !important; padding: 0 8px !important; text-align: center !important;
+    font: 700 14.5px/19px var(--fs-font) !important; color: var(--bl-ink) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    border: 0 solid transparent !important; border-image: var(--fs-btn-primary) 0 66 fill / 0 9.5px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .profile-about { font: 500 13px/15px var(--fs-font) !important; letter-spacing: -.25px; -webkit-line-clamp: 2 !important; display: -webkit-box !important;
+    -webkit-box-orient: vertical; max-height: 30px; overflow: hidden; padding-left: 1px; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .profile-stats { position: absolute !important; left: 218px !important; top: 88px !important; width: 168px; display: grid !important;
+    grid-template-columns: 1fr 1fr; gap: 0 !important; z-index: 2; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .stat { display: flex !important; flex-direction: column-reverse !important; align-items: center; gap: 1px; height: auto !important;
+    padding: 0 !important; background: none !important; border: 0 !important; border-image: none !important; border-radius: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .stat + .stat { border-left: 1.5px solid rgba(74,28,8,.45) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .stat-label { font: 600 13px/15px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .stat-count { font: 700 20px/20px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .view-profile-link { left: 232px !important; right: auto !important; top: 132px !important; bottom: auto !important;
+    font: 700 16.5px/20px var(--fs-font) !important; color: var(--ct-sage) !important; text-decoration-color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .edit-profile-btn { left: auto !important; right: 2px !important; top: 132px !important; width: 39px !important; height: 32px !important; }
+
+  /* Photos (visible y 336-528): heading, 3 x 2 rounded photos 116 x 65, butter "View All" pill over the last photo */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .photos-card { margin-top: -3px !important; height: 198px !important; box-sizing: border-box; padding: 0 4px 0 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .photos-card .card-heading { font: 700 21px/22px var(--fs-font) !important; margin: -6px 0 5px 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .photos-preview { gap: 7px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .photos-preview > * { height: 65px !important; aspect-ratio: auto !important; -webkit-mask: none !important; mask: none !important; -webkit-mask-box-image: none !important;
+    border-radius: 9px !important; box-shadow: 0 0 0 2.5px #fdf3e4, 0 1.5px 3px 2px rgba(120,48,20,.25); }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .photos-card .view-more-link { top: auto !important; bottom: -2px !important; right: 8px !important; width: 108px; height: 29px; display: flex !important;
+    align-items: center; justify-content: center; z-index: 2; font: 700 17px var(--fs-font) !important; color: var(--bl-ink) !important;
+    border: 0 solid transparent !important; border-image: var(--fs-btn-primary) 0 66 fill / 0 14.5px stretch !important; }
+
+  /* pills (y 532-565): butter + sage, little clay sparkle ticks at both ends */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .mobile-pills-bar { position: relative; margin: 1px 0 0 !important; padding: 0 16px 0 22px !important; gap: 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .mobile-pills-bar::before, html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .mobile-pills-bar::after { content: ""; position: absolute; top: 3px; width: 13px; height: 27px;
+    background: var(--fs-burst) center / contain no-repeat; pointer-events: none; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .mobile-pills-bar::before { left: 7px; transform: scaleX(-1); }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .mobile-pills-bar::after { right: 2px; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .mobile-pill { height: 33px !important; font: 700 14.5px var(--fs-font) !important; padding: 0 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .mobile-pill:first-child { flex: 187 1 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .mobile-pill:nth-child(2) { flex: 167 1 0 !important; }
+
+  /* Stories card (visible y 570-668): heading + sparkle, five 58pt rings */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .stories-bar { position: relative; margin: 2px 0 0 !important; height: 104px; box-sizing: border-box; padding: 9px 0 0 6px !important; gap: 0 !important;
+    justify-content: space-between !important; overflow: visible !important; border: 14px solid transparent !important; border-image: var(--fs-panel-card) 12% fill / 14px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .stories-bar::before { content: "Stories"; position: absolute; left: 6px; top: -11px; font: 700 20px/22px var(--fs-font); color: var(--bl-ink);
+    padding-right: 26px; background: var(--fs-sparkle-1) right 2px center / 15px 15px no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .stories-bar .story-item { flex: 0 0 auto !important; width: 62px !important; min-width: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .story-ring { width: 58px !important; height: 58px !important; margin: 0 auto !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .story-name { font: 600 13.5px/15px var(--fs-font) !important; color: var(--bl-ink) !important; max-width: none !important; white-space: nowrap; overflow: visible !important; margin-top: 0 !important; }
+}
+@keyframes ctBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+
+/* ---------- Home, scrolled — overlay ov-home-b (post bar at y 57) ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .center-feed { gap: 0 !important; row-gap: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .center-feed > :is(.featured-skin-banner, .quest-panel, .coin-goal-bar) { margin-top: -3px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .center-feed > .post-create-bar { margin-top: 2px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home :is(.post-create-bar, .featured-skin-banner, .quest-panel, .coin-goal-bar, .feed-post) { border-width: 14px !important; border-image-width: 14px !important; box-sizing: border-box; }
+  /* post bar (visible 57-119): ringed avatar, cream clay field */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .post-create-bar { height: 68px !important; min-height: 0 !important; padding: 0 !important; gap: 7px !important; align-items: center; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .post-create-bar .post-create-avatar { width: 52px !important; height: 52px !important; flex: 0 0 52px; margin-left: 2px;
+    box-shadow: 0 0 0 2px var(--ct-cream), 0 0 0 5px var(--ct-terra) !important; -webkit-mask: none !important; mask: none !important; border-radius: 50% !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .post-input-fake { height: 36px !important; flex: 1 1 auto; padding: 0 16px !important; font: 500 16px var(--fs-font) !important; color: #7a4a33 !important; }
+
+  /* Featured Skin (visible 124-249): the sage clay card; heading + sparkle, cream timer chip, wide preview left, name / line / Buy right */
+  html body.fs.fs-blip[data-fs-variant="clay-town"]:is(*) #page-home .featured-skin-banner { height: 134px !important; min-height: 0 !important; padding: 0 !important; border-image-source: var(--fs-panel-card-sage) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-header { position: absolute !important; left: 0; right: 0; top: -4px !important; height: 23px; margin: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-header h4 { position: absolute; left: 6px !important; top: 0 !important; height: 23px; padding: 0 22px 0 0 !important; border: 0 !important; border-image: none !important;
+    font: 700 20px/23px var(--fs-font) !important; color: var(--bl-ink) !important; background: var(--fs-sparkle-1) right center / 17px 17px no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-header h4 > i { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-timer { position: absolute; left: auto !important; right: 1px !important; top: 0 !important; width: 108px; height: 23px; box-sizing: border-box; padding: 0 6px !important;
+    display: flex !important; align-items: center; justify-content: center; gap: 4px; font: 700 13.5px var(--fs-font) !important; color: var(--bl-ink) !important;
+    border: 0 solid transparent !important; border-image: var(--fs-chip) 0 76 fill / 0 11.5px stretch !important; background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-timer > i { width: 14px; height: 14px; font-size: 0 !important; background: var(--bl-ink) !important; -webkit-mask: var(--fs-icon-clock) center / contain no-repeat; mask: var(--fs-icon-clock) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-body { position: absolute !important; inset: 21px 1px -2px 1px; display: grid !important; grid-template-columns: 177px 1fr !important; grid-template-rows: 29px 16px 1fr !important; row-gap: 0 !important;
+    column-gap: 14px; align-items: start; margin: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-preview { grid-row: 1 / 4; width: 177px !important; height: 84px !important; margin: 0 !important; border-radius: 10px !important;
+    -webkit-mask: none !important; mask: none !important; -webkit-mask-box-image: none !important; box-shadow: 0 0 0 3px #fbf1e2, 0 2px 4px 3px rgba(60,90,50,.3) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-info { display: contents !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-info h5 { grid-column: 2; grid-row: 1; margin: 8px 0 0 !important; font: 700 21px/21px var(--fs-font) !important; color: var(--bl-ink) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-info p { grid-column: 2; grid-row: 2; margin: 2px 0 0 !important; font: 500 13.5px/14px var(--fs-font) !important; color: var(--bl-ink) !important;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-body .featured-buy-btn { grid-column: 2; grid-row: 3; position: static !important; width: 100% !important; height: 29px !important; min-height: 0 !important; margin: 7px 0 0 !important; padding: 0 !important;
+    display: flex !important; align-items: center; justify-content: center; gap: 5px; font: 700 18px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-buy-btn::before { content: "Buy \00B7"; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-buy-btn > i { width: 22px !important; height: 22px !important; font-size: 0 !important; color: transparent !important; background: var(--fs-coin) center / contain no-repeat !important; -webkit-mask: none !important; mask: none !important; }
+
+  /* Daily Quests (visible 250-412): heading + sparkle, cream "Resets daily" chip; rows = clay tile · label over green bar · n/m | coin +x */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-panel { height: 168px !important; padding: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .center-feed > .quest-panel { margin-top: -6px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .center-feed > .coin-goal-bar { margin-top: -2px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-panel-header { height: 22px; margin: -6px 0 1px !important; display: flex !important; align-items: center; justify-content: space-between; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-panel-header h4 { margin: 0 0 0 4px !important; padding-right: 24px !important; font: 700 20px/22px var(--fs-font) !important; background: var(--fs-sparkle-1) right center / 17px 17px no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-panel-header h4 > i { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-reset { width: 108px; height: 22px; box-sizing: border-box; display: flex !important; align-items: center; justify-content: center; margin-right: 1px; padding: 0 !important;
+    font: 700 13.5px var(--fs-font) !important; color: var(--bl-ink) !important; border: 0 solid transparent !important; border-image: var(--fs-chip) 0 76 fill / 0 11px stretch !important; background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-item { height: 43px !important; min-height: 0 !important; grid-template-columns: 37px 1fr auto !important; column-gap: 15px !important; padding: 0 0 0 11px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-item + .quest-item { border-top: 1.5px solid rgba(214,112,78,.28) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-icon { width: 37px !important; height: 37px !important; background: var(--fs-quest-comment) center / contain no-repeat !important; border-radius: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-icon > i { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-icon:has(.fa-heart) { background-image: var(--fs-quest-like) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-icon:has(.fa-paper-plane) { background-image: var(--fs-quest-message) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-icon:has(.fa-thumbs-up) { background-image: var(--fs-quest-react) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-icon:has(.fa-pen) { background-image: var(--fs-quest-post) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-icon:has(.fa-bookmark) { background-image: var(--fs-quest-save) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-icon:has(.fa-share-nodes) { background-image: var(--fs-quest-share) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-icon:has(.fa-eye) { background-image: var(--fs-quest-view) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-info { grid-template-columns: 190px 1fr !important; grid-template-rows: 15px 12px !important; row-gap: 5px !important; column-gap: 12px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-info p { grid-column: 1 / -1 !important; grid-row: 1; margin: 0 !important; font: 600 14px/15px var(--fs-font) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-bar { grid-column: 1 !important; grid-row: 2 !important; height: 12px !important; width: 190px !important; border-image-width: 0 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-progress { grid-column: 2 !important; grid-row: 1 / 3 !important; align-self: end; font: 700 15px var(--fs-font) !important; color: var(--bl-ink) !important; white-space: nowrap; word-spacing: -3px; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-reward { height: 30px !important; min-width: 64px; box-sizing: border-box; padding: 0 0 0 9px !important; gap: 5px; border: 0 !important; border-image: none !important; background: none !important;
+    border-left: 1.5px solid rgba(74,28,8,.4) !important; font: 700 17px var(--fs-font) !important; color: var(--bl-ink) !important; align-self: end; margin-bottom: 1px; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-reward > i { width: 23px !important; height: 23px !important; flex: 0 0 23px; }
+
+  /* coin goal (visible 416-447): coin · "180 / 300 coins" · green bar | next look */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .coin-goal-bar { height: 37px !important; padding: 0 0 0 2px !important; display: grid !important; grid-template-columns: auto 125px auto; align-items: center; column-gap: 0; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .coin-goal-bar::before { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .coin-goal-bar p { display: contents !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .coin-goal-bar p span { grid-column: 1; grid-row: 1; display: flex; align-items: center; gap: 7px; padding-right: 10px; font: 600 14.5px var(--fs-font); color: var(--bl-ink); white-space: nowrap; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .coin-goal-bar p span::before { content: ""; width: 25px; height: 25px; flex: 0 0 25px; margin-left: -4px; background: var(--fs-coin) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .coin-goal-track { grid-column: 2; grid-row: 1; height: 12px !important; margin: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .coin-goal-bar p strong { grid-column: 3; grid-row: 1; justify-self: end; padding-left: 9px; margin-left: 12px; border-left: 1.5px solid rgba(74,28,8,.4); line-height: 22px;
+    font: 600 14.5px var(--fs-font) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* feed tabs (452-482): three clay pills, the active one terracotta with cream text */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home #feedTabs { margin-top: 2px !important; padding: 0 14px 0 12px !important; gap: 5px !important; height: 31px; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #feedTabs .search-tab { height: 31px !important; font: 700 17px var(--fs-font) !important; border-image-width: 0 15.5px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #feedTabs .search-tab.active { border-image-source: var(--fs-pill-terra) !important; border-image-slice: 0 66 fill !important; color: #fbf1e2 !important; text-shadow: 0 1px 0 rgba(90,30,10,.35); }
+
+  /* posts: ringed avatar, name / time, text, rounded photo, the actions as clay pills (like = sage) */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .feed-post { margin-top: 1px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .feed-post .post-avatar { width: 41px !important; height: 41px !important; box-shadow: 0 0 0 2px var(--ct-cream), 0 0 0 3.5px var(--ct-terra) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .feed-post .post-username { font: 700 17px/18px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .feed-post .post-time { font: 600 12.5px/14px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .feed-post :is(.post-description, .post-description p) { font: 500 14.5px/17px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .feed-post .post-media-grid { border-radius: 10px !important; -webkit-mask: none !important; mask: none !important; -webkit-mask-box-image: none !important; overflow: hidden; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .feed-post .post-actions .action-left { display: flex !important; width: 100%; justify-content: space-between; gap: 6px; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .feed-post .action-btn { height: 28px !important; min-height: 0 !important; min-width: 52px; padding: 0 9px !important; display: flex !important; align-items: center; justify-content: center; gap: 6px;
+    font: 700 16px var(--fs-font) !important; color: var(--bl-ink) !important; border: 0 solid transparent !important; border-image: var(--fs-pill-cream) 0 66 fill / 0 14px stretch !important; background: none !important; border-radius: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .feed-post .action-btn.like-btn { min-width: 71px; border-image-source: var(--fs-pill-sage) !important; border-image-slice: 0 66 fill !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .feed-post .action-btn.comment-btn { min-width: 80px; }
+}
+@media (max-width: 768px) {
+  /* Home fixes after the first side-by-side: solid sage pencil tile with a dark-green pencil, bigger quest tiles, the active
+     feed pill lifted off the terracotta page */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .edit-profile-btn { right: 4px !important; background: none !important; border: 0 solid transparent !important;
+    border-image: var(--fs-pill-sage) 0 66 fill / 0 16px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .edit-profile-btn > i { background: #2c5a2c !important; width: 19px !important; height: 19px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-icon { background-size: 128% 128% !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #feedTabs .search-tab.active { filter: drop-shadow(0 1.5px 1px rgba(90,25,8,.35)); }
+}
