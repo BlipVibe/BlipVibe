@@ -373,7 +373,7 @@
         theme: { '--primary': '#e8742a', '--primary-hover': '#c8561a', '--dark': '#3b2414', '--gray': '#7a5a40', '--light-bg': '#5a361e', '--card': '#f6ebd9', '--border': 'rgba(59,36,20,.25)', '--nav-bg': '#6b4226' },
         font: "'Nunito', sans-serif", titleFont: "'Fraunces', serif",
         fonts: 'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,700;1,9..144,800&family=Nunito:wght@600;700;800;900&display=swap' },
-      { id: 'clay-town', name: 'Clay Town', ready: false,   // owner approval pending (prototypes/clay-town-kit-brief.md)
+      { id: 'clay-town', name: 'Clay Town', ready: true,   // owner approved Nov 21 2026 (prototypes/clay-town-kit-brief.md)
         art: [
           'avatar-frame', 'avatar-ring', 'background', 'badge-commenter', 'badge-count', 'badge-early_adopter',
           'badge-first_post', 'badge-generous', 'badge-group_leader', 'badge-photographer', 'badge-popular',
