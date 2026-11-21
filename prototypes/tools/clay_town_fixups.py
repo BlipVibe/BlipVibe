@@ -36,3 +36,6 @@ for n, lo, hi in [('tile-butter', (0xd9, 0xa4, 0x38), (0xfb, 0xe0, 0x8a)), ('til
                   ('tile-cream', (0xd8, 0xbf, 0x98), (0xfd, 0xf0, 0xda))]:
     colorize(K + 'nav-active.png', lo, hi).save(K + n + '.png')
 print('fixups done')
+# Home concept: Trending Groups is a sage pill; Following / Followers are soft cream-butter pills (no outline)
+for n, lo, hi in [('pill-sage', (0x6c, 0x9e, 0x5e), (0xb8, 0xdc, 0xa8)), ('pill-cream', (0xd8, 0xb8, 0x80), (0xfa, 0xea, 0xc4))]:
+    colorize(K + 'btn-primary.png', lo, hi).save(K + n + '.png')

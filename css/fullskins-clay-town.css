@@ -72,3 +72,21 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard .pv-online-line
   html body.fs.fs-blip[data-fs-variant="clay-town"] #shopTabs { border-bottom-color: #e3b48e !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #pvMutualFollowers .mutual-followers > span { border-left-color: #e3b48e !important; }
 }
+
+/* ===== Home 1:1 to the concept (clay-town/home.png) ===== */
+/* bottom nav: inactive labels + icons are clay brown, not Logo Classic navy */
+html body.fs.fs-blip[data-fs-variant="clay-town"] .nav-center .nav-link:not(.active),
+html body.fs.fs-blip[data-fs-variant="clay-town"] .nav-center .nav-link:not(.active) > span:not(.notif-badge) { color: var(--bl-ink) !important; }
+/* profile card: plain clay card (the concept has no speech tail) */
+html body.fs.fs-blip[data-fs-variant="clay-town"]:is(*) #profileCard::after { display: none !important; }
+/* edit = sage clay tile with a cream pencil */
+html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .edit-profile-btn { background: var(--fs-tile-sage) center / 100% 100% no-repeat !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .edit-profile-btn > i { background: #fbf1e2 !important;
+  -webkit-mask: var(--fs-icon-edit) center / contain no-repeat; mask: var(--fs-icon-edit) center / contain no-repeat; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .view-profile-link { text-decoration: underline !important; text-decoration-thickness: 2px !important; text-underline-offset: 4px; }
+/* Following / Followers: soft cream clay pills (no terracotta rim) */
+html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .stat { border-image-source: var(--fs-pill-cream) !important; }
+/* Trending Groups = sage clay pill, dark-green text + icon */
+html body.fs.fs-blip[data-fs-variant="clay-town"] #pillTrendingGroups { border-image-source: var(--fs-pill-sage) !important; color: #24502a !important; }
+html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background: currentColor !important;
+  -webkit-mask: var(--fs-icon-groups-on) center / contain no-repeat; mask: var(--fs-icon-groups-on) center / contain no-repeat; }
