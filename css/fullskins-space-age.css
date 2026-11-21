@@ -20,6 +20,8 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .btn-disabled { color: #6b625c
 html body.fs.fs-blip[data-fs-variant="space-age"] #gvLeaveBtn { color: #d7352b !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] .search-tab { color: var(--sa-text) !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] .search-tab.active { color: #fff !important; }
+/* Logo Classic's blue links + post badges, in Space-Age teal */
+html body.fs.fs-blip[data-fs-variant="space-age"] :is(.view-more-btn, .post-badges .badge, .post-badges .badge > i) { color: var(--sa-teal) !important; }
 /* Space-Age icons carry a cream fill: on an active (orange) tab show the painted icon, never Logo Classic's white silhouette filter */
 html body.fs.fs-blip[data-fs-variant="space-age"] :is(.search-tab.active, .search-tab.active *) > i { filter: none !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-input-fake, .page-search) { color: var(--bl-soft) !important; font-style: italic; }
@@ -397,4 +399,62 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
     border: 0 solid transparent !important; border-image: var(--fs-pill-mint) 0 67 fill / 0 11px stretch !important; font: italic 800 13px/22px var(--fs-font) !important; color: var(--sa-text) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .mutual-badge > i { color: var(--sa-teal) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .profile-card-bio { display: none !important; }
+}
+
+/* ======================================================================================================== SEARCH (phone) — ref/space-age/search-a.png
+   (concept y - 32 = page y): header card 61-195 (white italic "Search" tab 75-111 with a starburst, line, mascot head right, teal field
+   144-178); results card from 198 holding the "Results for …" tab 206-233, the tabs 240-272 (active TEAL) and teal-rim rows 84pt from 285 */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-search .page-container { position: relative !important; padding: 0 14px 90px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-search .page-container > * { position: relative; z-index: 1; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-search .page-container::after { content: ""; position: absolute; left: 4px; right: 4px; top: 163px; bottom: 70px; z-index: 0; pointer-events: none;
+    border: 0 solid transparent; border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px stretch; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-search .page-header { height: 205px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-search .page-header::before { content: ""; position: absolute; left: -10px; right: -10px; top: 26px; height: 134px; z-index: -1; pointer-events: none;
+    border: 0 solid transparent; border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px stretch; }
+  html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #page-search .page-header::after { background: var(--fs-sparkle-1) left 2px top 6px / 26px no-repeat, var(--fs-sparkle-1) right 0 top 22px / 22px no-repeat, var(--fs-mascot-head-plain) center / 92px no-repeat !important;
+    top: 28px !important; right: 18px !important; width: 140px !important; height: 72px !important; aspect-ratio: auto !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-search .page-header h2 { top: 40px !important; left: 42px !important; height: 36px; padding: 0 26px !important; gap: 0 !important;
+    font: italic 800 30px/36px var(--fs-title-font) !important; color: #fff !important; border: 0 solid transparent !important; border-image: var(--fs-heading-tab) 0 72 fill / 0 18px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-search .page-header h2 > i { position: absolute !important; left: -38px; top: 2px; width: 32px !important; height: 32px !important; background: var(--fs-sparkle-1) center / contain no-repeat !important; -webkit-mask: none !important; mask: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchPageInput { top: 109px !important; left: 4px !important; right: 8px !important; height: 34px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchPageInput::before { font: italic 800 14.5px var(--fs-font) !important; top: -25px !important; left: 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchPageQuery { font: italic 800 18px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchQuery { position: absolute !important; left: 0 !important; top: 171px !important; margin: 0 !important; height: 27px; display: inline-flex !important; align-items: center; padding: 0 22px !important;
+    font: italic 800 20px/27px var(--fs-title-font) !important; color: #fff !important; border: 0 solid transparent !important; border-image: var(--fs-heading-tab) 0 72 fill / 0 14px stretch !important; max-width: 90%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-search .search-tabs { margin: 0 4px 13px !important; gap: 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-search .search-tab { height: 32px !important; font: italic 800 17px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-search .search-tab.active { border-image-source: var(--fs-btn-teal) !important; border-image-slice: 0 67 fill !important; color: #fff !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .search-results-grid { gap: 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .profile-card-item { min-height: 84px !important; height: auto !important; border-image-source: var(--fs-panel-teal-tight) !important; grid-template-columns: 78px 1fr 102px !important; column-gap: 12px !important; padding: 0 4px 0 0 !important; border-width: 3px 10px 5px 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .profile-card-avatar { width: 78px !important; height: 78px !important; padding: 10px !important; box-sizing: border-box !important; box-shadow: none !important; background: var(--fs-avatar-frame) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .profile-card-name { font: italic 800 19px/23px var(--fs-title-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .profile-card-bio { font: 500 14.5px/18px var(--fs-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .profile-follow-btn { width: 102px !important; height: 36px !important; font: italic 800 18px var(--fs-title-font) !important; border-image-width: 0 18px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .profile-follow-btn.btn-primary { border-image-source: var(--fs-btn-teal) !important; color: #fff !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .profile-follow-btn.btn-outline { border-image-source: var(--fs-coin-pill) !important; border-image-slice: 0 63 fill !important; color: var(--sa-teal) !important; }
+}
+
+@media (max-width: 768px) {
+  /* group results (concept B): teal-rim card, landscape banner strip on top, porthole picture left over it, name / line / members,
+     a mint "✓ Joined" (or teal Join) over a cream View at the right */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-card { display: grid !important; grid-template-columns: 88px minmax(0, 1fr) 96px; grid-template-rows: 32px auto; column-gap: 8px; row-gap: 0; align-items: start;
+    min-height: 0 !important; height: auto !important; padding: 0 0 6px !important; border-width: 4px 8px 6px !important; border-image-source: var(--fs-panel-teal-tight) !important; position: relative; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-card-banner { grid-column: 1 / -1; grid-row: 1; height: 32px !important; border-radius: 12px 12px 0 0 !important; position: static !important; overflow: visible !important; margin: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-card-banner > .gc-icon-edit-btn { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-card-banner > img, html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-card-banner > i { position: absolute !important; left: 4px !important; top: 14px !important; width: 78px !important; height: 78px !important; margin: 0 !important; border: 0 !important;
+    padding: 10px !important; box-sizing: border-box !important; background: var(--fs-avatar-frame) center / 100% 100% no-repeat !important; border-radius: 50% !important; z-index: 2; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-card-body { grid-column: 2; grid-row: 2; padding: 6px 0 0 !important; text-align: left !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-card-body h4 { font: italic 800 18px/21px var(--fs-title-font) !important; margin: 0 !important; white-space: normal; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-card-body p { font: 500 13px/16px var(--fs-font) !important; margin: 1px 0 2px !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-members { font: 800 13.5px var(--fs-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-members > i { color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-card-actions { grid-column: 3; grid-row: 2; display: flex !important; flex-direction: column !important; gap: 6px !important; padding: 8px 0 0 !important; margin: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-card-actions .btn { width: 96px !important; height: 26px !important; min-height: 0 !important; padding: 0 6px !important; margin: 0 !important; border-radius: 0 !important; display: flex !important; align-items: center; justify-content: center; gap: 4px;
+    font: italic 800 15px/26px var(--fs-title-font) !important; border: 0 solid transparent !important; border-image: var(--fs-chip) 0 76 fill / 0 13px stretch !important; color: var(--sa-text) !important; background: none !important; box-shadow: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-card-actions .btn .gc-btn-text { display: inline !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-card-actions .btn .gc-btn-icon { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-card-actions .join-group-btn.btn-disabled { border-image-source: var(--fs-pill-mint) !important; border-image-slice: 0 67 fill !important; color: var(--sa-teal) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-card-actions .join-group-btn.btn-disabled .gc-btn-text::before { content: "\2713\00a0"; font-style: normal; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-card-actions .join-group-btn:not(.btn-disabled) { border-image-source: var(--fs-btn-teal) !important; border-image-slice: 0 67 fill !important; color: #fff !important; }
 }
