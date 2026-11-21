@@ -521,3 +521,16 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
   html body.fs.fs-blip[data-fs-variant="clay-town"] #msgGifBtn { width: 46px !important; min-width: 46px !important; height: 34px !important; position: relative; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #msgGifBtn::after { content: ""; position: absolute; inset: 4px 8px; background: var(--fs-icon-gif) center / contain no-repeat; pointer-events: none; }
 }
+
+/* ======================================================================================================== COMMENTS sheet (phone) — concept comments.png */
+@media (max-width: 768px) {
+  /* sort = three separate clay pills (Top butter, Newest / Oldest soft cream); comment field soft cream; GIF sage; Post butter */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .comment-modal-layout .search-tabs { border-image: none !important; background: none !important; gap: 6px !important; padding: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .comment-modal-layout .comment-sort-tab { height: 36px !important; font: 700 18px var(--fs-font) !important; color: var(--bl-ink) !important; border: 0 solid transparent !important; border-image: var(--fs-pill-cream) 0 66 fill / 0 18px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .comment-modal-layout .comment-sort-tab.active { border-image-source: var(--fs-btn-primary) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #commentInput { border: 0 solid transparent !important; border-image: var(--fs-pill-cream) 0 66 fill / 0 19px stretch !important; background: none !important; font: 500 16px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #commentGifBtn { border: 0 solid transparent !important; border-image: var(--fs-pill-sage) 0 66 fill / 0 17px stretch !important; background: none !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #postCommentBtn { color: var(--bl-ink) !important; font: 700 17px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #commentsList .comment-item :is(.comment-author, strong, h5) { font: 700 18px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #commentsList .comment-item :is(.comment-reply-btn, .comment-edit-btn, .comment-delete-btn) { color: #2f6b34 !important; font-weight: 700 !important; }
+}
