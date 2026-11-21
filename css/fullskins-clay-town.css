@@ -471,3 +471,16 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
   html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard .profile-links { position: absolute !important; left: 0 !important; right: 0 !important; width: auto !important; bottom: -44px !important; top: auto !important; display: block !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard .pv-back-link { position: static !important; width: auto !important; }
 }
+
+/* ---------- SOMEONE ELSE'S PROFILE (phone) — concept otherprofile.png ---------- */
+@media (max-width: 768px) {
+  /* stats = soft cream pills; Follow sage, Message butter; Mute / Block / Close Friend / Invite soft cream with brown labels; Report stays the red-rimmed clay */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard:has(#pvFollowBtn) .stat { border-image-source: var(--fs-pill-cream) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard #pvFollowBtn.btn-primary { border-image-source: var(--fs-pill-sage) !important; border-image-slice: 0 66 fill !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard :is(#pvMuteBtn, #pvBlockBtn, #pvCloseFriendBtn, #pvInviteGroupBtn) { color: var(--bl-ink) !important; border-image-source: var(--fs-pill-cream) !important; border-image-slice: 0 66 fill !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard :is(#pvMuteBtn, #pvBlockBtn, #pvCloseFriendBtn, #pvInviteGroupBtn) > i { filter: none !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard .pv-actions .btn { font: 700 18px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard :is(#pvFollowBtn, #pvMsgBtn) { height: 44px !important; font-size: 21px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard #pvMsgBtn { color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvMutualFollowers .mutual-followers > span { font: 600 16px/19px var(--fs-font) !important; color: var(--bl-ink) !important; }
+}
