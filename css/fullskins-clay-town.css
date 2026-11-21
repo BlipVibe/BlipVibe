@@ -271,3 +271,73 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .quest-icon { background-size: 128% 128% !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #feedTabs .search-tab.active { filter: drop-shadow(0 1.5px 1px rgba(90,25,8,.35)); }
 }
+@media (max-width: 768px) {
+  /* real-account fixes: no empty status pill; the green + sits on Your Story's ring (concept), not at the bar's end */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #profileCard .profile-title:empty { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .stories-bar .story-item { position: relative !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .story-plus { left: 41px !important; top: 27px !important; right: auto !important; bottom: auto !important; width: 24px !important; height: 24px !important; }
+}
+
+/* ======================================================================================================== GROUP PAGE (phone) — concept group.png (A top, B scrolled), crop 453px → 402pt */
+@media (max-width: 768px) {
+  /* nav on the group page: Groups tile keeps the mascot head like the concept; Skins / Messages plain icons */
+  /* cover: edge to edge 6pt under the bar, the mascot big at the right (no arms) */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-group-view.page.active { padding-top: calc(54px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-group-view .main-container { padding: 0 3px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvCoverBanner { height: 160px !important; margin: 6px 0 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvCoverBanner::after { right: 12px !important; top: 42px !important; width: 140px !important; height: 116px !important; background-image: var(--fs-mascot-wave) !important; background-size: contain !important; }
+  /* group card (concept y 212-445, tail bottom-right): picture in a thick terracotta ring overlapping the cover */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard { margin: -12px 0 44px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard .profile-info { grid-template-columns: 132px 1fr !important; column-gap: 8px !important; padding: 18px 12px 18px 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard .profile-avatar-wrap { width: 130px !important; height: 130px !important; margin: -36px 0 0 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard .profile-name { font: 700 28px/31px var(--fs-font) !important; margin: 4px 0 6px !important; letter-spacing: -.3px; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard .profile-title { font: 500 15px/20px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard .profile-stats { margin: 10px 0 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard .stat + .stat::before { background: rgba(74,28,8,.55) !important; width: 2px; left: -1px; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard .stat-count { font: 700 22px/24px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard .stat-label { font: 500 16px/19px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard .pv-actions { gap: 16px !important; margin: 12px 0 0 !important; padding: 0 0 0 8px; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard .pv-actions .btn { height: 43px !important; font: 600 18px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard #gvJoinBtn { color: #4f4a44 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard #gvJoinBtn::before { content: ""; width: 22px; height: 22px; margin-right: 4px; background: #6d6760; -webkit-mask: var(--fs-icon-check) center / contain no-repeat; mask: var(--fs-icon-check) center / contain no-repeat; }
+  /* Leave Group: cream clay pill (secondary), red label + exit icon */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard #gvLeaveBtn { color: #c9302a !important; border-image-source: var(--fs-btn-secondary) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard #gvLeaveBtn > i { background: #c9302a !important; -webkit-mask: var(--fs-icon-exit) center / contain no-repeat; mask: var(--fs-icon-exit) center / contain no-repeat; width: 22px !important; height: 22px !important; font-size: 0 !important; }
+  /* Back to Groups under the card, deep green like the concept */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard .pv-back-link { left: 12px !important; bottom: -36px !important; font: 600 17px var(--fs-font) !important; color: #1f5a52 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard .pv-back-link > i { width: 19px !important; height: 19px !important; background: #1f5a52 !important; -webkit-mask: var(--fs-icon-back) center / contain no-repeat; mask: var(--fs-icon-back) center / contain no-repeat; }
+  /* Group Rules = butter pill, Invite Link = sage pill: brown icon + label centred, chevron at the right */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvMobileRight { gap: 5px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn) { position: relative; height: 43px !important; font: 700 19px var(--fs-font) !important; color: var(--bl-ink) !important; margin: 0 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvMobileRight .gv-invite-link-btn { border-image-source: var(--fs-pill-sage) !important; border-image-slice: 0 66 fill !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn) > i { filter: none !important; background-color: var(--bl-ink) !important; background-image: none !important; width: 26px !important; height: 26px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvMobileRight .gv-rules-btn > i { -webkit-mask: var(--fs-icon-scroll) center / contain no-repeat; mask: var(--fs-icon-scroll) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvMobileRight .gv-invite-link-btn > i { -webkit-mask: var(--fs-icon-link) center / contain no-repeat; mask: var(--fs-icon-link) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn)::after { content: ""; position: absolute; right: 16px; top: 50%; width: 13px; height: 18px; margin-top: -9px;
+    background: var(--bl-ink); -webkit-mask: var(--fs-icon-chevron) center / contain no-repeat; mask: var(--fs-icon-chevron) center / contain no-repeat; }
+  /* Members card: heading, sage-ringed faces, "+N more" */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvMobileRight .card { border-width: 14px !important; padding: 0 2px 2px !important; margin-top: 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvMobileRight .card-heading { font: 700 21px/24px var(--fs-font) !important; margin: -4px 0 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .gv-members-preview img { width: 50px !important; height: 50px !important; box-shadow: 0 0 0 2px var(--ct-cream), 0 0 0 4.5px #9cc79a !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .gv-members-more { font: 700 17px/18px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  /* (B) Feed / Chat (/ Group Shop): separate clay pills, the active one butter, the others sage like the concept's Chat */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvModeTabs { border-image: none !important; background: none !important; gap: 8px !important; height: 40px !important; padding: 0 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvModeTabs .search-tab { height: 40px !important; border-image: var(--fs-pill-sage) 0 66 fill / 0 20px stretch !important; font: 700 20px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvModeTabs .search-tab.active { border-image-source: var(--fs-btn-primary) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvModeTabs .search-tab > i { display: none !important; }
+  /* (B) Group Posts heading = sage clay strip; each post its own card */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvPostsFeed { border: 0 !important; border-image: none !important; background: none !important; gap: 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvPostsFeed > .card:first-child { padding: 0 12px !important; margin: 0 !important; min-height: 0; height: 52px; box-sizing: border-box; display: flex !important; align-items: center;
+    border: 14px solid transparent !important; border-image: var(--fs-panel-card-sage) 12% fill / 14px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvPostsFeed .pv-posts-heading { font: 700 23px var(--fs-font) !important; margin: 0 !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvPostsFeed .pv-posts-heading > i { display: none !important; }
+}
+@media (max-width: 768px) {   /* Group page pass 2 (side-by-side): the concept's labels are bigger and bolder */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard .pv-actions .btn { font: 700 20px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn) { font: 700 21px var(--fs-font) !important; height: 45px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #gvProfileCard .pv-back-link { font: 600 19px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .gv-members-preview img { width: 53px !important; height: 53px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-group-view .post-create-bar .post-create-avatar { width: 50px !important; height: 50px !important; flex-basis: 50px; -webkit-mask: none !important; mask: none !important; border-radius: 50% !important;
+    box-shadow: 0 0 0 2px var(--ct-cream), 0 0 0 5px var(--ct-terra) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-group-view .post-input-fake { font: 500 18px var(--fs-font) !important; height: 42px !important; }
+}
