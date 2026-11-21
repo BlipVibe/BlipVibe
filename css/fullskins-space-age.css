@@ -516,3 +516,31 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvSkinCard .card > div > div > i.fa-font { background-image: var(--fs-icon-font) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvSkinCard .card > div > div > i.fa-table-columns { background-image: var(--fs-icon-skins) !important; }
 }
+
+/* ---------- SOMEONE ELSE'S PROFILE (phone) — ref/space-age/otherprofile-a.png: same TV card + porthole as Home / My Profile;
+   Following / Followers cream-teal pills, Follow + Message teal 34pt, Mute / Block / Report and Add Close Friend / Invite to Group as
+   28pt cream pills (Report red), mutual faces + "Followed by…" in 13pt bold; a cover without a photo shows the Space-Age room art ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvCoverBanner { background: #f6dcb8 var(--fs-background) center 30% / cover no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .profile-title { font: italic 700 15px/19px var(--fs-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvMutualFollowers .mutual-followers > span, html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvMutualFollowers span { font: 800 13px/16px var(--fs-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvMutualFollowers img { width: 38px !important; height: 38px !important; padding: 3px !important; box-sizing: border-box; box-shadow: none !important; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .pv-actions .btn { min-width: 0 !important; overflow: hidden; white-space: nowrap; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvFollowBtn, html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvMsgBtn { height: 34px !important; font: italic 800 19px var(--fs-title-font) !important; border-image-width: 0 17px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvFollowBtn.btn-primary, html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvMsgBtn { border-image-source: var(--fs-btn-teal) !important; border-image-slice: 0 67 fill !important; color: #fff !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvFollowBtn.btn-disabled { border-image-source: var(--fs-chip) !important; border-image-slice: 0 76 fill !important; color: var(--sa-teal) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view :is(#pvMuteBtn, #pvBlockBtn, #pvReportUserBtn, #pvCloseFriendBtn, #pvInviteGroupBtn) { height: 28px !important; padding: 0 6px !important; gap: 5px !important; font: italic 800 14px var(--fs-title-font) !important; color: var(--sa-text) !important; border-image-width: 0 14px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view :is(#pvMuteBtn, #pvBlockBtn, #pvReportUserBtn, #pvCloseFriendBtn, #pvInviteGroupBtn) > i { width: 16px !important; height: 16px !important; flex: 0 0 16px; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvReportUserBtn { border-image-source: var(--fs-btn-danger) !important; color: #d7352b !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view :is(#pvAdminSuspend, #pvAdminDelete) { height: 28px !important; font: 800 13px var(--fs-font) !important; }
+}
+
+/* covers without a photo (any page): the Space-Age room art, never Logo Classic's blue fill */
+html body.fs.fs-blip[data-fs-variant="space-age"] :is(.fs-tl-slot-1, #gvCoverBanner, #pvCoverBanner, #timelineCover) { background-color: #f6dcb8 !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] .fs-tl-slot-1:not(:has(img)) { background: #f6dcb8 var(--fs-background) center 30% / cover no-repeat !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvAdminDelete { color: #d7352b !important; }
+/* inline comment previews under posts: the cream / teal Space-Age chat bubble (never a skin colour leaking from the viewed profile) */
+html body.fs.fs-blip[data-fs-variant="space-age"] .inline-comment-bubble { background: none !important; border-radius: 0 !important; box-shadow: none !important; border: 0 solid transparent !important;
+  border-image: var(--fs-bubble-in) 80 80 100 90 fill / 12px 12px 15px 14px stretch !important; padding: 6px 12px 9px 14px !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] .inline-comment-bubble strong { color: var(--sa-teal) !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] .inline-comment-bubble p { color: var(--sa-text) !important; }
