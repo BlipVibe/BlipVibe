@@ -151,6 +151,20 @@ def vivid(name, hue_lo, hue_hi, target):
     return im
 
 
+def tv_antenna():
+    """the TV card's antenna (desktop concept): two orange rods in a V with round tips on a small base, 160x90"""
+    W, H = 160, 90
+    im = Image.new('RGBA', (W * SS, H * SS), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    for (x0, y0, x1, y1) in [(80, 82, 22, 14), (80, 82, 138, 14)]:
+        d.line([(x0 * SS, y0 * SS), (x1 * SS, y1 * SS)], fill=OR_EDGE, width=11 * SS)
+        d.line([(x0 * SS, y0 * SS), (x1 * SS, y1 * SS)], fill=OR_BODY, width=7 * SS)
+        d.ellipse([(x1 - 11) * SS, (y1 - 11) * SS, (x1 + 11) * SS, (y1 + 11) * SS], fill=OR_EDGE)
+        d.ellipse([(x1 - 8) * SS, (y1 - 8) * SS, (x1 + 8) * SS, (y1 + 8) * SS], fill=(247, 208, 16))
+    d.rounded_rectangle([58 * SS, 74 * SS, 102 * SS, 90 * SS], radius=8 * SS, fill=OR_EDGE)
+    d.rounded_rectangle([61 * SS, 76 * SS, 99 * SS, 88 * SS], radius=6 * SS, fill=OR_BODY)
+    return im.resize((W, H), Image.LANCZOS)
+
+
 def save(im, name, q=92): im.save(f'{O}/{name}.webp', 'WEBP', quality=q, method=6); return name
 
 
@@ -172,6 +186,7 @@ def build():
     out.append(save(card((756, 751), (2, 2, 754, 690), 28 * k3, 9.5 * k3, 'orange', CREAM, edge=1.2 * k3), 'card-tail-tight'))
     out.append(save(tv_foot(), 'tv-foot'))
     out.append(save(swoosh(), 'wordmark-swoosh'))
+    out.append(save(tv_antenna(), 'tv-antenna'))
     # pills (Logo Classic canvases + boxes)
     out.append(save(pill((563, 134), (1, 1, 562, 127), 'orange'), 'btn-primary'))
     out.append(save(pill((563, 134), (1, 1, 562, 127), 'teal'), 'btn-teal'))

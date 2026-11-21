@@ -774,3 +774,108 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .gv-staff-role { background: #
   html body.fs.fs-blip[data-fs-variant="space-age"] .blip-menu hr { display: none !important; }
 }
 @media (max-width: 768px) { html body.fs.fs-blip[data-fs-variant="space-age"] .blip-sw-bag { width: 32px !important; height: 32px !important; flex-basis: 32px !important; background-size: contain !important; margin: 0 12px !important; } }
+
+/* ======================================================================================================== DESKTOP HOME — concept desktop.png (app 1410 wide -> 1440)
+   TV profile card (antenna on top, feet below, porthole 140 left, name / teal title pill / about right, orbit stats, View Profile + pencil,
+   planet bottom-left); right column headings as tabs (Earn Coins teal, People You May Know orange, Trending Groups teal), teal Follow;
+   Featured / Quests / feed tabs / post bar share the phone's concept styling */
+@media (min-width: 769px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard { min-height: 300px !important; height: 300px !important; margin: 46px 0 22px !important; padding: 0 !important; border: 0 !important; border-image: none !important; background: none !important; overflow: visible !important; position: relative; }
+  html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #profileCard::before { content: "" !important; display: block !important; position: absolute !important; inset: 0 0 -18px 0 !important; border: 0 solid transparent !important; z-index: 0; pointer-events: none;
+    border-image: var(--fs-card-tail-tight) 130 130 190 130 fill / 31px 31px 45px 31px / 0 stretch !important; background: var(--fs-tv-foot) left 70px bottom 0 / 34px 18px no-repeat, var(--fs-tv-foot) right 70px bottom 0 / 34px 18px no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #profileCard::after { content: "" !important; display: block !important; position: absolute !important; left: 50% !important; top: -44px !important; width: 96px !important; height: 54px !important; margin-left: -48px; right: auto !important; bottom: auto !important; border: 0 !important;
+    background: var(--fs-tv-antenna) center bottom / contain no-repeat !important; z-index: 0; pointer-events: none; transform: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-cover { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-info { display: block !important; position: relative !important; height: 300px !important; padding: 0 !important; z-index: 1; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-avatar-wrap { position: absolute !important; left: 14px !important; top: 16px !important; width: 140px !important; height: 140px !important; margin: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-avatar-wrap::after { inset: 0 !important; background-image: var(--fs-avatar-frame) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .avatar-edit-btn { width: 32px !important; height: 32px !important; right: 3% !important; bottom: 5% !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .avatar-edit-btn::before { content: ""; position: absolute; left: -132px; top: 108px; width: 112px; height: 56px; background: var(--fs-planet) center / contain no-repeat; pointer-events: none; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .fs-namecard { position: absolute !important; left: 162px !important; right: 12px !important; top: 26px !important; padding: 0 !important; margin: 0 !important; text-align: left !important; background: none !important; border: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-name { font: 800 26px/30px var(--fs-title-font) !important; color: #222321 !important; margin: 0 !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-title { display: inline-block !important; height: 22px; line-height: 22px !important; padding: 0 14px !important; margin: 4px 0 6px !important; font: italic 800 14.5px/22px var(--fs-title-font) !important; color: #fff6de !important;
+    border: 0 solid transparent !important; border-image: var(--fs-btn-teal) 0 67 fill / 0 11px stretch !important; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-sizing: border-box; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-title:empty { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-about { font: 600 14px/17px var(--fs-font) !important; color: #332d26 !important; margin: 4px 0 0 !important; display: -webkit-box !important; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; text-align: left !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-stats { position: absolute !important; left: 70px !important; right: 22px !important; top: 170px !important; height: 48px; display: flex !important; justify-content: space-between !important; gap: 0 !important; margin: 0 !important; padding: 0 !important; border: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-stats::after { content: ""; position: absolute; left: 50%; top: 10px; width: 26px; height: 26px; margin-left: -13px; background: var(--fs-sparkle-1) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .stat { flex-direction: column-reverse !important; gap: 0 !important; width: 44% !important; height: 48px !important; padding: 0 !important; justify-content: center !important; align-items: center !important; border: 0 !important; border-image: none !important; background: var(--fs-orbit-teal) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard #followersStat { background-image: var(--fs-orbit-orange) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .stat + .stat::before { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .stat-label { font: 700 13px/14px var(--fs-font) !important; color: #222321 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .stat-count { font: 900 21px/22px var(--fs-font) !important; color: #222321 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .view-profile-link { position: absolute !important; left: 60px !important; right: 60px !important; top: 236px !important; bottom: auto !important; text-align: center; font: 800 16px/22px var(--fs-title-font) !important; color: #13706b !important;
+    text-decoration: underline !important; text-underline-offset: 3px; background: none !important; border: 0 !important; border-image: none !important; height: auto !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .view-profile-link::after { content: " \203A"; font-style: normal; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .edit-profile-btn { position: absolute !important; right: 26px !important; top: 228px !important; bottom: auto !important; width: 36px !important; height: 36px !important; background: var(--fs-btn-square) center / 100% 100% no-repeat !important; border: 0 !important; border-image: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .right-sidebar .promo-title { display: inline-flex !important; align-items: center; height: 30px; padding: 0 22px !important; margin: 0 0 8px !important; font: italic 800 18px/30px var(--fs-title-font) !important; color: #fff6de !important;
+    border: 0 solid transparent !important; border-image: var(--fs-btn-teal) 0 67 fill / 0 15px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .right-sidebar .card-heading { display: inline-flex !important; align-items: center; height: 30px; padding: 0 22px !important; margin: 0 0 8px !important; font: italic 800 18px/30px var(--fs-title-font) !important; color: #fff6de !important;
+    border: 0 solid transparent !important; border-image: var(--fs-heading-tab) 0 72 fill / 0 15px stretch !important; width: auto !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .right-sidebar .card:nth-of-type(3) .card-heading, html body.fs.fs-blip[data-fs-variant="space-age"] .right-sidebar .card:has(.trending-group, [class*=trending]) .card-heading { border-image-source: var(--fs-btn-teal) !important; border-image-slice: 0 67 fill !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .right-sidebar :is(.suggestion-follow-btn, .btn-primary) { border-image-source: var(--fs-btn-teal) !important; border-image-slice: 0 67 fill !important; color: #fff6de !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .right-sidebar .view-more-link { font: italic 800 15px var(--fs-title-font) !important; text-decoration: underline !important; }
+
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .post-create-bar { border-image-source: var(--fs-panel-tan-tight) !important; min-height: 0 !important; height: 43px !important; padding: 0 10px 0 6px !important; border-width: 3px 6px 3px 6px !important; gap: 9px !important; align-items: center !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .post-create-avatar { width: 38px !important; height: 38px !important; flex: 0 0 38px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .post-input-fake { height: 33px !important; min-height: 0 !important; line-height: 33px !important; padding: 0 16px !important; font: 600 14px/33px var(--fs-font) !important; }
+
+  /* Featured Skin: heading tab on the top edge, timer pill right; preview left, name / line / Buy pill (gold) under the text */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-skin-banner { margin-top: 3px !important; padding: 0 !important; border-width: 2px 12px 10px !important; min-height: 129px; position: relative; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-header { margin: 0 0 8px 8px !important; height: 22px; align-items: center !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-header h4 { height: 22px !important; font-size: 16px !important; line-height: 22px !important; padding: 0 20px !important; margin: 0 !important; border-image-width: 0 11px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-header h4 > i { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-timer { margin: 4px 8px 0 0 !important; height: 19px !important; padding: 0 10px !important; font: 700 12.5px/19px var(--fs-font) !important; border-image-width: 0 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-body { display: grid !important; grid-template-columns: 104px 1fr; grid-template-rows: auto auto 1fr; column-gap: 12px; align-items: start !important; padding: 0 0 0 25px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-preview { grid-row: 1 / 4; width: 104px !important; height: 85px !important; border-radius: 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-info { grid-column: 2; padding: 0 !important; min-width: 0; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-info h5 { font: italic 800 20px/22px var(--fs-title-font) !important; margin: 3px 0 2px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-info p { font: 600 12.5px/15px var(--fs-font) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 1; display: block !important; margin: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-body .btn { grid-column: 2; justify-self: start; width: min(157px, 100%) !important; height: 28px !important; min-height: 0 !important; padding: 0 12px !important; margin: 2px 0 0 15px !important; font: italic 800 16px/28px var(--fs-title-font) !important; border-image-width: 0 14px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-skin-banner::before, html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-skin-banner::after { content: ""; position: absolute; width: 22px; height: 22px; background: var(--fs-sparkle-1) center / contain no-repeat; pointer-events: none; z-index: 1; display: block !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-skin-banner { overflow: visible !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-skin-banner::before { left: -3px; top: 60px; } html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-skin-banner::after { right: 4px; top: 70px; }
+
+  /* Daily Quests: heading tab + "Resets daily." ; each quest one line: icon · label · teal bar · n/m · gold +coin chip */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-panel { margin-top: 2px !important; padding: 0 !important; border-width: 2px 12px 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-panel-header { margin: 0 0 6px 8px !important; height: 22px; align-items: center !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-panel-header h4 { height: 22px !important; font-size: 16px !important; line-height: 22px !important; padding: 0 20px !important; margin: 0 !important; border-image-width: 0 11px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-panel-header h4 > i { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-reset { font: italic 700 12.5px var(--fs-font) !important; margin-right: 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-item { display: grid !important; grid-template-columns: 22px minmax(0, 1fr) 106px 30px 50px; column-gap: 8px; align-items: center !important; height: 23px !important; min-height: 0 !important; padding: 0 2px 0 14px !important; margin: 0 !important; border: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-info { display: contents !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-item > .quest-icon { grid-area: 1 / 1 !important; } html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-info > p { grid-area: 1 / 2 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-info > .quest-bar { grid-area: 1 / 3 !important; } html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-info > .quest-progress { grid-area: 1 / 4 !important; width: auto !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-item > .quest-reward { grid-area: 1 / 5 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-icon { width: 22px !important; height: 22px !important; min-width: 0 !important; background-color: transparent !important; background-size: contain !important; border-radius: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-icon > i { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-info p { font: 700 12.5px/23px var(--fs-font) !important; margin: 0 !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-bar { width: 106px !important; height: 9px !important; margin: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-progress { position: static !important; font: 700 12.5px var(--fs-font) !important; text-align: right; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-reward { width: 50px !important; height: 18px !important; padding: 0 4px !important; justify-content: center !important; font: 800 12px/18px var(--fs-font) !important; border-image-width: 0 9px !important; gap: 2px !important; }
+}
+@media (min-width: 769px) {
+  /* desktop Logo Classic positions the Featured header absolutely and puts the Quests header in a left column: the concept stacks both */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-header, html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-header > *,
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-timer { position: static !important; transform: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-header { display: flex !important; justify-content: space-between !important; width: auto !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-body { grid-template-columns: 130px 1fr auto !important; grid-template-rows: auto auto !important; padding: 0 16px 0 24px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-preview { grid-row: 1 / 3 !important; width: 130px !important; height: 88px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-body .btn { grid-column: 3 !important; grid-row: 1 / 3 !important; align-self: center !important; margin: 0 !important; width: 170px !important; height: 38px !important; font-size: 19px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-info h5 { font-size: 24px !important; line-height: 28px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-panel { display: block !important; grid-template-columns: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-panel-header { display: flex !important; justify-content: space-between !important; align-items: center !important; width: auto !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-panel-header::before, html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-panel-header::after { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-item { grid-template-columns: 22px minmax(0, 1fr) 170px 34px 54px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-bar { width: 170px !important; }
+  /* top bar: the painted icons (ink), never Logo Classic's white silhouette filter; active tab keeps its cream -on icon on orange */
+  html body.fs.fs-blip[data-fs-variant="space-age"] .nav-center .nav-link > i { filter: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .nav-center .nav-link:not(.active), html body.fs.fs-blip[data-fs-variant="space-age"] .nav-center .nav-link:not(.active) > span:not(.notif-badge) { color: #222321 !important; }
+}
+@media (min-width: 769px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home :is(.featured-header h4, .quest-panel-header h4) { width: auto !important; display: inline-flex !important; align-items: center; height: 24px !important; padding: 0 22px !important; white-space: nowrap;
+    font: 800 17px/24px var(--fs-title-font) !important; color: #fff6de !important; border: 0 solid transparent !important; border-image: var(--fs-heading-tab) 0 72 fill / 0 12px stretch !important; background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-panel::before { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-panel-header :is(img, .quest-mascot) { display: none !important; }
+}
+html body.fs.fs-blip[data-fs-variant="space-age"] .navbar { background-color: #fde9cf !important; border-bottom-color: #cdb48e !important; }
