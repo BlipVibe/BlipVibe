@@ -1,45 +1,91 @@
 """Space-Age Pop (Blip Vibe 'space-age'): images/skins/blip/kit/space-age/*.png -> images/skins/blip/assets/space-age/*.webp.
 usage: python3 prototypes/tools/space_age_convert.py      (from the repo root)
-- same part names as Logo Classic (blip_convert.py); parts not painted here fall back to Logo Classic's art;
-- *-tight copies (panel-card, panel-card-active, card-tail, panel-teal) are cut to the outline (soft shadow dropped) for 9-slicing;
-- avatar-mask = avatar-frame's round window; card.png -> images/skins/blip/space-age/card.webp (store / menu card).
-Prints the list of parts written, for the variant's `art` list in js/fullskins.js."""
+
+GEOMETRY RULE (prototypes/SKIN-PLAYBOOK.md §4, from Pixel Pal): every part that Logo Classic also has is refitted to
+Logo Classic's canvas + opaque box (images/skins/blip/assets/<name>.webp), so css/fullskins-blip.css slices it unchanged:
+- 9-slice parts (pills, bubbles, panels, menu, header) are resampled slice-wise: the corners/ends keep their shape,
+  only the plain middles stretch (never squashed);
+- pictures (icons, mascots, badges, frames, coins, round buttons) are fitted 'contain' into the Logo Classic box;
+- CUSTOM parts keep their own trimmed shape because the concept's shape differs and css/fullskins-space-age.css places
+  them itself: card-tail (TV console with feet, not a speech tail), nav-bar (curved console), nav-active / nav-btn /
+  blip-btn (round domes, not tiles/pills), plus the Space-Age-only extras (btn-teal, heading-tab, panel-teal, orbit-*, planet).
+avatar-mask is cut from the refitted avatar-frame window. card.png -> images/skins/blip/space-age/card.webp.
+Prints the `art` list for the variant entry in js/fullskins.js."""
 import os, glob, json
 from PIL import Image, ImageDraw
-K = 'images/skins/blip/kit/space-age'; O = 'images/skins/blip/assets/space-age'; os.makedirs(O, exist_ok=True)
-WINDOWED = ['avatar-frame', 'avatar-ring', 'group-avatar-frame', 'story-ring', 'story-ring-seen', 'swatch-ring']
+K = 'images/skins/blip/kit/space-age'; O = 'images/skins/blip/assets/space-age'; L = 'images/skins/blip/assets'
+os.makedirs(O, exist_ok=True)
 LOSSLESS_PREFIX = ('icon-', 'notif-', 'quest-', 'mascot', 'sparkle', 'menu-check', 'badge', 'coin', 'story-', 'camera', 'orbit', 'planet', 'burst')
-TIGHT = ['panel-card', 'panel-card-active', 'card-tail', 'panel-teal']
-# pills / bars / round buttons: cut to the visible shape (1px air), so a 9-slice end = half the art's height
-TRIM = ('chip', 'chip-active', 'btn-', 'field', 'tabs-track', 'bar-', 'coin-pill', 'reward-chip', 'heading-tab', 'nav-bar',
-        'nav-btn', 'nav-active', 'blip-btn', 'bubble-', 'menu-panel', 'menu-row-on', 'divider', 'orbit-')
+CUSTOM = ('card-tail', 'nav-bar', 'nav-active', 'nav-btn', 'blip-btn', 'blip-btn-on', 'orbit-orange', 'orbit-teal', 'planet', 'heading-tab')
+PILLS = ('chip', 'chip-active', 'btn-primary', 'btn-secondary', 'btn-danger', 'btn-disabled', 'field', 'tabs-track', 'bar-track',
+         'bar-fill', 'coin-pill', 'reward-chip', 'menu-row-on', 'divider')
+SLICES = {'bubble-in': (90, 80, 80, 100), 'bubble-out': (80, 80, 90, 100), 'menu-panel': (200, 60, 60, 70), 'header-bar': (40, 40, 40, 40)}
+PLAIN = ('panel-card', 'panel-card-active')
+# extras with no Logo Classic part: borrow the geometry of a Logo Classic part of the same kind
+BORROW = {'btn-teal': 'btn-primary', 'panel-teal': 'panel-card'}
+
+def bbox(im, t=40): return im.getchannel('A').point(lambda v: 255 if v > t else 0).getbbox()
+def nine(src, size, T):
+    """resample src into size; T = target (l, t, r, b) slice widths; source slices = T * (src_h / tgt_h)."""
+    sw, sh = src.size; tw, th = size; k = sh / th
+    S = [min(int(round(v * k)), (sw if i % 2 == 0 else sh) // 2) for i, v in enumerate(T)]
+    T = [int(round(v / k)) for v in S]
+    xs, ys = [0, S[0], sw - S[2], sw], [0, S[1], sh - S[3], sh]
+    xt, yt = [0, T[0], tw - T[2], tw], [0, T[1], th - T[3], th]
+    out = Image.new('RGBA', size, (0, 0, 0, 0))
+    for i in range(3):
+        for j in range(3):
+            a = (xs[i], ys[j], xs[i + 1], ys[j + 1]); b = (xt[i], yt[j], xt[i + 1], yt[j + 1])
+            if a[2] > a[0] and a[3] > a[1] and b[2] > b[0] and b[3] > b[1]:
+                out.paste(src.crop(a).resize((b[2] - b[0], b[3] - b[1]), Image.LANCZOS), (b[0], b[1]))
+    return out
+def refit(im, ref, mode, T=None):
+    """put im's visible shape into ref's canvas + opaque box."""
+    r = Image.open(ref).convert('RGBA'); box = bbox(r); bw, bh = box[2] - box[0], box[3] - box[1]
+    src = im.crop(bbox(im)); out = Image.new('RGBA', r.size, (0, 0, 0, 0))
+    if mode == 'contain':
+        s = min(bw / src.width, bh / src.height); w, h = max(1, round(src.width * s)), max(1, round(src.height * s))
+        out.paste(src.resize((w, h), Image.LANCZOS), (box[0] + (bw - w) // 2, box[1] + (bh - h) // 2))
+    elif mode == 'plain': out.paste(src.resize((bw, bh), Image.LANCZOS), box[:2])
+    else: out.paste(nine(src, (bw, bh), T), box[:2])
+    return out
+
 done = []
-def save(im, name, lossless=False, q=90):
-    im.save(f'{O}/{name}.webp', 'WEBP', lossless=lossless, quality=q, method=6); done.append(name)
+def save(im, name):
+    if name == 'background': im.convert('RGB').save(f'{O}/{name}.webp', 'WEBP', quality=86, method=6)
+    elif name.startswith(LOSSLESS_PREFIX) and max(im.size) <= 900: im.save(f'{O}/{name}.webp', 'WEBP', lossless=True, method=6)
+    else: im.save(f'{O}/{name}.webp', 'WEBP', quality=90, method=6)
+    done.append(name)
 for f in sorted(glob.glob(f'{K}/*.png')):
     name = os.path.splitext(os.path.basename(f))[0]
     if name.startswith('_') or name.endswith('-mask'): continue
     im = Image.open(f).convert('RGBA')
-    if name.startswith(TRIM) or name in TRIM:
-        l, t, r, b = im.getchannel('A').point(lambda v: 255 if v > 24 else 0).getbbox()
-        im = im.crop((max(0, l - 1), max(0, t - 1), min(im.width, r + 1), min(im.height, b + 1)))
     if name == 'card':
         os.makedirs('images/skins/blip/space-age', exist_ok=True)
         im.convert('RGB').resize((256, 256), Image.LANCZOS).save('images/skins/blip/space-age/card.webp', 'WEBP', quality=88, method=6); continue
-    if name == 'background': save(im.convert('RGB'), name, q=86)
-    elif name.startswith(LOSSLESS_PREFIX) and max(im.size) <= 900: save(im, name, lossless=True)
-    else: save(im, name)
-    if name in TIGHT:   # cut to the outline: bbox of the solid pixels (alpha > 200), shadow outside it dropped
-        box = im.getchannel('A').point(lambda v: 255 if v > 200 else 0).getbbox()
-        t = im.crop(box); save(t, name + '-tight'); print(f'{name}-tight {t.size}')
-    if name in WINDOWED:
-        w, h = im.size; bw = im.getchannel('A').point(lambda v: 255 if v > 60 else 0)
-        if bw.getpixel((w // 2, h // 2)) == 255: print(name, 'centre not transparent'); continue
-        ImageDraw.floodfill(bw, (w // 2, h // 2), 128)
-        win = bw.point(lambda v: 255 if v == 128 else 0); l, t, r, b = win.getbbox()
-        if l == 0 or t == 0: print(name, 'WINDOW NOT CLOSED'); continue
-        print(f'{name}: window {l/w*100:.1f}% {t/h*100:.1f}% {100-r/w*100:.1f}% {100-b/h*100:.1f}% (l t r b)')
-        if name == 'avatar-frame':
-            m = Image.new('L', (w * 2, h * 2), 0); ImageDraw.Draw(m).ellipse((l * 2, t * 2, r * 2, b * 2), fill=255)
-            o = Image.new('RGBA', (w, h), (0, 0, 0, 0)); o.putalpha(m.resize((w, h), Image.LANCZOS)); save(o, 'avatar-mask', lossless=True)
+    if name == 'background':
+        save(im.resize(Image.open(f'{L}/background.webp').size, Image.LANCZOS) if im.size != (1290, 2796) else im, name); continue
+    ref = f'{L}/{BORROW.get(name, name)}.webp'
+    if name in CUSTOM or not os.path.exists(ref):
+        if name in CUSTOM: im = im.crop(bbox(im, 24))
+        save(im, name)
+        if name == 'card-tail':   # 9-sliced by the Space-Age CSS: cut to the outline
+            save(im.crop(bbox(im, 200)), 'card-tail-tight')
+        continue
+    base = BORROW.get(name, name)
+    if base in PILLS: r = Image.open(ref); h = bbox(r.convert('RGBA'))[3] - bbox(r.convert('RGBA'))[1]; out = refit(im, ref, 'nine', (h / 2, 0, h / 2, 0))
+    elif base in SLICES: out = refit(im, ref, 'nine', SLICES[base])
+    elif base in PLAIN: out = refit(im, ref, 'plain')
+    else: out = refit(im, ref, 'contain')
+    save(out, name)
+    if base in PLAIN:   # -tight: the card cut to its outline, in Logo Classic's -tight canvas
+        # Logo Classic's -tight = outline box (y 5-673 of 712) + its drop shadow below: cut ours the same way
+        l, t, r_, b = bbox(im, 200); tight = im.crop((l, t, r_, min(im.height, b + round((b - t) * 0.058)))); tref = f'{L}/{base}-tight.webp'
+        if os.path.exists(tref): save(refit(tight, tref, 'plain'), name + '-tight')
+    if name == 'avatar-frame':
+        w, h = out.size; bw = out.getchannel('A').point(lambda v: 255 if v > 60 else 0)
+        ImageDraw.floodfill(bw, (w // 2, h // 2), 128); l, t, r_, b = bw.point(lambda v: 255 if v == 128 else 0).getbbox()
+        m = Image.new('L', (w * 2, h * 2), 0); ImageDraw.Draw(m).ellipse((l * 2, t * 2, r_ * 2, b * 2), fill=255)
+        o = Image.new('RGBA', (w, h), (0, 0, 0, 0)); o.putalpha(m.resize((w, h), Image.LANCZOS)); save(o, 'avatar-mask')
+        print(f'avatar window {l} {t} {r_} {b} of {w}x{h}')
 print('art:', json.dumps(sorted(set(done))))

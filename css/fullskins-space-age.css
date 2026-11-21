@@ -9,30 +9,18 @@ html body.fs.fs-blip[data-fs-variant="space-age"] { --bl-ink: #2a2233; --bl-soft
 html body.fs.fs-blip[data-fs-variant="space-age"] :is(h1, h2, h3, h4, .profile-name, .post-username, .card-heading, .stat-count, .msg-contact-name, .group-card-body h4, .fsk-name, .profile-card-name) { color: var(--sa-text) !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] :is(.profile-name, .page-header h2, .card-heading, .featured-header h4, .quest-panel-header h4) { font-family: var(--fs-title-font) !important; }
 
-/* ---------- cards: chunky cream console card, thick orange outline (panel-card-tight 756: 15px outline, ~76px corner) ---------- */
-html body.fs.fs-blip[data-fs-variant="space-age"] :is(.card, .feed-post, .quest-panel, .coin-goal-bar, .featured-skin-banner, .group-card, .comment-item, .msg-contact, .notif-item, .user-dropdown, .post-dropdown, .modal-content),
-html body.fs.fs-blip[data-fs-variant="space-age"] #page-home :is(.post-create-bar, .featured-skin-banner, .quest-panel, .coin-goal-bar, .photos-card),
-html body.fs.fs-blip[data-fs-variant="space-age"] #gvMobileRight .card, html body.fs.fs-blip[data-fs-variant="space-age"] .feed-post {
-  border-image-source: var(--fs-panel-card-tight) !important; border-image-slice: 84 fill !important;
-  border-image-width: 20px !important; border-image-outset: 0 !important; border-image-repeat: stretch !important; }
-html body.fs.fs-blip[data-fs-variant="space-age"] :is(.msg-contact.active, .notif-item.unread) { border-image-source: var(--fs-panel-card-active-tight) !important; }
+/* ---------- cards + pills: Space-Age art refitted to Logo Classic's geometry (space_age_convert.py), so the base slices
+   work unchanged; only the art source changes where the concept uses another piece ---------- */
 /* teal cards (concept): Photos, Featured Skin, Daily Quests, posts */
 html body.fs.fs-blip[data-fs-variant="space-age"] #page-home :is(.photos-card, .featured-skin-banner, .quest-panel), html body.fs.fs-blip[data-fs-variant="space-age"] .feed-post { border-image-source: var(--fs-panel-teal-tight) !important; }
-
-/* ---------- pills: art cut to the pill, so each end slice = half the art's height ---------- */
-html body.fs.fs-blip[data-fs-variant="space-age"] :is(.btn-primary, .featured-buy-btn, .mobile-pill, .fsk-buy) { border-image-source: var(--fs-btn-primary) !important; border-image-slice: 0 59 fill !important; }
-html body.fs.fs-blip[data-fs-variant="space-age"] :is(.btn-outline, .view-group-btn) { border-image-source: var(--fs-btn-secondary) !important; border-image-slice: 0 55 fill !important; color: var(--sa-orange) !important; }
-html body.fs.fs-blip[data-fs-variant="space-age"] .btn-disabled { border-image-source: var(--fs-btn-disabled) !important; border-image-slice: 0 60 fill !important; color: #6b625c !important; }
-html body.fs.fs-blip[data-fs-variant="space-age"] #gvLeaveBtn { border-image-source: var(--fs-btn-danger) !important; border-image-slice: 0 52 fill !important; color: #d7352b !important; }
-html body.fs.fs-blip[data-fs-variant="space-age"] .search-tab { border-image-source: var(--fs-chip) !important; border-image-slice: 0 54 fill !important; color: var(--sa-text) !important; }
-html body.fs.fs-blip[data-fs-variant="space-age"] .search-tab.active { border-image-source: var(--fs-chip-active) !important; border-image-slice: 0 56 fill !important; color: #fff !important; }
-html body.fs.fs-blip[data-fs-variant="space-age"] #feedTabs .search-tab:not(.active) { border-image-source: none !important; }
-html body.fs.fs-blip[data-fs-variant="space-age"] #feedTabs { border-image: var(--fs-tabs-track) 0 41 fill / 0 16px stretch !important; }
-html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-coins { border-image-source: var(--fs-coin-pill) !important; border-image-slice: 0 52 fill !important; }
-html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-input-fake, .page-search) { border-image-source: var(--fs-field) !important; border-image-slice: 0 53 fill !important; color: var(--bl-soft) !important; font-style: italic; }
-html body.fs.fs-blip[data-fs-variant="space-age"] .quest-reward { border-image-source: var(--fs-reward-chip) !important; border-image-slice: 0 37 fill !important; }
-html body.fs.fs-blip[data-fs-variant="space-age"] :is(.quest-bar, .coin-goal-track) { border-image: var(--fs-bar-track) 0 20 fill / 0 6px stretch !important; }
-html body.fs.fs-blip[data-fs-variant="space-age"] :is(.quest-bar-fill, .coin-goal-fill) { background-image: var(--fs-bar-fill) !important; -webkit-mask-image: var(--fs-bar-fill); mask-image: var(--fs-bar-fill); }
+/* Home cards: the art ends at the box (no 11px shadow outset below), so the concept's gaps between cards hold */
+html body.fs.fs-blip[data-fs-variant="space-age"] #page-home :is(.photos-card, .featured-skin-banner, .quest-panel, .post-create-bar) { border-image-outset: 0 !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] :is(.btn-outline, .view-group-btn) { color: var(--sa-orange) !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] .btn-disabled { color: #6b625c !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] #gvLeaveBtn { color: #d7352b !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] .search-tab { color: var(--sa-text) !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] .search-tab.active { color: #fff !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-input-fake, .page-search) { color: var(--bl-soft) !important; font-style: italic; }
 
 /* ---------- avatars: small ones in the cream ring ---------- */
 html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create-avatar, .nav-avatar, .suggestion-avatar, .msg-contact-avatar, .comment-avatar) { padding: 2px; }
@@ -41,17 +29,18 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
 @media (max-width: 768px) {
   /* top bar = the cream page (concept): wordmark in chunky italic teal + orange with the mascot, icons in round cream buttons */
   html body.fs.fs-blip[data-fs-variant="space-age"] .navbar { background: var(--fs-header-bar) center bottom / 100% 100% no-repeat !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .nav-container { grid-template-columns: 1fr 34px 34px auto 40px; column-gap: 6px; padding: 0 9px 0 8px !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-logo { font: italic 800 25px/1 var(--fs-title-font) !important; color: var(--sa-teal) !important; letter-spacing: -.6px; gap: 4px;
+  html body.fs.fs-blip[data-fs-variant="space-age"] .nav-container { grid-template-columns: 1fr 32px 32px minmax(64px, auto) 36px; column-gap: 6px; padding: 0 10px 0 16px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-logo { font: italic 800 27px/1 var(--fs-title-font) !important; color: var(--sa-teal) !important; letter-spacing: -.6px; gap: 2px;
     background: linear-gradient(90deg, #13625e 0 34%, #ee7a1e 34% 100%) !important; -webkit-background-clip: text !important; background-clip: text !important; -webkit-text-fill-color: transparent; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-logo::before { width: 52px; height: 46px; flex-basis: 52px; -webkit-text-fill-color: initial; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-logo::before { width: 52px; height: 46px; flex-basis: 52px; -webkit-text-fill-color: initial; background-image: var(--fs-mascot-head-plain) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-logo::after { content: "" !important; width: 15px; height: 15px; margin: -18px 0 0 -2px; background: var(--fs-sparkle-1) center / contain no-repeat; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .navbar :is(.mobile-search-btn, .mobile-notif-btn) { width: 34px !important; height: 34px !important; background: var(--fs-btn-round) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .navbar :is(.mobile-search-btn, .mobile-notif-btn) { width: 32px !important; height: 32px !important; background: var(--fs-btn-round) center / 100% 100% no-repeat !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .navbar :is(.mobile-search-btn, .mobile-notif-btn) > i { width: 19px !important; height: 19px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-coins { height: 30px !important; padding: 0 9px 0 5px !important; border-image-width: 0 15px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-coins > i { width: 21px !important; height: 21px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-coins .coin-count { font: 800 15px var(--fs-font) !important; color: var(--sa-text) !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-avatar { width: 38px !important; height: 38px !important; padding: 2px; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-avatar { width: 36px !important; height: 36px !important; padding: 2px; box-sizing: border-box !important; flex: 0 0 36px; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-user { justify-content: flex-start !important; gap: 0 !important; padding: 0 !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .notif-badge { min-width: 17px; height: 17px; font-size: 10.5px !important; line-height: 17px !important; top: -4px; right: -4px; }
 
   /* bottom nav = the console (nav-bar: cream, orange rim, teal fins at both ends); each tab a round cream button with its
@@ -77,75 +66,129 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
   html body.fs.fs-blip[data-fs-variant="space-age"] .nav-center .notif-badge { top: -3px !important; right: -3px !important; }
 }
 
-/* ======================================================================================================== HOME (phone) — ref/space-age/home-a.png (402 wide) */
+/* ======================================================================================================== HOME (phone) — ref/space-age/home-a.png
+   (402 wide; the concept's status bar is 30pt taller than the browser's, so concept y - 30 = page y). Card 182-342 (feet to 356),
+   porthole x 28-148, name centre 210, title pill 227-247, about 256, orbit stats 270-305, View Profile 322, Photos 362-465,
+   pills 477-503, stories 518-575. */
 @media (max-width: 768px) {
-  /* cover 394 x 127, the mascot's rocket at its left, camera in a round cream button bottom-right */
-  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home #timelineCover { height: 127px !important; margin-top: 3px !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home #timelineCover::after { left: 16px; right: auto; top: 14px; width: 118px; height: 98px; background-image: var(--fs-mascot-peek) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home #timelineCover { height: 127px !important; margin: -2px 4px 0 !important; width: auto !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home #timelineCover::after { left: 16px; right: auto; top: 12px; width: 118px; height: 98px; background-image: var(--fs-mascot-peek) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-home #coverEditBtn { right: 10px !important; bottom: 11px !important; width: 36px !important; height: 36px !important; }
 
-  /* profile card = the TV console (card-tail-tight: feet kept inside the bottom corner slices), porthole left, name right */
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard { margin-top: 3px !important; min-height: 154px !important; margin-bottom: 14px !important; }
+  /* profile card = the TV console (card-tail-tight: the feet live in the bottom corner slices) */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard { margin: -5px 0 20px !important; min-height: 160px !important; height: 160px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #profileCard::before { border-width: 0 !important; inset: 0 0 -14px 0 !important;
     border-image: var(--fs-card-tail-tight) 84 170 142 170 fill / 20px 40px 34px 40px / 0 stretch !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #profileCard::after { display: none !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-info { display: block !important; position: relative !important; height: 154px; padding: 0 !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-avatar-wrap { position: absolute !important; left: 16px; top: 10px; width: 116px !important; height: 116px !important; margin: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-info { display: block !important; position: relative !important; height: 160px !important; padding: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-avatar-wrap { position: absolute !important; left: 19px !important; top: 16px !important; width: 120px !important; height: 120px !important; margin: 0 !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-avatar-wrap::after { inset: 0 !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .avatar-edit-btn { width: 30px !important; height: 30px !important; right: 4% !important; bottom: 6% !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .avatar-edit-btn::before { content: ""; position: absolute; left: -46px; top: 26px; width: 62px; height: 40px; background: var(--fs-planet) center / contain no-repeat; pointer-events: none; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .fs-namecard { position: absolute !important; left: 140px; right: 8px; top: 10px; padding: 0 !important; text-align: center !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-name { font: 800 28px/32px var(--fs-title-font) !important; text-align: center !important; margin: 0 !important; letter-spacing: -.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 24px !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .fs-namecard::after { content: ""; position: absolute; right: 2px; top: 6px; width: 24px; height: 24px; background: var(--fs-sparkle-1) center / contain no-repeat; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-title { display: inline-block !important; height: 21px; line-height: 21px !important; padding: 0 16px !important; margin: 2px 0 4px !important;
-    font: italic 800 14.5px/21px var(--fs-title-font) !important; color: #fff !important; border: 0 solid transparent !important; border-image: var(--fs-btn-teal) 0 63 fill / 0 11px stretch !important; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-sizing: border-box; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-about { font: 600 11.5px/14px var(--fs-font) !important; text-align: center !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 1; margin: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .avatar-edit-btn { width: 30px !important; height: 30px !important; right: 3% !important; bottom: 5% !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .avatar-edit-btn::before { content: ""; position: absolute; left: -110px; top: 12px; width: 62px; height: 40px; background: var(--fs-planet) center / contain no-repeat; pointer-events: none; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .fs-namecard { position: absolute !important; left: 143px !important; right: 6px !important; top: 12px !important; padding: 0 !important; text-align: center !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-name { font: 800 29px/32px var(--fs-title-font) !important; text-align: center !important; margin: 0 !important; letter-spacing: -.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 26px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .fs-namecard::after { content: ""; position: absolute; right: 4px; top: 4px; width: 26px; height: 26px; background: var(--fs-sparkle-1) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-title { display: inline-block !important; height: 20px; line-height: 20px !important; padding: 0 18px !important; margin: 1px 0 3px !important;
+    font: italic 800 14.5px/20px var(--fs-title-font) !important; color: #fff !important; border: 0 solid transparent !important; border-image: var(--fs-btn-teal) 0 67 fill / 0 10px stretch !important; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-sizing: border-box; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-title:empty { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-about { font: 600 11.5px/14px var(--fs-font) !important; text-align: center !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block !important; -webkit-line-clamp: 1; margin: 2px 0 0 !important; }
   /* stats: label over number inside a tilted orbit ring (teal Following, orange Followers), a starburst between them */
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-stats { position: absolute !important; left: 140px; right: 10px; top: 80px !important; display: flex !important; justify-content: space-between !important; gap: 0 !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-stats::after { content: ""; position: absolute; left: 50%; top: 9px; width: 22px; height: 22px; margin-left: -11px; background: var(--fs-sparkle-1) center / contain no-repeat; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .stat { flex-direction: column-reverse !important; gap: 0 !important; width: 47%; height: 42px !important; padding: 0 !important; justify-content: center; border-image: none !important;
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-stats { position: absolute !important; left: 143px !important; right: 19px !important; top: 88px !important; height: 36px; display: flex !important; justify-content: space-between !important; gap: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-stats::after { content: ""; position: absolute; left: 50%; top: 6px; width: 24px; height: 24px; margin-left: -12px; background: var(--fs-sparkle-1) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .stat { flex-direction: column-reverse !important; gap: 0 !important; width: 41% !important; height: 36px !important; padding: 0 !important; justify-content: center !important; border: 0 !important; border-image: none !important;
     background: var(--fs-orbit-teal) center / 100% 100% no-repeat !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard #followersStat { background-image: var(--fs-orbit-orange) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard #followersStat { background-image: var(--fs-orbit-orange) !important; width: 44% !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .stat-label { font: 700 11.5px/12px var(--fs-font) !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .stat-count { font: 900 18.5px/20px var(--fs-font) !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .view-profile-link { left: 140px; right: 10px; bottom: 10px !important; text-align: center; font: italic 800 14.5px var(--fs-title-font) !important; color: var(--sa-teal) !important;
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .stat-count { font: 900 19px/20px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .view-profile-link { position: absolute !important; left: 143px !important; right: 19px !important; top: 130px !important; bottom: auto !important; text-align: center; font: 800 14.5px/20px var(--fs-title-font) !important; color: var(--sa-teal) !important;
     text-decoration: underline !important; text-underline-offset: 3px; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .view-profile-link::after { content: " \203A"; font-style: normal; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .edit-profile-btn { right: 26px !important; top: auto !important; bottom: 6px; width: 30px !important; height: 30px !important; background-image: var(--fs-btn-square) !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .edit-profile-btn > i { width: 15px !important; height: 15px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .view-profile-link::after { content: " \203A"; font-style: normal; display: inline; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .edit-profile-btn { right: 30px !important; top: 124px !important; bottom: auto !important; width: 28px !important; height: 28px !important; background-image: var(--fs-btn-square) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .edit-profile-btn > i { width: 14px !important; height: 14px !important; }
 
-  /* Photos: teal card, orange heading tab, View All link, ONE row of six */
-  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .photos-card { padding: 4px 4px 4px !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .photos-card .card-heading { display: inline-flex !important; align-items: center; height: 26px; padding: 0 20px !important; margin: 0 0 7px 2px !important;
-    font: italic 800 17px/26px var(--fs-title-font) !important; color: #fff !important; border: 0 solid transparent !important; border-image: var(--fs-heading-tab) 0 72 fill / 0 13px stretch !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .photos-card .view-more-link { top: 8px !important; right: 10px !important; font: italic 800 14px var(--fs-title-font) !important; color: var(--sa-teal) !important; text-decoration: underline !important; text-underline-offset: 3px; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .photos-card .view-more-link::after { content: " \203A"; font-style: normal; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .photos-preview { grid-template-columns: repeat(6, 1fr) !important; gap: 4px !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .photos-preview > * { aspect-ratio: 61 / 64 !important; }
+  /* Photos: teal card 103pt, the orange heading tab inside the top-left, View All link, ONE row of six 60pt photos */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .photos-card { padding: 0 !important; border-width: 3px 12px 10px !important; margin: 4px 0 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .photos-card .card-heading { display: inline-flex !important; align-items: center; height: 22px; padding: 0 22px !important; margin: 0 0 8px 14px !important;
+    font: 800 16px/23px var(--fs-title-font) !important; color: #fff !important; border: 0 solid transparent !important; border-image: var(--fs-heading-tab) 0 72 fill / 0 11px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .photos-card .view-more-link { top: 1px !important; right: 14px !important; font: 800 14px var(--fs-title-font) !important; color: var(--sa-teal) !important; text-decoration: underline !important; text-underline-offset: 3px; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .photos-card .view-more-link::after { content: " \203A"; font-style: normal; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .photos-preview { grid-template-columns: repeat(6, 1fr) !important; gap: 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .photos-preview > * { height: 60px !important; min-height: 0 !important; }
 
   /* pills: People You May Know orange, Trending Groups teal, a starburst between */
-  html body.fs.fs-blip[data-fs-variant="space-age"] .mobile-pills-bar { gap: 30px !important; position: relative; padding: 0 8px !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .mobile-pills-bar::after { content: ""; position: absolute; left: 50%; top: 50%; width: 24px; height: 24px; margin: -12px 0 0 -18px; background: var(--fs-sparkle-1) center / contain no-repeat; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .mobile-pill { height: 30px !important; border-image-width: 0 15px !important; font: italic 800 14px var(--fs-title-font) !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .mobile-pill > i { display: none !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .mobile-pill::after { content: "\203A"; font-style: normal; margin-left: 4px; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .mobile-pill + .mobile-pill { border-image-source: var(--fs-btn-teal) !important; border-image-slice: 0 63 fill !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .mobile-pills-bar { gap: 32px !important; position: relative; padding: 0 8px !important; margin: -1px 0 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .mobile-pills-bar::after { content: ""; position: absolute; left: 50%; top: 50%; width: 24px; height: 24px; margin: -12px 0 0 -16px; background: var(--fs-sparkle-1) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .mobile-pill { height: 26px !important; border-image-width: 0 13px !important; font: 700 14.5px var(--fs-title-font) !important; color: #fff !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .mobile-pill > i { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .mobile-pill::after { content: "\203A"; font-style: normal; margin-left: 4px; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .mobile-pill + .mobile-pill { border-image-source: var(--fs-btn-teal) !important; border-image-slice: 0 67 fill !important; }
 
-  /* stories: orange-magenta ring unseen, thin tan ring seen, teal + on Your Story */
-  html body.fs.fs-blip[data-fs-variant="space-age"] .story-name { font: 700 13.5px var(--fs-font) !important; }
+  /* stories (518-575): 58pt rings 72pt apart, names under; the teal + on Your Story's ring; starbursts at both ends */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .stories-bar { position: relative !important; gap: 10px !important; padding: 0 22px !important; justify-content: flex-start !important; overflow: visible !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .stories-bar .story-item { flex: 0 0 auto !important; width: min(62px, 15.4vw) !important; min-width: 0 !important; position: relative !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .story-ring { width: min(58px, 14.4vw) !important; height: min(58px, 14.4vw) !important; padding: 4px !important; margin: 0 auto !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .story-ring img { width: 100% !important; height: 100% !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .story-plus { left: auto !important; right: -1px !important; top: min(34px, 8.4vw) !important; bottom: auto !important; width: 24px !important; height: 24px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .stories-bar::before, html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .stories-bar::after { content: ""; position: absolute; top: 2px; width: 24px; height: 24px; background: var(--fs-sparkle-1) center / contain no-repeat; pointer-events: none; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .stories-bar::before { left: 0; } html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .stories-bar::after { right: 0; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .story-name { font: 700 13px/16px var(--fs-font) !important; margin-top: 3px !important; }
 
-  /* scrolled half: headings are orange tabs that sit on the card's top edge */
+  /* scrolled half: headings are orange tabs */
   html body.fs.fs-blip[data-fs-variant="space-age"] .featured-header h4, html body.fs.fs-blip[data-fs-variant="space-age"] .quest-panel-header h4 { display: inline-flex !important; align-items: center; height: 26px; padding: 0 18px !important; margin: -2px 0 0 !important;
-    font: italic 800 17px/26px var(--fs-title-font) !important; color: #fff !important; border: 0 solid transparent !important; border-image: var(--fs-heading-tab) 0 72 fill / 0 13px stretch !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .featured-timer { height: 22px; padding: 0 10px; border: 0 solid transparent; border-image: var(--fs-coin-pill) 0 52 fill / 0 11px stretch; font: 700 13px var(--fs-font) !important; }
+    font: 800 17px/26px var(--fs-title-font) !important; color: #fff !important; border: 0 solid transparent !important; border-image: var(--fs-heading-tab) 0 72 fill / 0 13px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .featured-timer { height: 22px; padding: 0 10px; border: 0 solid transparent; border-image: var(--fs-coin-pill) 0 63 fill / 0 11px stretch; font: 700 13px var(--fs-font) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .featured-info h5 { font: 800 21px/24px var(--fs-title-font) !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .featured-body .btn { height: 34px !important; border-image-source: var(--fs-coin-pill) !important; border-image-slice: 0 52 fill !important; border-image-width: 0 17px !important; color: var(--sa-text) !important; font: 800 18px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .featured-body .btn { height: 34px !important; border-image-source: var(--fs-coin-pill) !important; border-image-slice: 0 63 fill !important; border-image-width: 0 17px !important; color: var(--sa-text) !important; font: 800 18px var(--fs-title-font) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .quest-reset { font: italic 600 13px var(--fs-font) !important; color: var(--bl-soft) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .quest-info p { font-weight: 700 !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .quest-icon:has(.fa-comment), html body.fs.fs-blip[data-fs-variant="space-age"] .quest-icon:has(.fa-thumbs-up) { background-image: var(--fs-quest-react) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .quest-icon:has(.fa-paper-plane) { background-image: var(--fs-quest-message) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .quest-icon:has(.fa-heart) { background-image: var(--fs-quest-like) !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .coin-goal-bar::before { background-image: var(--fs-coin) !important; width: 30px; height: 30px; margin-top: -15px; left: 6px; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .coin-goal-bar p strong { font-style: italic; color: var(--sa-teal) !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #feedTabs .search-tab { font: 800 15px var(--fs-font) !important; }
+  /* feed tabs (400-425): one cream track, the active tab an orange pill */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #feedTabs { height: 26px !important; padding: 1px !important; margin-top: -1px !important; border: 0 solid transparent !important; border-image: var(--fs-tabs-track) 0 64 fill / 0 13px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #feedTabs .search-tab { height: 24px !important; font: 800 14.5px/24px var(--fs-font) !important; border: 0 solid transparent !important; border-image: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #feedTabs .search-tab.active { border-image: var(--fs-chip-active) 0 76 fill / 0 12px stretch !important; }
+}
+
+/* ---------- Home, scrolled — ref/space-age/home-b.png (post bar at page y 62): post bar 62-105, Featured 116-245,
+   Daily Quests 255-425 (one-line rows 23pt apart), feed tabs 400-425, posts from 432 ---------- */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .post-create-bar { min-height: 0 !important; height: 43px !important; padding: 0 10px 0 6px !important; border-width: 3px 6px 3px 6px !important; gap: 9px !important; align-items: center !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .post-create-avatar { width: 38px !important; height: 38px !important; flex: 0 0 38px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .post-input-fake { height: 33px !important; min-height: 0 !important; line-height: 33px !important; padding: 0 16px !important; font: 600 14px/33px var(--fs-font) !important; }
+
+  /* Featured Skin: heading tab on the top edge, timer pill right; preview left, name / line / Buy pill (gold) under the text */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-skin-banner { margin-top: 3px !important; padding: 0 !important; border-width: 2px 12px 10px !important; min-height: 129px; position: relative; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-header { margin: 0 0 8px 8px !important; height: 22px; align-items: center !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-header h4 { height: 22px !important; font-size: 16px !important; line-height: 22px !important; padding: 0 20px !important; margin: 0 !important; border-image-width: 0 11px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-header h4 > i { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-timer { margin: 4px 8px 0 0 !important; height: 19px !important; padding: 0 10px !important; font: 700 12.5px/19px var(--fs-font) !important; border-image-width: 0 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-body { display: grid !important; grid-template-columns: 104px 1fr; grid-template-rows: auto auto 1fr; column-gap: 12px; align-items: start !important; padding: 0 0 0 25px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-preview { grid-row: 1 / 4; width: 104px !important; height: 85px !important; border-radius: 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-info { grid-column: 2; padding: 0 !important; min-width: 0; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-info h5 { font: italic 800 20px/22px var(--fs-title-font) !important; margin: 3px 0 2px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-info p { font: 600 12.5px/15px var(--fs-font) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 1; display: block !important; margin: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-body .btn { grid-column: 2; justify-self: start; width: min(157px, 100%) !important; height: 28px !important; min-height: 0 !important; padding: 0 12px !important; margin: 2px 0 0 15px !important; font: italic 800 16px/28px var(--fs-title-font) !important; border-image-width: 0 14px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-skin-banner::before, html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-skin-banner::after { content: ""; position: absolute; width: 22px; height: 22px; background: var(--fs-sparkle-1) center / contain no-repeat; pointer-events: none; z-index: 1; display: block !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-skin-banner { overflow: visible !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-skin-banner::before { left: -3px; top: 60px; } html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-skin-banner::after { right: 4px; top: 70px; }
+
+  /* Daily Quests: heading tab + "Resets daily." ; each quest one line: icon · label · teal bar · n/m · gold +coin chip */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-panel { margin-top: 2px !important; padding: 0 !important; border-width: 2px 12px 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-panel-header { margin: 0 0 6px 8px !important; height: 22px; align-items: center !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-panel-header h4 { height: 22px !important; font-size: 16px !important; line-height: 22px !important; padding: 0 20px !important; margin: 0 !important; border-image-width: 0 11px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-panel-header h4 > i { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-reset { font: italic 700 12.5px var(--fs-font) !important; margin-right: 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-item { display: grid !important; grid-template-columns: 22px minmax(0, 1fr) 106px 30px 50px; column-gap: 8px; align-items: center !important; height: 23px !important; min-height: 0 !important; padding: 0 2px 0 14px !important; margin: 0 !important; border: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-info { display: contents !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-item > .quest-icon { grid-area: 1 / 1 !important; } html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-info > p { grid-area: 1 / 2 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-info > .quest-bar { grid-area: 1 / 3 !important; } html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-info > .quest-progress { grid-area: 1 / 4 !important; width: auto !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-item > .quest-reward { grid-area: 1 / 5 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-icon { width: 22px !important; height: 22px !important; min-width: 0 !important; background-color: transparent !important; background-size: contain !important; border-radius: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-icon > i { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-info p { font: 700 12.5px/23px var(--fs-font) !important; margin: 0 !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-bar { width: 106px !important; height: 9px !important; margin: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-progress { position: static !important; font: 700 12.5px var(--fs-font) !important; text-align: right; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-reward { width: 50px !important; height: 18px !important; padding: 0 4px !important; justify-content: center !important; font: 800 12px/18px var(--fs-font) !important; border-image-width: 0 9px !important; gap: 2px !important; }
 }
