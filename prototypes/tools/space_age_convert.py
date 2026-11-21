@@ -88,26 +88,14 @@ for f in sorted(glob.glob(f'{K}/*.png')):
         m = Image.new('L', (w * 2, h * 2), 0); ImageDraw.Draw(m).ellipse((l * 2, t * 2, r_ * 2, b * 2), fill=255)
         o = Image.new('RGBA', (w, h), (0, 0, 0, 0)); o.putalpha(m.resize((w, h), Image.LANCZOS)); save(o, 'avatar-mask')
         print(f'avatar window {l} {t} {r_} {b} of {w}x{h}')
+# chrome drawn to the concept's sampled colours + measured rims (overwrites the Codex cards / pills / tabs / sheet)
+import sys; sys.path.insert(0, os.path.dirname(__file__)); import space_age_chrome
+done += space_age_chrome.build()
 # orbit-gold (Group Coins ring, group concept) = the painted orange orbit recoloured to the coin gold
 from PIL import ImageOps
 og = Image.open(f'{K}/orbit-orange.png').convert('RGBA'); og = og.crop(bbox(og, 24)); a = og.getchannel('A')
 g = ImageOps.colorize(ImageOps.autocontrast(ImageOps.grayscale(og.convert('RGB')), cutoff=1), (0xc8, 0x8a, 0x08), (0xff, 0xd8, 0x5a)).convert('RGBA'); g.putalpha(a)
 save(g, 'orbit-gold')
-# panel-tan-tight (inner post cards inside the teal Group Posts frame, group concept) = the card with its orange rim turned warm tan
-import colorsys
-pt = Image.open(f'{O}/panel-card-tight.webp').convert('RGBA'); px = pt.load()
-for y in range(pt.height):
-    for x in range(pt.width):
-        r, g, b, al = px[x, y]
-        if al < 8: continue
-        h, sat, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
-        if sat > 0.35 and 0.02 < h < 0.13:
-            t = min(1, (sat - 0.35) / 0.4); tr, tg, tb = 0xcd, 0xb4, 0x8e
-            px[x, y] = (round(r + (tr * v / 0.93 - r) * t), round(g + (tg * v / 0.93 - g) * t), round(b + (tb * v / 0.93 - b) * t), al)
-save(pt, 'panel-tan-tight')
-# sheet (the page sheet behind Groups / Notifications / Network / Search…: open at the bottom, 9-sliced 70 70 0 70) =
-# the top of the tan-rim card, refitted to Logo Classic's sheet box
-top = pt.crop((0, 0, pt.width, int(pt.height * 0.6))); save(refit(top, f'{L}/sheet.webp', 'nine', (70, 70, 70, 0)), 'sheet')
 # pill-mint (Network "Mutual" heading pill, network concept) = the painted teal pill lightened to mint
 bt = Image.open(f'{O}/btn-teal.webp').convert('RGBA'); a = bt.getchannel('A')
 m = ImageOps.colorize(ImageOps.autocontrast(ImageOps.grayscale(bt.convert('RGB')), cutoff=1), (0x7c, 0xc2, 0xb4), (0xd8, 0xf1, 0xea)).convert('RGBA'); m.putalpha(a)
