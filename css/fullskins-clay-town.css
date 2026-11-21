@@ -371,3 +371,9 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .group-card-actions .btn { font: 700 16px var(--fs-font) !important; color: var(--bl-ink) !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .group-card-actions .join-group-btn.btn-disabled { color: #4f4a44 !important; }
 }
+@media (max-width: 768px) {   /* Groups tab pass 2 (side-by-side): the concept's search, idle tabs and View are soft cream clay (no terracotta rim); cards keep the thin clay lip */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .page-search { border: 0 solid transparent !important; border-image: var(--fs-pill-cream) 0 66 fill / 0 18px stretch !important; background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #groupsTabs .search-tab:not(.active) { border-image-source: var(--fs-pill-cream) !important; border-image-slice: 0 66 fill !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .group-card-actions .view-group-btn { border-image-source: var(--fs-pill-cream) !important; border-image-slice: 0 66 fill !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .group-card { border: 14px solid transparent !important; border-image: var(--fs-panel-card) 12% fill / 14px stretch !important; background: none !important; padding: 0 !important; }
+}
