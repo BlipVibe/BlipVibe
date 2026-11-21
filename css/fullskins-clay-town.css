@@ -377,3 +377,21 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .group-card-actions .view-group-btn { border-image-source: var(--fs-pill-cream) !important; border-image-slice: 0 66 fill !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .group-card { border: 14px solid transparent !important; border-image: var(--fs-panel-card) 12% fill / 14px stretch !important; background: none !important; padding: 0 !important; }
 }
+
+/* ======================================================================================================== NOTIFICATIONS (phone) — concept notifications.png */
+@media (max-width: 768px) {
+  /* the whole page sits on one cream clay sheet; title 30pt; two rows of four tab pills (soft cream, active butter); every row a soft cream clay strip */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-notifications.page.active { padding-top: calc(60px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-notifications .page-container { margin: 0 3px !important; padding: 4px 10px 90px !important; min-height: calc(100vh - 60px); box-sizing: border-box;
+    border: 14px solid transparent !important; border-image: var(--fs-sheet) 12% fill / 14px stretch !important; border-bottom: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-notifications .page-header { padding: 0 2px !important; margin: -6px 0 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-notifications .page-header h2 { font: 700 30px/36px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #notifTabs { gap: 5px 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #notifTabs .search-tab { height: 34px !important; font: 700 15.5px var(--fs-font) !important; color: var(--bl-ink) !important; border-image: var(--fs-pill-cream) 0 66 fill / 0 17px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #notifTabs .search-tab.active { border-image-source: var(--fs-btn-primary) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #notifList { gap: 3px !important; margin-top: 2px; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-notifications .notif-item { min-height: 34px !important; border: 0 solid transparent !important; border-width: 0 !important; padding: 0 12px 0 8px !important;
+    border-image: var(--fs-pill-cream) 0 66 fill / 0 17px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-notifications .notif-text p { font: 600 15.5px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-notifications .notif-text span { font: 600 14.5px var(--fs-font) !important; color: var(--bl-ink) !important; }
+}
