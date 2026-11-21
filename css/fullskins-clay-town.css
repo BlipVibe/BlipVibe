@@ -395,3 +395,30 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-notifications .notif-text p { font: 600 15.5px var(--fs-font) !important; color: var(--bl-ink) !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-notifications .notif-text span { font: 600 14.5px var(--fs-font) !important; color: var(--bl-ink) !important; }
 }
+
+/* ======================================================================================================== NETWORK (phone) — concept network.png */
+@media (max-width: 768px) {
+  /* one cream clay sheet; 34pt title with the network icon; the winking mascot right; soft cream search; Connections butter, other tabs soft cream */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles .page-container { margin: 0 3px !important; padding: 0 10px 90px !important; min-height: calc(100vh - 60px); box-sizing: border-box;
+    border: 14px solid transparent !important; border-image: var(--fs-sheet) 12% fill / 14px stretch !important; border-bottom: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles .page-header h2 { font: 700 34px/40px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles .page-header h2 > i { background: var(--bl-ink) !important; filter: none !important; -webkit-mask: var(--fs-icon-network) center / contain no-repeat; mask: var(--fs-icon-network) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles .page-search { border-image: var(--fs-pill-cream) 0 66 fill / 0 18px stretch !important; height: 38px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles .page-search input { font: 600 17px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles .search-tabs .search-tab { font: 700 16px/18px var(--fs-font) !important; color: var(--bl-ink) !important; border-image-source: var(--fs-pill-cream) !important; border-image-slice: 0 66 fill !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles .search-tabs .search-tab.active { border-image-source: var(--fs-btn-primary) !important; }
+  /* Mutual heading = soft lilac-grey clay pill (concept); count beside the label */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles .connections-heading { height: 40px; display: flex !important; align-items: center; padding: 0 22px !important; font: 700 20px var(--fs-font) !important; color: var(--bl-ink) !important;
+    background: none !important; border: 0 solid transparent !important; border-image: var(--fs-btn-disabled) 0 70 fill / 0 20px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles .connections-heading > i { display: none !important; }
+  /* person cards: chunky terracotta clay frame, big cream-ringed photo, bold name; Following = soft cream, Follow = sage */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles .profile-card-item { border: 8px solid transparent !important; border-image: var(--fs-panel-card) 12% fill / 28px stretch !important; background: none !important; padding: 10px 6px 16px !important; height: auto !important; min-height: 0 !important; gap: 6px !important; box-sizing: border-box !important; width: auto !important; min-width: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles .profile-card-avatar { width: 84px !important; height: 84px !important; box-shadow: 0 0 0 4px #fbf1e2, 0 2px 4px 4px rgba(120,48,20,.18) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles .profile-card-name { font: 700 19px/22px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles .profile-follow-btn { height: 34px !important; min-height: 0 !important; font: 700 18px var(--fs-font) !important; color: var(--bl-ink) !important; border-image: var(--fs-pill-cream) 0 66 fill / 0 17px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles .profile-follow-btn.btn-primary { border-image-source: var(--fs-pill-sage) !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles .connections-grid { grid-template-columns: repeat(2, calc((100vw - 62px) / 2)) !important; gap: 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles :is(.connections-col, .connections-scroll) { width: calc(100vw - 54px) !important; max-width: none !important; }
+}
