@@ -484,3 +484,18 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
   html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard #pvMsgBtn { color: var(--bl-ink) !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #pvMutualFollowers .mutual-followers > span { font: 600 16px/19px var(--fs-font) !important; color: var(--bl-ink) !important; }
 }
+
+/* ======================================================================================================== MESSAGES (phone) — concept messages.png */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages:not(:has(.msg-chat-header:not([style*="none"]))) .msg-sidebar { margin: 0 -9px !important; padding: 0 9px 90px !important; min-height: calc(100vh - 60px); box-sizing: border-box;
+    border: 14px solid transparent !important; border-image: var(--fs-sheet) 12% fill / 14px stretch !important; border-bottom: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-sidebar h3, html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-sidebar-header h3 { font: 700 36px/42px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-search { height: 40px !important; border-image: var(--fs-pill-cream) 0 66 fill / 0 20px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-search input { font: 500 17px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-contact { border-image-source: var(--fs-panel-card) !important; border-image-slice: 12% fill !important; border-image-width: 22px !important; margin-bottom: 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-contact img { width: 50px !important; height: 50px !important; box-shadow: 0 0 0 2px var(--ct-cream), 0 0 0 4.5px var(--ct-terra) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-contact-name { font: 700 19px/22px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-contact-preview { font: 500 16px/19px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-contact-time, html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-time { font: 600 15px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-contact { padding-left: 12px !important; }
+}
