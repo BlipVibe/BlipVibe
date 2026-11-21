@@ -2532,10 +2532,8 @@ function showShopTutorial(){
         +'<div class="tut-feat"><i class="fas fa-palette"></i><strong>Skins</strong><span>Change your color theme</span></div>'
         +'<div class="tut-feat"><i class="fas fa-font"></i><strong>Fonts</strong><span>Pick your text style</span></div>'
         +'<div class="tut-feat"><i class="fas fa-columns"></i><strong>Templates</strong><span>Choose your layout</span></div>'
-        +'<div class="tut-feat"><i class="fas fa-star"></i><strong>Premium Skins</strong><span>Animated borders &amp; effects</span></div>'
+        +'<div class="tut-feat"><i class="fas fa-star"></i><strong>Premium Vibes</strong><span>Full looks for every page</span></div>'
         +'</div>'
-        +'<div class="tut-divider"></div>'
-        +'<p class="tut-tip"><i class="fas fa-image" style="color:var(--primary);"></i> Premium skins let you upload a <strong>custom background</strong> — scroll down in the shop and make it yours. The sky is the limit!</p>'
     );
 }
 
@@ -8587,9 +8585,9 @@ function _fskSectionHtml(){
 }
 function getShopCategories(){
     var cats=[];
-    if(_fskCatalog().length) cats.push({key:'fullskins',label:'<i class="fas fa-wand-magic-sparkles"></i> Skins',items:[],render:null});
+    if(_fskCatalog().length) cats.push({key:'fullskins',label:'<i class="fas fa-gem"></i> Premium Vibes',items:[],render:null});
     cats.push({key:'basic',label:'<i class="fas fa-palette"></i> Basic Skins',items:skins,render:function(s){return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="skin-preview-inner" style="color:#333;background:#fff;">Profile Preview</div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';">'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p>'+shopBuy(state.ownedSkins[s.id],s.price,'buy-skin-btn','data-sid="'+s.id+'"','skin',s.id)+'</div></div>';}});
-    cats.push({key:'premium',label:'<i class="fas fa-gem"></i> Premium Skins',items:premiumSkins,render:function(s){return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="premium-preview-frame" style="background:'+s.border+';"><img src="images/default-avatar.svg" class="premium-preview-avatar"></div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';"><i class="fas '+s.icon+'" style="color:'+s.iconColor+';margin-right:6px;"></i>'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p>'+shopBuy(state.ownedPremiumSkins[s.id],s.price,'buy-premium-btn','data-pid="'+s.id+'"','premium',s.id)+'</div></div>';}});
+    /* old Premium Skins tab removed (owner, Nov 21 2026) */
     cats.push({key:'fonts',label:'<i class="fas fa-font"></i> Font Styles',items:fonts,render:function(f){return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#667eea,#764ba2);"><span style="font-family:\''+f.family+'\',sans-serif;color:#fff;font-size:24px;">Aa Bb Cc</span></div><div class="skin-card-body"><h4 style="font-family:\''+f.family+'\',sans-serif;">'+f.name+'</h4><p>'+f.desc+'</p>'+shopBuy(state.ownedFonts[f.id],f.price,'buy-font-btn','data-fid="'+f.id+'"','font',f.id)+'</div></div>';}});
     cats.push({key:'logos',label:'<i class="fas fa-star"></i> Logo Styles',items:logos,render:function(l){var preview=l.img?'<img src="'+l.img+'" style="height:80px;object-fit:contain;">':'<span style="color:#fff;font-size:22px;font-weight:700;">'+(l.text||'')+'</span>';return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;">'+preview+'</div><div class="skin-card-body"><h4>'+l.name+'</h4><p>'+l.desc+'</p>'+shopBuy(state.ownedLogos[l.id],l.price,'buy-logo-btn','data-lid="'+l.id+'"','logo',l.id)+'</div></div>';}});
     cats.push({key:'icons',label:'<i class="fas fa-icons"></i> Icon Sets',items:iconSets,render:function(s){var prev='';Object.keys(s.icons).slice(0,5).forEach(function(k){prev+='<i class="fas '+s.icons[k]+'" style="margin:0 4px;font-size:18px;"></i>';});return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div style="color:#fff;">'+prev+'</div></div><div class="skin-card-body"><h4>'+s.name+'</h4><p>'+s.desc+'</p>'+shopBuy(state.ownedIconSets[s.id],s.price,'buy-icon-btn','data-iid="'+s.id+'"','icons',s.id)+'</div></div>';}});
@@ -8849,15 +8847,14 @@ function getGroupShopCategories(groupId,canManage){
     if(!state.groupOwnedSongs) state.groupOwnedSongs={};
     if(!state.groupOwnedSongs[groupId]) state.groupOwnedSongs[groupId]={};
     var ownedSongsG=(_shopSongs||[]).filter(function(s){return state.groupOwnedSongs[groupId][s.id];});
-    var allOwnedItems=[].concat(ownedBasic,ownedPrem,ownedFontsG,ownedSongsG);
+    var allOwnedItems=[].concat(ownedBasic,ownedFontsG,ownedSongsG);
     // Apply tab uses a sub-filter stored in _groupApplyFilter
     if(!window._groupApplyFilter) window._groupApplyFilter='all';
     var _applyFilteredItems=[];
     var gaf=window._groupApplyFilter;
     if(gaf==='all'){window._groupApplyFilter=gaf='basic';}
     if(gaf==='basic') _applyFilteredItems=ownedBasic;
-    else if(gaf==='premium') _applyFilteredItems=ownedPrem;
-    else if(gaf==='fonts') _applyFilteredItems=ownedFontsG;
+        else if(gaf==='fonts') _applyFilteredItems=ownedFontsG;
     else if(gaf==='songs') _applyFilteredItems=ownedSongsG;
     // The render prepends filter pills
     function _gpill(key,icon,has){
@@ -8867,7 +8864,6 @@ function getGroupShopCategories(groupId,canManage){
     }
     var _applyPillsHtml='<div style="width:100%;display:flex;gap:4px;padding:4px 0 8px;justify-content:center;">'
         +_gpill('basic','fa-palette',true)
-        +_gpill('premium','fa-gem',true)
         +_gpill('fonts','fa-font',true)
         +_gpill('songs','fa-music',true)
         +'</div>';
@@ -8909,10 +8905,7 @@ function getGroupShopCategories(groupId,canManage){
         return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="skin-preview-inner" style="color:#333;background:#fff;">Preview</div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';">'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p>'+buyHtml+'</div></div>';
     }});
 
-    cats.push({key:'premium',label:'<i class="fas fa-gem"></i> Premium Skins',items:premiumSkins,render:function(s){
-        var buyHtml=canManage?groupShopBuy(groupId,state.groupOwnedPremiumSkins[groupId][s.id],s.price,'buy-gspremium-btn','data-pid="'+s.id+'" data-gid="'+groupId+'"'):(state.groupOwnedPremiumSkins[groupId][s.id]?'<button class="btn btn-disabled">Owned</button>':_lockHtml);
-        return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="premium-preview-frame" style="background:'+s.border+';"><img src="images/default-avatar.svg" class="premium-preview-avatar"></div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';"><i class="fas '+s.icon+'" style="color:'+s.iconColor+';margin-right:6px;"></i>'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p>'+buyHtml+'</div></div>';
-    }});
+    /* old Premium Skins tab removed (owner, Nov 21 2026) */
 
     // Fonts tab
     if(!state.groupOwnedFonts[groupId]) state.groupOwnedFonts[groupId]={};
@@ -9545,8 +9538,8 @@ function getMySkinCategories(){
     var ownedT=templates.filter(function(t){return state.ownedTemplates[t.id];});
     if(ownedS.length) cats.push({key:'basic',label:'<i class="fas fa-palette"></i> Basic Skins',items:ownedS,render:function(s){var a=_myActiveSkin()===s.id;return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="skin-preview-inner" style="color:#333;background:#fff;">Preview</div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';">'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p><button class="btn '+(a?'btn-disabled':'btn-primary')+' apply-skin-btn" data-sid="'+s.id+'">'+(a?'Active':'Apply')+'</button></div></div>';},defaultCard:'<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);"><div class="skin-preview-inner" style="color:#333;background:#fff;">Default</div></div><div class="skin-card-body"><h4>Default</h4><p>The BlipVibe signature look.</p><button class="btn '+(!_myActiveSkin()?'btn-disabled':'btn-primary')+' apply-skin-btn" data-sid="default">'+(!_myActiveSkin()?'Active':'Apply')+'</button></div></div>'});
     var ownedFull=_fskCatalog().filter(function(k){return k.ready&&state.ownedPremiumSkins[k.id];});
-    cats.push({key:'fullskins',label:'<i class="fas fa-wand-magic-sparkles"></i> Skins',items:[{_default:1}].concat(ownedFull),render:function(k){return k._default?_fskDefaultCardHtml():_fskCardHtml(k,'mine');}});
-    if(ownedP.length) cats.push({key:'premium',label:'<i class="fas fa-gem"></i> Premium Skins',items:ownedP,render:function(s){var a=_myActivePremiumSkin()===s.id;return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div class="premium-preview-frame" style="background:'+s.border+';"><img src="images/default-avatar.svg" class="premium-preview-avatar"></div></div><div class="skin-card-body" style="background:'+s.cardBg+';"><h4 style="color:'+s.cardText+';"><i class="fas '+s.icon+'" style="color:'+s.iconColor+';margin-right:6px;"></i>'+s.name+'</h4><p style="color:'+s.cardMuted+';">'+s.desc+'</p><button class="btn '+(a?'btn-disabled':'btn-primary')+' apply-premium-btn" data-pid="'+s.id+'">'+(a?'Active':'Apply')+'</button></div></div>';},defaultCard:'<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);"><div style="color:#fff;font-size:14px;font-weight:600;">Default</div></div><div class="skin-card-body"><h4>Default</h4><p>The BlipVibe signature look.</p><button class="btn '+(!_myActivePremiumSkin()?'btn-disabled':'btn-primary')+' apply-premium-btn" data-pid="default">'+(!_myActivePremiumSkin()?'Active':'Apply')+'</button></div></div>'});
+    cats.push({key:'fullskins',label:'<i class="fas fa-gem"></i> Premium Vibes',items:[{_default:1}].concat(ownedFull),render:function(k){return k._default?_fskDefaultCardHtml():_fskCardHtml(k,'mine');}});
+    /* old Premium Skins tab removed (owner, Nov 21 2026) */
     if(ownedF.length) cats.push({key:'fonts',label:'<i class="fas fa-font"></i> Font Styles',items:ownedF,render:function(f){var a=_myActiveFont()===f.id;return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#667eea,#764ba2);"><span style="font-family:\''+f.family+'\',sans-serif;color:#fff;font-size:24px;">Aa Bb Cc</span></div><div class="skin-card-body"><h4 style="font-family:\''+f.family+'\',sans-serif;">'+f.name+'</h4><p>'+f.desc+'</p><button class="btn '+(a?'btn-disabled':'btn-primary')+' apply-font-btn" data-fid="'+f.id+'">'+(a?'Active':'Apply')+'</button></div></div>';},defaultCard:'<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#667eea,#764ba2);"><span style="font-family:Roboto,sans-serif;color:#fff;font-size:24px;">Aa Bb Cc</span></div><div class="skin-card-body"><h4>Default (Roboto)</h4><p>The original BlipVibe font.</p><button class="btn '+(!_myActiveFont()?'btn-disabled':'btn-primary')+' apply-font-btn" data-fid="default">'+(!_myActiveFont()?'Active':'Apply')+'</button></div></div>'});
     if(ownedL.length) cats.push({key:'logos',label:'<i class="fas fa-star"></i> Logo Styles',items:ownedL,render:function(l){var a=state.activeLogo===l.id;var preview=l.img?'<img src="'+l.img+'" style="height:80px;object-fit:contain;">':'<span style="color:#fff;font-size:22px;font-weight:700;">'+(l.text||'')+'</span>';return '<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;">'+preview+'</div><div class="skin-card-body"><h4>'+l.name+'</h4><p>'+l.desc+'</p><button class="btn '+(a?'btn-disabled':'btn-primary')+' apply-logo-btn" data-lid="'+l.id+'">'+(a?'Active':'Apply')+'</button></div></div>';},defaultCard:'<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#f093fb,#f5576c);"><span style="color:#fff;font-size:22px;font-weight:700;">BlipVibe</span></div><div class="skin-card-body"><h4>Default</h4><p>The original BlipVibe logo.</p><button class="btn '+(!state.activeLogo?'btn-disabled':'btn-primary')+' apply-logo-btn" data-lid="default">'+(!state.activeLogo?'Active':'Apply')+'</button></div></div>'});
     if(ownedI.length) cats.push({key:'icons',label:'<i class="fas fa-icons"></i> Icon Sets',items:ownedI,render:function(s){var a=state.activeIconSet===s.id;var prev='';Object.keys(s.icons).slice(0,4).forEach(function(k){prev+='<i class="fas '+s.icons[k]+'" style="margin:0 4px;font-size:18px;"></i>';});return '<div class="skin-card"><div class="skin-preview" style="background:'+s.preview+';"><div style="color:#fff;">'+prev+'</div></div><div class="skin-card-body"><h4>'+s.name+'</h4><p>'+s.desc+'</p><button class="btn '+(a?'btn-disabled':'btn-primary')+' apply-icon-btn" data-iid="'+s.id+'">'+(a?'Active':'Apply')+'</button></div></div>';},defaultCard:'<div class="skin-card"><div class="skin-preview" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);"><div style="color:#fff;"><i class="fas fa-home" style="margin:0 4px;font-size:18px;"></i><i class="fas fa-users-rectangle" style="margin:0 4px;font-size:18px;"></i><i class="fas fa-palette" style="margin:0 4px;font-size:18px;"></i><i class="fas fa-store" style="margin:0 4px;font-size:18px;"></i></div></div><div class="skin-card-body"><h4>Default</h4><p>The original BlipVibe icons.</p><button class="btn '+(!state.activeIconSet?'btn-disabled':'btn-primary')+' apply-icon-btn" data-iid="default">'+(!state.activeIconSet?'Active':'Apply')+'</button></div></div>'});
