@@ -72,6 +72,11 @@ kit. If it is in the concept, it is painted, not drawn in CSS. ("There's so much
 - Overlay the concept crop (402pt wide, ~45% opacity) on the live page and match every top, height and gap to it.
   Read positions from the overlay, not by eye.
 - CSS only places and sizes art. No CSS-drawn frames, gradients, shadows, rings or fills standing in for art.
+- **Use the concept art's colour palette only** (owner, Nov 21). Sample every colour (page, panels, text, links,
+  buttons, icons, badges, highlights, borders, placeholders, menus) with an eyedropper from that page's concept and
+  write the palette into the skin's brief as hex values. No colour that isn't in the concept: no leftover app
+  defaults (violet, slate, blue links), no other skin's colours, no guessed "close enough" shades. Kit art is checked
+  against the same palette.
 - **Never stretch art into another shape.** 9-slice panels (pill ends = half height), contain for pictures, separate
   pieces placed on top.
 - Kill effects the concept doesn't have: backdrop blur, template `::before` overlays, the old premium spinning ring /
@@ -121,6 +126,11 @@ These are the errors the owner kept having to report. A page is not done until e
 - [ ] Liked/disliked visibly fill or change. React button works on other people's pages.
 - [ ] Pop-up × buttons tappable; chat input visible while chat is open.
 - [ ] The skin's own menu (Start/Blip) items work and the picture in it isn't blank.
+
+**Colour**
+- [ ] Every colour on the page comes from the concept art's palette (sampled hex values in the brief). No app
+      default colours (violet, slate, blue links, grey placeholders) and no colours from another skin, on any page,
+      menu, pop-up or state (hover, active, disabled, liked).
 
 **Art defects**
 - [ ] No painted checkerboard anywhere. No old premium overlays leaking in.
