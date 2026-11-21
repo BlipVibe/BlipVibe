@@ -607,3 +607,35 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .inline-comment-bubble p { col
   html body.fs.fs-blip[data-fs-variant="space-age"] #msgGifGrid img { border-radius: 10px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #msgGifPicker :is(.gif-picker-footer, .gif-powered, [class*=powered]) { background: none !important; font: italic 800 14px var(--fs-title-font) !important; color: var(--sa-text) !important; }
 }
+
+/* ======================================================================================================== COMMENTS (phone) — ref/space-age/comments-a.png
+   one tall orange-rim sheet (to the bottom, the input pinned at its foot); white italic "Comments" heading tab, × in a round cream button;
+   sort tabs on a cream track (active orange); comments as thin tan-rim cards, names 19pt bold italic, Reply / Edit / Delete teal italic */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] .modal-content:has(.comment-modal-layout) { min-height: calc(100dvh - 150px) !important; display: flex !important; flex-direction: column !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .modal-content:has(.comment-modal-layout) > .comment-modal-layout { flex: 1 1 auto; display: flex !important; flex-direction: column !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .comment-modal-layout > .comment-modal-input { margin-top: auto !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .modal-content:has(.comment-modal-layout) > .modal-header { padding: 0 12px 0 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .modal-content:has(.comment-modal-layout) > .modal-header::before { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .modal-content:has(.comment-modal-layout) > .modal-header h3 { display: inline-flex !important; align-items: center; height: 40px; padding: 0 30px !important;
+    font: italic 800 30px/40px var(--fs-title-font) !important; color: #fff !important; border: 0 solid transparent !important; border-image: var(--fs-heading-tab) 0 72 fill / 0 20px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .comment-modal-scroll .comment-sort-tab { font: italic 800 18px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .comment-modal-scroll .search-tabs { border: 0 solid transparent !important; border-image: var(--fs-chip) 0 76 fill / 0 19px stretch !important; background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #commentsList .comment-item { border-image-source: var(--fs-panel-card-tight) !important; border-image-width: 9px 9px 15px 9px !important; border-image-outset: 0 0 4px 0 !important; padding: 6px 8px 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #commentsList .comment-item > img { box-shadow: none !important; width: 48px !important; height: 48px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #commentsList .comment-item strong { font: italic 800 19px/22px var(--fs-title-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #commentsList .comment-text { font: 600 15.5px/20px var(--fs-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #commentsList .comment-text > span:first-child { color: var(--sa-teal) !important; font: italic 800 15.5px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #commentsList :is(.comment-reply-btn, .comment-edit-btn, .comment-delete-btn) { color: var(--sa-teal) !important; font: italic 800 15.5px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #commentsList .comment-item.comment-reply::before { background: var(--sa-teal) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .comment-modal-input #postCommentBtn { font: italic 800 18px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .comment-modal-input #commentGifBtn { color: var(--sa-teal) !important; font: italic 800 16px var(--fs-title-font) !important; border-image-source: var(--fs-coin-pill) !important; }
+}
+@media (max-width: 768px) {
+  /* replying (concept comments B): a mint bar "Replying to <name> … Cancel" over the input */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #replyIndicator { display: flex !important; align-items: center; height: 32px; padding: 0 16px !important; margin: 0 0 8px !important; gap: 4px;
+    border: 0 solid transparent !important; border-image: var(--fs-pill-mint) 0 67 fill / 0 16px stretch !important; background: none !important; font: italic 800 17px var(--fs-title-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #replyIndicator[style*="none"] { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #replyIndicator * { font: inherit !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #replyIndicator #cancelReply { margin-left: auto !important; color: var(--sa-teal) !important; }
+}
