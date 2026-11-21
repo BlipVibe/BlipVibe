@@ -365,7 +365,14 @@
           'panel-card-active-tight', 'panel-card-tight', 'quest-comment', 'quest-like', 'quest-message', 'quest-post',
           'quest-react', 'quest-save', 'quest-share', 'quest-view', 'reward-chip', 'sheet', 'sparkle-1', 'sparkle-2',
           'story-add', 'story-ring', 'story-ring-seen', 'swatch-ring', 'tabs-track', 'unread-dot'] },
-      { id: 'lofi-room', name: 'Walnut Hi-Fi', ready: false, art: [] },
+      { id: 'lofi-room', name: 'Walnut Hi-Fi', ready: false,
+        // every part painted for Walnut (prototypes/tools/lofi_room_convert.py prints this list)
+        art: ['avatar-frame', 'avatar-mask', 'avatar-ring', 'background', 'badge-commenter', 'badge-count', 'badge-early_adopter', 'badge-first_post', 'badge-generous', 'badge-group_leader', 'badge-photographer', 'badge-popular', 'badge-skin_collector', 'badge-social_butterfly', 'badge-streak_master', 'bar-fill', 'bar-track', 'blip-btn', 'blip-btn-on', 'btn-danger', 'btn-disabled', 'btn-primary', 'btn-round', 'btn-secondary', 'btn-square', 'bubble-in', 'bubble-out', 'burst', 'camera-badge', 'card-tail', 'card-tail-tight', 'card-tailtip', 'chip', 'chip-active', 'coin', 'coin-pill', 'coin-stack', 'divider', 'field', 'grille', 'group-avatar-frame', 'header-bar', 'icon-back', 'icon-bag', 'icon-bell', 'icon-block', 'icon-bookmark', 'icon-calendar', 'icon-camera', 'icon-check', 'icon-chevron', 'icon-clock', 'icon-close', 'icon-coin', 'icon-comment', 'icon-compass', 'icon-compose', 'icon-crown', 'icon-dislike', 'icon-dislike-on', 'icon-edit', 'icon-emoji', 'icon-envelope', 'icon-exit', 'icon-fire', 'icon-flag', 'icon-flag-red', 'icon-font', 'icon-gif', 'icon-gift', 'icon-globe', 'icon-groups', 'icon-groups-on', 'icon-hanger', 'icon-heart', 'icon-home', 'icon-home-on', 'icon-image', 'icon-info', 'icon-like', 'icon-like-on', 'icon-link', 'icon-logout', 'icon-messages', 'icon-messages-on', 'icon-mic', 'icon-more', 'icon-music', 'icon-mute', 'icon-network', 'icon-network-on', 'icon-people', 'icon-phone', 'icon-photo', 'icon-plus', 'icon-poll', 'icon-reply', 'icon-scroll', 'icon-search', 'icon-seen', 'icon-send', 'icon-settings', 'icon-share', 'icon-skins', 'icon-skins-on', 'icon-star', 'icon-user', 'icon-user-plus', 'icon-video', 'knob', 'mascot', 'mascot-head', 'mascot-head-plain', 'mascot-jump', 'mascot-listen', 'mascot-page-happy', 'mascot-page-smile', 'mascot-page-wink', 'mascot-peek', 'mascot-sleep', 'mascot-turntable', 'mascot-wave', 'menu-check', 'menu-panel', 'menu-row-on', 'nav-active', 'nav-bar', 'notif-comment', 'notif-follow', 'notif-group', 'notif-like', 'notif-message', 'notif-purchase', 'panel-card', 'panel-card-active', 'panel-card-active-tight', 'panel-card-tight', 'panel-wood', 'quest-comment', 'quest-like', 'quest-message', 'quest-post', 'quest-react', 'quest-save', 'quest-share', 'quest-view', 'reward-chip', 'screw', 'sheet', 'sparkle-1', 'sparkle-2', 'story-add', 'story-ring', 'story-ring-seen', 'swatch-ring', 'tabs-track', 'unread-dot', 'vu-meter', 'vu-needle'],
+        assets: ['knob', 'vu-meter', 'vu-needle', 'grille', 'screw', 'mascot-turntable', 'mascot-listen', 'panel-wood'],
+        ink: '#3b2414', muted: '#7a5a40', accent: '#e8742a',
+        theme: { '--primary': '#e8742a', '--primary-hover': '#c8561a', '--dark': '#3b2414', '--gray': '#7a5a40', '--light-bg': '#5a361e', '--card': '#f6ebd9', '--border': 'rgba(59,36,20,.25)', '--nav-bg': '#6b4226' },
+        font: "'Nunito', sans-serif", titleFont: "'Fraunces', serif",
+        fonts: 'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,700;1,9..144,800&family=Nunito:wght@600;700;800;900&display=swap' },
       { id: 'clay-town', name: 'Clay Town', ready: false,   // owner approval pending (prototypes/clay-town-kit-brief.md)
         art: [
           'avatar-frame', 'avatar-ring', 'background', 'badge-commenter', 'badge-count', 'badge-early_adopter',
@@ -2908,6 +2915,93 @@
     });
   }
 
+  // WALNUT HI-FI (Blip Vibe lofi-room) — "drop the needle": a walnut cabinet lid slides up over the screen, a big vinyl
+  // record spins in with the mascot on its label, a VU meter swings while "Now playing" shows; the look is applied under
+  // the lid, then the record spins down and the lid slides away. Painted Walnut art only (assets/lofi-room/).
+  function equipLofiRoom(id, swap) {
+    var P = ['background', 'avatar-frame', 'mascot-listen', 'coin-pill', 'vu-meter', 'vu-needle', 'sparkle-2', 'grille'];
+    return Promise.all(P.map(function (n) { return fxArt('blip', 'lofi-room/' + n); })).then(function (r) {
+      var c = fxCanvas('lofi-room'), g = c.g, W = c.W, H = c.H;
+      var wood = r[0], disc = r[1], head = r[2], pill = r[3], vu = r[4], needle = r[5], spk = r[6], grille = r[7];
+      var D = Math.min(W * .78, H * .42), cx = W / 2, cy = H * .4, spin = 0;
+      function lid(cover) {   // cover 0..1: walnut panel rising from the bottom, a grille band along its top edge
+        var y = H * (1 - cover);
+        if (wood) { g.save(); g.beginPath(); g.rect(0, y, W, H - y); g.clip(); g.drawImage(wood, 0, 0, W, Math.max(H, W * wood.height / wood.width)); g.restore(); }
+        else { g.fillStyle = '#5a361e'; g.fillRect(0, y, W, H - y); }
+        if (grille && cover > 0 && cover < 1) g.drawImage(grille, -8, y - 14, W + 16, 28);
+      }
+      function record(t, al, sc) {
+        if (al <= 0) return; spin += .09; var d = D * sc;
+        g.save(); g.globalAlpha = al; g.translate(cx, cy);
+        g.fillStyle = '#e8742a'; g.beginPath(); g.arc(0, 0, d * .34, 0, Math.PI * 2); g.fill();   // label behind the painted disc's window
+        g.save(); g.rotate(spin); if (disc) g.drawImage(disc, -d / 2, -d / 2, d, d); g.restore();   // only the record turns
+        if (head) { var hs = d * .56, bob = Math.sin(t / 160) * d * .015; g.rotate(Math.sin(t / 320) * .08); g.drawImage(head, -hs / 2, -hs * .44 + bob, hs, hs * head.height / head.width); }
+        g.restore();
+      }
+      function meter(t, al) {
+        if (!vu || al <= 0) return; var mw = Math.min(W * .62, 300), mh = mw * vu.height / vu.width, mx = cx - mw / 2, my = cy + D * .62;
+        g.save(); g.globalAlpha = al; g.drawImage(vu, mx, my, mw, mh);
+        if (needle) { var a = -.6 + .55 * (1 + Math.sin(t / 140) * .6 + Math.sin(t / 53) * .25); g.translate(cx, my + mh * .92); g.rotate(a); g.drawImage(needle, -2, -mh * .8, 4, mh * .8); }
+        g.restore();
+        g.save(); g.globalAlpha = al; var tw = Math.min(W * .8, 300), th = 46, ty = my + mh + 16;
+        if (pill) g.drawImage(pill, cx - tw / 2, ty, tw, th);
+        g.font = 'italic 700 18px Fraunces, Georgia, serif'; g.textAlign = 'center'; g.fillStyle = '#3b2414'; g.fillText('Now playing: Walnut Hi-Fi', cx, ty + 29); g.restore();
+        if (spk) { g.save(); g.globalAlpha = al * (.6 + .4 * Math.sin(t / 120)); g.drawImage(spk, cx + D * .36, cy - D * .52, 42, 42); g.restore(); }
+      }
+      return fxRun(620, function (t, k) { g.clearRect(0, 0, W, H); lid(ease(k)); record(t, clamp01((k - .35) / .65), .6 + .4 * ease(clamp01((k - .35) / .65))); })
+        .then(function () { return Promise.all([swap(), fxRun(1100, function (t, k) { g.clearRect(0, 0, W, H); lid(1); record(620 + t, 1, 1); meter(t, clamp01(t / 250)); })]); })
+        .then(function () { return fxRun(560, function (t, k) { g.clearRect(0, 0, W, H); var e = ease(k); g.save(); g.translate(0, -H * e); lid(1); record(1720 + t, 1 - k * .5, 1); meter(1100 + t, 1 - k); g.restore(); }); })
+        .then(function () { c.o.remove(); });
+    });
+  }
+
+  // BUBBLE POP (Blip Vibe) — soap bubbles: little bubbles float up from the bottom while one big glossy bubble swells out
+  // of the Blip corner until the sunshine-yellow fills the screen; the toy mascot bounces inside it ("Switching to Bubble
+  // Pop…" on the cream jelly pill) while the look changes underneath; then the big bubble POPS — a splash ring, sparkles
+  // and a burst of small bubbles drifting away — and the new look is there. Art: assets/bubble-pop (fx-bubble, fx-pop).
+  function equipBubblePop(id, swap) {
+    var A = function (n) { return fxArt('blip', 'bubble-pop/' + n); };
+    return Promise.all([A('fx-bubble'), A('fx-pop'), A('background'), A('mascot-jump'), A('sparkle-1'), A('coin-pill'), A('mascot')]).then(function (r) {
+      var c = fxCanvas('bubble-pop'), g = c.g, W = c.W, H = c.H, bub = r[0], pop = r[1], sun = r[2], jump = r[3] || r[6], spk = r[4], pill = r[5];
+      var ox = W * .12, oy = H * .94, R = Math.hypot(W, H) * 1.05, cx = W / 2, cy = H * .42, rise = [], burst = [];
+      for (var i = 0; i < 16; i++) rise.push({ x: Math.random() * W, s: 18 + Math.random() * 46, v: .18 + Math.random() * .3, w: Math.random() * 6, t: Math.random() * 500 });
+      for (var j = 0; j < 22; j++) burst.push({ a: Math.random() * Math.PI * 2, d: 90 + Math.random() * Math.max(W, H) * .45, s: 26 + Math.random() * 54, t: Math.random() * 120 });
+      function risers(t, al) {   // small soap bubbles drifting up, wobbling side to side
+        if (!bub) return; rise.forEach(function (b) { var tt = t - b.t; if (tt < 0) return;
+          var y = H + b.s - tt * b.v, x = b.x + Math.sin(tt / 260 + b.w) * 14; if (y < -b.s) return;
+          g.save(); g.globalAlpha = al; g.drawImage(bub, x - b.s / 2, y - b.s / 2, b.s, b.s); g.restore(); });
+      }
+      function big(rad, al) {    // the big bubble: sunshine inside, the painted bubble rim/sheen over it
+        if (rad <= 0) return;
+        g.save(); g.globalAlpha = al; g.beginPath(); g.arc(ox, oy, rad, 0, Math.PI * 2); g.clip();
+        if (sun) g.drawImage(sun, 0, 0, W, W * sun.height / sun.width); else { g.fillStyle = '#ffd23f'; g.fillRect(0, 0, W, H); }
+        g.restore();
+        if (bub) { g.save(); g.globalAlpha = al; g.drawImage(bub, ox - rad, oy - rad, rad * 2, rad * 2); g.restore(); }
+      }
+      function mascot(t, al, grow) {
+        if (!jump || al <= 0) return; var sz = Math.min(W, H) * .5 * (grow || 1), bob = Math.abs(Math.sin(t / 170)) * 24, sq = 1 + Math.sin(t / 85) * .03;
+        g.save(); g.globalAlpha = al; g.translate(cx, cy - bob); g.scale(1 / sq, sq); g.drawImage(jump, -sz / 2, -sz / 2, sz, sz * jump.height / jump.width); g.restore();
+        g.save(); g.globalAlpha = al; g.font = '800 19px Nunito, sans-serif'; g.textAlign = 'center';
+        var tw = 276, th = 54, tx = cx - tw / 2, ty = cy + sz * .6;
+        if (pill) g.drawImage(pill, tx, ty, tw, th);
+        g.fillStyle = '#14215a'; g.fillText('Switching to Bubble Pop…', cx, ty + 33); g.restore();
+      }
+      function popped(t, al) {   // splash ring + bubbles flying out and floating up + sparkles
+        var k = clamp01(t / 750);
+        if (pop) { var ps = Math.min(W, H) * (.7 + ease(k) * 1.3); g.save(); g.globalAlpha = al * (1 - k * k); g.drawImage(pop, cx - ps / 2, cy - ps / 2, ps, ps); g.restore(); }
+        burst.forEach(function (b, n) { var kk = clamp01((t - b.t) / 800), d = b.d * ease(kk), x = cx + Math.cos(b.a) * d, y = cy + Math.sin(b.a) * d - kk * 60;
+          if (bub) { g.save(); g.globalAlpha = al * (1 - kk * kk); g.drawImage(bub, x - b.s / 2, y - b.s / 2, b.s, b.s); g.restore(); }
+          if (spk && n % 2 === 0) drawRot(g, spk, x + b.s * .4, y - b.s * .3, b.s * .5, b.s * .5, kk * 3, al * (1 - kk)); });
+      }
+      return fxRun(700, function (t, k) { g.clearRect(0, 0, W, H); risers(t, 1); big(R * ease(k), 1); mascot(t, clamp01((k - .55) * 2.2)); })
+        .then(function () { return Promise.all([swap(), fxRun(900, function (t) { g.clearRect(0, 0, W, H); big(R, 1); risers(700 + t, .9); mascot(700 + t, 1); })]); })
+        .then(function () { return fxRun(800, function (t, k) { g.clearRect(0, 0, W, H);
+          big(R, 1 - clamp01(k * 3.5));                       // the skin of the bubble is gone almost at once: pop!
+          mascot(1600 + t, 1 - clamp01(k * 2.4), 1 + ease(k) * .25); popped(t, 1); }); })
+        .then(function () { c.o.remove(); });
+    });
+  }
+
   // SPACE-AGE POP (Blip Vibe): a brass porthole irises open from the Blip button onto the cream atomic sky, the mascot's
   // retro rocket launches across it on a curved trail past a ringed planet while orange + teal starbursts spin and a cream
   // pill reads "Switching to Space-Age Pop…"; the look changes underneath, then the porthole closes on the new screen.
@@ -2955,6 +3049,8 @@
      all"): each Vibe registers its own, one line each, e.g. VIBE_FX['pixel-pal'] = equipPixelPal; (fn(id, swap) → Promise,
      same contract as EQUIP_FX; load its art with fxArt('blip', '<vibe>/<part>')). Logo Classic keeps equipBlip. */
   var VIBE_FX = {};
+  VIBE_FX['lofi-room'] = equipLofiRoom;
+  VIBE_FX['bubble-pop'] = equipBubblePop;
 
   // CLAY TOWN — slap-down: lumps of painted clay (terracotta, cream, sage, butter) drop from the top, stretch as they
   // fall and splat flat with a squash until the clay page covers the screen; the clay mascot plops in with a
