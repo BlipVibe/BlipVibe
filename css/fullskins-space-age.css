@@ -5,7 +5,7 @@
 
 /* ---------- page + type: warm cream page, dark navy-brown ink, chunky italic headings ---------- */
 html body.fs.fs-blip[data-fs-variant="space-age"] { --bl-ink: #222321 !important; --bl-text: #332d26 !important; --bl-soft: #5c544a !important; --bl-blue: #13706b !important; --bl-link: #13706b !important; --bl-deep: #02544e !important; --bl-navy: #222321 !important; --bl-red: #db231b !important; --sa-orange: #ee6c07; --sa-teal: #13706b; --sa-text: #222321;
-  background: #fde9cf var(--fs-background) center top / 100% auto repeat-y !important; color: var(--sa-text) !important; }
+  background: var(--fs-background) center top / 100% auto repeat-y !important; color: var(--sa-text) !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] :is(h1, h2, h3, h4, .profile-name, .post-username, .card-heading, .stat-count, .msg-contact-name, .group-card-body h4, .fsk-name, .profile-card-name) { color: var(--sa-text) !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] :is(.profile-name, .page-header h2, .card-heading, .featured-header h4, .quest-panel-header h4) { font-family: var(--fs-title-font) !important; }
 
@@ -83,7 +83,7 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
   /* profile card = the TV console (card-tail-tight: the feet live in the bottom corner slices) */
   html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard { margin: -5px 0 20px !important; min-height: 160px !important; height: 160px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #profileCard::before { border-width: 0 !important; inset: 0 0 -14px 0 !important;
-    border-image: var(--fs-card-tail-tight) 130 130 190 130 fill / 31px 31px 45px 31px / 0 stretch !important; background: var(--fs-tv-foot) left 58px bottom 0 / 30px 17px no-repeat, var(--fs-tv-foot) right 58px bottom 0 / 30px 17px no-repeat !important; }
+    border-image: var(--fs-card-tail-tight) 150 150 211 150 fill / 36px 36px 51px 36px / 0 stretch !important; background: var(--fs-tv-foot) left 58px bottom 0 / 30px 17px no-repeat, var(--fs-tv-foot) right 58px bottom 0 / 30px 17px no-repeat !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #profileCard::after { display: none !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-info { display: block !important; position: relative !important; height: 160px !important; padding: 0 !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-avatar-wrap { position: absolute !important; left: 19px !important; top: 16px !important; width: 120px !important; height: 120px !important; margin: 0 !important; }
@@ -204,13 +204,13 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
    Joined + Leave 362-394; Group Rules 411-447 (teal), Invite Link 454-491 (orange); Members card 507-602. */
 @media (max-width: 768px) {
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvCoverBanner { height: 128px !important; margin: -2px 0 0 !important; width: auto !important; border-radius: 0 0 14px 14px !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvCoverBanner::after { left: auto !important; right: 14px !important; top: 6px !important; width: 150px !important; height: 122px !important; background-image: var(--fs-mascot-peek) !important; background-size: contain !important; transform: scaleX(-1); }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvCoverBanner::after { left: auto !important; right: 14px !important; top: 6px !important; width: 150px !important; height: 122px !important; background-image: var(--fs-mascot-peek) !important; background-size: contain !important; transform: none; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvCoverEditBtn { top: 8px !important; bottom: auto !important; right: auto !important; left: 10px !important; }
 
   /* the card art is a 187pt TV console drawn behind the info; the action buttons flow under it */
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard { margin: -31px 0 0 !important; padding: 0 !important; border: 0 !important; border-image: none !important; background: none !important; position: relative !important; min-height: 0 !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #page-group-view #gvProfileCard::before { content: "" !important; display: block !important; position: absolute !important; left: 0 !important; right: 0 !important; top: 0 !important; bottom: auto !important; height: 201px !important; width: auto !important;
-    border: 0 solid transparent !important; border-image: var(--fs-card-tail-tight) 130 130 190 130 fill / 31px 31px 45px 31px / 0 stretch !important; background: var(--fs-tv-foot) left 58px bottom 0 / 30px 17px no-repeat, var(--fs-tv-foot) right 58px bottom 0 / 30px 17px no-repeat !important; z-index: 0 !important; pointer-events: none; transform: none !important; }
+    border: 0 solid transparent !important; border-image: var(--fs-card-tail-tight) 150 150 211 150 fill / 36px 36px 51px 36px / 0 stretch !important; background: var(--fs-tv-foot) left 58px bottom 0 / 30px 17px no-repeat, var(--fs-tv-foot) right 58px bottom 0 / 30px 17px no-repeat !important; z-index: 0 !important; pointer-events: none; transform: none !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #page-group-view #gvProfileCard::after { display: none !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard .profile-cover { display: none !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard .profile-info { display: block !important; position: relative !important; padding: 20px 18px 0 148px !important; min-height: 237px !important; box-sizing: border-box; z-index: 1; }
@@ -236,7 +236,7 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard .stat-label > i { display: none !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard .pv-back-link { position: absolute !important; left: 0 !important; right: 0 !important; top: 160px !important; bottom: auto !important; margin: 0 !important; text-align: center; justify-content: center !important; display: flex !important; align-items: center; gap: 4px;
     font: 800 15px/18px var(--fs-title-font) !important; color: var(--sa-teal) !important; text-decoration: underline !important; text-underline-offset: 3px; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard .pv-back-link > i { width: 15px !important; height: 15px !important; background: var(--sa-teal) !important; -webkit-mask: var(--fs-icon-back) center / contain no-repeat; mask: var(--fs-icon-back) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard .pv-back-link > i { width: 15px !important; height: 15px !important; background: var(--fs-icon-back-teal) center / contain no-repeat !important; -webkit-mask: none; mask: none; }
   /* under the card: (Edit Group for the owner,) Joined grey pill + Leave Group red-outline pill, starbursts at both sides */
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard .pv-actions { position: absolute !important; left: 0 !important; right: 0 !important; top: 205px !important; display: flex !important; flex-wrap: wrap !important; gap: 9px 17px !important; margin: 0 !important; padding: 0 29px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard .pv-actions::before, html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard .pv-actions::after { content: ""; position: absolute; bottom: 4px; width: 24px; height: 24px; background: var(--fs-sparkle-1) center / contain no-repeat; pointer-events: none; }
@@ -244,9 +244,9 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard .pv-actions .btn { flex: 1 1 0 !important; height: 32px !important; min-height: 0 !important; margin: 0 !important; padding: 0 10px !important; font: 800 16px/32px var(--fs-title-font) !important; border-image-width: 0 16px !important; gap: 6px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard #gvEditBtn { flex-basis: 100% !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard #gvJoinBtn { color: #72726f !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard #gvJoinBtn::before { content: ""; width: 17px; height: 17px; background: #72726f; -webkit-mask: var(--fs-icon-check) center / contain no-repeat; mask: var(--fs-icon-check) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard #gvJoinBtn::before { content: ""; width: 17px; height: 17px; background: var(--fs-icon-check-grey) center / contain no-repeat; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard #gvLeaveBtn { color: #db231b !important; border-image-source: var(--fs-btn-danger) !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard #gvLeaveBtn > i { background: #db231b !important; -webkit-mask: var(--fs-icon-exit) center / contain no-repeat; mask: var(--fs-icon-exit) center / contain no-repeat; width: 19px !important; height: 19px !important; font-size: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard #gvLeaveBtn > i { background: var(--fs-icon-exit) center / contain no-repeat !important; -webkit-mask: none; mask: none; width: 19px !important; height: 19px !important; font-size: 0 !important; }
 
   /* Group Rules (teal) / Invite Link (orange): icon + white label centred, chevron right */
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvMobileRight { gap: 7px !important; margin-top: 17px !important; }
@@ -255,9 +255,9 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvMobileRight .gv-rules-btn { border-image-source: var(--fs-btn-teal) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn) > i { filter: none !important; width: 26px !important; height: 26px !important; font-size: 0 !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvMobileRight .gv-rules-btn > i { background: var(--fs-icon-scroll) center / contain no-repeat !important; -webkit-mask: none !important; mask: none !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvMobileRight .gv-invite-link-btn > i { background: #fff !important; -webkit-mask: var(--fs-icon-link) center / contain no-repeat; mask: var(--fs-icon-link) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvMobileRight .gv-invite-link-btn > i { background: var(--fs-icon-link-on) center / contain no-repeat !important; -webkit-mask: none; mask: none; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvMobileRight :is(.gv-rules-btn, .gv-invite-link-btn)::after { content: ""; position: absolute; right: 18px; top: 50%; width: 14px; height: 18px; margin-top: -9px;
-    background: #fff; -webkit-mask: var(--fs-icon-chevron) center / contain no-repeat; mask: var(--fs-icon-chevron) center / contain no-repeat; }
+    background: var(--fs-icon-chevron-on) center / contain no-repeat; }
   /* Members card: orange heading tab with a starburst, faces in cream-tan rings, "+N more" teal */
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvMobileRight > .card { margin: 9px 0 0 !important; padding: 0 !important; border-width: 3px 12px 12px !important; border-image-source: var(--fs-panel-card-tight) !important; border-image-outset: 0 !important; position: relative; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvMobileRight > .card .card-heading { display: inline-flex !important; align-items: center; width: auto !important; height: 25px; padding: 0 22px !important; margin: 0 0 8px 2px !important;
@@ -265,7 +265,7 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvMobileRight > .card .card-heading::after { content: ""; position: absolute; left: 160px; top: 0; width: 26px; height: 26px; background: var(--fs-sparkle-1) center / contain no-repeat; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view .gv-members-preview { gap: 5px !important; padding: 0 !important; flex-wrap: nowrap !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view .gv-members-preview .gv-member-click { width: min(46px, 11.4vw) !important; height: min(46px, 11.4vw) !important; flex: 0 0 auto !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view .gv-members-preview img { width: 100% !important; height: 100% !important; box-shadow: 0 0 0 2.5px #fff6de, 0 0 0 4px #cdb48e !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view .gv-members-preview img { width: 100% !important; height: 100% !important; box-shadow: none !important; padding: 3px !important; box-sizing: border-box !important; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view .gv-members-more { font: 800 17px/17px var(--fs-title-font) !important; color: var(--sa-teal) !important; text-align: center; white-space: normal !important; flex: 1 1 0 !important; min-width: 0 !important; word-spacing: 100vw; }
   html body.fs.fs-blip[data-fs-variant="space-age"]:has(#page-group-view.active) .nav-center .nav-link[data-page="shop"] > i { background-image: var(--fs-icon-skins) !important; }
 }
@@ -283,7 +283,7 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvOpenPostModal .post-create-avatar { width: 46px !important; height: 46px !important; flex: 0 0 46px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvOpenPostModal .post-input-fake { height: 33px !important; line-height: 33px !important; font: italic 600 15px/33px var(--fs-font) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvPostsFeed { position: relative; margin-top: 8px !important; padding: 0 !important; border: 0 solid transparent !important; border-width: 3px 9px 12px !important;
-    border-image: var(--fs-panel-teal-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 stretch !important; background: none !important; gap: 8px !important; display: flex !important; flex-direction: column !important; }
+    border-image: var(--fs-panel-teal-tight) 100 fill / 35px / 0 stretch !important; background: none !important; gap: 8px !important; display: flex !important; flex-direction: column !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvPostsFeed > .card:first-child { border: 0 !important; border-image: none !important; background: none !important; padding: 0 !important; margin: 0 0 -2px !important; min-height: 0 !important; height: auto !important; display: block !important; box-shadow: none !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvPostsFeed > .card:first-child::before, html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvPostsFeed > .card:first-child::after { display: none !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvPostsFeed .pv-posts-heading { display: inline-flex !important; align-items: center; height: 28px; padding: 0 24px !important; margin: 0 0 0 6px !important;
@@ -344,7 +344,7 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
 @media (max-width: 768px) {
   /* an opened group (concept "3 new comments on your post"): the rows sit in an orange-rim card under it, each a pale peach bar */
   html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-group-expand { background: none !important; border: 0 solid transparent !important; border-width: 6px 10px 12px !important; border-radius: 0 !important; box-shadow: none !important; margin: -4px 0 0 !important; overflow: visible !important;
-    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 stretch !important; }
+    border-image: var(--fs-panel-card-tight) 100 fill / 35px / 0 stretch !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-sub-item { border: 0 solid transparent !important; border-image: var(--fs-menu-row-on) 0 60 fill / 0 14px stretch !important; padding: 0 12px !important; min-height: 30px; margin: 0 0 4px !important; gap: 8px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-sub-item > i { display: none !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-sub-item > div { display: flex !important; align-items: center; gap: 8px; }
@@ -355,7 +355,7 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
 @media (max-width: 768px) {
   /* empty category (concept B): one big orange-rim card, the sleeping mascot (moon), the line in bold italic */
   html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .empty-state { min-height: 490px; display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 20px !important;
-    border: 0 solid transparent !important; border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 stretch !important; background: none !important; }
+    border: 0 solid transparent !important; border-image: var(--fs-panel-card-tight) 100 fill / 35px / 0 stretch !important; background: none !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .empty-state > i { width: 210px !important; height: 190px !important; font-size: 0 !important; color: transparent !important; background: var(--fs-mascot-sleep) center / contain no-repeat !important; -webkit-mask: none !important; mask: none !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .empty-state p { font: italic 800 19px/23px var(--fs-title-font) !important; color: var(--sa-text) !important; text-align: center; }
 }
@@ -365,7 +365,7 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
    at the right; search 116-151; tabs 161-214 (active orange); "Mutual" mint pill 226-258; 2-column person cards from 268 */
 @media (max-width: 768px) {
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .page-container { margin: -18px 6px 0 !important; width: auto !important; padding: 0 8px 90px !important; border: 0 solid transparent !important; border-width: 14px 6px 0 !important; min-height: calc(100vh - 62px); box-sizing: border-box;
-    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 stretch !important; }
+    border-image: var(--fs-panel-card-tight) 100 fill / 35px / 0 stretch !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .page-header { margin-top: -18px !important; height: 106px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .page-header h2 { top: 16px !important; font: italic 800 31px/38px var(--fs-title-font) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .page-header::after { right: -6px !important; top: 2px !important; width: 160px !important; height: 76px !important; animation: none !important;
@@ -409,10 +409,10 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-search .page-container { position: relative !important; padding: 0 14px 90px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-search .page-container > * { position: relative; z-index: 1; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-search .page-container::after { content: ""; position: absolute; left: 4px; right: 4px; top: 163px; bottom: 70px; z-index: 0; pointer-events: none;
-    border: 0 solid transparent; border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px stretch; }
+    border: 0 solid transparent; border-image: var(--fs-panel-card-tight) 100 fill / 35px stretch; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-search .page-header { height: 205px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-search .page-header::before { content: ""; position: absolute; left: -10px; right: -10px; top: 26px; height: 134px; z-index: -1; pointer-events: none;
-    border: 0 solid transparent; border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px stretch; }
+    border: 0 solid transparent; border-image: var(--fs-panel-card-tight) 100 fill / 35px stretch; }
   html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #page-search .page-header::after { background: var(--fs-sparkle-1) left 2px top 6px / 26px no-repeat, var(--fs-sparkle-1) right 0 top 22px / 22px no-repeat, var(--fs-mascot-head-plain) center / 92px no-repeat !important;
     top: 28px !important; right: 18px !important; width: 140px !important; height: 72px !important; aspect-ratio: auto !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-search .page-header h2 { top: 40px !important; left: 42px !important; height: 36px; padding: 0 26px !important; gap: 0 !important;
@@ -465,11 +465,11 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
    name 179, medals 196-243, about from 265, Following / Followers cream-teal pills 330-356, teal Edit Profile 362-390;
    Back to Home 418; Photos card from 433 (orange tab + Photos/Albums tabs, active teal) */
 @media (max-width: 768px) {
-  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvCoverBanner { height: 122px !important; margin: 0 6px !important; border-radius: 0 0 16px 16px !important; background-color: #fde9cf !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvCoverBanner { height: 122px !important; margin: 0 6px !important; border-radius: 0 0 16px 16px !important; background-color: transparent !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:is(*) #pvCoverBanner::after { right: 34px !important; top: 2px !important; width: 128px !important; height: 82px !important;
     background: var(--fs-burst) left 0 top 2px / 30px no-repeat, var(--fs-sparkle-1) right 0 top 6px / 22px no-repeat, var(--fs-mascot-head-plain) center / 84px no-repeat !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard { margin: -22px 0 0 !important; min-height: 244px !important; border: 0 solid transparent !important;
-    border-image: var(--fs-card-tail-tight) 130 130 190 130 fill / 31px 31px 45px 31px / 0 0 15px 0 stretch !important; }
+    border-image: var(--fs-card-tail-tight) 150 150 211 150 fill / 36px 36px 51px 36px / 0 0 15px 0 stretch !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #page-profile-view #pvProfileCard::after { content: "" !important; display: block !important; position: absolute; left: 0; right: 0; bottom: -17px; height: 17px; z-index: 0; pointer-events: none; background: var(--fs-tv-foot) left 58px bottom 0 / 30px 17px no-repeat, var(--fs-tv-foot) right 58px bottom 0 / 30px 17px no-repeat !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .profile-info { min-height: 244px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .profile-avatar-wrap { left: 10px !important; top: -20px !important; width: 124px !important; height: 124px !important; }
@@ -487,7 +487,7 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvEditProfileBtn { border-image-source: var(--fs-btn-teal) !important; color: #fff !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .profile-links { bottom: -32px !important; left: 8px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .pv-back-link { font: italic 800 16px var(--fs-title-font) !important; color: var(--sa-teal) !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .pv-back-link > i { filter: none !important; background: var(--sa-teal) !important; -webkit-mask: var(--fs-icon-back) center / contain no-repeat; mask: var(--fs-icon-back) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .pv-back-link > i { filter: none !important; background: var(--fs-icon-back-teal) center / contain no-repeat !important; -webkit-mask: none; mask: none; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvPhotosCard { margin: 40px 0 0 !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvPhotosCard .card-heading { display: inline-flex !important; align-items: center; width: auto !important; height: 28px; padding: 0 24px !important; margin: 2px 0 6px 4px !important;
     font: 800 21px/28px var(--fs-title-font) !important; color: #fff !important; border: 0 solid transparent !important; border-image: var(--fs-heading-tab) 0 72 fill / 0 14px stretch !important; }
@@ -498,7 +498,7 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
 @media (max-width: 768px) {
   /* (B) posts: one orange-rim frame with an orange "Posts" tab, each post a thin tan inner card */
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvPostsFeed { position: relative; margin-top: 12px !important; padding: 34px 0 2px !important; border: 0 solid transparent !important; border-width: 8px 8px 12px !important;
-    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 stretch !important; display: flex !important; flex-direction: column; gap: 8px !important; }
+    border-image: var(--fs-panel-card-tight) 100 fill / 35px / 0 stretch !important; display: flex !important; flex-direction: column; gap: 8px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvPostsFeed::before { content: "Posts"; position: absolute; left: 2px; top: 0; height: 28px; padding: 0 26px; display: flex; align-items: center;
     font: 800 21px/28px var(--fs-title-font); color: #fff; border: 0 solid transparent; border-image: var(--fs-heading-tab) 0 72 fill / 0 14px stretch; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvPostsFeed > .feed-post { margin: 0 !important; border-image-source: var(--fs-panel-tan-tight) !important; border-image-width: 10px 10px 16px 10px !important; border-image-outset: 0 0 6px 0 !important; }
@@ -521,7 +521,7 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
    Following / Followers cream-teal pills, Follow + Message teal 34pt, Mute / Block / Report and Add Close Friend / Invite to Group as
    28pt cream pills (Report red), mutual faces + "Followed by…" in 13pt bold; a cover without a photo shows the Space-Age room art ---------- */
 @media (max-width: 768px) {
-  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvCoverBanner { background: #fde9cf var(--fs-background) center 30% / cover no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvCoverBanner { background: var(--fs-cover-default) center 60% / cover no-repeat !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .profile-title { font: italic 700 15px/19px var(--fs-font) !important; color: var(--sa-text) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvMutualFollowers .mutual-followers > span, html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvMutualFollowers span { font: 800 13px/16px var(--fs-font) !important; color: var(--sa-text) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvMutualFollowers img { width: 38px !important; height: 38px !important; padding: 3px !important; box-sizing: border-box; box-shadow: none !important; background: var(--fs-avatar-ring) center / 100% 100% no-repeat !important; }
@@ -536,8 +536,8 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
 }
 
 /* covers without a photo (any page): the Space-Age room art, never Logo Classic's blue fill */
-html body.fs.fs-blip[data-fs-variant="space-age"] :is(.fs-tl-slot-1, #gvCoverBanner, #pvCoverBanner, #timelineCover) { background-color: #fde9cf !important; }
-html body.fs.fs-blip[data-fs-variant="space-age"] .fs-tl-slot-1:not(:has(img)) { background: #fde9cf var(--fs-background) center 30% / cover no-repeat !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] :is(.fs-tl-slot-1, #gvCoverBanner, #pvCoverBanner, #timelineCover) { background-color: transparent !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] .fs-tl-slot-1:not(:has(img)) { background: var(--fs-cover-default) center 60% / cover no-repeat !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvAdminDelete { color: #db231b !important; }
 /* inline comment previews under posts: the cream / teal Space-Age chat bubble (never a skin colour leaking from the viewed profile) */
 html body.fs.fs-blip[data-fs-variant="space-age"] .inline-comment-bubble { background: none !important; border-radius: 0 !important; box-shadow: none !important; border: 0 solid transparent !important;
@@ -556,8 +556,8 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .inline-comment-bubble p { col
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages .msg-search { height: 38px !important; margin: 6px 2px 8px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages .msg-search input { font: 600 16px var(--fs-font) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages .msg-contact-list { gap: 1px !important; padding: 7px 4px 90px !important; border: 0 solid transparent !important; border-width: 7px 4px 0 !important;
-    border-image: var(--fs-panel-card-tight) 60 60 0 60 fill / 17px 17px 0 17px / 0 stretch !important; margin: 0 -4px !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages .msg-contact { min-height: 57px !important; height: 57px; padding: 0 12px 0 10px !important; gap: 14px !important; border-image-source: var(--fs-panel-teal-tight) !important; border-image-width: 9px 9px 15px 9px !important; border-image-outset: 0 0 4px 0 !important; }
+    border-image: var(--fs-panel-card-tight) 100 100 0 100 fill / 35px 35px 0 35px / 0 stretch !important; margin: 0 -4px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages .msg-contact { min-height: 57px !important; height: 57px; padding: 0 12px 0 10px !important; gap: 14px !important; border-image-source: var(--fs-panel-teal-tight) !important; border-image-slice: 100 fill !important; border-image-width: 22px !important; border-image-outset: 0 !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages .msg-contact.active { border-image-source: var(--fs-panel-teal-tight) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages #newGroupDmBtn { min-height: 57px !important; border-image-source: var(--fs-panel-tan-tight) !important; margin-bottom: 5px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages #newGroupDmBtn > div:first-child { width: 46px !important; height: 46px !important; background: var(--fs-story-add) center / contain no-repeat !important; flex: 0 0 46px !important; }
@@ -593,12 +593,12 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .inline-comment-bubble p { col
   html body.fs.fs-blip[data-fs-variant="space-age"] .msg-chat-input { margin: 0 6px 6px !important; height: 58px !important; padding: 0 8px 0 18px !important; border: 0 solid transparent !important; border-image: var(--fs-btn-secondary) 0 74 fill / 0 29px stretch !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #msgInput { height: 36px !important; font: italic 600 16px var(--fs-font) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #sendMsgBtn { width: 44px !important; height: 44px !important; background: var(--fs-blip-btn) center / 100% 100% no-repeat !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #sendMsgBtn::after { filter: none !important; background: #fff6de !important; -webkit-mask: var(--fs-icon-send) center / contain no-repeat; mask: var(--fs-icon-send) center / contain no-repeat; inset: 12px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #sendMsgBtn::after { filter: none !important; background: var(--fs-icon-send-on) center / contain no-repeat !important; -webkit-mask: none; mask: none; inset: 12px !important; }
 }
 @media (max-width: 768px) {
   /* chat GIF picker (concept chat B): orange-rim cream panel, cream search pill with a teal rim, rounded tiles, teal rules around "Powered by KLIPY" */
   html body.fs.fs-blip[data-fs-variant="space-age"] #msgGifPicker { background: none !important; box-shadow: none !important; border-radius: 0 !important; border: 0 solid transparent !important; border-width: 8px 8px 12px !important;
-    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 stretch !important; }
+    border-image: var(--fs-panel-card-tight) 100 fill / 35px / 0 stretch !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #msgGifPicker .gif-picker-header { background: none !important; border: 0 !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #msgGifSearch { background: none !important; border: 0 solid transparent !important; border-radius: 0 !important; border-image: var(--fs-field) 0 64 fill / 0 18px stretch !important;
     font: italic 600 16px var(--fs-font) !important; color: var(--sa-text) !important; padding: 0 16px !important; }
@@ -621,13 +621,13 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .inline-comment-bubble p { col
     font: italic 800 30px/40px var(--fs-title-font) !important; color: #fff !important; border: 0 solid transparent !important; border-image: var(--fs-heading-tab) 0 72 fill / 0 20px stretch !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .comment-modal-scroll .comment-sort-tab { font: italic 800 18px var(--fs-title-font) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .comment-modal-scroll .search-tabs { border: 0 solid transparent !important; border-image: var(--fs-chip) 0 76 fill / 0 19px stretch !important; background: none !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #commentsList .comment-item { border-image-source: var(--fs-panel-card-tight) !important; border-image-width: 9px 9px 15px 9px !important; border-image-outset: 0 0 4px 0 !important; padding: 6px 8px 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #commentsList .comment-item { border-image-source: var(--fs-panel-card-tight) !important; border-image-slice: 100 fill !important; border-image-width: 22px !important; border-image-outset: 0 !important; padding: 6px 8px 8px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #commentsList .comment-item > img { box-shadow: none !important; width: 48px !important; height: 48px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #commentsList .comment-item strong { font: italic 800 19px/22px var(--fs-title-font) !important; color: var(--sa-text) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #commentsList .comment-text { font: 600 15.5px/20px var(--fs-font) !important; color: var(--sa-text) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #commentsList .comment-text > span:first-child { color: var(--sa-teal) !important; font: italic 800 15.5px var(--fs-title-font) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #commentsList :is(.comment-reply-btn, .comment-edit-btn, .comment-delete-btn) { color: var(--sa-teal) !important; font: italic 800 15.5px var(--fs-title-font) !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #commentsList .comment-item.comment-reply::before { background: var(--sa-teal) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #commentsList .comment-item.comment-reply::before { display: none !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .comment-modal-input #postCommentBtn { font: italic 800 18px var(--fs-title-font) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .comment-modal-input #commentGifBtn { color: var(--sa-teal) !important; font: italic 800 16px var(--fs-title-font) !important; border-image-source: var(--fs-coin-pill) !important; }
 }
@@ -660,14 +660,14 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .inline-comment-bubble p { col
   html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-media-grid > * { border: 0 solid transparent !important; border-image: var(--fs-panel-teal-tight) 60 60 98 60 fill / 8px 8px 13px 8px stretch !important; border-radius: 0 !important; padding: 4px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-tag-chip { background: none !important; border: 0 solid transparent !important; border-radius: 0 !important; border-image: var(--fs-pill-mint) 0 67 fill / 0 16px stretch !important; font: italic 800 17px var(--fs-title-font) !important; color: var(--sa-text) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-footer { margin: auto 2px 4px !important; height: 58px; padding: 0 8px 0 18px !important; border: 0 solid transparent !important; border-image: var(--fs-chip) 0 76 fill / 0 29px stretch !important; background: none !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal #cpmCharCounter { font: 700 14px var(--fs-font) !important; color: var(--sa-text) !important; border-right-color: #cdb48e !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal #cpmCharCounter { font: 700 14px var(--fs-font) !important; color: var(--sa-text) !important; border-right: 0 !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-emoji-btn { background: var(--fs-btn-round) center / 100% 100% no-repeat !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal #cpmPublish { height: 38px !important; min-height: 0 !important; font: italic 800 19px var(--fs-title-font) !important; border-image-width: 0 19px !important; }
 }
 @media (max-width: 768px) {
   /* overlay pass (createpost-a): the concept has no outer frame — the composer IS the page: header pill x 8-394, porthole 100pt at x 10,
      text box x 8-394; so the modal drops its frame and padding and fills the screen on the cream page art */
-  html body.fs.fs-blip[data-fs-variant="space-age"] .modal-overlay:has(.create-post-modal #cpmText) { padding: 0 !important; background: #fde9cf var(--fs-background) center top / 100% auto repeat-y !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .modal-overlay:has(.create-post-modal #cpmText) { padding: 0 !important; background: var(--fs-background) center top / 100% auto repeat-y !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #modalContent:has(.create-post-modal #cpmText) { border: 0 !important; border-image: none !important; background: none !important; box-shadow: none !important;
     width: 100% !important; max-width: none !important; margin: 0 !important; padding: calc(env(safe-area-inset-top, 0px) + 18px) 8px 0 !important; border-radius: 0 !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal:has(#cpmText) > .modal-header { margin: 4px 0 8px !important; height: 58px !important; }
@@ -683,7 +683,7 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .inline-comment-bubble p { col
   html body.fs.fs-blip[data-fs-variant="space-age"] #modalContent:has(.create-post-modal #cpmText) > .create-post-modal { flex: 1 0 auto !important; min-height: 0 !important; }
   /* poll (concept createpost B): orange-rim card, "Poll" bold italic with its teal icon, Remove teal, options as cream / teal-rim pills, + Add option teal */
   html body.fs.fs-blip[data-fs-variant="space-age"] #cpmPollSection { margin: 10px 0 0 !important; padding: 2px 6px 6px !important; border: 0 solid transparent !important; border-width: 6px 10px 12px !important; background: none !important;
-    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 stretch !important; }
+    border-image: var(--fs-panel-card-tight) 100 fill / 35px / 0 stretch !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #cpmPollSection *:not(i) { font-family: var(--fs-title-font) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #cpmPollSection > div:first-child, html body.fs.fs-blip[data-fs-variant="space-age"] #cpmPollSection > div:first-child *:not(i) { font-style: italic !important; font-weight: 800 !important; font-size: 21px !important; color: var(--sa-text) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #cpmPollSection > div:first-child i { color: var(--sa-teal) !important; }
@@ -704,24 +704,24 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.view-more-link, .view-pro
 html body.fs.fs-blip[data-fs-variant="space-age"] .msg-contact-preview, html body.fs.fs-blip[data-fs-variant="space-age"] .post-input-fake { color: #5c544a !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] .connections-count { background: none !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] .post-badges .badge, html body.fs.fs-blip[data-fs-variant="space-age"] .badge { background-color: transparent !important; }
-html body.fs.fs-blip[data-fs-variant="space-age"] [style*="#e74c3c"], html body.fs.fs-blip[data-fs-variant="space-age"] [style*="#e74c3c"] * { color: #db231b !important; border-color: #db231b !important; }
-html body.fs.fs-blip[data-fs-variant="space-age"] .group-icon { background-color: #11837f !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] [style*="#e74c3c"], html body.fs.fs-blip[data-fs-variant="space-age"] [style*="#e74c3c"] * { color: #db231b !important; border-color: transparent !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] .group-icon { background: var(--fs-blip-btn) center / 100% 100% no-repeat !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] [style*="var(--primary)"] { --primary: #ee6c07; }
 /* the app's own colour variables (used by inline styles across pages) mapped to the concept palette */
 html body.fs.fs-blip[data-fs-variant="space-age"] { --dark: #222321 !important; --primary: #ee6c07 !important; --primary-hover: #c44e00 !important; --gray: #5c544a !important; --card: #fdebd2 !important; --border: #cdb48e !important; --light: #fde9cf !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) :is(#page-groups .page-search > i, .navbar .search-bar > i, #page-messages .msg-search > i, #page-profiles .page-search > i,
-  #page-search .page-header h2 > i, #searchPageInput > i) { background: #222321 !important; }
+  #page-search .page-header h2 > i, #searchPageInput > i) { background: var(--fs-icon-search) center / contain no-repeat !important; -webkit-mask: none !important; mask: none !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] #dropdownAdmin { color: #db231b !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) .blip-start-btn > span { color: #fff6de !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-icon { background-color: transparent !important; }
-html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #page-profile-view #pvProfileCard .pv-back-link > i { background: #13706b !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #page-profile-view #pvProfileCard .pv-back-link > i { background: var(--fs-icon-back-teal) center / contain no-repeat !important; -webkit-mask: none !important; mask: none !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] .user-badge { background-color: transparent !important; }
-html body.fs.fs-blip[data-fs-variant="space-age"] :is(.photo-menu-btn, .photo-video-badge) { background: #fff6de !important; color: #222321 !important; border-radius: 999px !important; box-shadow: 0 0 0 1.5px #cdb48e !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] :is(.photo-menu-btn, .photo-video-badge) { background: none !important; border: 0 solid transparent !important; border-image: var(--fs-chip) 0 76 fill / 0 10px stretch !important; color: #222321 !important; border-radius: 0 !important; box-shadow: none !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] :is(.photo-menu-btn, .photo-video-badge) * { color: #222321 !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] .timeline-cover-btn, html body.fs.fs-blip[data-fs-variant="space-age"] .timeline-cover-btn * { color: #222321 !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] #chatMessages .msg-bubble.received, html body.fs.fs-blip[data-fs-variant="space-age"] #chatMessages .msg-bubble.received * { color: #222321 !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] #chatMessages .msg-bubble.sent, html body.fs.fs-blip[data-fs-variant="space-age"] #chatMessages .msg-bubble.sent * { color: #fff6de !important; }
-html body.fs.fs-blip[data-fs-variant="space-age"] .gv-staff-role { background: #afdcd0 !important; color: #222321 !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] .gv-staff-role { background: none !important; border: 0 solid transparent !important; border-image: var(--fs-pill-mint) 0 67 fill / 0 9px stretch !important; color: #222321 !important; }
 
 /* ======================================================================================================== SKINS SHOP (phone) — ref/space-age/shop-a.png
    34pt italic "Skins" + subtitle, the plain mascot head with burst + sparkles right; Skin Shop / My Skins on one cream track (active
@@ -763,12 +763,12 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .gv-staff-role { background: #
   html body.fs.fs-blip[data-fs-variant="space-age"] .blip-menu-side i { width: 54px !important; height: 54px !important; background-image: var(--fs-mascot-head-plain) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .blip-menu-list h4 { align-self: flex-start; display: inline-flex; align-items: center; height: 34px; padding: 0 24px; margin: 4px 0 8px !important;
     font: italic 800 25px/34px var(--fs-title-font) !important; color: #fff6de !important; border: 0 solid transparent; border-image: var(--fs-heading-tab) 0 72 fill / 0 17px stretch; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .blip-row { min-height: 43px !important; gap: 12px !important; padding: 3px 10px 3px 4px !important; border-bottom: 1.5px solid #cdb48e !important; border-radius: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .blip-row { min-height: 43px !important; gap: 12px !important; padding: 3px 10px 3px 4px !important; border-bottom: 0 !important; background: var(--fs-divider) center bottom / 100% 4px no-repeat !important; border-radius: 0 !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .blip-row.blip-more, html body.fs.fs-blip[data-fs-variant="space-age"] .blip-row:has(+ hr) { border-bottom: 0 !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .blip-row span { font: italic 800 19px var(--fs-title-font) !important; color: #222321 !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .blip-sw { width: 56px !important; height: 36px !important; flex: 0 0 56px !important; border-radius: 9px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .blip-sw::after { display: none !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .blip-sw-default { background-color: #fde9cf !important; background-size: contain !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .blip-sw-default { background-color: transparent !important; background-size: contain !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .blip-sw-bag { width: 30px !important; flex-basis: 30px !important; margin: 0 13px; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .blip-check { width: 30px !important; height: 30px !important; flex-basis: 30px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .blip-menu hr { display: none !important; }
@@ -782,7 +782,7 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .gv-staff-role { background: #
 @media (min-width: 769px) {
   html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard { min-height: 300px !important; height: 300px !important; margin: 46px 0 22px !important; padding: 0 !important; border: 0 !important; border-image: none !important; background: none !important; overflow: visible !important; position: relative; }
   html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #profileCard::before { content: "" !important; display: block !important; position: absolute !important; inset: 0 0 -18px 0 !important; border: 0 solid transparent !important; z-index: 0; pointer-events: none;
-    border-image: var(--fs-card-tail-tight) 130 130 190 130 fill / 31px 31px 45px 31px / 0 stretch !important; background: var(--fs-tv-foot) left 70px bottom 0 / 34px 18px no-repeat, var(--fs-tv-foot) right 70px bottom 0 / 34px 18px no-repeat !important; }
+    border-image: var(--fs-card-tail-tight) 150 150 211 150 fill / 36px 36px 51px 36px / 0 stretch !important; background: var(--fs-tv-foot) left 70px bottom 0 / 34px 18px no-repeat, var(--fs-tv-foot) right 70px bottom 0 / 34px 18px no-repeat !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #profileCard::after { content: "" !important; display: block !important; position: absolute !important; left: 50% !important; top: -44px !important; width: 96px !important; height: 54px !important; margin-left: -48px; right: auto !important; bottom: auto !important; border: 0 !important;
     background: var(--fs-tv-antenna) center bottom / contain no-repeat !important; z-index: 0; pointer-events: none; transform: none !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-cover { display: none !important; }
@@ -878,7 +878,7 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .gv-staff-role { background: #
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-panel::before { display: none !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-panel-header :is(img, .quest-mascot) { display: none !important; }
 }
-html body.fs.fs-blip[data-fs-variant="space-age"] .navbar { background-color: #fde9cf !important; border-bottom-color: #cdb48e !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] .navbar { background-color: transparent !important; border-bottom: 0 !important; }
 
 /* ======================================================================================================== DESKTOP GROUPS — concept groupsdesk.png (app 1536 -> 1440)
    44pt italic title with starbursts both sides; search pill; teal Create Group; tabs (active orange); cards 252 wide in 2 rows that
@@ -897,7 +897,7 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .navbar { background-color: #f
   html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card { min-width: 252px !important; max-width: 252px !important; height: auto !important; min-height: 300px; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-banner { height: 116px !important; flex-basis: 116px !important; border-radius: 16px 16px 6px 6px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-banner > i, html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-banner > img { bottom: -40px !important; width: 84px !important; height: 84px !important; margin-left: -42px !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-banner > i { background-color: #11837f !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-banner > i { background: var(--fs-blip-btn) center / 100% 100% no-repeat !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-banner::after { background-image: var(--fs-group-avatar-frame) !important; bottom: -48px !important; width: 100px !important; height: 100px !important; margin-left: -50px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-body { padding-top: 48px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-body h4 { font: italic 800 23px/26px var(--fs-title-font) !important; white-space: normal !important; display: -webkit-box !important; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; text-overflow: clip !important; color: #222321 !important; }
@@ -910,7 +910,7 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .navbar { background-color: #f
   html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .join-group-btn.btn-disabled { color: #72726f !important; }
 }
 /* the app's default banner colour for groups without a cover isn't in the concept: the concept's thin-teal instead */
-html body.fs.fs-blip[data-fs-variant="space-age"] .group-card-banner[style*="#5cbdb9"], html body.fs.fs-blip[data-fs-variant="space-age"] [style*="background:#5cbdb9"] { background-color: #52a29b !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] .group-card-banner[style*="#5cbdb9"], html body.fs.fs-blip[data-fs-variant="space-age"] [style*="background:#5cbdb9"] { background: var(--fs-cover-default) center 60% / cover no-repeat !important; }
 /* the starburst left of the Search heading is art, not a masked icon (undo the search-glass ink fill for it) */
 html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #page-search .page-header h2 > i { background: var(--fs-sparkle-1) center / contain no-repeat !important; -webkit-mask: none !important; mask: none !important; }
 
@@ -928,3 +928,120 @@ html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #page-search .page-heade
 }
 /* concept Featured "Buy · 300" is the bright gold pill (the top-bar coin pill is the pale one) */
 html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-body .btn { border-image: var(--fs-reward-chip) 0 64 fill / 0 14px stretch !important; color: #222321 !important; }
+
+/* group page graphics (concept group.png): the rocket flies through a gold orbit ring, white starbursts on the cover, italic group name */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvCoverBanner::after { right: 18px !important; top: 2px !important; width: 190px !important; height: 128px !important;
+    background: var(--fs-mascot-peek) 62% 0 / 128px 124px no-repeat, var(--fs-orbit-gold) center 74% / 100% 46% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvCoverBanner::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: var(--fs-sparkle-white) 14px 58px / 34px no-repeat, var(--fs-sparkle-white) right 120px top 12px / 26px no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-group-view #gvProfileCard .profile-name { font-style: italic !important; }
+}
+/* graphics pass 2 (concept pages): notification row icons as in notifications.png (red heart, chat bubble, user-plus, @, envelope, coins,
+   palette); the Skins header uses the layers icon and the Network header the orange nodes icon, as in shop.png / network.png */
+html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-icon { background: center / contain no-repeat !important; border-radius: 0 !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-icon > i { display: none !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-icon:has(.fa-heart, .fa-thumbs-up, .fa-thumbs-down) { background-image: var(--fs-notif-heart) !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-icon:has(.fa-comment, .fa-comments, .fa-reply) { background-image: var(--fs-notif-chat) !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-icon:has(.fa-user-plus, .fa-users, .fa-user) { background-image: var(--fs-notif-userplus) !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-icon:has(.fa-at) { background-image: var(--fs-notif-at) !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-icon:has(.fa-envelope, .fa-paper-plane) { background-image: var(--fs-notif-envelope) !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-icon:has(.fa-coins, .fa-coin, .fa-gift) { background-image: var(--fs-notif-coins) !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-icon:has(.fa-palette, .fa-shirt, .fa-wand-magic-sparkles) { background-image: var(--fs-notif-palette) !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #page-shop .page-header h2 > i { background: var(--fs-icon-layers) center / contain no-repeat !important; -webkit-mask: none !important; mask: none !important; width: 40px !important; height: 38px !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #page-profiles .page-header h2 > i { background: var(--fs-icon-nodes) center / contain no-repeat !important; -webkit-mask: none !important; mask: none !important; width: 40px !important; height: 38px !important; }
+
+/* ======================================================================================================== SOMEONE ELSE'S PROFILE — rebuilt by overlay
+   (ref/space-age/otherprofile-a.png, concept y - 28 = page y): cover 57-187 with the big plain mascot head + bursts at the right; ONE tall TV
+   card 154-600 holding everything: porthole 140 at x 12 / y 172, 30pt italic name, info lines, mutual faces 292-334, stat pills 347-382,
+   Follow + Message 397-434 (teal), Mute / Block / Report 446-480 and Add Close Friend / Invite to Group 489-523 as cream pills with a thin
+   tan rim (Report red), Back to Home inside the card at 538 */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvCoverBanner { height: 130px !important; margin-top: 1px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)):is(*) #pvCoverBanner::after { right: 14px !important; top: 6px !important; width: 190px !important; height: 116px !important;
+    background: var(--fs-burst) left 4px top 8px / 40px no-repeat, var(--fs-sparkle-2) right 0 top 6px / 26px no-repeat, var(--fs-mascot-head-plain) 62% 50% / 124px no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard { margin-top: -33px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .profile-info { min-height: 446px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .profile-info:has(#pvAdminSuspend) { min-height: 494px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .profile-avatar-wrap { left: 2px !important; top: 18px !important; width: 140px !important; height: 140px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .profile-name { left: 150px !important; right: 34px !important; top: 14px !important; font: italic 800 30px/34px var(--fs-title-font) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .profile-name::after { content: none; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .profile-title { position: absolute !important; left: 150px !important; right: 14px !important; top: 50px !important; margin: 0 !important; font: italic 800 17px/21px var(--fs-title-font) !important; color: #222321 !important; text-align: left !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .pv-online-line { position: absolute !important; left: 150px !important; right: 14px !important; top: 72px !important; margin: 0 !important; font: italic 800 17px/21px var(--fs-title-font) !important; color: #222321 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .profile-about { left: 150px !important; right: 12px !important; top: 96px !important; padding: 0 !important; font: italic 600 16px/19px var(--fs-font) !important; display: -webkit-box !important; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .profile-about::before { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .fs-namecard::after { content: ""; position: absolute; right: 10px; top: 18px; width: 34px; height: 34px; background: var(--fs-sparkle-1) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .profile-info::after { content: ""; position: absolute; right: 12px; top: 150px; width: 30px; height: 30px; background: var(--fs-sparkle-2) center / contain no-repeat; pointer-events: none; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvMutualFollowers { position: absolute !important; left: 22px !important; right: 12px !important; top: 138px !important; margin: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvMutualFollowers img { width: 42px !important; height: 42px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvMutualFollowers span { font: italic 800 15px/18px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .profile-stats { position: absolute !important; top: 193px !important; left: 12px !important; right: 12px !important; gap: 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .stat { height: 35px !important; border-image-width: 0 17px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .stat-count { font-size: 21px !important; } html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .stat-label { font-size: 18px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .pv-actions { position: absolute !important; display: grid !important; grid-template-columns: repeat(6, 1fr) !important; top: 243px !important; left: 8px !important; right: 12px !important; row-gap: 12px !important; column-gap: 9px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvFollowBtn, html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvMsgBtn { height: 37px !important; font-size: 21px !important; border-image-width: 0 18px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) :is(#pvMuteBtn, #pvBlockBtn, #pvReportUserBtn, #pvCloseFriendBtn, #pvInviteGroupBtn) { height: 34px !important; font: italic 800 16px var(--fs-title-font) !important; color: #222321 !important;
+    border-image-source: var(--fs-tabs-track) !important; border-image-slice: 0 64 fill !important; border-image-width: 0 17px !important; gap: 7px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) :is(#pvMuteBtn, #pvBlockBtn, #pvReportUserBtn, #pvCloseFriendBtn, #pvInviteGroupBtn) > i { width: 20px !important; height: 20px !important; flex-basis: 20px !important; color: #222321 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvReportUserBtn { border-image-source: var(--fs-btn-danger) !important; color: #db231b !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvReportUserBtn > i { color: #db231b !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .profile-links { position: absolute !important; left: 24px !important; bottom: 18px !important; top: auto !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .pv-back-link { font: italic 800 19px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvPhotosCard { margin-top: 14px !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvFollowBtn, html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvMsgBtn { grid-column: span 3 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) :is(#pvMuteBtn, #pvBlockBtn, #pvReportUserBtn) { grid-column: span 2 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) :is(#pvCloseFriendBtn, #pvInviteGroupBtn) { grid-column: span 3 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) .pv-actions > :not(.btn) { grid-column: 1 / -1 !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard :is(.profile-stats, .pv-actions) { margin: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .profile-info > div:has(> #pvAdminSuspend) { position: absolute !important; left: 0 !important; right: 0 !important; top: 384px !important; margin: 0 !important; border: 0 !important; padding: 0 !important; }
+}
+@media (max-width: 768px) {
+  /* otherprofile B: no "Photos" heading — the Photos / Albums toggle is the full-width orange-active track */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvPhotosCard .card-heading { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvPhotoTabs { position: static !important; width: auto !important; height: 38px !important; margin: 4px 4px 10px !important; padding: 1px !important;
+    border: 0 solid transparent !important; border-image: var(--fs-tabs-track) 0 64 fill / 0 19px stretch !important; display: flex !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvPhotoTabs .search-tab { flex: 1 !important; height: 36px !important; font: italic 800 22px var(--fs-title-font) !important; border: 0 solid transparent !important; border-image: none !important; color: #222321 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvPhotoTabs .search-tab.active { border-image: var(--fs-chip-active) 0 76 fill / 0 18px stretch !important; color: #fff6de !important; }
+}
+/* a cover without a photo shows the painted Space-Age landscape (real cover photos sit on top of it) */
+html body.fs.fs-blip[data-fs-variant="space-age"] :is(#pvCoverBanner, #gvCoverBanner, #timelineCover) { background: var(--fs-cover-default) center 60% / cover no-repeat !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] .fs-tl-slot-1:not(:has(img)) { background: var(--fs-cover-default) center 60% / cover no-repeat !important; }
+/* no CSS-drawn visuals: Logo Classic leftovers become art or go */
+html body.fs.fs-blip[data-fs-variant="space-age"] #msgContactList .msg-contact > div:first-child { background-color: transparent !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] #msgFollowingBar, html body.fs.fs-blip[data-fs-variant="space-age"] .msg-following-header { border: 0 !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] :is(.fsk-owned, .fsk-badge) { background: var(--fs-menu-check) center / contain no-repeat !important; box-shadow: none !important; border: 0 !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] :is(.fsk-owned, .fsk-badge) > * { opacity: 0 !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] .nav-center::after { display: none !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] #shopTabs { border-bottom: 0 !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] .modal-header, html body.fs.fs-blip[data-fs-variant="space-age"] .modal-profile-stats { border-top: 0 !important; border-bottom: 0 !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] :is(.photo-menu-btn, .photo-video-badge, #pvFollowBtn, #pvMsgBtn, #pvAdminDelete) { background-color: transparent !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] #pvMutualFollowers .mutual-followers > span { border-left: 0 !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] #pvProfileCard .pv-online-line::before { background: var(--fs-dot-offline) center / contain no-repeat !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] #pvProfileCard .pv-online-line:is(.online, .is-online, [data-online="1"])::before { background-image: var(--fs-dot-online) !important; }
+
+/* ===== painted glossy rims (Codex, from the concept): every card uses them at the concept's scale (9pt tube, ~28pt corners);
+   Logo Classic's 60/98 slices don't fit the painted corners, so the slice + width are set here for every card ===== */
+html body.fs.fs-blip[data-fs-variant="space-age"]:not(#a):not(#b) :is(.card, .feed-post, .quest-panel, .coin-goal-bar, .featured-skin-banner, .group-card, .profile-card-item, .user-dropdown, .post-dropdown, .modal-content, #pvPostsFeed, #gvPostsFeed) {
+  border-image-slice: 100 fill !important; border-image-width: 35px !important; border-image-outset: 0 !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"]:not(#a):not(#b) :is(.msg-contact, .comment-item, #searchResults .profile-card-item, #searchResults .group-card) { border-image-slice: 100 fill !important; border-image-width: 22px !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"]:not(#a):not(#b) :is(#gvPostsFeed, #pvPostsFeed) > .feed-post { border-image-slice: 60 60 98 60 fill !important; border-image-width: 10px 10px 16px 10px !important; border-image-outset: 0 0 6px 0 !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"]:not(#a):not(#b) #page-home .post-create-bar { border-image-slice: 60 60 98 60 fill !important; border-image-width: 10px 10px 16px 10px !important; }
+/* the rim curves around the porthole (concept): a painted collar ring behind every porthole on a TV card */
+html body.fs.fs-blip[data-fs-variant="space-age"] :is(#profileCard, #gvProfileCard, #pvProfileCard) .profile-avatar-wrap::before { content: "" !important; display: block !important; position: absolute !important; inset: -8% !important; z-index: 0 !important;
+  background: var(--fs-porthole-collar) center / 100% 100% no-repeat !important; pointer-events: none; border: 0 !important; transform: none !important; opacity: 1 !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] :is(#profileCard, #gvProfileCard, #pvProfileCard) .profile-avatar-wrap > img { position: relative; z-index: 1; }
+/* the TV cards keep their own slices (feet strip at the bottom) over the generic card rule */
+html body.fs.fs-blip[data-fs-variant="space-age"]:not(#a):not(#b):not(#c) #page-profile-view #pvProfileCard { border-image-slice: 150 150 211 150 fill !important; border-image-width: 36px 36px 51px 36px !important; border-image-outset: 0 0 15px 0 !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] :is(#profileCard, #gvProfileCard, #pvProfileCard) .profile-avatar-wrap::before { inset: -5% !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] #pvAdminDelete { background: none !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:not(:has(#pvEditProfileBtn)) #pvProfileCard .profile-links { bottom: 30px !important; }
+/* the collar only shows where the rim bulges OUT around the porthole (concept): above the card's top edge and left of its side */
+html body.fs.fs-blip[data-fs-variant="space-age"] :is(#profileCard, #gvProfileCard, #pvProfileCard) .profile-avatar-wrap::before { clip-path: polygon(0 0, 100% 0, 100% 15%, 9% 15%, 9% 100%, 0 100%); }
+/* otherprofile B: no "Posts" frame — every post is its own orange-rim card (concept) */
+html body.fs.fs-blip[data-fs-variant="space-age"]:not(#a):not(#b):not(#c) #page-profile-view:not(:has(#pvEditProfileBtn)) #pvPostsFeed { border-image: none !important; border-width: 0 !important; padding: 0 !important; margin-top: 14px !important; gap: 12px !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"]:not(#a):not(#b):not(#c) #page-profile-view:not(:has(#pvEditProfileBtn)) #pvPostsFeed::before { display: none !important; }
+html body.fs.fs-blip[data-fs-variant="space-age"]:not(#a):not(#b):not(#c) #page-profile-view:not(:has(#pvEditProfileBtn)) #pvPostsFeed > .feed-post { border-image-source: var(--fs-panel-card-tight) !important; border-image-slice: 100 fill !important; border-image-width: 35px !important; border-image-outset: 0 !important; padding: 12px 14px 10px !important; }

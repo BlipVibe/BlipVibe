@@ -248,6 +248,45 @@ def gold_coin(W, box):
     return im.resize((W, W), Image.LANCZOS)
 
 
+def recolor(name, rgb):
+    """an icon variant in one palette colour (art file, so no CSS tinting): keeps the icon's alpha and shading"""
+    im = Image.open(f'{O}/{name}.webp').convert('RGBA'); a = im.getchannel('A')
+    g = im.convert('L').point(lambda v: 255 - int((255 - v) * .25))
+    o = Image.merge('RGB', [g.point(lambda v, c=c: int(c * v / 255)) for c in rgb]).convert('RGBA'); o.putalpha(a); return o
+
+
+def status_dot(rgb):
+    """online / offline status dot: a glossy disc with a cream ring (art, not a CSS circle), 60x60"""
+    W = 60; im = Image.new('RGBA', (W * SS, W * SS), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    d.ellipse([2 * SS, 2 * SS, 58 * SS, 58 * SS], fill=(255, 246, 222)); d.ellipse([8 * SS, 8 * SS, 52 * SS, 52 * SS], fill=rgb)
+    d.ellipse([16 * SS, 13 * SS, 30 * SS, 24 * SS], fill=(255, 255, 255, 150)); return im.resize((W, W), Image.LANCZOS)
+
+
+K = 'images/skins/blip/kit/space-age'
+
+
+def painted_rim(name, size, corner, fill=None):
+    """a Codex-painted card rim (kit/<name>.png), cropped to its shape and resampled 9-slice-wise into `size` with `corner`-px corners
+    (the painted corners/tube are kept intact, only the straight runs stretch). fill: recolour the cream centre (e.g. peach for -active)."""
+    im = Image.open(f'{K}/{name}.png').convert('RGBA'); im = im.crop(im.getchannel('A').point(lambda v: 255 if v > 40 else 0).getbbox())
+    src_corner = 150; k = corner / src_corner
+    sw, sh = im.size; tw, th = size; S_ = src_corner; T = corner
+    out = Image.new('RGBA', size, (0, 0, 0, 0))
+    xs, ys, xt, yt = [0, S_, sw - S_, sw], [0, S_, sh - S_, sh], [0, T, tw - T, tw], [0, T, th - T, th]
+    for i in range(3):
+        for j in range(3):
+            a = (xs[i], ys[j], xs[i + 1], ys[j + 1]); b = (xt[i], yt[j], xt[i + 1], yt[j + 1])
+            out.paste(im.crop(a).resize((b[2] - b[0], b[3] - b[1]), Image.LANCZOS), (b[0], b[1]))
+    if fill:
+        px = out.load()
+        for y in range(out.height):
+            for x in range(out.width):
+                r, g, b_, a_ = px[x, y]
+                if a_ > 200 and r > 240 and g > 220 and b_ > 180 and T * .6 < x < out.width - T * .6 and T * .6 < y < out.height - T * .6:
+                    px[x, y] = (fill[0], fill[1], fill[2], a_)
+    return out
+
+
 def save(im, name, q=92): im.save(f'{O}/{name}.webp', 'WEBP', quality=q, method=6); return name
 
 
@@ -284,7 +323,7 @@ def build():
     out.append(save(vivid('bubble-out', .02, .13, OR_BODY), 'bubble-out'))
     out.append(save(vivid('bubble-in', .4, .6, TE_BODY), 'bubble-in'))
     out.append(save(vivid('menu-check', .02, .13, TE_BODY), 'menu-check'))   # concept: teal check disc
-    out.append(save(starburst((250, 131, 47)), 'sparkle-1')); out.append(save(starburst((36, 134, 123)), 'sparkle-2'))
+    out.append(save(starburst((250, 131, 47)), 'sparkle-1')); out.append(save(starburst((255, 252, 240)), 'sparkle-white')); out.append(save(starburst((36, 134, 123)), 'sparkle-2'))
     out.append(save(orbit((36, 134, 123)), 'orbit-teal')); out.append(save(orbit((238, 97, 19)), 'orbit-orange')); out.append(save(orbit((242, 172, 1)), 'orbit-gold'))
     out.append(save(gold_pill((451, 126), (1, 1, 450, 125), True), 'coin-pill')); out.append(save(gold_pill((249, 129), (1, 2, 248, 128)), 'reward-chip'))
     out.append(save(gold_disc(), 'btn-square'))
@@ -294,6 +333,17 @@ def build():
         n = os.path.basename(f)[:-5]
         if n in ('icon-font', 'icon-gif', 'icon-coin'): continue
         out.append(save(bolden(n, 0, 1.5 if n.startswith('quest') else 1.3), n))
+    for n, c, out_n in [('icon-back', (19, 112, 107), 'icon-back-teal'), ('icon-check', (114, 114, 111), 'icon-check-grey'),
+                        ('icon-link', (255, 246, 222), 'icon-link-on'), ('icon-chevron', (255, 246, 222), 'icon-chevron-on'),
+                        ('icon-send', (255, 246, 222), 'icon-send-on'), ('icon-chevron', (34, 35, 33), 'icon-chevron-ink')]:
+        out.append(save(recolor(n, c), out_n))
+    out.append(save(status_dot((52, 168, 83)), 'dot-online')); out.append(save(status_dot((160, 152, 140)), 'dot-offline'))
+    # Codex-painted glossy rims (concept): every card uses these, at 100px corners (the CSS slices them 100 / 35pt)
+    out.append(save(painted_rim('rim-orange', (520, 520), 100), 'panel-card-tight'))
+    out.append(save(painted_rim('rim-orange', (520, 520), 100, (255, 226, 194)), 'panel-card-active-tight'))
+    out.append(save(painted_rim('rim-teal', (520, 520), 100), 'panel-teal-tight'))
+    tv = painted_rim('rim-orange', (756, 690), 150); full = Image.new('RGBA', (756, 751), (0, 0, 0, 0)); full.paste(tv, (0, 0)); out.append(save(full, 'card-tail-tight'))
+    col = Image.open(f'{K}/porthole-collar.png').convert('RGBA'); col = col.crop(col.getchannel('A').getbbox()).resize((600, 600), Image.LANCZOS); out.append(save(col, 'porthole-collar'))
     # sheet (300x300, open bottom, 70 70 0 70 / 22px): cream with a thin tan rim
     sh = card((300, 400), (5, 4, 295, 396), 70, 9, 'tan', CREAM).crop((0, 0, 300, 300)); out.append(save(sh, 'sheet'))
     return out
