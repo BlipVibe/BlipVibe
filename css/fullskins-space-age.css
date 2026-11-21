@@ -879,3 +879,33 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .gv-staff-role { background: #
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .quest-panel-header :is(img, .quest-mascot) { display: none !important; }
 }
 html body.fs.fs-blip[data-fs-variant="space-age"] .navbar { background-color: #fde9cf !important; border-bottom-color: #cdb48e !important; }
+
+/* ======================================================================================================== DESKTOP GROUPS — concept groupsdesk.png (app 1536 -> 1440)
+   44pt italic title with starbursts both sides; search pill; teal Create Group; tabs (active orange); cards 252 wide in 2 rows that
+   scroll right: orange rim, cover 116 tall, porthole picture 88 over its foot, 23pt italic name (wraps), Join teal / View cream-teal /
+   Joined grey */
+@media (min-width: 769px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups .page-header h2 { font: italic 800 44px/52px var(--fs-title-font) !important; color: #222321 !important; position: relative; padding: 0 44px 0 30px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups .page-header h2::before, html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups .page-header h2::after { content: ""; position: absolute; top: 8px; width: 30px; height: 30px; background: var(--fs-sparkle-1) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups .page-header h2::before { left: -8px; } html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups .page-header h2::after { right: 0; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups .page-header h2 > i { background-image: var(--fs-icon-people) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups .page-search input { font: italic 600 18px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups #createGroupBtn { border-image-source: var(--fs-btn-teal) !important; border-image-slice: 0 67 fill !important; color: #fff6de !important; font: italic 800 21px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups #groupsTabs .search-tab { font: italic 800 21px var(--fs-title-font) !important; color: #222321 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups #groupsTabs .search-tab.active { color: #fff6de !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-groups .page-header::after { background-image: var(--fs-mascot-jump) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card { min-width: 252px !important; max-width: 252px !important; height: auto !important; min-height: 300px; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-banner { height: 116px !important; flex-basis: 116px !important; border-radius: 16px 16px 6px 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-banner > i, html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-banner > img { bottom: -40px !important; width: 84px !important; height: 84px !important; margin-left: -42px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-banner > i { background-color: #11837f !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-banner::after { background-image: var(--fs-group-avatar-frame) !important; bottom: -48px !important; width: 100px !important; height: 100px !important; margin-left: -50px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-body { padding-top: 48px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-body h4 { font: italic 800 23px/26px var(--fs-title-font) !important; white-space: normal !important; display: -webkit-box !important; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; text-overflow: clip !important; color: #222321 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-body p { font: 500 15px/19px var(--fs-font) !important; color: #222321 !important; white-space: normal !important; display: -webkit-box !important; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-members { font: 800 17px var(--fs-font) !important; color: #222321 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-members > i { color: #11837f !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .group-card-actions .btn { height: 34px !important; font: italic 800 18px var(--fs-title-font) !important; border-image-width: 0 17px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .join-group-btn:not(.btn-disabled) { border-image-source: var(--fs-btn-teal) !important; border-image-slice: 0 67 fill !important; color: #fff6de !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .view-group-btn { border-image-source: var(--fs-chip) !important; border-image-slice: 0 76 fill !important; color: #222321 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .join-group-btn.btn-disabled { color: #72726f !important; }
+}
