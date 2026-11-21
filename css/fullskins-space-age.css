@@ -572,9 +572,9 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .inline-comment-bubble p { col
 @media (max-width: 768px) {
   /* search results (concept B): "Following" / "Others" as white italic orange heading tabs over teal-rim rows */
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages #msgContactList > div:not(.msg-contact) { overflow-x: hidden !important; display: flex; flex-direction: column; gap: 1px; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages #msgContactList > div > div:not(.msg-contact) { align-self: flex-start; display: inline-flex !important; align-items: center; height: 30px; padding: 0 24px !important; margin: 4px 0 6px !important;
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages #msgContactList > div:not(.msg-contact) > div:not(.msg-contact) { align-self: flex-start; display: inline-flex !important; align-items: center; height: 30px; padding: 0 24px !important; margin: 4px 0 6px !important;
     font: italic 800 21px/30px var(--fs-title-font) !important; text-transform: none !important; letter-spacing: 0 !important; color: #fff !important; border: 0 solid transparent; border-image: var(--fs-heading-tab) 0 72 fill / 0 15px stretch; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages #msgContactList > div > div:not(.msg-contact) > i { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages #msgContactList > div:not(.msg-contact) > div:not(.msg-contact) > i { display: none !important; }
 }
 @media (max-width: 768px) { html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages .msg-sidebar { overflow-x: hidden !important; scrollbar-width: none; } }
 
@@ -911,3 +911,5 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .navbar { background-color: #f
 }
 /* the app's default banner colour for groups without a cover isn't in the concept: the concept's thin-teal instead */
 html body.fs.fs-blip[data-fs-variant="space-age"] .group-card-banner[style*="#5cbdb9"], html body.fs.fs-blip[data-fs-variant="space-age"] [style*="background:#5cbdb9"] { background-color: #52a29b !important; }
+/* the starburst left of the Search heading is art, not a masked icon (undo the search-glass ink fill for it) */
+html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #page-search .page-header h2 > i { background: var(--fs-sparkle-1) center / contain no-repeat !important; -webkit-mask: none !important; mask: none !important; }
