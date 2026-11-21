@@ -317,3 +317,42 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
   html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .join-group-btn:not(.btn-disabled) { border-image-source: var(--fs-btn-teal) !important; color: #fff !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .view-group-btn { border-image-source: var(--fs-chip) !important; color: var(--sa-teal-deep, #13625e) !important; }
 }
+
+/* ======================================================================================================== NOTIFICATIONS (phone) — ref/space-age/notifications-a.png
+   (concept y - 27 = page y): title = white italic heading tab 63-95 with a teal swoosh + starburst; two rows of four cream/teal tab
+   pills 103-131 / 139-167 (active orange); rows 34pt cream pills with the orange rim from 178, 6pt apart */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-notifications .page-header { position: relative; padding: 0 !important; margin: -3px 0 8px !important; height: 32px; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-notifications .page-header h2 { display: inline-flex !important; align-items: center; height: 32px; padding: 0 26px 0 20px !important; margin: 0 0 0 -2px !important;
+    font: italic 800 26px/32px var(--fs-title-font) !important; color: #fff !important; border: 0 solid transparent !important; border-image: var(--fs-heading-tab) 0 72 fill / 0 16px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-notifications .page-header::before { content: ""; position: absolute; left: 205px; right: 2px; top: 6px; height: 5px; background: var(--fs-divider) center / 100% 100% no-repeat; transform: rotate(4deg); transform-origin: left; pointer-events: none; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-notifications .page-header::after { content: ""; position: absolute; right: 50px; top: -2px; width: 34px; height: 34px; background: var(--fs-sparkle-1) center / contain no-repeat; pointer-events: none; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #notifTabs { gap: 8px 6px !important; margin-bottom: 11px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #notifTabs .search-tab { height: 28px !important; min-height: 0 !important; font: 800 14.5px/28px var(--fs-title-font) !important; padding: 0 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #notifList { gap: 6px !important; display: flex !important; flex-direction: column !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-item { min-height: 34px !important; height: auto !important; padding: 0 14px 0 8px !important; margin: 0 !important; gap: 10px !important; align-items: center !important;
+    border: 0 solid transparent !important; border-image: var(--fs-btn-secondary) 0 74 fill / 0 17px stretch !important; border-image-outset: 0 !important; background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-icon { width: 26px !important; height: 26px !important; flex: 0 0 26px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-text { display: flex !important; align-items: center !important; gap: 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-text p { flex: 1 1 auto; min-width: 0; font: 700 14px/18px var(--fs-font) !important; color: var(--sa-text) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-text > span { flex: 0 0 auto; font: 700 12.5px var(--fs-font) !important; color: var(--sa-text) !important; }
+}
+
+@media (max-width: 768px) {
+  /* an opened group (concept "3 new comments on your post"): the rows sit in an orange-rim card under it, each a pale peach bar */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-group-expand { background: none !important; border: 0 solid transparent !important; border-width: 6px 10px 12px !important; border-radius: 0 !important; box-shadow: none !important; margin: -4px 0 0 !important; overflow: visible !important;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-sub-item { border: 0 solid transparent !important; border-image: var(--fs-menu-row-on) 0 60 fill / 0 14px stretch !important; padding: 0 12px !important; min-height: 30px; margin: 0 0 4px !important; gap: 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-sub-item > i { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-sub-item > div { display: flex !important; align-items: center; gap: 8px; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-sub-item > div > div { flex: 1 1 auto; min-width: 0; font: 600 13px/16px var(--fs-font) !important; color: var(--sa-text) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .notif-sub-item > div > span { flex: 0 0 auto; font: 700 12px var(--fs-font) !important; color: var(--sa-text) !important; }
+}
+
+@media (max-width: 768px) {
+  /* empty category (concept B): one big orange-rim card, the sleeping mascot (moon), the line in bold italic */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .empty-state { min-height: 490px; display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 20px !important;
+    border: 0 solid transparent !important; border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 stretch !important; background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .empty-state > i { width: 210px !important; height: 190px !important; font-size: 0 !important; color: transparent !important; background: var(--fs-mascot-sleep) center / contain no-repeat !important; -webkit-mask: none !important; mask: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .empty-state p { font: italic 800 19px/23px var(--fs-title-font) !important; color: var(--sa-text) !important; text-align: center; }
+}
