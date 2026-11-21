@@ -458,3 +458,59 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
   html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-card-actions .join-group-btn.btn-disabled .gc-btn-text::before { content: "\2713\00a0"; font-style: normal; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #searchResults .group-card-actions .join-group-btn:not(.btn-disabled) { border-image-source: var(--fs-btn-teal) !important; border-image-slice: 0 67 fill !important; color: #fff !important; }
 }
+
+/* ======================================================================================================== MY PROFILE / PROFILE VIEW (phone) — ref/space-age/profile-a.png
+   (concept y - 32 = page y): cover 56-178 with the plain mascot head right; TV card 156-400 (feet to 416): porthole 124 at 136,
+   name 179, medals 196-243, about from 265, Following / Followers cream-teal pills 330-356, teal Edit Profile 362-390;
+   Back to Home 418; Photos card from 433 (orange tab + Photos/Albums tabs, active teal) */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvCoverBanner { height: 122px !important; margin: 0 6px !important; border-radius: 0 0 16px 16px !important; background-color: #f3c9a0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view:is(*) #pvCoverBanner::after { right: 34px !important; top: 2px !important; width: 128px !important; height: 82px !important;
+    background: var(--fs-burst) left 0 top 2px / 30px no-repeat, var(--fs-sparkle-1) right 0 top 6px / 22px no-repeat, var(--fs-mascot-head-plain) center / 84px no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard { margin: -22px 0 0 !important; min-height: 244px !important; border: 0 solid transparent !important;
+    border-image: var(--fs-card-tail-tight) 84 170 142 170 fill / 20px 40px 34px 40px / 0 0 16px 0 stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .profile-info { min-height: 244px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .profile-avatar-wrap { left: 10px !important; top: -20px !important; width: 124px !important; height: 124px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .profile-avatar-wrap::after { inset: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .profile-name { left: 138px !important; top: 8px !important; font: italic 800 26px/30px var(--fs-title-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .badge-row { left: 140px !important; right: 8px !important; top: 40px !important; height: 47px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .user-badge { width: 32px !important; height: 44px !important; margin: 0 1px 0 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .profile-about { top: 108px !important; left: 22px !important; font: italic 600 15.5px/20px var(--fs-font) !important; color: var(--sa-text) !important; padding-left: 34px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .profile-stats { top: 172px !important; left: 24px !important; right: 22px !important; gap: 12px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .stat { height: 27px !important; background: none !important; border: 0 solid transparent !important; border-radius: 0 !important; border-image: var(--fs-chip) 0 76 fill / 0 13px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .stat-count { font: italic 900 17px var(--fs-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .stat-label { font: italic 600 16px var(--fs-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .pv-actions { top: 205px !important; left: 28px !important; right: 26px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .pv-actions .btn { height: 29px !important; font: italic 800 20px var(--fs-title-font) !important; border-image-width: 0 15px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvEditProfileBtn { border-image-source: var(--fs-btn-teal) !important; color: #fff !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .profile-links { bottom: -32px !important; left: 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .pv-back-link { font: italic 800 16px var(--fs-title-font) !important; color: var(--sa-teal) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvProfileCard .pv-back-link > i { filter: none !important; background: var(--sa-teal) !important; -webkit-mask: var(--fs-icon-back) center / contain no-repeat; mask: var(--fs-icon-back) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvPhotosCard { margin: 40px 0 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvPhotosCard .card-heading { display: inline-flex !important; align-items: center; width: auto !important; height: 28px; padding: 0 24px !important; margin: 2px 0 6px 4px !important;
+    font: 800 21px/28px var(--fs-title-font) !important; color: #fff !important; border: 0 solid transparent !important; border-image: var(--fs-heading-tab) 0 72 fill / 0 14px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvPhotoTabs .search-tab.active { border-image-source: var(--fs-btn-teal) !important; border-image-slice: 0 67 fill !important; color: #fff !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvPhotoTabs .search-tab { font: italic 800 15px var(--fs-title-font) !important; }
+}
+
+@media (max-width: 768px) {
+  /* (B) posts: one orange-rim frame with an orange "Posts" tab, each post a thin tan inner card */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvPostsFeed { position: relative; margin-top: 12px !important; padding: 34px 0 2px !important; border: 0 solid transparent !important; border-width: 8px 8px 12px !important;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 stretch !important; display: flex !important; flex-direction: column; gap: 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvPostsFeed::before { content: "Posts"; position: absolute; left: 2px; top: 0; height: 28px; padding: 0 26px; display: flex; align-items: center;
+    font: 800 21px/28px var(--fs-title-font); color: #fff; border: 0 solid transparent; border-image: var(--fs-heading-tab) 0 72 fill / 0 14px stretch; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvPostsFeed > .feed-post { margin: 0 !important; border-image-source: var(--fs-panel-tan-tight) !important; border-image-width: 10px 10px 16px 10px !important; border-image-outset: 0 0 6px 0 !important; }
+  /* (B) What Skin Am I?: orange card, orange tab, each line a cream pill with a teal rim and its icon */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvSkinCard .card { padding: 6px 10px 12px !important; margin-top: 12px !important; border-image-source: var(--fs-panel-card-tight) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvSkinCard .card > h4 { display: inline-flex !important; align-items: center; height: 28px; padding: 0 22px !important; margin: 0 0 10px -2px !important;
+    font: 800 19px/28px var(--fs-title-font) !important; color: #fff !important; border: 0 solid transparent !important; border-image: var(--fs-heading-tab) 0 72 fill / 0 14px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvSkinCard .card > h4 > i { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvSkinCard .card > div { gap: 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvSkinCard .card > div > div { height: 34px; padding: 0 16px !important; gap: 14px !important; font: italic 800 17px var(--fs-title-font) !important; color: var(--sa-text) !important;
+    border: 0 solid transparent !important; border-image: var(--fs-chip) 0 76 fill / 0 17px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvSkinCard .card > div > div > span { color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvSkinCard .card > div > div > i { width: 24px !important; height: 22px !important; font-size: 0 !important; color: transparent !important; background: center / contain no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvSkinCard .card > div > div > i.fa-palette { background-image: var(--fs-icon-image) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvSkinCard .card > div > div > i.fa-font { background-image: var(--fs-icon-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profile-view #pvSkinCard .card > div > div > i.fa-table-columns { background-image: var(--fs-icon-skins) !important; }
+}
