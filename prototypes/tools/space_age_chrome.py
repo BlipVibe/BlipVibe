@@ -8,11 +8,11 @@ O = 'images/skins/blip/assets/space-age'
 SS = 3  # supersampling
 
 # sampled from the concept (home-a / group-a / notifications-a crops)
-OR_EDGE, OR_HI, OR_BODY, OR_LO, OR_DARK = (208, 81, 0), (250, 150, 70), (238, 108, 8), (229, 99, 3), (196, 78, 0)
-TE_EDGE, TE_HI, TE_BODY, TE_LO, TE_DARK = (8, 96, 92), (61, 169, 170), (16, 131, 127), (13, 118, 113), (2, 84, 78)
-TEAL_LINE, TEAL_LINE_HI = (70, 152, 146), (150, 205, 198)
-TAN_LINE = (206, 178, 136)
-CREAM, CREAM_HI, CREAM_LO = (254, 234, 203), (255, 246, 222), (247, 222, 186)
+OR_EDGE, OR_HI, OR_BODY, OR_LO, OR_DARK = (196, 78, 0), (250, 150, 70), (238, 108, 7), (229, 99, 3), (196, 78, 0)
+TE_EDGE, TE_HI, TE_BODY, TE_LO, TE_DARK = (2, 84, 78), (61, 169, 170), (17, 131, 127), (13, 118, 113), (2, 84, 78)
+TEAL_LINE, TEAL_LINE_HI = (82, 162, 155), (175, 220, 208)
+TAN_LINE = (205, 180, 142)
+CREAM, CREAM_HI, CREAM_LO = (253, 235, 210), (255, 246, 222), (247, 222, 186)
 PEACH = (255, 224, 192)
 
 
@@ -179,7 +179,7 @@ def build():
     out.append(save(pill((577, 144), (1, 1, 576, 143), 'orange'), 'heading-tab'))
     out.append(save(pill((592, 152), (1, 1, 591, 151), 'cream', TE_BODY, 13), 'chip'))
     out.append(save(pill((590, 148), (1, 1, 589, 147), 'cream', OR_BODY, 13), 'btn-secondary'))
-    out.append(save(pill((591, 148), (1, 1, 590, 147), 'cream', (215, 53, 43), 13), 'btn-danger'))
+    out.append(save(pill((591, 148), (1, 1, 590, 147), 'cream', (219, 35, 27), 13), 'btn-danger'))
     out.append(save(pill((889, 129), (1, 1, 888, 128), 'cream', TE_BODY, 10), 'field'))
     out.append(save(pill((1187, 129), (1, 1, 1186, 128), 'cream', TAN_LINE, 8), 'tabs-track'))
     out.append(save(pill((700, 130), (29, 5, 672, 125), 'cream', (240, 205, 165), 5), 'menu-row-on'))

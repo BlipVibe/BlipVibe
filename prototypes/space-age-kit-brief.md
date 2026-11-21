@@ -22,6 +22,25 @@ cream page `#FBEBD3`, card cream `#FFF4E2` (inner bevel `#FCE6C8`), ORANGE `#EE7
 - Line icons: chunky rounded line icons, ink `#2A2233`, ~10% stroke, some with a teal or orange fill accent.
 - NOT glassy, NOT neon, no purple, no blue screens, no comic halftone, no beige café wood (keeps it apart from other skins).
 
+## Concept palette (eyedropped from images/skins/blip/ref/space-age/*.png, Nov 21 — the ONLY colours allowed; playbook §4)
+| role | hex |
+|---|---|
+| page | `#FDE9CF` |
+| card fill / highlight | `#FDEBD2` / `#FFF6DE` |
+| text ink (names, headings, labels) | `#222321` |
+| body text | `#332D26` |
+| muted text, times, placeholders | `#5C544A` (light muted `#767266`) |
+| link / teal text (View Profile, Reply, Cancel) | `#13706B` |
+| orange (rims, heading tabs, primary pills, active tabs, sent bubbles) | body `#EE6C07`, light `#FA9646`, dark edge `#C44E00` |
+| teal (teal pills, Follow, active photo tab, send) | body `#11837F`, light `#3DA9AA`, deep `#02544E` |
+| thin teal rim (Photos, rows, chips, fields) | `#52A29B` |
+| mint pill (Mutual, mutuals, Joined in search, replying bar) | `#AFDCD0` |
+| tan rim (post bar, inner post cards, sheet) | `#CDB48E` |
+| gold (coins, Group Coins orbit) | `#F7D010` (coin pill cream-gold `#F3D7A0`) |
+| red (badges, danger text/rim) | `#DB231B` |
+| disabled pill / its text | `#D8CBBD` / `#72726F` |
+Kit art is checked against this palette (space_age_chrome.py draws the chrome with these values).
+
 ## Rules
 - NO text, letters or numbers in any piece. NO photos or people.
 - REAL transparent alpha outside every shape. NEVER paint a grey/white checkerboard.
