@@ -534,3 +534,16 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
   html body.fs.fs-blip[data-fs-variant="clay-town"] #commentsList .comment-item :is(.comment-author, strong, h5) { font: 700 18px var(--fs-font) !important; color: var(--bl-ink) !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #commentsList .comment-item :is(.comment-reply-btn, .comment-edit-btn, .comment-delete-btn) { color: #2f6b34 !important; font-weight: 700 !important; }
 }
+
+/* ======================================================================================================== CREATE A POST (phone) — concept createpost.png */
+@media (max-width: 768px) {
+  /* writing area = the soft thin-lipped clay card (no thick rim), brown placeholder; tool keys = cream clay tiles; Publish butter */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .create-post-modal #cpmText { border: 12px solid transparent !important; border-image: var(--fs-panel-card) 12% fill / 14px stretch !important; background: none !important;
+    font: 600 18px/23px var(--fs-font) !important; color: var(--bl-ink) !important; box-shadow: none !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .create-post-modal #cpmText::placeholder { color: #7a4a33 !important; opacity: 1; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .create-post-modal .cpm-emoji-btn { background-color: transparent !important; border: 0 !important; border-image: none !important;
+    background-image: var(--fs-tile-cream) !important; background-size: 100% 100% !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .create-post-modal #cpmPublish { color: var(--bl-ink) !important; font: 700 19px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .create-post-modal :is(h3, .modal-header h3) { font: 700 26px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .create-post-modal #cpmCharCounter { font: 600 15px var(--fs-font) !important; color: var(--bl-ink) !important; }
+}
