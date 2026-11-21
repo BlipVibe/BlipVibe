@@ -572,3 +572,11 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-shop .page-header::after { width: 104px !important; height: 66px !important; top: 0 !important; right: 0 !important; background-size: contain !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-shop .page-header p { position: relative; z-index: 2; font-size: 14.5px !important; }
 }
+
+/* ======================================================================================================== BLIP MENU (phone) — concept menu.png */
+@media (max-width: 768px) {
+  /* nearly full width like the concept, bigger rows: thumbnail pill + 21pt name, butter selected row with the sage check */
+  body.fs-blip[data-fs-variant="clay-town"] .blip-menu { width: min(378px, calc(100vw - 22px)) !important; }
+  body.fs-blip[data-fs-variant="clay-town"] .blip-menu-list h4 { font: 700 26px var(--fs-font) !important; }
+  body.fs-blip[data-fs-variant="clay-town"] .blip-row { font: 700 21px var(--fs-font) !important; min-height: 44px !important; }
+}
