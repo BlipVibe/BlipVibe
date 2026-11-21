@@ -449,3 +449,25 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
   html body.fs.fs-blip[data-fs-variant="clay-town"]:is(*) :is(#groupsTabs, #profilesTabs, #page-search .search-tabs, #shopTabs, #notifTabs) .search-tab:not(.active) { border-image-source: var(--fs-pill-cream) !important; border-image-slice: 0 66 fill !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #searchResults .profile-card-item { padding: 0 4px 0 10px !important; border-width: 6px 8px !important; border-image-width: 22px !important; border-image-outset: 0 !important; height: 96px !important; }
 }
+
+/* ======================================================================================================== MY PROFILE / PROFILE VIEW (phone) — concepts profile.png, otherprofile.png */
+@media (max-width: 768px) {
+  /* taller cover with the big mascot, big terracotta-ringed photo, 32pt name, sage Following / Followers pills, butter Edit Profile,
+     Back to Home on a soft cream clay strip */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvCoverBanner { height: 140px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvCoverBanner::after { width: 130px !important; height: 108px !important; top: 8px !important; right: 26px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard .profile-avatar-wrap { width: 124px !important; height: 124px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard .profile-name { font: 700 32px/36px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard .stat { border-image: var(--fs-pill-sage) 0 66 fill / 0 18px stretch !important; height: 38px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard :is(.stat-count, .stat-label) { font: 700 19px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard #pvEditProfileBtn { height: 42px !important; font: 700 24px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard .pv-back-link { display: flex !important; align-items: center; height: 34px; box-sizing: border-box; padding: 0 14px !important; left: 0 !important; right: 0 !important;
+    font: 700 18px var(--fs-font) !important; color: var(--bl-ink) !important; border: 0 solid transparent !important; border-image: var(--fs-pill-cream) 0 66 fill / 0 17px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"]:is(*) #pvProfileCard .pv-back-link > i { background: var(--bl-ink) !important; -webkit-mask: var(--fs-icon-back) center / contain no-repeat; mask: var(--fs-icon-back) center / contain no-repeat; width: 20px !important; height: 20px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvPhotosCard .card-heading, html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profile-view .pv-posts-heading { font: 700 28px var(--fs-font) !important; }
+}
+@media (max-width: 768px) {   /* profile pass 2: Back to Home is a full-width strip INSIDE the card (concept), the card grows to fit */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard { height: auto !important; min-height: 0 !important; padding-bottom: 50px !important; margin-bottom: 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard .profile-links { position: absolute !important; left: 0 !important; right: 0 !important; width: auto !important; bottom: -44px !important; top: auto !important; display: block !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #pvProfileCard .pv-back-link { position: static !important; width: auto !important; }
+}
