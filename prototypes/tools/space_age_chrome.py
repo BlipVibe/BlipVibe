@@ -185,6 +185,7 @@ def build():
     out.append(save(pill((700, 130), (29, 5, 672, 125), 'cream', (240, 205, 165), 5), 'menu-row-on'))
     out.append(save(vivid('bubble-out', .02, .13, OR_BODY), 'bubble-out'))
     out.append(save(vivid('bubble-in', .4, .6, TE_BODY), 'bubble-in'))
+    out.append(save(vivid('menu-check', .02, .13, TE_BODY), 'menu-check'))   # concept: teal check disc
     # sheet (300x300, open bottom, 70 70 0 70 / 22px): cream with a thin tan rim
     sh = card((300, 400), (5, 4, 295, 396), 70, 9, 'tan', CREAM).crop((0, 0, 300, 300)); out.append(save(sh, 'sheet'))
     return out

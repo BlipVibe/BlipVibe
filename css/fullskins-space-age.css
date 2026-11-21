@@ -752,3 +752,25 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .gv-staff-role { background: #
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-shop :is(.skin-card h4, .skin-card-name, .page-grid h4) { font-style: italic !important; color: #222321 !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] :is(#shopTabs, #mySkinsTabs) .search-tab { padding: 0 11px !important; font-size: 14px !important; }
 }
+
+/* ======================================================================================================== BLIP MENU (phone) — ref/space-age/menu-a.png
+   wide panel (x 36-386) with the thick orange rim and the teal strip; "My Skins" white italic heading tab; rows 43pt, picture swatches as
+   rounded rectangles 56x36, 20pt bold italic names, thin rules between; the equipped row a pale bar with the teal check disc */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] .blip-menu { left: 36px !important; width: calc(100vw - 52px) !important; max-width: 360px; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .blip-menu-side { width: 66px !important; flex-basis: 66px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .blip-menu-side span { font: italic 800 34px var(--fs-title-font) !important; color: #fff6de !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .blip-menu-side i { width: 54px !important; height: 54px !important; background-image: var(--fs-mascot-head-plain) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .blip-menu-list h4 { align-self: flex-start; display: inline-flex; align-items: center; height: 34px; padding: 0 24px; margin: 4px 0 8px !important;
+    font: italic 800 25px/34px var(--fs-title-font) !important; color: #fff6de !important; border: 0 solid transparent; border-image: var(--fs-heading-tab) 0 72 fill / 0 17px stretch; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .blip-row { min-height: 43px !important; gap: 12px !important; padding: 3px 10px 3px 4px !important; border-bottom: 1.5px solid #cdb48e !important; border-radius: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .blip-row.blip-more, html body.fs.fs-blip[data-fs-variant="space-age"] .blip-row:has(+ hr) { border-bottom: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .blip-row span { font: italic 800 19px var(--fs-title-font) !important; color: #222321 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .blip-sw { width: 56px !important; height: 36px !important; flex: 0 0 56px !important; border-radius: 9px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .blip-sw::after { display: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .blip-sw-default { background-color: #fde9cf !important; background-size: contain !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .blip-sw-bag { width: 30px !important; flex-basis: 30px !important; margin: 0 13px; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .blip-check { width: 30px !important; height: 30px !important; flex-basis: 30px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .blip-menu hr { display: none !important; }
+}
+@media (max-width: 768px) { html body.fs.fs-blip[data-fs-variant="space-age"] .blip-sw-bag { width: 32px !important; height: 32px !important; flex-basis: 32px !important; background-size: contain !important; margin: 0 12px !important; } }
