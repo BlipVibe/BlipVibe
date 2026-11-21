@@ -422,3 +422,30 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles .connections-grid { grid-template-columns: repeat(2, calc((100vw - 62px) / 2)) !important; gap: 8px !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-profiles :is(.connections-col, .connections-scroll) { width: calc(100vw - 54px) !important; max-width: none !important; }
 }
+
+/* ======================================================================================================== SEARCH (phone) — concept search.png */
+@media (max-width: 768px) {
+  /* cream clay sheet; big title; soft cream search field; People butter / others soft cream; each result a terracotta-lipped clay card,
+     terracotta-ringed photo, bold name, sage Follow / Following */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-search .page-container { margin: 0 3px !important; padding: 0 8px 90px !important; min-height: calc(100vh - 60px); box-sizing: border-box;
+    border: 14px solid transparent !important; border-image: var(--fs-sheet) 12% fill / 14px stretch !important; border-bottom: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-search .page-header h2 { font: 700 36px/42px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-search .page-header h2 > i { filter: none !important; background: var(--bl-ink) !important; -webkit-mask: var(--fs-icon-search) center / contain no-repeat; mask: var(--fs-icon-search) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #searchPageInput { height: 40px !important; border-image: var(--fs-pill-cream) 0 66 fill / 0 20px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #searchPageInput::before { font: 600 16px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #searchPageInput > i { filter: none !important; background: var(--bl-ink) !important; -webkit-mask: var(--fs-icon-search) center / contain no-repeat; mask: var(--fs-icon-search) center / contain no-repeat; top: 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #searchPageQuery { font: 600 21px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #searchQuery { font: 700 25px/30px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-search .search-tab { height: 38px !important; font: 700 18px var(--fs-font) !important; color: var(--bl-ink) !important; border-image-source: var(--fs-pill-cream) !important; border-image-slice: 0 66 fill !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-search .search-tab.active { border-image-source: var(--fs-btn-primary) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #searchResults .search-results-grid { gap: 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #searchResults .profile-card-item { height: 92px !important; border-width: 8px !important; border-image: var(--fs-panel-card) 12% fill / 26px stretch !important; grid-template-columns: 82px 1fr 106px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #searchResults .profile-card-avatar { width: 76px !important; height: 76px !important; box-shadow: 0 0 0 2px var(--ct-cream), 0 0 0 5px var(--ct-terra) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #searchResults .profile-card-name { font: 700 21px/25px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #searchResults .profile-card-bio { font: 500 16px/20px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #searchResults .profile-follow-btn { height: 38px !important; font: 700 19px var(--fs-font) !important; color: var(--bl-ink) !important; border-image: var(--fs-pill-sage) 0 66 fill / 0 19px stretch !important; background: none !important; }
+}
+@media (max-width: 768px) {   /* idle tab pills everywhere: soft cream clay (beats the base's :is(*) rim rule) */
+  html body.fs.fs-blip[data-fs-variant="clay-town"]:is(*) :is(#groupsTabs, #profilesTabs, #page-search .search-tabs, #shopTabs, #notifTabs) .search-tab:not(.active) { border-image-source: var(--fs-pill-cream) !important; border-image-slice: 0 66 fill !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #searchResults .profile-card-item { padding: 0 4px 0 10px !important; border-width: 6px 8px !important; border-image-width: 22px !important; border-image-outset: 0 !important; height: 96px !important; }
+}
