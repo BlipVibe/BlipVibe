@@ -77,6 +77,19 @@ Commits: 7d78031, 88f1231, 94e8360.
 | Rendition toggle + swap | n/a | pass | pass | pass | pass | pass | n/a | pass | pass | pass | pass | pass | pass | pass | pass | AB lightning, GW day→night sweep, VW "Updating BlipVibe" pixel swap, HL sun→moon (one white flash frame at the start — by design?) |
 | Equip transition | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass | Scrapbook paper collage, AB comic burst, WC moon ring + smoke, GW owl + constellations, VW BIOS boot, HL temple gates |
 
+## Pass 8 (Nov 21, owner: "qa the view profile button … aligned … profile pictures actually show up", then "missing their border art")
+Route checked on 24 looks (21 skin renditions + Blip Logo Classic / Clay Town / Pixel Pal): Home View Profile (and menu ⋯ My
+Profile) → My Profile pop-up → View Profile → own profile page. Probe per look: photo loaded (not broken / not default /
+visible / not squished), photo centred, every text/button inside the pop-up, button text inside + centred; frame art loads;
+own profile page avatar loads. Also at 375 and 430 widths. Every photo loads on every look.
+Fixed: (1) Superhero Heroes pop-up photo 47px above the gold ring window (margin collapse) — face hidden behind the city
+banner; now centred in the ring, name plate moved onto the wings. (2) Pop-up photo = Home: Blip ×3, Scrapbook, #Basic,
+Heaven's Light (wings cameo), Good Witch (ornate bubble), Blood Moon (cameo + rose), Vaporwave (Avatar.exe window), Anime
+Blaze (rim) now use Home's photo shape + frame art at Home's proportions (were bare circles). (3) Good Witch Day pop-ups had no
+gold border — now its own gold-framed panel like Night. (4) Villains own profile EDIT PROFILE text was 11px (visitor fit rule).
+Kept by design: Villains dossier pop-up (left photo, left-aligned command button), Heroes ink divider beside the name.
+Not changed: Superhero hides the Home "View Profile" link (its Home card has no button row) — flagged to owner.
+
 ## Pass 7 (Nov 19, owner: retro group card "3 lines through it", then Home profile card, "don't forget the XP version")
 Cause: Vaporwave panel art (panel.webp, every variant) fades light→dark top to bottom. The generic `.profile-card` /
 `.profile-card-item` rule draws it with `border-image … round`, so a card taller than the art repeated the fade 2–3 times and
@@ -271,6 +284,8 @@ so nothing comes back. Re-check column: date of the last pass that confirmed it.
 | 35 | Nov 18 | all | someone's profile | "some of the pictures are out of their frame when you go to view profile" | pass 6 | ✓ Nov 18 pass 6 (21 renditions, top/mid/bottom) |
 | 36 | Nov 18 | Scrapbook + others | someone's profile ⋯ menu | "the little pop up under the options … sometimes nothing shows up" | pass 6 (fullskins.js) | ✓ Nov 18 pass 6 (21 renditions) |
 | 37 | Nov 19 | Vaporwave Retro + XP (all 4) | group card, Home profile card | "3 lines through it … it should be one solid color" (panel fade tiled 2–3×) | pass 7 (fullskins.css) | ✓ Nov 19 pass 7 (4 variants × 23 screens) |
+| 38 | Nov 21 | all (24 looks) | My Profile pop-up (Home "View Profile", menu "My Profile") → profile page | "qa the view profile button … everything aligned and profile pictures actually show up"; Superhero Heroes photo hidden behind banner (owner screenshot) | pass 8 | ✓ Nov 21 pass 8 (24 looks × 375/402/430) |
+| 39 | Nov 21 | Blip ×3, Scrapbook, #Basic, Heaven's Light, Good Witch, Blood Moon, Vaporwave, Anime Blaze | My Profile pop-up | "some of them … are missing their border art" (bare photo, no Home frame; Good Witch Day no gold border) | pass 8 | ✓ Nov 21 pass 8 |
 | 38 | Nov 19 | BlipVibe default + #Basic | Skins shop / My Skins store cards | "the picture for #basic and blipvibe don't match the others in the skins store" (both were app screenshots; the rest are full-bleed painted scenes) | new painted cards (Codex): BlipVibe = mascot in a blue sky, #Basic = cream "basic girl" flat-lay | ✓ Nov 19 on the 390pt phone (Skins shop + My Skins) |
 | 39 | Nov 19 | BlipVibe default | Network (all phone pages) on a narrower phone | "why wasn't this caught in QA?" — Network cards ran off the right edge, mascot slid onto the title, purple search icon (QA had only run at 402pt) | 8324695 + 390pt pass: fluid columns, vw-scaled mascots, mask-tinted icons; Create a Post header/footer, profile medals, cover camera hidden on others' profiles | ✓ Nov 19 on the 390pt phone (all pages) |
 

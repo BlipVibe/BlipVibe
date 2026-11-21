@@ -9661,3 +9661,52 @@ html body.fs.fs-blood-moon .fsk-soon:not(#_) { display: flex !important; align-i
    rule tiles it ("round"), so a tall card repeated the fade 2–3× and each restart showed as a line through the card
    (Home #profileCard, #pvProfileCard, old group card). Vaporwave = solid Windows panels: always stretch the art once. */
 html body.fs.fs-vaporwave :is(*, *::before, *::after):not(#_):not(#_):not(#_) { border-image-repeat: stretch !important; }
+
+/* Skin QA pass 8 (owner, Nov 21: "qa the view profile button … make sure everything is aligned and profile pictures actually show up").
+   Superhero Heroes My Profile pop-up: the photo's margin-top (16%) collapsed through .modal-profile-top, so the photo sat 47px
+   above the gold ring's window (only the shirt showed, face hidden behind the city banner). Move the margin to the box and the
+   same amount into padding: banner + ring stay put, the photo lands exactly in the ring window (art hole 132px, centre 114px
+   down the 232px ring), the name plate keeps its place on the wings. */
+html body.fs.fs-superhero:not([data-fs-variant="villains"]) .modal-profile-top:not(#_) { margin-top: 16% !important; padding-top: 16% !important; }
+html body.fs.fs-superhero:not([data-fs-variant="villains"]) .modal-profile-top:not(#_) img { margin-top: 0 !important; }
+html body.fs.fs-superhero:not([data-fs-variant="villains"]) .modal-profile-top:not(#_) h3 { margin-top: calc(48px - 16%) !important; }
+/* Villains own profile: the 11px fit-rule for the visitor buttons also shrank your own EDIT PROFILE plate */
+html body.fs.fs-superhero[data-fs-variant="villains"] #page-profile-view .pv-actions #pvEditProfileBtn:not(#_):not(#_) { font-size: 19px !important; letter-spacing: var(--sh-tspace) !important; }
+/* My Profile pop-up (Home "View Profile" / menu "My Profile"), owner Nov 21: "some of them are missing their border art".
+   The pop-up photo was a bare circle while Home frames it — profile photo = Home (same shape + same frame art, scaled).
+   Each skin sets the Home geometry measured on the phone (img size/shape, frame offset/size relative to the photo);
+   the frame is drawn on .modal-profile-top::after (z 2 over the photo; Vaporwave's window sits behind it, z 0).
+   flow-root stops the photo's top margin collapsing out of the box (same bug as Superhero above). */
+html body.fs:is(.fs-blip, .fs-scrapbook, .fs-heavens-light, .fs-good-witch, .fs-blood-moon, .fs-anime-blaze, .fs-vaporwave, .fs-basic) .modal-profile-top:not(#_) {
+  position: relative !important; display: flow-root !important; isolation: isolate; --mp-fl: 0px; --mp-ft: 0px; --mp-fz: 2; --mp-r: 50%; --mp-top: 10px; }
+html body.fs:is(.fs-blip, .fs-scrapbook, .fs-heavens-light, .fs-good-witch, .fs-blood-moon, .fs-anime-blaze, .fs-vaporwave, .fs-basic) .modal-profile-top:not(#_) img {
+  position: relative !important; z-index: 1 !important; width: var(--mp-w) !important; height: var(--mp-h) !important; max-width: none !important; margin: var(--mp-top) auto var(--mp-mb, 12px) !important;
+  padding: 0 !important; background: none !important; border: 0 !important; box-shadow: none !important; border-radius: var(--mp-r) !important; object-fit: cover !important; display: block !important; box-sizing: border-box !important; }
+html body.fs:is(.fs-blip, .fs-scrapbook, .fs-heavens-light, .fs-good-witch, .fs-blood-moon, .fs-anime-blaze, .fs-vaporwave, .fs-basic) .modal-profile-top:not(#_)::after {
+  content: "" !important; display: block !important; position: absolute !important; z-index: var(--mp-fz) !important; pointer-events: none !important;
+  left: calc(50% - var(--mp-w) / 2 + var(--mp-fl)) !important; top: calc(var(--mp-top) + var(--mp-ft)) !important; width: var(--mp-fw) !important; height: var(--mp-fh) !important;
+  background: var(--mp-frame, none) center / 100% 100% no-repeat !important; }
+/* the photo shapes (masks) Home uses */
+html body.fs:is(.fs-blip, .fs-scrapbook) .modal-profile-top:not(#_) img { border-radius: 0 !important; -webkit-mask: var(--fs-avatar-mask) center / 100% 100% no-repeat !important; mask: var(--fs-avatar-mask) center / 100% 100% no-repeat !important; }
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .modal-profile-top:not(#_) img { -webkit-mask-image: var(--fs-skin-card-mask) !important; mask-image: var(--fs-skin-card-mask) !important; }
+html body.fs:is(.fs-heavens-light, .fs-good-witch, .fs-blood-moon, .fs-anime-blaze, .fs-vaporwave, .fs-basic) .modal-profile-top:not(#_) img { -webkit-mask: none !important; mask: none !important; }
+/* geometry per skin (Home: photo W×H, frame left/top/size) */
+html body.fs.fs-blip .modal-profile-top:not(#_) { --mp-w: 160px; --mp-h: 160px; --mp-fl: -3.2px; --mp-ft: -3.2px; --mp-fw: 166.4px; --mp-fh: 166.4px; --mp-frame: var(--fs-avatar-frame); }   /* 114 / -2% */
+html body.fs.fs-blip[data-fs-variant="clay-town"] .modal-profile-top:not(#_) { --mp-fl: 0px; --mp-ft: 0px; --mp-fw: 160px; --mp-fh: 160px; }                                                                 /* frame = photo */
+html body.fs.fs-blip[data-fs-variant="pixel-pal"] .modal-profile-top:not(#_) { --mp-h: 155px; --mp-frame: none; }                                                                                           /* pixel card, no frame (94×91) */
+html body.fs.fs-scrapbook .modal-profile-top:not(#_) { --mp-w: 170px; --mp-h: 170px; --mp-fl: -8.5px; --mp-ft: -8.5px; --mp-fw: 187px; --mp-fh: 187px; --mp-frame: var(--fs-avatar-frame); }          /* 124 / 136.4 */
+html body.fs.fs-heavens-light .modal-profile-top:not(#_) { --mp-w: 124px; --mp-h: 169px; --mp-top: 24px; --mp-fl: -52.6px; --mp-ft: -22.5px; --mp-fw: 229.5px; --mp-fh: 248.4px; --mp-frame: var(--fs-cameo-wings); } /* 138×188 oval, wings ×0.9 */
+html body.fs.fs-good-witch .modal-profile-top:not(#_) { --mp-w: 160px; --mp-h: 160px; --mp-top: 16px; --mp-fl: -14.4px; --mp-ft: -14.4px; --mp-fw: 188.8px; --mp-fh: 188.8px; --mp-frame: var(--fs-photo-bubble-ornate); } /* -9% */
+html body.fs.fs-blood-moon .modal-profile-top:not(#_) { --mp-w: 150px; --mp-h: 137px; --mp-top: 42px; --mp-fl: -26px; --mp-ft: -39.4px; --mp-fw: 204.4px; --mp-fh: 204.4px; --mp-frame: var(--fs-cameo-frame); }      /* Home 1:1 */
+html body.fs.fs-anime-blaze .modal-profile-top:not(#_) { --mp-w: 170px; --mp-h: 170px; --mp-fl: -6.8px; --mp-ft: -6.8px; --mp-fw: 183.6px; --mp-fh: 183.6px; --mp-frame: var(--fs-avatar-rim); }           /* -4% */
+html body.fs.fs-vaporwave .modal-profile-top:not(#_) { --mp-w: 195.4px; --mp-h: 137px; --mp-r: 0; --mp-top: 28px; --mp-fl: -4.5px; --mp-ft: -24.6px; --mp-fw: 204.8px; --mp-fh: 166.4px; --mp-fz: 0; --mp-frame: var(--fs-vhs-window); } /* Avatar.exe window ×1.6 */
+html body.fs.fs-basic .modal-profile-top:not(#_) { --mp-w: 170px; --mp-h: 170px; --mp-fw: 170px; --mp-fh: 170px; --mp-frame: var(--fs-avatar-bow); }                                                   /* bow = photo */
+/* frames that reach below the photo push the name down by the same amount (wings 57px, cameo roses 28px, bubble 14px) */
+html body.fs.fs-heavens-light .modal-profile-top:not(#_) { --mp-mb: 66px; }
+html body.fs.fs-blood-moon .modal-profile-top:not(#_) { --mp-mb: 38px; }
+html body.fs.fs-good-witch .modal-profile-top:not(#_) { --mp-mb: 24px; }
+html body.fs.fs-scrapbook .modal-profile-top:not(#_) { --mp-mb: 18px; }
+/* Good Witch Day pop-ups had no gold border (plain panel-card) while Night uses its gold-framed menu panel — Day uses its own
+   gold-framed Day menu panel the same way (stretched once, solid lavender backing) */
+html body.fs.fs-good-witch:not([data-fs-variant="night"]) .modal-content:not(#_) { border: solid transparent !important; border-width: 28px !important;
+  border-image: var(--fs-menu-panel) 80 fill / 28px stretch !important; background: #ece3f8 !important; background-clip: border-box !important; border-radius: 16px !important; }   /* art is 93% opaque: solid backing under the WHOLE frame (rounded like the art) — padding-box showed a paler inner box, none let the page ghost through */
