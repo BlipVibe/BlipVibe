@@ -722,3 +722,33 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .timeline-cover-btn, html body
 html body.fs.fs-blip[data-fs-variant="space-age"] #chatMessages .msg-bubble.received, html body.fs.fs-blip[data-fs-variant="space-age"] #chatMessages .msg-bubble.received * { color: #222321 !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] #chatMessages .msg-bubble.sent, html body.fs.fs-blip[data-fs-variant="space-age"] #chatMessages .msg-bubble.sent * { color: #fff6de !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] .gv-staff-role { background: #afdcd0 !important; color: #222321 !important; }
+
+/* ======================================================================================================== SKINS SHOP (phone) — ref/space-age/shop-a.png
+   34pt italic "Skins" + subtitle, the plain mascot head with burst + sparkles right; Skin Shop / My Skins on one cream track (active
+   orange); category chips wrap to fit their words (active TEAL); cards: orange rim, picture, 18pt italic name, teal Equip / Buy,
+   mint "✓ Equipped" */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-shop .page-header h2 { font: italic 800 34px/40px var(--fs-title-font) !important; color: #222321 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-shop .page-subtitle { font: italic 700 13.5px var(--fs-font) !important; color: #222321 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-shop .page-header::after { background: var(--fs-burst) left 0 top 6px / 30px no-repeat, var(--fs-sparkle-1) right 0 top 0 / 22px no-repeat, var(--fs-mascot-head-plain) center / 92px no-repeat !important; animation: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #skinPageToggle { height: 40px !important; padding: 1px !important; gap: 0 !important; border: 0 solid transparent !important; border-image: var(--fs-tabs-track) 0 64 fill / 0 20px stretch !important; background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #skinPageToggle .search-tab { height: 38px !important; border: 0 solid transparent !important; border-image: none !important; font: italic 800 21px/38px var(--fs-title-font) !important; color: #222321 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #skinPageToggle .search-tab.active { border-image: var(--fs-chip-active) 0 76 fill / 0 19px stretch !important; color: #fff6de !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] :is(#shopTabs, #mySkinsTabs) { display: flex !important; flex-wrap: wrap !important; justify-content: flex-start !important; gap: 7px 6px !important; grid-template-columns: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] :is(#shopTabs, #mySkinsTabs) .search-tab { flex: 0 0 auto !important; width: auto !important; height: 30px !important; padding: 0 12px !important; font: italic 800 14.5px/30px var(--fs-title-font) !important; white-space: nowrap !important; border-image-width: 0 15px !important; color: #222321 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] :is(#shopTabs, #mySkinsTabs) .search-tab.active { border-image-source: var(--fs-btn-teal) !important; border-image-slice: 0 67 fill !important; color: #fff6de !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #shopTabs .search-tab.active::after { content: ""; display: inline-block; width: 14px; height: 14px; margin-left: 4px; vertical-align: -1px; background: var(--fs-sparkle-1) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #shopGrid .fsk-filter { font: italic 800 14px var(--fs-title-font) !important; color: #222321 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #shopGrid .fsk-filter.active { border-image-source: var(--fs-btn-teal) !important; border-image-slice: 0 67 fill !important; color: #fff6de !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .fsk-card .fsk-name { font: italic 800 18px/22px var(--fs-title-font) !important; color: #222321 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .fsk-card :is(.fsk-equip, .fsk-buy) { border-image-source: var(--fs-btn-teal) !important; border-image-slice: 0 67 fill !important; color: #fff6de !important; font: italic 800 17px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .fsk-card .fsk-equipped { border-image-source: var(--fs-pill-mint) !important; border-image-slice: 0 67 fill !important; color: #13706b !important; font: italic 800 16px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .fsk-card .fsk-equipped::before { content: "\2713\00a0"; font-style: normal; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .fsk-badge, html body.fs.fs-blip[data-fs-variant="space-age"] .fsk-owned { background-color: transparent !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-shop .apply-skin-btn.btn-primary { border-image-source: var(--fs-btn-teal) !important; border-image-slice: 0 67 fill !important; color: #fff6de !important; font: italic 800 17px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-shop .apply-skin-btn.btn-disabled { border-image-source: var(--fs-pill-mint) !important; border-image-slice: 0 67 fill !important; color: #13706b !important; font: italic 800 16px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-shop :is(.skin-card h4, .skin-card-name, .page-grid h4) { font-style: italic !important; color: #222321 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] :is(#shopTabs, #mySkinsTabs) .search-tab { padding: 0 11px !important; font-size: 14px !important; }
+}
