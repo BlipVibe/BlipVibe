@@ -165,6 +165,89 @@ def tv_antenna():
     return im.resize((W, H), Image.LANCZOS)
 
 
+def starburst(color):
+    """the concept's atomic starburst: 8 equal straight rays of even weight from a small hub (an asterisk), 200x200"""
+    import math
+    W = 200; im = Image.new('RGBA', (W * SS, W * SS), (0, 0, 0, 0)); d = ImageDraw.Draw(im); c = W * SS / 2
+    for i in range(8):
+        t = i * math.pi / 4; L = 86 * SS
+        d.line([(c, c), (c + math.cos(t) * L, c + math.sin(t) * L)], fill=color, width=13 * SS)
+        x, y = c + math.cos(t) * L, c + math.sin(t) * L; d.ellipse([x - 6.5 * SS, y - 6.5 * SS, x + 6.5 * SS, y + 6.5 * SS], fill=color)
+    d.ellipse([c - 14 * SS, c - 14 * SS, c + 14 * SS, c + 14 * SS], fill=color)
+    return im.resize((W, W), Image.LANCZOS)
+
+
+def orbit(color):
+    """the concept's stat orbit: a thick tilted ellipse with a dot riding each end, 420x170"""
+    import math
+    W, H = 420, 170; im = Image.new('RGBA', (W * SS, H * SS), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    cx, cy, rx, ry, rot = W / 2, H / 2, 196, 64, math.radians(-8); pts = []
+    for i in range(361):
+        t = math.radians(i); x, y = rx * math.cos(t), ry * math.sin(t)
+        pts.append(((cx + x * math.cos(rot) - y * math.sin(rot)) * SS, (cy + x * math.sin(rot) + y * math.cos(rot)) * SS))
+    d.line(pts, fill=color, width=10 * SS, joint='curve')
+    for t in (math.radians(160), math.radians(-25)):
+        x, y = rx * math.cos(t), ry * math.sin(t); px_, py_ = cx + x * math.cos(rot) - y * math.sin(rot), cy + x * math.sin(rot) + y * math.cos(rot)
+        d.ellipse([(px_ - 12) * SS, (py_ - 12) * SS, (px_ + 12) * SS, (py_ + 12) * SS], fill=color)
+    return im.resize((W, H), Image.LANCZOS)
+
+
+def gold_pill(size, box, pale=False):
+    """bright gold coin pill / reward chip (concept quest rewards + top-bar coins)"""
+    W, H = size; im = Image.new('RGBA', (W * SS, H * SS), (0, 0, 0, 0)); r = (box[3] - box[1]) / 2
+    layer(im, size, box, r, (212, 168, 100) if pale else (226, 150, 0))
+    layer(im, size, inset(box, 3), r - 3, vgrad(size, [(0, (255, 240, 205)), (.5, (248, 222, 172)), (1, (238, 200, 140))]) if pale else vgrad(size, [(0, (255, 226, 130)), (.45, (250, 202, 72)), (1, (240, 170, 10))]))
+    sh = Image.new('RGBA', im.size, (0, 0, 0, 0)); bh = box[3] - box[1]
+    sb = (box[0] + r * .6, box[1] + bh * .12, box[2] - r * .6, box[1] + bh * .36)
+    sh.paste(Image.new('RGBA', im.size, (255, 255, 255, 90)), (0, 0), rr_mask(size, sb, (sb[3] - sb[1]) / 2)); im.alpha_composite(sh.filter(ImageFilter.GaussianBlur(1.5 * SS)))
+    return finish(im, size)
+
+
+def gold_disc():
+    """the pencil button: a bright gold domed disc with a thin dark rim, 200x200 (Logo Classic box 10,8,189,187)"""
+    W = 200; im = Image.new('RGBA', (W * SS, W * SS), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    d.ellipse([10 * SS, 8 * SS, 189 * SS, 187 * SS], fill=(60, 45, 30))
+    g = vgrad((W, W), [(0, (255, 232, 150)), (.5, (252, 208, 111)), (1, (236, 165, 40))])
+    m = Image.new('L', im.size, 0); ImageDraw.Draw(m).ellipse([16 * SS, 14 * SS, 183 * SS, 181 * SS], fill=255); im.paste(g, (0, 0), m)
+    return im.resize((W, W), Image.LANCZOS)
+
+
+def bolden(name, grow=2, sat=1.35):
+    """icons: the concept's are bold — dark lines to the concept ink, strokes grown, colours saturated"""
+    import colorsys
+    im = Image.open(f'{O}/{name}.webp').convert('RGBA')
+    a = im.getchannel('A').filter(ImageFilter.MaxFilter(grow * 2 + 1)) if grow else im.getchannel('A')
+    src = im.copy(); px = src.load()
+    for y in range(src.height):
+        for x in range(src.width):
+            r, g, b, al = px[x, y]
+            if al < 8: continue
+            h, s_, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
+            if v < .45 and s_ < .5: px[x, y] = (34, 35, 33, al)
+            else:
+                rr, gg, bb = colorsys.hsv_to_rgb(h, min(1, s_ * sat), v); px[x, y] = (round(rr * 255), round(gg * 255), round(bb * 255), al)
+    # grow: the widened rim is the concept's ink outline (clean, no colour bleed)
+    if not grow: return src
+    ink = Image.new('RGBA', src.size, (34, 35, 33, 255)); ink.putalpha(a)
+    ink.alpha_composite(src); return ink
+
+
+def gold_coin(W, box):
+    """the concept's coin: bright gold disc, darker amber rim, embossed 5-point star, a shine"""
+    import math
+    im = Image.new('RGBA', (W * SS, W * SS), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    x0, y0, x1, y1 = box; cx, cy, R = (x0 + x1) / 2, (y0 + y1) / 2, (x1 - x0) / 2
+    d.ellipse([x0 * SS, y0 * SS, x1 * SS, y1 * SS], fill=(196, 112, 0))
+    g = vgrad((W, W), [(0, (255, 214, 80)), (.5, (246, 172, 12)), (1, (230, 140, 0))]); m = Image.new('L', im.size, 0)
+    ImageDraw.Draw(m).ellipse([(cx - R * .86) * SS, (cy - R * .86) * SS, (cx + R * .86) * SS, (cy + R * .86) * SS], fill=255); im.paste(g, (0, 0), m)
+    pts = []
+    for i in range(10):
+        r = R * (.52 if i % 2 == 0 else .22); t = -math.pi / 2 + i * math.pi / 5; pts.append(((cx + r * math.cos(t)) * SS, (cy + r * math.sin(t)) * SS))
+    d.polygon(pts, fill=(204, 120, 0)); pts2 = [((p_[0] / SS - cx) * .8 + cx) * SS for p_ in pts]
+    d.polygon([(((p_[0] / SS - cx) * .78 + cx) * SS, ((p_[1] / SS - cy) * .78 + cy - R * .02) * SS) for p_ in pts], fill=(255, 200, 50))
+    return im.resize((W, W), Image.LANCZOS)
+
+
 def save(im, name, q=92): im.save(f'{O}/{name}.webp', 'WEBP', quality=q, method=6); return name
 
 
@@ -201,6 +284,16 @@ def build():
     out.append(save(vivid('bubble-out', .02, .13, OR_BODY), 'bubble-out'))
     out.append(save(vivid('bubble-in', .4, .6, TE_BODY), 'bubble-in'))
     out.append(save(vivid('menu-check', .02, .13, TE_BODY), 'menu-check'))   # concept: teal check disc
+    out.append(save(starburst((250, 131, 47)), 'sparkle-1')); out.append(save(starburst((36, 134, 123)), 'sparkle-2'))
+    out.append(save(orbit((36, 134, 123)), 'orbit-teal')); out.append(save(orbit((238, 97, 19)), 'orbit-orange')); out.append(save(orbit((242, 172, 1)), 'orbit-gold'))
+    out.append(save(gold_pill((451, 126), (1, 1, 450, 125), True), 'coin-pill')); out.append(save(gold_pill((249, 129), (1, 2, 248, 128)), 'reward-chip'))
+    out.append(save(gold_disc(), 'btn-square'))
+    out.append(save(gold_coin(200, (5, 5, 195, 192)), 'coin')); out.append(save(gold_coin(256, (20, 20, 236, 236)), 'icon-coin'))
+    import glob, os
+    for f in sorted(glob.glob(f'{O}/icon-*.webp')) + sorted(glob.glob(f'{O}/quest-*.webp')):
+        n = os.path.basename(f)[:-5]
+        if n in ('icon-font', 'icon-gif', 'icon-coin'): continue
+        out.append(save(bolden(n, 0, 1.5 if n.startswith('quest') else 1.3), n))
     # sheet (300x300, open bottom, 70 70 0 70 / 22px): cream with a thin tan rim
     sh = card((300, 400), (5, 4, 295, 396), 70, 9, 'tan', CREAM).crop((0, 0, 300, 300)); out.append(save(sh, 'sheet'))
     return out

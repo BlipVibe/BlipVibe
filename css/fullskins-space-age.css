@@ -77,7 +77,7 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
    pills 477-503, stories 518-575. */
 @media (max-width: 768px) {
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-home #timelineCover { height: 127px !important; margin: -2px 4px 0 !important; width: auto !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home #timelineCover::after { left: 16px; right: auto; top: 12px; width: 118px; height: 98px; background-image: var(--fs-mascot-peek) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-home #timelineCover::after { left: 14px; right: auto; top: 4px; width: 134px; height: 120px; background-image: var(--fs-mascot-peek) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #page-home #coverEditBtn { right: 10px !important; bottom: 11px !important; width: 36px !important; height: 36px !important; }
 
   /* profile card = the TV console (card-tail-tight: the feet live in the bottom corner slices) */
@@ -913,3 +913,18 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .navbar { background-color: #f
 html body.fs.fs-blip[data-fs-variant="space-age"] .group-card-banner[style*="#5cbdb9"], html body.fs.fs-blip[data-fs-variant="space-age"] [style*="background:#5cbdb9"] { background-color: #52a29b !important; }
 /* the starburst left of the Search heading is art, not a masked icon (undo the search-glass ink fill for it) */
 html body.fs.fs-blip[data-fs-variant="space-age"]:is(*) #page-search .page-header h2 > i { background: var(--fs-sparkle-1) center / contain no-repeat !important; -webkit-mask: none !important; mask: none !important; }
+
+/* graphics pass (concept crops side by side): wordmark head + type at the concept's size, bigger top-bar / nav icons and labels,
+   starbursts at the concept's 30pt */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-logo { font-size: 30px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-logo::before { width: 62px !important; height: 54px !important; flex-basis: 62px !important; margin-left: -8px; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .navbar :is(.mobile-search-btn, .mobile-notif-btn) > i { width: 22px !important; height: 22px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .nav-center .nav-link > i { width: clamp(24px, 7vw, 28px) !important; height: clamp(24px, 7vw, 28px) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .nav-center .nav-link > span:not(.notif-badge), html body.fs.fs-blip[data-fs-variant="space-age"] .nav-center .nav-link { font-size: clamp(10px, 2.9vw, 11.5px) !important; font-weight: 800 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .fs-namecard::after { width: 30px !important; height: 30px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .profile-stats::after { width: 28px !important; height: 28px !important; margin-left: -14px !important; top: 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #profileCard .edit-profile-btn > i { width: 17px !important; height: 17px !important; }
+}
+/* concept Featured "Buy · 300" is the bright gold pill (the top-bar coin pill is the pale one) */
+html body.fs.fs-blip[data-fs-variant="space-age"] #page-home .featured-body .btn { border-image: var(--fs-reward-chip) 0 64 fill / 0 14px stretch !important; color: #222321 !important; }
