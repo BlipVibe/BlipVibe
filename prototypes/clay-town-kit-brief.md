@@ -1,3 +1,38 @@
+# Clay Town — build rules taken from Pixel Pal (the owner-approved Vibe, live since 3daf63e)
+
+Owner (Nov 20 2026): "you need to look at the pixel pal one and use all the rules there to make the clay town one."
+Sources: prototypes/pixel-pal-kit-brief.md, css/fullskins-pixel-pal.css, the pixel-pal entry + VIBE_FX['pixel-pal'] in
+js/fullskins.js (fe57980), prototypes/tools/pixel_pal_convert.py, Pixel Pal commits 840d9f0 → 3daf63e, its notes.
+
+1. **A Vibe is a variant of the default skin `blip`**, not a new skin: entry in `FULL_SKINS.blip.variants`, saved as
+   `fsVariants.blip`, picked from the Blip menu. Touch only Clay Town's entry, `css/fullskins-clay-town.css`,
+   `assets/clay-town/`, `images/skins/blip/clay-town/card.webp`. Never edit `css/fullskins-blip.css` or Logo Classic art.
+2. **Same geometry as Logo Classic** for every kit part (same name, same canvas, same opaque bbox, same windows), so
+   Logo Classic's 9-slice numbers work unchanged. Only the style changes (below: clay).
+3. **Full kit coverage = Pixel Pal's**: every part Pixel Pal ships, Clay Town ships in clay — including its OWN masks
+   (`cover-mask`, `photo-mask`, `skin-card-mask`, `avatar-mask` from the clay avatar-frame window) and the store/menu
+   card (`images/skins/blip/clay-town/card.webp`, full-bleed painted scene, no text). All listed in the entry's `art`.
+4. **Painted art only, CSS only places it.** Frames are art: a photo is framed by sitting ON the painted card 9-slice
+   (inset ~3pt) like Pixel Pal's cover, not by CSS borders/shadows. Icons are tinted with masks, never filters.
+   NO text/numbers in art, real alpha (never a painted checkerboard), crisp edges, icons centred.
+5. **Mascot = the BlipVibe bubble head with headphones only: NO arms, hands, body, legs.** Zoom-check every mascot.
+   Where a concept shows arms (Clay Town Home holds a sign), use an armless pose instead.
+6. **Entry structure** like Pixel Pal's: `{ id, name, ready, art: [...every part...], font/titleFont/fonts }`
+   (+ `lightBar` only for a light top bar — Clay Town's bar is terracotta, so no). Own switch animation registered as
+   one line `VIBE_FX['clay-town'] = equipClayTown;` (done: 9afda65), own painted FX art, 1.5–3 s, reduced motion skipped.
+7. **CSS structure** like css/fullskins-pixel-pal.css: palette layer first, then one section per page in this order —
+   phone top bar, Home (A, B scrolled), Group page, Groups tab, Notifications, Network, Search, My Profile / Profile
+   view, Someone else's profile, Messages, Chat, Comments, Create a Post, Skins shop, Blip menu, Desktop Home, Desktop
+   Groups, then EVERY PHONE WIDTH (375/390/402/430: vw-clamped sizes, never hardcoded 402 widths). Every rule scoped to
+   `html body.fs.fs-blip[data-fs-variant="clay-town"]`, overriding the base only where the concept differs.
+8. **1:1 to the concept, spacing too**: overlay the concept crop (402pt) to measure; 9-slice, never squash; side-by-side
+   (concept | build, top + scrolled) sent to the owner for each page; note what is only the account's real data.
+9. **QA**: read-only always (`window.__BV_QA_READONLY=true`, see "[QA read-only] ON"); never Equip/Buy/Follow/Publish;
+   own preview/simulator, cleaned up after; check every width and desktop.
+10. **Ship like Pixel Pal**: commit on the branch, merge origin/main (keep every Vibe's entries in shared files), push to
+   main with `ready: false`, report what's left and ask the owner to approve. Only on the owner's approval flip
+   `ready: true` (Pixel Pal: 3daf63e).
+
 # Clay Town (Blip Vibe `clay-town` of the default skin `blip`) — production art kit
 
 Owner rules: 1:1 to the concepts, "almost no CSS visuals" (every visual is painted art, CSS only places it), the

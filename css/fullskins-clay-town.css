@@ -100,9 +100,11 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .left-sidebar { gap: 0 !important; }
   /* cover (y 55-148): a rounded photo inset under the bar with a thin clay lip; no mascot on it (he stands on the profile pedestal) */
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home #timelineCover { height: 93px !important; margin: 0 3px !important; }
-  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .fs-tl-slot-1 { -webkit-mask: none !important; mask: none !important; border-radius: 11px !important; overflow: hidden; }
-  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home #timelineCover::after { inset: 0 !important; width: auto !important; height: auto !important; background: none !important; animation: none !important;
-    border-radius: 11px; box-shadow: inset 0 0 0 2px rgba(120,48,20,.55), inset 0 -3px 4px rgba(120,48,20,.25); }
+  /* cover shape = the clay cover-mask (rounded slab) */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home #timelineCover::after { display: none !important; content: none !important; background: none !important; animation: none !important; }
+  /* like Pixel Pal: the photo sits ON the painted clay card (9-slice), inset 3pt, so only the clay lip shows around it */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .fs-timeline { border: 0 solid transparent; border-image: var(--fs-panel-card-tight) 12% fill / 14px stretch; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .fs-tl-slot-1 { inset: 3px !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home #coverEditBtn { right: 10px !important; bottom: 10px !important; width: 34px !important; height: 34px !important;
     background: var(--fs-camera-badge) center / contain no-repeat !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home #coverEditBtn > i { opacity: 0 !important; }
@@ -144,8 +146,7 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .photos-card { margin-top: -3px !important; height: 198px !important; box-sizing: border-box; padding: 0 4px 0 8px !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .photos-card .card-heading { font: 700 21px/22px var(--fs-font) !important; margin: -6px 0 5px 6px !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .photos-preview { gap: 7px !important; }
-  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .photos-preview > * { height: 65px !important; aspect-ratio: auto !important; -webkit-mask: none !important; mask: none !important; -webkit-mask-box-image: none !important;
-    border-radius: 9px !important; box-shadow: 0 0 0 2.5px #fdf3e4, 0 1.5px 3px 2px rgba(120,48,20,.25); }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .photos-preview > * { height: 65px !important; aspect-ratio: auto !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .photos-card .view-more-link { top: auto !important; bottom: -2px !important; right: 8px !important; width: 108px; height: 29px; display: flex !important;
     align-items: center; justify-content: center; z-index: 2; font: 700 17px var(--fs-font) !important; color: var(--bl-ink) !important;
     border: 0 solid transparent !important; border-image: var(--fs-btn-primary) 0 66 fill / 0 14.5px stretch !important; }
@@ -195,8 +196,7 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-timer > i { width: 14px; height: 14px; font-size: 0 !important; background: var(--bl-ink) !important; -webkit-mask: var(--fs-icon-clock) center / contain no-repeat; mask: var(--fs-icon-clock) center / contain no-repeat; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-body { position: absolute !important; inset: 21px 1px -2px 1px; display: grid !important; grid-template-columns: 177px 1fr !important; grid-template-rows: 29px 16px 1fr !important; row-gap: 0 !important;
     column-gap: 14px; align-items: start; margin: 0 !important; }
-  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-preview { grid-row: 1 / 4; width: 177px !important; height: 84px !important; margin: 0 !important; border-radius: 10px !important;
-    -webkit-mask: none !important; mask: none !important; -webkit-mask-box-image: none !important; box-shadow: 0 0 0 3px #fbf1e2, 0 2px 4px 3px rgba(60,90,50,.3) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-preview { grid-row: 1 / 4; width: 177px !important; height: 84px !important; margin: 0 !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-info { display: contents !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-info h5 { grid-column: 2; grid-row: 1; margin: 8px 0 0 !important; font: 700 21px/21px var(--fs-font) !important; color: var(--bl-ink) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-home .featured-info p { grid-column: 2; grid-row: 2; margin: 2px 0 0 !important; font: 500 13.5px/14px var(--fs-font) !important; color: var(--bl-ink) !important;
@@ -255,7 +255,7 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
   html body.fs.fs-blip[data-fs-variant="clay-town"] .feed-post .post-username { font: 700 17px/18px var(--fs-font) !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] .feed-post .post-time { font: 600 12.5px/14px var(--fs-font) !important; color: var(--bl-ink) !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] .feed-post :is(.post-description, .post-description p) { font: 500 14.5px/17px var(--fs-font) !important; color: var(--bl-ink) !important; }
-  html body.fs.fs-blip[data-fs-variant="clay-town"] .feed-post .post-media-grid { border-radius: 10px !important; -webkit-mask: none !important; mask: none !important; -webkit-mask-box-image: none !important; overflow: hidden; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] .feed-post .post-media-grid { overflow: hidden; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] .feed-post .post-actions .action-left { display: flex !important; width: 100%; justify-content: space-between; gap: 6px; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] .feed-post .action-btn { height: 28px !important; min-height: 0 !important; min-width: 52px; padding: 0 9px !important; display: flex !important; align-items: center; justify-content: center; gap: 6px;
     font: 700 16px var(--fs-font) !important; color: var(--bl-ink) !important; border: 0 solid transparent !important; border-image: var(--fs-pill-cream) 0 66 fill / 0 14px stretch !important; background: none !important; border-radius: 0 !important; }
