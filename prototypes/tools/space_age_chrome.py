@@ -120,6 +120,19 @@ def tv_foot():
     return im.filter(ImageFilter.GaussianBlur(.6 * SS)).resize((W, H), Image.LANCZOS)
 
 
+def swoosh():
+    """the orange swoosh under the wordmark (concept top bar): a tapered upward arc, 360x48"""
+    W, H = 360, 48
+    im = Image.new('RGBA', (W * SS, H * SS), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    pts_top, pts_bot = [], []
+    for i in range(101):
+        t = i / 100; x = 8 + t * (W - 16); y = 30 - 22 * t * t + 6 * (1 - t)
+        th = 1.5 + 10 * (4 * t * (1 - t))
+        pts_top.append((x * SS, (y - th / 2) * SS)); pts_bot.append((x * SS, (y + th / 2) * SS))
+    d.polygon(pts_top + pts_bot[::-1], fill=OR_BODY)
+    return im.filter(ImageFilter.GaussianBlur(.5 * SS)).resize((W, H), Image.LANCZOS)
+
+
 def save(im, name, q=92): im.save(f'{O}/{name}.webp', 'WEBP', quality=q, method=6); return name
 
 
@@ -140,6 +153,7 @@ def build():
     k3 = 130 / 31
     out.append(save(card((756, 751), (2, 2, 754, 690), 28 * k3, 9.5 * k3, 'orange', CREAM, edge=1.2 * k3), 'card-tail-tight'))
     out.append(save(tv_foot(), 'tv-foot'))
+    out.append(save(swoosh(), 'wordmark-swoosh'))
     # pills (Logo Classic canvases + boxes)
     out.append(save(pill((563, 134), (1, 1, 562, 127), 'orange'), 'btn-primary'))
     out.append(save(pill((563, 134), (1, 1, 562, 127), 'teal'), 'btn-teal'))

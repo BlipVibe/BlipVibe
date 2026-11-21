@@ -35,9 +35,10 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
   html body.fs.fs-blip[data-fs-variant="space-age"] .navbar { background: var(--fs-header-bar) center bottom / 100% 100% no-repeat !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .nav-container { grid-template-columns: 1fr 32px 32px minmax(64px, auto) 36px; column-gap: 6px; padding: 0 10px 0 16px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-logo { font: italic 800 27px/1 var(--fs-title-font) !important; color: var(--sa-teal) !important; letter-spacing: -.6px; gap: 2px;
-    background: linear-gradient(90deg, #13625e 0 34%, #ee7a1e 34% 100%) !important; -webkit-background-clip: text !important; background-clip: text !important; -webkit-text-fill-color: transparent; }
+    background: linear-gradient(90deg, #13625e 0 106px, #ee7a1e 106px 100%) !important; position: relative; -webkit-background-clip: text !important; background-clip: text !important; -webkit-text-fill-color: transparent; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-logo::before { width: 52px; height: 46px; flex-basis: 52px; -webkit-text-fill-color: initial; background-image: var(--fs-mascot-head-plain) !important; }
-  html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-logo::after { content: "" !important; width: 15px; height: 15px; margin: -18px 0 0 -2px; background: var(--fs-sparkle-1) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-logo::after { content: "" !important; position: absolute; left: 52px; right: -16px; top: 2px; bottom: -2px; margin: 0; width: auto; height: auto; pointer-events: none;
+    background: var(--fs-sparkle-1) right 0 top 0 / 16px no-repeat, var(--fs-wordmark-swoosh) left 2px bottom -2px / calc(100% - 14px) 15px no-repeat !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .navbar :is(.mobile-search-btn, .mobile-notif-btn) { width: 32px !important; height: 32px !important; background: var(--fs-btn-round) center / 100% 100% no-repeat !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .navbar :is(.mobile-search-btn, .mobile-notif-btn) > i { width: 19px !important; height: 19px !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] .navbar .nav-coins { height: 30px !important; padding: 0 9px 0 5px !important; border-image-width: 0 15px !important; }
