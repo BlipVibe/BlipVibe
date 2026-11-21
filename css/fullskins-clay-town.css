@@ -341,3 +341,33 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
     box-shadow: 0 0 0 2px var(--ct-cream), 0 0 0 5px var(--ct-terra) !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-group-view .post-input-fake { font: 500 18px var(--fs-font) !important; height: 42px !important; }
 }
+
+/* ======================================================================================================== GROUPS TAB (phone) — concept groups.png */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups.page.active { padding-top: calc(60px + env(safe-area-inset-top, 0px)) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .page-container { padding: 0 8px 90px !important; margin: 0 3px !important; }
+  /* heading: big people icon + 32pt title, the mascot (no arms) peeking with sparkles at the right */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .page-header { grid-template-columns: 1fr 156px !important; column-gap: 7px !important; row-gap: 12px !important; padding-top: 14px !important; margin-bottom: 12px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .page-header h2 { font: 700 34px/40px var(--fs-font) !important; gap: 12px !important; margin-left: 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .page-header h2 > i { width: 52px !important; height: 44px !important; flex-basis: 52px !important; background: var(--bl-ink) !important;
+    -webkit-mask: var(--fs-icon-groups) center / contain no-repeat; mask: var(--fs-icon-groups) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .page-header::after { right: 0 !important; top: -2px !important; width: 150px !important; height: 72px !important; background-image: var(--fs-mascot-page-happy) !important; background-size: contain !important; background-position: right center !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .page-search { height: 37px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .page-search > i { filter: none !important; background: var(--bl-ink) !important; -webkit-mask: var(--fs-icon-search) center / contain no-repeat; mask: var(--fs-icon-search) center / contain no-repeat; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .page-search input { font: 500 17px var(--fs-font) !important; }
+  /* Create Group = sage clay pill, brown label */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups #createGroupBtn { height: 38px !important; min-height: 0 !important; font: 700 17px var(--fs-font) !important; color: var(--bl-ink) !important; border-image-source: var(--fs-pill-sage) !important; border-image-slice: 0 66 fill !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups #createGroupBtn * { color: var(--bl-ink) !important; }
+  /* tabs: three clay pills with icons, the active one butter */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #groupsTabs { gap: 7px !important; height: 38px; margin-bottom: 12px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #groupsTabs .search-tab { height: 38px !important; font: 700 16.5px var(--fs-font) !important; color: var(--bl-ink) !important; border-image: var(--fs-chip) 0 76 fill / 0 19px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #groupsTabs .search-tab.active { border-image-source: var(--fs-btn-primary) !important; border-image-slice: 0 66 fill !important; }
+  /* group cards: wider clay cards, rounded cover, cream-ringed picture, bold name, grey Joined + cream View */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .shop-scroll-row { grid-auto-columns: calc((100vw - 29px) / 2) !important; column-gap: 7px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .group-card { width: auto !important; max-width: none !important; min-width: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .group-card-body h4 { font: 700 18px/22px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .group-card-body p { font: 500 13.5px/17px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .group-members { font: 700 15px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .group-card-actions .btn { font: 700 16px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .group-card-actions .join-group-btn.btn-disabled { color: #4f4a44 !important; }
+}
