@@ -544,3 +544,36 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .inline-comment-bubble { backg
   border-image: var(--fs-bubble-in) 80 80 100 90 fill / 12px 12px 15px 14px stretch !important; padding: 6px 12px 9px 14px !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] .inline-comment-bubble strong { color: var(--sa-teal) !important; }
 html body.fs.fs-blip[data-fs-variant="space-age"] .inline-comment-bubble p { color: var(--sa-text) !important; }
+
+/* ======================================================================================================== MESSAGES (phone) — ref/space-age/messages-a.png
+   (concept y - 33 = page y): white italic "Messages" heading tab 69-109 with a starburst right; teal search field 119-157; the list
+   on an orange-rim frame from 165: New Group Chat as a cream tan-rim row with a teal + disc (172-229), then teal-rim rows 57pt, pitch 58 */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages .msg-sidebar-header { position: relative; padding: 3px 0 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages .msg-sidebar-header h3 { display: inline-flex !important; align-items: center; height: 40px; padding: 0 28px !important; margin: 0 0 0 -4px !important;
+    font: italic 800 31px/40px var(--fs-title-font) !important; color: #fff !important; border: 0 solid transparent !important; border-image: var(--fs-heading-tab) 0 72 fill / 0 20px stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages .msg-sidebar-header::after { content: ""; position: absolute; right: 26px; top: 0; width: 46px; height: 46px; background: var(--fs-sparkle-1) center / contain no-repeat; pointer-events: none; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages .msg-search { height: 38px !important; margin: 6px 2px 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages .msg-search input { font: 600 16px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages .msg-contact-list { gap: 1px !important; padding: 7px 4px 90px !important; border: 0 solid transparent !important; border-width: 7px 4px 0 !important;
+    border-image: var(--fs-panel-card-tight) 60 60 0 60 fill / 17px 17px 0 17px / 0 stretch !important; margin: 0 -4px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages .msg-contact { min-height: 57px !important; height: 57px; padding: 0 12px 0 10px !important; gap: 14px !important; border-image-source: var(--fs-panel-teal-tight) !important; border-image-width: 9px 9px 15px 9px !important; border-image-outset: 0 0 4px 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages .msg-contact.active { border-image-source: var(--fs-panel-teal-tight) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages #newGroupDmBtn { min-height: 57px !important; border-image-source: var(--fs-panel-tan-tight) !important; margin-bottom: 5px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages #newGroupDmBtn > div:first-child { width: 46px !important; height: 46px !important; background: var(--fs-story-add) center / contain no-repeat !important; flex: 0 0 46px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages #newGroupDmBtn > div:first-child > i { opacity: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages #newGroupDmBtn .msg-contact-name { font: italic 800 19px/22px var(--fs-title-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages .msg-contact img { width: 46px !important; height: 46px !important; padding: 0 !important; background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages .msg-contact-name { font: 800 17.5px/21px var(--fs-title-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages .msg-contact-preview { font: 600 15px/18px var(--fs-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages .msg-contact-time { font: 600 14px var(--fs-font) !important; color: var(--sa-text) !important; align-self: flex-start; margin-top: 9px; }
+}
+
+@media (max-width: 768px) {
+  /* search results (concept B): "Following" / "Others" as white italic orange heading tabs over teal-rim rows */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages #msgContactList > div:not(.msg-contact) { overflow-x: hidden !important; display: flex; flex-direction: column; gap: 1px; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages #msgContactList > div > div:not(.msg-contact) { align-self: flex-start; display: inline-flex !important; align-items: center; height: 30px; padding: 0 24px !important; margin: 4px 0 6px !important;
+    font: italic 800 21px/30px var(--fs-title-font) !important; text-transform: none !important; letter-spacing: 0 !important; color: #fff !important; border: 0 solid transparent; border-image: var(--fs-heading-tab) 0 72 fill / 0 15px stretch; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages#page-messages #msgContactList > div > div:not(.msg-contact) > i { display: none !important; }
+}
+@media (max-width: 768px) { html body.fs.fs-blip[data-fs-variant="space-age"] #page-messages .msg-sidebar { overflow-x: hidden !important; scrollbar-width: none; } }
