@@ -9710,3 +9710,18 @@ html body.fs.fs-scrapbook .modal-profile-top:not(#_) { --mp-mb: 18px; }
    gold-framed Day menu panel the same way (stretched once, solid lavender backing) */
 html body.fs.fs-good-witch:not([data-fs-variant="night"]) .modal-content:not(#_) { border: solid transparent !important; border-width: 28px !important;
   border-image: var(--fs-menu-panel) 80 fill / 28px stretch !important; background: #ece3f8 !important; background-clip: border-box !important; border-radius: 16px !important; }   /* art is 93% opaque: solid backing under the WHOLE frame (rounded like the art) — padding-box showed a paler inner box, none let the page ghost through */
+/* Superhero Home (owner, Nov 21: "Yes, add it back"): the Home card's View Profile + edit pencil were hidden (display:none),
+   so Superhero had no way from Home to your profile. Back as one full-width row under the stats: View Profile on the skin's
+   painted plaque (same piece as the profile page's EDIT PROFILE) + the pencil on the painted round button. */
+html body.fs.fs-superhero[data-fs-variant] #profileCard .profile-info > .profile-links:not(#_) { display: flex !important; grid-column: 1 / -1 !important; align-items: center; justify-content: center;
+  gap: 10px; margin: 8px 0 10px !important; padding: 0 !important; border: 0 !important; background: none !important; }
+html body.fs.fs-superhero #profileCard .profile-links:not(#_) #viewMyProfile { flex: 1 1 auto; max-width: 280px; min-height: 48px; box-sizing: border-box; display: flex !important; align-items: center; justify-content: center;
+  border: solid transparent !important; border-width: 12px 28px !important; border-image: var(--fs-edit-btn) 60 85 fill / 12px 28px stretch !important; border-radius: 0 !important;
+  background: none !important; box-shadow: none !important; padding: 0 4px !important; margin: 0 !important; color: var(--sh-on) !important; font: 400 21px/1 var(--sh-tfont) !important;
+  letter-spacing: var(--sh-tspace); text-transform: uppercase; text-decoration: none !important; white-space: nowrap; }
+html body.fs.fs-superhero[data-fs-variant="heroes"] #profileCard .profile-links:not(#_) #viewMyProfile { font-style: italic; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #profileCard .profile-links:not(#_) #viewMyProfile { color: #10240a !important; }
+html body.fs.fs-superhero #profileCard .profile-links:not(#_) #editProfileBtn { flex: 0 0 48px; width: 48px !important; height: 48px !important; display: flex !important; align-items: center; justify-content: center;
+  margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 50% !important; box-shadow: none !important; background: var(--fs-round-btn) center / contain no-repeat !important; }
+html body.fs.fs-superhero #profileCard .profile-links:not(#_) #editProfileBtn i { font-size: 18px !important; color: var(--sh-title) !important; }
+html body.fs.fs-superhero[data-fs-variant="villains"] #profileCard .profile-links:not(#_) #editProfileBtn i { color: #b8ff6a !important; }
