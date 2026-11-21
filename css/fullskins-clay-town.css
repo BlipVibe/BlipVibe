@@ -599,9 +599,7 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
 @media (min-width: 769px) {   /* the base whitens desktop nav icons for its blue bar; on cream / butter clay tiles they stay clay brown */
   html body.fs.fs-blip[data-fs-variant="clay-town"]:is(*) .nav-center .nav-link > i { filter: none !important; }
 }
-@media (min-width: 769px) {   /* Desktop Groups (concept groupsdesk.png): the page on one cream clay sheet, soft cream search + idle tabs, terracotta-framed cards, Join sage */
-  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .page-container { margin: 6px 18px 0 !important; padding: 4px 22px 40px !important; min-height: calc(100vh - 80px); box-sizing: border-box;
-    border: 14px solid transparent !important; border-image: var(--fs-sheet) 12% fill / 14px stretch !important; border-bottom: 0 !important; }
+@media (min-width: 769px) {   /* Desktop Groups (concept groupsdesk.png): on the terracotta page, soft cream search + idle tabs, terracotta-framed cards, Join sage */
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .page-search { border-image: var(--fs-pill-cream) 0 66 fill / 0 20px stretch !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"]:is(*) #groupsTabs .search-tab:not(.active) { border-image-source: var(--fs-pill-cream) !important; border-image-slice: 0 66 fill !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-groups .group-card { border: 8px solid transparent !important; border-image: var(--fs-panel-card) 12% fill / 26px stretch !important; background: none !important; }
