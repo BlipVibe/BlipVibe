@@ -909,3 +909,5 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .navbar { background-color: #f
   html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .view-group-btn { border-image-source: var(--fs-chip) !important; border-image-slice: 0 76 fill !important; color: #222321 !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #groupsSections .join-group-btn.btn-disabled { color: #72726f !important; }
 }
+/* the app's default banner colour for groups without a cover isn't in the concept: the concept's thin-teal instead */
+html body.fs.fs-blip[data-fs-variant="space-age"] .group-card-banner[style*="#5cbdb9"], html body.fs.fs-blip[data-fs-variant="space-age"] [style*="background:#5cbdb9"] { background-color: #52a29b !important; }
