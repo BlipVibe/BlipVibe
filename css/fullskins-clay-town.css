@@ -499,3 +499,25 @@ html body.fs.fs-blip[data-fs-variant="clay-town"] .mobile-pill > i { background:
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-contact-time, html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-time { font: 600 15px var(--fs-font) !important; color: var(--bl-ink) !important; }
   html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-contact { padding-left: 12px !important; }
 }
+
+/* ======================================================================================================== CHAT (phone) — concept chat.png */
+@media (max-width: 768px) {
+  /* cream clay sheet behind the conversation; header card with back / ringed photo / name; incoming = cream clay bubble, outgoing = butter,
+     brown text in both; input strip = cream with image / sage GIF / mic / cream field / sage round send */
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #msgChat { background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #msgChat::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; border: 14px solid transparent; border-image: var(--fs-sheet) 12% fill / 14px stretch; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #msgChat { position: relative; isolation: isolate; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-chat-header { border-image: var(--fs-panel-card) 12% fill / 26px stretch !important; height: 70px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-chat-header img { width: 52px !important; height: 52px !important; box-shadow: 0 0 0 2px var(--ct-cream), 0 0 0 5px var(--ct-terra) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-chat-header :is(h3, h4, .msg-chat-name, span) { font: 700 26px var(--fs-font) !important; color: var(--bl-ink) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-bubble, html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-bubble * { color: var(--bl-ink) !important; text-shadow: none !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-bubble { font: 600 18px/22px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-chat-input { background: none !important; border-top: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #page-messages .msg-chat-input input, html body.fs.fs-blip[data-fs-variant="clay-town"] #msgInput { border: 0 solid transparent !important; border-image: var(--fs-pill-cream) 0 66 fill / 0 20px stretch !important; background: none !important; font: 600 17px var(--fs-font) !important; color: var(--bl-ink) !important; height: 40px !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #sendMsgBtn { background: var(--fs-icon-send) center / 22px no-repeat, var(--fs-tile-sage) center / 100% 100% no-repeat !important; border-radius: 50% !important; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #msgGifBtn { border: 0 solid transparent !important; border-image: var(--fs-pill-sage) 0 66 fill / 0 16px stretch !important; background: var(--fs-icon-gif) center / 28px no-repeat !important; color: var(--bl-ink) !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #msgGifBtn { width: 46px !important; min-width: 46px !important; height: 34px !important; position: relative; }
+  html body.fs.fs-blip[data-fs-variant="clay-town"] #msgGifBtn::after { content: ""; position: absolute; inset: 4px 8px; background: var(--fs-icon-gif) center / contain no-repeat; pointer-events: none; }
+}
