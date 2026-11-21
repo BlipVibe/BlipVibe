@@ -356,3 +356,45 @@ html body.fs.fs-blip[data-fs-variant="space-age"] :is(.post-avatar, .post-create
   html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .empty-state > i { width: 210px !important; height: 190px !important; font-size: 0 !important; color: transparent !important; background: var(--fs-mascot-sleep) center / contain no-repeat !important; -webkit-mask: none !important; mask: none !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #notifList .empty-state p { font: italic 800 19px/23px var(--fs-title-font) !important; color: var(--sa-text) !important; text-align: center; }
 }
+
+/* ======================================================================================================== NETWORK (phone) — ref/space-age/network-a.png
+   (concept y - 44 = page y): the whole page on one orange-rim sheet from 58 (x 8-394); title 89 with the plain mascot head + burst
+   at the right; search 116-151; tabs 161-214 (active orange); "Mutual" mint pill 226-258; 2-column person cards from 268 */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .page-container { margin: -18px 6px 0 !important; width: auto !important; padding: 0 8px 90px !important; border: 0 solid transparent !important; border-width: 14px 6px 0 !important; min-height: calc(100vh - 62px); box-sizing: border-box;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .page-header { margin-top: -18px !important; height: 106px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .page-header h2 { top: 16px !important; font: italic 800 31px/38px var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .page-header::after { right: -6px !important; top: 2px !important; width: 160px !important; height: 76px !important; animation: none !important;
+    background: var(--fs-sparkle-2) right 4px top 10px / 22px no-repeat, var(--fs-burst) left 6px top 4px / 34px no-repeat, var(--fs-mascot-head-plain) center / 92px no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .page-actions { top: 60px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .page-search input { font: italic 600 15.5px var(--fs-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles #profilesTabs { height: 52px !important; margin: 4px 0 10px !important; gap: 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles #profilesTabs .search-tab { height: 52px !important; font: italic 800 15.5px/17px var(--fs-title-font) !important; padding: 0 8px !important; white-space: normal !important; text-align: center; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .connections-wrap { margin: 0 -8px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .connections-columns { padding: 0 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .connections-col { flex: 0 0 calc(100vw - 44px) !important; width: calc(100vw - 44px) !important; min-width: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .connections-heading { width: 228px !important; height: 32px !important; padding: 0 0 0 26px !important; margin: 0 0 10px !important; background: none !important; border-radius: 0 !important;
+    border: 0 solid transparent !important; border-image: var(--fs-pill-mint) 0 67 fill / 0 16px stretch !important; font: italic 800 20px/32px var(--fs-title-font) !important; color: var(--sa-text) !important; gap: 8px; margin-bottom: 8px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .connections-grid { gap: 6px 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .profile-card-item { height: 156px !important; }
+  /* each photo in the brass porthole (avatar-frame art behind the photo's padding) */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .profile-card-avatar { width: 88px !important; height: 88px !important; padding: 12px !important; box-sizing: border-box !important; box-shadow: none !important; border: 0 !important; margin: 0 0 3px !important;
+    background: var(--fs-avatar-frame) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .profile-card-name { font: italic 800 17px/21px var(--fs-title-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .profile-follow-btn { width: 136px !important; height: 30px !important; font: italic 800 17px/30px var(--fs-title-font) !important; color: var(--sa-text) !important; border-image-width: 0 15px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .profile-follow-btn.btn-primary { border-image-source: var(--fs-btn-teal) !important; color: #fff !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .connections-dot { background: var(--fs-unread-dot) center / contain no-repeat !important; opacity: .35; box-shadow: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .connections-dot.active { opacity: 1; box-shadow: none !important; }
+}
+
+@media (max-width: 768px) {
+  /* People You May Know / Not Following Back (concept B): the same 2-column cards, a mint "n mutuals" pill, teal Follow */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .search-results-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 6px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .search-results-grid .profile-card-item { height: auto !important; min-height: 172px; padding: 8px 6px 10px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .search-results-grid .profile-card-item > * { flex-shrink: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .mutual-badge { display: inline-flex !important; align-items: center; justify-content: center; gap: 5px; height: 22px; padding: 0 12px !important; margin: 0 0 6px !important; background: none !important; border-radius: 0 !important;
+    border: 0 solid transparent !important; border-image: var(--fs-pill-mint) 0 67 fill / 0 11px stretch !important; font: italic 800 13px/22px var(--fs-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .mutual-badge > i { color: var(--sa-teal) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #page-profiles#page-profiles .profile-card-bio { display: none !important; }
+}

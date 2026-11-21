@@ -108,4 +108,8 @@ save(pt, 'panel-tan-tight')
 # sheet (the page sheet behind Groups / Notifications / Network / Search…: open at the bottom, 9-sliced 70 70 0 70) =
 # the top of the tan-rim card, refitted to Logo Classic's sheet box
 top = pt.crop((0, 0, pt.width, int(pt.height * 0.6))); save(refit(top, f'{L}/sheet.webp', 'nine', (70, 70, 70, 0)), 'sheet')
+# pill-mint (Network "Mutual" heading pill, network concept) = the painted teal pill lightened to mint
+bt = Image.open(f'{O}/btn-teal.webp').convert('RGBA'); a = bt.getchannel('A')
+m = ImageOps.colorize(ImageOps.autocontrast(ImageOps.grayscale(bt.convert('RGB')), cutoff=1), (0x7c, 0xc2, 0xb4), (0xd8, 0xf1, 0xea)).convert('RGBA'); m.putalpha(a)
+save(m, 'pill-mint')
 print('art:', json.dumps(sorted(set(done))))
