@@ -639,3 +639,62 @@ html body.fs.fs-blip[data-fs-variant="space-age"] .inline-comment-bubble p { col
   html body.fs.fs-blip[data-fs-variant="space-age"] #replyIndicator * { font: inherit !important; color: var(--sa-text) !important; }
   html body.fs.fs-blip[data-fs-variant="space-age"] #replyIndicator #cancelReply { margin-left: auto !important; color: var(--sa-teal) !important; }
 }
+
+/* ======================================================================================================== CREATE A POST (phone) — ref/space-age/createpost-a.png
+   a full-height cream sheet: header = cream pill with the orange rim, the plain mascot head (burst + sparkle) at its left, 28pt italic title,
+   × in a round cream button; porthole avatar + 27pt italic name + starburst; orange-rim text box; teal-rim thumbnails; mint tag chips;
+   the footer is a teal-rim console pinned at the bottom (counter · round tool buttons · orange Publish) */
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal:has(#cpmText) { min-height: calc(100dvh - 24px) !important; display: flex !important; flex-direction: column !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal:has(#cpmText) > .cpm-scroll, html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal:has(#cpmText) > :not(.modal-header):not(.cpm-footer) { flex: 0 0 auto; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-footer { margin-top: auto !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal:has(#cpmText) > .modal-header { height: 62px !important; margin: 4px 2px 6px !important; padding: 0 12px 0 102px !important; border: 0 solid transparent !important; border-image: var(--fs-btn-secondary) 0 74 fill / 0 31px stretch !important; overflow: visible !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal:has(#cpmText) > .modal-header::before { left: -6px !important; top: -16px !important; width: 112px !important; height: 86px !important;
+    background: var(--fs-burst) left 6px top 0 / 30px no-repeat, var(--fs-sparkle-2) right 4px top 2px / 18px no-repeat, var(--fs-mascot-head-plain) center 10px / 98px no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal:has(#cpmText) > .modal-header h3 { font: italic 800 28px var(--fs-title-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-scroll > div:first-child { position: relative; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-scroll > div:first-child::after { content: ""; position: absolute; right: 22px; top: 18px; width: 40px; height: 40px; background: var(--fs-sparkle-1) center / contain no-repeat; pointer-events: none; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-scroll > div:first-child > img { width: 84px !important; height: 84px !important; padding: 12px !important; box-sizing: border-box !important; box-shadow: none !important; background: var(--fs-avatar-frame) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-scroll > div:first-child > strong { font: italic 800 28px var(--fs-title-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-textarea { font: italic 700 17px/22px var(--fs-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-media-grid > * { border: 0 solid transparent !important; border-image: var(--fs-panel-teal-tight) 60 60 98 60 fill / 8px 8px 13px 8px stretch !important; border-radius: 0 !important; padding: 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-tag-chip { background: none !important; border: 0 solid transparent !important; border-radius: 0 !important; border-image: var(--fs-pill-mint) 0 67 fill / 0 16px stretch !important; font: italic 800 17px var(--fs-title-font) !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-footer { margin: auto 2px 4px !important; height: 58px; padding: 0 8px 0 18px !important; border: 0 solid transparent !important; border-image: var(--fs-chip) 0 76 fill / 0 29px stretch !important; background: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal #cpmCharCounter { font: 700 14px var(--fs-font) !important; color: var(--sa-text) !important; border-right-color: #cdb48e !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-emoji-btn { background: var(--fs-btn-round) center / 100% 100% no-repeat !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal #cpmPublish { height: 38px !important; min-height: 0 !important; font: italic 800 19px var(--fs-title-font) !important; border-image-width: 0 19px !important; }
+}
+@media (max-width: 768px) {
+  /* overlay pass (createpost-a): the concept has no outer frame — the composer IS the page: header pill x 8-394, porthole 100pt at x 10,
+     text box x 8-394; so the modal drops its frame and padding and fills the screen on the cream page art */
+  html body.fs.fs-blip[data-fs-variant="space-age"] .modal-overlay:has(.create-post-modal #cpmText) { padding: 0 !important; background: #fbebd3 var(--fs-background) center top / 100% auto repeat-y !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #modalContent:has(.create-post-modal #cpmText) { border: 0 !important; border-image: none !important; background: none !important; box-shadow: none !important;
+    width: 100% !important; max-width: none !important; margin: 0 !important; padding: calc(env(safe-area-inset-top, 0px) + 18px) 8px 0 !important; border-radius: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal:has(#cpmText) > .modal-header { margin: 4px 0 8px !important; height: 58px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-scroll > div:first-child { padding: 0 4px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-scroll > div:first-child > img { width: 104px !important; height: 104px !important; padding: 14px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-scroll > div:first-child > strong { font-size: 31px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-textarea { width: 100% !important; margin: 10px 0 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-media-zone, html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-tags-section { margin-left: 0 !important; margin-right: 0 !important; padding-left: 0 !important; padding-right: 0 !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal .cpm-footer { margin: auto 0 calc(env(safe-area-inset-bottom, 0px) + 10px) !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #modalContent:has(.create-post-modal #cpmText) { height: 100dvh !important; max-height: none !important; overflow: auto !important; display: flex !important; flex-direction: column !important; box-sizing: border-box !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #modalContent:has(.create-post-modal #cpmText) > .create-post-modal { flex: 1 0 auto !important; min-height: 0 !important; }
+  /* poll (concept createpost B): orange-rim card, "Poll" bold italic with its teal icon, Remove teal, options as cream / teal-rim pills, + Add option teal */
+  html body.fs.fs-blip[data-fs-variant="space-age"] #cpmPollSection { margin: 10px 0 0 !important; padding: 2px 6px 6px !important; border: 0 solid transparent !important; border-width: 6px 10px 12px !important; background: none !important;
+    border-image: var(--fs-panel-card-tight) 60 60 98 60 fill / 17px 17px 28px 17px / 0 stretch !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #cpmPollSection *:not(i) { font-family: var(--fs-title-font) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #cpmPollSection > div:first-child, html body.fs.fs-blip[data-fs-variant="space-age"] #cpmPollSection > div:first-child *:not(i) { font-style: italic !important; font-weight: 800 !important; font-size: 21px !important; color: var(--sa-text) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #cpmPollSection > div:first-child i { color: var(--sa-teal) !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #cpmRemovePoll, html body.fs.fs-blip[data-fs-variant="space-age"] #cpmRemovePoll *:not(i) { color: var(--sa-teal) !important; font-size: 16px !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #cpmPollOptions .cpm-poll-input { width: 100% !important; height: 32px !important; margin: 0 0 6px !important; background: none !important; border: 0 solid transparent !important; border-radius: 0 !important;
+    border-image: var(--fs-chip) 0 76 fill / 0 16px stretch !important; font: italic 800 16px var(--fs-title-font) !important; color: var(--sa-text) !important; padding: 0 18px !important; box-shadow: none !important; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] #cpmAddPollOpt { color: var(--sa-teal) !important; font: italic 800 17px var(--fs-title-font) !important; }
+}
+@media (max-width: 768px) {
+  html body.fs.fs-blip[data-fs-variant="space-age"] #cpmPollSection #cpmRemovePoll, html body.fs.fs-blip[data-fs-variant="space-age"] #cpmPollSection #cpmRemovePoll *:not(i) { color: var(--sa-teal) !important; font-size: 17px !important; }
+  /* the console sits on the bottom edge like the concept (pinned), the sheet scrolls above it */
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal:has(#cpmText) .cpm-footer { position: fixed !important; left: 8px !important; right: 8px !important; bottom: calc(env(safe-area-inset-bottom, 0px) + 10px) !important; margin: 0 !important; z-index: 5; }
+  html body.fs.fs-blip[data-fs-variant="space-age"] .create-post-modal:has(#cpmText) { padding-bottom: 80px !important; }
+}
